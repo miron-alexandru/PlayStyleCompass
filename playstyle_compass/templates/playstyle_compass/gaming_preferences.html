@@ -1,0 +1,164 @@
+{% extends "playstyle_compass/base.html" %}
+
+{% block page_header %}
+  <h2>My Preferences</h2>
+{% endblock page_header %}
+
+{% block content %}
+  <form method="post" action="{% url 'playstyle_compass:update_preferences' %}">
+    {% csrf_token %}
+
+    <fieldset>
+    <legend>Gaming History:</legend>
+    <div>
+      <label for="gaming_history">Gaming History:</label>
+      <input type="text" id="gaming_history" name="gaming_history" value="{{ user_preferences.gaming_history }}"
+             pattern="[A-Za-z0-9]+" title="Only letters and numbers are allowed"><br><br>
+    </div>
+  </fieldset>
+
+
+    <fieldset>
+      <legend>Favorite Genres (Select up to 3):</legend>
+      <div>
+        <label>
+          <input type="checkbox" name="favorite_genres" value="action" {% if 'action' in user_preferences.favorite_genres %}checked{% endif %}>
+          Action
+        </label>
+        <label>
+          <input type="checkbox" name="favorite_genres" value="adventure" {% if 'adventure' in user_preferences.favorite_genres %}checked{% endif %}>
+          Adventure
+        </label>
+        <label>
+          <input type="checkbox" name="favorite_genres" value="rpg" {% if 'rpg' in user_preferences.favorite_genres %}checked{% endif %}>
+          Role-playing (RPG)
+        </label>
+        <label>
+          <input type="checkbox" name="favorite_genres" value="strategy" {% if 'strategy' in user_preferences.favorite_genres %}checked{% endif %}>
+          Strategy
+        </label>
+        <label>
+          <input type="checkbox" name="favorite_genres" value="sports" {% if 'sports' in user_preferences.favorite_genres %}checked{% endif %}>
+          Sports
+        </label>
+        <label>
+          <input type="checkbox" name="favorite_genres" value="shooter" {% if 'shooter' in user_preferences.favorite_genres %}checked{% endif %}>
+          Shooter
+        </label>
+        <label>
+          <input type="checkbox" name="favorite_genres" value="simulation" {% if 'simulation' in user_preferences.favorite_genres %}checked{% endif %}>
+          Simulation
+        </label>
+        <label>
+          <input type="checkbox" name="favorite_genres" value="puzzle" {% if 'puzzle' in user_preferences.favorite_genres %}checked{% endif %}>
+          Puzzle
+        </label>
+        <label>
+          <input type="checkbox" name="favorite_genres" value="horror" {% if 'horror' in user_preferences.favorite_genres %}checked{% endif %}>
+          Horror
+        </label>
+        <label>
+          <input type="checkbox" name="favorite_genres" value="sandbox" {% if 'sandbox' in user_preferences.favorite_genres %}checked{% endif %}>
+          Sandbox
+        </label>
+      </div>
+    </fieldset>
+    
+    <fieldset>
+      <legend>Preferred Platforms (Select up to 3):</legend>
+      <div>
+        <label>
+          <input type="checkbox" name="platforms" value="pc" {% if 'pc' in user_preferences.platforms %}checked{% endif %}>
+          PC
+        </label>
+        <label>
+          <input type="checkbox" name="platforms" value="console" {% if 'console' in user_preferences.platforms %}checked{% endif %}>
+          Console
+        </label>
+        <label>
+          <input type="checkbox" name="platforms" value="mobile" {% if 'mobile' in user_preferences.platforms %}checked{% endif %}>
+          Mobile
+        </label>
+        <label>
+          <input type="checkbox" name="platforms" value="vr" {% if 'vr' in user_preferences.platforms %}checked{% endif %}>
+          Virtual Reality (VR)
+        </label>
+        <label>
+          <input type="checkbox" name="platforms" value="nintendo" {% if 'nintendo' in user_preferences.platforms %}checked{% endif %}>
+          Nintendo
+        </label>
+        <label>
+          <input type="checkbox" name="platforms" value="xbox" {% if 'xbox' in user_preferences.platforms %}checked{% endif %}>
+          Xbox
+        </label>
+        <label>
+          <input type="checkbox" name="platforms" value="playstation" {% if 'playstation' in user_preferences.platforms %}checked{% endif %}>
+          PlayStation
+        </label>
+        <label>
+          <input type="checkbox" name="platforms" value="mac" {% if 'mac' in user_preferences.platforms %}checked{% endif %}>
+          Mac
+        </label>
+        <label>
+          <input type="checkbox" name="platforms" value="linux" {% if 'linux' in user_preferences.platforms %}checked{% endif %}>
+          Linux
+        </label>
+        <label>
+          <input type="checkbox" name="platforms" value="browser" {% if 'browser' in user_preferences.platforms %}checked{% endif %}>
+          Browser
+        </label>
+      <div>
+        <p class="warning" id="platform-warning" style="color: red; display: none;">Please select at least one platform.</p>
+        <p class="warning" id="genre-warning" style="color: red; display: none;">Please select at least one genre.</p>
+        <p class="warning" id="history-warning" style="color: red; display: none;">Please write at least one game that you have played.</p>
+        </fieldset>
+
+        <input type="submit" value="Update Preferences" id="update-button">
+      </form>
+
+    <script>
+    const maxSelections = 3;
+    const favoriteGenreCheckboxes = document.querySelectorAll('input[name="favorite_genres"]');
+    const preferredPlatformCheckboxes = document.querySelectorAll('input[name="platforms"]');
+    const updateButton = document.getElementById('update-button');
+    const genreWarning = document.getElementById('genre-warning');
+    const platformWarning = document.getElementById('platform-warning');
+    const historyWarning = document.getElementById('history-warning');
+    const gamingHistoryInput = document.getElementById('gaming_history');
+
+    function handleCheckboxChange(checkboxes, warningElement) {
+      function updateWarnings() {
+        const selectedCount = Array.from(checkboxes).filter(cb => cb.checked).length;
+        warningElement.style.display = selectedCount >= 1 ? 'none' : 'block';
+        updateButton.disabled = isUpdateButtonDisabled();
+      }
+
+      checkboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', updateWarnings);
+      });
+
+      // Call updateWarnings initially to account for the initial checkbox state
+      updateWarnings();
+    }
+
+    handleCheckboxChange(favoriteGenreCheckboxes, genreWarning);
+    handleCheckboxChange(preferredPlatformCheckboxes, platformWarning);
+
+    gamingHistoryInput.addEventListener('input', () => {
+      historyWarning.style.display = gamingHistoryInput.value.trim() === '' ? 'block' : 'none';
+      updateButton.disabled = isUpdateButtonDisabled();
+    });
+
+    function isUpdateButtonDisabled() {
+      const selectedGenres = Array.from(favoriteGenreCheckboxes).filter(cb => cb.checked);
+      const selectedPlatforms = Array.from(preferredPlatformCheckboxes).filter(cb => cb.checked);
+      const hasSelectedGenres = selectedGenres.length >= 1 && selectedGenres.length <= maxSelections;
+      const hasSelectedPlatforms = selectedPlatforms.length >= 1 && selectedPlatforms.length <= maxSelections;
+      const hasGamingHistory = gamingHistoryInput.value.trim() !== '';
+
+      return !hasSelectedGenres || !hasSelectedPlatforms || !hasGamingHistory;
+    }
+</script>
+
+</div>
+{% endblock content %}

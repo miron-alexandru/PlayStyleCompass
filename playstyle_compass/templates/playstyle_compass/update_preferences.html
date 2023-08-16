@@ -1,0 +1,23 @@
+{% extends "playstyle_compass/base.html" %}
+{% load custom_filters %}
+
+{% block page_header %}
+  <h2>My Preferences</h2>
+{% endblock page_header %}
+
+{% block content %}
+  <div>
+    <h3>Gaming History:</h3>
+    <p><strong>{{ user_preferences.gaming_history|format_preferences|safe }}</strong></p>
+  </div>
+  
+  <div>
+    <h3>Favorite Genres:</h3>
+    <p><strong>{{ user_preferences.favorite_genres|format_preferences|safe }}</strong></p>
+  </div>
+  
+  <div>
+    <h3>Preferred Platforms:</h3>
+    <p><strong>{{ user_preferences.platforms|format_preferences|safe }}</strong></p>
+  </div>
+{% endblock content %}
