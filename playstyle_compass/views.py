@@ -20,7 +20,6 @@ def gaming_preferences(request):
 def update_preferences(request):
     """Update user preferences."""
     user = request.user
-
     try:
         user_preferences = UserPreferences.objects.get(user=user)
     except UserPreferences.DoesNotExist:

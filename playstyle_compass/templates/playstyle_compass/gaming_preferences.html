@@ -1,25 +1,24 @@
 {% extends "playstyle_compass/base.html" %}
-
+{% load static %}
 {% block page_header %}
-  <h2>My Preferences</h2>
+  <h3>PERSONALIZE YOUR PLAYSTYLE</h3>
 {% endblock page_header %}
 
 {% block content %}
-  <form method="post" action="{% url 'playstyle_compass:update_preferences' %}">
-    {% csrf_token %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/gaming_preferences.css' %}">
 
-    <fieldset>
-    <legend>Gaming History:</legend>
-    <div>
-      <label for="gaming_history">Gaming History:</label>
-      <input type="text" id="gaming_history" name="gaming_history" value="{{ user_preferences.gaming_history }}"
-             pattern="[A-Za-z0-9]+" title="Only letters and numbers are allowed"><br><br>
-    </div>
-  </fieldset>
+<form method="post" action="{% url 'playstyle_compass:update_preferences' %}" id="preferences-form">
+  {% csrf_token %}
 
+  <div class="form-group">
+    <label for="gaming_history" class="form-label">Gaming History:</label>
+    <input type="text" id="gaming_history" name="gaming_history" class="form-control"
+           value="{{ user_preferences.gaming_history }}" pattern="[A-Za-z0-9]+" title="Only letters and numbers are allowed">
+  </div>
 
-    <fieldset>
-      <legend>Favorite Genres (Select up to 3):</legend>
+    <!-- Favorite Genres -->
+  <fieldset style="margin-bottom: 10px;">
+      <legend style="font-size: 22px;">Favorite Genres (Select up to 3):</legend>
       <div>
         <label>
           <input type="checkbox" name="favorite_genres" value="action" {% if 'action' in user_preferences.favorite_genres %}checked{% endif %}>
@@ -64,8 +63,8 @@
       </div>
     </fieldset>
     
-    <fieldset>
-      <legend>Preferred Platforms (Select up to 3):</legend>
+    <fieldset style="margin-bottom: 10px;">
+      <legend style="font-size: 22px;">Preffered Platforms (Select up to 3):</legend>
       <div>
         <label>
           <input type="checkbox" name="platforms" value="pc" {% if 'pc' in user_preferences.platforms %}checked{% endif %}>
@@ -108,57 +107,72 @@
           Browser
         </label>
       <div>
-        <p class="warning" id="platform-warning" style="color: red; display: none;">Please select at least one platform.</p>
-        <p class="warning" id="genre-warning" style="color: red; display: none;">Please select at least one genre.</p>
-        <p class="warning" id="history-warning" style="color: red; display: none;">Please write at least one game that you have played.</p>
+        <p class="warning" id="history-warning" style="color: red; display: none;">Write at least one game that you have played.</p>
+        <p class="warning" id="genre-warning" style="color: red; display: none;">Select at least one genre.</p>
+        <p class="warning" id="platform-warning" style="color: red; display: none;">Select at least one platform.</p>
         </fieldset>
 
-        <input type="submit" value="Update Preferences" id="update-button">
-      </form>
+  <div>
+    <p class="warning" id="history-warning">Write at least one game that you have played.</p>
+    <p class="warning" id="genre-warning">Select at least one genre.</p>
+    <p class="warning" id="platform-warning">Select at least one platform.</p>
+  </div>
 
-    <script>
-    const maxSelections = 3;
-    const favoriteGenreCheckboxes = document.querySelectorAll('input[name="favorite_genres"]');
-    const preferredPlatformCheckboxes = document.querySelectorAll('input[name="platforms"]');
-    const updateButton = document.getElementById('update-button');
-    const genreWarning = document.getElementById('genre-warning');
-    const platformWarning = document.getElementById('platform-warning');
-    const historyWarning = document.getElementById('history-warning');
-    const gamingHistoryInput = document.getElementById('gaming_history');
+  <input type="submit" value="Update Preferences" id="update-button">
+</form>
 
-    function handleCheckboxChange(checkboxes, warningElement) {
-      function updateWarnings() {
-        const selectedCount = Array.from(checkboxes).filter(cb => cb.checked).length;
-        warningElement.style.display = selectedCount >= 1 ? 'none' : 'block';
-        updateButton.disabled = isUpdateButtonDisabled();
-      }
+<script>
+  const maxSelections = 3;
+  const favoriteGenreCheckboxes = document.querySelectorAll('input[name="favorite_genres"]');
+  const preferredPlatformCheckboxes = document.querySelectorAll('input[name="platforms"]');
+  const updateButton = document.getElementById('update-button');
+  const genreWarning = document.getElementById('genre-warning');
+  const platformWarning = document.getElementById('platform-warning');
+  const historyWarning = document.getElementById('history-warning');
+  const gamingHistoryInput = document.getElementById('gaming_history');
 
-      checkboxes.forEach(checkbox => {
-        checkbox.addEventListener('change', updateWarnings);
-      });
-
-      // Call updateWarnings initially to account for the initial checkbox state
-      updateWarnings();
-    }
-
-    handleCheckboxChange(favoriteGenreCheckboxes, genreWarning);
-    handleCheckboxChange(preferredPlatformCheckboxes, platformWarning);
-
-    gamingHistoryInput.addEventListener('input', () => {
-      historyWarning.style.display = gamingHistoryInput.value.trim() === '' ? 'block' : 'none';
-      updateButton.disabled = isUpdateButtonDisabled();
+  function updateCheckboxStates(checkboxes) {
+    const selectedCount = Array.from(checkboxes).filter(cb => cb.checked).length;
+    checkboxes.forEach(checkbox => {
+      checkbox.disabled = selectedCount >= maxSelections && !checkbox.checked;
     });
+  }
 
-    function isUpdateButtonDisabled() {
-      const selectedGenres = Array.from(favoriteGenreCheckboxes).filter(cb => cb.checked);
-      const selectedPlatforms = Array.from(preferredPlatformCheckboxes).filter(cb => cb.checked);
-      const hasSelectedGenres = selectedGenres.length >= 1 && selectedGenres.length <= maxSelections;
-      const hasSelectedPlatforms = selectedPlatforms.length >= 1 && selectedPlatforms.length <= maxSelections;
-      const hasGamingHistory = gamingHistoryInput.value.trim() !== '';
+  function updateWarnings() {
+    const selectedGenres = Array.from(favoriteGenreCheckboxes).filter(cb => cb.checked);
+    const selectedPlatforms = Array.from(preferredPlatformCheckboxes).filter(cb => cb.checked);
+    const hasSelectedGenres = selectedGenres.length >= 1 && selectedGenres.length <= maxSelections;
+    const hasSelectedPlatforms = selectedPlatforms.length >= 1 && selectedPlatforms.length <= maxSelections;
+    const hasGamingHistory = gamingHistoryInput.value.trim() !== '';
 
-      return !hasSelectedGenres || !hasSelectedPlatforms || !hasGamingHistory;
-    }
+    genreWarning.style.display = hasSelectedGenres ? 'none' : 'block';
+    platformWarning.style.display = hasSelectedPlatforms ? 'none' : 'block';
+    historyWarning.style.display = hasGamingHistory ? 'none' : 'block';
+
+    updateButton.disabled = !hasSelectedGenres || !hasSelectedPlatforms || !hasGamingHistory;
+  }
+
+  favoriteGenreCheckboxes.forEach(checkbox => {
+    checkbox.addEventListener('change', () => {
+      updateCheckboxStates(favoriteGenreCheckboxes);
+      updateWarnings();
+    });
+  });
+
+  preferredPlatformCheckboxes.forEach(checkbox => {
+    checkbox.addEventListener('change', () => {
+      updateCheckboxStates(preferredPlatformCheckboxes);
+      updateWarnings();
+    });
+  });
+
+  gamingHistoryInput.addEventListener('input', () => {
+    updateWarnings();
+  });
+
+  // Call updateCheckboxStates initially to account for the initial checkbox state
+  updateCheckboxStates(favoriteGenreCheckboxes);
+  updateCheckboxStates(preferredPlatformCheckboxes);
+  updateWarnings();
 </script>
-
-</div>
 {% endblock content %}

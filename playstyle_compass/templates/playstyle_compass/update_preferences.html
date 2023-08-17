@@ -1,23 +1,26 @@
 {% extends "playstyle_compass/base.html" %}
 {% load custom_filters %}
+{% load static %}
 
 {% block page_header %}
-  <h2>My Preferences</h2>
+  <h3 class="text mb-4">MY PLAYSTYLE</h3>
 {% endblock page_header %}
 
 {% block content %}
-  <div>
-    <h3>Gaming History:</h3>
-    <p><strong>{{ user_preferences.gaming_history|format_preferences|safe }}</strong></p>
+  <link rel="stylesheet" href="{% static 'css/update_preferences.css' %}">
+  
+  <div class="playstyle-section">
+    <div class="playstyle-title">Gaming History:</div>
+    <p class="playstyle-text">{{ user_preferences.gaming_history|format_preferences|safe }}</p>
   </div>
   
-  <div>
-    <h3>Favorite Genres:</h3>
-    <p><strong>{{ user_preferences.favorite_genres|format_preferences|safe }}</strong></p>
+  <div class="playstyle-section">
+    <div class="playstyle-title">Favorite Genres:</div>
+    <p class="playstyle-text">{{ user_preferences.favorite_genres|format_preferences|safe }}</p>
   </div>
   
-  <div>
-    <h3>Preferred Platforms:</h3>
-    <p><strong>{{ user_preferences.platforms|format_preferences|safe }}</strong></p>
+  <div class="playstyle-section">
+    <div class="playstyle-title">Preferred Platforms:</div>
+    <p class="playstyle-text">{{ user_preferences.platforms|format_preferences|safe }}</p>
   </div>
 {% endblock content %}

@@ -1,63 +1,74 @@
 {% load bootstrap4 %}
+{% load static %}
 
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1,
-    shrink-to-fit=no">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PlayStyle Compass</title>
-
+  
   {% bootstrap_css %}
   {% bootstrap_javascript jquery='full' %}
-
+  <link rel="stylesheet" type="text/css" href="{% static 'css/base.css' %}">
 </head>
 <body>
 
-  <nav class="navbar navbar-expand-md navbar-light bg-light mb-4 border">
-
-    <a class="navbar-brand" href="{% url 'playstyle_compass:index'%}">
-        PlayStyle Compass</a>
-
-    <button class="navbar-toggler" type="button" data-toggle="collapse"
-        data-target="#navbarCollapse" aria-controls="navbarCollapse"
-        aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span></button>
-    <div class="collapse navbar-collapse" id="navbarCollapse">
-      <ul class="navbar-nav mr-auto">
+  <nav class="navbar navbar-expand-md navbar-light">
+    <div class="container">
+      <!-- Replace the navbar brand with the image -->
+      <a class="navbar-brand" href="{% url 'playstyle_compass:index'%}">
+        <img src="{% static 'images/playstyle.png' %}" alt="PlayStyle Compass Logo">
+      </a>
+      <ul class="navbar-nav ml-auto">
         <li class="nav-item">
           <a class="nav-link" href="{% url 'playstyle_compass:gaming_preferences'%}">
-              Add your gaming preferences</a></li>
-      </ul>
-      <ul class="navbar-nav ml-auto">
+            DEFINE PLAYSTYLE
+          </a>
+        </li>
         {% if user.is_authenticated %}
           <li class="nav-item">
-            <span class="navbar-text"}>Hello, {{ user.username }}.</span>
+            <a class="nav-link" href="{% url 'playstyle_compass:update_preferences'%}">
+              YOUR PLAYSTYLE
+            </a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'users:logout' %}">Log out</a>
-          </li>
-        {% else %}
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'users:register' %}">Register</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'users:login' %}">Log in</a></li>
         {% endif %}
       </ul>
+      <button class="navbar-toggler" type="button" data-toggle="collapse"
+              data-target="#navbarCollapse" aria-controls="navbarCollapse"
+              aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav ml-auto-custom"> <!-- Use the custom class here -->
+          {% if user.is_authenticated %}
+            <li class="nav-item">
+              <span class="navbar-text">Hello, {{ user.username }}.</span>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'users:logout' %}">Log out</a>
+            </li>
+          {% else %}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'users:register' %}">Register</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'users:login' %}">Log in</a>
+            </li>
+          {% endif %}
+        </ul>
+      </div>
     </div>
-
   </nav>
 
   <main role="main" class="container">
-    <div class="pb-2 mb-2 border-bottom">
+    <div class="page-header border-bottom">
       {% block page_header %}{% endblock page_header %}
     </div>
-    <div>
+    <div class="content">
       {% block content %}{% endblock content %}
     </div>
   </main>
 
 </body>
-
 </html>

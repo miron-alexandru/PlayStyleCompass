@@ -1,0 +1,29 @@
+/* gaming_preferences.css */
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-label {
+  font-size: 22px;
+}
+
+.form-check-label {
+  font-size: 16px;
+}
+
+.warning {
+  color: red;
+  display: none;
+}
+
+#update-button {
+  margin-top: 15px;
+  padding: 10px 20px;
+  font-size: 18px;
+  background-color: #5dade2;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
