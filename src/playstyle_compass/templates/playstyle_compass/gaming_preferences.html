@@ -56,10 +56,6 @@
           <input type="checkbox" name="favorite_genres" value="horror" {% if 'horror' in user_preferences.favorite_genres %}checked{% endif %}>
           Horror
         </label>
-        <label>
-          <input type="checkbox" name="favorite_genres" value="sandbox" {% if 'sandbox' in user_preferences.favorite_genres %}checked{% endif %}>
-          Sandbox
-        </label>
       </div>
     </fieldset>
     
@@ -71,16 +67,12 @@
           PC
         </label>
         <label>
-          <input type="checkbox" name="platforms" value="console" {% if 'console' in user_preferences.platforms %}checked{% endif %}>
-          Console
-        </label>
-        <label>
           <input type="checkbox" name="platforms" value="mobile" {% if 'mobile' in user_preferences.platforms %}checked{% endif %}>
           Mobile
         </label>
         <label>
-          <input type="checkbox" name="platforms" value="vr" {% if 'vr' in user_preferences.platforms %}checked{% endif %}>
-          Virtual Reality (VR)
+          <input type="checkbox" name="platforms" value="wii" {% if 'wii' in user_preferences.platforms %}checked{% endif %}>
+          Wii
         </label>
         <label>
           <input type="checkbox" name="platforms" value="nintendo" {% if 'nintendo' in user_preferences.platforms %}checked{% endif %}>
