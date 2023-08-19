@@ -8,5 +8,6 @@ app_name = 'playstyle_compass'
 urlpatterns = [
     path('', views.index, name='index'),
     path('gaming_preferences/', views.gaming_preferences, name='gaming_preferences'),
-    path('preferences', views.update_preferences, name='update_preferences'),
+    path('preferences/', views.update_preferences, name='update_preferences'),
+    path('get-recommendations/', views.get_recommendations, name='get_recommendations'),
 ]

@@ -1,8 +1,9 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.http import Http404
+from django.db.models import Q
 
-from .models import GamingPreferences, UserPreferences
+from .models import GamingPreferences, UserPreferences, Game
 from .forms import GamingPreferencesForm
 
 def index(request):
@@ -43,5 +44,44 @@ def update_preferences(request):
     }
 
     return render(request, 'playstyle_compass/update_preferences.html', context)
+
+
+@login_required
+def get_recommendations(request):
+    """Provide game recommendations for the user."""
+    user = request.user
+    user_preferences = UserPreferences.objects.get(user=user)
+    favorite_genres = user_preferences.favorite_genres.split(', ')
+    preferred_platforms = user_preferences.platforms.split(', ')
+    gaming_history = user_preferences.gaming_history.split(', ')
+
+    genre_filters = Q()
+    platform_filters = Q()
+    history_filters = Q()
+
+    for genre in favorite_genres:
+        genre_filters |= Q(genres__iexact=genre.strip())
+
+    for platform in preferred_platforms:
+        platform_filters |= Q(platforms__iexact=platform.strip())
+
+    for history_game in gaming_history:
+        history_filters |= Q(title__iexact=history_game.strip())
+
+    matching_games = {
+        'gaming_history': Game.objects.filter(history_filters),
+        'preferred_platforms': Game.objects.filter(platform_filters),
+        'favorite_genres': Game.objects.filter(genre_filters),
+    }
+
+    # Find games that have common genres and platforms
+    common_filters = genre_filters & platform_filters
+    matching_games['common_genres_platforms'] = Game.objects.filter(common_filters)
+
+    context = {
+        'user_preferences': user_preferences,
+        'matching_games': matching_games,
+    }
+    return render(request, 'playstyle_compass/recommendations.html', context)
 
 

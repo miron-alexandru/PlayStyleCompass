@@ -13,7 +13,7 @@
   <div class="form-group">
     <label for="gaming_history" class="form-label">Gaming History:</label>
     <input type="text" id="gaming_history" name="gaming_history" class="form-control"
-           value="{{ user_preferences.gaming_history }}" pattern="[A-Za-z0-9]+" title="Only letters and numbers are allowed">
+           value="{{ user_preferences.gaming_history }}" pattern="[A-Za-z0-9\s]+" title="Only letters and numbers are allowed">
   </div>
 
     <!-- Favorite Genres -->

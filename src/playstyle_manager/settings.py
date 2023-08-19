@@ -70,8 +70,14 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'src/db.sqlite3'),
-    }
+    },
+    'games_db': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'src/misc/games_data.db'),
+    },
 }
+
+DATABASE_ROUTERS = ['playstyle_compass.database_router.GameRouter']
 
 
 # Password validation

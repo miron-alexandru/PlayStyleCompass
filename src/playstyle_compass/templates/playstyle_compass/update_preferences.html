@@ -23,4 +23,8 @@
     <div class="playstyle-title">Preferred Platforms:</div>
     <p class="playstyle-text">{{ user_preferences.platforms|format_preferences|safe }}</p>
   </div>
+
+  <!-- Add a button to get recommendations -->
+  <a href="{% url 'playstyle_compass:get_recommendations' %}" class="btn btn-primary">Get Recommendations</a>
+  
 {% endblock content %}

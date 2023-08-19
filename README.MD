@@ -7,6 +7,7 @@
 <summary><h2>PlayStyle Compass Changelog</h2></summary>
 
 ### Version 1.0:
+- Implemented feature: Integrated database connectivity to compare the user's preferences with the games stored in the games database. The outcome is a list of game recommendations tailored to the user's preferences.
 - Created a database for seamless storage of the acquired data.
 - Utilized [Giant Bomb's API](https://www.giantbomb.com/) to efficiently gather essential game data.
 - Implemented an enhanced folder structure to ensure the project's long-term maintainability.
