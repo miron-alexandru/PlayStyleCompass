@@ -4,7 +4,8 @@ from django.http import Http404
 from django.db.models import Q
 
 from .models import GamingPreferences, UserPreferences, Game
-from .forms import GamingPreferencesForm
+from misc.constants import genres, platforms
+
 
 def index(request):
     """Home Page"""
@@ -12,9 +13,15 @@ def index(request):
 
 @login_required
 def gaming_preferences(request):
-    """Add gaming preferences"""
+    """Display and manage a user's gaming preferences."""
     preferences = GamingPreferences.objects.filter(owner=request.user).order_by('date_added')
-    context = {'gaming_preferences': preferences}
+
+    context = {
+    'gaming_preferences': preferences,
+    'genres': genres,
+    'platforms': platforms,
+    }
+
     return render(request, 'playstyle_compass/gaming_preferences.html', context)
 
 @login_required

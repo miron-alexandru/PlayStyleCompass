@@ -1,32 +1,17 @@
 {% extends "playstyle_compass/base.html" %}
 {% load static %}
 
+{% block page_header %}
+  <h3>GAME RECOMMENDATIONS</h3>
+{% endblock page_header %}
+
 {% block styles %}
   <link rel="stylesheet" type="text/css" href="{% static 'css/game_recommendations.css' %}">
 {% endblock %}
 
+
 {% block content %}
-  <h2>Game Recommendations</h2>
-
   {% if matching_games.gaming_history or matching_games.preferred_platforms or matching_games.favorite_genres %}
-    <div class="recommendations">
-      {% if matching_games.gaming_history %}
-        <div class="recommendation-section">
-          <h3>Based on Gaming History:</h3>
-          <ul>
-            {% for game in matching_games.gaming_history %}
-              <li>
-                <h4>{{ game.title|default:"Not available" }}</h4>
-                <p><strong>Description:</strong> {{ game.description|default:"Not available" }}</p>
-                <p><strong>Genres:</strong> {{ game.genres|default:"Not available" }}</p>
-                <p><strong>Platforms:</strong> {{ game.platforms|default:"Not available" }}</p>
-                <p><strong>Themes:</strong> {{ game.themes|default:"Not available" }}</p>
-              </li>
-            {% endfor %}
-          </ul>
-        </div>
-      {% endif %}
-
       {% if matching_games.preferred_platforms %}
         <div class="recommendation-section">
           <h3>Based on Preferred Platforms:</h3>

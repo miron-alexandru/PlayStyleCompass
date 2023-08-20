@@ -13,6 +13,9 @@ Wii (36)
 
 platform_ids = ['94', '17', '123', '96', '21', '52', '32', '22', '152', '140', '36' ]
 
+genres = ['Action', 'Adventure', 'Role-Playing (RPG)', 'Strategy', 'Sports', 'Shooter', 'Simulation', 'Puzzle', 'Horror']
+platforms = ['PC', 'Mobile', 'Wii', 'Nintendo', 'Xbox', 'PlayStation', 'Mac', 'Linux', 'Browser']
+
 # Modify API Key
 API_KEY = ''
 
