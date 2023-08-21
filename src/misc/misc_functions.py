@@ -8,6 +8,7 @@ from constants import BASE_URL, headers, API_KEY
 import requests
 import json
 import sqlite3
+from datetime import datetime
 
 def fetch_game_ids_by_platforms(platform_ids, api_key):
     """
@@ -15,8 +16,10 @@ def fetch_game_ids_by_platforms(platform_ids, api_key):
     """
     all_game_ids = set()
 
+    current_date = datetime.now().date()
+
     for platform_id in platform_ids:
-        url = f'{BASE_URL}games/?api_key={api_key}&format=json&platforms={platform_id}&limit=5'
+        url = f'{BASE_URL}games/?api_key={api_key}&format=json&platforms={platform_id}&filter=original_release_date:|{current_date}&sort=original_release_date:desc&limit=100'
         response = requests.get(url, headers=headers)
         game_ids = [result['id'] for result in response.json()['results']]
         all_game_ids.update(game_ids)
@@ -44,8 +47,13 @@ def parse_game_data(game_id):
     
     theme_names = [theme['name'] for theme in game_data['results'].get('themes', [])]
     themes = ", ".join(theme_names) if theme_names else None
-    
-    return title, description, genres, platforms, themes
+
+    image_data = game_data['results']['image']
+    image = image_data.get('small_url', None) if image_data else None
+
+    release_date = game_data['results']['original_release_date']
+
+    return title, description, genres, platforms, themes, image, release_date
 
 def create_games_data_db(game_ids):
     """Inserts game data into a SQLite database using the provided game IDs."""
@@ -59,16 +67,18 @@ def create_games_data_db(game_ids):
             description TEXT,
             genres TEXT,  
             platforms TEXT,
-            themes TEXT
+            themes TEXT,
+            image TEXT,
+            release_date TEXT
         );
         '''
         cursor.execute(create_table_sql)
         db_connection.commit()
 
         for game_id in game_ids:
-            title, description, genres, platforms, themes = parse_game_data(game_id)
+            title, description, genres, platforms, themes, image, release_date = parse_game_data(game_id)
             
-            sql = "INSERT INTO Games (title, description, genres, platforms, themes) VALUES (?, ?, ?, ?, ?)"
-            values = (title, description, genres, platforms, themes)
+            sql = "INSERT INTO Games (title, description, genres, platforms, themes, image, release_date) VALUES (?, ?, ?, ?, ?, ?, ?)"
+            values = (title, description, genres, platforms, themes, image, release_date)
             cursor.execute(sql, values)
             db_connection.commit()

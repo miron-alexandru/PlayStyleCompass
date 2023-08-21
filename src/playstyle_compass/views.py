@@ -67,28 +67,41 @@ def get_recommendations(request):
     history_filters = Q()
 
     for genre in favorite_genres:
-        genre_filters |= Q(genres__iexact=genre.strip())
+        genre_filters |= Q(genres__icontains=genre.strip())
 
-    for platform in preferred_platforms:
-        platform_filters |= Q(platforms__iexact=platform.strip())
+    common_filters = genre_filters  # Initialize common filters with genre filters
 
     for history_game in gaming_history:
-        history_filters |= Q(title__iexact=history_game.strip())
+        history_filters |= Q(title__icontains=history_game.strip())
 
     matching_games = {
         'gaming_history': Game.objects.filter(history_filters),
-        'preferred_platforms': Game.objects.filter(platform_filters),
         'favorite_genres': Game.objects.filter(genre_filters),
     }
 
     # Find games that have common genres and platforms
-    common_filters = genre_filters & platform_filters
+    common_filters_platforms = Q()
+    for platform in preferred_platforms:
+        common_filters_platforms |= Q(platforms__icontains=platform.strip())
+    
+    common_filters &= common_filters_platforms
     matching_games['common_genres_platforms'] = Game.objects.filter(common_filters)
+
+    platform_exclude_ids = (
+        Game.objects.filter(common_filters)
+        .values_list('id', flat=True)
+        .distinct()
+    )
+
+    for platform in preferred_platforms:
+        platform_filters |= Q(
+            Q(platforms__icontains=platform.strip()) & ~Q(id__in=platform_exclude_ids)
+        )
+
+    matching_games['preferred_platforms'] = Game.objects.filter(platform_filters)
 
     context = {
         'user_preferences': user_preferences,
         'matching_games': matching_games,
     }
     return render(request, 'playstyle_compass/recommendations.html', context)
-
-

@@ -6,65 +6,62 @@
 {% endblock page_header %}
 
 {% block styles %}
-  <link rel="stylesheet" type="text/css" href="{% static 'css/game_recommendations.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'css/recommendation_section.css' %}">
 {% endblock %}
 
-
 {% block content %}
-  {% if matching_games.gaming_history or matching_games.preferred_platforms or matching_games.favorite_genres %}
-      {% if matching_games.preferred_platforms %}
-        <div class="recommendation-section">
-          <h3>Based on Preferred Platforms:</h3>
-          <ul>
-            {% for game in matching_games.preferred_platforms %}
-              <li>
-                <h4>{{ game.title|default:"Not available" }}</h4>
-                <p><strong>Description:</strong> {{ game.description|default:"Not available" }}</p>
-                <p><strong>Genres:</strong> {{ game.genres|default:"Not available" }}</p>
-                <p><strong>Platforms:</strong> {{ game.platforms|default:"Not available" }}</p>
-                <p><strong>Themes:</strong> {{ game.themes|default:"Not available" }}</p>
-              </li>
-            {% endfor %}
-          </ul>
-        </div>
-      {% endif %}
+  <div class="category-buttons">
+    <button class="category-button" data-category="preferred-platforms">Preferred Platforms</button>
+    <button class="category-button" data-category="favorite-genres">Favorite Genres</button>
+    <button class="category-button" data-category="common-genres-platforms">Common Genres and Platforms</button>
+  </div>
 
-      {% if matching_games.favorite_genres %}
-        <div class="recommendation-section">
-          <h3>Based on Favorite Genres:</h3>
-          <ul>
-            {% for game in matching_games.favorite_genres %}
-              <li>
-                <h4>{{ game.title|default:"Not available" }}</h4>
-                <p><strong>Description:</strong> {{ game.description|default:"Not available" }}</p>
-                <p><strong>Genres:</strong> {{ game.genres|default:"Not available" }}</p>
-                <p><strong>Platforms:</strong> {{ game.platforms|default:"Not available" }}</p>
-                <p><strong>Themes:</strong> {{ game.themes|default:"Not available" }}</p>
-              </li>
-            {% endfor %}
-          </ul>
-        </div>
-      {% endif %}
+  <div class="game-recommendations-container preferred-platforms">
+    <h4>Games you might like based on your preferred platforms</h4>
+    <ul>
+      {% for game in matching_games.preferred_platforms %}
+        {% include "playstyle_compass/game_recommendations_section.html" %}
+      {% endfor %}
+    </ul>
+  </div>
 
-      {% if matching_games.common_genres_platforms %}
-        <div class="recommendation-section">
-          <h3>Based on Common Genres and Platforms:</h3>
-          <ul>
-            {% for game in matching_games.common_genres_platforms %}
-              <li>
-                <h4>{{ game.title|default:"Not available" }}</h4>
-                <p><strong>Description:</strong> {{ game.description|default:"Not available" }}</p>
-                <p><strong>Genres:</strong> {{ game.genres|default:"Not available" }}</p>
-                <p><strong>Platforms:</strong> {{ game.platforms|default:"Not available" }}</p>
-                <p><strong>Themes:</strong> {{ game.themes|default:"Not available" }}</p>
-              </li>
-            {% endfor %}
-          </ul>
-        </div>
-      {% endif %}
+  <div class="game-recommendations-container favorite-genres">
+    <h4>Games you might like based on your favorite genres</h4>
+    <ul>
+      {% for game in matching_games.favorite_genres %}
+        {% include "playstyle_compass/game_recommendations_section.html" %}
+      {% endfor %}
+    </ul>
+  </div>
 
-    </div>
-  {% else %}
-    <p>No matching games found.</p>
-  {% endif %}
+  <div class="game-recommendations-container common-genres-platforms">
+    <h4>Games matching your preffered genres and platforms</h4>
+    <ul>
+      {% for game in matching_games.common_genres_platforms %}
+        {% include "playstyle_compass/game_recommendations_section.html" %}
+      {% endfor %}
+    </ul>
+  </div>
+
+  <script>
+    function filterGames(category) {
+      const gameContainers = document.querySelectorAll('.game-recommendations-container');
+      
+      gameContainers.forEach(container => {
+        container.style.display = 'none';
+      });
+
+      const selectedContainer = document.querySelector(`.${category}`);
+      if (selectedContainer) {
+        selectedContainer.style.display = 'block';
+      }
+    }
+
+    const buttons = document.querySelectorAll('.category-button');
+    buttons.forEach(button => {
+      button.addEventListener('click', () => {
+        filterGames(button.dataset.category);
+      });
+    });
+  </script>
 {% endblock %}

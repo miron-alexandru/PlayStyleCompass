@@ -29,6 +29,8 @@ class Game(models.Model):
     genres = models.CharField(max_length=200)
     platforms = models.CharField(max_length=200)
     themes = models.CharField(max_length=200)
+    image = models.CharField(max_length=200)
+    release_date = models.CharField(max_length=200)
 
     def __str__(self):
         return self.title
