@@ -7,7 +7,9 @@
 <summary><h2>PlayStyle Compass Changelog</h2></summary>
 
 ### Version 1.0:
--  Users now have the ability to apply filters. These filters include preferred genres, preferred platforms, and games that align with both the selected platforms and genres.
+- Improved overall code structure.
+- Created .js files for the scripts used.
+- Users now have the ability to apply filters. These filters include preferred genres, preferred platforms, and games that align with both the selected platforms and genres.
 - Improved the recommendations page: Now an image of each game is displayed and also more details about the game are provided.
 - Code refactored
 - Improved registration and login pages 

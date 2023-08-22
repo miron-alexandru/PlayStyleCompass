@@ -2,27 +2,31 @@
 {% load static %}
 
 {% block page_header %}
-  <h3 class="text mb-4">MY PLAYSTYLE</h3>
+<h3 class="text mb-4">MY PLAYSTYLE</h3>
 {% endblock page_header %}
 
 {% block content %}
-  <link rel="stylesheet" href="{% static 'css/update_preferences.css' %}">
-  
-  <div class="playstyle-section">
-    <div class="playstyle-title">Gaming History:</div>
-    <p class="playstyle-text">{{ user_preferences.gaming_history|safe }}</p>
-  </div>
-  
-  <div class="playstyle-section">
-    <div class="playstyle-title">Favorite Genres:</div>
-    <p class="playstyle-text">{{ user_preferences.favorite_genres|safe }}</p>
-  </div>
-  
-  <div class="playstyle-section">
-    <div class="playstyle-title">Preferred Platforms:</div>
-    <p class="playstyle-text">{{ user_preferences.platforms|safe }}</p>
-  </div>
+<link rel="stylesheet" href="{% static 'css/update_preferences.css' %}">
 
-  <a href="{% url 'playstyle_compass:get_recommendations' %}" class="btn btn-primary">Get Recommendations</a>
-  
+{% if user_preferences.gaming_history or user_preferences.favorite_genres or user_preferences.platforms %}
+<div class="playstyle-section">
+  <div class="playstyle-title">Gaming History:</div>
+  <p class="playstyle-text">{{ user_preferences.gaming_history|safe }}</p>
+</div>
+
+<div class="playstyle-section">
+  <div class="playstyle-title">Favorite Genres:</div>
+  <p class="playstyle-text">{{ user_preferences.favorite_genres|safe }}</p>
+</div>
+
+<div class="playstyle-section">
+  <div class="playstyle-title">Preferred Platforms:</div>
+  <p class="playstyle-text">{{ user_preferences.platforms|safe }}</p>
+</div>
+
+<a href="{% url 'playstyle_compass:get_recommendations' %}" class="btn btn-primary">Get Recommendations</a>
+{% else %}
+<p class="text-center">You have not defined your PlayStyle yet. <a href="{% url 'playstyle_compass:gaming_preferences' %}">Click here to start</a>.</p>
+{% endif %}
+
 {% endblock content %}

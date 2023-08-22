@@ -1,15 +1,15 @@
 {% load static %}
 
 {% block styles %}
-  <link rel="stylesheet" type="text/css" href="{% static 'css/recommendation_section.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/recommendation_section.css' %}">
 {% endblock %}
 
 <li>
   <div class="game-image">
     {% if game.image %}
-      <img src="{{ game.image }}" alt="Game Image">
+    <img src="{{ game.image }}" alt="Game Image">
     {% else %}
-      <p><strong>Image not available</strong></p>
+    <p><strong>Image not available</strong></p>
     {% endif %}
   </div>
   <div class="game-info">

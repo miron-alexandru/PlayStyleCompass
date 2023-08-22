@@ -2,66 +2,47 @@
 {% load static %}
 
 {% block page_header %}
-  <h3>GAME RECOMMENDATIONS</h3>
+<h3>GAME RECOMMENDATIONS</h3>
 {% endblock page_header %}
 
 {% block styles %}
-  <link rel="stylesheet" type="text/css" href="{% static 'css/recommendation_section.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/recommendation_section.css' %}">
 {% endblock %}
 
 {% block content %}
-  <div class="category-buttons">
-    <button class="category-button" data-category="preferred-platforms">Preferred Platforms</button>
-    <button class="category-button" data-category="favorite-genres">Favorite Genres</button>
-    <button class="category-button" data-category="common-genres-platforms">Common Genres and Platforms</button>
-  </div>
+<div class="category-buttons">
+  <button class="category-button" data-category="preferred-platforms">Preferred Platforms</button>
+  <button class="category-button" data-category="favorite-genres">Favorite Genres</button>
+  <button class="category-button" data-category="common-genres-platforms">Common Genres and Platforms</button>
+</div>
 
-  <div class="game-recommendations-container preferred-platforms">
-    <h4>Games you might like based on your preferred platforms</h4>
-    <ul>
-      {% for game in matching_games.preferred_platforms %}
-        {% include "playstyle_compass/game_recommendations_section.html" %}
-      {% endfor %}
-    </ul>
-  </div>
+<div class="game-recommendations-container preferred-platforms">
+  <h4>Games you might like based on your preferred platforms</h4>
+  <ul>
+    {% for game in matching_games.preferred_platforms %}
+    {% include "playstyle_compass/game_recommendations_section.html" %}
+    {% endfor %}
+  </ul>
+</div>
 
-  <div class="game-recommendations-container favorite-genres">
-    <h4>Games you might like based on your favorite genres</h4>
-    <ul>
-      {% for game in matching_games.favorite_genres %}
-        {% include "playstyle_compass/game_recommendations_section.html" %}
-      {% endfor %}
-    </ul>
-  </div>
+<div class="game-recommendations-container favorite-genres">
+  <h4>Games you might like based on your favorite genres</h4>
+  <ul>
+    {% for game in matching_games.favorite_genres %}
+    {% include "playstyle_compass/game_recommendations_section.html" %}
+    {% endfor %}
+  </ul>
+</div>
 
-  <div class="game-recommendations-container common-genres-platforms">
-    <h4>Games matching your preffered genres and platforms</h4>
-    <ul>
-      {% for game in matching_games.common_genres_platforms %}
-        {% include "playstyle_compass/game_recommendations_section.html" %}
-      {% endfor %}
-    </ul>
-  </div>
+<div class="game-recommendations-container common-genres-platforms">
+  <h4>Games matching your preffered genres and platforms</h4>
+  <ul>
+    {% for game in matching_games.common_genres_platforms %}
+    {% include "playstyle_compass/game_recommendations_section.html" %}
+    {% endfor %}
+  </ul>
+</div>
 
-  <script>
-    function filterGames(category) {
-      const gameContainers = document.querySelectorAll('.game-recommendations-container');
-      
-      gameContainers.forEach(container => {
-        container.style.display = 'none';
-      });
+<script src="{% static 'js/recommendations.js' %}"> </script>
 
-      const selectedContainer = document.querySelector(`.${category}`);
-      if (selectedContainer) {
-        selectedContainer.style.display = 'block';
-      }
-    }
-
-    const buttons = document.querySelectorAll('.category-button');
-    buttons.forEach(button => {
-      button.addEventListener('click', () => {
-        filterGames(button.dataset.category);
-      });
-    });
-  </script>
 {% endblock %}

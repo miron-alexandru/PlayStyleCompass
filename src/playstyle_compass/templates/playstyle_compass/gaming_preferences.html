@@ -2,19 +2,18 @@
 {% load static %}
 
 {% block page_header %}
-  <h3>PERSONALIZE YOUR PLAYSTYLE</h3>
+<h3>PERSONALIZE YOUR PLAYSTYLE</h3>
 {% endblock page_header %}
 
 {% block content %}
-<link rel="stylesheet" type="text/css" href="{% static 'css/gaming_preferences.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/gaming_pref.css' %}">
 
 <form method="post" action="{% url 'playstyle_compass:update_preferences' %}" id="preferences-form">
   {% csrf_token %}
   <!-- Gaming history -->
   <div class="form-group">
     <label for="gaming_history" class="form-label">Gaming History:</label>
-    <input type="text" id="gaming_history" name="gaming_history" class="form-control"
-           value="{{ user_preferences.gaming_history }}" pattern="[A-Za-z0-9\s]+" title="Only letters and numbers are allowed">
+    <input type="text" id="gaming_history" name="gaming_history" class="form-control" value="{{ user_preferences.gaming_history }}" pattern="[A-Za-z0-9\s]+" title="Only letters and numbers are allowed">
   </div>
 
   <!-- Favorite Genres -->
@@ -22,10 +21,10 @@
     <legend style="font-size: 22px;">Favorite Genres (Select up to 3):</legend>
     <div>
       {% for genre in genres %}
-        <label>
-          <input type="checkbox" name="favorite_genres" value="{{ genre }}" {% if genre in user_preferences.favorite_genres %}checked{% endif %}>
-          {{ genre }}
-        </label>
+      <label>
+        <input type="checkbox" name="favorite_genres" value="{{ genre }}" {% if genre in user_preferences.favorite_genres %}checked{% endif %}>
+        {{ genre }}
+      </label>
       {% endfor %}
     </div>
   </fieldset>
@@ -35,10 +34,10 @@
     <legend style="font-size: 22px;">Preffered Platforms (Select up to 3):</legend>
     <div>
       {% for platform in platforms %}
-        <label>
-          <input type="checkbox" name="platforms" value="{{ platform }}" {% if platform in user_preferences.platforms %}checked{% endif %}>
-          {{ platform }}
-        </label>
+      <label>
+        <input type="checkbox" name="platforms" value="{{ platform }}" {% if platform in user_preferences.platforms %}checked{% endif %}>
+        {{ platform }}
+      </label>
       {% endfor %}
     </div>
   </fieldset>
@@ -49,61 +48,9 @@
     <p class="warning" id="platform-warning">Please select at least one platform.</p>
   </div>
 
-  <input type="submit" value="Update Preferences" id="update-button">
+  <input class="btn btn-primary" type="submit" value="Update Preferences" id="update-button">
 </form>
 
-<script>
-  const maxSelections = 3;
-  const favoriteGenreCheckboxes = document.querySelectorAll('input[name="favorite_genres"]');
-  const preferredPlatformCheckboxes = document.querySelectorAll('input[name="platforms"]');
-  const updateButton = document.getElementById('update-button');
-  const genreWarning = document.getElementById('genre-warning');
-  const platformWarning = document.getElementById('platform-warning');
-  const historyWarning = document.getElementById('history-warning');
-  const gamingHistoryInput = document.getElementById('gaming_history');
+<script src="{% static 'js/gaming_preferences.js' %}"></script>
 
-  function updateCheckboxStates(checkboxes) {
-    const selectedCount = Array.from(checkboxes).filter(cb => cb.checked).length;
-    checkboxes.forEach(checkbox => {
-      checkbox.disabled = selectedCount >= maxSelections && !checkbox.checked;
-    });
-  }
-
-  function updateWarnings() {
-    const selectedGenres = Array.from(favoriteGenreCheckboxes).filter(cb => cb.checked);
-    const selectedPlatforms = Array.from(preferredPlatformCheckboxes).filter(cb => cb.checked);
-    const hasSelectedGenres = selectedGenres.length >= 1 && selectedGenres.length <= maxSelections;
-    const hasSelectedPlatforms = selectedPlatforms.length >= 1 && selectedPlatforms.length <= maxSelections;
-    const hasGamingHistory = gamingHistoryInput.value.trim() !== '';
-
-    genreWarning.style.display = hasSelectedGenres ? 'none' : 'block';
-    platformWarning.style.display = hasSelectedPlatforms ? 'none' : 'block';
-    historyWarning.style.display = hasGamingHistory ? 'none' : 'block';
-
-    updateButton.disabled = !hasSelectedGenres || !hasSelectedPlatforms || !hasGamingHistory;
-  }
-
-  favoriteGenreCheckboxes.forEach(checkbox => {
-    checkbox.addEventListener('change', () => {
-      updateCheckboxStates(favoriteGenreCheckboxes);
-      updateWarnings();
-    });
-  });
-
-  preferredPlatformCheckboxes.forEach(checkbox => {
-    checkbox.addEventListener('change', () => {
-      updateCheckboxStates(preferredPlatformCheckboxes);
-      updateWarnings();
-    });
-  });
-
-  gamingHistoryInput.addEventListener('input', () => {
-    updateWarnings();
-  });
-
-  // Call updateCheckboxStates initially to account for the initial checkbox state
-  updateCheckboxStates(favoriteGenreCheckboxes);
-  updateCheckboxStates(preferredPlatformCheckboxes);
-  updateWarnings();
-</script>
 {% endblock content %}

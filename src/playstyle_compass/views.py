@@ -55,53 +55,61 @@ def update_preferences(request):
 
 @login_required
 def get_recommendations(request):
-    """Provide game recommendations for the user."""
+    # Get the currently logged-in user
     user = request.user
+    
+    # Fetch the user's preferences from the database
     user_preferences = UserPreferences.objects.get(user=user)
-    favorite_genres = user_preferences.favorite_genres.split(', ')
-    preferred_platforms = user_preferences.platforms.split(', ')
-    gaming_history = user_preferences.gaming_history.split(', ')
 
+    # Extract and clean up user preferences from strings
+    favorite_genres = [genre.strip() for genre in user_preferences.favorite_genres.split(',')]
+    preferred_platforms = [platform.strip() for platform in user_preferences.platforms.split(',')]
+    gaming_history = [game.strip() for game in user_preferences.gaming_history.split(',')]
+
+    # Create filters for genres, platforms, and history
     genre_filters = Q()
     platform_filters = Q()
     history_filters = Q()
 
+    # Build filters for each favorite genre
     for genre in favorite_genres:
-        genre_filters |= Q(genres__icontains=genre.strip())
+        genre_filters |= Q(genres__icontains=genre)
 
-    common_filters = genre_filters  # Initialize common filters with genre filters
+    # Build filters for each preferred platform
+    for platform in preferred_platforms:
+        platform_filters |= Q(platforms__icontains=platform)
 
+    # Build filters for each game in gaming history
     for history_game in gaming_history:
-        history_filters |= Q(title__icontains=history_game.strip())
+        history_filters |= Q(title__icontains=history_game)
 
+    # Get matching games based on different filters
     matching_games = {
         'gaming_history': Game.objects.filter(history_filters),
         'favorite_genres': Game.objects.filter(genre_filters),
     }
 
-    # Find games that have common genres and platforms
-    common_filters_platforms = Q()
-    for platform in preferred_platforms:
-        common_filters_platforms |= Q(platforms__icontains=platform.strip())
-    
-    common_filters &= common_filters_platforms
+    # Create filters for common genres and platforms
+    common_filters = genre_filters & platform_filters
     matching_games['common_genres_platforms'] = Game.objects.filter(common_filters)
 
-    platform_exclude_ids = (
-        Game.objects.filter(common_filters)
-        .values_list('id', flat=True)
-        .distinct()
-    )
+    # Identify game IDs to be excluded from preferred platforms
+    platform_exclude_ids = Game.objects.filter(common_filters).values_list('id', flat=True).distinct()
 
-    for platform in preferred_platforms:
-        platform_filters |= Q(
-            Q(platforms__icontains=platform.strip()) & ~Q(id__in=platform_exclude_ids)
-        )
+    # Create filters to exclude common games from preferred platforms
+    platform_exclude_filters = Q()
+    for game_id in platform_exclude_ids:
+        platform_exclude_filters |= Q(id=game_id)
 
-    matching_games['preferred_platforms'] = Game.objects.filter(platform_filters)
+    # Filter preferred platforms based on exclusion
+    preferred_platform_filters = platform_filters & ~platform_exclude_filters
+    matching_games['preferred_platforms'] = Game.objects.filter(preferred_platform_filters)
 
+    # Prepare context for rendering
     context = {
         'user_preferences': user_preferences,
         'matching_games': matching_games,
     }
+
+    # Render the recommendations page with the prepared context
     return render(request, 'playstyle_compass/recommendations.html', context)
