@@ -1,8 +1,9 @@
 {% extends "playstyle_compass/base.html" %}
+{% load static %}
 
 {% block page_header %}
 <div class="jumbotron">
-  <h1 class="display-3">Get your best game choices</h1>
+  <h1 class="display-4">Get your best game choices</h1>
 
   <p class="lead">Welcome to PlayStyle Compass, your personal guide to discovering video games tailored to your preferences, gaming history, and genre interests. Whether you're a casual player or a hardcore gamer, our app analyzes your unique gaming profile to recommend the perfect games for you. Create an account to get started on an exciting journey through a world of gaming possibilities!</p>
 
@@ -11,3 +12,19 @@
   {% endif %}
 </div>
 {% endblock page_header %}
+
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/search_bar.css' %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+<form action="{% url 'playstyle_compass:search_results' %}" method="GET" class="search-form" onsubmit="return validateSearch()">
+  <div class="search-bar">
+    <input type="text" name="query" id="search-input" placeholder="Search for games...">
+    <button type="submit"><i class="fas fa-search"></i></button>
+  </div>
+  <div id="search-results" class="search-results"></div>
+</form>
+
+<script src="{% static 'js/search_bar.js' %}"></script>
+
+{% endblock content %}

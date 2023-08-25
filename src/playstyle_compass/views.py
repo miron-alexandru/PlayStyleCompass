@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from django.http import Http404
+from django.http import Http404, JsonResponse
 from django.db.models import Q
 
 from .models import GamingPreferences, UserPreferences, Game
@@ -113,3 +113,19 @@ def get_recommendations(request):
 
     # Render the recommendations page with the prepared context
     return render(request, 'playstyle_compass/recommendations.html', context)
+
+def search_results(request):
+    query = request.GET.get('query')
+    games = Game.objects.filter(title__icontains=query)
+    context = {'query': query, 'games': games}
+    return render(request, 'playstyle_compass/search_results.html', context)
+
+def autocomplete_view(request):
+    query = request.GET.get('query', '')
+    results = []
+
+    if query:
+        games = Game.objects.filter(title__icontains=query)
+        results = list(games.values('title'))
+
+    return JsonResponse(results, safe=False)

@@ -6,6 +6,9 @@
 <details>
 <summary><h2>PlayStyle Compass Changelog</h2></summary>
 
+### Version 1.1:
+- Introduced an advanced search bar on the index page, empowering users to seamlessly search for their desired games. The search bar incorporates an autocomplete feature, enhancing user experience and efficiency.
+
 ### Version 1.0:
 - Improved overall code structure.
 - Created .js files for the scripts used.

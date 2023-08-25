@@ -1,0 +1,15 @@
+{% extends "playstyle_compass/base.html" %}
+{% load static %}
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/recommendation_section.css' %}">
+
+<h2>Search Results for "{{ query }}"</h2>
+
+<div class="game-recommendations-container preferred-platforms">
+  <ul>
+    {% for game in games %}
+    {% include "playstyle_compass/game_recommendations_section.html" %}
+    {% endfor %}
+  </ul>
+</div>
+{% endblock content %}
