@@ -1,0 +1,31 @@
+:root {
+  --primary-color: #3498db;
+  --secondary-color: #e74c3c;
+  --text-color: #333;
+}
+
+.playstyle-title {
+  font-size: 24px;
+  margin-bottom: 5px;
+  color: var(--text-color);
+}
+
+.playstyle-text {
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--text-color);
+}
+
+.text-center {
+  text-align: center;
+}
+
+a {
+  color: var(--primary-color);
+  text-decoration: none;
+  transition: color 0.3s ease-in-out;
+}
+
+a:hover {
+  color: var(--secondary-color);
+}

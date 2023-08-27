@@ -7,6 +7,10 @@
 <summary><h2>PlayStyle Compass Changelog</h2></summary>
 
 ### Version 1.1:
+- Added recommendations based on the gaming history.
+- Improved UI for the gaming preferences and preferences pages.
+- Implemented default image that automatically takes the place of missing game images.
+- Added database filtering: The games are filtered so that duplicate entries are eliminated from the games database.
 - Introduced an advanced search bar on the index page, empowering users to seamlessly search for their desired games. The search bar incorporates an autocomplete feature, enhancing user experience and efficiency.
 
 ### Version 1.0:

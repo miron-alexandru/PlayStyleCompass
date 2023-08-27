@@ -2,24 +2,24 @@
 {% load static %}
 
 {% block page_header %}
-<h3 class="text mb-4">MY PLAYSTYLE</h3>
+<h3>MY PLAYSTYLE</h3>
 {% endblock page_header %}
-
 {% block content %}
-<link rel="stylesheet" href="{% static 'css/preferences.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/my_preferences.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/common_styles.css' %}">
 
 {% if user_preferences.gaming_history or user_preferences.favorite_genres or user_preferences.platforms %}
-<div class="playstyle-section">
+<div class="section">
   <div class="playstyle-title">Gaming History:</div>
   <p class="playstyle-text">{{ user_preferences.gaming_history|safe }}</p>
 </div>
 
-<div class="playstyle-section">
+<div class="section">
   <div class="playstyle-title">Favorite Genres:</div>
   <p class="playstyle-text">{{ user_preferences.favorite_genres|safe }}</p>
 </div>
 
-<div class="playstyle-section">
+<div class="section">
   <div class="playstyle-title">Preferred Platforms:</div>
   <p class="playstyle-text">{{ user_preferences.platforms|safe }}</p>
 </div>

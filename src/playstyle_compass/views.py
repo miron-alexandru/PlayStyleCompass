@@ -5,6 +5,7 @@ from django.db.models import Q
 
 from .models import GamingPreferences, UserPreferences, Game
 from misc.constants import genres, platforms
+import re
 
 
 def index(request):
@@ -55,72 +56,76 @@ def update_preferences(request):
 
 @login_required
 def get_recommendations(request):
-    # Get the currently logged-in user
     user = request.user
-    
-    # Fetch the user's preferences from the database
     user_preferences = UserPreferences.objects.get(user=user)
 
-    # Extract and clean up user preferences from strings
     favorite_genres = [genre.strip() for genre in user_preferences.favorite_genres.split(',')]
     preferred_platforms = [platform.strip() for platform in user_preferences.platforms.split(',')]
     gaming_history = [game.strip() for game in user_preferences.gaming_history.split(',')]
 
-    # Create filters for genres, platforms, and history
+    matching_games = {
+        'gaming_history': [],
+        'favorite_genres': [],
+        'common_genres_platforms': [],
+        'preferred_platforms': [],
+    }
+
+    unique_games = set()
+    unique_genres = set()
+
+    for history_game in gaming_history:
+        if len(history_game) > 3:
+            pattern = re.escape(history_game).replace(r'\ ', r'.*?')
+            pattern = f'.*{pattern}.*'
+            matching_title_games = Game.objects.filter(title__iregex=rf'^{pattern}')
+            print(matching_title_games)
+            for matching_game in matching_title_games:
+                if matching_game not in unique_games:
+                    unique_games.add(matching_game)
+                    matching_genre_games = Game.objects.filter(genres__icontains=matching_game.genres)
+                    for genre_game in matching_genre_games:
+                        genre = genre_game.genres
+                        if genre not in unique_genres:
+                            unique_genres.add(genre)
+                            matching_games['gaming_history'].append(genre_game)
+
     genre_filters = Q()
     platform_filters = Q()
-    history_filters = Q()
 
-    # Build filters for each favorite genre
     for genre in favorite_genres:
         genre_filters |= Q(genres__icontains=genre)
 
-    # Build filters for each preferred platform
     for platform in preferred_platforms:
         platform_filters |= Q(platforms__icontains=platform)
 
-    # Build filters for each game in gaming history
-    for history_game in gaming_history:
-        history_filters |= Q(title__icontains=history_game)
-
-    # Get matching games based on different filters
-    matching_games = {
-        'gaming_history': Game.objects.filter(history_filters),
-        'favorite_genres': Game.objects.filter(genre_filters),
-    }
-
-    # Create filters for common genres and platforms
     common_filters = genre_filters & platform_filters
-    matching_games['common_genres_platforms'] = Game.objects.filter(common_filters)
-
-    # Identify game IDs to be excluded from preferred platforms
     platform_exclude_ids = Game.objects.filter(common_filters).values_list('id', flat=True).distinct()
-
-    # Create filters to exclude common games from preferred platforms
-    platform_exclude_filters = Q()
-    for game_id in platform_exclude_ids:
-        platform_exclude_filters |= Q(id=game_id)
-
-    # Filter preferred platforms based on exclusion
+    platform_exclude_filters = Q(id__in=platform_exclude_ids)
     preferred_platform_filters = platform_filters & ~platform_exclude_filters
+
+    matching_games['favorite_genres'] = Game.objects.filter(genre_filters)
+    matching_games['common_genres_platforms'] = Game.objects.filter(common_filters)
     matching_games['preferred_platforms'] = Game.objects.filter(preferred_platform_filters)
 
-    # Prepare context for rendering
     context = {
         'user_preferences': user_preferences,
         'matching_games': matching_games,
     }
 
-    # Render the recommendations page with the prepared context
     return render(request, 'playstyle_compass/recommendations.html', context)
 
+
 def search_results(request):
+    """Retrieves games from the database that match a given
+    search query and renders a search results page.
+    """
     query = request.GET.get('query')
     games = Game.objects.filter(title__icontains=query)
     context = {'query': query, 'games': games}
     return render(request, 'playstyle_compass/search_results.html', context)
 
 def autocomplete_view(request):
+    """Provides autocomplete suggestions for game titles based on a user's query."""
     query = request.GET.get('query', '')
     results = []
 

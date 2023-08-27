@@ -51,6 +51,10 @@ def parse_game_data(game_id):
     image_data = game_data['results']['image']
     image = image_data.get('small_url', None) if image_data else None
 
+    if 'default' in image:
+        image = 'https://i.ibb.co/HnJFgmy/default-psc.jpg'
+
+
     release_date = game_data['results']['original_release_date']
 
     return title, description, genres, platforms, themes, image, release_date
@@ -82,3 +86,15 @@ def create_games_data_db(game_ids):
             values = (title, description, genres, platforms, themes, image, release_date)
             cursor.execute(sql, values)
             db_connection.commit()
+
+        # Remove duplicates based on the title
+        remove_duplicates_sql = '''
+        DELETE FROM Games
+        WHERE rowid NOT IN (
+            SELECT MIN(rowid)
+            FROM Games
+            GROUP BY title
+        );
+        '''
+        cursor.execute(remove_duplicates_sql)
+        db_connection.commit()

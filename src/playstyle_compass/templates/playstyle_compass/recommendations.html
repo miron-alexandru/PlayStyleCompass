@@ -11,37 +11,64 @@
 
 {% block content %}
 <div class="category-buttons">
+  <button class="category-button" data-category="gaming-history">Gaming Histroy</button>
   <button class="category-button" data-category="preferred-platforms">Preferred Platforms</button>
   <button class="category-button" data-category="favorite-genres">Favorite Genres</button>
   <button class="category-button" data-category="common-genres-platforms">Common Genres and Platforms</button>
 </div>
 
+<div class="game-recommendations-container gaming-history">
+  <h4>Games you might like based on your gaming history</h4>
+  <ul>
+    {% if matching_games.gaming_history %}
+      {% for game in matching_games.gaming_history %}
+        {% include "playstyle_compass/game_recommendations_section.html" %}
+      {% endfor %}
+    {% else %}
+      <p><strong>No game recommendations based on your gaming history.</strong></p>
+    {% endif %}
+  </ul>
+</div>
+
 <div class="game-recommendations-container preferred-platforms">
   <h4>Games you might like based on your preferred platforms</h4>
   <ul>
-    {% for game in matching_games.preferred_platforms %}
-    {% include "playstyle_compass/game_recommendations_section.html" %}
-    {% endfor %}
+    {% if matching_games.preferred_platforms %}
+      {% for game in matching_games.preferred_platforms %}
+        {% include "playstyle_compass/game_recommendations_section.html" %}
+      {% endfor %}
+    {% else %}
+      <p><strong>No game recommendations based on your preferred platforms.</strong></p>
+    {% endif %}
   </ul>
 </div>
 
 <div class="game-recommendations-container favorite-genres">
   <h4>Games you might like based on your favorite genres</h4>
   <ul>
-    {% for game in matching_games.favorite_genres %}
-    {% include "playstyle_compass/game_recommendations_section.html" %}
-    {% endfor %}
+    {% if matching_games.favorite_genres %}
+      {% for game in matching_games.favorite_genres %}
+        {% include "playstyle_compass/game_recommendations_section.html" %}
+      {% endfor %}
+    {% else %}
+      <p><strong>No game recommendations based on your favorite genres.</strong></p>
+    {% endif %}
   </ul>
 </div>
 
 <div class="game-recommendations-container common-genres-platforms">
-  <h4>Games matching your preffered genres and platforms</h4>
+  <h4>Games matching your preferred genres and platforms</h4>
   <ul>
-    {% for game in matching_games.common_genres_platforms %}
-    {% include "playstyle_compass/game_recommendations_section.html" %}
-    {% endfor %}
+    {% if matching_games.common_genres_platforms %}
+      {% for game in matching_games.common_genres_platforms %}
+        {% include "playstyle_compass/game_recommendations_section.html" %}
+      {% endfor %}
+    {% else %}
+      <p><strong>No game recommendations based on common genres and platforms.</strong></p>
+    {% endif %}
   </ul>
 </div>
+
 
 <script src="{% static 'js/recommendations.js' %}"> </script>
 
