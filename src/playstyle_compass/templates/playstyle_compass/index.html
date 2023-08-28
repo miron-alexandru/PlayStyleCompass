@@ -17,6 +17,10 @@
 <link rel="stylesheet" type="text/css" href="{% static 'css/search_bar.css' %}">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
+<div class="search-description">
+  <p class="search-description-text">Search for your favorite games</p>
+</div>
+
 <form action="{% url 'playstyle_compass:search_results' %}" method="GET" class="search-form" onsubmit="return validateSearch()">
   <div class="search-bar">
     <input type="text" name="query" id="search-input" placeholder="Search for games...">
@@ -26,5 +30,4 @@
 </form>
 
 <script src="{% static 'js/search_bar.js' %}"></script>
-
 {% endblock content %}

@@ -1,12 +1,11 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.http import Http404, JsonResponse
-from django.db.models import Q
 
 from .models import GamingPreferences, UserPreferences, Game
-from misc.constants import genres, platforms
-import re
 
+from misc.constants import genres, platforms
+from .helper_functions.get_recommendations_helpers import process_gaming_history, apply_filters
 
 def index(request):
     """Home Page"""
@@ -56,6 +55,8 @@ def update_preferences(request):
 
 @login_required
 def get_recommendations(request):
+    """Retrieves personalized game recommendations based
+    on user preferences and gaming history."""
     user = request.user
     user_preferences = UserPreferences.objects.get(user=user)
 
@@ -73,39 +74,11 @@ def get_recommendations(request):
     unique_games = set()
     unique_genres = set()
 
-    for history_game in gaming_history:
-        if len(history_game) > 3:
-            pattern = re.escape(history_game).replace(r'\ ', r'.*?')
-            pattern = f'.*{pattern}.*'
-            matching_title_games = Game.objects.filter(title__iregex=rf'^{pattern}')
-            print(matching_title_games)
-            for matching_game in matching_title_games:
-                if matching_game not in unique_games:
-                    unique_games.add(matching_game)
-                    matching_genre_games = Game.objects.filter(genres__icontains=matching_game.genres)
-                    for genre_game in matching_genre_games:
-                        genre = genre_game.genres
-                        if genre not in unique_genres:
-                            unique_genres.add(genre)
-                            matching_games['gaming_history'].append(genre_game)
+    # Process gaming history to find matching games
+    matching_games = process_gaming_history(gaming_history, unique_games, unique_genres, matching_games)
 
-    genre_filters = Q()
-    platform_filters = Q()
-
-    for genre in favorite_genres:
-        genre_filters |= Q(genres__icontains=genre)
-
-    for platform in preferred_platforms:
-        platform_filters |= Q(platforms__icontains=platform)
-
-    common_filters = genre_filters & platform_filters
-    platform_exclude_ids = Game.objects.filter(common_filters).values_list('id', flat=True).distinct()
-    platform_exclude_filters = Q(id__in=platform_exclude_ids)
-    preferred_platform_filters = platform_filters & ~platform_exclude_filters
-
-    matching_games['favorite_genres'] = Game.objects.filter(genre_filters)
-    matching_games['common_genres_platforms'] = Game.objects.filter(common_filters)
-    matching_games['preferred_platforms'] = Game.objects.filter(preferred_platform_filters)
+    # Apply genre and platform filters
+    matching_games = apply_filters(favorite_genres, preferred_platforms, matching_games)
 
     context = {
         'user_preferences': user_preferences,
@@ -113,7 +86,6 @@ def get_recommendations(request):
     }
 
     return render(request, 'playstyle_compass/recommendations.html', context)
-
 
 def search_results(request):
     """Retrieves games from the database that match a given

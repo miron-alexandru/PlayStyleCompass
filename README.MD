@@ -7,6 +7,8 @@
 <summary><h2>PlayStyle Compass Changelog</h2></summary>
 
 ### Version 1.1:
+- Improved the base.html styling.
+- Refactored the get_recommendations view function.
 - Added recommendations based on the gaming history.
 - Improved UI for the gaming preferences and preferences pages.
 - Implemented default image that automatically takes the place of missing game images.
