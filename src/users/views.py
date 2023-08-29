@@ -1,5 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login
+from django.core.mail import send_mail
+from django.http import HttpResponse
 from .forms import CustomRegistrationForm
 
 def register(request):
@@ -18,5 +20,7 @@ def register(request):
             return redirect('playstyle_compass:index')
 
     # Display a blank or invalid form.
-    context = {'form': form}
+    context = {
+    'form': form,
+    'page_title': 'Register :: PlayStyle Compass'}
     return render(request, 'registration/register.html', context)

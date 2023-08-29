@@ -29,3 +29,34 @@ a {
 a:hover {
   color: var(--secondary-color);
 }
+
+.btn-danger {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* Hover effect */
+.btn-danger:hover {
+  background-color: #c82333;
+}
+
+/* Focus effect */
+.btn-danger:focus {
+  outline: none;
+  box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.5);
+}
+
+.button-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.button-container a,
+.button-container button {
+  margin: 0 5px;
+}

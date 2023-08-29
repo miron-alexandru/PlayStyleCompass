@@ -1,5 +1,7 @@
 {% extends "playstyle_compass/base.html" %}
 
+{% block title %}Log In :: PlayStyle Compass{% endblock title %}
+
 {% load bootstrap4 %}
 
 {% block page_header %}
@@ -18,5 +20,7 @@
     <input type="hidden" name="next" 
       value="{% url 'playstyle_compass:index' %}" />
   </form>
-    
+
+  <p><a href="{% url 'users:password_reset' %}">Forgot Password?</a></p>
+
 {% endblock content %}

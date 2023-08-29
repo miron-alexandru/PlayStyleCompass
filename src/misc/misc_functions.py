@@ -34,30 +34,27 @@ def fetch_game_data(game_id):
 
 def parse_game_data(game_id):
     """Parses the game data fetched using the provided game ID and extracts relevant information."""
-    game_data = fetch_game_data(game_id)
+    game_data = fetch_game_data(game_id)['results']
     
-    title = game_data['results']['name']
-    description = game_data['results']['deck']
+    title = game_data['name']
+    description = game_data['deck']
     
-    genre_names = [genre['name'] for genre in game_data['results'].get('genres', [])]
+    genre_names = [genre['name'] for genre in game_data.get('genres', [])]
     genres = ", ".join(genre_names) if genre_names else None
     
-    platform_names = [platform['name'] for platform in game_data['results']['platforms']]
+    platform_names = [platform['name'] for platform in game_data['platforms']]
     platforms = ", ".join(platform_names)
     
-    theme_names = [theme['name'] for theme in game_data['results'].get('themes', [])]
+    theme_names = [theme['name'] for theme in game_data.get('themes', [])]
     themes = ", ".join(theme_names) if theme_names else None
-
-    image_data = game_data['results']['image']
-    image = image_data.get('small_url', None) if image_data else None
-
-    if 'default' in image:
-        image = 'https://i.ibb.co/HnJFgmy/default-psc.jpg'
-
-
-    release_date = game_data['results']['original_release_date']
+    
+    image_url = game_data['image'].get('small_url', None)
+    image = 'https://i.ibb.co/HnJFgmy/default-psc.jpg' if image_url and 'default' in image_url else image_url
+    
+    release_date = game_data['original_release_date']
 
     return title, description, genres, platforms, themes, image, release_date
+
 
 def create_games_data_db(game_ids):
     """Inserts game data into a SQLite database using the provided game IDs."""

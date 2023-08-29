@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.http import Http404, JsonResponse
+from django.contrib import messages
 
 from .models import GamingPreferences, UserPreferences, Game
 
@@ -9,7 +10,8 @@ from .helper_functions.get_recommendations_helpers import process_gaming_history
 
 def index(request):
     """Home Page"""
-    return render(request, 'playstyle_compass/index.html')
+    context = {'page_title': 'Index :: PlayStyle Compass'}
+    return render(request, 'playstyle_compass/index.html', context)
 
 @login_required
 def gaming_preferences(request):
@@ -17,6 +19,7 @@ def gaming_preferences(request):
     preferences = GamingPreferences.objects.filter(owner=request.user).order_by('date_added')
 
     context = {
+    'page_title': 'Define PlayStyle :: PlayStyle Compass',
     'gaming_preferences': preferences,
     'genres': genres,
     'platforms': platforms,
@@ -47,10 +50,28 @@ def update_preferences(request):
         user_preferences.save()
 
     context = {
+        'page_title': 'Your PlayStyle :: PlayStyle Compass',
         'user_preferences': user_preferences,
     }
 
     return render(request, 'playstyle_compass/update_preferences.html', context)
+
+@login_required
+def clear_preferences(request):
+    """Resets the user's gaming preferences."""
+    user = request.user
+    try:
+        user_preferences = UserPreferences.objects.get(user=user)
+    except UserPreferences.DoesNotExist:
+        user_preferences = None
+
+    if user_preferences:
+        user_preferences.gaming_history = ''
+        user_preferences.favorite_genres = ''
+        user_preferences.platforms = ''
+        user_preferences.save()
+
+    return redirect('playstyle_compass:update_preferences')
 
 
 @login_required
@@ -81,6 +102,7 @@ def get_recommendations(request):
     matching_games = apply_filters(favorite_genres, preferred_platforms, matching_games)
 
     context = {
+        'page_title': 'Recommendations :: PlayStyle Compass',
         'user_preferences': user_preferences,
         'matching_games': matching_games,
     }
@@ -93,7 +115,11 @@ def search_results(request):
     """
     query = request.GET.get('query')
     games = Game.objects.filter(title__icontains=query)
-    context = {'query': query, 'games': games}
+    context = {
+    'page_title': 'Serach Results :: PlayStyle Compass',
+    'query': query, 
+    'games': games
+    }
     return render(request, 'playstyle_compass/search_results.html', context)
 
 def autocomplete_view(request):
