@@ -24,7 +24,7 @@ platforms = [
 ]
 
 # Modify API Key
-API_KEY = '8350ec49b114e2c880d043c324ed6b851706d459'
+API_KEY = ''
 
 # URL
 BASE_URL = 'https://www.giantbomb.com/api/'
