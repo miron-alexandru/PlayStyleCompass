@@ -3,9 +3,9 @@
 
 {% block page_header %}
 <div class="jumbotron">
-  <h1 class="display-4">Get your best game choices</h1>
+  <h1 class="display-4">Discover Your Perfect Games</h1>
 
-  <p class="lead">Welcome to PlayStyle Compass, your personal guide to discovering video games tailored to your preferences, gaming history, and genre interests. Whether you're a casual player or a hardcore gamer, our app analyzes your unique gaming profile to recommend the perfect games for you. Create an account to get started on an exciting journey through a world of gaming possibilities!</p>
+  <p class="lead">Welcome to PlayStyle Compass – your personalized gateway to uncovering video games perfectly tailored to your unique preferences, gaming history, and genre inclinations. Whether you're a casual enthusiast or a dedicated gaming passionate, our application meticulously analyzes your individual gaming profile, curating recommendations that align with your distinct tastes. Embark on an exhilarating journey through the realm of gaming possibilities by creating an account with us!</p>
 
   {% if not user.is_authenticated %}
   <a class="btn btn-lg btn-primary" href="{% url 'users:register' %}" role="button">Register &raquo;</a>

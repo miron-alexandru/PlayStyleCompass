@@ -5,7 +5,7 @@ import os
 
 BASE_DIR = os.path.dirname(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-SECRET_KEY = 'c&=x%v4k!%$bn&9!)*b5%-0ao)fsrl6@mbpd8t8zt*b*5#*4h0'
+SECRET_KEY = ''
 
 DEBUG = True
 
@@ -61,15 +61,17 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'playstyle_manager.wsgi.application'
 
-# Add sendgrid API KEY
+
+SENDGRID_SANDBOX_MODE_IN_DEBUG = False
+EMAIL_BACKEND = "sendgrid_backend.SendgridBackend"
 SENDGRID_API_KEY = ''
-# Add email matching the sendgrid settings
 DEFAULT_FROM_EMAIL = ''
 EMAIL_HOST = 'smtp.sendgrid.net'
 EMAIL_HOST_USER = 'apikey'
 EMAIL_HOST_PASSWORD = SENDGRID_API_KEY
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
+
 
 # Database
 
