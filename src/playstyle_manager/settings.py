@@ -1,11 +1,13 @@
 """Django settings for the PlayStyle Compass."""
 
 import os
-# Base Dir
+from dotenv import load_dotenv
 
+load_dotenv()
+# Base Dir
 BASE_DIR = os.path.dirname(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-SECRET_KEY = ''
+SECRET_KEY = str(os.getenv('SECRET_KEY'))
 
 DEBUG = True
 
@@ -28,7 +30,6 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles',
 ]
 
 MIDDLEWARE = [
@@ -64,14 +65,13 @@ WSGI_APPLICATION = 'playstyle_manager.wsgi.application'
 
 SENDGRID_SANDBOX_MODE_IN_DEBUG = False
 EMAIL_BACKEND = "sendgrid_backend.SendgridBackend"
-SENDGRID_API_KEY = ''
-DEFAULT_FROM_EMAIL = ''
+SENDGRID_API_KEY = str(os.getenv('SENDGRID_API_KEY'))
+DEFAULT_FROM_EMAIL = str(os.getenv('DEFAULT_FROM_EMAIL'))
 EMAIL_HOST = 'smtp.sendgrid.net'
 EMAIL_HOST_USER = 'apikey'
 EMAIL_HOST_PASSWORD = SENDGRID_API_KEY
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-
 
 # Database
 
@@ -128,7 +128,7 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 # My settings
 LOGIN_URL = 'users:login'
 
-# Heroku settings.
+# Heroku
 import django_heroku
 django_heroku.settings(locals())
 

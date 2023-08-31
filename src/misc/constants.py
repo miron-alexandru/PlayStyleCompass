@@ -11,6 +11,11 @@ Browser (140)
 Wii (36)
 """
 
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
 platform_ids = ['94', '17', '123', '96', '21', '52', '32', '22', '152', '140', '36', '157', '19']
 
 genres = [
@@ -24,7 +29,7 @@ platforms = [
 ]
 
 # Modify API Key
-API_KEY = ''
+API_KEY = str(os.getenv('GBAPI_KEY'))
 
 # URL
 BASE_URL = 'https://www.giantbomb.com/api/'
