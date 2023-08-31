@@ -1,5 +1,5 @@
 dj-database-url
-Django
+django
 django-bootstrap4
 django-heroku
 gunicorn
