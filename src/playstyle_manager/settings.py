@@ -7,7 +7,6 @@ from dotenv import load_dotenv
 load_dotenv()
 # Base Dir
 BASE_DIR = os.path.dirname(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-sys.path.append(os.path.abspath('C:/Users/Rux/Desktop/Programming/Projects/PlayStyleCompass/src'))
 SECRET_KEY = str(os.getenv('SECRET_KEY'))
 
 DEBUG = True
