@@ -61,7 +61,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'playstyle_manager.wsgi.application'
+WSGI_APPLICATION = 'src.wsgi.application'
 
 
 SENDGRID_SANDBOX_MODE_IN_DEBUG = False
