@@ -1,6 +1,7 @@
 """Django settings for the PlayStyle Compass."""
 
 import os
+import sys
 from dotenv import load_dotenv
 
 load_dotenv()
