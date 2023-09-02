@@ -1,0 +1,1 @@
+web: gunicorn playstyle_manager.wsgi --log-file -

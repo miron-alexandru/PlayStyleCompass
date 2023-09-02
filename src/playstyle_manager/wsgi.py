@@ -1,4 +1,5 @@
 import os
+
 from django.core.wsgi import get_wsgi_application
 
 # Set the environment variable to indicate production mode
