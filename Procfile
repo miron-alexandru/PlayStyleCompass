@@ -1,1 +1,1 @@
-web: gunicorn src.playstyle_manager.wsgi --log-file -
+web: gunicorn playstyle_manager.wsgi --log-file -
