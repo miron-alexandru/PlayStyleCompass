@@ -8,6 +8,7 @@ load_dotenv()
 # Base Dir
 BASE_DIR = os.path.dirname(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 SECRET_KEY = str(os.getenv('SECRET_KEY'))
+sys.path.append(os.path.abspath(BASE_DIR + 'playstyle_compass'))
 
 DEBUG = True
 
