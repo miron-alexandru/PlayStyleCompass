@@ -18,7 +18,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     # My apps
-    'playstyle_compass',
+    'src.playstyle_compass',
     'users',
 
     # Third party apps.
@@ -61,7 +61,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'src.wsgi.application'
+WSGI_APPLICATION = 'playstyle_manager.wsgi.application'
 
 
 SENDGRID_SANDBOX_MODE_IN_DEBUG = False
