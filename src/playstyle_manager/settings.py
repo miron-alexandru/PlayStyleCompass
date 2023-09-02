@@ -18,7 +18,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     # My apps
-    'src.playstyle_compass',
+    'playstyle_compass',
     'users',
 
     # Third party apps.
