@@ -49,6 +49,9 @@
           <li class="nav-item">
             <a class="nav-link" href="{% url 'users:logout' %}">Log out</a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'users:delete_account' %}">Delete Account</a>
+          </li>
           {% else %}
           <li class="nav-item">
             <a class="nav-link" href="{% url 'users:register' %}">Register</a>

@@ -1,0 +1,73 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.delete-account {
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+}
+
+h1 {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 20px;
+    margin-top: 0;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    font-size: 24px;
+}
+
+.warning-message {
+    background-color: #f2dede;
+    border: 1px solid #ebccd1;
+    color: #a94442;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+p {
+    font-size: 18px;
+    text-align: center;
+}
+
+form {
+    text-align: center;
+}
+
+input[type="password"] {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+button.btn-danger {
+    background-color: #e74c3c;
+    color: #fff;
+    border: none;
+    padding: 12px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 18px;
+    width: 100%;
+}
+
+button.btn-danger:hover {
+    background-color: #c0392b;
+}

@@ -7,6 +7,8 @@
 <summary><h2>PlayStyle Compass Changelog</h2></summary>
 
 ### Version 1.1:
+- Improved the password reset email template.
+- Users are now able to delete their accounts.
 - Improved index template.
 - Improved password reset templates.
 - Users now have the capability to reset their passwords.
