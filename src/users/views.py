@@ -1,9 +1,10 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout
-from .forms import CustomRegistrationForm, DeleteAccountForm
+from .forms import CustomRegistrationForm, DeleteAccountForm, EmailChangeForm, CustomPasswordChangeForm
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages 
 
 
 
@@ -54,3 +55,55 @@ def delete_account(request):
     }
 
     return render(request, 'registration/delete_account.html', context)
+
+@login_required
+def change_email(request):
+    """View for changing a user's email address."""
+    if request.method == 'POST':
+        form = EmailChangeForm(request.POST, user=request.user)
+        if form.is_valid():
+            new_email = form.cleaned_data['new_email']
+            request.user.email = new_email
+            request.user.save()
+            
+            messages.success(request, 'Your email has been updated successfully.')
+            return redirect('playstyle_compass:index')
+    else:
+        form = EmailChangeForm(user=request.user, initial={'current_email': request.user.email})
+
+    context = {
+        'form': form,
+        'page_title': 'Change Email :: PlayStyle Compass'
+    }
+
+    return render(request, 'registration/change_email.html', context)
+
+@login_required
+def password_change(request):
+    if request.method == 'POST':
+        form = CustomPasswordChangeForm(user=request.user, data=request.POST)
+        if form.is_valid():
+            password1 = form.cleaned_data['new_password1']
+            password2 = form.cleaned_data['new_password2']
+
+            if password1 == password2:
+                if not request.user.check_password(password1):
+                    request.user.set_password(password1)
+                    request.user.save()
+                    messages.success(request, 'Your password has been changed successfully.')
+                    return redirect('playstyle_compass:index')
+                else:
+                    messages.error(request, 'New password must be different from the old password.')
+            else:
+                form.add_error('new_password2', 'New passwords must match.')
+        else:
+            messages.error(request, 'There was an error in your submission. Please correct the errors below.')
+    else:
+        form = CustomPasswordChangeForm(user=request.user)
+
+    context = {
+        'form': form,
+        'page_title': 'Change Password :: PlayStyle Compass'
+    }
+
+    return render(request, 'registration/password_change_form.html', context)

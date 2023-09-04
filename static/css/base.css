@@ -4,18 +4,19 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol {
 }
 
 body {
-  font-family: 'Helvetica Neue', Arial, sans-serif;
+  font-family: 'Arial', sans-serif;
 }
 
+/* Add a subtle background color */
 body {
-  background-color: #f5f5f5;
+  background-color: #f7f7f7;
 }
 
 .navbar {
   background-color: #3498db;
   border: none;
   border-radius: 0;
-  padding: 0px;
+  padding: 0;
 }
 
 .nav-link {
@@ -34,18 +35,17 @@ body {
 }
 
 .container {
-  padding-top: 30px;
-  padding-bottom: 30px;
+  padding: 30px 0;
 }
 
 .page-header {
   font-size: 32px;
   color: #2c3e50;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
 }
 
 .border-bottom {
-  border-bottom: 2px solid #bdc3c7;
+  border-bottom: 1px solid #bdc3c7;
 }
 
 .content {
@@ -84,14 +84,43 @@ body {
   color: #ffffff;
 }
 
-.search-description {
-  padding: 10px;
-  margin-bottom: 0px;
-  text-align: start;
+.dropdown-menu {
+  background-color: #fff;
+  border: none;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  transition: transform 0.2s ease-in-out, opacity 0.2s ease-in-out;
 }
 
-.search-description-text {
-  font-size: 18px;
+.dropdown-item {
+  color: #333; /* Text color */
+  padding: 10px 20px;
+  transition: background-color 0.3s;
+}
+
+.dropdown-item:hover {
+  background-color: #007bff;
+  color: #fff;
+}
+
+/* Style the dropdown toggle */
+.dropdown-toggle {
   color: #333;
-  line-height: 1.6;
+  border: none;
+}
+
+.dropdown-toggle:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Smoothly animate dropdowns */
+.dropdown.show .dropdown-menu {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.dropdown-divider {
+  margin: 5px 0;
+  border-color: rgba(0, 0, 0, 0.1);
 }
