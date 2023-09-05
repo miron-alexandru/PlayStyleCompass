@@ -14,7 +14,7 @@ urlpatterns = [
         html_email_template_name='registration/password_reset_email.html',
         ),
     name='password_reset'),
-    path('password_change/', views.password_change, name='password_change'),
+    path('change_password/', views.change_password, name='change_password'),
     path('change_email/', views.change_email, name='change_email'),
     path('delete_account/', views.delete_account, name='delete_account'),
 ]

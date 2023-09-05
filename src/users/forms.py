@@ -94,6 +94,7 @@ class EmailChangeForm(forms.ModelForm):
 
         return cleaned_data
 
+
 class CustomPasswordChangeForm(PasswordChangeForm):
     old_password = forms.CharField(
         label="Current Password",
@@ -116,19 +117,8 @@ class CustomPasswordChangeForm(PasswordChangeForm):
             raise forms.ValidationError('Password must be at least 8 characters long.')
         return password1
 
-    def clean(self):
-        cleaned_data = super().clean()
-        password1 = cleaned_data.get('new_password1')
-        password2 = cleaned_data.get('new_password2')
-        old_password = cleaned_data.get('old_password')
-
-        if password1 and password1 == old_password:
-            raise forms.ValidationError("New password must be different from the old password.")
-
-        if password1 and password2 and password1 != password2:
-            raise forms.ValidationError("New passwords must match.")
-
-        return cleaned_data
-
-
-
+    def clean_new_password2(self):
+        password1 = self.cleaned_data.get('new_password2')
+        if len(password1) < 8:
+            raise forms.ValidationError('Password must be at least 8 characters long.')
+        return password1

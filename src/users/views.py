@@ -1,11 +1,10 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import login, logout
+from django.contrib.auth import login, logout, update_session_auth_hash
 from .forms import CustomRegistrationForm, DeleteAccountForm, EmailChangeForm, CustomPasswordChangeForm
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages 
-
 
 
 def register(request):
@@ -79,7 +78,8 @@ def change_email(request):
     return render(request, 'registration/change_email.html', context)
 
 @login_required
-def password_change(request):
+def change_password(request):
+    """View for changing a user's password."""
     if request.method == 'POST':
         form = CustomPasswordChangeForm(user=request.user, data=request.POST)
         if form.is_valid():
@@ -90,14 +90,14 @@ def password_change(request):
                 if not request.user.check_password(password1):
                     request.user.set_password(password1)
                     request.user.save()
-                    messages.success(request, 'Your password has been changed successfully.')
-                    return redirect('playstyle_compass:index')
+
+                    update_session_auth_hash(request, request.user)
+
+                    return redirect('users:password_change_done')
                 else:
                     messages.error(request, 'New password must be different from the old password.')
             else:
                 form.add_error('new_password2', 'New passwords must match.')
-        else:
-            messages.error(request, 'There was an error in your submission. Please correct the errors below.')
     else:
         form = CustomPasswordChangeForm(user=request.user)
 
@@ -107,3 +107,4 @@ def password_change(request):
     }
 
     return render(request, 'registration/password_change_form.html', context)
+

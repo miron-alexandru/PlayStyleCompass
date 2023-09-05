@@ -7,6 +7,8 @@
 <summary><h2>PlayStyle Compass Changelog</h2></summary>
 
 ### Version 1.1:
+- Changed css styles for different templates.
+- Modifications to password change view and form.
 - Users are now also abe to change their email or password.
 - Improved the password reset email template.
 - Users are now able to delete their accounts.
