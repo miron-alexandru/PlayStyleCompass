@@ -40,30 +40,41 @@
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
-          <ul class="navbar-nav ml-auto-custom">
-            {% if user.is_authenticated %}
-            <li class="nav-item">
-              <span class="navbar-text">Hello, {{ user.username }}.</span>
-            </li>
-            <li class="nav-item dropdown" id="hoverDropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Settings
-              </a>
-              <div class="dropdown-menu" aria-labelledby="profileDropdown">
-                <a class="dropdown-item" href="{% url 'users:logout' %}">Log Out</a>
-                <a class="dropdown-item" href="{% url 'users:change_password' %}">Change Password</a>
-                <a class="dropdown-item" href="{% url 'users:change_email' %}">Change Email</a>
-                <a class="dropdown-item" href="{% url 'users:delete_account' %}">Delete Account</a>
-              </div>
-            </li>
-            {% else %}
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'users:register' %}">Register</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'users:login' %}">Log in</a>
-            </li>
-            {% endif %}
+  <ul class="navbar-nav ml-auto-custom">
+    {% if user.is_authenticated %}
+    <li class="nav-item">
+      {% if user.userprofile.profile_picture %}
+        <img src="{{ user.userprofile.profile_picture.url }}" alt="{{ user.username }}'s Profile Picture" class="profile-picture mr-2">
+      {% else %}
+        <img src="{% static 'images/default_profile_picture.png' %}" alt="{{ user.username }}'s Default Profile Picture" class="profile-picture mr-2">
+      {% endif %}
+    </li>
+    <li class="nav-item">
+      <span class="navbar-text mr-3">Hello, {{ user.username }}.</span>
+    </li>
+    <li class="nav-item dropdown" id="hoverDropdown">
+      <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Settings
+      </a>
+      <div class="dropdown-menu" aria-labelledby="profileDropdown">
+        <a class="dropdown-item" href="{% url 'users:profile' %}">Profile Picture</a>
+        <a class="dropdown-item" href="{% url 'users:logout' %}">Log Out</a>
+        <a class="dropdown-item" href="{% url 'users:change_password' %}">Change Password</a>
+        <a class="dropdown-item" href="{% url 'users:change_email' %}">Change Email</a>
+        <a class="dropdown-item" href="{% url 'users:delete_account' %}">Delete Account</a>
+      </div>
+    </li>
+    {% else %}
+    <li class="nav-item">
+      <a class="nav-link" href="{% url 'users:register' %}">Register</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="{% url 'users:login' %}">Log in</a>
+    </li>
+    {% endif %}
+  </ul>
+</div>
+
           </ul>
         </div>
       </div>

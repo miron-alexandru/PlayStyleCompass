@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm
 from django.contrib.auth.models import User
+from .models import UserProfile
 
 
 class CustomRegistrationForm(UserCreationForm):
@@ -122,3 +123,8 @@ class CustomPasswordChangeForm(PasswordChangeForm):
         if len(password1) < 8:
             raise forms.ValidationError('Password must be at least 8 characters long.')
         return password1
+
+class ProfilePictureForm(forms.ModelForm):
+    class Meta:
+        model = UserProfile
+        fields = ['profile_picture']

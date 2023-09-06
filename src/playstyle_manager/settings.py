@@ -34,7 +34,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.forms',
 ]
+
+FORM_RENDERER = 'django.forms.renderers.TemplatesSetting'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -92,6 +95,8 @@ DATABASES = {
 
 DATABASE_ROUTERS = ['playstyle_compass.database_router.GameRouter']
 
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
+
 
 # Password validation
 
@@ -128,6 +133,9 @@ USE_TZ = True
 STATIC_ROOT = [os.path.join(BASE_DIR, 'static')]
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # My settings
 LOGIN_URL = 'users:login'

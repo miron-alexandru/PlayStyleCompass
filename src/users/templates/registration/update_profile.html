@@ -1,0 +1,33 @@
+{% extends 'playstyle_compass/base.html' %}
+{% load static %}
+{% load bootstrap4 %}
+
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/profile_pictures.css' %}">
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header">
+          <h2 class="text-center">Update Profile Picture</h2>
+        </div>
+        <div class="card-body">
+          <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% bootstrap_form form %}
+            <button id="uploadButton" type="submit" class="btn btn-primary" disabled>Change profile picture</button>
+          </form>
+          <div class="current-image" style="display: none;">
+            {% if form.instance.profile_picture %}
+            <img src="{{ form.instance.profile_picture.url }}" alt="Current Profile Picture">
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="{% static 'js/profile_picture.js' %}"></script>
+
+{% endblock content %}

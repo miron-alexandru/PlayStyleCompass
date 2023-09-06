@@ -38,6 +38,20 @@ body {
   padding: 30px 0;
 }
 
+.nav-item {
+    display: flex;
+    align-items: center;
+}
+
+.nav-item img {
+    width: 70px;
+    height: 70px;
+    object-fit: cover;
+    border-radius: 50%;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
+}
+
+
 .page-header {
   font-size: 32px;
   color: #2c3e50;

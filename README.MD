@@ -7,6 +7,7 @@
 <summary><h2>PlayStyle Compass Changelog</h2></summary>
 
 ### Version 1.1:
+- Implemented Profile Picture: Now users are able to add a profile picture.
 - Changed css styles for different templates.
 - Modifications to password change view and form.
 - Users are now also abe to change their email or password.

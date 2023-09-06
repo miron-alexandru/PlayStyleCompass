@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout, update_session_auth_hash
-from .forms import CustomRegistrationForm, DeleteAccountForm, EmailChangeForm, CustomPasswordChangeForm
+from .forms import CustomRegistrationForm, DeleteAccountForm, EmailChangeForm, CustomPasswordChangeForm, ProfilePictureForm
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.contrib.auth.decorators import login_required
@@ -108,3 +108,16 @@ def change_password(request):
 
     return render(request, 'registration/password_change_form.html', context)
 
+@login_required
+def update_profile(request):
+    if request.method == 'POST':
+        form = ProfilePictureForm(request.POST, request.FILES, instance=request.user.userprofile)
+
+        if form.is_valid():
+            form.save()
+            return redirect('users:profile')
+
+    else:
+        form = ProfilePictureForm(instance=request.user.userprofile)
+
+    return render(request, 'registration/update_profile.html', {'form': form})
