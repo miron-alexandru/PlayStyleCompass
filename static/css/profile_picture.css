@@ -1,0 +1,40 @@
+h2 {
+  font-size: 26px;
+}
+
+input[type="file"] {
+  display: none;
+}
+label[for="id_profile_picture"] {
+  margin-bottom: 0px;
+}
+label[for="id_profile_picture"]::before {
+  content: "Choose File";
+  background-color: #007bff;
+  color: #fff;
+  padding: 8px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 12px;
+  text-align: center;
+}
+
+.current-image p {
+  font-size: 15px;
+  font-weight: bold;
+  margin: 0;
+  padding: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 10px;
+}
+
+.current-image a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.current-image a:hover {
+  text-decoration: underline;
+}

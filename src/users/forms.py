@@ -124,7 +124,17 @@ class CustomPasswordChangeForm(PasswordChangeForm):
             raise forms.ValidationError('Password must be at least 8 characters long.')
         return password1
 
+
+class CustomClearableFileInput(forms.ClearableFileInput):
+    template_name = 'widgets/custom_change_img.html'
+
 class ProfilePictureForm(forms.ModelForm):
     class Meta:
         model = UserProfile
         fields = ['profile_picture']
+
+    profile_picture = forms.ImageField(
+        required=False,
+        widget=CustomClearableFileInput(),
+        label=' ',
+    )

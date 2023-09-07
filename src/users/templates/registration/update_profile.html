@@ -3,8 +3,8 @@
 {% load bootstrap4 %}
 
 {% block content %}
-<link rel="stylesheet" type="text/css" href="{% static 'css/profile_pictures.css' %}">
-<div class="container">
+<link rel="stylesheet" type="text/css" href="{% static 'css/profile_picture.css' %}">
+<div class="containerr">
   <div class="row justify-content-center">
     <div class="col-md-6">
       <div class="card">
@@ -15,13 +15,13 @@
           <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
             {% bootstrap_form form %}
-            <button id="uploadButton" type="submit" class="btn btn-primary" disabled>Change profile picture</button>
+            <div class="current-image">
+              {% if form.instance.profile_picture %}
+              <p>Current: <a href="{{ form.instance.profile_picture.url }}" target="_blank">{{ form.instance.profile_picture.url }}</a></p>
+              {% endif %}
+            </div>
+            <button id="uploadButton" type="submit" class="btn btn-primary" disabled>Update Image</button>
           </form>
-          <div class="current-image" style="display: none;">
-            {% if form.instance.profile_picture %}
-            <img src="{{ form.instance.profile_picture.url }}" alt="Current Profile Picture">
-            {% endif %}
-          </div>
         </div>
       </div>
     </div>
