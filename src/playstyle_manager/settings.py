@@ -69,7 +69,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'playstyle_manager.wsgi.application'
 
-
 SENDGRID_SANDBOX_MODE_IN_DEBUG = False
 EMAIL_BACKEND = "sendgrid_backend.SendgridBackend"
 SENDGRID_API_KEY = str(os.getenv('SENDGRID_API_KEY'))
