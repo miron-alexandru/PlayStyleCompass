@@ -8,3 +8,4 @@ pytz
 sqlparse
 whitenoise
 python-dotenv
+Pillow
