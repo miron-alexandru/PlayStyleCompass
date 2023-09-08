@@ -55,7 +55,7 @@ ROOT_URLCONF = 'playstyle_manager.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'src', 'templates')],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -68,8 +68,8 @@ TEMPLATES = [
     },
 ]
 
-
 WSGI_APPLICATION = 'playstyle_manager.wsgi.application'
+
 
 SENDGRID_SANDBOX_MODE_IN_DEBUG = False
 EMAIL_BACKEND = "sendgrid_backend.SendgridBackend"
@@ -86,7 +86,7 @@ EMAIL_USE_TLS = True
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'utils/db.sqlite3'),
+        'NAME': os.path.join(BASE_DIR, 'src/db.sqlite3'),
     },
     'games_db': {
         'ENGINE': 'django.db.backends.sqlite3',

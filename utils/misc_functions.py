@@ -10,6 +10,7 @@ import json
 import sqlite3
 from datetime import datetime
 
+
 def fetch_game_ids_by_platforms(platform_ids, api_key):
     """
     Fetches game IDs for multiple platform IDs and returns a set of all fetched game IDs.

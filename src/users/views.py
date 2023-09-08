@@ -53,7 +53,7 @@ def delete_account(request):
         'page_title': 'Delete Account :: PlayStyle Compass'
     }
 
-    return render(request, 'registration/delete_account.html', context)
+    return render(request, 'account_actions/delete_account.html', context)
 
 @login_required
 def change_email(request):
@@ -64,9 +64,8 @@ def change_email(request):
             new_email = form.cleaned_data['new_email']
             request.user.email = new_email
             request.user.save()
-            
-            messages.success(request, 'Your email has been updated successfully.')
-            return redirect('playstyle_compass:index')
+
+            return redirect('users:change_email_done')
     else:
         form = EmailChangeForm(user=request.user, initial={'current_email': request.user.email})
 
@@ -75,7 +74,11 @@ def change_email(request):
         'page_title': 'Change Email :: PlayStyle Compass'
     }
 
-    return render(request, 'registration/change_email.html', context)
+    return render(request, 'account_actions/change_email.html', context)
+
+@login_required
+def change_email_done(request):
+    return render(request, 'account_actions/change_email_done.html')
 
 @login_required
 def change_password(request):
@@ -106,7 +109,7 @@ def change_password(request):
         'page_title': 'Change Password :: PlayStyle Compass'
     }
 
-    return render(request, 'registration/password_change_form.html', context)
+    return render(request, 'account_actions/password_change_form.html', context)
 
 @login_required
 def update_profile(request):
@@ -120,4 +123,4 @@ def update_profile(request):
     else:
         form = ProfilePictureForm(instance=request.user.userprofile)
 
-    return render(request, 'registration/update_profile.html', {'form': form})
+    return render(request, 'account_actions/update_profile.html', {'form': form})

@@ -2,8 +2,9 @@ dj-database-url
 django
 django-bootstrap4
 gunicorn
-psycopg2
 pytz
 sqlparse
+psycopg2
 whitenoise
 python-dotenv
+Pillow

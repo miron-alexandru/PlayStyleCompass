@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Email Change Done :: PlayStyle Compass{% endblock title %}
+
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/password_change_done.css' %}">
+<div class="password-done-container">
+  <h2>Email Address Changed Successfully</h2>
+  <p>Your email address has been changed.</p>
+  <p><a href="{% url 'playstyle_compass:index' %}" class="btn btn-primary">Go to Home Page</a></p>
+</div>
+{% endblock %}

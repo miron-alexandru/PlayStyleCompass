@@ -5,7 +5,7 @@ from django.contrib import messages
 
 from .models import GamingPreferences, UserPreferences, Game
 
-from misc.constants import genres, platforms
+from utils.constants import genres, platforms
 from .helper_functions.get_recommendations_helpers import process_gaming_history, apply_filters
 
 def index(request):
