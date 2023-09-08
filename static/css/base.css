@@ -7,6 +7,7 @@ body {
   font-family: 'Arial', sans-serif;
 }
 
+/* Add a subtle background color */
 body {
   background-color: #f7f7f7;
 }
@@ -106,7 +107,7 @@ body {
 }
 
 .dropdown-item {
-  color: #333;
+  color: #333; /* Text color */
   padding: 10px 20px;
   transition: background-color 0.3s;
 }
@@ -116,6 +117,7 @@ body {
   color: #fff;
 }
 
+/* Style the dropdown toggle */
 .dropdown-toggle {
   color: #333;
   border: none;
@@ -126,6 +128,7 @@ body {
   box-shadow: none !important;
 }
 
+/* Smoothly animate dropdowns */
 .dropdown.show .dropdown-menu {
   transform: translateY(0);
   opacity: 1;

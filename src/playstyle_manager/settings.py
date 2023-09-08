@@ -6,6 +6,7 @@ import sys
 from dotenv import load_dotenv
 
 load_dotenv()
+
 # Base Dir
 BASE_DIR = os.path.dirname(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 sys.path.insert(0, os.path.join(BASE_DIR, 'src'))
@@ -68,6 +69,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'playstyle_manager.wsgi.application'
+
 
 SENDGRID_SANDBOX_MODE_IN_DEBUG = False
 EMAIL_BACKEND = "sendgrid_backend.SendgridBackend"
@@ -138,10 +140,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # My settings
 LOGIN_URL = 'users:login'
-
-# Heroku
-import django_heroku
-django_heroku.settings(locals())
 
 if os.environ.get('DEBUG') == 'TRUE':
     DEBUG = True
