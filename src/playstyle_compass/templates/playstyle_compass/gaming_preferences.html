@@ -6,8 +6,8 @@
 {% endblock page_header %}
 
 {% block content %}
-<link rel="stylesheet" type="text/css" href="{% static 'css/gaming_prefs.css' %}">
-<link rel="stylesheet" type="text/css" href="{% static 'css/common_styles.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/playstyle_compass/gaming_prefs.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/playstyle_compass/common_styles.css' %}">
 
 <form method="post" action="{% url 'playstyle_compass:update_preferences' %}" id="preferences-form">
   {% csrf_token %}

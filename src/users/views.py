@@ -78,7 +78,10 @@ def change_email(request):
 
 @login_required
 def change_email_done(request):
-    return render(request, 'account_actions/change_email_done.html')
+    messages.success(request, "Email Address Changed Successfully")
+    return render(request, 'account_actions/change_email_done.html', {
+        'page_title': 'Email Change Done :: PlayStyle Compass'}
+    )
 
 @login_required
 def change_password(request):
@@ -95,8 +98,8 @@ def change_password(request):
                     request.user.save()
 
                     update_session_auth_hash(request, request.user)
-
-                    return redirect('users:password_change_done')
+                    messages.success(request, "Password Changed Successfully")
+                    return redirect('users:change_password_done')
                 else:
                     messages.error(request, 'New password must be different from the old password.')
             else:
@@ -123,4 +126,9 @@ def update_profile(request):
     else:
         form = ProfilePictureForm(instance=request.user.userprofile)
 
-    return render(request, 'account_actions/update_profile.html', {'form': form})
+    context = {
+        'form': form,
+        'page_title': 'Change Profile Picture :: PlayStyle Compass'
+    }
+
+    return render(request, 'account_actions/update_profile.html', context)

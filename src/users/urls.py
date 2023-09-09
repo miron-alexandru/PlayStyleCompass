@@ -18,9 +18,9 @@ urlpatterns = [
     path('change_email/', views.change_email, name='change_email'),
     path('delete_account/', views.delete_account, name='delete_account'),
     path('profile/', views.update_profile, name='profile'),
-    path('password_change/done/',
+    path('password_change-done/',
         auth_views.PasswordChangeDoneView.as_view(template_name='account_actions/password_change_done.html'),
-        name='password_change_done'
+        name='change_password_done'
     ),
     path('change_email/done/', views.change_email_done, name='change_email_done'),
 

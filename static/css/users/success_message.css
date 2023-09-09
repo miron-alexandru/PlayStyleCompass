@@ -1,4 +1,4 @@
-.password-done-container {
+.message-container {
     max-width: 400px;
     margin: 0 auto;
     padding: 20px;
@@ -11,6 +11,7 @@
 h2 {
     color: #007bff;
     margin-bottom: 10px;
+    font-size: 24px;
 }
 
 p {
@@ -18,6 +19,7 @@ p {
 }
 
 .btn-primary {
+    font-size: 14px;
     background-color: #007bff;
     color: #fff;
     padding: 10px 20px;

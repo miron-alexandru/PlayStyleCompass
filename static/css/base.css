@@ -7,7 +7,6 @@ body {
   font-family: 'Arial', sans-serif;
 }
 
-/* Add a subtle background color */
 body {
   background-color: #f7f7f7;
 }
@@ -44,13 +43,13 @@ body {
 }
 
 .nav-item img {
-    width: 70px;
-    height: 70px;
+    width: 85px;
+    height: 85px;
     object-fit: cover;
     border-radius: 50%;
     box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
+    margin-bottom: -20px;
 }
-
 
 .page-header {
   font-size: 32px;
@@ -107,7 +106,7 @@ body {
 }
 
 .dropdown-item {
-  color: #333; /* Text color */
+  color: #333;
   padding: 10px 20px;
   transition: background-color 0.3s;
 }
@@ -117,7 +116,6 @@ body {
   color: #fff;
 }
 
-/* Style the dropdown toggle */
 .dropdown-toggle {
   color: #333;
   border: none;
@@ -128,7 +126,6 @@ body {
   box-shadow: none !important;
 }
 
-/* Smoothly animate dropdowns */
 .dropdown.show .dropdown-menu {
   transform: translateY(0);
   opacity: 1;
@@ -138,3 +135,31 @@ body {
   margin: 5px 0;
   border-color: rgba(0, 0, 0, 0.1);
 }
+
+.profile-picture-label {
+  position: relative;
+  cursor: pointer;
+  display: inline-block;
+}
+
+.profile-picture-label:hover::before {
+  content: "Change Profile Picture";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-55%, -30%);
+  background-color: rgba(0, 0, 0, 0.5);
+  color: #fff;
+  padding: 5px;
+  border-radius: 3px;
+  font-size: 11px;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.profile-picture-label:hover::before,
+.profile-picture-label:hover img {
+  opacity: 1;
+}
+
+

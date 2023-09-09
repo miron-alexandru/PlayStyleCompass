@@ -16,7 +16,6 @@
   </head>
 
   <body>
-    <script src="{% static 'js/dropdown.js' %}"></script>
     <nav class="navbar navbar-expand-md navbar-light">
       <div class="container">
         <a class="navbar-brand" href="{% url 'playstyle_compass:index'%}">
@@ -40,45 +39,50 @@
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
-  <ul class="navbar-nav ml-auto-custom">
-    {% if user.is_authenticated %}
-    <li class="nav-item">
-      {% if user.userprofile.profile_picture %}
-        <img src="{{ user.userprofile.profile_picture.url }}" alt="{{ user.username }}'s Profile Picture" class="profile-picture mr-2">
-      {% else %}
-        <img src="{% static 'images/default_profile_picture.png' %}" alt="{{ user.username }}'s Default Profile Picture" class="profile-picture mr-2">
-      {% endif %}
-    </li>
-    <li class="nav-item">
-      <span class="navbar-text mr-3">Hello, {{ user.username }}.</span>
-    </li>
-    <li class="nav-item dropdown" id="hoverDropdown">
-      <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        Settings
-      </a>
-      <div class="dropdown-menu" aria-labelledby="profileDropdown">
-        <a class="dropdown-item" href="{% url 'users:profile' %}">Change Profile Picture</a>
-        <a class="dropdown-item" href="{% url 'users:logout' %}">Log Out</a>
-        <a class="dropdown-item" href="{% url 'users:change_password' %}">Change Password</a>
-        <a class="dropdown-item" href="{% url 'users:change_email' %}">Change Email</a>
-        <a class="dropdown-item" href="{% url 'users:delete_account' %}">Delete Account</a>
-      </div>
-    </li>
-    {% else %}
-    <li class="nav-item">
-      <a class="nav-link" href="{% url 'users:register' %}">Register</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="{% url 'users:login' %}">Log in</a>
-    </li>
-    {% endif %}
-  </ul>
-</div>
-
+          <ul class="navbar-nav ml-auto-custom">
+            {% if user.is_authenticated %}
+            <li class="nav-item">
+              {% if user.userprofile.profile_picture %}
+              <label for="profile-picture-upload" class="profile-picture-label">
+                <img src="{{ user.userprofile.profile_picture.url }}" alt="{{ user.username }}'s Profile Picture" class="profile-picture mr-2" id="profile-picture">
+              </label>
+              {% else %}
+              <label for="profile-picture-upload" class="profile-picture-label">
+                <img src="{% static 'images/default_profile_picture.png' %}" alt="{{ user.username }}'s Default Profile Picture" class="profile-picture mr-2" id="profile-picture">
+              </label>
+              {% endif %}
+              <input type="file" id="profile-picture-upload" class="sr-only" accept="image/*" data-profile-url="{% url 'users:profile' %}" data-csrf-token="{{ csrf_token }}">
+            </li>
+            <li class="nav-item">
+              <span class="navbar-text mr-3">Hello, {{ user.username }}.</span>
+            </li>
+            <li class="nav-item dropdown" id="hoverDropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Settings
+              </a>
+              <div class="dropdown-menu" aria-labelledby="profileDropdown">
+                <a class="dropdown-item" href="{% url 'users:profile' %}">Change Profile Picture</a>
+                <a class="dropdown-item" href="{% url 'users:logout' %}">Log Out</a>
+                <a class="dropdown-item" href="{% url 'users:change_password' %}">Change Password</a>
+                <a class="dropdown-item" href="{% url 'users:change_email' %}">Change Email</a>
+                <a class="dropdown-item" href="{% url 'users:delete_account' %}">Delete Account</a>
+              </div>
+            </li>
+            {% else %}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'users:register' %}">Register</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'users:login' %}">Log in</a>
+            </li>
+            {% endif %}
           </ul>
         </div>
       </div>
     </nav>
+
+    <script src="{% static 'js/base.js' %}"></script>
+
     <main role="main" class="container">
       <div class="page-header border-bottom">
         {% block page_header %}{% endblock page_header %}
