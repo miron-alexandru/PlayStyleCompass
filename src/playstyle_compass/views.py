@@ -2,6 +2,9 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.http import Http404, JsonResponse
 from django.contrib import messages
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from collections import defaultdict
+
 
 from .models import GamingPreferences, UserPreferences, Game
 
@@ -76,15 +79,16 @@ def clear_preferences(request):
 
 @login_required
 def get_recommendations(request):
-    """Retrieves personalized game recommendations based
-    on user preferences and gaming history."""
+    """Retrieves personalized game recommendations based on user preferences and gaming history."""
     user = request.user
     user_preferences = UserPreferences.objects.get(user=user)
 
+    # Extract user preferences and gaming history
     favorite_genres = [genre.strip() for genre in user_preferences.favorite_genres.split(',')]
     preferred_platforms = [platform.strip() for platform in user_preferences.platforms.split(',')]
     gaming_history = [game.strip() for game in user_preferences.gaming_history.split(',')]
 
+    # Initialize matching_games dictionary
     matching_games = {
         'gaming_history': [],
         'favorite_genres': [],
@@ -92,19 +96,32 @@ def get_recommendations(request):
         'preferred_platforms': [],
     }
 
+    # Process gaming history and apply filters
     unique_games = set()
     unique_genres = set()
 
-    # Process gaming history to find matching games
     matching_games = process_gaming_history(gaming_history, unique_games, unique_genres, matching_games)
-
-    # Apply genre and platform filters
     matching_games = apply_filters(favorite_genres, preferred_platforms, matching_games)
+
+    # Pagination setup
+    games_per_page = 10
+    paginated_games = defaultdict(list)
+
+    for category, game_list in matching_games.items():
+        paginator = Paginator(game_list, games_per_page)
+        page_number = request.GET.get(f'{category}_page', 1)
+
+        try:
+            page = paginator.page(page_number)
+        except (PageNotAnInteger, EmptyPage):
+            page = paginator.page(1)
+
+        paginated_games[category] = page
 
     context = {
         'page_title': 'Recommendations :: PlayStyle Compass',
         'user_preferences': user_preferences,
-        'matching_games': matching_games,
+        'paginated_games': dict(paginated_games),
     }
 
     return render(request, 'playstyle_compass/recommendations.html', context)
@@ -115,11 +132,13 @@ def search_results(request):
     """
     query = request.GET.get('query')
     games = Game.objects.filter(title__icontains=query)
+
     context = {
     'page_title': 'Serach Results :: PlayStyle Compass',
     'query': query, 
     'games': games
     }
+
     return render(request, 'playstyle_compass/search_results.html', context)
 
 def autocomplete_view(request):

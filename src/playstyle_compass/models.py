@@ -37,3 +37,4 @@ class Game(models.Model):
 
     class Meta:
         db_table = 'Games'
+        ordering = ['title']

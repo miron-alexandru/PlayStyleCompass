@@ -7,11 +7,13 @@
 <summary><h2>PlayStyle Compass Changelog</h2></summary>
 
 ### Version v1.2:
+* Implemented pagination for the games recommendation page.
 * Users are now also able to change their profile picture by directly clicking on it.
 * Improved folder structure.
 
 ### Version v1.1:
-* Implemented Profile picture feature: Users can now personalize their profiles by adding profile pictures.
+* Views refactored.
+* Implemented Profile Picture feature: Users can now personalize their profiles by adding profile pictures.
 * Changed css styles for different templates.
 * Modifications to password change view and form.
 * Users are now also abe to change their email or password.

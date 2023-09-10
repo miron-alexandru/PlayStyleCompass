@@ -1,75 +1,105 @@
 {% extends "base.html" %}
 {% load static %}
+{% load custom_filters %}
 
 {% block page_header %}
 <h3>GAME RECOMMENDATIONS</h3>
 {% endblock page_header %}
 
-{% block styles %}
-<link rel="stylesheet" type="text/css" href="{% static 'css/playstyle_compass/recommendation_section.css' %}">
-{% endblock %}
-
 {% block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/playstyle_compass/pagination.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/playstyle_compass/recommendation_section.css' %}">
+
 <div class="category-buttons">
-  <button class="category-button" data-category="gaming-history">Gaming Histroy</button>
-  <button class="category-button" data-category="preferred-platforms">Preferred Platforms</button>
-  <button class="category-button" data-category="favorite-genres">Favorite Genres</button>
-  <button class="category-button" data-category="common-genres-platforms">Common Genres and Platforms</button>
+  <button class="category-button" data-category="gaming_history">Gaming History</button>
+  <button class="category-button" data-category="preferred_platforms">Preferred Platforms</button>
+  <button class="category-button" data-category="favorite_genres">Favorite Genres</button>
+  <button class="category-button" data-category="common_genres_platforms">Common Genres and Platforms</button>
 </div>
 
-<div class="game-recommendations-container gaming-history">
-  <h4>Games you might like based on your gaming history</h4>
-  <ul>
-    {% if matching_games.gaming_history %}
-      {% for game in matching_games.gaming_history %}
-        {% include "playstyle_compass/game_recommendations_section.html" %}
+{% for category, paginated_page in paginated_games.items %}
+<div class="game-recommendations-container {{ category|slugify }}">
+  {% if paginated_page.object_list %}
+    <h4>Games you might like based on your {{ category|format_category_label }}: {{ user_preferences|getattr:category }} </h4>
+    <ul>
+      {% for game in paginated_page.object_list %}
+      {% include "playstyle_compass/game_recommendations_section.html" %}
       {% endfor %}
-    {% else %}
-      <p><strong>No game recommendations based on your gaming history.</strong></p>
-    {% endif %}
-  </ul>
+    </ul>
+    <div class="pagination">
+      <span class="step-links">
+      {% if paginated_page.has_previous %}
+        <a href="?category={{ category }}&{{ category|slugify }}_page=1">&laquo; first</a>
+        <a href="?category={{ category }}&{{ category|slugify }}_page={{ paginated_page.previous_page_number }}">previous</a>
+      {% endif %}
+      
+      <span class="current-page">{{ paginated_page.number }}</span>
+
+      {% if paginated_page.has_next %}
+      <a href="?category={{ category }}&{{ category|slugify }}_page={{ paginated_page.next_page_number }}">next</a>
+      <a href="?category={{ category }}&{{ category|slugify }}_page={{ paginated_page.paginator.num_pages }}">last &raquo;</a>
+      {% endif %}
+      </span>
+    </div>
+  {% else %}
+    <h4>No game recommendations based on your {{ category|format_category_label }}: {{ user_preferences|getattr:category }}</h4>
+  {% endif %}
 </div>
+{% endfor %}
 
-<div class="game-recommendations-container preferred-platforms">
-  <h4>Games you might like based on your preferred platforms</h4>
-  <ul>
-    {% if matching_games.preferred_platforms %}
-      {% for game in matching_games.preferred_platforms %}
-        {% include "playstyle_compass/game_recommendations_section.html" %}
-      {% endfor %}
-    {% else %}
-      <p><strong>No game recommendations based on your preferred platforms.</strong></p>
-    {% endif %}
-  </ul>
-</div>
+<script>
+  function hideAllContainers() {
+    const gameContainers = document.querySelectorAll('.game-recommendations-container');
+    gameContainers.forEach(container => {
+      container.style.display = 'none';
+    });
+  }
 
-<div class="game-recommendations-container favorite-genres">
-  <h4>Games you might like based on your favorite genres</h4>
-  <ul>
-    {% if matching_games.favorite_genres %}
-      {% for game in matching_games.favorite_genres %}
-        {% include "playstyle_compass/game_recommendations_section.html" %}
-      {% endfor %}
-    {% else %}
-      <p><strong>No game recommendations based on your favorite genres.</strong></p>
-    {% endif %}
-  </ul>
-</div>
+  function showCategoryContainer(category) {
+    const selectedContainer = document.querySelector(`.${category}`);
+    if (selectedContainer) {
+      selectedContainer.style.display = 'block';
+    }
+  }
 
-<div class="game-recommendations-container common-genres-platforms">
-  <h4>Games matching your preferred genres and platforms</h4>
-  <ul>
-    {% if matching_games.common_genres_platforms %}
-      {% for game in matching_games.common_genres_platforms %}
-        {% include "playstyle_compass/game_recommendations_section.html" %}
-      {% endfor %}
-    {% else %}
-      <p><strong>No game recommendations based on common genres and platforms.</strong></p>
-    {% endif %}
-  </ul>
-</div>
+  function getCategoryAndPageFromURL() {
+    const searchParams = new URLSearchParams(window.location.search);
+    const category = searchParams.get('category') || 'gaming_history';
+    const page = searchParams.get(`${category}_page`) || 1;
+    return {
+      category,
+      page
+    };
+  }
 
+  const {
+    category,
+    page
+  } = getCategoryAndPageFromURL();
+  hideAllContainers();
+  showCategoryContainer(category);
 
-<script src="{% static 'js/recommendations.js' %}"> </script>
+  const buttons = document.querySelectorAll('.category-button');
+  buttons.forEach(button => {
+    button.addEventListener('click', () => {
+      const selectedCategory = button.dataset.category;
+      hideAllContainers();
+      showCategoryContainer(selectedCategory);
+
+      // Update the URL without page reload
+      const newUrl = `?category=${selectedCategory}`;
+      history.pushState(null, null, newUrl);
+    });
+  });
+
+  window.addEventListener('popstate', (event) => {
+    const {
+      category,
+      page
+    } = getCategoryAndPageFromURL();
+    hideAllContainers();
+    showCategoryContainer(category);
+  });
+</script>
 
 {% endblock %}
