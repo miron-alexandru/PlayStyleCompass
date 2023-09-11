@@ -1,0 +1,19 @@
+.jumbotron {
+  color: fff;
+  padding: 45px;
+}
+
+.jumbotron h1 {
+  margin-top: -10px;
+  font-size: 36px;
+}
+
+.jumbotron p {
+  font-size: 18px;
+  margin-top: 15px;
+}
+
+.register-button {
+  font-size: 15px;
+  padding: 8px 16px;
+}

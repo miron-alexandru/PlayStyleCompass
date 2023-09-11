@@ -9,7 +9,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="{% static 'images/pscicon.ico' %}" type="image/x-icon">
     <title>{% block title %}{{ page_title }}{% endblock title %}</title>
-
     {% bootstrap_css %}
     {% bootstrap_javascript jquery='full' %}
     <link rel="stylesheet" type="text/css" href="{% static 'css/base.css' %}">
@@ -82,6 +81,7 @@
     </nav>
 
     <script src="{% static 'js/base.js' %}"></script>
+    <script src="{% static 'js/dropdown.js' %}"></script>
 
     <main role="main" class="container">
       <div class="page-header border-bottom">
