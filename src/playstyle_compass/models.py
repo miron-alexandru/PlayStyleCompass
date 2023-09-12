@@ -26,10 +26,11 @@ class Game(models.Model):
     id = models.BigAutoField(primary_key=True)
     title = models.CharField(max_length=100)
     description = models.TextField()
+    overview = models.TextField()
     genres = models.CharField(max_length=200)
     platforms = models.CharField(max_length=200)
     themes = models.CharField(max_length=200)
-    image = models.CharField(max_length=200)
+    image = models.TextField()
     release_date = models.CharField(max_length=200)
 
     def __str__(self):

@@ -9,6 +9,7 @@ import requests
 import json
 import sqlite3
 from datetime import datetime
+from bs4 import BeautifulSoup
 
 
 def fetch_game_ids_by_platforms(platform_ids, api_key):
@@ -20,7 +21,7 @@ def fetch_game_ids_by_platforms(platform_ids, api_key):
     current_date = datetime.now().date()
 
     for platform_id in platform_ids:
-        url = f'{BASE_URL}games/?api_key={api_key}&format=json&platforms={platform_id}&sort=original_release_date:desc&limit=100'
+        url = f'{BASE_URL}games/?api_key={api_key}&format=json&platforms={platform_id}&sort=original_release_date:desc&limit=80'
         response = requests.get(url, headers=headers)
         
         if response.status_code == 200:
@@ -36,12 +37,36 @@ def fetch_game_data(game_id):
     response = requests.get(url, headers=headers)
     return response.json()
 
+def extract_overview_content(data):
+    """Extract overview content from game data."""
+    if 'description' in data and data['description']:
+        soup = BeautifulSoup(data['description'], 'html.parser')
+
+        overview_tag = soup.find('h2', string='Overview')
+        
+        if overview_tag:
+            overview_content = []
+
+            current_element = overview_tag.find_next_sibling()
+            while current_element and current_element.name != 'h2':
+                if current_element.name == 'p':
+                    overview_content.append(current_element.get_text())
+                current_element = current_element.find_next_sibling()
+
+            overview_text = '\n'.join(overview_content)
+
+            return overview_text
+    
+    return None
+
 def parse_game_data(game_id):
     """Parses the game data fetched using the provided game ID and extracts relevant information."""
     game_data = fetch_game_data(game_id)['results']
-    
+
     title = game_data['name']
     description = game_data['deck']
+
+    overview = extract_overview_content(game_data)
     
     genre_names = [genre['name'] for genre in game_data.get('genres', [])]
     genres = ", ".join(genre_names) if genre_names else None
@@ -57,8 +82,7 @@ def parse_game_data(game_id):
     
     release_date = game_data['original_release_date']
 
-    return title, description, genres, platforms, themes, image, release_date
-
+    return title, description, overview, genres, platforms, themes, image, release_date
 
 def create_games_data_db(game_ids):
     """Inserts game data into a SQLite database using the provided game IDs."""
@@ -70,6 +94,7 @@ def create_games_data_db(game_ids):
             id INTEGER PRIMARY KEY,
             title TEXT,
             description TEXT,
+            overview TEXT,
             genres TEXT,  
             platforms TEXT,
             themes TEXT,
@@ -81,10 +106,10 @@ def create_games_data_db(game_ids):
         db_connection.commit()
 
         for game_id in game_ids:
-            title, description, genres, platforms, themes, image, release_date = parse_game_data(game_id)
+            title, description, overview, genres, platforms, themes, image, release_date = parse_game_data(game_id)
             
-            sql = "INSERT INTO Games (title, description, genres, platforms, themes, image, release_date) VALUES (?, ?, ?, ?, ?, ?, ?)"
-            values = (title, description, genres, platforms, themes, image, release_date)
+            sql = "INSERT INTO Games (title, description, overview, genres, platforms, themes, image, release_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
+            values = (title, description, overview, genres, platforms, themes, image, release_date)
             cursor.execute(sql, values)
             db_connection.commit()
 
