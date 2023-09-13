@@ -2,7 +2,7 @@
 {% load custom_filters %}
 
 {% block styles %}
-<link rel="stylesheet" type="text/css" href="{% static 'css/playstyle_compass/recommendation_sections.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/playstyle_compass/recommendation_section.css' %}">
 {% endblock %}
 
 <li>
@@ -17,18 +17,18 @@
     <h4>{{ game.title|default:"Game Title not available" }}</h4>
     <p>{{ game.description|default:"Game description not available" }}</p>
     <p><strong>Release date:</strong> {{ game.release_date|default:"N/A"}}</p>
+    <p><strong>Developer:</strong> {{ game.developers|default:"N/A"}}</p>
     <p><strong>Genres:</strong> {{ game.genres|default:"N/A" }}</p>
     <p><strong>Platforms:</strong> {{ game.platforms|default:"N/A" }}</p>
     <p><strong>Themes:</strong> {{ game.themes|default:"N/A" }}</p>
     <p><strong>Overview:</strong>
-   <span class="overview">{{ game.overview|default:"N/A"|slice:"300"}}</span>
-   {% if game.overview|length > 300 %}
-     <span class="dots">...</span>
-     <span class="more" style="display: none;">{{ game.overview|default:"N/A"|slice:"300:" }}</span>
-    <button class="read-button" onclick="readMore(this)">[Read more...]</button>
-    {% endif %}
-</p>
-
+      <span class="overview">{{ game.overview|default:"N/A"|slice:"300"}}</span>
+      {% if game.overview|length > 300 %}
+      <span class="dots">...</span>
+      <span class="more" style="display: none;">{{ game.overview|default:"N/A"|slice:"300:" }}</span>
+      <button class="read-button" onclick="readMore(this)">[Read more...]</button>
+      {% endif %}
+    </p>
   </div>
 </li>
 

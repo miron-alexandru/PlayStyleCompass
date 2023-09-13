@@ -31,7 +31,8 @@ class Game(models.Model):
     platforms = models.CharField(max_length=200)
     themes = models.CharField(max_length=200)
     image = models.TextField()
-    release_date = models.CharField(max_length=200)
+    release_date = models.CharField(max_length=100)
+    developers = models.CharField(max_length=100)
 
     def __str__(self):
         return self.title

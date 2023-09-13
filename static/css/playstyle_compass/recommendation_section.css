@@ -1,0 +1,33 @@
+p {
+  margin: 5px 0;
+}
+
+strong {
+  font-weight: bold;
+}
+
+.game-info {
+  flex: 1; 
+  padding: 0 10px;
+}
+
+.game-image img {
+  max-width: 210px;
+  max-height: 500px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin-right: 10px;
+}
+
+.read-button  {
+  background: none;
+  border: none;
+  padding: 0;
+  color: #007BFF;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.more {
+  display: none;
+}

@@ -22,3 +22,7 @@ def getattr_filter(obj, attr_name):
         return getattr(obj, attr_name)
     except AttributeError:
         return ''
+
+@register.filter(name='lstrip_spaces')
+def lstrip_spaces(value):
+    return value.lstrip()
