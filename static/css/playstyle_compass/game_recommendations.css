@@ -1,3 +1,7 @@
+.game-recommendations-container {
+  display: none;
+}
+
 .game-recommendations-container li {
   display: flex;
   align-items: start;
