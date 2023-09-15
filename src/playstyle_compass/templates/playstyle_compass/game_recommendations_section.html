@@ -2,7 +2,9 @@
 {% load custom_filters %}
 
 {% block styles %}
-<link rel="stylesheet" type="text/css" href="{% static 'css/playstyle_compass/recommendation_section.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/playstyle_compass/recommendation_sections.css' %}">
+<link rel="stylesheet" href="{% static 'css/lightbox.min.css' %}">
+
 {% endblock %}
 
 <li>
@@ -26,7 +28,32 @@
       <span class="full-text" style="display: none;">{{ game.overview|default:"N/A" }}</span>
       <button class="read-button" onclick="readMore(this);">[Read more...]</button>
     </p>
+    <p>
+      <strong>Game Images:</strong>
+      <span><small>(Click on the image to open gallery)</small></span>
+    </p>
+    {% if game.game_images %}
+    <div class="image-gallery">
+      {% with game_images=game.game_images|split_by_comma %}
+      {% for game_image in game_images %}
+      {% if forloop.counter == 1 %}
+      <a href="{{ game_image }}" data-lightbox="game-images-{{ game.id }}" class="gallery-image">
+        <img src="{{ game_image }}" alt="Game Image">
+      </a>
+      {% else %}
+      <a href="{{ game_image }}" data-lightbox="game-images-{{ game.id }}" style="display: none;">
+        <img src="{{ game_image }}" alt="Game Image">
+      </a>
+      {% endif %}
+      {% endfor %}
+      {% endwith %}
+    </div>
+    {% else %}
+    <p><strong>Images not available</strong></p>
+    {% endif %}
+
   </div>
 </li>
 
-<script src="{% static 'js/recommendations_sections.js' %}"></script>
+<script src="{% static 'js/lightbox-plus-jquery.min.js' %}"></script>
+<script src="{% static 'js/recommendations_section.js' %}"></script>

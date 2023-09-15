@@ -7,6 +7,7 @@
 <summary><h2>PlayStyle Compass Changelog</h2></summary>
 
 ### Version v1.2:
+* Added image gallery for each game.
 * Added Read more - Read less funcionality for the Overview.
 * Added new information about the games (Overview, Developers).
 * Implemented pagination for the games recommendation page.

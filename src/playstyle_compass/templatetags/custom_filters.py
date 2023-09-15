@@ -23,6 +23,6 @@ def getattr_filter(obj, attr_name):
     except AttributeError:
         return ''
 
-@register.filter(name='lstrip_spaces')
-def lstrip_spaces(value):
-    return value.lstrip()
+@register.filter(name='split_by_comma')
+def split_by_comma(value):
+    return value.split(', ')

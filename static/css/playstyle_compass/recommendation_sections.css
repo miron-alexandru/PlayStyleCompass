@@ -6,6 +6,17 @@ strong {
   font-weight: bold;
 }
 
+small {
+    font-size: 70%;
+  }
+
+.gallery-image img {
+  max-width: 150px;
+  max-height: 300px;
+  border: none;
+  border-radius: 5px;
+}
+
 .game-info {
   flex: 1; 
   padding: 0 10px;

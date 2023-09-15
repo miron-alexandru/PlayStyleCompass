@@ -21,20 +21,37 @@ def fetch_game_ids_by_platforms(platform_ids, api_key):
     current_date = datetime.now().date()
 
     for platform_id in platform_ids:
-        url = f'{BASE_URL}games/?api_key={api_key}&format=json&platforms={platform_id}&filter=original_release_date:|{current_date}&sort=original_release_date:desc&limit=50'
+        url = f'{BASE_URL}games/?api_key={api_key}&format=json&platforms={platform_id}&filter=original_release_date:|{current_date}&sort=original_release_date:desc&limit=75'
         response = requests.get(url, headers=headers)
 
         if response.status_code == 200:
-            game_ids = [result['id'] for result in response.json()['results']]
+            game_ids = [result['guid'] for result in response.json()['results']]
             all_game_ids.update(game_ids)
 
     return all_game_ids
 
+
 def fetch_game_data(game_id):
-    """Fetch game data from Giant Bomb API"""
+    """Fetch game data from Giant Bomb's API."""
     url = f'{BASE_URL}game/{game_id}/?api_key={API_KEY}&format=json'
     response = requests.get(url, headers=headers)
     return response.json()
+
+def fetch_game_images(game_id):
+    """Fetch images for a game using Giant Bomb's API."""
+    url = f'{BASE_URL}images/{game_id}/?api_key={API_KEY}&format=json&limit=15'
+
+    response = requests.get(url, headers=headers)
+
+    if response.status_code == 200:
+        data = response.json()
+        images = data.get("results", [])
+
+        medium_urls = [image["medium_url"] for image in images if "medium_url" in image]
+        
+        return ", ".join(medium_urls) if medium_urls else None
+
+    return None
 
 def extract_overview_content(data):
     """Extract overview content from game data."""
@@ -62,6 +79,8 @@ def parse_game_data(game_id):
     """Parses the game data fetched using the provided game ID and extracts relevant information."""
     game_data = fetch_game_data(game_id)['results']
 
+    game_images = fetch_game_images(game_id)
+
     title = game_data['name']
 
     description = game_data['deck']
@@ -88,7 +107,7 @@ def parse_game_data(game_id):
     else:
         developers = None
 
-    return title, description, overview, genres, platforms, themes, image, release_date, developers
+    return title, description, overview, genres, platforms, themes, image, release_date, developers, game_images
 
 def create_games_data_db(game_ids):
     """Inserts game data into a SQLite database using the provided game IDs."""
@@ -106,17 +125,19 @@ def create_games_data_db(game_ids):
             themes TEXT,
             image TEXT,
             release_date TEXT,
-            developers TEXT
+            developers TEXT,
+            game_images TEXT
         );
+
         '''
         cursor.execute(create_table_sql)
         db_connection.commit()
 
         for game_id in game_ids:
-            title, description, overview, genres, platforms, themes, image, release_date, developers = parse_game_data(game_id)
+            title, description, overview, genres, platforms, themes, image, release_date, developers, game_images = parse_game_data(game_id)
             
-            sql = "INSERT INTO Games (title, description, overview, genres, platforms, themes, image, release_date, developers) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"
-            values = (title, description, overview, genres, platforms, themes, image, release_date, developers)
+            sql = "INSERT INTO Games (title, description, overview, genres, platforms, themes, image, release_date, developers, game_images) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+            values = (title, description, overview, genres, platforms, themes, image, release_date, developers, game_images)
             cursor.execute(sql, values)
             db_connection.commit()
 

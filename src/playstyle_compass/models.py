@@ -33,6 +33,7 @@ class Game(models.Model):
     image = models.TextField()
     release_date = models.CharField(max_length=100)
     developers = models.CharField(max_length=100)
+    game_images = models.TextField()
 
     def __str__(self):
         return self.title
