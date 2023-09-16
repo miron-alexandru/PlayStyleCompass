@@ -1,5 +1,5 @@
 p {
-  margin: 5px 0;
+  margin: 0;
 }
 
 strong {
@@ -7,18 +7,19 @@ strong {
 }
 
 small {
-    font-size: 70%;
-  }
+  font-size: 0.7em;
+}
 
 .gallery-image img {
   max-width: 150px;
   max-height: 300px;
   border: none;
   border-radius: 5px;
+  object-fit: cover;
 }
 
 .game-info {
-  flex: 1; 
+  flex: 1;
   padding: 0 10px;
 }
 
@@ -30,11 +31,16 @@ small {
   margin-right: 10px;
 }
 
-.read-button  {
+.read-button {
   background: none;
   border: none;
   padding: 0;
   color: #007BFF;
   cursor: pointer;
   font-size: 14px;
+  text-decoration: underline;
+}
+
+.read-button:hover {
+  text-decoration: none;
 }

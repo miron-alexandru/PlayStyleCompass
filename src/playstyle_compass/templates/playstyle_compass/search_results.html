@@ -1,11 +1,22 @@
 {% extends "base.html" %}
 {% load static %}
 {% block content %}
-<link rel="stylesheet" type="text/css" href="{% static 'css/playstyle_compass/recommendation_section.css' %}">
+<style>
+  .game-recommendations-container li {
+  display: flex;
+  align-items: start;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 10px;
+  margin: 10px 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: #f5f5f5;
+}
+</style>
 
-<h2>Search Results for "{{ query }}"</h2>
+<h3>Search results for "{{ query }}":</h3>
 
-<div class="game-recommendations-container preferred-platforms">
+<div class="game-recommendations-container">
   <ul>
     {% for game in games %}
     {% include "playstyle_compass/game_recommendations_section.html" %}

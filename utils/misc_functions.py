@@ -4,6 +4,7 @@ of the application.
 """
 
 from constants import BASE_URL, headers, API_KEY
+from sql_queries import create_table_sql, remove_duplicates_sql
 
 import requests
 import json
@@ -21,7 +22,7 @@ def fetch_game_ids_by_platforms(platform_ids, api_key):
     current_date = datetime.now().date()
 
     for platform_id in platform_ids:
-        url = f'{BASE_URL}games/?api_key={api_key}&format=json&platforms={platform_id}&filter=original_release_date:|{current_date}&sort=original_release_date:desc&limit=75'
+        url = f'{BASE_URL}games/?api_key={api_key}&format=json&platforms={platform_id}&filter=original_release_date:|{current_date}&sort=original_release_date:desc&limit=5'
         response = requests.get(url, headers=headers)
 
         if response.status_code == 200:
@@ -76,60 +77,58 @@ def extract_overview_content(data):
     return None
 
 def parse_game_data(game_id):
-    """Parses the game data fetched using the provided game ID and extracts relevant information."""
     game_data = fetch_game_data(game_id)['results']
-
     game_images = fetch_game_images(game_id)
 
-    title = game_data['name']
-
-    description = game_data['deck']
-
+    title = get_title(game_data)
+    description = get_description(game_data)
     overview = extract_overview_content(game_data)
-    
-    genre_names = [genre['name'] for genre in game_data.get('genres', [])]
-    genres = ", ".join(genre_names) if genre_names else None
-    
-    platform_names = [platform['name'] for platform in game_data['platforms']]
-    platforms = ", ".join(platform_names) if platform_names else None
-    
-    theme_names = [theme['name'] for theme in game_data.get('themes', [])]
-    themes = ", ".join(theme_names) if theme_names else None
-    
-    image_url = game_data['image'].get('small_url', None)
-    image = 'https://i.ibb.co/HnJFgmy/default-psc.jpg' if image_url and 'default' in image_url else image_url
-    
-    release_date = game_data['original_release_date'] if game_data['original_release_date'] is not None else game_data['expected_release_year']
-
-    if 'developers' in game_data and isinstance(game_data['developers'], list):
-        developer_names = [developer['name'] for developer in game_data['developers']]
-        developers = ", ".join(developer_names) if developer_names else None
-    else:
-        developers = None
+    genres = get_genres(game_data)
+    platforms = get_platforms(game_data)
+    themes = get_themes(game_data)
+    image = get_image(game_data)
+    release_date = get_release_date(game_data)
+    developers = get_developers(game_data)
 
     return title, description, overview, genres, platforms, themes, image, release_date, developers, game_images
+
+def get_title(game_data):
+    return game_data.get('name', None)
+
+def get_description(game_data):
+    return game_data.get('deck', None)
+
+def get_genres(game_data):
+    genre_names = [genre['name'] for genre in game_data.get('genres', [])]
+    return ", ".join(genre_names) if genre_names else None
+
+def get_platforms(game_data):
+    platform_names = [platform['name'] for platform in game_data['platforms']]
+    return ", ".join(platform_names) if platform_names else None
+
+def get_themes(game_data):
+    theme_names = [theme['name'] for theme in game_data.get('themes', [])]
+    return ", ".join(theme_names) if theme_names else None
+
+def get_image(game_data):
+    image_url = game_data['image'].get('small_url', None)
+    return 'https://i.ibb.co/HnJFgmy/default-psc.jpg' if image_url and 'default' in image_url else image_url
+
+def get_release_date(game_data):
+    release_date = game_data['original_release_date'] if game_data['original_release_date'] is not None else game_data['expected_release_year']
+    return release_date
+
+def get_developers(game_data):
+    if 'developers' in game_data and isinstance(game_data['developers'], list):
+        developer_names = [developer['name'] for developer in game_data['developers']]
+        return ", ".join(developer_names) if developer_names else None
+    else:
+        return None
 
 def create_games_data_db(game_ids):
     """Inserts game data into a SQLite database using the provided game IDs."""
     with sqlite3.connect('games_data.db') as db_connection:
         cursor = db_connection.cursor()
-
-        create_table_sql = '''
-        CREATE TABLE IF NOT EXISTS Games (
-            id INTEGER PRIMARY KEY,
-            title TEXT,
-            description TEXT,
-            overview TEXT,
-            genres TEXT,  
-            platforms TEXT,
-            themes TEXT,
-            image TEXT,
-            release_date TEXT,
-            developers TEXT,
-            game_images TEXT
-        );
-
-        '''
         cursor.execute(create_table_sql)
         db_connection.commit()
 
@@ -141,14 +140,5 @@ def create_games_data_db(game_ids):
             cursor.execute(sql, values)
             db_connection.commit()
 
-        # Remove duplicates based on the title
-        remove_duplicates_sql = '''
-        DELETE FROM Games
-        WHERE rowid NOT IN (
-            SELECT MIN(rowid)
-            FROM Games
-            GROUP BY title
-        );
-        '''
         cursor.execute(remove_duplicates_sql)
         db_connection.commit()
