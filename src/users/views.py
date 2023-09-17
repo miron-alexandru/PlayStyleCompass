@@ -1,11 +1,12 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout, update_session_auth_hash
-from .forms import CustomRegistrationForm, DeleteAccountForm, EmailChangeForm, CustomPasswordChangeForm, ProfilePictureForm
+from .forms import CustomRegistrationForm, DeleteAccountForm, EmailChangeForm, CustomPasswordChangeForm, ProfilePictureForm, ContactForm
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages 
-
+from django.core.mail import send_mail
+from django.conf import settings
 
 def register(request):
     """View function for user registration."""
@@ -132,3 +133,37 @@ def update_profile(request):
     }
 
     return render(request, 'account_actions/update_profile.html', context)
+
+def contact(request):
+    if request.method == 'POST':
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            contact_message = form.save()
+            subject = 'New Conctat Us Submission'
+            message = f'''
+                Name: {contact_message.name}
+                Email: {contact_message.email}
+                Subject: {contact_message.subject}
+                Message: {contact_message.message}
+                Time: {contact_message.formatted_timestamp()}
+            '''
+            from_email = settings.DEFAULT_FROM_EMAIL
+            recipient_list = [settings.EMAIL_USER_CONTACT]
+            send_mail(subject, message, from_email, recipient_list, fail_silently=False)
+            return redirect('users:contact_success')
+    else:
+        form = ContactForm()
+
+    context = {
+        'form': form,
+        'page_title': 'Contact Us :: PlayStyle Compass'
+    }
+
+    return render(request, 'account_actions/contact.html', context)
+
+@login_required
+def contact_success(request):
+    messages.success(request, 'Thank you for contacting us! Your message has been successfully submitted. Our team will review it within 48 hours and get back to you as soon as possible.')
+    return render(request, 'account_actions/contact_success.html', {
+        'page_title': 'Contact Us Done :: PlayStyle Compass'}
+    )

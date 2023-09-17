@@ -15,3 +15,13 @@ def create_user_profile(sender, instance, created, **kwargs):
 @receiver(post_save, sender=User)
 def save_user_profile(sender, instance, **kwargs):
     instance.userprofile.save()
+
+class ContactMessage(models.Model):
+    name = models.CharField(max_length=100)
+    email = models.EmailField()
+    subject = models.CharField(max_length=200)
+    message = models.TextField()
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    def formatted_timestamp(self):
+        return self.timestamp.strftime('%b %d, %Y %I:%M %p')

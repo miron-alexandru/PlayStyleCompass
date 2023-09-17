@@ -7,6 +7,9 @@
 <summary><h2>PlayStyle Compass Changelog</h2></summary>
 
 ### Version v1.2:
+* Refactored misc functions.
+* Refactored CSS.
+* Implemented Contact Us - Now users are able to fill a form and send an email for inquiries and communication.
 * Added image gallery for each game.
 * Added Read more - Read less funcionality for the Overview.
 * Added new information about the games (Overview, Developers).

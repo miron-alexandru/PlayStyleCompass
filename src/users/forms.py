@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm
 from django.contrib.auth.models import User
-from .models import UserProfile
+from .models import UserProfile, ContactMessage
 
 
 class CustomRegistrationForm(UserCreationForm):
@@ -138,3 +138,14 @@ class ProfilePictureForm(forms.ModelForm):
         widget=CustomClearableFileInput(),
         label=' ',
     )
+
+class ContactForm(forms.ModelForm):
+    class Meta:
+        model = ContactMessage
+        fields = ['name', 'email', 'subject', 'message']
+        widgets = {
+            'name': forms.TextInput(attrs={'placeholder': 'Enter your name'}),
+            'email': forms.EmailInput(attrs={'placeholder': 'Enter your email address'}),
+            'subject': forms.TextInput(attrs={'placeholder': 'Enter the subject of your message'}),
+            'message': forms.Textarea(attrs={'placeholder': 'Enter your message'}),
+        }

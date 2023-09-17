@@ -23,5 +23,7 @@ urlpatterns = [
         name='change_password_done'
     ),
     path('change_email/done/', views.change_email_done, name='change_email_done'),
+    path('contact/', views.contact, name='contact'),
+    path('contact_success/', views.contact_success, name='contact_success'),
 
 ]
