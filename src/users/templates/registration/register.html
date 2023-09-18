@@ -1,11 +1,11 @@
 {% extends "base.html" %}
+{% load static %}
 {% load bootstrap4 %}
 
-{% block page_header %}
-  <h2>Create your account</h2>
-{% endblock page_header %}
-
 {% block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/users/common.css' %}">
+<div class="my-container">
+  <h2>Create your account</h2>
   <form method="post" action="{% url 'users:register' %}" class="form">
     {% csrf_token %}
     {% bootstrap_form form %}
@@ -16,4 +16,5 @@
     <input type="hidden" name="next" 
       value="{% url 'playstyle_compass:index' %}" />
   </form>
+</div>
 {% endblock content %}

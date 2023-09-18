@@ -7,6 +7,7 @@
 <summary><h2>PlayStyle Compass Changelog</h2></summary>
 
 ### Version v1.2:
+* Modified css for different templates and placement of the footer.
 * Refactored misc functions.
 * Refactored CSS.
 * Implemented Contact Us - Now users are able to fill a form and send an email for inquiries and communication.

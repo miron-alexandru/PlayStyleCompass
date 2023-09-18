@@ -23,13 +23,13 @@
         <ul class="navbar-nav ml-auto">
           <li class="nav-item">
             <a class="nav-link" href="{% url 'playstyle_compass:gaming_preferences'%}">
-              DEFINE PLAYSTYLE
+              Define Playstyle
             </a>
           </li>
           {% if user.is_authenticated %}
           <li class="nav-item">
             <a class="nav-link" href="{% url 'playstyle_compass:update_preferences'%}">
-              YOUR PLAYSTYLE
+              Your Playstyle
             </a>
           </li>
           {% endif %}
@@ -57,15 +57,14 @@
             </li>
             <li class="nav-item dropdown" id="hoverDropdown">
               <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Settings
+                Account Actions
               </a>
               <div class="dropdown-menu" aria-labelledby="profileDropdown">
                 <a class="dropdown-item" href="{% url 'users:profile' %}">Change Profile Picture</a>
-                <a class="dropdown-item" href="{% url 'users:logout' %}">Log Out</a>
                 <a class="dropdown-item" href="{% url 'users:change_password' %}">Change Password</a>
                 <a class="dropdown-item" href="{% url 'users:change_email' %}">Change Email</a>
                 <a class="dropdown-item" href="{% url 'users:delete_account' %}">Delete Account</a>
-                <a class="dropdown-item" href="{% url 'users:contact' %}">Contact Us</a>
+                <a class="dropdown-item" href="{% url 'users:logout' %}">Log Out</a>
               </div>
             </li>
             {% else %}
@@ -76,6 +75,9 @@
               <a class="nav-link" href="{% url 'users:login' %}">Log in</a>
             </li>
             {% endif %}
+            <li class="nav-item">
+            <a class="nav-link" href="{% url 'users:contact' %}">Contact Us</a>
+          </li>
           </ul>
         </div>
       </div>
@@ -84,20 +86,19 @@
     <script src="{% static 'js/base.js' %}"></script>
     <script src="{% static 'js/dropdown.js' %}"></script>
 
-    <main role="main" class="container">
+     <main role="main" class="container">
       <div class="page-header border-bottom">
         {% block page_header %}{% endblock page_header %}
       </div>
       <div class="content">
         {% block content %}{% endblock content %}
       </div>
-
-      <footer class="footer mt-auto py-3">
-        <div class="container text-center">
+    </main>
+      <footer class="footer">
+        <div class="my-footer">
           <p>&copy; {{ current_year }} PlayStyle Compass. All rights reserved.</p>
         </div>
       </footer>
-    </main>
   </body>
 
 </html>

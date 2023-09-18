@@ -1,13 +1,26 @@
+html {
+  height: 100%;
+}
+
 body {
   font-family: 'Arial', sans-serif;
   background-color: #f7f7f7;
   margin: 0;
   padding: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 h1, h2, h3, h4, h5, h6, p, ul, ol {
   margin: 0;
   padding: 0;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  position: relative;
 }
 
 .navbar {
@@ -19,16 +32,21 @@ h1, h2, h3, h4, h5, h6, p, ul, ol {
   height: 85px;
 }
 .navbar-text {
-  font-size: 16px;
+  font-size: 15px;
 }
 
 .nav-link {
-  font-size: 16px;
+  font-size: 15px;
   transition: color 0.3s ease-in-out;
 }
 
+.navbar-nav .nav-item .contact-us {
+  margin-left: auto;
+}
+
 .container {
-  padding: 30px 0;
+  flex: 1;
+  padding: 25px 0; /* 25px top/bottom, 20px left/right */
 }
 
 .nav-item {
@@ -71,25 +89,12 @@ h1, h2, h3, h4, h5, h6, p, ul, ol {
 .footer {
   background-color: #2c3e50;
   color: #ffffff;
-  padding: 20px 0;
-  margin-top: 20px;
+  width: 100%;
 }
 
-.footer p {
-  margin: 0;
-}
-
-.footer .container {
+.my-footer {
   text-align: center;
-}
-
-.footer a {
-  color: #ecf0f1;
-  transition: color 0.3s ease-in-out;
-}
-
-.footer a:hover {
-  color: #ffffff;
+  padding: 25px;
 }
 
 .dropdown-menu {

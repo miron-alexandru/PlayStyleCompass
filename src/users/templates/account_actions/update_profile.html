@@ -4,30 +4,19 @@
 
 {% block content %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/users/profile_picture.css' %}">
-<div class="containerr">
-  <div class="row justify-content-center">
-    <div class="col-md-6">
-      <div class="card">
-        <div class="card-header">
-          <h2 class="text-center">Update Profile Picture</h2>
-        </div>
-        <div class="card-body">
-          <form method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            {% bootstrap_form form %}
-            <div class="current-image">
-              {% if form.instance.profile_picture %}
-              <p>Current: <a href="{{ form.instance.profile_picture.url }}" target="_blank">{{ form.instance.profile_picture.url }}</a></p>
-              {% endif %}
-            </div>
-            <button id="uploadButton" type="submit" class="btn btn-primary" disabled>Update Image</button>
+  <div class="my-container">
+    <h2>Update Profile Picture</h2>
+    <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {% bootstrap_form form %}
+    <div class="current-image">
+    {% if form.instance.profile_picture %}
+    <p>Current: <a href="{{ form.instance.profile_picture.url }}" target="_blank">{{ form.instance.profile_picture.url }}</a></p>
+    {% endif %}
+          <button id="uploadButton" type="submit" class="btn btn-primary" disabled>Update Image</button>
           </form>
-        </div>
-      </div>
-    </div>
-  </div>
 </div>
 
 <script src="{% static 'js/profile_picture.js' %}"></script>
 
-{% endblock content %}
+{% endblock %}  
