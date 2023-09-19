@@ -3,6 +3,20 @@
   --background-color: #f5f5f5;
 }
 
+.header{
+  background-color: #2f4255;
+  padding: 15px;
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+}
+.header h3 {
+  font-size: 24px;
+  font-weight: bold;
+  color: #fff;
+  margin-left: 100px;
+  letter-spacing: 2px;
+}
+
 .btn-primary {
   background-color: var(--primary-color);
   border-color: var(--primary-color);

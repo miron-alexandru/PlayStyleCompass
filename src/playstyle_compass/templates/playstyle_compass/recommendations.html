@@ -3,10 +3,13 @@
 {% load custom_filters %}
 
 {% block page_header %}
-<h3>Game Recommendations</h3>
+<div class="header">
+<h3>GAME RECOMMENDATIONS</h3>
+</div>
 {% endblock page_header %}
 
 {% block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/playstyle_compass/common_styles.css' %}">
 <link rel="stylesheet" type="text/css" href="{% static 'css/playstyle_compass/pagination.css' %}">
 <link rel="stylesheet" type="text/css" href="{% static 'css/playstyle_compass/game_recommendations.css' %}">
 

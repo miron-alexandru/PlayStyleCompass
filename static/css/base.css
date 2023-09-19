@@ -29,7 +29,7 @@ main {
   border-radius: 0;
   padding: 0;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
-  height: 85px;
+  max-height: 85px;
 }
 .navbar-text {
   font-size: 15px;
@@ -46,7 +46,7 @@ main {
 
 .container {
   flex: 1;
-  padding: 25px 0; /* 25px top/bottom, 20px left/right */
+  padding: 0px 0;
 }
 
 .nav-item {
@@ -67,7 +67,7 @@ main {
 .page-header {
   font-size: 32px;
   color: #2c3e50;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
 }
 
 .border-bottom {
@@ -75,10 +75,6 @@ main {
 }
 
 .content {
-  background-color: #ffffff;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   margin-bottom: 20px;
 }
 
