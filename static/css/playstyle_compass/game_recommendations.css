@@ -19,17 +19,18 @@
 }
 
 .category-button {
-      background-color: #3498db;
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      cursor: pointer;
-      transition: background-color 0.3s ease-in-out;
-    }
+  font-size: 14px;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+}
 
 .category-button:hover {
-      background-color: #2980b9;
-    }
+    background-color: #2980b9;
+}
 
 h4 {
   font-size: 1.2rem;
@@ -37,6 +38,7 @@ h4 {
   margin: 0;
   padding-bottom: 5px;
 }
+
 ul {
   list-style: none;
   padding: 0;

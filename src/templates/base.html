@@ -53,7 +53,7 @@
               <input type="file" id="profile-picture-upload" class="sr-only" accept="image/*" data-profile-url="{% url 'users:profile' %}" data-csrf-token="{{ csrf_token }}">
             </li>
             <li class="nav-item">
-              <span class="navbar-text mr-3">Hello, {{ user.username }}.</span>
+              <span class="navbar-text mr-3">Hello, {{ user.userprofile.profile_name }}.</span>
             </li>
             <li class="nav-item dropdown" id="hoverDropdown">
               <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

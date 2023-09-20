@@ -5,6 +5,9 @@ from .models import UserProfile, ContactMessage
 
 
 class CustomRegistrationForm(UserCreationForm):
+    profile_name = forms.CharField(
+        label="Profile Name",
+        help_text="Choose nickname that will be shown to other users on the site. This name is not used for login.")
     username = forms.CharField(
         help_text="")
     email = forms.EmailField(
@@ -24,7 +27,8 @@ class CustomRegistrationForm(UserCreationForm):
 
     class Meta:
         model = User
-        fields = ['username', 'email', 'password1', 'password2']
+        fields = ['profile_name', 'username', 'email', 'password1', 'password2',]
+
 
 class DeleteAccountForm(forms.Form):
     password = forms.CharField(

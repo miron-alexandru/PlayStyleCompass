@@ -7,6 +7,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages 
 from django.core.mail import send_mail
 from django.conf import settings
+from .models import UserProfile
+
 
 def register(request):
     """View function for user registration."""
@@ -21,9 +23,16 @@ def register(request):
             if User.objects.filter(email=email).exists():
                 form.add_error('email', 'This email address is already in use.')
             else:
-                new_user = form.save()
-                # Log the user in and then redirect to the home page.
+                new_user = form.save(commit=False)
+                new_user.save()
+
+                user_profile = UserProfile(
+                    user=new_user,
+                    profile_name=form.cleaned_data['profile_name'],
+                )
+                user_profile.save()
                 login(request, new_user)
+
                 return redirect('playstyle_compass:index')
 
     context = {

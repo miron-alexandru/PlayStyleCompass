@@ -5,13 +5,13 @@
 }
 
 .playstyle-title {
-  font-size: 24px;
+  font-size: 18px;
   margin-bottom: 5px;
   color: var(--text-color);
 }
 
 .playstyle-text {
-  font-size: 16px;
+  font-size: 15px;
   line-height: 1.6;
   color: var(--text-color);
 }
@@ -31,6 +31,7 @@ a:hover {
 }
 
 .btn-danger {
+  font-size: 13px;
   background-color: #dc3545;
   color: white;
   border: none;
@@ -38,13 +39,11 @@ a:hover {
   border-radius: 4px;
   cursor: pointer;
 }
-
-/* Hover effect */
+  
 .btn-danger:hover {
   background-color: #c82333;
 }
 
-/* Focus effect */
 .btn-danger:focus {
   outline: none;
   box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.5);
