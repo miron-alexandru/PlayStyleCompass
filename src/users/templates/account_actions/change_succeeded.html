@@ -4,9 +4,7 @@
 {% block content %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/users/success_message.css' %}">
 <div class="message-container">
-  {% for message in messages %}
-    <h2>{{ message }}</h2>
-  {% endfor %}
-  <p><a href="{% url 'playstyle_compass:index' %}" class="btn btn-primary">Go to Home Page</a></p>
+  <h2>{{ response }}</h2>
+  <p><a href="{% url 'playstyle_compass:index' %}" class="btn btn-primary">Home</a></p>
 </div>
 {% endblock %}

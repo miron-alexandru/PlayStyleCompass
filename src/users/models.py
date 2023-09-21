@@ -9,7 +9,7 @@ class UserProfile(models.Model):
     profile_name = models.CharField(max_length=15, blank=True, null=True)
 
     def __str__(self):
-        return self.user.profile_name
+        return self.user.username
 
 class ContactMessage(models.Model):
     name = models.CharField(max_length=100)

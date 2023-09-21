@@ -7,6 +7,7 @@
 <summary><h2>PlayStyle Compass Changelog</h2></summary>
 
 ### Version v1.2:
+* Implemented email confirmation for the registration.
 * Added profile name for the users.
 * Modified css for different templates and placement of the footer.
 * Refactored misc functions.
