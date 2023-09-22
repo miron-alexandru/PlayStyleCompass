@@ -40,6 +40,8 @@ INSTALLED_APPS = [
 
 FORM_RENDERER = 'django.forms.renderers.TemplatesSetting'
 
+AUTHENTICATION_BACKENDS = ['django.contrib.auth.backends.AllowAllUsersModelBackend']
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -82,7 +84,7 @@ EMAIL_HOST_PASSWORD = SENDGRID_API_KEY
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
-PASSWORD_RESET_TIMEOUT = 14400
+PASSWORD_RESET_TIMEOUT = 1800
 
 # Database
 

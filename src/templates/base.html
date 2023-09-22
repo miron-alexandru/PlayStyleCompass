@@ -99,6 +99,13 @@
           {% endfor %}
         </div>
         {% endif %}
+        {% if user.is_authenticated %}
+        {% if not user.userprofile.email_confirmed %}
+        <div class="alert alert-warning">
+          Please confirm your email to unlock all features.
+        </div>
+        {% endif %}
+        {% endif %}
         {% block page_header %}{% endblock page_header %}
       </div>
       <div class="content">

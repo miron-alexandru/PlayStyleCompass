@@ -1,8 +1,20 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm
+from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm, AuthenticationForm, UsernameField
 from django.contrib.auth.models import User
 from .models import UserProfile, ContactMessage
+from django.contrib.auth.views import LoginView
 
+from django.core.exceptions import ValidationError
+from django.contrib.auth.backends import AllowAllUsersModelBackend
+from django.utils.translation import gettext as _
+
+class CustomAuthenticationForm(AuthenticationForm):
+    def confirm_login_allowed(self, user):
+        if not user.is_active:
+            raise forms.ValidationError(
+                _("Your account is not yet activated. Please check your email and confirm your registration."),
+                code='inactive',
+            )
 
 class CustomRegistrationForm(UserCreationForm):
     profile_name = forms.CharField(

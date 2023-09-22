@@ -14,11 +14,10 @@
     {% buttons %}
       <button name="submit" class="btn btn-primary">Log in</button>
     {% endbuttons %}
-    
     <input type="hidden" name="next" 
       value="{% url 'playstyle_compass:index' %}" />
   </form>
   <p><a href="{% url 'users:password_reset' %}">Forgot password?</a></p>
   <p>Don't have an account? <a href="{% url 'users:register' %}">Sign up now!</a></p>
-
+</div>
 {% endblock content %}

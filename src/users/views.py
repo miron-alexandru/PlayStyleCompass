@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout, update_session_auth_hash, get_user_model
-from .forms import CustomRegistrationForm, DeleteAccountForm, EmailChangeForm, CustomPasswordChangeForm, ProfilePictureForm, ContactForm
+from .forms import CustomRegistrationForm, DeleteAccountForm, EmailChangeForm, CustomPasswordChangeForm, ProfilePictureForm, ContactForm, CustomAuthenticationForm
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.contrib.auth.decorators import login_required
@@ -9,6 +9,7 @@ from django.core.mail import send_mail
 from django.conf import settings
 from .models import UserProfile
 from .tokens import account_activation_token
+from django.contrib.auth.views import LoginView
 
 from django.template.loader import render_to_string
 from django.contrib.sites.shortcuts import get_current_site
@@ -17,6 +18,9 @@ from django.utils.encoding import force_bytes, force_str
 from django.core.mail import EmailMessage
 from django.utils.safestring import mark_safe
 
+class CustomLoginView(LoginView):
+    authentication_form = CustomAuthenticationForm
+    template_name = 'registration/login.html'
 
 def activate(request, uidb64, token):
     User = get_user_model()
@@ -27,11 +31,12 @@ def activate(request, uidb64, token):
         user = None
 
     if user is not None and account_activation_token.check_token(user, token):
-        user.is_active = True
+        user.userprofile.email_confirmed = True
+        user.userprofile.save()
         user.save()
 
-        messages.success(request, "Thank you for your email confirmation. Now you can log in into your account.")
-        return redirect('users:login')
+        messages.success(request, "Thank you for your email confirmation!")
+        return redirect('playstyle_compass:index')
     else:
         messages.error(request, "Activation link is invalid!")
 
@@ -49,7 +54,7 @@ def activateEmail(request, user, to_email):
     email = EmailMessage(mail_subject, message, to=[to_email])
     if email.send():
         message = f'Hello <b>{user}</b>, please go to your email <b>{to_email}</b> inbox and click on ' \
-                  f'received activation link to confirm and complete the registration. \
+                  f'received activation link to confirm your registration. \
                   <b>Note:</b> If you cannot find the email in your inbox, we recommend checking your spam folder.'
         messages.success(request, mark_safe(message))
     else:
@@ -63,20 +68,21 @@ def register(request):
         form = CustomRegistrationForm(data=request.POST)
         
         if form.is_valid():
-            # Check if a user with the provided email already exists
             email = form.cleaned_data['email']
             if User.objects.filter(email=email).exists():
                 form.add_error('email', 'This email address is already in use.')
             else:
                 new_user = form.save(commit=False)
-                new_user.is_active = False
                 new_user.save()
 
                 user_profile = UserProfile(
                     user=new_user,
                     profile_name=form.cleaned_data['profile_name'],
                 )
+
                 user_profile.save()
+                new_user.save()
+
                 activateEmail(request, new_user, form.cleaned_data.get('email'))
 
                 return redirect('users:login')
@@ -97,7 +103,7 @@ def delete_account(request):
             password = form.cleaned_data['password']
             if request.user.check_password(password):
                 request.user.delete()
-                messages.success("Your account has been successfully deleted!")
+                messages.success(request, "Your account has been successfully deleted!")
                 return redirect('playstyle_compass:index')
             else:
                 form.add_error('password', 'Incorrect password. Please try again.')
