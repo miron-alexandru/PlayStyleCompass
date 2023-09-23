@@ -84,6 +84,8 @@
     </nav>
     <script src="{% static 'js/base.js' %}"></script>
     <script src="{% static 'js/dropdown.js' %}"></script>
+    <script src="{% static 'js/email_confirmation.js' %}"></script>
+
 
     <main role="main" class="container">
       <div class="page-header border-bottom">
@@ -101,12 +103,17 @@
         {% endif %}
         {% if user.is_authenticated %}
         {% if not user.userprofile.email_confirmed %}
-        <div class="alert alert-warning">
-          Please confirm your email to unlock all features.
+        <div class="message">
+          <div class="alert alert-warning">
+            Please confirm your email address to unlock all features.
+            <a href="#" class="resend-link" id="resend-link" data-url="{% url 'users:resend_activation_link' %}">Resend verification link</a>
+            <div id="success-message"></div>
+          </div>
         </div>
-        {% endif %}
-        {% endif %}
-        {% block page_header %}{% endblock page_header %}
+      </div>
+      {% endif %}
+      {% endif %}
+      {% block page_header %}{% endblock page_header %}
       </div>
       <div class="content">
         {% block content %}{% endblock content %}

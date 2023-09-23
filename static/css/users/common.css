@@ -25,6 +25,17 @@
     font-size: 14px;
 }
 
+.captcha-error {
+    color: red;
+    font-size: 15px;
+    margin-top: -10px;
+    margin-bottom: 10px;
+}
+
+.captcha-error ul {
+    list-style-type: none;
+}
+
 button[type="submit"] {
     background-color: #007bff;
     color: #fff;

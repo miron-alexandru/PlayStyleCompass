@@ -1,4 +1,3 @@
-// profile.js
 document.getElementById('profile-picture-upload').addEventListener('change', function () {
   const fileInput = this;
   const file = fileInput.files[0];

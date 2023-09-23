@@ -23,5 +23,6 @@ urlpatterns = [
     path('change_email/done/', views.change_email_done, name='change_email_done'),
     path('contact/', views.contact, name='contact'),
     path('contact_success/', views.contact_success, name='contact_success'),
+    path('resend-activation-link/', views.resend_activation_link, name='resend_activation_link'),
 
 ]

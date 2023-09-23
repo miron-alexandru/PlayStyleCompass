@@ -5,16 +5,14 @@ from .models import UserProfile, ContactMessage
 from django.contrib.auth.views import LoginView
 
 from django.core.exceptions import ValidationError
-from django.contrib.auth.backends import AllowAllUsersModelBackend
 from django.utils.translation import gettext as _
+from captcha.fields import ReCaptchaField
+
 
 class CustomAuthenticationForm(AuthenticationForm):
-    def confirm_login_allowed(self, user):
-        if not user.is_active:
-            raise forms.ValidationError(
-                _("Your account is not yet activated. Please check your email and confirm your registration."),
-                code='inactive',
-            )
+    error_messages = {
+        "invalid_login": _("Incorrect username or password. Please make sure you entered your  username and password correctly."),
+    }
 
 class CustomRegistrationForm(UserCreationForm):
     profile_name = forms.CharField(
@@ -36,11 +34,21 @@ class CustomRegistrationForm(UserCreationForm):
         widget=forms.PasswordInput,
         help_text="Enter the same password as before, for verification."
     )
+    captcha = ReCaptchaField(
+        error_messages={
+            'required': 'Please complete reCAPTCHA.'
+        }
+    )
 
     class Meta:
         model = User
-        fields = ['profile_name', 'username', 'email', 'password1', 'password2',]
+        fields = ['profile_name', 'username', 'email', 'password1', 'password2', 'captcha']
 
+    def clean_email(self):
+        email = self.cleaned_data['email']
+        if User.objects.filter(email=email).exists():
+            raise forms.ValidationError('This email address is already in use.')
+        return email
 
 class DeleteAccountForm(forms.Form):
     password = forms.CharField(

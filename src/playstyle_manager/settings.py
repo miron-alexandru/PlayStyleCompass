@@ -21,12 +21,10 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    # My apps
     'playstyle_compass',
     'users',
-
-    # Third party apps.
     'bootstrap4',
+    'captcha',
 
    # Default django apps.
     'django.contrib.admin',
@@ -38,9 +36,10 @@ INSTALLED_APPS = [
     'django.forms',
 ]
 
-FORM_RENDERER = 'django.forms.renderers.TemplatesSetting'
+RECAPTCHA_PUBLIC_KEY = str(os.getenv('RECAPTCHA_PUBLIC_KEY'))
+RECAPTCHA_PRIVATE_KEY = str(os.getenv('RECAPTCHA_PRIVATE_KEY'))
 
-AUTHENTICATION_BACKENDS = ['django.contrib.auth.backends.AllowAllUsersModelBackend']
+FORM_RENDERER = 'django.forms.renderers.TemplatesSetting'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

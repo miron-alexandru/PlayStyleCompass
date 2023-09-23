@@ -1,6 +1,19 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import login, logout, update_session_auth_hash, get_user_model
-from .forms import CustomRegistrationForm, DeleteAccountForm, EmailChangeForm, CustomPasswordChangeForm, ProfilePictureForm, ContactForm, CustomAuthenticationForm
+from django.contrib.auth import (
+    login,
+    logout,
+    update_session_auth_hash,
+    get_user_model,
+)
+from .forms import (
+    CustomRegistrationForm,
+    DeleteAccountForm,
+    EmailChangeForm,
+    CustomPasswordChangeForm,
+    ProfilePictureForm,
+    ContactForm,
+    CustomAuthenticationForm,
+)
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.contrib.auth.decorators import login_required
@@ -13,10 +26,19 @@ from django.contrib.auth.views import LoginView
 
 from django.template.loader import render_to_string
 from django.contrib.sites.shortcuts import get_current_site
-from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
-from django.utils.encoding import force_bytes, force_str
+from django.utils.http import (
+    urlsafe_base64_encode,
+    urlsafe_base64_decode,
+)
+from django.utils.encoding import (
+    force_bytes,
+    force_str,
+)
 from django.core.mail import EmailMessage
 from django.utils.safestring import mark_safe
+from django.http import JsonResponse
+
+
 
 class CustomLoginView(LoginView):
     authentication_form = CustomAuthenticationForm
@@ -60,32 +82,38 @@ def activateEmail(request, user, to_email):
     else:
         messages.error(request, f'Problem sending email to {to_email}, check if you typed it correctly.')
 
+def resend_activation_link(request):
+    if request.method == 'GET':
+        email = request.user.email
+        user = User.objects.get(email=email)
+        activateEmail(request, user, email)
+    else:
+        return JsonResponse({'success': False, 'error_message': 'Invalid request method'})
+
 def register(request):
     """View function for user registration."""
-    if request.method != 'POST':
-        form = CustomRegistrationForm()
-    else:
+    if request.method == 'POST':
         form = CustomRegistrationForm(data=request.POST)
         
         if form.is_valid():
-            email = form.cleaned_data['email']
-            if User.objects.filter(email=email).exists():
-                form.add_error('email', 'This email address is already in use.')
-            else:
-                new_user = form.save(commit=False)
-                new_user.save()
+            new_user = form.save(commit=False)
+            new_user.save()
 
-                user_profile = UserProfile(
-                    user=new_user,
-                    profile_name=form.cleaned_data['profile_name'],
-                )
+            user_profile = UserProfile(
+                user=new_user,
+                profile_name=form.cleaned_data['profile_name'],
+            )
 
-                user_profile.save()
-                new_user.save()
+            user_profile.save()
+            new_user.save()
 
-                activateEmail(request, new_user, form.cleaned_data.get('email'))
+            activateEmail(request, new_user, form.cleaned_data.get('email'))
+            login(request, new_user)
 
-                return redirect('users:login')
+            return redirect('playstyle_compass:index')
+
+    else:
+        form = CustomRegistrationForm()
 
     context = {
         'form': form,
