@@ -3,7 +3,7 @@
 {% block title %}Delete Account :: PlayStyle Compass{% endblock title %}
 
 {% block content %}
-<link rel="stylesheet" type="text/css" href="{% static 'css/users/delete_account.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/users/delete_accounte.css' %}">
 
 <div class="delete-container">
     <div class="delete-account">
@@ -11,7 +11,7 @@
         <div class="warning-message">
             <p>Are you sure you want to delete your account? This action cannot be undone!!!</p>
         </div>
-        <form method="post">
+        <form method="post" id="delete-form">
             {% csrf_token %}
             <div class="form-group">
                 <input type="password" name="password" class="form-control" placeholder="Password">
@@ -19,8 +19,15 @@
                     <div class="error-message">{{ form.errors.password }}</div>
                 {% endif %}
             </div>
-            <button type="submit" class="btn btn-danger">Delete Account</button>
+            {% if not user.userprofile.email_confirmed %}
+                <button type="button" class="btn btn-danger disabled" title="Confirm your email address to unlock this!">Delete Account</button>
+            {% else %}
+                <button type="button" class="btn btn-danger" id="delete-button">Delete Account</button>
+            {% endif %}
         </form>
     </div>
 </div>
+
+<script src="{% static 'js/delete_acc.js' %}"></script>
+
 {% endblock content %}

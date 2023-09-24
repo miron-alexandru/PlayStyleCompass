@@ -6,6 +6,7 @@
 <link rel="stylesheet" type="text/css" href="{% static 'css/playstyle_compass/index.css' %}">
 
 <div class="jumbotron">
+  <div class="my-header">
   <h1 class="display-5">Discover Your Perfect Games</h1>
 
   <p class="lead">Welcome to PlayStyle Compass – your personalized gateway to uncovering video games perfectly tailored to your unique preferences, gaming history, and genre inclinations. Whether you're a casual enthusiast or a dedicated gaming passionate, our application meticulously analyzes your individual gaming profile, curating recommendations that align with your distinct tastes. Embark on an exhilarating journey through the realm of gaming possibilities by creating an account with us!</p>
@@ -13,6 +14,7 @@
   {% if not user.is_authenticated %}
   <a class="btn btn-lg btn-primary register-button" href="{% url 'users:register' %}" role="button">Register &raquo;</a>
   {% endif %}
+</div>
 </div>
 {% endblock page_header %}
 

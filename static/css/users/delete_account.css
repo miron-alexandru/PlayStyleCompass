@@ -1,14 +1,12 @@
 .delete-container {
     max-width: 500px;
     margin: 0 auto;
-    padding: 20px;
+    padding: 0px;
 }
 
 .delete-account {
-    background-color: #fff;
-    border: 1px solid #e0e0e0;
+    background-color: #f9f9f9;
     padding: 20px;
-    border-radius: 5px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
 }
 
@@ -16,11 +14,11 @@
     background-color: #333;
     color: #fff;
     text-align: center;
-    padding: 20px;
+    padding: 15px;
     margin-top: 0;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
-    font-size: 24px;
+    font-size: 22px;
 }
 
 .warning-message {
@@ -33,8 +31,17 @@
 }
 
 .warning-message p {
-    font-size: 18px;
+    font-size: 16px;
     text-align: center;
+}
+
+.error-message {
+    color: red;
+    font-size: 15px;
+}
+
+.error-message ul {
+    list-style-type: none;
 }
 
 form {
@@ -47,7 +54,7 @@ input[type="password"] {
     margin-bottom: 15px;
     border: 1px solid #ccc;
     border-radius: 5px;
-    font-size: 16px;
+    font-size: 15px;
 }
 
 button.btn-danger {
@@ -57,10 +64,12 @@ button.btn-danger {
     padding: 12px 20px;
     cursor: pointer;
     border-radius: 5px;
-    font-size: 18px;
+    font-size: 16px;
     width: 100%;
 }
 
-button.btn-danger:hover {
-    background-color: #c0392b;
+
+.btn-danger.disabled {
+    cursor: not-allowed;
+    opacity: 0.7;
 }

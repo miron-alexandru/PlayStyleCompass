@@ -1,3 +1,12 @@
+document.addEventListener("DOMContentLoaded", function () {
+  var headerContent = document.getElementById("header-content").innerHTML.trim();
+  var pageHeader = document.querySelector(".page-header");
+
+  if (headerContent.length > 0) {
+    pageHeader.classList.add("border-bottom");
+  }
+});
+
 document.getElementById('profile-picture-upload').addEventListener('change', function () {
   const fileInput = this;
   const file = fileInput.files[0];
