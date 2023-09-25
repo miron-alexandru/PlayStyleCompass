@@ -13,25 +13,35 @@ class CustomAuthenticationForm(AuthenticationForm):
     error_messages = {
         "invalid_login": _("Incorrect username or password. Please make sure you entered your  username and password correctly."),
     }
+    username = forms.CharField(
+        widget=forms.TextInput(attrs={'placeholder': '', 'autofocus': 'autofocus'})
+    )
+    password = forms.CharField(
+        widget=forms.PasswordInput(attrs={'placeholder': ''}),
+        )
 
 class CustomRegistrationForm(UserCreationForm):
     profile_name = forms.CharField(
         label="Profile Name",
-        help_text="Choose nickname that will be shown to other users on the site. This name is not used for login.")
+        help_text="Choose nickname that will be shown to other users on the site. This name is not used for login.",
+        widget=forms.TextInput(attrs={'autofocus': 'autofocus', 'placeholder': ''}),
+    )
     username = forms.CharField(
-        help_text="")
+        help_text="",
+        widget=forms.TextInput(attrs={'placeholder': ''}))
     email = forms.EmailField(
         label="Email",
-        help_text="")
+        help_text="",
+        widget=forms.EmailInput(attrs={'placeholder': ''}),)
     password1 = forms.CharField(
         label="Password",
-        widget=forms.PasswordInput,
+        widget=forms.PasswordInput(attrs={'placeholder': ''}),
         help_text=(""
         )
     )
     password2 = forms.CharField(
         label="Password Confirmation",
-        widget=forms.PasswordInput,
+        widget=forms.PasswordInput(attrs={'placeholder': ''}),
         help_text="Enter the same password as before, for verification."
     )
     captcha = ReCaptchaField(
@@ -52,16 +62,8 @@ class CustomRegistrationForm(UserCreationForm):
 
 class DeleteAccountForm(forms.Form):
     password = forms.CharField(
-        label="Password",
-        widget=forms.PasswordInput,
-        help_text="Enter your password to confirm account deletion."
-    )
-
-class DeleteAccountForm(forms.Form):
-    password = forms.CharField(
         label='',
-        widget=forms.PasswordInput,
-        help_text="Enter your password to confirm account deletion."
+        widget=forms.PasswordInput(attrs={'placeholder': 'Enter your password'}),
     )
 
 class EmailChangeForm(forms.ModelForm):
@@ -168,8 +170,8 @@ class ContactForm(forms.ModelForm):
         model = ContactMessage
         fields = ['name', 'email', 'subject', 'message']
         widgets = {
-            'name': forms.TextInput(attrs={'placeholder': 'Enter your name'}),
-            'email': forms.EmailInput(attrs={'placeholder': 'Enter your email address'}),
-            'subject': forms.TextInput(attrs={'placeholder': 'Enter the subject of your message'}),
-            'message': forms.Textarea(attrs={'placeholder': 'Enter your message'}),
+            'name': forms.TextInput(attrs={'placeholder': '', 'autofocus': 'autofocus'}),
+            'email': forms.EmailInput(attrs={'placeholder': ''}),
+            'subject': forms.TextInput(attrs={'placeholder': ''}),
+            'message': forms.Textarea(attrs={'placeholder': ''}),
         }

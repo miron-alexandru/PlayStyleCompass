@@ -1,9 +1,9 @@
 {% extends "base.html" %}
 {% load static %}
-{% block title %}Delete Account :: PlayStyle Compass{% endblock title %}
+{% load bootstrap4 %}
 
 {% block content %}
-<link rel="stylesheet" type="text/css" href="{% static 'css/users/delete_accounte.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/users/delete_account.css' %}">
 
 <div class="delete-container">
     <div class="delete-account">
@@ -13,12 +13,7 @@
         </div>
         <form method="post" id="delete-form">
             {% csrf_token %}
-            <div class="form-group">
-                <input type="password" name="password" class="form-control" placeholder="Password">
-                {% if form.errors.password %}
-                    <div class="error-message">{{ form.errors.password }}</div>
-                {% endif %}
-            </div>
+            {% bootstrap_form form %}
             {% if not user.userprofile.email_confirmed %}
                 <button type="button" class="btn btn-danger disabled" title="Confirm your email address to unlock this!">Delete Account</button>
             {% else %}

@@ -48,15 +48,6 @@ form {
     text-align: center;
 }
 
-input[type="password"] {
-    width: 100%;
-    padding: 12px;
-    margin-bottom: 15px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 15px;
-}
-
 button.btn-danger {
     background-color: #e74c3c;
     color: #fff;
