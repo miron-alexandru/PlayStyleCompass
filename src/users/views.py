@@ -44,6 +44,9 @@ class CustomLoginView(LoginView):
     authentication_form = CustomAuthenticationForm
     template_name = 'registration/login.html'
 
+    def form_invalid(self, form):
+        return super().form_invalid(form)
+
 def activate(request, uidb64, token):
     User = get_user_model()
     try:
@@ -119,6 +122,7 @@ def register(request):
         'form': form,
         'page_title': 'Register :: PlayStyle Compass'
     }
+
     return render(request, 'registration/register.html', context)
 
 @login_required

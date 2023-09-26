@@ -36,16 +36,14 @@
 }
 
 .error-message {
-    color: red;
-    font-size: 15px;
+    color: #dc3545;
+    font-size: 14px;
+    list-style: none;
 }
+
 
 .error-message ul {
     list-style-type: none;
-}
-
-form {
-    text-align: center;
 }
 
 button.btn-danger {
@@ -58,7 +56,6 @@ button.btn-danger {
     font-size: 16px;
     width: 100%;
 }
-
 
 .btn-danger.disabled {
     cursor: not-allowed;

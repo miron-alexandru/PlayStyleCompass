@@ -1,20 +1,76 @@
 {% extends "base.html" %}
 {% load static %}
-{% load bootstrap4 %}
 
 <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
 {% block content %}
-<link rel="stylesheet" type="text/css" href="{% static 'css/users/common.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/users/common.css' %}"> 
+
 <div class="my-container">
   <h2>Create your account</h2>
   <form method="post" action="{% url 'users:register' %}" class="form">
     {% csrf_token %}
-    {% bootstrap_form form %}
-    {% if form.captcha.errors %}
-    <div class="captcha-error">{{ form.captcha.errors }}</div>
-    {% endif %}
+    
+    <div class="form-group">
+      <label for="{{ form.profile_name.id_for_label }}"><i class="fas fa-user-circle"></i> Profile Name</label>
+      {{ form.profile_name }}
+      {% if form.profile_name.errors %}
+        <ul class="custom-error-list">
+          {{ form.profile_name.errors }}
+        </ul>
+      {% endif %}
+    </div>
+    
+    <div class="form-group">
+      <label for="{{ form.username.id_for_label }}"><i class="fas fa-user" aria-hidden="true"></i> Username</label>
+      {{ form.username }}
+      {% if form.username.errors %}
+        <ul class="custom-error-list">
+          {{ form.username.errors }}
+        </ul>
+      {% endif %}
+    </div>
+    
+    <div class="form-group">
+      <label for="{{ form.email.id_for_label }}"><i class="fas fa-envelope"></i> Email</label>
+      {{ form.email }}
+      {% if form.email.errors %}
+        <ul class="custom-error-list">
+          {{ form.email.errors }}
+        </ul>
+      {% endif %}
+    </div>
+    
+    <div class="form-group">
+      <label for="{{ form.password1.id_for_label }}"><i class="fas fa-lock"></i> Password</label>
+      {{ form.password1 }}
+      {% if form.password1.errors %}
+        <ul class="custom-error-list">
+          {{ form.password1.errors }}
+        </ul>
+      {% endif %}
+    </div>
+    
+    <div class="form-group">
+      <label for="{{ form.password2.id_for_label }}"><i class="fas fa-lock"></i> Confirm Password</label>
+      {{ form.password2 }}
+      {% if form.password2.errors %}
+        <ul class="custom-error-list">
+          {{ form.password2.errors }}
+        </ul>
+      {% endif %}
+    </div>
 
+    <div class="form-group">
+      <label for="{{ form.captcha.id_for_label }}"><i class="fas fa-refresh"></i> Captcha</label>
+      {{ form.captcha }}
+      {% if form.captcha.errors %}
+      <ul class="custom-error-list">
+        <li>{{ form.captcha.errors }}</li>
+      </ul>
+      {% endif %}
+    </div>
+    
     <button name="submit" class="btn btn-primary">Register</button>
     <input type="hidden" name="next" value="{% url 'playstyle_compass:index' %}" />
   </form>

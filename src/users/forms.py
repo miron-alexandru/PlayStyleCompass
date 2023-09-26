@@ -63,7 +63,7 @@ class CustomRegistrationForm(UserCreationForm):
 class DeleteAccountForm(forms.Form):
     password = forms.CharField(
         label='',
-        widget=forms.PasswordInput(attrs={'placeholder': 'Enter your password'}),
+        widget=forms.PasswordInput(attrs={'placeholder': ''}),
     )
 
 class EmailChangeForm(forms.ModelForm):
@@ -111,16 +111,12 @@ class EmailChangeForm(forms.ModelForm):
             raise forms.ValidationError('This email address is already in use.')
         return new_email
 
-    def clean(self):
-        cleaned_data = super().clean()
-        new_email = cleaned_data.get("new_email")
-        confirm_email = cleaned_data.get("confirm_email")
-
+    def clean_confirm_email(self):
+        confirm_email = self.cleaned_data['confirm_email']
+        new_email = self.cleaned_data['new_email']
         if new_email != confirm_email:
             raise forms.ValidationError("New email addresses must match.")
-
-        return cleaned_data
-
+        return confirm_email
 
 class CustomPasswordChangeForm(PasswordChangeForm):
     old_password = forms.CharField(

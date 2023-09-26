@@ -23,7 +23,10 @@ main {
   position: relative;
 }
 
-.form-control {
+.form-control,
+input[type="text"],
+input[type="password"],
+input[type="email"] {
   width: 100%;
   height: 41px;
   display: block;
@@ -35,7 +38,10 @@ main {
   border-radius: 21px;
 }
 
-.form-control:focus {
+.form-control:focus,
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="email"]:focus {
   color: #495057;
   background-color: #fff;
   border-color: #a5c9ff;
@@ -43,24 +49,10 @@ main {
   box-shadow: 0 0 0 0.1rem rgba(0,123,255,.25);
 }
 
-input[type="text"] {
-  width: 100%;
-  height: 41px;
-  display: block;
-  color: #495057;
-  font-size: 15px;
-  background: #fff;
-  border: 1px solid #d5dee6;
-  padding: 6px 35px 6px 10px;
-  border-radius: 21px;
-}
-
-input[type="text"]:focus {
-  color: #495057;
-  background-color: #fff;
-  border-color: #a5c9ff;
-  outline: 0;
-  box-shadow: 0 0 0 0.1rem rgba(0,123,255,.25);
+.form-control.is-valid, .form-control.is-invalid, .was-validated .form-control:valid {
+    background-image: none;
+} .was-validated .form-control:valid {
+    background-image: none;
 }
 
 .navbar {

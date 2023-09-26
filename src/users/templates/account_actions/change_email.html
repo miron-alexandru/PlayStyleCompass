@@ -3,40 +3,41 @@
 
 {% block content %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/users/common.css' %}">
+
 <div class="my-container">
   <h2>Change Email Address</h2>
   <form method="post">
     {% csrf_token %}
 
     <div class="form-group">
-      {{ form.current_password.label_tag }}
+      <label for="{{ form.current_password.id_for_label }}"><i class="fas fa-lock"></i> Current Password</label>
       {{ form.current_password }}
       {% if form.current_password.errors %}
-      <small class="text-danger">{{ form.current_password.errors.0 }}</small>
+      <ul class="custom-error-list">{{ form.current_password.errors }}</ul>
       {% endif %}
     </div>
 
     <div class="form-group">
-      {{ form.current_email.label_tag }}
+      <label for="{{ form.current_email.id_for_label }}"><i class="fa-solid fa-envelope-circle-check"></i> Current Email Address</label>
       {{ form.current_email }}
       {% if form.current_email.errors %}
-      <small class="text-danger">{{ form.current_email.errors.0 }}</small>
+      <ul class="custom-error-list">{{ form.current_email.errors }}</ul>
       {% endif %}
     </div>
 
     <div class="form-group">
-      {{ form.new_email.label_tag }}
+      <label for="{{ form.new_email.id_for_label }}"><i class="fas fa-envelope"></i> New Email Address</label>
       {{ form.new_email }}
       {% if form.new_email.errors %}
-      <small class="text-danger">{{ form.new_email.errors.0 }}</small>
+      <ul class="custom-error-list">{{ form.new_email.errors }}</ul>
       {% endif %}
     </div>
 
     <div class="form-group">
-      {{ form.confirm_email.label_tag }}
+      <label for="{{ form.confirm.id_for_label }}"><i class="fas fa-envelope"></i> Confirm New Email Address</label>
       {{ form.confirm_email }}
       {% if form.confirm_email.errors %}
-      <small class="text-danger">{{ form.confirm_email.errors.0 }}</small>
+      <ul class="custom-error-list">{{ form.confirm_email.errors }}</ul>
       {% endif %}
     </div>
 

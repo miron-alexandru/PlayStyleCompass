@@ -7,6 +7,13 @@
     background-color: #f9f9f9;
 }
 
+.custom-error-list, .custom-error-list ul {
+    color: #dc3545;
+    font-size: 14px;
+    list-style: none;
+    padding: 5px 0px 0px 0px;
+    }
+
 .my-container h2 {
     padding: 10px 0;
     text-align: center;
@@ -18,22 +25,6 @@
     font-weight: bold;
     display: block;
     margin-bottom: 5px;
-}
-
-.text-danger {
-    color: #f00;
-    font-size: 14px;
-}
-
-.captcha-error {
-    color: red;
-    font-size: 15px;
-    margin-top: -10px;
-    margin-bottom: 10px;
-}
-
-.captcha-error ul {
-    list-style-type: none;
 }
 
 button[type="submit"] {

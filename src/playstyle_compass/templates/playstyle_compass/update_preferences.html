@@ -14,17 +14,17 @@
 
 {% if user_preferences.gaming_history or user_preferences.favorite_genres or user_preferences.platforms %}
 <div class="section">
-  <div class="playstyle-title">Gaming History:</div>
+  <div class="playstyle-title">Your Gaming History:</div>
   <p class="playstyle-text">{{ user_preferences.gaming_history|safe }}</p>
 </div>
 
 <div class="section">
-  <div class="playstyle-title">Favorite Genres:</div>
+  <div class="playstyle-title">Your Favorite Genres:</div>
   <p class="playstyle-text">{{ user_preferences.favorite_genres|safe }}</p>
 </div>
 
 <div class="section">
-  <div class="playstyle-title">Preferred Platforms:</div>
+  <div class="playstyle-title">Your Preferred Platforms:</div>
   <p class="playstyle-text">{{ user_preferences.platforms|safe }}</p>
 </div>
 
