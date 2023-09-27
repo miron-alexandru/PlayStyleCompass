@@ -41,7 +41,8 @@ input[type="email"] {
 .form-control:focus,
 input[type="text"]:focus,
 input[type="password"]:focus,
-input[type="email"]:focus {
+input[type="email"]:focus,
+#id_message:focus {
   color: #495057;
   background-color: #fff;
   border-color: #a5c9ff;
@@ -49,9 +50,22 @@ input[type="email"]:focus {
   box-shadow: 0 0 0 0.1rem rgba(0,123,255,.25);
 }
 
+#id_message {
+  width: 100%;
+  display: block;
+  color: #495057;
+  font-size: 15px;
+  background: #fff;
+  border: 1px solid #d5dee6;
+  padding: 6px 35px 6px 10px;
+  border-radius: 21px;
+}
+
 .form-control.is-valid, .form-control.is-invalid, .was-validated .form-control:valid {
     background-image: none;
-} .was-validated .form-control:valid {
+}
+
+.was-validated .form-control:valid {
     background-image: none;
 }
 
