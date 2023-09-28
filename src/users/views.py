@@ -38,7 +38,21 @@ from django.core.mail import EmailMessage
 from django.utils.safestring import mark_safe
 from django.http import JsonResponse
 
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic.edit import UpdateView
+from django.urls import reverse
 
+
+class ProfileUpdateView(LoginRequiredMixin, UpdateView):
+    model = UserProfile
+    template_name = 'account_actions/profile_name_update.html'
+    fields = ['profile_name']
+
+    def get_object(self, queryset=None):
+        return self.request.user.userprofile
+
+    def get_success_url(self):
+        return reverse('playstyle_compass:index') 
 
 class CustomLoginView(LoginView):
     authentication_form = CustomAuthenticationForm

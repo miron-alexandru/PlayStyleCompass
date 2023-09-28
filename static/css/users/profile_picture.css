@@ -4,7 +4,7 @@
     padding: 20px;
     border: 1px solid #ccc;
     border-radius: 5px;
-    background-color: #f9f9f9;
+    background-color: #f7f7f7;
 }
 .my-container h2 {
     padding: 10px 0;
@@ -16,9 +16,11 @@
 input[type="file"] {
   display: none;
 }
+
 label[for="id_profile_picture"] {
   margin-bottom: 0px;
 }
+
 label[for="id_profile_picture"]::before {
   content: "Choose File";
   background-color: #007bff;

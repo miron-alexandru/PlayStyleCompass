@@ -7,6 +7,7 @@
 <summary><h2>PlayStyle Compass Changelog</h2></summary>
 
 ### Version v1.2:
+* Users are now able to change their Profile Name
 * Improved CSS, added icons for different forms using [FontAwesome](https://fontawesome.com/)
 * Users are not able to resend the email verification link.
 * Implemented reCAPTCHA.
