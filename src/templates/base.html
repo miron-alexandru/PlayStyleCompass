@@ -54,8 +54,9 @@
               <input type="file" id="profile-picture-upload" class="sr-only" accept="image/*" data-profile-url="{% url 'users:profile' %}" data-csrf-token="{{ csrf_token }}">
             </li>
             <li class="nav-item">
-              <span class="navbar-text mr-3">Hello, {{ user.userprofile.profile_name|default:user.username }}.</span>
+              <span class="navbar-text mr-3">Hello, <a href="{% url 'users:change_profile_name' %}" style="color: inherit;">{{ user.userprofile.profile_name|default:user.username }}</a>.</span>
             </li>
+
             <li class="nav-item dropdown" id="hoverDropdown">
               <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Account Actions
@@ -91,31 +92,31 @@
     <main role="main" class="container">
       <div class="page-header">
         <div id="header-content">
-        {% if messages %}
-        <div class="message">
-          {% for message in messages %}
-          <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-            {{ message }}
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
+          {% if messages %}
+          <div class="message">
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+              {{ message }}
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            {% endfor %}
           </div>
-          {% endfor %}
+          {% endif %}
+          {% if user.is_authenticated %}
+          {% if not user.userprofile.email_confirmed %}
+          <div class="message">
+            <div class="alert alert-warning">
+              Please confirm your email address to unlock all features.
+              <a href="#" class="resend-link" id="resend-link" data-url="{% url 'users:resend_activation_link' %}">Resend verification link</a>
+              <div id="success-message"></div>
+            </div>
+          </div>
         </div>
         {% endif %}
-        {% if user.is_authenticated %}
-        {% if not user.userprofile.email_confirmed %}
-        <div class="message">
-          <div class="alert alert-warning">
-            Please confirm your email address to unlock all features.
-            <a href="#" class="resend-link" id="resend-link" data-url="{% url 'users:resend_activation_link' %}">Resend verification link</a>
-            <div id="success-message"></div>
-          </div>
-        </div>
-      </div>
-      {% endif %}
-      {% endif %}
-      {% block page_header %}{% endblock page_header %}
+        {% endif %}
+        {% block page_header %}{% endblock page_header %}
       </div>
       </div>
 

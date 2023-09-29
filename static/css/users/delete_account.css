@@ -1,13 +1,14 @@
 .delete-container {
-    max-width: 500px;
+    max-width: 428px;
     margin: 0 auto;
     padding: 0px;
 }
 
 .delete-account {
-    background-color: #f9f9f9;
+    background-color: #f7f7f7;
     padding: 20px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    border: 1px solid #ccc;
+    border-radius: 5px;
 }
 
 .delete-account h2 {
