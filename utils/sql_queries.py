@@ -22,3 +22,9 @@ DELETE FROM Games
     GROUP BY title
 );
 '''
+
+inserting_sql = '''
+INSERT INTO Games 
+(title, description, overview, genres, platforms, themes, image, release_date, developers, game_images) 
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+'''
