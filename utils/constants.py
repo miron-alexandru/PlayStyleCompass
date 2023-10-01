@@ -28,10 +28,8 @@ platforms = [
     'Mac', 'Linux', 'Wii', 'Browser'
 ]
 
-# Modify API Key
 API_KEY = str(os.getenv('GBAPI_KEY'))
 
-# URL
 BASE_URL = 'https://www.giantbomb.com/api/'
 
 headers = {

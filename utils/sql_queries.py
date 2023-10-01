@@ -23,6 +23,21 @@ DELETE FROM Games
 );
 '''
 
+remove_empty = '''
+DELETE FROM Games
+WHERE title IS NULL
+  AND description IS NULL
+  AND overview IS NULL
+  AND genres IS NULL
+  AND platforms IS NULL
+  AND themes IS NULL
+  AND image IS NULL
+  AND release_date IS NULL
+  AND developers IS NULL
+  AND game_images IS NULL;
+'''
+
+
 inserting_sql = '''
 INSERT INTO Games 
 (title, description, overview, genres, platforms, themes, image, release_date, developers, game_images) 

@@ -9,7 +9,7 @@ import requests
 from bs4 import BeautifulSoup
 
 from constants import BASE_URL, headers, API_KEY
-from sql_queries import create_table_sql, remove_duplicates_sql, inserting_sql
+from sql_queries import create_table_sql, remove_duplicates_sql, inserting_sql, remove_empty
 
 
 def fetch_game_ids_by_platforms(platform_ids, api_key):
@@ -21,7 +21,7 @@ def fetch_game_ids_by_platforms(platform_ids, api_key):
     current_date = datetime.now().date()
 
     for platform_id in platform_ids:
-        url = f'{BASE_URL}games/?api_key={api_key}&format=json&platforms={platform_id}&filter=original_release_date:|{current_date}&sort=original_release_date:desc&limit=75'
+        url = f'{BASE_URL}games/?api_key={api_key}&format=json&platforms={platform_id}&filter=original_release_date:|{current_date}&sort=original_release_date:desc&limit=40'
 
         try:
             response = requests.get(url, headers=headers, timeout=20)
@@ -170,4 +170,5 @@ def create_games_data_db(game_ids):
             db_connection.commit()
 
         cursor.execute(remove_duplicates_sql)
+        cursor.execute(remove_empty)
         db_connection.commit()

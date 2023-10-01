@@ -11,6 +11,7 @@ from .models import GamingPreferences, UserPreferences, Game
 from utils.constants import genres, platforms
 from .helper_functions.get_recommendations_helpers import process_gaming_history, apply_filters
 
+
 def index(request):
     """Home Page"""
     context = {'page_title': 'Index :: PlayStyle Compass'}

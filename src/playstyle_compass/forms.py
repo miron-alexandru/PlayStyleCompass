@@ -7,3 +7,4 @@ class GamingPreferencesForm(forms.ModelForm):
         model = GamingPreferences
         fields = ['text']
         labels = {'text': ''}
+

@@ -46,7 +46,6 @@ gamingHistoryInput.addEventListener('input', () => {
   updateWarnings();
 });
 
-// Call updateCheckboxStates initially to account for the initial checkbox state
 updateCheckboxStates(favoriteGenreCheckboxes);
 updateCheckboxStates(preferredPlatformCheckboxes);
 updateWarnings();
