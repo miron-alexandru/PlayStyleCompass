@@ -279,7 +279,6 @@ def contact(request):
 
     return render(request, 'account_actions/contact.html', context)
 
-@login_required
 def contact_success(request):
     messages.success(request, 'Your message has been successfully submitted!')
     context = {

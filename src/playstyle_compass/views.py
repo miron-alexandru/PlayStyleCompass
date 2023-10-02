@@ -8,7 +8,7 @@ from collections import defaultdict
 
 from .models import GamingPreferences, UserPreferences, Game
 
-from utils.constants import genres, platforms
+from utils.constants import genres, all_platforms
 from .helper_functions.get_recommendations_helpers import process_gaming_history, apply_filters
 
 
@@ -26,7 +26,7 @@ def gaming_preferences(request):
     'page_title': 'Define PlayStyle :: PlayStyle Compass',
     'gaming_preferences': preferences,
     'genres': genres,
-    'platforms': platforms,
+    'platforms': all_platforms,
     }
 
     return render(request, 'playstyle_compass/gaming_preferences.html', context)
@@ -56,9 +56,41 @@ def update_preferences(request):
     context = {
         'page_title': 'Your PlayStyle :: PlayStyle Compass',
         'user_preferences': user_preferences,
+        'genres': genres,
+        'platforms': all_platforms,
     }
 
     return render(request, 'playstyle_compass/update_preferences.html', context)
+
+@login_required
+def save_gaming_history(request):
+    """Save gaming history for the user."""
+    if request.method == 'POST':
+        new_gaming_history = request.POST.get('gaming_history')
+        user_preferences = UserPreferences.objects.get(user=request.user)
+        user_preferences.gaming_history = new_gaming_history
+        user_preferences.save()
+    return redirect('playstyle_compass:update_preferences')
+
+@login_required
+def save_favorite_genres(request):
+    """Save favorite genres for the user."""
+    if request.method == 'POST':
+        new_favorite_genres = request.POST.getlist('favorite_genres')
+        user_preferences = UserPreferences.objects.get(user=request.user)
+        user_preferences.favorite_genres = ', '.join(new_favorite_genres)
+        user_preferences.save()
+    return redirect('playstyle_compass:update_preferences')
+
+@login_required
+def save_platforms(request):
+    """Save platforms for the user."""
+    if request.method == 'POST':
+        new_platforms = request.POST.getlist('platforms')
+        user_preferences = UserPreferences.objects.get(user=request.user)
+        user_preferences.platforms = ', '.join(new_platforms)
+        user_preferences.save()
+    return redirect('playstyle_compass:update_preferences')
 
 @login_required
 def clear_preferences(request):

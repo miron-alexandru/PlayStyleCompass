@@ -14,4 +14,7 @@ urlpatterns = [
     path('search/', views.search_results, name='search_results'),
     path('autocomplete/', views.autocomplete_view, name='autocomplete'),
     path('clear_preferences/', views.clear_preferences, name='clear_preferences'),
+    path('save_gaming_history/', views.save_gaming_history, name='save_gaming_history'),
+    path('save_favorite_genres/', views.save_favorite_genres, name='save_favorite_genres'),
+    path('save_platforms/', views.save_platforms, name='save_platforms'),
 ]

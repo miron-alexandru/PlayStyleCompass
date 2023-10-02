@@ -23,7 +23,7 @@ genres = [
     'Simulation', 'Puzzle', 'Horror', 'MMORPG', 'MOBA', 'Driving/Racing'
 ]
 
-platforms = [
+all_platforms = [
     'PC', 'PlayStation', 'Xbox', 'Nintendo', 'Android', 'iPhone',
     'Mac', 'Linux', 'Wii', 'Browser'
 ]

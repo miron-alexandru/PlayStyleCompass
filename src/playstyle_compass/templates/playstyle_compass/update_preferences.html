@@ -3,7 +3,7 @@
 
 {% block page_header %}
 <div class="header">
-<h3>MY PLAYSTYLE</h3>
+  <h3>MY PLAYSTYLE</h3>
 </div>
 <p class="header-desc">Your gaming preferences are the key to unlocking a world of tailored gaming experiences. By sharing your preferences, you'll receive game recommendations perfectly suited to your unique tastes and interests.</p>
 {% endblock page_header %}
@@ -16,20 +16,69 @@
 <div class="section">
   <div class="playstyle-title">Your Gaming History:</div>
   <p class="playstyle-text">{{ user_preferences.gaming_history|safe }}</p>
+  <button class="change-button" data-section="gaming_history">Change</button>
+  <div class="editing-form" id="gaming_history-form" style="display: none;">
+    <form method="post" action="{% url 'playstyle_compass:save_gaming_history' %}">
+      {% csrf_token %}
+      <input type="text" id="gaming_history" name="gaming_history" class="form-control" value="{{ user_preferences.gaming_history }}" pattern="[A-Za-z0-9\s]+" title="Only letters and numbers are allowed">
+      <button type="submit" class="save-button" data-section="gaming_history" style="display: none;">Save</button>
+    </form>
+  </div>
+</div>
 </div>
 
 <div class="section">
   <div class="playstyle-title">Your Favorite Genres:</div>
   <p class="playstyle-text">{{ user_preferences.favorite_genres|safe }}</p>
+  <button class="change-button" data-section="favorite_genres">Change</button>
+  <div class="editing-form" id="favorite_genres-form" style="display: none;">
+    <form method="post" action="{% url 'playstyle_compass:save_favorite_genres' %}">
+      {% csrf_token %}
+      <fieldset>
+        <div>
+          {% for genre in genres %}
+          <label>
+            <input type="checkbox" name="favorite_genres" value="{{ genre }}" {% if genre in user_preferences.favorite_genres %}checked{% endif %}>
+            {{ genre }}
+          </label>
+          {% endfor %}
+        </div>
+      </fieldset>
+      <button class="save-button" data-section="favorite_genres" style="display: none;">Save</button>
+    </form>
+  </div>
+</div>
 </div>
 
 <div class="section">
   <div class="playstyle-title">Your Preferred Platforms:</div>
   <p class="playstyle-text">{{ user_preferences.platforms|safe }}</p>
+  <button class="change-button" data-section="platforms">Change</button>
+  <div class="editing-form" id="platforms-form" style="display: none;">
+    <form method="post" action="{% url 'playstyle_compass:save_platforms' %}">
+      {% csrf_token %}
+      <fieldset>
+        <div>
+          {% for platform in platforms %}
+          <label>
+            <input type="checkbox" name="platforms" value="{{ platform }}" {% if platform in user_preferences.platforms %}checked{% endif %}>
+            {{ platform }}
+          </label>
+          {% endfor %}
+        </div>
+      </fieldset>
+      <button type="submit" class="save-button" data-section="platforms" style="display: none;">Save</button>
+    </form>
+  </div>
+</div>
 </div>
 
+<script src="{% static 'js/update_preferences.js' %}"></script>
+
 <div class="button-container">
-  <a href="{% url 'playstyle_compass:get_recommendations' %}" class="btn btn-primary">Get Recommendations</a>
+  <form method="get" action="{% url 'playstyle_compass:get_recommendations' %}">
+    <button type="submit" class="btn btn-primary">Get Recommendations</button>
+  </form>
 
   <form method="post" action="{% url 'playstyle_compass:clear_preferences' %}">
     {% csrf_token %}

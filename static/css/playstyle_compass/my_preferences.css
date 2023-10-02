@@ -55,7 +55,44 @@ a:hover {
   align-items: center;
 }
 
-.button-container a,
 .button-container button {
   margin: 0 5px;
+  margin-bottom: 20px;
+}
+
+.change-button, .save-button {
+  border: none;
+  padding: 6px 10px;
+  font-size: 10px;
+  border-radius: 5px;
+  color: #fff;
+  transition: background-color 0.3s ease-in-out;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  cursor: pointer;
+  outline: none;
+}
+
+.change-button {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+.save-button {
+  background-color: #27ae60;
+  border-color: #27ae60;
+}
+
+.change-button:hover {
+  background-color: #007bff;
+  border-color: #007bff;
+}
+
+.save-button:hover {
+  background-color: #1e8449;
+  border-color: #1e8449;
+}
+
+.form-label {
+  font-size: 18px;
 }
