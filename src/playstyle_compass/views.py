@@ -80,6 +80,7 @@ def save_favorite_genres(request):
         user_preferences = UserPreferences.objects.get(user=request.user)
         user_preferences.favorite_genres = ', '.join(new_favorite_genres)
         user_preferences.save()
+
     return redirect('playstyle_compass:update_preferences')
 
 @login_required
@@ -90,6 +91,19 @@ def save_platforms(request):
         user_preferences = UserPreferences.objects.get(user=request.user)
         user_preferences.platforms = ', '.join(new_platforms)
         user_preferences.save()
+
+    return redirect('playstyle_compass:update_preferences')
+
+@login_required
+def save_all_preferences(request):
+    """Save all user preferences."""
+    if request.method == 'POST':
+        new_platforms = request.POST.getlist('platforms')
+        new_favorite_genres = request.POST.getlist('favorite_genres')
+        new_gaming_history = request.POST.get('gaming_history')
+        print(new_platforms, new_favorite_genres, new_gaming_history)
+        
+
     return redirect('playstyle_compass:update_preferences')
 
 @login_required

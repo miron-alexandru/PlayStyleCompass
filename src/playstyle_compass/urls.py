@@ -17,4 +17,5 @@ urlpatterns = [
     path('save_gaming_history/', views.save_gaming_history, name='save_gaming_history'),
     path('save_favorite_genres/', views.save_favorite_genres, name='save_favorite_genres'),
     path('save_platforms/', views.save_platforms, name='save_platforms'),
+    path('save_all_preferences/', views.save_all_preferences, name='save_all_preferences'),
 ]

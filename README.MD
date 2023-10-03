@@ -7,6 +7,9 @@
 <summary><h2>PlayStyle Compass Changelog</h2></summary>
 
 ### Version v1.2:
+* Improved the save buttons and save all button functionality on the my playstyle page.
+* Implemented Save all button to save all preferences after modifying them.
+* Users are now able to modify their preferences individually.
 * Users are now able to change their Profile Name
 * Improved CSS, added icons for different forms using [FontAwesome](https://fontawesome.com/)
 * Users are not able to resend the email verification link.

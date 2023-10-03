@@ -1,11 +1,11 @@
 const maxSelections = 3;
 const favoriteGenreCheckboxes = document.querySelectorAll('input[name="favorite_genres"]');
 const preferredPlatformCheckboxes = document.querySelectorAll('input[name="platforms"]');
+const gamingHistoryInput = document.getElementById('gaming_history');
 const updateButton = document.getElementById('update-button');
 const genreWarning = document.getElementById('genre-warning');
 const platformWarning = document.getElementById('platform-warning');
 const historyWarning = document.getElementById('history-warning');
-const gamingHistoryInput = document.getElementById('gaming_history');
 
 function updateCheckboxStates(checkboxes) {
   const selectedCount = Array.from(checkboxes).filter(cb => cb.checked).length;
