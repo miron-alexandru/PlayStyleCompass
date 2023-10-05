@@ -60,7 +60,7 @@ a:hover {
   margin-bottom: 20px;
 }
 
-.change-button, .save-button {
+.change-button, .save-button, .save-all-button {
   border: none;
   padding: 6px 10px;
   font-size: 10px;
@@ -73,12 +73,13 @@ a:hover {
   outline: none;
 }
 
+
 .change-button {
   background-color: var(--primary-color);
   border-color: var(--primary-color);
 }
 
-.save-button {
+.save-button, .save-all-button{
   background-color: #27ae60;
   border-color: #27ae60;
 }
@@ -88,9 +89,17 @@ a:hover {
   border-color: #007bff;
 }
 
-.save-button:hover {
+.save-button:hover, .save-all-button:hover {
   background-color: #1e8449;
   border-color: #1e8449;
+}
+
+.save-all-button {
+  font-size: 1.05rem;
+}
+
+.save-button:disabled, .save-all-button:disabled {
+  opacity: .65;
 }
 
 .form-label {

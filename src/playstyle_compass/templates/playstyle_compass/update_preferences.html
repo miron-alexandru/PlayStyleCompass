@@ -82,7 +82,7 @@
     <button type="submit" class="btn btn-primary">Get Recommendations</button>
   </form>
 
-  <button id="save-all-button" class="btn btn-success">Save All</button>
+  <button id="save-all-button" class="save-all-button">Save All</button>
 
   <form method="post" action="{% url 'playstyle_compass:clear_preferences' %}">
     {% csrf_token %}
