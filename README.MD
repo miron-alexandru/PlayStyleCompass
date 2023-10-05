@@ -7,6 +7,7 @@
 <summary><h2>PlayStyle Compass Changelog</h2></summary>
 
 ### Version v1.2:
+* Css improvements.
 * Improved the save buttons and save all button functionality on the my playstyle page.
 * Implemented Save all button to save all preferences after modifying them.
 * Users are now able to modify their preferences individually.
