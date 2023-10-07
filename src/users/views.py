@@ -44,6 +44,7 @@ from django.urls import reverse
 
 
 class ProfileUpdateView(LoginRequiredMixin, UpdateView):
+    """Custom user profile update view."""
     model = UserProfile
     template_name = 'account_actions/profile_name_update.html'
     fields = ['profile_name']
@@ -55,6 +56,7 @@ class ProfileUpdateView(LoginRequiredMixin, UpdateView):
         return reverse('playstyle_compass:index') 
 
 class CustomLoginView(LoginView):
+    """Cusotm user login view."""
     authentication_form = CustomAuthenticationForm
     template_name = 'registration/login.html'
 
@@ -62,6 +64,7 @@ class CustomLoginView(LoginView):
         return super().form_invalid(form)
 
 def activate(request, uidb64, token):
+    """Email activation view."""
     User = get_user_model()
     try:
         uid = force_str(urlsafe_base64_decode(uidb64))
@@ -82,6 +85,7 @@ def activate(request, uidb64, token):
     return redirect('playstyle_compass:index')
 
 def activateEmail(request, user, to_email):
+    """Send activation email to users."""
     mail_subject = "Activate your user account."
     message = render_to_string("registration/activate_account.html", {
         'user': user.username,
@@ -100,6 +104,7 @@ def activateEmail(request, user, to_email):
         messages.error(request, f'Problem sending email to {to_email}, check if you typed it correctly.')
 
 def resend_activation_link(request):
+    """Resend email activation link to the user."""
     if request.method == 'GET':
         email = request.user.email
         user = User.objects.get(email=email)
@@ -187,6 +192,7 @@ def change_email(request):
 
 @login_required
 def change_email_done(request):
+    """View for email change confirmation."""
     messages.success(request, "Email Address Changed Successfully!")
     context = {
     'page_title': 'Email Change Done :: PlayStyle Compass',
@@ -226,6 +232,7 @@ def change_password(request):
 
 @login_required
 def change_password_done(request):
+    """View for password change confirmation."""
     messages.success(request, "Password Changed Successfully!")
     context = {
     'page_title': 'Password Change Done :: PlayStyle Compass',
@@ -235,6 +242,7 @@ def change_password_done(request):
 
 @login_required
 def update_profile(request):
+    """View for profile image update."""
     if request.method == 'POST':
         form = ProfilePictureForm(request.POST, request.FILES, instance=request.user.userprofile)
 
@@ -253,6 +261,7 @@ def update_profile(request):
     return render(request, 'account_actions/update_profile.html', context)
 
 def contact(request):
+    """Contact view."""
     if request.method == 'POST':
         form = ContactForm(request.POST)
         if form.is_valid():
@@ -280,6 +289,7 @@ def contact(request):
     return render(request, 'account_actions/contact.html', context)
 
 def contact_success(request):
+    """Contact confirmation view."""
     messages.success(request, 'Your message has been successfully submitted!')
     context = {
     'page_title': 'Contact Us Done :: PlayStyle Compass',

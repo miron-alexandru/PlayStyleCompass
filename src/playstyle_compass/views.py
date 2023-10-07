@@ -151,7 +151,7 @@ def get_recommendations(request):
     matching_games = apply_filters(favorite_genres, preferred_platforms, matching_games)
 
     # Pagination setup
-    games_per_page = 10
+    games_per_page = 15
     paginated_games = defaultdict(list)
 
     for category, game_list in matching_games.items():
