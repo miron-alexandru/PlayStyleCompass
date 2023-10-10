@@ -1,9 +1,11 @@
+"""Defines models."""
+
+
 from django.db import models
 from django.contrib.auth.models import User
-from django.db.models.signals import post_save
-from django.dispatch import receiver
 
 class UserProfile(models.Model):
+    """User profile model."""
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     profile_picture = models.ImageField(upload_to='profile_pictures/', null=True, blank=True)
     profile_name = models.CharField(max_length=15, blank=True, null=True)
@@ -13,6 +15,7 @@ class UserProfile(models.Model):
         return self.user.username
 
 class ContactMessage(models.Model):
+    """Contact message model."""
     name = models.CharField(max_length=100)
     email = models.EmailField()
     subject = models.CharField(max_length=200)
@@ -20,4 +23,5 @@ class ContactMessage(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
 
     def formatted_timestamp(self):
+        """Return the timestap formatted."""
         return self.timestamp.strftime('%b %d, %Y %I:%M %p')

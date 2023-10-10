@@ -6,6 +6,9 @@
 <details>
 <summary><h2>PlayStyle Compass Changelog</h2></summary>
 
+### Version v1.3:
+* Code refactored, improved documentation.
+
 ### Version v1.2:
 * Css improvements.
 * Improved the save buttons and save all button functionality on the my playstyle page.

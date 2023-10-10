@@ -1,27 +1,17 @@
+"""Defines views."""
+
+
 from django.shortcuts import render, redirect
 from django.contrib.auth import (
     login,
-    logout,
     update_session_auth_hash,
     get_user_model,
 )
-from .forms import (
-    CustomRegistrationForm,
-    DeleteAccountForm,
-    EmailChangeForm,
-    CustomPasswordChangeForm,
-    ProfilePictureForm,
-    ContactForm,
-    CustomAuthenticationForm,
-)
 from django.contrib.auth.models import User
-from django.core.exceptions import ValidationError
 from django.contrib.auth.decorators import login_required
-from django.contrib import messages 
+from django.contrib import messages
 from django.core.mail import send_mail
 from django.conf import settings
-from .models import UserProfile
-from .tokens import account_activation_token
 from django.contrib.auth.views import LoginView
 
 from django.template.loader import render_to_string
@@ -42,6 +32,19 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.edit import UpdateView
 from django.urls import reverse
 
+from .forms import (
+    CustomRegistrationForm,
+    DeleteAccountForm,
+    EmailChangeForm,
+    CustomPasswordChangeForm,
+    ProfilePictureForm,
+    ContactForm,
+    CustomAuthenticationForm,
+)
+
+from .models import UserProfile
+from .tokens import account_activation_token
+
 
 class ProfileUpdateView(LoginRequiredMixin, UpdateView):
     """Custom user profile update view."""
@@ -53,7 +56,7 @@ class ProfileUpdateView(LoginRequiredMixin, UpdateView):
         return self.request.user.userprofile
 
     def get_success_url(self):
-        return reverse('playstyle_compass:index') 
+        return reverse('playstyle_compass:index')
 
 class CustomLoginView(LoginView):
     """Cusotm user login view."""
@@ -69,7 +72,7 @@ def activate(request, uidb64, token):
     try:
         uid = force_str(urlsafe_base64_decode(uidb64))
         user = User.objects.get(pk=uid)
-    except:
+    except Exception:
         user = None
 
     if user is not None and account_activation_token.check_token(user, token):
@@ -105,18 +108,18 @@ def activateEmail(request, user, to_email):
 
 def resend_activation_link(request):
     """Resend email activation link to the user."""
-    if request.method == 'GET':
-        email = request.user.email
-        user = User.objects.get(email=email)
-        activateEmail(request, user, email)
-    else:
+    if request.method != 'GET':
         return JsonResponse({'success': False, 'error_message': 'Invalid request method'})
+
+    email = request.user.email
+    user = User.objects.get(email=email)
+    activateEmail(request, user, email)
 
 def register(request):
     """View function for user registration."""
     if request.method == 'POST':
         form = CustomRegistrationForm(data=request.POST)
-        
+
         if form.is_valid():
             new_user = form.save(commit=False)
             new_user.save()

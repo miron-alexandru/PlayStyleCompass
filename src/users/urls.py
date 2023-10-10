@@ -1,6 +1,9 @@
-from django.urls import path, include
-from . import views
+"""Defines URL patterns."""
+
+from django.urls import path
 from django.contrib.auth import views as auth_views
+
+from . import views
 
 app_name = 'users'
 
@@ -25,5 +28,4 @@ urlpatterns = [
     path('contact/', views.contact, name='contact'),
     path('contact_success/', views.contact_success, name='contact_success'),
     path('resend-activation-link/', views.resend_activation_link, name='resend_activation_link'),
-
 ]

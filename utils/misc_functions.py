@@ -3,6 +3,7 @@ The misc_functions module contains misc functions used in different parts
 of the application.
 """
 
+import sys
 import sqlite3
 from datetime import datetime
 import requests
@@ -17,30 +18,35 @@ def fetch_game_ids_by_platforms(platform_ids, api_key):
     Fetches game IDs for multiple platform IDs and returns a set of all fetched game IDs.
     """
     all_game_ids = set()
-
     current_date = datetime.now().date()
 
     for platform_id in platform_ids:
         url = f'{BASE_URL}games/?api_key={api_key}&format=json&platforms={platform_id}&filter=original_release_date:|{current_date}&sort=original_release_date:desc&limit=50'
-
         try:
             response = requests.get(url, headers=headers, timeout=20)
-
             if response.status_code == 200:
                 game_ids = [result['guid'] for result in response.json()['results']]
                 all_game_ids.update(game_ids)
-
         except requests.exceptions.RequestException as e:
             print(f"Error fetching game IDs for platform {platform_id}: {e}")
 
     return all_game_ids
 
-
 def fetch_game_data(game_id):
     """Fetch game data from Giant Bomb's API."""
     url = f'{BASE_URL}game/{game_id}/?api_key={API_KEY}&format=json'
-    response = requests.get(url, headers=headers)
-    return response.json()
+
+    try:
+        response = requests.get(url, headers=headers, timeout=20)
+        response.raise_for_status()
+        return response.json()
+    except requests.exceptions.RequestException as e:
+        print(f"Request Exception: {e}")
+        raise FetchDataException(f"Failed to fetch game data for game ID {game_id}")
+    except ValueError as e:
+        print(f"JSON Decoding Error: {e}")
+        raise FetchDataException(f"Failed to decode JSON data for game ID {game_id}")
+
 
 def fetch_game_images(game_id):
     """Fetch images for a game using Giant Bomb's API."""
@@ -86,7 +92,12 @@ def extract_overview_content(data):
 
 def parse_game_data(game_id):
     """Parse the game data."""
-    game_data = fetch_game_data(game_id)['results']
+    try:
+        game_data = fetch_game_data(game_id)['results']
+    except FetchDataException as e:
+        print(f"Fetching data failed: {e}")
+        sys.exit()
+
     game_images = fetch_game_images(game_id)
 
     title = get_title(game_data)
@@ -172,3 +183,7 @@ def create_games_data_db(game_ids):
         cursor.execute(remove_duplicates_sql)
         cursor.execute(remove_empty)
         db_connection.commit()
+
+class FetchDataException(Exception):
+    """Custom data exception."""
+    pass

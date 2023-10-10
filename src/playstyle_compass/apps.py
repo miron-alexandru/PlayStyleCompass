@@ -1,5 +1,4 @@
 from django.apps import AppConfig
 
-
-class LearningLogsConfig(AppConfig):
+class PlaystyleCompassConfig(AppConfig):
     name = 'playstyle_compass'

@@ -1,3 +1,5 @@
+"""Defines sql queries."""
+
 create_table_sql = '''
 CREATE TABLE IF NOT EXISTS Games (
     id INTEGER PRIMARY KEY,

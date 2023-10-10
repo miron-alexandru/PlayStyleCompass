@@ -1,14 +1,15 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.decorators import login_required
-from django.http import Http404, JsonResponse
-from django.contrib import messages
-from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+"""Views for the playstyle_compass app."""
+
+
 from collections import defaultdict
-
-
-from .models import GamingPreferences, UserPreferences, Game
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
 from utils.constants import genres, all_platforms
+from .models import GamingPreferences, UserPreferences, Game
+
 from .helper_functions.get_recommendations_helpers import process_gaming_history, apply_filters
 
 
@@ -102,7 +103,7 @@ def save_all_preferences(request):
         new_favorite_genres = request.POST.getlist('favorite_genres')
         new_gaming_history = request.POST.get('gaming_history')
         print(new_platforms, new_favorite_genres, new_gaming_history)
-        
+
 
     return redirect('playstyle_compass:update_preferences')
 

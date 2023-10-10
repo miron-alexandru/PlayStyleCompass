@@ -1,15 +1,18 @@
-from django import forms
-from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm, AuthenticationForm, UsernameField
-from django.contrib.auth.models import User
-from .models import UserProfile, ContactMessage
-from django.contrib.auth.views import LoginView
+"""Defines forms."""
 
-from django.core.exceptions import ValidationError
+
+from django import forms
+from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm, AuthenticationForm
+from django.contrib.auth.models import User
 from django.utils.translation import gettext as _
 from captcha.fields import ReCaptchaField
 
+from .models import UserProfile, ContactMessage
+
+
 
 class CustomAuthenticationForm(AuthenticationForm):
+    """Custom authentication form."""
     error_messages = {
         "invalid_login": _("Incorrect username or password. Please make sure you entered your  username and password correctly."),
     }
@@ -21,6 +24,7 @@ class CustomAuthenticationForm(AuthenticationForm):
         )
 
 class CustomRegistrationForm(UserCreationForm):
+    """Custom registration form."""
     profile_name = forms.CharField(
         label="Profile Name",
         help_text="Choose nickname that will be shown to other users on the site. This name is not used for login.",
@@ -61,17 +65,19 @@ class CustomRegistrationForm(UserCreationForm):
         return email
 
 class DeleteAccountForm(forms.Form):
+    """Custom delete account form."""
     password = forms.CharField(
         label='',
         widget=forms.PasswordInput(attrs={'placeholder': ''}),
     )
 
 class EmailChangeForm(forms.ModelForm):
+    """Custom email change form."""
     current_password = forms.CharField(
         label='Current Password',
         widget=forms.PasswordInput(attrs={'class': 'form-control'}),
     )
-    
+
     current_email = forms.EmailField(
         label='Current Email Address',
         max_length=254,
@@ -146,11 +152,12 @@ class CustomPasswordChangeForm(PasswordChangeForm):
             raise forms.ValidationError('Password must be at least 8 characters long.')
         return password1
 
-
 class CustomClearableFileInput(forms.ClearableFileInput):
+    """Custom file input form."""
     template_name = 'widgets/custom_change_img.html'
 
 class ProfilePictureForm(forms.ModelForm):
+    """Custom profile picture form."""
     class Meta:
         model = UserProfile
         fields = ['profile_picture']
@@ -162,6 +169,7 @@ class ProfilePictureForm(forms.ModelForm):
     )
 
 class ContactForm(forms.ModelForm):
+    """Custom contact form."""
     class Meta:
         model = ContactMessage
         fields = ['name', 'email', 'subject', 'message']
