@@ -1,6 +1,6 @@
 """Defines sql queries."""
 
-create_table_sql = '''
+create_table_sql = """
 CREATE TABLE IF NOT EXISTS Games (
     id INTEGER PRIMARY KEY,
     title TEXT,
@@ -14,18 +14,18 @@ CREATE TABLE IF NOT EXISTS Games (
     developers TEXT,
     game_images TEXT
 );
-'''
+"""
 
-remove_duplicates_sql = '''
+remove_duplicates_sql = """
 DELETE FROM Games
     WHERE rowid NOT IN (
     SELECT MIN(rowid)
     FROM Games
     GROUP BY title
 );
-'''
+"""
 
-remove_empty = '''
+remove_empty = """
 DELETE FROM Games
 WHERE title IS NULL
   AND description IS NULL
@@ -37,11 +37,11 @@ WHERE title IS NULL
   AND release_date IS NULL
   AND developers IS NULL
   AND game_images IS NULL;
-'''
+"""
 
 
-inserting_sql = '''
+inserting_sql = """
 INSERT INTO Games 
 (title, description, overview, genres, platforms, themes, image, release_date, developers, game_images) 
 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-'''
+"""

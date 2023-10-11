@@ -16,21 +16,53 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-platform_ids = ['94', '17', '123', '96', '21', '52', '32', '22', '152', '140', '36', '157', '19']
+platform_ids = [
+    "94",
+    "17",
+    "123",
+    "96",
+    "21",
+    "52",
+    "32",
+    "22",
+    "152",
+    "140",
+    "36",
+    "157",
+    "19",
+]
 
 genres = [
-    'Action', 'Adventure', 'Role-Playing', 'Strategy', 'Sports', 'Shooter',
-    'Simulation', 'Puzzle', 'Horror', 'MMORPG', 'MOBA', 'Driving/Racing'
+    "Action",
+    "Adventure",
+    "Role-Playing",
+    "Strategy",
+    "Sports",
+    "Shooter",
+    "Simulation",
+    "Puzzle",
+    "Horror",
+    "MMORPG",
+    "MOBA",
+    "Driving/Racing",
 ]
 
 all_platforms = [
-    'PC', 'PlayStation', 'Xbox', 'Nintendo', 'Android', 'iPhone',
-    'Mac', 'Linux', 'Wii', 'Browser'
+    "PC",
+    "PlayStation",
+    "Xbox",
+    "Nintendo",
+    "Android",
+    "iPhone",
+    "Mac",
+    "Linux",
+    "Wii",
+    "Browser",
 ]
 
-API_KEY = str(os.getenv('GBAPI_KEY'))
+API_KEY = str(os.getenv("GBAPI_KEY"))
 
-BASE_URL = 'https://www.giantbomb.com/api/'
+BASE_URL = "https://www.giantbomb.com/api/"
 
 headers = {
     "User-Agent": "PlayStyleCompass/1.0",
