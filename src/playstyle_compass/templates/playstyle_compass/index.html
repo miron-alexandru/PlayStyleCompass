@@ -7,14 +7,14 @@
 
 <div class="jumbotron">
   <div class="my-header">
-  <h1 class="display-5">Discover Your Perfect Games</h1>
+    <h1 class="display-5">Discover Your Perfect Games</h1>
 
-  <p class="lead">Welcome to PlayStyle Compass – your personalized gateway to uncovering video games perfectly tailored to your unique preferences, gaming history, and genre inclinations. Whether you're a casual enthusiast or a dedicated gaming passionate, our application meticulously analyzes your individual gaming profile, curating recommendations that align with your distinct tastes. Embark on an exhilarating journey through the realm of gaming possibilities by creating an account with us!</p>
+    <p class="lead">Welcome to PlayStyle Compass – your personalized gateway to uncovering video games perfectly tailored to your unique preferences, gaming history, and genre inclinations. Whether you're a casual enthusiast or a dedicated gaming passionate, our application meticulously analyzes your individual gaming profile, curating recommendations that align with your distinct tastes. Embark on an exhilarating journey through the realm of gaming possibilities by creating an account with us!</p>
 
-  {% if not user.is_authenticated %}
-  <a class="btn btn-lg btn-primary register-button" href="{% url 'users:register' %}" role="button">Register &raquo;</a>
-  {% endif %}
-</div>
+    {% if not user.is_authenticated %}
+    <a class="btn btn-lg btn-primary register-button" href="{% url 'users:register' %}" role="button">Register &raquo;</a>
+    {% endif %}
+  </div>
 </div>
 {% endblock page_header %}
 
@@ -28,13 +28,21 @@
 
 <form action="{% url 'playstyle_compass:search_results' %}" method="GET" class="search-form" onsubmit="return validateSearch()">
   <div class="search-bar">
-  <div class="search-input-container">
-    <input type="text" name="query" id="search-input" placeholder="Search for games...">
-    <button type="submit"><i class="fas fa-search"></i></button>
+    <div class="search-input-container">
+      <input type="text" name="query" id="search-input" placeholder="Search for games...">
+      <button type="submit"><i class="fas fa-search"></i></button>
+    </div>
   </div>
-</div>
   <div id="search-results" class="search-results"></div>
 </form>
+<div class="upcoming-games">
+  <h3>UPCOMING GAMES</h3>
+  <p class="upcoming-games-description">Explore the latest and most anticipated games coming soon. Don't miss out on the gaming excitement!</p>
+  <ul>
+    {% for game in upcoming_games %}
+    {% include "playstyle_compass/upcoming_games.html" %}
+    {% endfor %}
+  </ul>
 
-<script src="{% static 'js/search_bar.js' %}"></script>
-{% endblock content %}
+  <script src="{% static 'js/search_bar.js' %}"></script>
+  {% endblock content %}

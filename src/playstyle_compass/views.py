@@ -15,10 +15,18 @@ from .helper_functions.get_recommendations_helpers import (
     apply_filters,
 )
 
-
 def index(request):
     """Home Page"""
-    context = {"page_title": "Index :: PlayStyle Compass"}
+    titles_to_filter = ["Little Nightmares III", "Reka", "Neva", "Animal Well",
+     "Princess Peach Showtime!", "Anger Foot", "Earthblade", "Vampire: The Masquerade - Bloodlines 2"] 
+
+    upcoming_games = Game.objects.filter(title__in=titles_to_filter)
+
+    context = {
+        "upcoming_games": upcoming_games,
+        "page_title": "Index :: PlayStyle Compass",
+    }
+
     return render(request, "playstyle_compass/index.html", context)
 
 
@@ -104,19 +112,6 @@ def save_platforms(request):
         user_preferences.save()
 
     return redirect("playstyle_compass:update_preferences")
-
-
-@login_required
-def save_all_preferences(request):
-    """Save all user preferences."""
-    if request.method == "POST":
-        new_platforms = request.POST.getlist("platforms")
-        new_favorite_genres = request.POST.getlist("favorite_genres")
-        new_gaming_history = request.POST.get("gaming_history")
-        print(new_platforms, new_favorite_genres, new_gaming_history)
-
-    return redirect("playstyle_compass:update_preferences")
-
 
 @login_required
 def clear_preferences(request):
