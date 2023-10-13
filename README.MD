@@ -7,6 +7,7 @@
 <summary><h2>PlayStyle Compass Changelog</h2></summary>
 
 ### Version v1.3:
+* Added upcoming games on the Home Page.
 * Code refactored, improved documentation.
 
 ### Version v1.2:
