@@ -1,7 +1,7 @@
 {% load static %}
 
-<link rel="stylesheet" type="text/css" href="{% static 'css/playstyle_compass/upcoming_games.css' %}">
-<li class="games">
+<link rel="stylesheet" type="text/css" href="{% static 'css/playstyle_compass/games_listing.css' %}">
+<li class="games-li">
   <a href="{% url 'playstyle_compass:search_results' %}?query={{ game.title|urlencode }}">
     <div class="game-image">
       {% if game.image %}

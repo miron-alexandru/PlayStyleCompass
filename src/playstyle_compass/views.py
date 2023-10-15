@@ -17,13 +17,17 @@ from .helper_functions.get_recommendations_helpers import (
 
 def index(request):
     """Home Page"""
-    titles_to_filter = ["Little Nightmares III", "Reka", "Neva", "Animal Well",
-     "Princess Peach Showtime!", "Anger Foot", "Earthblade", "Vampire: The Masquerade - Bloodlines 2"] 
+    upcoming_titles = ["Little Nightmares III", "Reka", "Neva", "Animal Well",
+     "Princess Peach Showtime!", "Anger Foot", "Earthblade", "Vampire: The Masquerade - Bloodlines 2"]
+    popular_titles = ["Honkai: Star Rail", "Diablo IV", "Farming Simulator 23", "FIFA 14", "Overwatch",
+     "The Witcher 3: Wild Hunt", "Baldur's Gate 3"]
 
-    upcoming_games = Game.objects.filter(title__in=titles_to_filter)
+    upcoming_games = Game.objects.filter(title__in=upcoming_titles)
+    popular_games = Game.objects.filter(title__in=popular_titles)
 
     context = {
         "upcoming_games": upcoming_games,
+        "popular_games": popular_games,
         "page_title": "Index :: PlayStyle Compass",
     }
 

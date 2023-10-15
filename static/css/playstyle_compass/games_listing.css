@@ -1,4 +1,4 @@
-.games {
+.games-li {
     display: inline-block;
     vertical-align: top;
     padding: 5px;
@@ -11,11 +11,11 @@
   border-radius: 5px;
 }
 
-.upcoming-games {
-  padding-bottom: 40px;
+.games {
+  padding-bottom: 5px;
 }
 
-.upcoming-games h3 {
+.games h3 {
   padding-top: 40px;
   color: #2f6187;
   osition: relative;
@@ -28,8 +28,8 @@
   color: #3e6a91;
 }
 
-.upcoming-games-description {
+.games-description {
   color: #555;
   font-size: 16px;
-  padding-bottom: 25px;
+  padding-bottom: 15px;
 }

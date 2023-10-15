@@ -35,14 +35,24 @@
   </div>
   <div id="search-results" class="search-results"></div>
 </form>
-<div class="upcoming-games">
-  <h3>UPCOMING GAMES</h3>
-  <p class="upcoming-games-description">Explore the latest and most anticipated games coming soon. Don't miss out on the gaming excitement!</p>
+<div class="games">
+  <h3>POPULAR GAMES</h3>
+<p class="games-description">Discover some of the most popular games here!</p>
   <ul>
-    {% for game in upcoming_games %}
-    {% include "playstyle_compass/upcoming_games.html" %}
+    {% for game in popular_games %}
+    {% include "playstyle_compass/games_list.html" %}
     {% endfor %}
   </ul>
+</div>
 
+<div class="games">
+  <h3>UPCOMING GAMES</h3>
+  <p class="games-description">Explore the latest and most anticipated games coming soon. Don't miss out on the gaming excitement!</p>
+  <ul>
+    {% for game in upcoming_games %}
+    {% include "playstyle_compass/games_list.html" %}
+    {% endfor %}
+  </ul>
+</div>
   <script src="{% static 'js/search_bar.js' %}"></script>
   {% endblock content %}
