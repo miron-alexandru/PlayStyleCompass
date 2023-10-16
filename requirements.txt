@@ -1,6 +1,7 @@
 dj-database-url
 django
 django-bootstrap4
+django-sendgrid
 gunicorn
 pytz
 sqlparse
@@ -8,3 +9,9 @@ psycopg2
 whitenoise
 python-dotenv
 Pillow
+captcha
+django-recaptcha
+beautifulsoup4
+six
+sendgrid
+django-sendgrid-v5

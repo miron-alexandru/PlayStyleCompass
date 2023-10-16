@@ -1,7 +1,29 @@
 # PlayStyle Compass: Your Personalized Video Game Guide
-## (Work in Progress)
 
 ### PlayStyle Compass is a personal guide to discovering video games tailored to your preferences, gaming history, and genre interests.
+
+### How to run the website locally:
+#### Option one:
+* Open a command prompt or terminal
+* Navigate to the project's root directory (containing manage.py)
+* pip install -r requirements.txt
+* Create a file named .env and paste the contents from 'env-example.txt' and then fill the variables with your data
+* python manage.py makemigrations
+* python manage.py migrate
+* python manage.py runserver
+* Open the url: http://127.0.0.1:8000/ on your browser to view the website
+
+#### Option two:
+* git clone https://github.com/KhadaAke/PlayStyleCompass.git
+* cd PlayStyleCompass
+* python -m venv env
+* source env/Scripts/activate (env\Scripts\activate for Windows)
+* pip install -r requirements.txt
+* Create a file named .env and paste the contents from 'env-example.txt' and then fill the variables with your data
+* python manage.py makemigrations
+* python manage.py migrate
+* Open the url: http://127.0.0.1:8000/ on your browser to view the website
+
 
 <details>
 <summary><h2>PlayStyle Compass Changelog</h2></summary>
