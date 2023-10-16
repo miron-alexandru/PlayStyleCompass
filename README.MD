@@ -22,8 +22,10 @@
 * Create a file named .env and paste the contents from 'env-example.txt' and then fill the variables with your data
 * python manage.py makemigrations
 * python manage.py migrate
+* python manage.py runserver
 * Open the url: http://127.0.0.1:8000/ on your browser to view the website
 
+Websites for .env configuration: [GiantBomb](https://www.giantbomb.com/) / [SendGrid](https://sendgrid.com/) / [RECAPTCHA](https://www.google.com/recaptcha/about/)
 
 <details>
 <summary><h2>PlayStyle Compass Changelog</h2></summary>
