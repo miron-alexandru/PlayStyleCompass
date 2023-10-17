@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% load static %}
+{% load custom_filters %}
+
+{% block page_header %}
+<div class="header">
+<h3>MY FAVORITE GAMES</h3>
+</div>
+<p class="header-desc">A curated collection of games you love. Explore and enjoy your handpicked selection of favorite games that bring you joy and excitement.</p>
+{% endblock page_header %}
+
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/playstyle_compass/common_styles.css' %}">
+{% for game in games %}
+<div class=favorite-games>
+	{% include "playstyle_compass/game_recommendations_section.html" %}
+</div>
+{% endfor %}
+
+<script src="{% static 'js/favorite_star.js' %}"></script>
+{% endblock content %}

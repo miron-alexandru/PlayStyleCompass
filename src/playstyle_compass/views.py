@@ -219,3 +219,38 @@ def autocomplete_view(request):
         results = list(games.values("title"))
 
     return JsonResponse(results, safe=False)
+
+@login_required
+def toggle_favorite(request):
+    if request.method == 'POST':
+        game_id = request.POST.get('game_id')
+        user = request.user
+        user_preferences = UserPreferences.objects.get(user=user)
+
+        # Get the list of favorite games as a list of game IDs
+        favorite_games_list = user_preferences.get_favorite_games()
+
+        if int(game_id) in favorite_games_list:
+            user_preferences.remove_favorite_game(game_id)
+            is_favorite = False
+        else:
+            user_preferences.add_favorite_game(game_id)
+            is_favorite = True
+
+        return JsonResponse({'is_favorite': is_favorite})
+
+@login_required
+def favorite_games(request):
+    user = request.user
+    user_preferences = UserPreferences.objects.get(user=user)
+    favorite_games_list = user_preferences.get_favorite_games()
+
+    games = Game.objects.filter(id__in=favorite_games_list)
+    
+    context = {
+        'user_preferences': user_preferences,
+        'favorite_games': favorite_games_list,
+        'games': games,
+    }
+
+    return render(request, 'playstyle_compass/favorite_games.html', context)

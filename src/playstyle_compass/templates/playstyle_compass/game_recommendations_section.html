@@ -51,8 +51,14 @@
     {% else %}
     <p><strong>Images not available</strong></p>
     {% endif %}
-
   </div>
+  <span class="favorite-toggle" data-game-id="{{ game.id }}">
+  {% if game.id|is_favorite:user_preferences.favorite_games %}
+    <i class="fas fa-star" id="star-{{ game.id }}"></i>
+  {% else %}
+    <i class="far fa-star" id="star-{{ game.id }}"></i>
+  {% endif %}
+</span>
 </li>
 
 <script src="{% static 'js/lightbox-plus-jquery.min.js' %}"></script>

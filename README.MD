@@ -31,6 +31,7 @@ Websites for .env configuration: [GiantBomb](https://www.giantbomb.com/) / [Send
 <summary><h2>PlayStyle Compass Changelog</h2></summary>
 
 ### Version v1.3:
+* Users are now able to mark games as favorites and they can find them on the Favorite Games page.
 * Added popular and upcoming games on the Home Page.
 * Code refactored, improved documentation.
 

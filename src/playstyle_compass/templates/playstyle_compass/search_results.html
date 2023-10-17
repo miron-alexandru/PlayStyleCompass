@@ -14,7 +14,7 @@
 }
 </style>
 
-<h3>Search results for "{{ query }}":</h3>
+<h3>Search results for {{ query }}:</h3>
 
 <div class="game-recommendations-container">
   <ul>
@@ -23,4 +23,5 @@
     {% endfor %}
   </ul>
 </div>
+<script src="{% static 'js/favorite_star.js' %}"></script>
 {% endblock content %}

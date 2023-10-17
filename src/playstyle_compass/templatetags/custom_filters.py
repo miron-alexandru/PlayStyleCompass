@@ -34,3 +34,10 @@ def getattr_filter(obj, attr_name):
 def split_by_comma(value):
     """Split a string by commas and return a list."""
     return value.split(", ")
+
+@register.filter(name="is_favorite")
+def is_favorite(game_id, user_favorites):
+    if str(game_id) in user_favorites.split(','):
+        return True
+    return False
+
