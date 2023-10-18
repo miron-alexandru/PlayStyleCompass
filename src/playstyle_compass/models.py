@@ -64,6 +64,7 @@ class Game(models.Model):
     release_date = models.CharField(max_length=100)   
     developers = models.CharField(max_length=100)
     game_images = models.TextField()
+    similar_games = models.CharField(max_length=200)
 
     def __str__(self):
         return self.title

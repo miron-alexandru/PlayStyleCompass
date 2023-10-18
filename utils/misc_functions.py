@@ -5,7 +5,7 @@ of the application.
 
 import sys
 import sqlite3
-from datetime import datetime
+import datetime
 import requests
 from bs4 import BeautifulSoup
 
@@ -119,6 +119,7 @@ def parse_game_data(game_id):
     image = get_image(game_data)
     release_date = get_release_date(game_data)
     developers = get_developers(game_data)
+    similar_games = get_similar_games(game_data)
 
     return (
         title,
@@ -131,6 +132,7 @@ def parse_game_data(game_id):
         release_date,
         developers,
         game_images,
+        similar_games,
     )
 
 
@@ -159,6 +161,18 @@ def get_platforms(game_data):
     platform_names = [platform["name"] for platform in game_data["platforms"]]
     return ", ".join(platform_names) if platform_names else None
 
+def get_similar_games(game_data, max_count=5):
+    if not isinstance(game_data, dict):
+        return None
+    similar_games = game_data.get("similar_games")
+    if similar_games is not None:
+        similar_games = [game["name"] for game in similar_games]
+
+        if max_count:
+            similar_games = similar_games[:max_count]
+        
+        return ", ".join(similar_games) if similar_games else None
+    return None
 
 def get_themes(game_data):
     """Get game platforms."""
@@ -222,6 +236,7 @@ def create_games_data_db(game_ids):
                 release_date,
                 developers,
                 game_images,
+                similar_games,
             ) = parse_game_data(game_id)
             values = (
                 title,
@@ -234,6 +249,7 @@ def create_games_data_db(game_ids):
                 release_date,
                 developers,
                 game_images,
+                similar_games
             )
             cursor.execute(inserting_sql, values)
             db_connection.commit()

@@ -12,7 +12,8 @@ CREATE TABLE IF NOT EXISTS Games (
     image TEXT,
     release_date TEXT,
     developers TEXT,
-    game_images TEXT
+    game_images TEXT,
+    similar_games TEXT
 );
 """
 
@@ -36,12 +37,13 @@ WHERE title IS NULL
   AND image IS NULL
   AND release_date IS NULL
   AND developers IS NULL
-  AND game_images IS NULL;
+  AND game_images IS NULL
+  AND similar_games is NULL;
 """
 
 
 inserting_sql = """
 INSERT INTO Games 
-(title, description, overview, genres, platforms, themes, image, release_date, developers, game_images) 
-VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+(title, description, overview, genres, platforms, themes, image, release_date, developers, game_images, similar_games) 
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 """

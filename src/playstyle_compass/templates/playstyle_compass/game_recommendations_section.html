@@ -23,13 +23,14 @@
     <p><strong>Genres:</strong> {{ game.genres|default:"N/A" }}</p>
     <p><strong>Platforms:</strong> {{ game.platforms|default:"N/A" }}</p>
     <p><strong>Themes:</strong> {{ game.themes|default:"N/A" }}</p>
+    <p><strong>Similar games:</strong> {{ game.similar_games|default:"N/A"}}</p>
     <p><strong>Overview:</strong>
       <span class="overview">{{ game.overview|default:"N/A"|truncatewords_html:"50" }}</span>
       <span class="full-text" style="display: none;">{{ game.overview|default:"N/A" }}</span>
       <button class="read-button" onclick="readMore(this);">[Read more...]</button>
     </p>
     <p>
-      <strong>Game Images:</strong>
+      <strong>Images:</strong>
       <span><small>(Click on the image to open gallery)</small></span>
     </p>
     {% if game.game_images %}
