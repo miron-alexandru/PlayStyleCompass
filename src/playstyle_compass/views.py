@@ -15,6 +15,10 @@ from .helper_functions.get_recommendations_helpers import (
     apply_filters,
 )
 
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.http import JsonResponse
+from django.template.loader import render_to_string
+
 def index(request):
     """Home Page"""
     upcoming_titles = ["Little Nightmares III", "Reka", "Neva", "Animal Well",
@@ -168,6 +172,15 @@ def get_recommendations(request):
         gaming_history, unique_games, unique_genres, matching_games
     )
     matching_games = apply_filters(favorite_genres, preferred_platforms, matching_games)
+
+    # Sorting
+    sort_option = request.GET.get('sort', 'recommended')
+    if sort_option == 'release_date_asc':
+        for category, game_list in matching_games.items():
+            matching_games[category] = sorted(game_list, key=lambda game: game.release_date)
+    elif sort_option == 'release_date_desc':
+        for category, game_list in matching_games.items():
+            matching_games[category] = sorted(game_list, key=lambda game: game.release_date, reverse=True)
 
     # Pagination setup
     games_per_page = 15

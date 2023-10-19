@@ -19,6 +19,12 @@
   <button class="category-button" data-category="preferred_platforms">Preferred Platforms</button>
   <button class="category-button" data-category="favorite_genres">Favorite Genres</button>
   <button class="category-button" data-category="common_genres_platforms">Common Genres and Platforms</button>
+  <label for="sort-select">Sort by:</label>
+  <select id="sort-select" name="sort">
+    <option value="recommended">Recommended</option>
+    <option value="release_date_asc">Release Date (Oldest First)</option>
+    <option value="release_date_desc">Release Date (Newest First)</option>
+  </select>
 </div>
 
 {% for category, paginated_page in paginated_games.items %}
@@ -33,15 +39,15 @@
   <div class="pagination">
     <span class="step-links">
       {% if paginated_page.has_previous %}
-        <a href="?category={{ category }}&{{ category|slugify }}_page=1">&laquo; first</a>
-        <a href="?category={{ category }}&{{ category|slugify }}_page={{ paginated_page.previous_page_number }}">previous</a>
+        <a href="?category={{ category }}&{{ category|slugify }}_page=1{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}">&laquo; first</a>
+    <a href="?category={{ category }}&{{ category|slugify }}_page={{ paginated_page.previous_page_number }}{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}">previous</a>
       {% endif %}
       
       <span class="current-page">{{ paginated_page.number }}</span>
 
     {% if paginated_page.has_next %}
-    <a href="?category={{ category }}&{{ category|slugify }}_page={{ paginated_page.next_page_number }}">next</a>
-    <a href="?category={{ category }}&{{ category|slugify }}_page={{ paginated_page.paginator.num_pages }}">last &raquo;</a>
+    <a href="?category={{ category }}&{{ category|slugify }}_page={{ paginated_page.next_page_number }}{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}">next</a>
+    <a href="?category={{ category }}&{{ category|slugify }}_page={{ paginated_page.paginator.num_pages }}{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}">last &raquo;</a>
     {% endif %}
     </span>
   </div>
@@ -51,7 +57,7 @@
 </div>
 {% endfor %}
 
-<script src="{% static 'js/recommendations.js' %}"></script>
-<script src="{% static 'js/favorite_star.js' %}"></script>
+<script src="{% static 'js/playstyle_compass/recommendations.js' %}"></script>
+<script src="{% static 'js/playstyle_compass/favorite_star.js' %}"></script>
 
-{% endblock %}
+{% endblock content %}
