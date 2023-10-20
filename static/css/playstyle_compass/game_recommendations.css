@@ -26,6 +26,7 @@
   padding: 10px 20px;
   cursor: pointer;
   transition: background-color 0.3s ease-in-out;
+  border-radius: 5px;
 }
 
 .category-button:hover {
@@ -42,4 +43,33 @@ h4 {
 ul {
   list-style: none;
   padding: 0;
+}
+
+label[for="sort-select"] {
+  font-size: 15px;
+  font-weight: bold;
+  margin-right: 5px;
+  margin-left: 5px;
+  color: #333;
+}
+
+#sort-select {
+  padding: 5px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  color: #333;
+  width: 170px;
+  outline: none;
+}
+
+#sort-select option {
+  font-size: 14px;
+  background-color: #f9f9f9;
+  color: #333;
+}
+
+#sort-select:hover, #sort-select:focus {
+  border: 1px solid #007bff;
 }
