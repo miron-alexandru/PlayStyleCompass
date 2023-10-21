@@ -25,7 +25,7 @@ from django.utils.encoding import (
 )
 from django.core.mail import EmailMessage
 from django.utils.safestring import mark_safe
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.edit import UpdateView
@@ -43,6 +43,10 @@ from .forms import (
 
 from .models import UserProfile
 from .tokens import account_activation_token
+
+from django.contrib.auth.tokens import default_token_generator
+from django.contrib.sessions.models import Session
+
 
 
 class ProfileUpdateView(LoginRequiredMixin, UpdateView):
@@ -125,6 +129,8 @@ def resend_activation_link(request):
     email = request.user.email
     user = User.objects.get(email=email)
     activateEmail(request, user, email)
+    
+    return JsonResponse({})
 
 
 def register(request):
@@ -182,13 +188,23 @@ def delete_account(request):
 
 @login_required
 def change_email(request):
-    """View for changing a user's email address."""
+    """View for email change with verification."""
     if request.method == "POST":
         form = EmailChangeForm(request.POST, user=request.user)
         if form.is_valid():
             new_email = form.cleaned_data["new_email"]
-            request.user.email = new_email
-            request.user.save()
+            token = default_token_generator.make_token(request.user)
+            uid = urlsafe_base64_encode(force_bytes(request.user.pk))
+
+            request.session['email_change_temp'] = new_email
+            request.session['email_change_token'] = token
+
+            confirm_url = request.build_absolute_uri(reverse("users:confirm_email_change", kwargs={"uidb64": uid, "token": token}))
+
+            subject = "Confirm Email Change"
+            from_email = settings.DEFAULT_FROM_EMAIL
+            message = render_to_string("account_actions/confirm_email_change.txt", {"confirm_url": confirm_url, "new_email": new_email})
+            send_mail(subject, message, from_email, [request.user.email])
 
             return redirect("users:change_email_done")
     else:
@@ -200,14 +216,42 @@ def change_email(request):
 
     return render(request, "account_actions/change_email.html", context)
 
+def confirm_email_change(request, uidb64, token):
+    """View for email change confirmation."""
+    if 'email_change_token' in request.session:
+        user = request.user
+
+        if request.session['email_change_token'] == token:
+            user.email = request.session['email_change_temp']
+            user.save()
+
+            del request.session['email_change_temp']
+            del request.session['email_change_token']
+
+            return redirect("users:change_email_success")
+
+    return HttpResponse("Invalid token for email change.")
+
+@login_required
+def change_email_success(request):
+    """View for email change success."""
+    new_email = request.user.email
+    messages.success(request, "Email Address successfully changed!")
+    context = {
+        "page_title": "Email Change Success :: PlayStyle Compass",
+        "response": "You have successfully changed your email address, go to the homepage by clicking the button below.",
+        "additional_message": new_email,
+    }
+    return render(request, "account_actions/change_succeeded.html", context)
+
 
 @login_required
 def change_email_done(request):
     """View for email change confirmation."""
-    messages.success(request, "Email Address Changed Successfully!")
+    messages.success(request, "Confirmation email successfully sent!")
     context = {
         "page_title": "Email Change Done :: PlayStyle Compass",
-        "response": "You have changed your email address, go to the homepage by clicking the button below.",
+        "response": "An email confirmation has been sent to your current email address. Please check your inbox and click the link provided to confirm the email change.",
     }
     return render(request, "account_actions/change_succeeded.html", context)
 
@@ -251,7 +295,7 @@ def change_password_done(request):
     messages.success(request, "Password Changed Successfully!")
     context = {
         "page_title": "Password Change Done :: PlayStyle Compass",
-        "response": "You have changed your password, go to te homepage by clicking the button below.",
+        "response": "You have changed your password, go to the homepage by clicking the button below.",
     }
     return render(request, "account_actions/change_succeeded.html", context)
 

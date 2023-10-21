@@ -15,9 +15,9 @@ from .helper_functions.get_recommendations_helpers import (
     apply_filters,
 )
 
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.http import JsonResponse
 from django.template.loader import render_to_string
+from django.core.exceptions import ObjectDoesNotExist
+
 
 def index(request):
     """Home Page"""
@@ -183,7 +183,7 @@ def get_recommendations(request):
             matching_games[category] = sorted(game_list, key=lambda game: game.release_date, reverse=True)
 
     # Pagination setup
-    games_per_page = 15
+    games_per_page = 10
     paginated_games = defaultdict(list)
 
     for category, game_list in matching_games.items():
@@ -235,12 +235,12 @@ def autocomplete_view(request):
 
 @login_required
 def toggle_favorite(request):
+    """View for toggling a game's favorite status for the current user."""
     if request.method == 'POST':
         game_id = request.POST.get('game_id')
         user = request.user
         user_preferences = UserPreferences.objects.get(user=user)
 
-        # Get the list of favorite games as a list of game IDs
         favorite_games_list = user_preferences.get_favorite_games()
 
         if int(game_id) in favorite_games_list:
@@ -252,15 +252,23 @@ def toggle_favorite(request):
 
         return JsonResponse({'is_favorite': is_favorite})
 
+
 @login_required
 def favorite_games(request):
+    """View for displaying a user's list of favorite games."""
     user = request.user
-    user_preferences = UserPreferences.objects.get(user=user)
-    favorite_games_list = user_preferences.get_favorite_games()
+
+    try:
+        user_preferences = UserPreferences.objects.get(user=user)
+        favorite_games_list = user_preferences.get_favorite_games()
+    except ObjectDoesNotExist:
+        user_preferences = UserPreferences.objects.create(user=user)
+        favorite_games_list = []
 
     games = Game.objects.filter(id__in=favorite_games_list)
-    
+
     context = {
+        "page_title": "Favorites :: PlayStyle Compass",
         'user_preferences': user_preferences,
         'favorite_games': favorite_games_list,
         'games': games,

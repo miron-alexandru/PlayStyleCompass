@@ -127,16 +127,24 @@ class EmailChangeForm(forms.ModelForm):
         return current_password
 
     def clean_new_email(self):
-        new_email = self.cleaned_data["new_email"]
-        if User.objects.filter(email=new_email).exclude(pk=self.user.pk).exists():
-            raise forms.ValidationError("This email address is already in use.")
+        new_email = self.cleaned_data.get("new_email")
+
+        if new_email:
+            if User.objects.filter(email=new_email).exclude(pk=self.user.pk).exists():
+                raise forms.ValidationError("This email address is already in use.")
+
+            if new_email == self.user.email:
+                raise forms.ValidationError("New email address cannot be the current one.")
+
         return new_email
 
     def clean_confirm_email(self):
         confirm_email = self.cleaned_data["confirm_email"]
-        new_email = self.cleaned_data["new_email"]
-        if new_email != confirm_email:
+        new_email = self.cleaned_data.get("new_email")
+
+        if new_email and new_email != confirm_email:
             raise forms.ValidationError("New email addresses must match.")
+
         return confirm_email
 
 

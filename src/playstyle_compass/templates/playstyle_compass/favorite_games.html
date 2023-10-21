@@ -10,11 +10,15 @@
 
 {% block content %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/playstyle_compass/common_styles.css' %}">
-{% for game in games %}
-<div class=favorite-games>
-	{% include "playstyle_compass/game_recommendations_section.html" %}
-</div>
-{% endfor %}
+{% if games %}
+  {% for game in games %}
+  <div class="favorite-games">
+    {% include "playstyle_compass/game_recommendations_section.html" %}
+  </div>
+  {% endfor %}
+{% else %}
+	<p class="text-center">You haven't added any games to your Favorites yet.</p>
+{% endif %}
 
 <script src="{% static 'js/playstyle_compass/favorite_star.js' %}"></script>
 {% endblock content %}
