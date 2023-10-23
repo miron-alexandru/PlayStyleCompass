@@ -31,6 +31,8 @@ Websites for .env configuration: [GiantBomb](https://www.giantbomb.com/) / [Send
 <summary><h2>PlayStyle Compass Changelog</h2></summary>
 
 ### Version v1.3:
+* Views refactored into new helper functions.
+* Games that are not yet released removed from recommendations and moved to a new category: Upcoming Games.
 * Implemented email change confirmation.
 * Added sorting options for the recommended games based on the release date.
 * Users are now able to mark games as favorites and they can find them on the Favorite Games page.

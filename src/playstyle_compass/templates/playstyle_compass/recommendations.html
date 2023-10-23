@@ -19,6 +19,7 @@
   <button class="category-button" data-category="preferred_platforms">Preferred Platforms</button>
   <button class="category-button" data-category="favorite_genres">Favorite Genres</button>
   <button class="category-button" data-category="common_genres_platforms">Common Genres and Platforms</button>
+  <button class="category-button" data-category="upcoming_games">Upcoming Games</button>
   <label for="sort-select">Sort by:</label>
   <select id="sort-select" name="sort">
     <option value="recommended">Recommended</option>
@@ -30,7 +31,15 @@
 {% for category, paginated_page in paginated_games.items %}
 <div class="game-recommendations-container {{ category|slugify }}">
   {% if paginated_page.object_list %}
-  <h4>Games you might like based on your {{ category|format_category_label }}: {{ user_preferences|getattr:category }} </h4>
+  <h4>
+    {% if category == "common_genres_platforms" %}
+      Games that match your preferred genres and platforms
+    {% elif category == "upcoming_games" %}
+      Coming Soon: Exciting new games to watch out for
+    {% else %}
+      Games you might like based on your {{ category|format_category_label }}: {{ user_preferences|getattr:category }}
+    {% endif %}
+  </h4>
   <ul>
     {% for game in paginated_page.object_list %}
     {% include "playstyle_compass/game_recommendations_section.html" %}

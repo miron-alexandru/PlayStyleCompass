@@ -11,8 +11,10 @@ from utils.constants import genres, all_platforms
 from .models import GamingPreferences, UserPreferences, Game
 
 from .helper_functions.get_recommendations_helpers import (
-    process_gaming_history,
-    apply_filters,
+    initialize_matching_games,
+    process_user_data,
+    filter_preferences,
+    sort_matching_games,
 )
 
 from django.template.loader import render_to_string
@@ -141,48 +143,25 @@ def clear_preferences(request):
 
 @login_required
 def get_recommendations(request):
-    """Retrieves personalized game recommendations based on user preferences and gaming history."""
     user = request.user
     user_preferences = UserPreferences.objects.get(user=user)
 
-    # Extract user preferences and gaming history
-    favorite_genres = [
-        genre.strip() for genre in user_preferences.favorite_genres.split(",")
-    ]
-    preferred_platforms = [
-        platform.strip() for platform in user_preferences.platforms.split(",")
-    ]
-    gaming_history = [
-        game.strip() for game in user_preferences.gaming_history.split(",")
-    ]
+    matching_games = initialize_matching_games()
+    matching_games = process_user_data(user_preferences, matching_games)
+    matching_games = filter_preferences(user_preferences, matching_games)
+    matching_games = sort_matching_games(request, matching_games)
+    paginated_games = paginate_matching_games(request, matching_games)
 
-    # Initialize matching_games dictionary
-    matching_games = {
-        "gaming_history": [],
-        "favorite_genres": [],
-        "common_genres_platforms": [],
-        "preferred_platforms": [],
+    context = {
+        "page_title": "Recommendations :: PlayStyle Compass",
+        "user_preferences": user_preferences,
+        "paginated_games": dict(paginated_games),
     }
 
-    # Process gaming history and apply filters
-    unique_games = set()
-    unique_genres = set()
+    return render(request, "playstyle_compass/recommendations.html", context)
 
-    matching_games = process_gaming_history(
-        gaming_history, unique_games, unique_genres, matching_games
-    )
-    matching_games = apply_filters(favorite_genres, preferred_platforms, matching_games)
 
-    # Sorting
-    sort_option = request.GET.get('sort', 'recommended')
-    if sort_option == 'release_date_asc':
-        for category, game_list in matching_games.items():
-            matching_games[category] = sorted(game_list, key=lambda game: game.release_date)
-    elif sort_option == 'release_date_desc':
-        for category, game_list in matching_games.items():
-            matching_games[category] = sorted(game_list, key=lambda game: game.release_date, reverse=True)
-
-    # Pagination setup
+def paginate_matching_games(request, matching_games):
     games_per_page = 10
     paginated_games = defaultdict(list)
 
@@ -197,13 +176,7 @@ def get_recommendations(request):
 
         paginated_games[category] = page
 
-    context = {
-        "page_title": "Recommendations :: PlayStyle Compass",
-        "user_preferences": user_preferences,
-        "paginated_games": dict(paginated_games),
-    }
-
-    return render(request, "playstyle_compass/recommendations.html", context)
+    return paginated_games
 
 
 def search_results(request):

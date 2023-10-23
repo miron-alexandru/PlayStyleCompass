@@ -24,6 +24,7 @@ class UserPreferences(models.Model):
     favorite_genres = models.CharField(max_length=255, blank=True)
     platforms = models.CharField(max_length=255, blank=True)
     favorite_games = models.CharField(max_length=255, blank=True)
+    upcoming_games = models.CharField(max_length=255, blank=True)
 
     def add_favorite_game(self, game_id):
         favorite_games_list = self.favorite_games.split(',')
