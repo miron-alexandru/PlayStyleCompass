@@ -4,6 +4,34 @@
 {% block styles %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/playstyle_compass/recommendation_section.css' %}">
 <link rel="stylesheet" href="{% static 'css/lightbox.min.css' %}">
+<style>
+.review {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 20px;
+    margin: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    transition: transform 0.2s;
+}
+
+.review:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.review p {
+    margin: 0;
+}
+
+.review strong {
+    color: #333;
+}
+
+.review p:nth-child(odd) {
+    background-color: #f9f9f9;
+}
+</style>
 
 {% endblock %}
 
@@ -52,6 +80,19 @@
     {% else %}
     <p><strong>Images not available</strong></p>
     {% endif %}
+{% zip_lists game.reviewers game.review_deck game.score as zipped_data %}
+
+{% for reviewer, title, score in zipped_data %}
+    {% if forloop.counter <= 5 %} {# Check if the loop counter is less than or equal to 5 #}
+        <div class="review">
+            <p><strong>Reviewer:</strong> {{ reviewer }}</p>
+            <p><strong>Review Title:</strong> {{ title }}</p>
+            <p><strong>Score:</strong> {{ score }}</p>
+        </div>
+    {% endif %}
+{% endfor %}
+
+
   </div>
   <span class="favorite-toggle" data-game-id="{{ game.id }}">
   {% if game.id|is_favorite:user_preferences.favorite_games %}

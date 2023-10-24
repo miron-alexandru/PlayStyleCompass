@@ -2,7 +2,7 @@
 
 
 from django import template
-
+from itertools import zip_longest
 register = template.Library()
 
 
@@ -41,3 +41,13 @@ def is_favorite(game_id, user_favorites):
         return True
     return False
 
+@register.simple_tag
+def zip_lists(reviewers, review_deck, score):
+    zipped_data = zip_longest(
+        reviewers.split('; '), 
+        review_deck.split('; '),  
+        score.split('; '),
+        fillvalue="N/A"
+    )
+    
+    return zipped_data

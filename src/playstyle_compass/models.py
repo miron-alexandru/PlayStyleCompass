@@ -66,6 +66,10 @@ class Game(models.Model):
     developers = models.CharField(max_length=100)
     game_images = models.TextField()
     similar_games = models.CharField(max_length=200)
+    reviewers = models.TextField()
+    review_deck = models.TextField()
+    review_description = models.TextField()
+    score = models.TextField()
 
     def __str__(self):
         return self.title

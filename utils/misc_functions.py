@@ -6,6 +6,7 @@ of the application.
 import sys
 import sqlite3
 import datetime
+from datetime import datetime
 import requests
 from bs4 import BeautifulSoup
 
@@ -26,7 +27,7 @@ def fetch_game_ids_by_platforms(platform_ids, api_key):
     current_date = datetime.now().date()
 
     for platform_id in platform_ids:
-        url = f"{BASE_URL}games/?api_key={api_key}&format=json&platforms={platform_id}&filter=original_release_date:|{current_date}&sort=original_release_date:desc&limit=50"
+        url = f"{BASE_URL}games/?api_key={api_key}&format=json&platforms={platform_id}&filter=original_release_date:|{current_date}&sort=original_release_date:desc&limit=2"
         try:
             response = requests.get(url, headers=headers, timeout=20)
             if response.status_code == 200:
@@ -110,6 +111,12 @@ def parse_game_data(game_id):
 
     game_images = fetch_game_images(game_id)
 
+    processed_reviews = process_user_reviews(game_id)
+    reviewers = get_reviewers(processed_reviews)
+    review_deck = get_review_deck(processed_reviews)
+    review_description = get_review_text(processed_reviews)
+    score = get_review_score(processed_reviews)
+
     title = get_title(game_data)
     description = get_description(game_data)
     overview = extract_overview_content(game_data)
@@ -133,6 +140,10 @@ def parse_game_data(game_id):
         developers,
         game_images,
         similar_games,
+        reviewers,
+        review_deck,
+        review_description,
+        score,
     )
 
 
@@ -217,6 +228,80 @@ def get_developers(game_data):
     return ", ".join(developer_names) if developer_names else None
 
 
+def fetch_user_reviews(game_id):
+    """Fetch all user reviews for a game."""
+    game_id = game_id.split("3030-")[-1]
+    url = f'{BASE_URL}user_reviews/?api_key={API_KEY}&game={game_id}&format=json'
+    response = requests.get(url, headers=headers)
+    if response.status_code == 200:
+        data = response.json()
+        if 'results' in data and data['number_of_total_results'] < 100:
+            return data
+    return None
+
+def extract_description_text(html_description):
+    """Extract description text from review."""
+    soup = BeautifulSoup(html_description, 'html.parser')
+    text = soup.get_text()
+    return text
+
+def process_user_reviews(game_id):
+    """Process user reviews."""
+    user_reviews_data = fetch_user_reviews(game_id)
+    if user_reviews_data:
+        reviews = []
+        for review in user_reviews_data['results']:
+            reviewer = review['reviewer']
+            deck = review['deck']
+            description = review['description']
+            score = review['score']
+            text = extract_description_text(description)
+            reviews.append({
+                "reviewer": reviewer,
+                "deck": deck,
+                "text": text,
+                "score": score
+            })
+        return reviews
+    else:
+        return None
+
+def get_reviewers(reviews_data):
+    """Get the name of the reviewers."""
+    reviewers = []
+    if reviews_data:
+        for review in reviews_data:
+            reviewers.append(review['reviewer'])
+
+    return '; '.join(reviewers)
+
+def get_review_deck(reviews_data):
+    """Get short description of the review."""
+    reviewers = []
+    if reviews_data:
+        for review in reviews_data:
+            reviewers.append(review['deck'])
+
+    return '; '.join(reviewers)
+
+def get_review_text(reviews_data):
+    """Get full description of the review."""
+    reviewers = []
+    if reviews_data:
+        for review in reviews_data:
+            reviewers.append(review['text'])
+
+    return '; '.join(reviewers)
+
+def get_review_score(reviews_data):
+    """Get the score."""
+    reviewers = []
+    if reviews_data:
+        for review in reviews_data:
+            reviewers.append(str(review['score']))
+
+    return '; '.join(reviewers)
+
 def create_games_data_db(game_ids):
     """Inserts game data into a SQLite database using the provided game IDs."""
     with sqlite3.connect("games_data.db") as db_connection:
@@ -237,6 +322,10 @@ def create_games_data_db(game_ids):
                 developers,
                 game_images,
                 similar_games,
+                reviewers,
+                review_deck,
+                review_description,
+                score
             ) = parse_game_data(game_id)
             values = (
                 title,
@@ -249,12 +338,17 @@ def create_games_data_db(game_ids):
                 release_date,
                 developers,
                 game_images,
-                similar_games
+                similar_games,
+                reviewers,
+                review_deck,
+                review_description,
+                score
             )
             cursor.execute(inserting_sql, values)
             db_connection.commit()
 
         cursor.execute(remove_duplicates_sql)
+        db_connection.commit()
         cursor.execute(remove_empty)
         db_connection.commit()
 
