@@ -25,7 +25,7 @@ def index(request):
     """Home Page"""
     upcoming_titles = ["Little Nightmares III", "Reka", "Neva", "Animal Well",
      "Princess Peach Showtime!", "Anger Foot", "Earthblade", "Vampire: The Masquerade - Bloodlines 2"]
-    popular_titles = ["Honkai: Star Rail", "Diablo IV", "Farming Simulator 23", "FIFA 14", "Overwatch",
+    popular_titles = ["Honkai: Star Rail", "Diablo IV", "Farming Simulator 23", "Fortnite", "Overwatch",
      "The Witcher 3: Wild Hunt", "Baldur's Gate 3"]
 
     upcoming_games = Game.objects.filter(title__in=upcoming_titles)

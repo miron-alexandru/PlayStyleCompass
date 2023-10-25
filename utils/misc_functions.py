@@ -10,7 +10,7 @@ from datetime import datetime
 import requests
 from bs4 import BeautifulSoup
 
-from constants import BASE_URL, headers, API_KEY
+from constants import BASE_URL, headers, API_KEY, game_ids_to_add
 from sql_queries import (
     create_table_sql,
     remove_duplicates_sql,
@@ -27,7 +27,7 @@ def fetch_game_ids_by_platforms(platform_ids, api_key):
     current_date = datetime.now().date()
 
     for platform_id in platform_ids:
-        url = f"{BASE_URL}games/?api_key={api_key}&format=json&platforms={platform_id}&filter=original_release_date:|{current_date}&sort=original_release_date:desc&limit=2"
+        url = f"{BASE_URL}games/?api_key={api_key}&format=json&platforms={platform_id}&filter=original_release_date:|{current_date}&sort=original_release_date:desc&limit=50"
         try:
             response = requests.get(url, headers=headers, timeout=20)
             if response.status_code == 200:
@@ -36,8 +36,12 @@ def fetch_game_ids_by_platforms(platform_ids, api_key):
         except requests.exceptions.RequestException as e:
             print(f"Error fetching game IDs for platform {platform_id}: {e}")
 
+    add_custom_game_ids(all_game_ids, game_ids_to_add)        
     return all_game_ids
 
+def add_custom_game_ids(all_game_ids, game_ids_to_add):
+    """Add custom game ids's"""
+    all_game_ids.update(game_ids_to_add)
 
 def fetch_game_data(game_id):
     """Fetch game data from Giant Bomb's API."""
@@ -172,6 +176,7 @@ def get_platforms(game_data):
     platform_names = [platform["name"] for platform in game_data["platforms"]]
     return ", ".join(platform_names) if platform_names else None
 
+
 def get_similar_games(game_data, max_count=5):
     if not isinstance(game_data, dict):
         return None
@@ -184,6 +189,7 @@ def get_similar_games(game_data, max_count=5):
         
         return ", ".join(similar_games) if similar_games else None
     return None
+
 
 def get_themes(game_data):
     """Get game platforms."""
@@ -262,9 +268,11 @@ def process_user_reviews(game_id):
                 "text": text,
                 "score": score
             })
+
         return reviews
     else:
         return None
+
 
 def get_reviewers(reviews_data):
     """Get the name of the reviewers."""
@@ -273,34 +281,38 @@ def get_reviewers(reviews_data):
         for review in reviews_data:
             reviewers.append(review['reviewer'])
 
-    return '; '.join(reviewers)
+    return ' [REV_SEP] '.join(reviewers)
+
 
 def get_review_deck(reviews_data):
     """Get short description of the review."""
-    reviewers = []
+    reviews_deck = []
     if reviews_data:
         for review in reviews_data:
-            reviewers.append(review['deck'])
+            reviews_deck.append(review['deck'])
 
-    return '; '.join(reviewers)
+    return ' [REV_SEP] '.join(reviews_deck)
+
 
 def get_review_text(reviews_data):
     """Get full description of the review."""
-    reviewers = []
+    review_text = []
     if reviews_data:
         for review in reviews_data:
-            reviewers.append(review['text'])
+            review_text.append(review['text'])
 
-    return '; '.join(reviewers)
+    return ' [REV_SEP] '.join(review_text)
+
 
 def get_review_score(reviews_data):
     """Get the score."""
-    reviewers = []
+    review_scores = []
     if reviews_data:
         for review in reviews_data:
-            reviewers.append(str(review['score']))
+            review_scores.append(str(review['score']))
 
-    return '; '.join(reviewers)
+    return ' [REV_SEP] '.join(review_scores)
+
 
 def create_games_data_db(game_ids):
     """Inserts game data into a SQLite database using the provided game IDs."""

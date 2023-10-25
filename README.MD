@@ -31,6 +31,7 @@ Websites for .env configuration: [GiantBomb](https://www.giantbomb.com/) / [Send
 <summary><h2>PlayStyle Compass Changelog</h2></summary>
 
 ### Version v1.3:
+* Now reviews for the games are displayed.
 * Views refactored into new helper functions.
 * Games that are not yet released removed from recommendations and moved to a new category: Upcoming Games.
 * Implemented email change confirmation.

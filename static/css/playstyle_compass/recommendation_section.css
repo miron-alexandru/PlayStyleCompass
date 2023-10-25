@@ -32,7 +32,7 @@ small {
   margin-left: 5;
 }
 
-.read-button {
+.read-button, .read-button-review {
   background: none;
   border: none;
   padding: 0;
@@ -42,6 +42,6 @@ small {
   text-decoration: underline;
 }
 
-.read-button:hover {
+.read-button:hover, .read-button-review:hover {
   text-decoration: none;
 }

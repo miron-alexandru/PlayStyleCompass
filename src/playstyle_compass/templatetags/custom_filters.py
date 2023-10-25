@@ -42,12 +42,18 @@ def is_favorite(game_id, user_favorites):
     return False
 
 @register.simple_tag
-def zip_lists(reviewers, review_deck, score):
-    zipped_data = zip_longest(
-        reviewers.split('; '), 
-        review_deck.split('; '),  
-        score.split('; '),
-        fillvalue="N/A"
-    )
-    
-    return zipped_data
+def zip_lists(reviewers, review_deck, review_text, score):
+    if any([not reviewers, not review_deck, not review_text, not score]):
+        return None
+    else:
+        zipped_data = zip_longest(
+            reviewers.split(' [REV_SEP] '), 
+            review_deck.split(' [REV_SEP] '),
+            review_text.split(' [REV_SEP] '),  
+            score.split(' [REV_SEP] '),
+            fillvalue="N/A"
+        )
+
+        return zipped_data
+
+

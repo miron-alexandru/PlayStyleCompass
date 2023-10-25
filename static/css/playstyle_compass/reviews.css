@@ -1,0 +1,54 @@
+.review {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin: 10px;
+  border-radius: 5px;
+}
+
+.review-header {
+  background-color: #f2f2f2;
+  padding: 5px;
+  border-bottom: 1px solid #ccc;
+}
+
+.review-header p {
+  margin: 5px 0;
+}
+
+.review-body {
+  margin: 10px 0;
+}
+
+.review-description {
+  margin: 10px 0;
+}
+
+.review-footer {
+  margin-top: 10px;
+}
+
+.review-footer p {
+  margin: 5px 0;
+}
+
+.gold-star {
+  color: gold;
+}
+
+.empty-star {
+  color: lightgrey;
+}
+
+.score-hidden {
+  display: none;
+}
+
+.show-hide-button {
+  background: none;
+  border: none;
+  color: #007BFF;
+  cursor: pointer;
+  text-decoration: none;
+  font-weight: bold;
+  padding: 5px;
+}
