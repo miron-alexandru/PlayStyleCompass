@@ -23,10 +23,25 @@ from django.core.exceptions import ObjectDoesNotExist
 
 def index(request):
     """Home Page"""
-    upcoming_titles = ["Little Nightmares III", "Reka", "Neva", "Animal Well",
-     "Princess Peach Showtime!", "Anger Foot", "Earthblade", "Vampire: The Masquerade - Bloodlines 2"]
-    popular_titles = ["Honkai: Star Rail", "Diablo IV", "Farming Simulator 23", "Fortnite", "Overwatch",
-     "The Witcher 3: Wild Hunt", "Baldur's Gate 3"]
+    upcoming_titles = [
+        "Little Nightmares III",
+        "Reka",
+        "Neva",
+        "Animal Well",
+        "Princess Peach Showtime!",
+        "Anger Foot",
+        "Earthblade",
+        "Vampire: The Masquerade - Bloodlines 2",
+    ]
+    popular_titles = [
+        "Honkai: Star Rail",
+        "Diablo IV",
+        "Farming Simulator 23",
+        "Fortnite",
+        "Overwatch",
+        "The Witcher 3: Wild Hunt",
+        "Baldur's Gate 3",
+    ]
 
     upcoming_games = Game.objects.filter(title__in=upcoming_titles)
     popular_games = Game.objects.filter(title__in=popular_titles)
@@ -123,6 +138,7 @@ def save_platforms(request):
 
     return redirect("playstyle_compass:update_preferences")
 
+
 @login_required
 def clear_preferences(request):
     """Resets the user's gaming preferences."""
@@ -206,11 +222,12 @@ def autocomplete_view(request):
 
     return JsonResponse(results, safe=False)
 
+
 @login_required
 def toggle_favorite(request):
     """View for toggling a game's favorite status for the current user."""
-    if request.method == 'POST':
-        game_id = request.POST.get('game_id')
+    if request.method == "POST":
+        game_id = request.POST.get("game_id")
         user = request.user
         user_preferences = UserPreferences.objects.get(user=user)
 
@@ -223,7 +240,7 @@ def toggle_favorite(request):
             user_preferences.add_favorite_game(game_id)
             is_favorite = True
 
-        return JsonResponse({'is_favorite': is_favorite})
+        return JsonResponse({"is_favorite": is_favorite})
 
 
 @login_required
@@ -242,9 +259,9 @@ def favorite_games(request):
 
     context = {
         "page_title": "Favorites :: PlayStyle Compass",
-        'user_preferences': user_preferences,
-        'favorite_games': favorite_games_list,
-        'games': games,
+        "user_preferences": user_preferences,
+        "favorite_games": favorite_games_list,
+        "games": games,
     }
 
-    return render(request, 'playstyle_compass/favorite_games.html', context)
+    return render(request, "playstyle_compass/favorite_games.html", context)

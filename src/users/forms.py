@@ -134,7 +134,9 @@ class EmailChangeForm(forms.ModelForm):
                 raise forms.ValidationError("This email address is already in use.")
 
             if new_email == self.user.email:
-                raise forms.ValidationError("New email address cannot be the current one.")
+                raise forms.ValidationError(
+                    "New email address cannot be the current one."
+                )
 
         return new_email
 

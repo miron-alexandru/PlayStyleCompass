@@ -36,12 +36,14 @@ def fetch_game_ids_by_platforms(platform_ids, api_key):
         except requests.exceptions.RequestException as e:
             print(f"Error fetching game IDs for platform {platform_id}: {e}")
 
-    add_custom_game_ids(all_game_ids, game_ids_to_add)        
+    add_custom_game_ids(all_game_ids, game_ids_to_add)
     return all_game_ids
+
 
 def add_custom_game_ids(all_game_ids, game_ids_to_add):
     """Add custom game ids's"""
     all_game_ids.update(game_ids_to_add)
+
 
 def fetch_game_data(game_id):
     """Fetch game data from Giant Bomb's API."""
@@ -186,7 +188,7 @@ def get_similar_games(game_data, max_count=5):
 
         if max_count:
             similar_games = similar_games[:max_count]
-        
+
         return ", ".join(similar_games) if similar_games else None
     return None
 
@@ -237,37 +239,36 @@ def get_developers(game_data):
 def fetch_user_reviews(game_id):
     """Fetch all user reviews for a game."""
     game_id = game_id.split("3030-")[-1]
-    url = f'{BASE_URL}user_reviews/?api_key={API_KEY}&game={game_id}&format=json'
+    url = f"{BASE_URL}user_reviews/?api_key={API_KEY}&game={game_id}&format=json"
     response = requests.get(url, headers=headers)
     if response.status_code == 200:
         data = response.json()
-        if 'results' in data and data['number_of_total_results'] < 100:
+        if "results" in data and data["number_of_total_results"] < 100:
             return data
     return None
 
+
 def extract_description_text(html_description):
     """Extract description text from review."""
-    soup = BeautifulSoup(html_description, 'html.parser')
+    soup = BeautifulSoup(html_description, "html.parser")
     text = soup.get_text()
     return text
+
 
 def process_user_reviews(game_id):
     """Process user reviews."""
     user_reviews_data = fetch_user_reviews(game_id)
     if user_reviews_data:
         reviews = []
-        for review in user_reviews_data['results']:
-            reviewer = review['reviewer']
-            deck = review['deck']
-            description = review['description']
-            score = review['score']
+        for review in user_reviews_data["results"]:
+            reviewer = review["reviewer"]
+            deck = review["deck"]
+            description = review["description"]
+            score = review["score"]
             text = extract_description_text(description)
-            reviews.append({
-                "reviewer": reviewer,
-                "deck": deck,
-                "text": text,
-                "score": score
-            })
+            reviews.append(
+                {"reviewer": reviewer, "deck": deck, "text": text, "score": score}
+            )
 
         return reviews
     else:
@@ -279,9 +280,9 @@ def get_reviewers(reviews_data):
     reviewers = []
     if reviews_data:
         for review in reviews_data:
-            reviewers.append(review['reviewer'])
+            reviewers.append(review["reviewer"])
 
-    return ' [REV_SEP] '.join(reviewers)
+    return " [REV_SEP] ".join(reviewers)
 
 
 def get_review_deck(reviews_data):
@@ -289,9 +290,9 @@ def get_review_deck(reviews_data):
     reviews_deck = []
     if reviews_data:
         for review in reviews_data:
-            reviews_deck.append(review['deck'])
+            reviews_deck.append(review["deck"])
 
-    return ' [REV_SEP] '.join(reviews_deck)
+    return " [REV_SEP] ".join(reviews_deck)
 
 
 def get_review_text(reviews_data):
@@ -299,9 +300,9 @@ def get_review_text(reviews_data):
     review_text = []
     if reviews_data:
         for review in reviews_data:
-            review_text.append(review['text'])
+            review_text.append(review["text"])
 
-    return ' [REV_SEP] '.join(review_text)
+    return " [REV_SEP] ".join(review_text)
 
 
 def get_review_score(reviews_data):
@@ -309,9 +310,9 @@ def get_review_score(reviews_data):
     review_scores = []
     if reviews_data:
         for review in reviews_data:
-            review_scores.append(str(review['score']))
+            review_scores.append(str(review["score"]))
 
-    return ' [REV_SEP] '.join(review_scores)
+    return " [REV_SEP] ".join(review_scores)
 
 
 def create_games_data_db(game_ids):
@@ -337,7 +338,7 @@ def create_games_data_db(game_ids):
                 reviewers,
                 review_deck,
                 review_description,
-                score
+                score,
             ) = parse_game_data(game_id)
             values = (
                 title,
@@ -354,7 +355,7 @@ def create_games_data_db(game_ids):
                 reviewers,
                 review_deck,
                 review_description,
-                score
+                score,
             )
             cursor.execute(inserting_sql, values)
             db_connection.commit()

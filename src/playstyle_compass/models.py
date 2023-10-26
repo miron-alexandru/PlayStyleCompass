@@ -27,25 +27,25 @@ class UserPreferences(models.Model):
     upcoming_games = models.CharField(max_length=255, blank=True)
 
     def add_favorite_game(self, game_id):
-        favorite_games_list = self.favorite_games.split(',')
+        favorite_games_list = self.favorite_games.split(",")
         if str(game_id) not in favorite_games_list:
             favorite_games_list.append(str(game_id))
-            self.favorite_games = ','.join(favorite_games_list)
+            self.favorite_games = ",".join(favorite_games_list)
             self.save()
 
     def remove_favorite_game(self, game_id):
-        favorite_games_list = self.favorite_games.split(',')
+        favorite_games_list = self.favorite_games.split(",")
         if str(game_id) in favorite_games_list:
             favorite_games_list.remove(str(game_id))
-            self.favorite_games = ','.join(favorite_games_list)
+            self.favorite_games = ",".join(favorite_games_list)
             self.save()
 
-
     def get_favorite_games(self):
-        favorite_games_list = self.favorite_games.split(',')
-        favorite_games_ids = [int(game_id.strip()) for game_id in favorite_games_list if game_id.strip()]
+        favorite_games_list = self.favorite_games.split(",")
+        favorite_games_ids = [
+            int(game_id.strip()) for game_id in favorite_games_list if game_id.strip()
+        ]
         return favorite_games_ids
-
 
     def __str__(self):
         return self.user.username
@@ -62,7 +62,7 @@ class Game(models.Model):
     platforms = models.CharField(max_length=200)
     themes = models.CharField(max_length=200)
     image = models.TextField()
-    release_date = models.CharField(max_length=100)   
+    release_date = models.CharField(max_length=100)
     developers = models.CharField(max_length=100)
     game_images = models.TextField()
     similar_games = models.CharField(max_length=200)

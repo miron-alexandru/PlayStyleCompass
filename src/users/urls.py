@@ -33,7 +33,9 @@ urlpatterns = [
         "password_change-done/", views.change_password_done, name="change_password_done"
     ),
     path("change_email/done/", views.change_email_done, name="change_email_done"),
-    path("change_email/success", views.change_email_success, name="change_email_success"),
+    path(
+        "change_email/success", views.change_email_success, name="change_email_success"
+    ),
     path("contact/", views.contact, name="contact"),
     path("contact_success/", views.contact_success, name="contact_success"),
     path(
@@ -41,5 +43,9 @@ urlpatterns = [
         views.resend_activation_link,
         name="resend_activation_link",
     ),
-    path('confirm_email_change/<str:uidb64>/<str:token>/', views.confirm_email_change, name='confirm_email_change'),
+    path(
+        "confirm_email_change/<str:uidb64>/<str:token>/",
+        views.confirm_email_change,
+        name="confirm_email_change",
+    ),
 ]

@@ -3,6 +3,7 @@
 
 from django import template
 from itertools import zip_longest
+
 register = template.Library()
 
 
@@ -35,11 +36,13 @@ def split_by_comma(value):
     """Split a string by commas and return a list."""
     return value.split(", ")
 
+
 @register.filter(name="is_favorite")
 def is_favorite(game_id, user_favorites):
-    if str(game_id) in user_favorites.split(','):
+    if str(game_id) in user_favorites.split(","):
         return True
     return False
+
 
 @register.simple_tag
 def zip_lists(reviewers, review_deck, review_text, score):
@@ -47,13 +50,11 @@ def zip_lists(reviewers, review_deck, review_text, score):
         return None
     else:
         zipped_data = zip_longest(
-            reviewers.split(' [REV_SEP] '), 
-            review_deck.split(' [REV_SEP] '),
-            review_text.split(' [REV_SEP] '),  
-            score.split(' [REV_SEP] '),
-            fillvalue="N/A"
+            reviewers.split(" [REV_SEP] "),
+            review_deck.split(" [REV_SEP] "),
+            review_text.split(" [REV_SEP] "),
+            score.split(" [REV_SEP] "),
+            fillvalue="N/A",
         )
 
         return zipped_data
-
-

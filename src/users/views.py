@@ -48,7 +48,6 @@ from django.contrib.auth.tokens import default_token_generator
 from django.contrib.sessions.models import Session
 
 
-
 class ProfileUpdateView(LoginRequiredMixin, UpdateView):
     """Custom user profile update view."""
 
@@ -129,7 +128,7 @@ def resend_activation_link(request):
     email = request.user.email
     user = User.objects.get(email=email)
     activateEmail(request, user, email)
-    
+
     return JsonResponse({})
 
 
@@ -196,14 +195,21 @@ def change_email(request):
             token = default_token_generator.make_token(request.user)
             uid = urlsafe_base64_encode(force_bytes(request.user.pk))
 
-            request.session['email_change_temp'] = new_email
-            request.session['email_change_token'] = token
+            request.session["email_change_temp"] = new_email
+            request.session["email_change_token"] = token
 
-            confirm_url = request.build_absolute_uri(reverse("users:confirm_email_change", kwargs={"uidb64": uid, "token": token}))
+            confirm_url = request.build_absolute_uri(
+                reverse(
+                    "users:confirm_email_change", kwargs={"uidb64": uid, "token": token}
+                )
+            )
 
             subject = "Confirm Email Change"
             from_email = settings.DEFAULT_FROM_EMAIL
-            message = render_to_string("account_actions/confirm_email_change.txt", {"confirm_url": confirm_url, "new_email": new_email})
+            message = render_to_string(
+                "account_actions/confirm_email_change.txt",
+                {"confirm_url": confirm_url, "new_email": new_email},
+            )
             send_mail(subject, message, from_email, [request.user.email])
 
             return redirect("users:change_email_done")
@@ -216,21 +222,23 @@ def change_email(request):
 
     return render(request, "account_actions/change_email.html", context)
 
+
 def confirm_email_change(request, uidb64, token):
     """View for email change confirmation."""
-    if 'email_change_token' in request.session:
+    if "email_change_token" in request.session:
         user = request.user
 
-        if request.session['email_change_token'] == token:
-            user.email = request.session['email_change_temp']
+        if request.session["email_change_token"] == token:
+            user.email = request.session["email_change_temp"]
             user.save()
 
-            del request.session['email_change_temp']
-            del request.session['email_change_token']
+            del request.session["email_change_temp"]
+            del request.session["email_change_token"]
 
             return redirect("users:change_email_success")
 
     return HttpResponse("Invalid token for email change.")
+
 
 @login_required
 def change_email_success(request):
