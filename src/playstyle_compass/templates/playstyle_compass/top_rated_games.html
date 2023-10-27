@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block page_header %}
+<div class="header">
+  <h3>TOP RATED GAMES</h3>
+</div>
+<p class="header-desc">Explore the best-rated games as chosen by the gaming community.</p>
+{% endblock page_header %}
+
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/playstyle_compass/common_styles.css' %}">
+<ul>
+  {% for game in top_games %}
+  <div class=top-games>
+    {% include "playstyle_compass/game_recommendations_section.html" %}
+  </div>
+  {% endfor %}
+</ul>
+{% endblock content %}

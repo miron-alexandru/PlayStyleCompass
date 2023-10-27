@@ -58,3 +58,8 @@ def zip_lists(reviewers, review_deck, review_text, score):
         )
 
         return zipped_data
+
+
+@register.filter
+def pluralize_reviews(count):
+    return "review" if count == 1 else "reviews"

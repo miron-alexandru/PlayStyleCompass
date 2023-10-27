@@ -10,6 +10,9 @@
 <li>
   <div class="game-image">
     {% if game.image %}
+    {% if game.calculate_overall_score > 1 %}
+    <span>Rating: </span><span class="star-rating"><span class="score-hidden">{{ game.calculate_overall_score }}</span></span> <small><span>({{ game.get_all_scores }} {{ game.get_all_scores|pluralize_reviews }})</span></small></p>
+    {% endif %}
     <img src="{{ game.image }}" alt="Game Image">
     {% else %}
     <p><strong>Image not available</strong></p>

@@ -21,4 +21,5 @@ urlpatterns = [
     path("save_platforms/", views.save_platforms, name="save_platforms"),
     path("toggle_favorite/", views.toggle_favorite, name="toggle_favorite"),
     path("favorite_games/", views.favorite_games, name="favorite_games"),
+    path('top_rated_games/', views.top_rated_games, name='top_rated_games'),
 ]

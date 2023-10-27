@@ -265,3 +265,17 @@ def favorite_games(request):
     }
 
     return render(request, "playstyle_compass/favorite_games.html", context)
+
+
+def top_rated_games(request):
+    all_games = Game.objects.all()
+    games_with_scores = [(game, game.calculate_overall_score()) for game in all_games]
+    sorted_games = sorted(games_with_scores, key=lambda x: x[1], reverse=True)
+    top_games = [game for game, score in sorted_games if score >= 4.5]
+
+    context = {
+    "page_title": "Top Rated Games :: PlayStyle Compass",
+    'top_games': top_games,
+    }
+
+    return render(request, 'playstyle_compass/top_rated_games.html', context)
