@@ -31,6 +31,8 @@ Websites for .env configuration: [GiantBomb](https://www.giantbomb.com/) / [Send
 <summary><h2>PlayStyle Compass Changelog</h2></summary>
 
 ### Version v1.3:
+* Improved the search bar and small tweaks for the search results page.
+* Implemented Top Rated Games page, and also each game has an average rating displayed based on the review scores.
 * Now reviews for the games are displayed.
 * Views refactored into new helper functions.
 * Games that are not yet released removed from recommendations and moved to a new category: Upcoming Games.

@@ -27,7 +27,7 @@ def fetch_game_ids_by_platforms(platform_ids, api_key):
     current_date = datetime.now().date()
 
     for platform_id in platform_ids:
-        url = f"{BASE_URL}games/?api_key={api_key}&format=json&platforms={platform_id}&filter=original_release_date:|{current_date}&sort=original_release_date:desc&limit=50"
+        url = f"{BASE_URL}games/?api_key={api_key}&format=json&platforms={platform_id}&filter=original_release_date:|{current_date}&sort=original_release_date:desc&limit=40"
         try:
             response = requests.get(url, headers=headers, timeout=20)
             if response.status_code == 200:
@@ -36,7 +36,7 @@ def fetch_game_ids_by_platforms(platform_ids, api_key):
         except requests.exceptions.RequestException as e:
             print(f"Error fetching game IDs for platform {platform_id}: {e}")
 
-    add_custom_game_ids(all_game_ids, game_ids_to_add)
+    #add_custom_game_ids(all_game_ids, game_ids_to_add)
     return all_game_ids
 
 

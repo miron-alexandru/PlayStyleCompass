@@ -1,29 +1,28 @@
 {% extends "base.html" %}
 {% load static %}
+
+{% block page_header %}
+<div class="header">
+<h3>YOU SEARCHED FOR: "{{ query }}"</h3>
+</div>
+{% endblock page_header %}
+
 {% block content %}
-<style>
-  .game-recommendations-container li {
-  display: flex;
-  align-items: start;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  padding: 10px;
-  margin: 10px 0;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  background-color: #f5f5f5;
-}
-h3 {
-  font-size: 22px;
-}
-</style>
+<link rel="stylesheet" href="{% static 'css/playstyle_compass/common_styles.css' %}">
 
-<h3>Search results for {{ query }}:</h3>
+<div class="search-bar-only">
+{% include "playstyle_compass/search_bar_only.html" %}
+</div>
 
-<div class="game-recommendations-container">
+<div class="results">
   <ul>
-    {% for game in games %}
-    {% include "playstyle_compass/game_recommendations_section.html" %}
-    {% endfor %}
+    {% if games %}
+      {% for game in games %}
+        {% include "playstyle_compass/game_recommendations_section.html" %}
+      {% endfor %}
+    {% else %}
+      <p><strong>Sorry, there are no results for your search.</strong></p>
+    {% endif %}
   </ul>
 </div>
 <script src="{% static 'js/playstyle_compass/favorite_star.js' %}"></script>

@@ -26,15 +26,10 @@
   <p class="search-description-text">Looking for your favorite games? You're in the right place! Use our search bar to find games from various genres, platforms, and eras.</p>
 </div>
 
-<form action="{% url 'playstyle_compass:search_results' %}" method="GET" class="search-form" onsubmit="return validateSearch()">
-  <div class="search-bar">
-    <div class="search-input-container">
-      <input type="text" name="query" id="search-input" placeholder="Search for games...">
-      <button type="submit"><i class="fas fa-search"></i></button>
-    </div>
-  </div>
-  <div id="search-results" class="search-results"></div>
-</form>
+<div class="search-bar">
+{% include "playstyle_compass/search_bar_only.html" %}
+</div>
+
 <div class="games">
   <h3>POPULAR GAMES</h3>
 <p class="games-description">Discover some of the most popular games here!</p>

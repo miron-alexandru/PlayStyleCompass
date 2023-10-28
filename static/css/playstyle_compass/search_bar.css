@@ -2,6 +2,7 @@
   padding: 10px;
   cursor: pointer;
   border-bottom: 1px solid #ccc;
+  border-radius: 50px;
   transition: background-color 0.3s;
 }
 

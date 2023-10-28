@@ -1,5 +1,3 @@
-// search_bar.js
-
 const searchInput = document.getElementById('search-input');
 const searchResults = document.getElementById('search-results');
 
@@ -23,9 +21,18 @@ searchInput.addEventListener('input', function() {
 });
 
 function fillSearchBar(value) {
-  searchInput.value = value;
+  searchInput.value = decodeURIComponent(value); // Decode the encoded value
   searchResults.innerHTML = '';
+  document.querySelector('.search-form').submit();
 }
+
+searchResults.addEventListener('click', function (event) {
+  const target = event.target;
+  if (target.classList.contains('result')) {
+    const clickedTitle = target.textContent;
+    fillSearchBar(clickedTitle);
+  }
+});
 
 function validateSearch() {
     const searchInput = document.getElementById('search-input');
