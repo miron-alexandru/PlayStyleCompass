@@ -20,6 +20,60 @@ from .helper_functions.get_recommendations_helpers import (
 from django.template.loader import render_to_string
 from django.core.exceptions import ObjectDoesNotExist
 
+from .forms import ReviewForm
+from django.shortcuts import get_object_or_404
+from django.contrib import messages
+
+
+
+def add_review(request, game_id):
+    """View to add a review for a game."""
+    game = Game.objects.get(pk=game_id)
+    separator = ' [REV_SEP] '
+    
+    if request.method == 'POST':
+        form = ReviewForm(request.POST)
+        if form.is_valid():
+            profile_name = request.user.userprofile.profile_name
+            game.reviewers += separator + profile_name if game.reviewers else profile_name
+            game.review_deck += separator + form.cleaned_data['review_deck'] if game.review_deck else form.cleaned_data['review_deck']
+            game.review_description += separator + form.cleaned_data['review_description'] if game.review_description else form.cleaned_data['review_description']
+            game.score += separator + str(form.cleaned_data['score']) if game.score else str(form.cleaned_data['score'])
+            game.save()
+            messages.success(request, "Your review has been successfully submitted.")
+
+            previous_page = request.META.get('HTTP_REFERER')
+            return redirect(previous_page)
+
+    else:
+        form = ReviewForm()
+
+    context = {
+        'page_title': "Add Review :: PlayStyle Compass",
+        'form': form, 
+        'game': game,
+    }
+
+    return render(request, 'playstyle_compass/add_review.html', context)
+
+
+@login_required
+def clear_reviews(request, game_id):
+    # TEMPORARILY IMPLEMENTED FOR IMPLEMENTATION PURPOSES!!!
+    game = get_object_or_404(Game, id=game_id)
+
+    print(game.reviewers)
+    print(game.review_deck)
+    print(game.review_description)
+    print(game.score)
+    game.reviewers = ''
+    game.review_deck = ''
+    game.review_description = '' 
+    game.score = ''
+    game.save()
+
+    return redirect('playstyle_compass:favorite_games')
+
 
 def index(request):
     """Home Page"""

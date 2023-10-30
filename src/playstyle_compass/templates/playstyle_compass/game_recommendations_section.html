@@ -93,6 +93,8 @@
   {% endif %}
 </span>
 </li>
+<a href="{% url 'playstyle_compass:add_review' game.id %}" class="btn btn-primary">Add Review</a>
+<a href="{% url 'playstyle_compass:clear_reviews' game.id %}" class="btn btn-danger">Clear Reviews</a>
 
 <script src="{% static 'js/lightbox-plus-jquery.min.js' %}"></script>
 <script src="{% static 'js/playstyle_compass/star_rating.js' %}"></script>
