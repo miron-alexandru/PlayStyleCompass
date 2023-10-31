@@ -2,13 +2,16 @@
 
 
 from collections import defaultdict
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse
+from django.contrib import messages
+from django.http import JsonResponse, HttpResponseRedirect
+from django.urls import reverse
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
 from utils.constants import genres, all_platforms
 from .models import GamingPreferences, UserPreferences, Game
+from .forms import ReviewForm
 
 from .helper_functions.get_recommendations_helpers import (
     initialize_matching_games,
@@ -17,20 +20,14 @@ from .helper_functions.get_recommendations_helpers import (
     sort_matching_games,
 )
 
-from django.template.loader import render_to_string
 from django.core.exceptions import ObjectDoesNotExist
-
-from .forms import ReviewForm
-from django.shortcuts import get_object_or_404
-from django.contrib import messages
 
 
 
 def add_review(request, game_id):
-    """View to add a review for a game."""
     game = Game.objects.get(pk=game_id)
     separator = ' [REV_SEP] '
-    
+
     if request.method == 'POST':
         form = ReviewForm(request.POST)
         if form.is_valid():
@@ -41,9 +38,9 @@ def add_review(request, game_id):
             game.score += separator + str(form.cleaned_data['score']) if game.score else str(form.cleaned_data['score'])
             game.save()
             messages.success(request, "Your review has been successfully submitted.")
-
-            previous_page = request.META.get('HTTP_REFERER')
-            return redirect(previous_page)
+            
+            next_url = request.GET.get('next', reverse('playstyle_compass:index'))
+            return HttpResponseRedirect(next_url)
 
     else:
         form = ReviewForm()

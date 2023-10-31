@@ -10,7 +10,7 @@
 <li>
   <div class="game-image">
     {% if game.image %}
-    {% if game.calculate_overall_score > 1 %}
+    {% if game.calculate_overall_score >= 1 %}
     <span>Rating: </span><span class="star-rating"><span class="score-hidden">{{ game.calculate_overall_score }}</span></span> <small><span>({{ game.get_all_scores }} {{ game.get_all_scores|pluralize_reviews }})</span></small></p>
     {% endif %}
     <img src="{{ game.image }}" alt="Game Image">
@@ -57,10 +57,10 @@
     {% endif %}
     {% zip_lists game.reviewers game.review_deck game.review_description game.score as zipped_data %}
     {% if not zipped_data %}
-    <p><strong>Reviews:</strong> No reviews for this game yet.</p>
+    <span><strong>Reviews:</strong> No reviews for this game yet. <a href="{% url 'playstyle_compass:add_review' game.id %}?next={{ request.get_full_path }}" class="add-review-btn">Write a Review</a></span>
     {% else %}
     <div class="reviews-section">
-      <p><strong>Reviews:</strong> <button class="show-hide-button" onclick="toggleReviews(this);">Show</button></p>
+      <p><strong>Reviews:</strong> <button class="show-hide-button" onclick="toggleReviews(this);">Show</button> / <a href="{% url 'playstyle_compass:add_review' game.id %}?next={{ request.get_full_path }}" class="add-review-btn">Write a Review</a></p>
       <div class="reviews" style="display: none;">
         {% for reviewer, title, review_description, score in zipped_data %}
         {% if forloop.counter <= 5 %}
@@ -93,7 +93,6 @@
   {% endif %}
 </span>
 </li>
-<a href="{% url 'playstyle_compass:add_review' game.id %}" class="btn btn-primary">Add Review</a>
 <a href="{% url 'playstyle_compass:clear_reviews' game.id %}" class="btn btn-danger">Clear Reviews</a>
 
 <script src="{% static 'js/lightbox-plus-jquery.min.js' %}"></script>
