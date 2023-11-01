@@ -43,7 +43,7 @@
   display: none;
 }
 
-.show-hide-button, .add-review-btn {
+.show-hide-button, .add-review-btn, .delete-review-btn {
   background: none;
   border: none;
   color: #007BFF;

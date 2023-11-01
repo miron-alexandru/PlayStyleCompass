@@ -105,6 +105,7 @@ class Game(models.Model):
 
 class Review(models.Model):
     game = models.ForeignKey(Game, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     reviewers = models.CharField(max_length=25)
     review_deck = models.CharField(max_length=50)
     review_description = models.TextField()
@@ -113,3 +114,7 @@ class Review(models.Model):
 
     def __str__(self):
         return f"Review by {self.reviewer} for {self.game.title}"
+
+
+    class Meta:
+        db_table = "Reviews"

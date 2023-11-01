@@ -10,15 +10,17 @@
 <li>
   <div class="game-image">
     {% if game.image %}
-    {% if game.calculate_overall_score >= 1 %}
-    <span>Rating: </span><span class="star-rating"><span class="score-hidden">{{ game.calculate_overall_score }}</span></span> <small><span>({{ game.get_all_scores }} {{ game.get_all_scores|pluralize_reviews }})</span></small></p>
-    {% endif %}
+    <div id="average-score-container">
+      <span>Rating: </span>
+      <span class="star-rating" id="average-score-stars"></span>
+      <small id="total-reviews"></small>
+    </div>
     <img src="{{ game.image }}" alt="Game Image">
     {% else %}
     <p><strong>Image not available</strong></p>
     {% endif %}
   </div>
-  <div class="game-info">
+  <div class="game-info" id="game-details" data-average-score-url="{% url 'playstyle_compass:get_average_score' game.id %}" data-reviews-url="{% url 'playstyle_compass:get_game_reviews' game.id %}">
     <h4>{{ game.title|default:"Game Title not available" }}</h4>
     <p>{{ game.description|default:"Game description not available" }}</p>
     <p><strong>Release date:</strong> {{ game.release_date|default:"N/A"}}</p>
@@ -55,35 +57,12 @@
     {% else %}
     <p><strong>Images not available</strong></p>
     {% endif %}
-    {% zip_lists game.reviewers game.review_deck game.review_description game.score as zipped_data %}
-    {% if not zipped_data %}
-    <span><strong>Reviews:</strong> No reviews for this game yet. <a href="{% url 'playstyle_compass:add_review' game.id %}?next={{ request.get_full_path }}" class="add-review-btn">Write a Review</a></span>
-    {% else %}
     <div class="reviews-section">
-      <p><strong>Reviews:</strong> <button class="show-hide-button" onclick="toggleReviews(this);">Show</button> / <a href="{% url 'playstyle_compass:add_review' game.id %}?next={{ request.get_full_path }}" class="add-review-btn">Write a Review</a></p>
-      <div class="reviews" style="display: none;">
-        {% for reviewer, title, review_description, score in zipped_data %}
-        {% if forloop.counter <= 5 %}
-        <div class="review">
-          <div class="review-header">
-            <p><strong>Author:</strong> {{ reviewer }} - <span class="star-rating"><span class="score-hidden">{{ score }}</span></span></p>
-            <p><strong>Title:</strong> {{ title }}</p>
-          </div>
-          <div class="review-body">
-            <p><strong>Summary:</strong></p>
-            <span class="review-description">{{ review_description|default:"N/A"|truncatewords_html:"50" }}</span>
-            <span class="review-description-full" style="display: none;">{{ review_description|default:"N/A" }}</span>
-            <button class="read-button-review" onclick="readMoreReview(this);">[Read more...]</button>
-          </div>
-          <div class="review-footer">
-            <p><strong>Rating:</strong> {{ score }}</p>
-          </div>
-        </div>
-        {% endif %}
-        {% endfor %}
+      <p><strong>Reviews:</strong></p>
+      <button class="show-hide-button" data-game-id="{{ game.id }}">Show</button> <a href="{% url 'playstyle_compass:add_review' game.id %}?next={{ request.get_full_path }}" class="add-review-btn">Write a Review</a> <a href="{% url 'playstyle_compass:delete_reviews' game.id %}" class="delete-review-btn">Delete your Review</a>
+      <div class="reviews-list" style="display: none;">
       </div>
     </div>
-    {% endif %}
   </div>
   <span class="favorite-toggle" data-game-id="{{ game.id }}">
   {% if game.id|is_favorite:user_preferences.favorite_games %}
@@ -93,8 +72,8 @@
   {% endif %}
 </span>
 </li>
-<a href="{% url 'playstyle_compass:clear_reviews' game.id %}" class="btn btn-danger">Clear Reviews</a>
+
 
 <script src="{% static 'js/lightbox-plus-jquery.min.js' %}"></script>
-<script src="{% static 'js/playstyle_compass/star_rating.js' %}"></script>
+<script src="{% static 'js/playstyle_compass/reviews_section.js' %}"></script>
 <script src="{% static 'js/playstyle_compass/game_recommendations.js' %}"></script>

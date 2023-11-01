@@ -4,13 +4,14 @@
 from collections import defaultdict
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import get_user
 from django.contrib import messages
 from django.http import JsonResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
 from utils.constants import genres, all_platforms
-from .models import GamingPreferences, UserPreferences, Game
+from .models import GamingPreferences, UserPreferences, Game, Review
 from .forms import ReviewForm
 
 from .helper_functions.get_recommendations_helpers import (
@@ -23,23 +24,36 @@ from .helper_functions.get_recommendations_helpers import (
 from django.core.exceptions import ObjectDoesNotExist
 
 
-
+@login_required
 def add_review(request, game_id):
-    game = Game.objects.get(pk=game_id)
-    separator = ' [REV_SEP] '
+    game = get_object_or_404(Game, pk=game_id)
+    user = request.user
+
+    existing_review = Review.objects.filter(game=game, user=user).first()
+
+    if existing_review:
+        messages.error(request, "You have already reviewed this game.")
+        return redirect('playstyle_compass:index.html')  # Not finished !!!
 
     if request.method == 'POST':
         form = ReviewForm(request.POST)
         if form.is_valid():
             profile_name = request.user.userprofile.profile_name
-            game.reviewers += separator + profile_name if game.reviewers else profile_name
-            game.review_deck += separator + form.cleaned_data['review_deck'] if game.review_deck else form.cleaned_data['review_deck']
-            game.review_description += separator + form.cleaned_data['review_description'] if game.review_description else form.cleaned_data['review_description']
-            game.score += separator + str(form.cleaned_data['score']) if game.score else str(form.cleaned_data['score'])
-            game.save()
+
+            review = Review(
+                game=game,
+                user=user,
+                reviewers=profile_name,
+                review_deck=form.cleaned_data['review_deck'],
+                review_description=form.cleaned_data['review_description'],
+                score=form.cleaned_data['score']
+            )
+
+            review.save()
+
             messages.success(request, "Your review has been successfully submitted.")
-            
             next_url = request.GET.get('next', reverse('playstyle_compass:index'))
+
             return HttpResponseRedirect(next_url)
 
     else:
@@ -47,27 +61,55 @@ def add_review(request, game_id):
 
     context = {
         'page_title': "Add Review :: PlayStyle Compass",
-        'form': form, 
+        'form': form,
         'game': game,
     }
 
     return render(request, 'playstyle_compass/add_review.html', context)
 
 
-@login_required
-def clear_reviews(request, game_id):
-    # TEMPORARILY IMPLEMENTED FOR IMPLEMENTATION PURPOSES!!!
-    game = get_object_or_404(Game, id=game_id)
+def get_game_reviews(request, game_id):
+    """View to get the reviews for a game."""
+    game_reviews = Review.objects.filter(game_id=game_id)
+    reviews_data = []
 
-    print(game.reviewers)
-    print(game.review_deck)
-    print(game.review_description)
-    print(game.score)
-    game.reviewers = ''
-    game.review_deck = ''
-    game.review_description = '' 
-    game.score = ''
-    game.save()
+    for review in game_reviews:
+
+        reviews_data.append({
+            'reviewer': review.reviewers,
+            'title': review.review_deck,
+            'description': review.review_description,
+            'score': review.score,
+        })
+
+    return JsonResponse({'reviews': reviews_data})
+
+def get_average_score(request, game_id):
+    """View to get the average score of a game."""
+    game_reviews = Review.objects.filter(game_id=game_id)
+    total_score = 0
+
+    for review in game_reviews:
+        total_score += int(review.score)
+
+    average_score = total_score / len(game_reviews) if game_reviews else 0
+    total_reviews = len(game_reviews)
+
+    return JsonResponse({'average_score': average_score, 'total_reviews': total_reviews})
+
+
+@login_required
+def delete_reviews(request, game_id):
+    """View for deleting user reviews."""
+    game = get_object_or_404(Game, id=game_id)
+    user = request.user
+
+    try:
+        review = Review.objects.get(game=game, user=user)
+        review.delete()
+        messages.success(request, "Your review has been successfully deleted.")
+    except Review.DoesNotExist:
+        messages.error(request, "You haven't written a review for this game.")
 
     return redirect('playstyle_compass:favorite_games')
 
