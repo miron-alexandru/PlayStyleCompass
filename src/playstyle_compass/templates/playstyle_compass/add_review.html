@@ -11,10 +11,14 @@
 {% block content %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/playstyle_compass/common_styles.css' %}">
 
-<form method="post">
-  {% csrf_token %}
-  {% bootstrap_form form %}
-  <button class="btn btn-primary" type="submit">Submit Review</button>
-</form>
+{% if review_exists %}
+  <p class="review-message"><strong>You have already reviewed this game.</strong> <a href="{{ request.META.HTTP_REFERER }}">Go Back</a></p>
+{% else %}
+  <form method="post">
+    {% csrf_token %}
+    {% bootstrap_form form %}
+    <button class="btn btn-primary" type="submit">Submit Review</button>
+  </form>
+{% endif %}
 
 {% endblock content %}

@@ -63,3 +63,8 @@
 .search-bar-only {
   padding-bottom: 10px;
 }
+
+.review-message {
+  padding: 5px;
+  font-size: 17px;
+}

@@ -22,6 +22,7 @@ from .helper_functions.get_recommendations_helpers import (
 )
 
 from django.core.exceptions import ObjectDoesNotExist
+from django.http import HttpResponse
 
 
 @login_required
@@ -32,8 +33,9 @@ def add_review(request, game_id):
     existing_review = Review.objects.filter(game=game, user=user).first()
 
     if existing_review:
-        messages.error(request, "You have already reviewed this game.")
-        return redirect('playstyle_compass:index.html')  # Not finished !!!
+        review_exists = True
+    else:
+        review_exists = False
 
     if request.method == 'POST':
         form = ReviewForm(request.POST)
@@ -63,6 +65,7 @@ def add_review(request, game_id):
         'page_title': "Add Review :: PlayStyle Compass",
         'form': form,
         'game': game,
+        'review_exists': review_exists,
     }
 
     return render(request, 'playstyle_compass/add_review.html', context)
@@ -83,6 +86,7 @@ def get_game_reviews(request, game_id):
         })
 
     return JsonResponse({'reviews': reviews_data})
+
 
 def get_average_score(request, game_id):
     """View to get the average score of a game."""
@@ -107,11 +111,11 @@ def delete_reviews(request, game_id):
     try:
         review = Review.objects.get(game=game, user=user)
         review.delete()
-        messages.success(request, "Your review has been successfully deleted.")
+        context = {"success": True}
     except Review.DoesNotExist:
-        messages.error(request, "You haven't written a review for this game.")
+        context = {"success": False}
 
-    return redirect('playstyle_compass:favorite_games')
+    return render(request, "playstyle_compass/delete_review_result.html", context)
 
 
 def index(request):
