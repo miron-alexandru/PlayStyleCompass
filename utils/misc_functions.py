@@ -3,6 +3,7 @@ The misc_functions module contains misc functions used in different parts
 of the application.
 """
 
+import uuid
 import sys
 import sqlite3
 import datetime
@@ -16,6 +17,9 @@ from sql_queries import (
     remove_duplicates_sql,
     inserting_sql,
     remove_empty,
+    create_reviews_table,
+    insert_reviews_sql,
+    remove_duplicates_reviews,
 )
 
 
@@ -27,9 +31,9 @@ def fetch_game_ids_by_platforms(platform_ids, api_key):
     current_date = datetime.now().date()
 
     for platform_id in platform_ids:
-        url = f"{BASE_URL}games/?api_key={api_key}&format=json&platforms={platform_id}&filter=original_release_date:|{current_date}&sort=original_release_date:desc&limit=40"
+        url = f"{BASE_URL}games/?api_key={api_key}&format=json&platforms={platform_id}&filter=original_release_date:|{current_date}&sort=original_release_date:desc&limit=20"
         try:
-            response = requests.get(url, headers=headers, timeout=20)
+            response = requests.get(url, headers=headers, timeout=10)
             if response.status_code == 200:
                 game_ids = [result["guid"] for result in response.json()["results"]]
                 all_game_ids.update(game_ids)
@@ -50,7 +54,7 @@ def fetch_game_data(game_id):
     url = f"{BASE_URL}game/{game_id}/?api_key={API_KEY}&format=json"
 
     try:
-        response = requests.get(url, headers=headers, timeout=20)
+        response = requests.get(url, headers=headers, timeout=10)
         response.raise_for_status()
         return response.json()
     except requests.exceptions.RequestException as e:
@@ -66,7 +70,7 @@ def fetch_game_images(game_id):
     url = f"{BASE_URL}images/{game_id}/?api_key={API_KEY}&format=json&limit=15"
 
     try:
-        response = requests.get(url, headers=headers, timeout=20)
+        response = requests.get(url, headers=headers, timeout=10)
 
         if response.status_code == 200:
             data = response.json()
@@ -116,12 +120,7 @@ def parse_game_data(game_id):
         sys.exit()
 
     game_images = fetch_game_images(game_id)
-
-    processed_reviews = process_user_reviews(game_id)
-    reviewers = get_reviewers(processed_reviews)
-    review_deck = get_review_deck(processed_reviews)
-    review_description = get_review_text(processed_reviews)
-    score = get_review_score(processed_reviews)
+    reviews_data = process_user_reviews(game_id)
 
     title = get_title(game_data)
     description = get_description(game_data)
@@ -146,10 +145,7 @@ def parse_game_data(game_id):
         developers,
         game_images,
         similar_games,
-        reviewers,
-        review_deck,
-        review_description,
-        score,
+        reviews_data
     )
 
 
@@ -263,11 +259,11 @@ def process_user_reviews(game_id):
         for review in user_reviews_data["results"]:
             reviewer = review["reviewer"]
             deck = review["deck"]
-            description = review["description"]
+            description_text = review["description"]
             score = review["score"]
-            text = extract_description_text(description)
+            description = extract_description_text(description_text)
             reviews.append(
-                {"reviewer": reviewer, "deck": deck, "text": text, "score": score}
+                {"reviewer": reviewer, "deck": deck, "description": description, "score": score}
             )
 
         return reviews
@@ -275,51 +271,12 @@ def process_user_reviews(game_id):
         return None
 
 
-def get_reviewers(reviews_data):
-    """Get the name of the reviewers."""
-    reviewers = []
-    if reviews_data:
-        for review in reviews_data:
-            reviewers.append(review["reviewer"])
-
-    return " [REV_SEP] ".join(reviewers)
-
-
-def get_review_deck(reviews_data):
-    """Get short description of the review."""
-    reviews_deck = []
-    if reviews_data:
-        for review in reviews_data:
-            reviews_deck.append(review["deck"])
-
-    return " [REV_SEP] ".join(reviews_deck)
-
-
-def get_review_text(reviews_data):
-    """Get full description of the review."""
-    review_text = []
-    if reviews_data:
-        for review in reviews_data:
-            review_text.append(review["text"])
-
-    return " [REV_SEP] ".join(review_text)
-
-
-def get_review_score(reviews_data):
-    """Get the score."""
-    review_scores = []
-    if reviews_data:
-        for review in reviews_data:
-            review_scores.append(str(review["score"]))
-
-    return " [REV_SEP] ".join(review_scores)
-
-
 def create_games_data_db(game_ids):
-    """Inserts game data into a SQLite database using the provided game IDs."""
+    """Inserts game data and reviews data into the database using the provided game IDs."""
     with sqlite3.connect("games_data.db") as db_connection:
         cursor = db_connection.cursor()
         cursor.execute(create_table_sql)
+        cursor.execute(create_reviews_table)
         db_connection.commit()
 
         for game_id in game_ids:
@@ -335,12 +292,10 @@ def create_games_data_db(game_ids):
                 developers,
                 game_images,
                 similar_games,
-                reviewers,
-                review_deck,
-                review_description,
-                score,
+                reviews_data,
             ) = parse_game_data(game_id)
-            values = (
+
+            game_values = (
                 title,
                 description,
                 overview,
@@ -352,16 +307,34 @@ def create_games_data_db(game_ids):
                 developers,
                 game_images,
                 similar_games,
-                reviewers,
-                review_deck,
-                review_description,
-                score,
             )
-            cursor.execute(inserting_sql, values)
+            cursor.execute(inserting_sql, game_values)
+
+            game_id = cursor.lastrowid
+
+            if reviews_data:
+                for review in reviews_data:
+                    reviewers = review["reviewer"]
+                    review_deck = review["deck"]
+                    review_description = review["description"]
+                    score = str(review["score"])
+
+                    user_id = str(uuid.uuid4())
+
+                    review_values = (
+                        reviewers,
+                        review_deck,
+                        review_description,
+                        score,
+                        user_id,
+                        game_id,
+                    )
+                    cursor.execute(insert_reviews_sql, review_values)
+
             db_connection.commit()
 
         cursor.execute(remove_duplicates_sql)
-        db_connection.commit()
+        cursor.execute(remove_duplicates_reviews)
         cursor.execute(remove_empty)
         db_connection.commit()
 

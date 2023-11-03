@@ -23,6 +23,7 @@ from .helper_functions.get_recommendations_helpers import (
 
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse
+from django.db.models import Avg
 
 
 @login_required
@@ -365,14 +366,12 @@ def favorite_games(request):
 
 
 def top_rated_games(request):
-    all_games = Game.objects.all()
-    games_with_scores = [(game, game.calculate_overall_score()) for game in all_games]
-    sorted_games = sorted(games_with_scores, key=lambda x: x[1], reverse=True)
-    top_games = [game for game, score in sorted_games if score >= 4.5]
+    """View to display top rated games."""
+    top_games = Game.objects.annotate(average_score=Avg('review__score')).filter(average_score__gt=4)
 
     context = {
-    "page_title": "Top Rated Games :: PlayStyle Compass",
-    'top_games': top_games,
+        "page_title": "Top Rated Games :: PlayStyle Compass",
+        'top_games': top_games,
     }
 
     return render(request, 'playstyle_compass/top_rated_games.html', context)

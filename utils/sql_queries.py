@@ -13,13 +13,27 @@ CREATE TABLE IF NOT EXISTS Games (
     release_date TEXT,
     developers TEXT,
     game_images TEXT,
-    similar_games TEXT,
+    similar_games TEXT
+);
+"""
+
+create_reviews_table = """
+CREATE TABLE IF NOT EXISTS Reviews (
+    id INTEGER PRIMARY KEY,
     reviewers TEXT,
     review_deck TEXT,
     review_description TEXT,
-    score TEXT
+    score TEXT,
+    user_id INTEGER,
+    game_id INTEGER
 );
 """
+
+insert_reviews_sql = """
+INSERT INTO Reviews (reviewers, review_deck, review_description, score, user_id, game_id)
+VALUES (?, ?, ?, ?, ?, ?);
+"""
+
 
 remove_duplicates_sql = """
 DELETE FROM Games
@@ -27,6 +41,15 @@ DELETE FROM Games
     SELECT MIN(rowid)
     FROM Games
     GROUP BY title
+);
+"""
+
+remove_duplicates_reviews = """
+DELETE FROM Reviews 
+where rowid NOT IN (
+SELECT MIN(rowid)
+FROM Reviews
+GROUP BY reviewers
 );
 """
 
@@ -48,6 +71,6 @@ WHERE title IS NULL
 
 inserting_sql = """
 INSERT INTO Games 
-(title, description, overview, genres, platforms, themes, image, release_date, developers, game_images, similar_games, reviewers, review_deck, review_description, score) 
-VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+(title, description, overview, genres, platforms, themes, image, release_date, developers, game_images, similar_games) 
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
 """

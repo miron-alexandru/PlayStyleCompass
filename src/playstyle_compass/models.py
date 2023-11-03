@@ -66,34 +66,6 @@ class Game(models.Model):
     developers = models.CharField(max_length=100)
     game_images = models.TextField()
     similar_games = models.CharField(max_length=200)
-    reviewers = models.TextField()
-    review_deck = models.TextField()
-    review_description = models.TextField()
-    score = models.TextField()
-
-    def calculate_overall_score(self):
-        """Calculate the average score of a game."""
-        if not self.score:
-            return 0
-
-        scores = [int(score) for score in self.score.split(' [REV_SEP] ')]
-        total_score = sum(scores)
-        num_reviews = len(scores)
-        
-        if num_reviews == 0:
-            return 0
-
-        overall_score = round(total_score / num_reviews, 1)
-        return overall_score
-
-    def get_all_scores(self):
-        """Get how many scores the game has."""
-        if not self.score:
-            return 0
-
-        scores = [int(score) for score in self.score.split(' [REV_SEP] ')]
-
-        return len(scores)
 
     def __str__(self):
         return self.title

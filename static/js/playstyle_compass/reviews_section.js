@@ -113,7 +113,7 @@ $(document).ready(function() {
         });
 
         container.find('.show-hide-button').click(toggleReviewVisibility);
-        container.find('.read-button-review').click(function() {
+        container.on('click', '.read-button-review', function() {
             var $description = $(this).parent().find('.review-description');
             var $fullDescription = $(this).parent().find('.review-description-full');
             var buttonText = $(this).text();
