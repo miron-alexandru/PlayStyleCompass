@@ -30,11 +30,19 @@ class ReviewRouter:
         return None
 
     def allow_relation(self, obj1, obj2, **hints):
-        if obj1._meta.app_label == "playstyle_compass" and obj1.__class__.__name__ == "Review" and \
-           obj2._meta.app_label == "auth" and obj2.__class__.__name__ == "User":
+        if (
+            obj1._meta.app_label == "playstyle_compass"
+            and obj1.__class__.__name__ == "Review"
+            and obj2._meta.app_label == "auth"
+            and obj2.__class__.__name__ == "User"
+        ):
             return True
-        if obj2._meta.app_label == "playstyle_compass" and obj2.__class__.__name__ == "Review" and \
-           obj1._meta.app_label == "auth" and obj1.__class__.__name__ == "User":
+        if (
+            obj2._meta.app_label == "playstyle_compass"
+            and obj2.__class__.__name__ == "Review"
+            and obj1._meta.app_label == "auth"
+            and obj1.__class__.__name__ == "User"
+        ):
             return True
         return None
 
@@ -42,6 +50,3 @@ class ReviewRouter:
         if app_label == "playstyle_compass" and model_name == "Review":
             return db == "games_db"
         return None
-
-
-

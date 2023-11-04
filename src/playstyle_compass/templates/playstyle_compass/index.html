@@ -31,21 +31,26 @@
 
 <div class="games">
   <h3>POPULAR GAMES</h3>
-<p class="games-description">Discover some of the most popular games here!</p>
-  <ul>
-    {% for game in popular_games %}
-    {% include "playstyle_compass/games_list.html" %}
-    {% endfor %}
-  </ul>
+  <p class="games-description">Discover some of the most popular games here!</p>
+  <div class="game-container">
+    <ul>
+      {% for game in popular_games %}
+      {% include "playstyle_compass/games_list.html" %}
+      {% endfor %}
+    </ul>
+  </div>
 </div>
 
 <div class="games">
   <h3>UPCOMING GAMES</h3>
   <p class="games-description">Explore the latest and most anticipated games coming soon. Don't miss out on the gaming excitement!</p>
-  <ul>
-    {% for game in upcoming_games %}
-    {% include "playstyle_compass/games_list.html" %}
-    {% endfor %}
-  </ul>
+  <div class="game-container">
+    <ul>
+      {% for game in upcoming_games %}
+      {% include "playstyle_compass/games_list.html" %}
+      {% endfor %}
+    </ul>
+  </div>
 </div>
-  {% endblock content %}
+
+{% endblock content %}

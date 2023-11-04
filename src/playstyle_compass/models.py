@@ -81,12 +81,11 @@ class Review(models.Model):
     reviewers = models.CharField(max_length=25)
     review_deck = models.CharField(max_length=50)
     review_description = models.TextField()
-    SCORE_CHOICES = [(1, '1'), (2, '2'), (3, '3'), (4, '4'), (5, '5')]
+    SCORE_CHOICES = [(1, "1"), (2, "2"), (3, "3"), (4, "4"), (5, "5")]
     score = models.PositiveSmallIntegerField(choices=SCORE_CHOICES)
 
     def __str__(self):
         return f"Review by {self.reviewer} for {self.game.title}"
-
 
     class Meta:
         db_table = "Reviews"

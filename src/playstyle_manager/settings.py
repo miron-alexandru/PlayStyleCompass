@@ -99,7 +99,10 @@ DATABASES = {
     },
 }
 
-DATABASE_ROUTERS = ["playstyle_compass.database_router.GameRouter", "playstyle_compass.database_router.ReviewRouter"]
+DATABASE_ROUTERS = [
+    "playstyle_compass.database_router.GameRouter",
+    "playstyle_compass.database_router.ReviewRouter",
+]
 
 DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
 

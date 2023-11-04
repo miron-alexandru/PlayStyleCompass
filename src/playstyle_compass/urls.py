@@ -21,9 +21,17 @@ urlpatterns = [
     path("save_platforms/", views.save_platforms, name="save_platforms"),
     path("toggle_favorite/", views.toggle_favorite, name="toggle_favorite"),
     path("favorite_games/", views.favorite_games, name="favorite_games"),
-    path('top_rated_games/', views.top_rated_games, name='top_rated_games'),
-    path('game/<int:game_id>/add_review/', views.add_review, name='add_review'),
-    path('clear_reviews/<int:game_id>/', views.delete_reviews, name='delete_reviews'),
-    path('get_game_reviews/<int:game_id>/', views.get_game_reviews, name='get_game_reviews'),
-    path('get_average_score/<int:game_id>/', views.get_average_score, name='get_average_score'),
+    path("top_rated_games/", views.top_rated_games, name="top_rated_games"),
+    path("game/<int:game_id>/add_review/", views.add_review, name="add_review"),
+    path("clear_reviews/<int:game_id>/", views.delete_reviews, name="delete_reviews"),
+    path(
+        "get_game_reviews/<int:game_id>/",
+        views.get_game_reviews,
+        name="get_game_reviews",
+    ),
+    path(
+        "get_average_score/<int:game_id>/",
+        views.get_average_score,
+        name="get_average_score",
+    ),
 ]
