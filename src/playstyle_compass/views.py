@@ -338,6 +338,38 @@ def add_review(request, game_id):
     return render(request, "playstyle_compass/add_review.html", context)
 
 
+@login_required
+def edit_review(request, game_id):
+    """View to edit reviews for games."""
+    game = get_object_or_404(Game, id=game_id)
+    try:
+        user = request.user
+        review = Review.objects.get(game=game, user=user)
+    except:
+        messages.error(request, "You haven't written any reviews for this game!")
+        next_url = request.META.get('HTTP_REFERER')
+        return HttpResponseRedirect(next_url)
+
+    if request.method == "POST":
+        form = ReviewForm(request.POST, instance=review)
+        if form.is_valid():
+            form.save()
+
+            messages.success(request, "Your review has been successfully updated.")
+            next_url = request.GET.get("next", reverse("playstyle_compass:index"))
+            return HttpResponseRedirect(next_url)
+    else:
+        form = ReviewForm(instance=review)
+
+    context = {
+        "page_title": "Edit Review :: PlayStyle Compass",
+        "form": form,
+        "game": game,
+    }
+
+    return render(request, "playstyle_compass/edit_review.html", context)
+
+
 def get_game_reviews(request, game_id):
     """View to get the reviews for a game."""
     game_reviews = Review.objects.filter(game_id=game_id)
@@ -381,8 +413,11 @@ def delete_reviews(request, game_id):
     try:
         review = Review.objects.get(game=game, user=user)
         review.delete()
-        context = {"success": True}
-    except Review.DoesNotExist:
-        context = {"success": False}
 
-    return render(request, "playstyle_compass/delete_review_result.html", context)
+        messages.success(request, "Your review has been successfully deleted!")
+        next_url = request.GET.get("next", reverse("playstyle_compass:index"))
+        return HttpResponseRedirect(next_url)
+    except Review.DoesNotExist:
+        messages.error(request, "You haven't written any reviews for this game!")
+        next_url = request.GET.get("next", reverse("playstyle_compass:index"))
+        return HttpResponseRedirect(next_url)

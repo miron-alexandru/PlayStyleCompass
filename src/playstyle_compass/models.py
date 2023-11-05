@@ -85,7 +85,7 @@ class Review(models.Model):
     score = models.PositiveSmallIntegerField(choices=SCORE_CHOICES)
 
     def __str__(self):
-        return f"Review by {self.reviewer} for {self.game.title}"
+        return f"Review by {self.reviewers} for {self.game.title}"
 
     class Meta:
         db_table = "Reviews"

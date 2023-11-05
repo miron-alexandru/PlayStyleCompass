@@ -25,7 +25,7 @@ $(document).ready(function() {
             } else {
                 reviewsList.toggle();
             }
-            container.find('.show-hide-button').text(reviewsList.is(':visible') ? 'Hide' : 'Show');
+            container.find('.show-hide-button').text(reviewsList.is(':visible') ? 'Hide Reviews' : 'Show Reviews');
         }
 
         function fetchReviews(reviewsList) {
@@ -37,9 +37,8 @@ $(document).ready(function() {
                 data: { game_id: game_id },
                 success: function(data) {
                     var reviews = data.reviews;
-                    var averageScore = data.average_score;
                     renderReviews(reviewsList, reviews);
-                    container.find('#average-score').text(averageScore);
+                    container.find('.show-hide-button').text(reviewsList.is(':visible') ? 'Hide Reviews' : 'Show Reviews');
                 },
                 error: function() {
                     reviewsList.html('Failed to retrieve reviews.');
@@ -112,7 +111,7 @@ $(document).ready(function() {
             }
         });
 
-        container.find('.show-hide-button').click(toggleReviewVisibility);
+        container.on('click', '.show-hide-button', toggleReviewVisibility);
         container.on('click', '.read-button-review', function() {
             var $description = $(this).parent().find('.review-description');
             var $fullDescription = $(this).parent().find('.review-description-full');

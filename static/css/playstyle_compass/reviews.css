@@ -39,11 +39,7 @@
   color: lightgrey;
 }
 
-.score-hidden {
-  display: none;
-}
-
-.show-hide-button, .add-review-btn, .delete-review-btn {
+.show-hide-button, .add-review-btn, .delete-review-btn, .edit-review-btn {
   background: none;
   border: none;
   color: #007BFF;
