@@ -26,7 +26,6 @@ from django.http import HttpResponse
 from django.db.models import Avg
 
 
-
 def index(request):
     """Home Page"""
     upcoming_titles = [
@@ -39,8 +38,6 @@ def index(request):
         "Anger Foot",
         "S.T.A.L.K.E.R. 2: Heart of Chornobyl",
         "Wuchang: Fallen Feathers",
-
-
     ]
     popular_titles = [
         "Honkai: Star Rail",
@@ -347,7 +344,7 @@ def edit_review(request, game_id):
         review = Review.objects.get(game=game, user=user)
     except:
         messages.error(request, "You haven't written any reviews for this game!")
-        next_url = request.META.get('HTTP_REFERER')
+        next_url = request.META.get("HTTP_REFERER")
         return HttpResponseRedirect(next_url)
 
     if request.method == "POST":

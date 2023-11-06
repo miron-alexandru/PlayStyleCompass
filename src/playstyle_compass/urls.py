@@ -34,8 +34,9 @@ urlpatterns = [
         views.get_average_score,
         name="get_average_score",
     ),
-    path('edit_review/<int:game_id>/',
-     views.edit_review, 
-     name='edit_review',
+    path(
+        "edit_review/<int:game_id>/",
+        views.edit_review,
+        name="edit_review",
     ),
 ]
