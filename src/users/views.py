@@ -29,7 +29,7 @@ from django.http import JsonResponse, HttpResponse
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.edit import UpdateView
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 
 from .forms import (
     CustomRegistrationForm,
@@ -39,6 +39,7 @@ from .forms import (
     ProfilePictureForm,
     ContactForm,
     CustomAuthenticationForm,
+    ProfileUpdateForm
 )
 
 from .models import UserProfile
@@ -49,17 +50,13 @@ from django.contrib.sessions.models import Session
 
 
 class ProfileUpdateView(LoginRequiredMixin, UpdateView):
-    """Custom user profile update view."""
-
     model = UserProfile
     template_name = "account_actions/profile_name_update.html"
-    fields = ["profile_name"]
+    form_class = ProfileUpdateForm
+    success_url = reverse_lazy("playstyle_compass:index")
 
     def get_object(self, queryset=None):
         return self.request.user.userprofile
-
-    def get_success_url(self):
-        return reverse("playstyle_compass:index")
 
 
 class CustomLoginView(LoginView):

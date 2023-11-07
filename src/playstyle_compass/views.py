@@ -170,16 +170,19 @@ def get_recommendations(request):
     user = request.user
     user_preferences = UserPreferences.objects.get(user=user)
 
-    matching_games = initialize_matching_games()
-    matching_games = process_user_data(user_preferences, matching_games)
-    matching_games = filter_preferences(user_preferences, matching_games)
-    matching_games = sort_matching_games(request, matching_games)
-    paginated_games = paginate_matching_games(request, matching_games)
+    if user_preferences.gaming_history == "" or user_preferences.favorite_genres == "":
+        return redirect("playstyle_compass:update_preferences")
+    else:
+        matching_games = initialize_matching_games()
+        matching_games = process_user_data(user_preferences, matching_games)
+        matching_games = filter_preferences(user_preferences, matching_games)
+        matching_games = sort_matching_games(request, matching_games)
+        paginated_games = paginate_matching_games(request, matching_games)
 
     context = {
         "page_title": "Recommendations :: PlayStyle Compass",
         "user_preferences": user_preferences,
-        "paginated_games": dict(paginated_games),
+        "paginated_games": dict(paginated_games)
     }
 
     return render(request, "playstyle_compass/recommendations.html", context)

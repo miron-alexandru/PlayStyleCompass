@@ -24,13 +24,18 @@
         <ul class="navbar-nav ml-auto">
           <li class="nav-item">
             <a class="nav-link" href="{% url 'playstyle_compass:gaming_preferences'%}">
-              Define Playstyle
+              Create Playstyle
             </a>
           </li>
           {% if user.is_authenticated %}
           <li class="nav-item">
             <a class="nav-link" href="{% url 'playstyle_compass:update_preferences'%}">
               Your Playstyle
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'playstyle_compass:get_recommendations'%}">
+              Game Recommendations
             </a>
           </li>
           <li class="nav-item">

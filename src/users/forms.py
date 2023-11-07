@@ -75,6 +75,12 @@ class CustomRegistrationForm(UserCreationForm):
             raise forms.ValidationError("This email address is already in use.")
         return email
 
+    def clean_profile_name(self):
+        profile_name = self.cleaned_data["profile_name"]
+        if UserProfile.objects.filter(profile_name=profile_name).exists():
+            raise forms.ValidationError("This profile name is already in use.")
+        return profile_name
+
 
 class DeleteAccountForm(forms.Form):
     """Custom delete account form."""
@@ -213,3 +219,21 @@ class ContactForm(forms.ModelForm):
             "subject": forms.TextInput(attrs={"placeholder": ""}),
             "message": forms.Textarea(attrs={"placeholder": ""}),
         }
+
+
+class ProfileUpdateForm(forms.ModelForm):
+    profile_name = forms.CharField(
+        max_length=15,
+        required=True,
+        widget=forms.TextInput(attrs={'autofocus': 'autofocus'}),
+    )
+
+    class Meta:
+        model = UserProfile
+        fields = ["profile_name"]
+
+    def clean_profile_name(self):
+        profile_name = self.cleaned_data.get("profile_name")
+        if UserProfile.objects.filter(profile_name=profile_name).exclude(user=self.instance.user).exists():
+            raise forms.ValidationError("This profile name is already in use.")
+        return profile_name

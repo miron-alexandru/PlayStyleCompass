@@ -3,6 +3,7 @@
 
 from django.db import models
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
 
 
 class UserProfile(models.Model):
@@ -14,6 +15,13 @@ class UserProfile(models.Model):
     )
     profile_name = models.CharField(max_length=15, blank=True, null=True)
     email_confirmed = models.BooleanField(default=False)
+
+    def clean(self):
+        profile_name = self.profile_name
+        existing_profiles = UserProfile.objects.filter(profile_name=profile_name).exclude(user=self.user)
+
+        if existing_profiles.exists():
+            raise ValidationError("This profile name is already in use by another user. Please choose a different one.")
 
     def __str__(self):
         return self.user.username
