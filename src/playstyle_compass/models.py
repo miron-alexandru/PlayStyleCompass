@@ -13,7 +13,7 @@ class GamingPreferences(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.text
+        return str(self.text)
 
 
 class UserPreferences(models.Model):
@@ -52,7 +52,7 @@ class UserPreferences(models.Model):
 
 
 class Game(models.Model):
-    """Represents a video game."""
+    """Represents a game."""
 
     id = models.BigAutoField(primary_key=True)
     title = models.CharField(max_length=100)
@@ -68,7 +68,7 @@ class Game(models.Model):
     similar_games = models.CharField(max_length=200)
 
     def __str__(self):
-        return self.title
+        return str(self.title)
 
     class Meta:
         db_table = "Games"
@@ -76,6 +76,7 @@ class Game(models.Model):
 
 
 class Review(models.Model):
+    """Represents a review for a game."""
     game = models.ForeignKey(Game, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     reviewers = models.CharField(max_length=25)

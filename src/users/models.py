@@ -18,10 +18,14 @@ class UserProfile(models.Model):
 
     def clean(self):
         profile_name = self.profile_name
-        existing_profiles = UserProfile.objects.filter(profile_name=profile_name).exclude(user=self.user)
+        existing_profiles = UserProfile.objects.filter(
+            profile_name=profile_name
+        ).exclude(user=self.user)
 
         if existing_profiles.exists():
-            raise ValidationError("This profile name is already in use by another user. Please choose a different one.")
+            raise ValidationError(
+                "This profile name is already in use by another user. Please choose a different one."
+            )
 
     def __str__(self):
         return self.user.username

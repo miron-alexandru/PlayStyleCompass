@@ -7,15 +7,11 @@
 <link rel="stylesheet" href="{% static 'css/lightbox.min.css' %}">
 {% endblock %}
 
-<div class="game-container" data-game-id="{{ game.id }}" data-average-score-url="{% url 'playstyle_compass:get_average_score' game.id %}" data-reviews-url="{% url 'playstyle_compass:get_game_reviews' game.id %}">
+<div class="game-container" data-game-id="{{ game.id }}" data-reviews-url="{% url 'playstyle_compass:get_game_reviews' game.id %}">
 <li>
   <div class="game-image">
     {% if game.image %}
-    <div id="average-score-container">
-      <span>Rating: </span>
-      <span class="star-rating" id="average-score-stars"></span>
-      <small id="total-reviews"></small>
-    </div>
+    <span>Rating:</span><span class="star-rating"><span class="score-hidden" style="display: none">{{ game.average_score }}</span></span> <small><span>({{ game.total_reviews }} {{ game.total_reviews|pluralize_reviews }})</span></small></p>
     <img src="{{ game.image }}" alt="Game Image">
     {% else %}
     <p><strong>Image not available</strong></p>
@@ -77,3 +73,4 @@
 
 <script src="{% static 'js/lightbox-plus-jquery.min.js' %}"></script>
 <script src="{% static 'js/playstyle_compass/game_recommendations.js' %}"></script>
+<script src="{% static 'js/playstyle_compass/star_rating.js' %}"></script>

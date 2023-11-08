@@ -12,10 +12,6 @@ $(document).ready(function() {
             return starsHtml;
         }
 
-        function pluralizeReviews(count) {
-            return count === 1 ? 'review' : 'reviews';
-        }
-
         function toggleReviewVisibility() {
             var reviewsList = container.find('.reviews-list');
 
@@ -83,33 +79,6 @@ $(document).ready(function() {
           }
           reviewsList.show();
       }
-
-        function updateAverageScoreStars(averageScore) {
-            var starsHtml = getStarRating(averageScore);
-            container.find('#average-score-stars').html(starsHtml);
-        }
-
-        function updateTotalReviews(totalReviews) {
-            var reviewsText = `${totalReviews} ${pluralizeReviews(totalReviews)}`;
-            container.find('#total-reviews').text(reviewsText);
-        }
-
-        var game_id = container.data('game-id');
-        var averageScoreURL = container.data('average-score-url');
-        $.ajax({
-            url: averageScoreURL,
-            method: 'GET',
-            data: { game_id: game_id },
-            success: function(data) {
-                var averageScore = data.average_score;
-                var totalReviews = data.total_reviews;
-                updateAverageScoreStars(averageScore);
-                updateTotalReviews(totalReviews);
-            },
-            error: function() {
-                container.find('#average-score').text('N/A');
-            }
-        });
 
         container.on('click', '.show-hide-button', toggleReviewVisibility);
         container.on('click', '.read-button-review', function() {

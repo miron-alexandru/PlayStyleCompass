@@ -4,11 +4,12 @@
 from collections import defaultdict
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import get_user
 from django.contrib import messages
 from django.http import JsonResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from django.core.exceptions import ObjectDoesNotExist
+from django.db.models import Avg
 
 from utils.constants import genres, all_platforms
 from .models import GamingPreferences, UserPreferences, Game, Review
@@ -19,11 +20,10 @@ from .helper_functions.get_recommendations_helpers import (
     process_user_data,
     filter_preferences,
     sort_matching_games,
+    calculate_game_scores,
 )
 
-from django.core.exceptions import ObjectDoesNotExist
-from django.http import HttpResponse
-from django.db.models import Avg
+
 
 
 def index(request):
@@ -167,28 +167,30 @@ def clear_preferences(request):
 
 @login_required
 def get_recommendations(request):
+    """View to get game recommendations based on user preferences."""
     user = request.user
     user_preferences = UserPreferences.objects.get(user=user)
 
     if user_preferences.gaming_history == "" or user_preferences.favorite_genres == "":
         return redirect("playstyle_compass:update_preferences")
-    else:
-        matching_games = initialize_matching_games()
-        matching_games = process_user_data(user_preferences, matching_games)
-        matching_games = filter_preferences(user_preferences, matching_games)
-        matching_games = sort_matching_games(request, matching_games)
-        paginated_games = paginate_matching_games(request, matching_games)
+
+    matching_games = initialize_matching_games()
+    matching_games = process_user_data(user_preferences, matching_games)
+    matching_games = filter_preferences(user_preferences, matching_games)
+    matching_games = sort_matching_games(request, matching_games)
+    paginated_games = paginate_matching_games(request, matching_games)
 
     context = {
         "page_title": "Recommendations :: PlayStyle Compass",
         "user_preferences": user_preferences,
-        "paginated_games": dict(paginated_games)
+        "paginated_games": dict(paginated_games),
     }
 
     return render(request, "playstyle_compass/recommendations.html", context)
 
 
 def paginate_matching_games(request, matching_games):
+    """Function to paginate games and calculate average scores."""
     games_per_page = 10
     paginated_games = defaultdict(list)
 
@@ -203,6 +205,8 @@ def paginate_matching_games(request, matching_games):
 
         paginated_games[category] = page
 
+        page = calculate_game_scores(page)
+
     return paginated_games
 
 
@@ -212,6 +216,8 @@ def search_results(request):
     """
     query = request.GET.get("query")
     games = Game.objects.filter(title__icontains=query)
+
+    games = calculate_game_scores(games)
 
     context = {
         "page_title": "Serach Results :: PlayStyle Compass",
@@ -267,6 +273,7 @@ def favorite_games(request):
         favorite_games_list = []
 
     games = Game.objects.filter(id__in=favorite_games_list)
+    games = calculate_game_scores(games)
 
     context = {
         "page_title": "Favorites :: PlayStyle Compass",
@@ -284,6 +291,8 @@ def top_rated_games(request):
         average_score__gt=4
     )
 
+    top_games = calculate_game_scores(top_games)
+
     context = {
         "page_title": "Top Rated Games :: PlayStyle Compass",
         "top_games": top_games,
@@ -294,15 +303,13 @@ def top_rated_games(request):
 
 @login_required
 def add_review(request, game_id):
+    """View to add a review for a game."""
     game = get_object_or_404(Game, pk=game_id)
     user = request.user
 
     existing_review = Review.objects.filter(game=game, user=user).first()
 
-    if existing_review:
-        review_exists = True
-    else:
-        review_exists = False
+    review_exists = bool(existing_review)
 
     if request.method == "POST":
         form = ReviewForm(request.POST)
@@ -345,7 +352,7 @@ def edit_review(request, game_id):
     try:
         user = request.user
         review = Review.objects.get(game=game, user=user)
-    except:
+    except Review.DoesNotExist:
         messages.error(request, "You haven't written any reviews for this game!")
         next_url = request.META.get("HTTP_REFERER")
         return HttpResponseRedirect(next_url)
@@ -373,35 +380,16 @@ def edit_review(request, game_id):
 def get_game_reviews(request, game_id):
     """View to get the reviews for a game."""
     game_reviews = Review.objects.filter(game_id=game_id)
-    reviews_data = []
-
-    for review in game_reviews:
-        reviews_data.append(
-            {
-                "reviewer": review.reviewers,
-                "title": review.review_deck,
-                "description": review.review_description,
-                "score": review.score,
-            }
-        )
-
+    reviews_data = [
+        {
+            "reviewer": review.reviewers,
+            "title": review.review_deck,
+            "description": review.review_description,
+            "score": review.score,
+        }
+        for review in game_reviews
+    ]
     return JsonResponse({"reviews": reviews_data})
-
-
-def get_average_score(request, game_id):
-    """View to get the average score of a game."""
-    game_reviews = Review.objects.filter(game_id=game_id)
-    total_score = 0
-
-    for review in game_reviews:
-        total_score += int(review.score)
-
-    average_score = total_score / len(game_reviews) if game_reviews else 0
-    total_reviews = len(game_reviews)
-
-    return JsonResponse(
-        {"average_score": average_score, "total_reviews": total_reviews}
-    )
 
 
 @login_required

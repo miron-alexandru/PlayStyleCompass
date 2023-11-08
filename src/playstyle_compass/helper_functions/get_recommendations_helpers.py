@@ -5,7 +5,7 @@ the get_recommendations view function."""
 import re
 
 from django.db.models import Q
-from ..models import Game
+from ..models import Game, Review
 from datetime import date, datetime
 
 
@@ -153,3 +153,21 @@ def sort_matching_games(request, matching_games):
                 matching_games[category] = list(reversed(matching_games[category]))
 
     return matching_games
+
+
+def calculate_game_scores(games):
+    """Calculate average scores and total reviews for games."""
+    for game in games:
+        game_reviews = Review.objects.filter(game_id=game.id)
+        total_score = 0
+
+        for review in game_reviews:
+            total_score += int(review.score)
+
+        average_score = total_score / len(game_reviews) if game_reviews else 0
+        total_reviews = len(game_reviews)
+
+        game.average_score = average_score
+        game.total_reviews = total_reviews
+
+    return games

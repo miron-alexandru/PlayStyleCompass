@@ -41,7 +41,7 @@ def fetch_game_ids_by_platforms(platform_ids, api_key):
         except requests.exceptions.RequestException as e:
             print(f"Error fetching game IDs for platform {platform_id}: {e}")
 
-    #add_custom_game_ids(all_game_ids, game_ids_to_add)
+    # add_custom_game_ids(all_game_ids, game_ids_to_add)
     return all_game_ids
 
 

@@ -39,7 +39,7 @@ from .forms import (
     ProfilePictureForm,
     ContactForm,
     CustomAuthenticationForm,
-    ProfileUpdateForm
+    ProfileUpdateForm,
 )
 
 from .models import UserProfile

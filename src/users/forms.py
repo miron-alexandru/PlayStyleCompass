@@ -225,7 +225,7 @@ class ProfileUpdateForm(forms.ModelForm):
     profile_name = forms.CharField(
         max_length=15,
         required=True,
-        widget=forms.TextInput(attrs={'autofocus': 'autofocus'}),
+        widget=forms.TextInput(attrs={"autofocus": "autofocus"}),
     )
 
     class Meta:
@@ -234,6 +234,10 @@ class ProfileUpdateForm(forms.ModelForm):
 
     def clean_profile_name(self):
         profile_name = self.cleaned_data.get("profile_name")
-        if UserProfile.objects.filter(profile_name=profile_name).exclude(user=self.instance.user).exists():
+        if (
+            UserProfile.objects.filter(profile_name=profile_name)
+            .exclude(user=self.instance.user)
+            .exists()
+        ):
             raise forms.ValidationError("This profile name is already in use.")
         return profile_name
