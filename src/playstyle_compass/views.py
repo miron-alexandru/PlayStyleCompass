@@ -24,10 +24,8 @@ from .helper_functions.get_recommendations_helpers import (
 )
 
 
-
-
 def index(request):
-    """Home Page"""
+    """View for Home Page"""
     upcoming_titles = [
         "Little Nightmares III",
         "Reka",
@@ -309,7 +307,11 @@ def add_review(request, game_id):
 
     existing_review = Review.objects.filter(game=game, user=user).first()
 
-    review_exists = bool(existing_review)
+    if existing_review:
+        messages.error(request, "You have already reviewed this game!")
+        next_url = request.META.get("HTTP_REFERER")
+
+        return HttpResponseRedirect(next_url)
 
     if request.method == "POST":
         form = ReviewForm(request.POST)
@@ -339,7 +341,6 @@ def add_review(request, game_id):
         "page_title": "Add Review :: PlayStyle Compass",
         "form": form,
         "game": game,
-        "review_exists": review_exists,
     }
 
     return render(request, "playstyle_compass/add_review.html", context)

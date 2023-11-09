@@ -14,6 +14,7 @@ class UserProfile(models.Model):
         upload_to="profile_pictures/", null=True, blank=True
     )
     profile_name = models.CharField(max_length=15, blank=True, null=True)
+    name_last_update_time = models.DateTimeField(null=True, blank=True)
     email_confirmed = models.BooleanField(default=False)
 
     def clean(self):

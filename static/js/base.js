@@ -7,6 +7,28 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 
+document.addEventListener('DOMContentLoaded', function() {
+  var closeButtons = document.querySelectorAll('.message .close');
+
+  closeButtons.forEach(function(button) {
+    button.addEventListener('click', function() {
+      var alertDiv = button.closest('.alert');
+      alertDiv.classList.add('fade-out');
+
+      setTimeout(function() {
+        alertDiv.style.display = 'none';
+
+        var visibleAlerts = document.querySelectorAll('.message .alert:not([style="display: none;"])');
+
+        if (visibleAlerts.length === 0) {
+          document.querySelector('.message').style.display = 'none';
+        }
+      }, 500);
+    });
+  });
+});
+
+
 document.getElementById('profile-picture-upload').addEventListener('change', function () {
   const fileInput = this;
   const file = fileInput.files[0];

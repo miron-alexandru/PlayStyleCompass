@@ -31,6 +31,7 @@ Websites for .env configuration: [GiantBomb](https://www.giantbomb.com/) / [Send
 <summary><h2>PlayStyle Compass Changelog</h2></summary>
 
 ### Version v1.3:
+* Profile name change has a cooldown of 1 hour.
 * Modified how average score and total reviews are fetched to improve functionality.
 * Profile name must be unique.
 * Each user is able to Edit or Delete their own reviews for the games.

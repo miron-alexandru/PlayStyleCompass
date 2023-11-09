@@ -118,9 +118,31 @@ input[type="email"]:focus,
 }
 
 .message {
-  padding-top: 10px;
+  margin-bottom: -10px;
+  padding-top: 5px;
 }
 
+.alert {
+  position: relative;
+  padding: 15px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+}
+
+.alert-success {
+  color: #3c763d;
+  background-color: #dff0d8;
+  border-color: #d6e9c6;
+}
+
+.alert.fade {
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.alert.show {
+  opacity: 1;
+}
 
 .border-bottom {
   border-bottom: 1px solid #bdc3c7;

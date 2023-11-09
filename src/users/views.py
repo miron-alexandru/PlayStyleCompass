@@ -1,5 +1,6 @@
 """Defines views."""
 
+from datetime import timedelta
 
 from django.shortcuts import render, redirect
 from django.contrib.auth import (
@@ -15,6 +16,7 @@ from django.contrib.auth.views import LoginView
 
 from django.template.loader import render_to_string
 from django.contrib.sites.shortcuts import get_current_site
+from django.utils import timezone
 from django.utils.http import (
     urlsafe_base64_encode,
     urlsafe_base64_decode,
@@ -57,6 +59,23 @@ class ProfileUpdateView(LoginRequiredMixin, UpdateView):
 
     def get_object(self, queryset=None):
         return self.request.user.userprofile
+
+    def dispatch(self, request, *args, **kwargs):
+        last_update_time = self.request.user.userprofile.name_last_update_time
+
+        if last_update_time:
+            one_hour_ago = timezone.now() - timedelta(hours=1)
+            if last_update_time > one_hour_ago:
+                messages.error(self.request, "You can only update your profile name once per hour.")
+                return redirect(request.META.get('HTTP_REFERER', 'playstyle_compass:index'))
+
+        return super().dispatch(request, *args, **kwargs)
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.name_last_update_time = timezone.now()
+        self.object.save()
+        return super().form_valid(form)
 
 
 class CustomLoginView(LoginView):
