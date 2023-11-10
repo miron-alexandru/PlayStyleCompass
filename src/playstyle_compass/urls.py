@@ -34,4 +34,5 @@ urlpatterns = [
         views.edit_review,
         name="edit_review",
     ),
+    path("upcoming_games/", views.upcoming_games, name="upcoming_games"),
 ]

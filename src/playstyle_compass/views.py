@@ -1,6 +1,6 @@
 """Views for the playstyle_compass app."""
 
-
+from datetime import date, datetime
 from collections import defaultdict
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
@@ -9,13 +9,13 @@ from django.http import JsonResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.core.exceptions import ObjectDoesNotExist
-from django.db.models import Avg
+from django.db.models import Avg, Q
 
 from utils.constants import genres, all_platforms
 from .models import GamingPreferences, UserPreferences, Game, Review
 from .forms import ReviewForm
 
-from .helper_functions.get_recommendations_helpers import (
+from .helper_functions.views_helpers import (
     initialize_matching_games,
     process_user_data,
     filter_preferences,
@@ -176,7 +176,7 @@ def get_recommendations(request):
     matching_games = process_user_data(user_preferences, matching_games)
     matching_games = filter_preferences(user_preferences, matching_games)
     matching_games = sort_matching_games(request, matching_games)
-    paginated_games = paginate_matching_games(request, matching_games)
+    paginated_games = paginate_matching_games_dict(request, matching_games)
 
     context = {
         "page_title": "Recommendations :: PlayStyle Compass",
@@ -187,7 +187,7 @@ def get_recommendations(request):
     return render(request, "playstyle_compass/recommendations.html", context)
 
 
-def paginate_matching_games(request, matching_games):
+def paginate_matching_games_dict(request, matching_games):
     """Function to paginate games and calculate average scores."""
     games_per_page = 10
     paginated_games = defaultdict(list)
@@ -297,6 +297,39 @@ def top_rated_games(request):
     }
 
     return render(request, "playstyle_compass/top_rated_games.html", context)
+
+def upcoming_games(request):
+    current_date = date.today()
+
+    upcoming_filter = Q(release_date__gte=current_date)
+
+    upcoming_games = Game.objects.filter(upcoming_filter)
+    upcoming_games = calculate_game_scores(upcoming_games)
+    paginated_games = paginate_matching_games_query(request, upcoming_games)
+
+    context = {
+        "page_title": "Upcoming Games :: PlayStyle Compass",
+        "upcoming_games": paginated_games,
+    }
+
+    return render(request, "playstyle_compass/upcoming_games.html", context)
+
+
+def paginate_matching_games_query(request, matching_games):
+    """Function to paginate games and calculate average scores."""
+    games_per_page = 10
+
+    paginator = Paginator(matching_games, games_per_page)
+    page_number = request.GET.get('page', 1)
+
+    try:
+        paginated_games = paginator.page(page_number)
+    except (PageNotAnInteger, EmptyPage):
+        paginated_games = paginator.page(1)
+
+    paginated_games = calculate_game_scores(paginated_games)
+
+    return paginated_games
 
 
 @login_required

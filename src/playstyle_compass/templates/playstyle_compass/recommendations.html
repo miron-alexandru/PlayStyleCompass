@@ -4,7 +4,7 @@
 
 {% block page_header %}
 <div class="header">
-<h3>GAME RECOMMENDATIONS</h3>
+  <h3>GAME RECOMMENDATIONS</h3>
 </div>
 <p class="header-desc">Discover a curated selection of game recommendations tailored specifically to your gaming history, preferred platforms, favorite genres, and more. Explore the information about each game to make informed choices for your next gaming adventure.</p>
 {% endblock page_header %}
@@ -33,11 +33,11 @@
   {% if paginated_page.object_list %}
   <h4>
     {% if category == "common_genres_platforms" %}
-      Games that match your preferred genres and platforms
+    Games that match your preferred genres and platforms
     {% elif category == "upcoming_games" %}
-      Coming Soon: Exciting new games to watch out for
+    Coming Soon: Exciting new games to watch out for
     {% else %}
-      Games you might like based on your {{ category|format_category_label }}: {{ user_preferences|getattr:category }}
+    Games you might like based on your {{ category|format_category_label }}: {{ user_preferences|getattr:category }}
     {% endif %}
   </h4>
   <ul>
@@ -48,15 +48,17 @@
   <div class="pagination">
     <span class="step-links">
       {% if paginated_page.has_previous %}
-        <a href="?category={{ category }}&{{ category|slugify }}_page=1{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}">&laquo; first</a>
-    <a href="?category={{ category }}&{{ category|slugify }}_page={{ paginated_page.previous_page_number }}{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}">previous</a>
+        <a href="?category={{ category }}&{{ category|slugify }}_page=1{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}">&laquo; First</a>
+    <a href="?category={{ category }}&{{ category|slugify }}_page={{ paginated_page.previous_page_number }}{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}">Previous</a>
       {% endif %}
-      
-      <span class="current-page">{{ paginated_page.number }}</span>
+
+    <span class="current-page">
+        Page {{ paginated_page.number }} of {{ paginated_page.paginator.num_pages }}
+    </span>
 
     {% if paginated_page.has_next %}
-    <a href="?category={{ category }}&{{ category|slugify }}_page={{ paginated_page.next_page_number }}{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}">next</a>
-    <a href="?category={{ category }}&{{ category|slugify }}_page={{ paginated_page.paginator.num_pages }}{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}">last &raquo;</a>
+    <a href="?category={{ category }}&{{ category|slugify }}_page={{ paginated_page.next_page_number }}{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}">Next</a>
+    <a href="?category={{ category }}&{{ category|slugify }}_page={{ paginated_page.paginator.num_pages }}{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}">Last &raquo;</a>
     {% endif %}
     </span>
   </div>

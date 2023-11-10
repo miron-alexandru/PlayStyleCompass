@@ -1,6 +1,5 @@
 """
-The 'get_recommendations_helpers' module contains helper functions used for
-the get_recommendations view function."""
+The 'views_helpers' module contains helper functions used for differend views."""
 
 import re
 
@@ -75,18 +74,18 @@ def apply_filters(favorite_genres, preferred_platforms, matching_games):
 
     common_filters = genre_filters & platform_filters
 
-    exclude_upcoming = Q(release_date__gte=current_date)
+    upcoming_filter = Q(release_date__gte=current_date)
 
     matching_games["favorite_genres"] = Game.objects.filter(genre_filters).exclude(
-        exclude_upcoming
+        upcoming_filter
     )
     matching_games["common_genres_platforms"] = Game.objects.filter(
         common_filters
-    ).exclude(exclude_upcoming)
+    ).exclude(upcoming_filter)
     matching_games["preferred_platforms"] = Game.objects.filter(
         platform_filters
-    ).exclude(exclude_upcoming)
-    matching_games["upcoming_games"] = Game.objects.filter(exclude_upcoming)
+    ).exclude(upcoming_filter)
+    matching_games["upcoming_games"] = Game.objects.filter(upcoming_filter)
 
     return matching_games
 

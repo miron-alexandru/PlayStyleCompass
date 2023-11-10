@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block page_header %}
+<div class="header">
+  <h3>UPCOMING GAMES</h3>
+</div>
+<p class="header-desc">Discover the latest and most anticipated games set to launch soon and explore the future of gaming excitement.</p>
+{% endblock page_header %}
+
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/playstyle_compass/common_styles.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/playstyle_compass/pagination.css' %}">
+
+<div class="results">
+  <ul>
+    {% for game in upcoming_games %}
+    {% include "playstyle_compass/game_recommendations_section.html" %}
+    {% endfor %}
+  </ul>
+</div>
+
+<div class="pagination">
+  <span class="step-links">
+        {% if upcoming_games.has_previous %}
+            <a href="?page=1">&laquo; First</a>
+            <a href="?page={{ upcoming_games.previous_page_number }}">Previous</a>
+        {% endif %}
+
+        <span class="current-page">
+            Page {{ upcoming_games.number }} of {{ upcoming_games.paginator.num_pages }}
+        </span>
+
+  {% if upcoming_games.has_next %}
+  <a href="?page={{ upcoming_games.next_page_number }}">Next</a>
+  <a href="?page={{ upcoming_games.paginator.num_pages }}">Last &raquo;</a>
+  {% endif %}
+  </span>
+</div>
+
+<script src="{% static 'js/playstyle_compass/favorite_star.js' %}"></script>
+<script src="{% static 'js/playstyle_compass/reviews_section.js' %}"></script>
+
+{% endblock content %}
