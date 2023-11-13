@@ -48,4 +48,12 @@ urlpatterns = [
         views.confirm_email_change,
         name="confirm_email_change",
     ),
+    path('friends/<user_id>', views.friends_list_view, name='friends_list'),
+    path('friend_remove ', views.remove_friend, name='remove_friend'),
+    path('send_friend_request/<int:user_id>/', views.send_friend_request, name='friend_request'),
+    path('friend_request_cancel/', views.cancel_friend_request, name='friend_request_cancel'),
+    path('friend_requests/<user_id>/', views.friend_requests, name='friend_requests'),
+    path('friend_request_accept/<friend_request_id>/', views.accept_friend_request, name='friend_request_accept'),
+    path('friend_request_decline/<friend_request_id>/', views.decline_friend_request, name='friend_request_decline'),
+
 ]

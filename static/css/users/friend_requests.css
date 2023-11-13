@@ -1,0 +1,40 @@
+.profile-image {
+    max-height: 100px;
+    max-width: 100px;
+  }
+
+.profile-image {
+    border-radius: 12px;
+  }
+
+.card {
+    border-radius: 12px;
+  }
+
+.dropdown-toggle::after {
+    content: none;
+  }
+
+.material-icons {
+    font-size: 30px;
+  }
+
+.material-icons:hover {
+    cursor: pointer;
+  }
+
+.confirm-friend-request {
+    color: green;
+  }
+
+.confirm-friend-request:hover {
+    opacity: 0.3;
+  }
+
+.decline-friend-request:hover {
+    opacity: 0.3;
+  }
+
+.decline-friend-request {
+    color: red;
+  }

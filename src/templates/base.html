@@ -82,6 +82,8 @@
                 Account Actions
               </a>
               <div class="dropdown-menu" aria-labelledby="profileDropdown">
+                <a class="dropdown-item" href="{% url 'users:friends_list' user.id %}">Friends List</a>
+                <a class="dropdown-item" href="{% url 'users:friend_requests' user.id %}">Friend Requests</a>
                 <a class="dropdown-item" href="{% url 'users:profile' %}">Change Profile Picture</a>
                 <a class="dropdown-item" href="{% url 'users:change_profile_name' %}">Change Profile Name</a>
                 <a class="dropdown-item" href="{% url 'users:change_password' %}">Change Password</a>
