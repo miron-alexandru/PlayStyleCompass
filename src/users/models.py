@@ -55,6 +55,7 @@ class ContactMessage(models.Model):
 
 
 class FriendList(models.Model):
+    """Friends list model."""
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="user")
     friends = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True, related_name="friends") 
 
@@ -81,6 +82,7 @@ class FriendList(models.Model):
 
 
 class FriendRequest(models.Model):
+    """Friend requests model."""
     sender = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="sender")
     receiver = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="receiver")
     is_active = models.BooleanField(blank=False, null=False, default=True)

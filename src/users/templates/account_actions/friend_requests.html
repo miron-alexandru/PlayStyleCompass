@@ -1,8 +1,16 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block page_header %}
+<div class="header">
+<h3>FRIEND REQUESTS</h3>
+</div>
+<p class="header-desc">Review and manage incoming friend requests. Accept or decline requests and stay connected with new friends.</p>
+{% endblock page_header %}
+
 {% block content %}
 <link rel="stylesheet" href="{% static 'css/users/friend_requests.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/playstyle_compass/common_styles.css' %}">
 
 <div class="container">
   <div class="card p-2">
@@ -13,12 +21,12 @@
       <div class="card flex-row flex-grow-1 p-2 mx-2 my-2 align-items-center">
         </a>
         <div class="card-center px-2">
-          <h4 class="card-title">{{request.sender.username}}</h4>
+          <h4 class="card-title">{{request.sender.userprofile.profile_name}}</h4>
         </div>
         </a>
         <div class="d-flex flex-row card-right flex-grow-1 justify-content-end mx-2">
-          <span id="id_cancel_{{request.sender.id}}" class="decline-friend-request material-icons p-1" onclick='triggerDeclineFriendRequest("{{request.id}}")'>Decline</span>
-          <span id="id_confirm_{{request.sender.id}}" class="confirm-friend-request material-icons p-1" onclick='triggerAcceptFriendRequest("{{request.id}}")'>Accept</span>
+          <button id="id_cancel_{{request.sender.id}}" class="decline-friend-request material-icons p-1" onclick='triggerDeclineFriendRequest("{{request.id}}")'>Decline</button>
+          <button id="id_confirm_{{request.sender.id}}" class="confirm-friend-request material-icons p-1" onclick='triggerAcceptFriendRequest("{{request.id}}")'>Accept</button>
         </div>
       </div>
       {% if forloop.counter|divisibleby:2 %}

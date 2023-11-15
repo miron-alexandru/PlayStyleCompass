@@ -1,24 +1,23 @@
 <script type="text/javascript">
 	
 	function removeFriend(id, uiUpdateFunction){
-		payload = {
+		result = {
 			"csrfmiddlewaretoken": "{{ csrf_token }}",
 			"receiver_user_id": id,
 		}
-		console.log(payload)
+		console.log(result)
 		$.ajax({
 			type: 'POST',
 			dataType: "json",
 			url: "{% url 'users:remove_friend' %}",
 			timeout: 5000,
-			data: payload,
+			data: result,
 			success: function(data) {
 				console.log("SUCCESS", data)
-				if(data['response'] == "Successfully removed that friend."){
-					// UI gets updated
+				if(data['message'] == "Successfully removed that friend."){
 				}
-				else if(data['response'] != null){
-					alert(data['response'])
+				else if(data['message'] != null){
+					alert(data['message'])
 				}
 			},
 			error: function(data) {
@@ -30,6 +29,5 @@
 			}
 		});
 	}
-	
 
 </script>

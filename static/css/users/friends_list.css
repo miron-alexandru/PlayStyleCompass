@@ -1,35 +1,42 @@
-.profile-image {
-    max-height: 100px;
-    max-width: 100px;
+.card {
+    border-radius: 50px;
+    padding: 150px;
+    background-color: #f7f7f7;
+    transition: transform 0.03s ease-in-out;
+  }
+
+.card:hover {
+  transform: scale(1.01);
 }
 
-.profile-image {
-    border-radius: 12px;
-  }
-
-.card {
-    border-radius: 12px;
-  }
-
 .friends-text {
-    color: #000;
-    font-weight: 500;
+    color: green;
+    font-size: 14px;
+    color: #1a1a1a;
+    margin: 0;
+    font-weight: bold
   }
 
 .friends-text-container {
-    border: 1px solid #cccccc;
-    border-radius: 12px;
-  }
+  background-color: lightgreen;
+  border: 1px solid #4e79a7;
+  border-radius: 13px;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+}
 
-.friends-btn:hover {
-    background-color: #bfbfbf;
-    border-color: #bfbfbf;
-  }
+.remove-friend-btn {
+  background-color: #dc3545;
+  color: #fff;
+  border: none;
+  padding: 6px 10px; 
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-size: 14px;
+}
 
-.dropdown-toggle::after {
-    content: none;
-  }
-
-.cancel-icon {
-    color: red;
-  }
+.remove-friend-btn:hover {
+  background-color: #c82333;
+}

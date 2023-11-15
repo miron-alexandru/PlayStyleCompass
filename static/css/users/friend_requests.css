@@ -1,40 +1,44 @@
-.profile-image {
-    max-height: 100px;
-    max-width: 100px;
-  }
-
-.profile-image {
-    border-radius: 12px;
-  }
-
 .card {
-    border-radius: 12px;
+    border-radius: 50px;
+    padding: 150px;
+    background-color: #f7f7f7;
+    transition: transform 0.03s ease-in-out;
   }
 
-.dropdown-toggle::after {
-    content: none;
-  }
+.card:hover {
+  transform: scale(1.01);
+}
 
-.material-icons {
-    font-size: 30px;
-  }
-
-.material-icons:hover {
-    cursor: pointer;
-  }
-
-.confirm-friend-request {
-    color: green;
-  }
-
-.confirm-friend-request:hover {
-    opacity: 0.3;
-  }
-
-.decline-friend-request:hover {
-    opacity: 0.3;
-  }
+.card-title {
+    font-size: 20px;
+}
 
 .decline-friend-request {
-    color: red;
-  }
+  background-color: #dc3545;
+  color: #fff; 
+  border: none;
+  padding: 8px 12px;
+  margin: 4px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.confirm-friend-request {
+  background-color: #28a745;
+  color: #fff;
+  border: none;
+  padding: 8px 12px;
+  margin: 4px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.decline-friend-request:hover {
+  background-color: #bd2130;
+}
+
+.confirm-friend-request:hover {
+  background-color: #218838;
+}

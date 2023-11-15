@@ -1,8 +1,7 @@
-
 <script type="text/javascript">
 	
 	function sendFriendRequest(id, uiUpdateFunction){
-		payload = {
+		result = {
 			"csrfmiddlewaretoken": "{{ csrf_token }}",
 			"receiver_user_id": id,
 		}
@@ -11,11 +10,10 @@
 			dataType: "json",
 			url: "{% url 'friend:friend-request' %}",
 			timeout: 5000,
-			data: payload,
+			data: result,
 			success: function(data) {
 				console.log("SUCCESS", data)
 				if(data['response'] == "Friend request sent."){
-					// ui is updated
 				}
 				else if(data['response'] != null){
 					alert(data['response'])
@@ -30,6 +28,5 @@
 			}
 		});
 	}
-	
 
 </script>
