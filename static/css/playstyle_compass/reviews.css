@@ -48,3 +48,27 @@
   font-weight: bold;
   padding: 5px;
 }
+
+.friend-request-text {
+    display: inline-block;
+    padding: 6px 10px;
+    background-color: green;
+    color: #ffffff; 
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-size: 11px;
+}
+
+.friend-request-text:hover {
+    background-color: darkgreen;
+}
+
+.author-link {
+  font-weight: bold;
+  text-decoration: none !important;
+}
+
+.author-name {
+  font-weight: bolder;
+}

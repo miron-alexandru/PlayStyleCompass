@@ -15,8 +15,11 @@ document.addEventListener('DOMContentLoaded', function () {
   const starRatingElements = document.querySelectorAll('.star-rating');
   starRatingElements.forEach(function (element) {
     const scoreElement = element.querySelector('.score-hidden');
-    const score = parseInt(scoreElement.textContent);
-    const maxScore = 5;
-    fillStars(score, maxScore, element);
+
+    if (scoreElement) {
+      const score = parseInt(scoreElement.textContent);
+      const maxScore = 5;
+      fillStars(score, maxScore, element);
+    }
   });
 });

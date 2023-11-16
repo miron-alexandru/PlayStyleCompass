@@ -420,6 +420,7 @@ def get_game_reviews(request, game_id):
             "title": review.review_deck,
             "description": review.review_description,
             "score": review.score,
+            "user_id": review.user_id,
         }
         for review in game_reviews
     ]

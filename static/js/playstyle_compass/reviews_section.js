@@ -52,11 +52,17 @@ $(document).ready(function() {
                   var description = review.description.substring(0, 300);
                   var truncated = description.length < review.description.length;
                   var buttonHtml = truncated ? `<button class="read-button-review" data-toggle="read-more">[Read more...]</button>` : '';
+                  var authorName = `<span class="author-container">
+                            <span class="author-name">${review.reviewer}</span>
+                            <a href="#" class="author-link" data-user-id="${review.user_id}">
+                                <span class="friend-request-text" style="display: none;">Friend Request</span>
+                            </a>
+                        </span>`;
 
                   var reviewHtml = `
                       <div class="review">
                           <div class="review-header">
-                              <p><strong>Author:</strong> ${review.reviewer} - 
+                              <p><strong>Author:</strong> ${authorName} - 
                                   <span class="star-rating">${getStarRating(review.score)}</span>
                               </p>
                               <p><strong>Title:</strong> ${review.title}</p>
@@ -79,6 +85,51 @@ $(document).ready(function() {
           }
           reviewsList.show();
       }
+
+        function showMessage(container, message) {
+            var customMessage = $(`<div class="success-message">${message}</div>`);
+            container.append(customMessage);
+
+            setTimeout(function () {
+                customMessage.fadeOut('slow', function () {
+                    customMessage.remove();
+                });
+            }, 3000);
+        }
+
+        container.on('mouseenter', '.author-container', function () {
+            var friendRequestText = $(this).find('.friend-request-text');
+            friendRequestText.show();
+        }).on('mouseleave', '.author-container', function () {
+            var friendRequestText = $(this).find('.friend-request-text');
+            friendRequestText.hide();
+        }).on('click', '.friend-request-text', function (e) {
+            event.preventDefault();
+
+            var friendReqUrl = $(this).closest('.game-container').data('friend-req');
+            var csrfToken = document.cookie.match(/csrftoken=([^ ;]+)/)[1];
+            var user_id = $(this).closest('.author-link').data('user-id');
+            var this_container = $(this).closest('.author-container')
+
+            $.ajax({
+                type: 'POST',
+                url: friendReqUrl,
+                headers: {
+                'X-CSRFToken': csrfToken
+                },
+                data: {
+                "user_id": user_id,
+                },
+                success: function(data) {
+                        console.log('Friend request sent successfully!');
+                        showMessage(this_container, data['message']);
+                    },
+                error: function(error) {
+                        console.error('Error sending friend request:', error);
+                        showMessage(this_container, data['message']);
+                }
+            }); 
+        });
 
         container.on('click', '.show-hide-button', toggleReviewVisibility);
         container.on('click', '.read-button-review', function() {

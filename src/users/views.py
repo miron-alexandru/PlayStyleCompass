@@ -405,7 +405,7 @@ def friends_list_view(request, *args, **kwargs):
         friends.append((friend, auth_user_friend_list.is_mutual_friend(friend)))
 
     allusers = User.objects.exclude(id=request.user.id)
-    all_friend_requests = FriendRequest.objects.filter(receiver=request.user)
+    all_friend_requests = FriendRequest.objects.all()
     user_profile = get_object_or_404(UserProfile, user=request.user)
 
     context = {
@@ -453,7 +453,6 @@ def send_friend_request(request, *args, **kwargs):
 
         if user_id:
             receiver = User.objects.get(pk=user_id)
-
             try:
                 friend_requests = FriendRequest.objects.filter(sender=user, receiver=receiver)
 
@@ -461,19 +460,17 @@ def send_friend_request(request, *args, **kwargs):
                     if friend_request.is_active:
                         result['message'] = "You already sent them a friend request."
                         break
-                    else:
-                        friend_request = FriendRequest(sender=user, receiver=receiver)
-                        friend_request.save()
-                        result['message'] = "Friend request sent."
-                        messages.success(request, f'You have successfully sent a friend request to {friend_request.receiver.userprofile.profile_name}.')
+                else:
+                    friend_request = FriendRequest(sender=user, receiver=receiver)
+                    friend_request.save()
+                    result['message'] = "Friend request sent."
 
             except FriendRequest.DoesNotExist:
                 friend_request = FriendRequest(sender=user, receiver=receiver)
                 friend_request.save()
                 result['message'] = "Friend request sent."
-                messages.success(request, f'You have successfully sent a friend request to {friend_request.receiver.userprofile.profile_name}.')
 
-            if 'response' not in result:
+            if 'message' not in result:
                 result['message'] = "Something went wrong."
         else:
             result['message'] = "Unable to send a friend request."

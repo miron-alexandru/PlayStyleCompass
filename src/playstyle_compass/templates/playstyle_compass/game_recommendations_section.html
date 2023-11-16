@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="{% static 'css/lightbox.min.css' %}">
 {% endblock %}
 
-<div class="game-container" data-game-id="{{ game.id }}" data-reviews-url="{% url 'playstyle_compass:get_game_reviews' game.id %}">
+<div class="game-container" data-game-id="{{ game.id }}" data-reviews-url="{% url 'playstyle_compass:get_game_reviews' game.id %}" data-friend-req="{% url 'users:friend_request' 0 %}">
 <li>
   <div class="game-image">
     {% if game.image %}
