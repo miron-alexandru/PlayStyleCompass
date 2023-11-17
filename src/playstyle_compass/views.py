@@ -149,10 +149,7 @@ def save_platforms(request):
 def clear_preferences(request):
     """Resets the user's gaming preferences."""
     user = request.user
-    try:
-        user_preferences = UserPreferences.objects.get(user=user)
-    except UserPreferences.DoesNotExist:
-        user_preferences = None
+    user_preferences, created = UserPreferences.objects.get_or_create(user=user)
 
     if user_preferences:
         user_preferences.gaming_history = ""
@@ -414,13 +411,14 @@ def edit_review(request, game_id):
 def get_game_reviews(request, game_id):
     """View to get the reviews for a game."""
     game_reviews = Review.objects.filter(game_id=game_id)
+    default_user_id = 'invalid_user'
     reviews_data = [
         {
             "reviewer": review.reviewers,
             "title": review.review_deck,
             "description": review.review_description,
             "score": review.score,
-            "user_id": review.user_id,
+            "user_id": default_user_id if '-' in str(review.user_id) else review.user_id,
         }
         for review in game_reviews
     ]

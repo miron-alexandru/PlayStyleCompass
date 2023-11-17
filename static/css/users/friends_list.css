@@ -9,6 +9,11 @@
   transform: scale(1.01);
 }
 
+.card-title {
+    font-size: 19px;
+    margin-top: 10px;
+}
+
 .friends-text {
     color: green;
     font-size: 14px;
@@ -19,8 +24,8 @@
 
 .friends-text-container {
   background-color: lightgreen;
-  border: 1px solid #4e79a7;
-  border-radius: 13px;
+  border: none;
+  border-radius: 50px;
   padding: 10px;
   display: flex;
   align-items: center;

@@ -23,15 +23,16 @@
           <h5 class="card-title">{{friend.0.userprofile.profile_name}}</h5>
         </div>
 
-        <div class="d-flex flex-row card-right flex-grow-1 justify-content-end mx-2">
-          <button id="id_cancel_{{request.sender.id}}" class="remove-friend-btn" onclick='triggerRemoveFriend("{{friend.0.id}}")'>Unfriend</button>
-        </div>
-
         <div class="d-flex flex-row friends-text-container p-2">
           <p class="friends-text m-auto">
             Friend
           </p>
         </div>
+
+        <div class="d-flex flex-row card-right flex-grow-1 justify-content-end mx-2">
+          <button id="id_cancel_{{request.sender.id}}" class="remove-friend-btn" onclick='triggerRemoveFriend("{{friend.0.id}}")'>Unfriend</button>
+        </div>
+
       </div>
       {% if forloop.counter|divisibleby:2 %}
     </div>
@@ -46,7 +47,6 @@
       {% endif %}
     </div>
   </div>
-
 </div>
 
 <script type="text/javascript">
@@ -58,17 +58,8 @@
     removeFriend(friend_id, onRemoveFriend)
   }
 
-  function onCancelFriendRequest() {
-    location.reload();
-  }
-
-  function triggerCancelFriendRequest(request_id) {
-    cancelFriendRequest(request_id, onCancelFriendRequest)
-  }
-
 </script>
 
 {% include 'snippets/remove_friend.html' %}
-{% include 'snippets/cancel_friend_request.html' %}
 
 {% endblock content %}

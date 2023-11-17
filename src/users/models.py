@@ -77,9 +77,6 @@ class FriendList(models.Model):
         friends_list = FriendList.objects.get(user=removee)
         friends_list.remove_friend(remover_friends_list.user)
 
-    def is_mutual_friend(self, friend):
-        return friend in self.friends.all()
-
 
 class FriendRequest(models.Model):
     """Friend requests model."""
@@ -92,8 +89,12 @@ class FriendRequest(models.Model):
 
     def accept(self):
         receiver_friend_list = FriendList.objects.get(user=self.receiver)
+        sender_friend_list = FriendList.objects.get(user=self.sender)
         if receiver_friend_list:
             receiver_friend_list.add_friend(self.sender)
+
+        if sender_friend_list:
+            sender_friend_list.add_friend(self.receiver)
 
     def decline(self):
         self.is_active = False
@@ -101,4 +102,8 @@ class FriendRequest(models.Model):
 
     def cancel(self):
         self.is_active = False
+        self.save()
+
+    def activate(self):
+        self.is_active = True
         self.save()

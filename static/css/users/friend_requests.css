@@ -10,7 +10,8 @@
 }
 
 .card-title {
-    font-size: 20px;
+    font-size: 19px;
+    margin-top: 10px;
 }
 
 .decline-friend-request {
@@ -22,6 +23,7 @@
   cursor: pointer;
   border-radius: 4px;
   transition: background-color 0.3s ease;
+  font-size: 14px;
 }
 
 .confirm-friend-request {
@@ -33,6 +35,7 @@
   cursor: pointer;
   border-radius: 4px;
   transition: background-color 0.3s ease;
+  font-size: 14px;
 }
 
 .decline-friend-request:hover {
@@ -41,4 +44,17 @@
 
 .confirm-friend-request:hover {
   background-color: #218838;
+}
+
+.sent-friend-requests {
+  margin-top: 25px;
+}
+
+.sent-requests, .incoming-requests {
+  text-align: center;
+  font-size: 19px;
+  color: #2d3e50;
+  margin-bottom: 8px;
+  font-weight: bold;
+  text-transform: uppercase;
 }

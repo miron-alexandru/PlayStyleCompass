@@ -3,9 +3,9 @@
 
 {% block page_header %}
 <div class="header">
-<h3>FRIEND REQUESTS</h3>
+  <h3>FRIEND REQUESTS</h3>
 </div>
-<p class="header-desc">Review and manage incoming friend requests. Accept or decline requests and stay connected with new friends.</p>
+<p class="header-desc">Review and manage incoming and sent friend requests. Stay connected with new friends!</p>
 {% endblock page_header %}
 
 {% block content %}
@@ -14,7 +14,7 @@
 
 <div class="container">
   <div class="card p-2">
-
+    <p class="incoming-requests">Requests received</p>
     {% if friend_requests %}
     <div class="d-flex flex-row flex-wrap">
       {% for request in friend_requests %}
@@ -33,14 +33,45 @@
     </div>
     <div class="d-flex flex-row flex-wrap">
       {% endif %}
-
       {% endfor %}
-
       {% else %}
       <div class="d-flex flex-row flex-grow-1 justify-content-center align-items-center p-4">
-        <p>No results</p>
+        <p>No friend requests received.</p>
       </div>
       {% endif %}
+    </div>
+  </div>
+
+  <div class="sent-friend-requests">
+
+    <div class="card p-2">
+      <p class="sent-requests">Sent by you</p>
+      {% if user_sent_friend_requests %}
+      <div class="d-flex flex-row flex-wrap">
+        {% for request in user_sent_friend_requests %}
+
+        <div class="card flex-row flex-grow-1 p-2 mx-2 my-2 align-items-center">
+          </a>
+          <div class="card-center px-2">
+            <h4 class="card-title">{{request.receiver.userprofile.profile_name}}</h4>
+          </div>
+          </a>
+          <div class="d-flex flex-row card-right flex-grow-1 justify-content-end mx-2">
+            <button id="id_cancel_{{request.receiver.id}}" class="decline-friend-request material-icons p-1" onclick='triggerCancelFriendRequest("{{request.receiver.id}}")'>Cancel</button>
+          </div>
+        </div>
+        {% if forloop.counter|divisibleby:2 %}
+      </div>
+      <div class="d-flex flex-row flex-wrap">
+        {% endif %}
+        {% endfor %}
+        {% else %}
+        <div class="d-flex flex-row flex-grow-1 justify-content-center align-items-center p-4">
+          <p>No friend requests sent.</p>
+        </div>
+        {% endif %}
+      </div>
+
     </div>
   </div>
 
@@ -55,6 +86,10 @@
     location.reload();
   }
 
+  function onCancelFriendRequest() {
+    location.reload();
+  }
+
   function triggerAcceptFriendRequest(friend_request_id) {
     acceptFriendRequest(friend_request_id, onFriendRequestAccepted)
   }
@@ -62,10 +97,15 @@
   function triggerDeclineFriendRequest(friend_request_id) {
     declineFriendRequest(friend_request_id, onFriendRequestDeclined)
   }
+
+  function triggerCancelFriendRequest(request_id) {
+    cancelFriendRequest(request_id, onCancelFriendRequest)
+  }
 </script>
 
 {% include 'snippets/accept_friend_request.html' %}
 {% include 'snippets/decline_friend_request.html' %}
+{% include 'snippets/cancel_friend_request.html' %}
 
 
 {% endblock content %}

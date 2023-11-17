@@ -30,6 +30,13 @@ Websites for .env configuration: [GiantBomb](https://www.giantbomb.com/) / [Send
 <details>
 <summary><h2>PlayStyle Compass Changelog</h2></summary>
 
+### Version v1.4
+* Friends List Implementation:
+**Features:**
+- Send, receive, accept, decline, and cancel friend requests.
+- View incoming and sent requests.
+- Manage Friends List and unfriend users.
+
 ### Version v1.3:
 * Upcoming games added to navbar.
 * Profile name change has a cooldown of 1 hour.

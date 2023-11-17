@@ -45,6 +45,7 @@ from .forms import (
 )
 
 from .models import UserProfile, FriendList, FriendRequest
+from playstyle_compass.models import UserPreferences
 from .tokens import account_activation_token
 
 from django.contrib.auth.tokens import default_token_generator
@@ -85,7 +86,7 @@ class CustomLoginView(LoginView):
     authentication_form = CustomAuthenticationForm
     template_name = "registration/login.html"
 
-
+@login_required
 def activate(request, uidb64, token):
     """Email activation view."""
     try:
@@ -106,7 +107,7 @@ def activate(request, uidb64, token):
 
     return redirect("playstyle_compass:index")
 
-
+@login_required
 def activateEmail(request, user, to_email):
     """Send activation email to users."""
     mail_subject = "Activate your user account."
@@ -134,7 +135,7 @@ def activateEmail(request, user, to_email):
             f"Problem sending email to {to_email}, check if you typed it correctly.",
         )
 
-
+@login_required
 def resend_activation_link(request):
     """Resend email activation link to the user."""
     if request.method != "GET":
@@ -402,22 +403,16 @@ def friends_list_view(request, *args, **kwargs):
     auth_user_friend_list = FriendList.objects.get(user=request.user)
 
     for friend in friend_list.friends.all():
-        friends.append((friend, auth_user_friend_list.is_mutual_friend(friend)))
-
-    allusers = User.objects.exclude(id=request.user.id)
-    all_friend_requests = FriendRequest.objects.all()
-    user_profile = get_object_or_404(UserProfile, user=request.user)
+        friends.append((friend, auth_user_friend_list))
 
     context = {
         "page_title": "Friends List :: PlayStyle Compass",
         "this_user": this_user,
         "friends": friends,
-        "allusers": allusers,
-        "all_friend_requests": all_friend_requests,
     }
-    ### All users and all_friend requests, only for testing # not finished.
 
     return render(request, "account_actions/friends_list.html", context)
+
 
 @login_required
 def friend_requests(request, *args, **kwargs):
@@ -430,6 +425,7 @@ def friend_requests(request, *args, **kwargs):
 
         if account == user:
             friend_requests = FriendRequest.objects.filter(receiver=account, is_active=True)
+            user_sent_friend_requests = FriendRequest.objects.filter(sender=user, is_active=True)
         else:
             return HttpResponse("You can't view another users friend requets.")
     else:
@@ -437,10 +433,12 @@ def friend_requests(request, *args, **kwargs):
 
     context = {
         "page_title": "Friend Requests :: PlayStyle Compass",
-        "friend_requests": friend_requests
+        "friend_requests": friend_requests,
+        "user_sent_friend_requests": user_sent_friend_requests,
     }
 
     return render(request, "account_actions/friend_requests.html", context)
+
 
 @login_required
 def send_friend_request(request, *args, **kwargs):
@@ -451,29 +449,35 @@ def send_friend_request(request, *args, **kwargs):
     if request.method == "POST" and user.is_authenticated:
         user_id = request.POST.get("user_id")
 
-        if user_id:
-            receiver = User.objects.get(pk=user_id)
-            try:
-                friend_requests = FriendRequest.objects.filter(sender=user, receiver=receiver)
+        if user_id and user_id != 'invalid_user':
+            receiver_queryset = User.objects.filter(pk=user_id)
 
-                for friend_request in friend_requests:
-                    if friend_request.is_active:
-                        result['message'] = "You already sent them a friend request."
-                        break
-                else:
+            if receiver_queryset.exists():
+                receiver = receiver_queryset.first()
+
+                try:
+                    friend_requests = FriendRequest.objects.filter(sender=user, receiver=receiver)
+
+                    for friend_request in friend_requests:
+                        if friend_request.is_active:
+                            result['message'] = "You already sent them a friend request."
+                            break
+                    else:
+                        friend_request.activate()
+                        friend_request.save()
+                        result['message'] = "Friend request sent."
+
+                except FriendRequest.DoesNotExist:
                     friend_request = FriendRequest(sender=user, receiver=receiver)
                     friend_request.save()
                     result['message'] = "Friend request sent."
 
-            except FriendRequest.DoesNotExist:
-                friend_request = FriendRequest(sender=user, receiver=receiver)
-                friend_request.save()
-                result['message'] = "Friend request sent."
-
-            if 'message' not in result:
-                result['message'] = "Something went wrong."
+                if 'message' not in result:
+                    result['message'] = "Something went wrong."
+            else:
+                result['message'] = "The user does not exist or has deleted their account."
         else:
-            result['message'] = "Unable to send a friend request."
+            result['message'] = "The user does not exist or has deleted their account."
     else:
         result['message'] = "You must be authenticated to send a friend request."
 
@@ -493,7 +497,8 @@ def accept_friend_request(request, *args, **kwargs):
 
             if friend_request.receiver == user:
                 try:
-                    updated_notification = friend_request.accept()
+                    friend_request.accept()
+                    friend_request.cancel()
                     result['message'] = "Friend request accepted."
                     messages.success(request, f'You are now friends with {friend_request.sender.userprofile.profile_name}.')
                 except Exception as e:
@@ -549,7 +554,7 @@ def decline_friend_request(request, *args, **kwargs):
 
             if friend_request.receiver == user:
                 try:
-                    updated_notification = friend_request.decline()
+                    friend_request.decline()
                     result['message'] = "Friend request declined."
                     messages.success(request, f'You refused to be friends with {friend_request.sender.userprofile.profile_name}.')
                 except Exception as e:
@@ -575,7 +580,6 @@ def cancel_friend_request(request, *args, **kwargs):
 
         if receiver_user_id:
             receiver = get_object_or_404(User, pk=receiver_user_id)
-            print(receiver)
             try:
                 friend_requests = FriendRequest.objects.filter(sender=user, receiver=receiver, is_active=True)
             except FriendRequest.DoesNotExist:
