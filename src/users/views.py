@@ -44,6 +44,7 @@ from .forms import (
     ProfileUpdateForm,
 )
 
+from .misc.helper_functions import are_friends
 from .models import UserProfile, FriendList, FriendRequest
 from playstyle_compass.models import UserPreferences
 from .tokens import account_activation_token
@@ -68,8 +69,12 @@ class ProfileUpdateView(LoginRequiredMixin, UpdateView):
         if last_update_time:
             one_hour_ago = timezone.now() - timedelta(hours=1)
             if last_update_time > one_hour_ago:
-                messages.error(self.request, "You can only update your profile name once per hour.")
-                return redirect(request.META.get('HTTP_REFERER', 'playstyle_compass:index'))
+                messages.error(
+                    self.request, "You can only update your profile name once per hour."
+                )
+                return redirect(
+                    request.META.get("HTTP_REFERER", "playstyle_compass:index")
+                )
 
         return super().dispatch(request, *args, **kwargs)
 
@@ -85,6 +90,7 @@ class CustomLoginView(LoginView):
 
     authentication_form = CustomAuthenticationForm
     template_name = "registration/login.html"
+
 
 @login_required
 def activate(request, uidb64, token):
@@ -106,6 +112,7 @@ def activate(request, uidb64, token):
         messages.error(request, "Activation link is invalid!")
 
     return redirect("playstyle_compass:index")
+
 
 @login_required
 def activateEmail(request, user, to_email):
@@ -134,6 +141,7 @@ def activateEmail(request, user, to_email):
             request,
             f"Problem sending email to {to_email}, check if you typed it correctly.",
         )
+
 
 @login_required
 def resend_activation_link(request):
@@ -393,7 +401,7 @@ def friends_list_view(request, *args, **kwargs):
 
     if not request.user.is_authenticated:
         return HttpResponse("You must be authenticated to view the friends list.")
-    
+
     user_id = kwargs.get("user_id")
     this_user = get_object_or_404(User, pk=user_id)
 
@@ -424,8 +432,12 @@ def friend_requests(request, *args, **kwargs):
         account = User.objects.get(pk=user_id)
 
         if account == user:
-            friend_requests = FriendRequest.objects.filter(receiver=account, is_active=True)
-            user_sent_friend_requests = FriendRequest.objects.filter(sender=user, is_active=True)
+            friend_requests = FriendRequest.objects.filter(
+                receiver=account, is_active=True
+            )
+            user_sent_friend_requests = FriendRequest.objects.filter(
+                sender=user, is_active=True
+            )
         else:
             return HttpResponse("You can't view another users friend requets.")
     else:
@@ -447,41 +459,51 @@ def send_friend_request(request, *args, **kwargs):
     result = {}
 
     if request.method == "POST" and user.is_authenticated:
-        user_id = request.POST.get("user_id")
+        user_id = request.POST.get("user_id", "invalid_user")
 
-        if user_id and user_id != 'invalid_user':
+        if user_id and user_id != "invalid_user":
             receiver_queryset = User.objects.filter(pk=user_id)
 
             if receiver_queryset.exists():
                 receiver = receiver_queryset.first()
 
-                try:
-                    friend_requests = FriendRequest.objects.filter(sender=user, receiver=receiver)
+                if are_friends(user, receiver):
+                    result[
+                        "message"
+                    ] = f"<strong>{receiver.userprofile.profile_name}</strong> is already in your friends list."
+                else:
+                    friend_requests = FriendRequest.objects.filter(
+                        sender=user, receiver=receiver, is_active=True
+                    )
 
-                    for friend_request in friend_requests:
-                        if friend_request.is_active:
-                            result['message'] = "You already sent them a friend request."
-                            break
+                    if friend_requests.exists():
+                        result["message"] = "You already sent them a friend request."
                     else:
-                        friend_request.activate()
-                        friend_request.save()
-                        result['message'] = "Friend request sent."
+                        try:
+                            friend_request = FriendRequest.objects.get(
+                                sender=user, receiver=receiver
+                            )
+                            friend_request.is_active = True
+                            friend_request.save()
+                        except FriendRequest.DoesNotExist:
+                            friend_request = FriendRequest(
+                                sender=user, receiver=receiver, is_active=True
+                            )
+                            friend_request.save()
 
-                except FriendRequest.DoesNotExist:
-                    friend_request = FriendRequest(sender=user, receiver=receiver)
-                    friend_request.save()
-                    result['message'] = "Friend request sent."
-
-                if 'message' not in result:
-                    result['message'] = "Something went wrong."
+                        result["message"] = "Friend request sent."
             else:
-                result['message'] = "The user does not exist or has deleted their account."
+                result[
+                    "message"
+                ] = "The user does not exist or has deleted their account."
+
         else:
-            result['message'] = "The user does not exist or has deleted their account."
+            result["message"] = "The user does not exist or has deleted their account."
     else:
-        result['message'] = "You must be authenticated to send a friend request."
+        result["message"] = "Invalid request method."
 
     return HttpResponse(json.dumps(result), content_type="application/json")
+
 
 @login_required
 def accept_friend_request(request, *args, **kwargs):
@@ -498,17 +520,22 @@ def accept_friend_request(request, *args, **kwargs):
             if friend_request.receiver == user:
                 try:
                     friend_request.accept()
-                    friend_request.cancel()
-                    result['message'] = "Friend request accepted."
-                    messages.success(request, f'You are now friends with {friend_request.sender.userprofile.profile_name}.')
+                    friend_request.delete()
+                    result["message"] = "Friend request accepted."
+                    messages.success(
+                        request,
+                        mark_safe(
+                            f"You are now friends with <strong>{friend_request.sender.userprofile.profile_name}</strong>."
+                        ),
+                    )
                 except Exception as e:
-                    result['message'] = str(e)
+                    result["message"] = str(e)
             else:
-                result['message'] = "That is not your request to accept."
+                result["message"] = "That is not your request to accept."
         else:
-            result['message'] = "Unable to accept that friend request."
+            result["message"] = "Unable to accept that friend request."
     else:
-        result['message'] = "You must be authenticated to accept a friend request."
+        result["message"] = "You must be authenticated to accept a friend request."
 
     return HttpResponse(json.dumps(result), content_type="application/json")
 
@@ -528,14 +555,19 @@ def remove_friend(request, *args, **kwargs):
 
             try:
                 friend_list.unfriend(friend_to_remove)
-                result['message'] = "Successfully removed that friend."
-                messages.success(request, f'You are no longer friends with {friend_to_remove.userprofile.profile_name}')
+                result["message"] = "Successfully removed that friend."
+                messages.success(
+                    request,
+                    mark_safe(
+                        f"You are no longer friends with <strong>{friend_to_remove.userprofile.profile_name}</strong>."
+                    ),
+                )
             except Exception as e:
-                result['message'] = f"Something went wrong: {str(e)}"
+                result["message"] = f"Something went wrong: {str(e)}"
         else:
-            result['message'] = "There was an error. Unable to remove that friend."
+            result["message"] = "There was an error. Unable to remove that friend."
     else:
-        result['message'] = "You must be authenticated to remove a friend."
+        result["message"] = "You must be authenticated to remove a friend."
 
     return HttpResponse(json.dumps(result), content_type="application/json")
 
@@ -555,16 +587,21 @@ def decline_friend_request(request, *args, **kwargs):
             if friend_request.receiver == user:
                 try:
                     friend_request.decline()
-                    result['message'] = "Friend request declined."
-                    messages.success(request, f'You refused to be friends with {friend_request.sender.userprofile.profile_name}.')
+                    result["message"] = "Friend request declined."
+                    messages.success(
+                        request,
+                        mark_safe(
+                            f"You refused to be friends with <strong>{friend_request.sender.userprofile.profile_name}</strong>."
+                        ),
+                    )
                 except Exception as e:
-                    result['message'] = str(e)
+                    result["message"] = str(e)
             else:
-                result['message'] = "That is not your friend request to decline."
+                result["message"] = "That is not your friend request to decline."
         else:
-            result['message'] = "Unable to decline that friend request."
+            result["message"] = "Unable to decline that friend request."
     else:
-        result['message'] = "You must be authenticated to decline a friend request."
+        result["message"] = "You must be authenticated to decline a friend request."
 
     return HttpResponse(json.dumps(result), content_type="application/json")
 
@@ -581,18 +618,25 @@ def cancel_friend_request(request, *args, **kwargs):
         if receiver_user_id:
             receiver = get_object_or_404(User, pk=receiver_user_id)
             try:
-                friend_requests = FriendRequest.objects.filter(sender=user, receiver=receiver, is_active=True)
+                friend_requests = FriendRequest.objects.filter(
+                    sender=user, receiver=receiver, is_active=True
+                )
             except FriendRequest.DoesNotExist:
-                result['message'] = "Nothing to cancel. Friend request does not exist."
+                result["message"] = "Nothing to cancel. Friend request does not exist."
             else:
                 for friend_request in friend_requests:
                     friend_request.cancel()
 
-                result['message'] = "Friend request canceled."
-                messages.success(request, f'You canceled your friend request for {receiver.userprofile.profile_name}.')
+                result["message"] = "Friend request canceled."
+                messages.success(
+                    request,
+                    mark_safe(
+                        f"You canceled your friend request for <strong>{receiver.userprofile.profile_name}</strong>."
+                    ),
+                )
         else:
-            result['message'] = "Unable to cancel that friend request."
+            result["message"] = "Unable to cancel that friend request."
     else:
-        result['message'] = "You must be authenticated to cancel a friend request."
+        result["message"] = "You must be authenticated to cancel a friend request."
 
     return HttpResponse(json.dumps(result), content_type="application/json")

@@ -16,6 +16,7 @@ class GamingPreferencesForm(forms.ModelForm):
 
 class ReviewForm(forms.ModelForm):
     """Form to write a review for a game."""
+
     class Meta:
         model = Review
         fields = ["review_deck", "review_description", "score"]

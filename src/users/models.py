@@ -56,8 +56,13 @@ class ContactMessage(models.Model):
 
 class FriendList(models.Model):
     """Friends list model."""
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="user")
-    friends = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True, related_name="friends") 
+
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="user"
+    )
+    friends = models.ManyToManyField(
+        settings.AUTH_USER_MODEL, blank=True, related_name="friends"
+    )
 
     def __str__(self):
         return self.user.username
@@ -77,11 +82,19 @@ class FriendList(models.Model):
         friends_list = FriendList.objects.get(user=removee)
         friends_list.remove_friend(remover_friends_list.user)
 
+    def is_friend(self, account):
+        return self.friends.filter(pk=account.id).exists()
+
 
 class FriendRequest(models.Model):
     """Friend requests model."""
-    sender = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="sender")
-    receiver = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="receiver")
+
+    sender = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="sender"
+    )
+    receiver = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="receiver"
+    )
     is_active = models.BooleanField(blank=False, null=False, default=True)
 
     def __str__(self):
@@ -103,6 +116,11 @@ class FriendRequest(models.Model):
     def cancel(self):
         self.is_active = False
         self.save()
+
+    def delete(self):
+        self.is_active = False
+        self.save()
+        super().delete()
 
     def activate(self):
         self.is_active = True

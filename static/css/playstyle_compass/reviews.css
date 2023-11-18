@@ -19,8 +19,13 @@
   margin: 10px 0;
 }
 
-.review-description {
+.review-description-container {
+  max-width: 100%;
+}
+
+.review-description, .review-description-full {
   margin: 10px 0;
+  word-break: break-word;
 }
 
 .review-footer {

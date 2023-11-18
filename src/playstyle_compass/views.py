@@ -295,6 +295,7 @@ def top_rated_games(request):
 
     return render(request, "playstyle_compass/top_rated_games.html", context)
 
+
 def upcoming_games(request):
     current_date = date.today()
 
@@ -317,7 +318,7 @@ def paginate_matching_games_query(request, matching_games):
     games_per_page = 10
 
     paginator = Paginator(matching_games, games_per_page)
-    page_number = request.GET.get('page', 1)
+    page_number = request.GET.get("page", 1)
 
     try:
         paginated_games = paginator.page(page_number)
@@ -411,14 +412,16 @@ def edit_review(request, game_id):
 def get_game_reviews(request, game_id):
     """View to get the reviews for a game."""
     game_reviews = Review.objects.filter(game_id=game_id)
-    default_user_id = 'invalid_user'
+    default_user_id = "invalid_user"
     reviews_data = [
         {
             "reviewer": review.reviewers,
             "title": review.review_deck,
             "description": review.review_description,
             "score": review.score,
-            "user_id": default_user_id if '-' in str(review.user_id) else review.user_id,
+            "user_id": default_user_id
+            if "-" in str(review.user_id)
+            else review.user_id,
         }
         for review in game_reviews
     ]

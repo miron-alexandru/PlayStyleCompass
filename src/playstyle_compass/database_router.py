@@ -1,5 +1,6 @@
 """This module contains the database routers."""
 
+
 class GameRouter:
     def db_for_read(self, model, **hints):
         if model._meta.app_label == "playstyle_compass" and model.__name__ == "Game":

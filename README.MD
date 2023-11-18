@@ -31,8 +31,9 @@ Websites for .env configuration: [GiantBomb](https://www.giantbomb.com/) / [Send
 <summary><h2>PlayStyle Compass Changelog</h2></summary>
 
 ### Version v1.4
+* Code refactoring / Bugs solved in reviews description.
+* Friends List improvements: Users are no longer able to send friend requests to users that are already their friends.
 * Friends List Implementation:
-**Features:**
 - Send, receive, accept, decline, and cancel friend requests.
 - View incoming and sent requests.
 - Manage Friends List and unfriend users.

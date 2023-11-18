@@ -77,6 +77,7 @@ class Game(models.Model):
 
 class Review(models.Model):
     """Represents a review for a game."""
+
     game = models.ForeignKey(Game, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     reviewers = models.CharField(max_length=25)
