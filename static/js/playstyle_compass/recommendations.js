@@ -1,19 +1,19 @@
-document.addEventListener("DOMContentLoaded", function() {
-  function hideAllContainers() {
+document.addEventListener("DOMContentLoaded", () => {
+  const hideAllContainers = () => {
     const gameContainers = document.querySelectorAll('.game-recommendations-container');
     gameContainers.forEach(container => {
       container.style.display = 'none';
     });
-  }
+  };
 
-  function showCategoryContainer(category) {
+  const showCategoryContainer = (category) => {
     const selectedContainer = document.querySelector(`.${category}`);
     if (selectedContainer) {
       selectedContainer.style.display = 'block';
     }
-  }
+  };
 
-  function getCategoryAndPageFromURL() {
+  const getCategoryAndPageFromURL = () => {
     const searchParams = new URLSearchParams(window.location.search);
     const category = searchParams.get('category') || 'gaming_history';
     const page = searchParams.get(`${category}_page`) || 1;
@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", function() {
       page,
       sort
     };
-  }
+  };
 
   const {
     category,

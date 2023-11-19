@@ -1,7 +1,7 @@
 $(document).ready(function() {
   $("#save-all-button").click(function(event) {
     event.preventDefault();
-    var successfulSubmissions = 0;
+    let successfulSubmissions = 0;
 
     $("#history-section form, #genres-section form, #platforms-section form").each(function() {
       $.ajax({

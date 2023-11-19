@@ -1,6 +1,7 @@
 """Defines views."""
 
 from datetime import timedelta
+import json
 
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import (
@@ -32,6 +33,7 @@ from django.http import JsonResponse, HttpResponse
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.edit import UpdateView
 from django.urls import reverse, reverse_lazy
+from django.contrib.auth.tokens import default_token_generator
 
 from .forms import (
     CustomRegistrationForm,
@@ -46,15 +48,11 @@ from .forms import (
 
 from .misc.helper_functions import are_friends
 from .models import UserProfile, FriendList, FriendRequest
-from playstyle_compass.models import UserPreferences
 from .tokens import account_activation_token
-
-from django.contrib.auth.tokens import default_token_generator
-from django.contrib.sessions.models import Session
-import json
 
 
 class ProfileUpdateView(LoginRequiredMixin, UpdateView):
+    """View used to update the profile name for users."""
     model = UserProfile
     template_name = "account_actions/profile_name_update.html"
     form_class = ProfileUpdateForm
@@ -541,7 +539,7 @@ def accept_friend_request(request, *args, **kwargs):
 
 
 @login_required
-def remove_friend(request, *args, **kwargs):
+def remove_friend(request):
     """View to remove a friend."""
     user = request.user
     result = {}
@@ -607,7 +605,7 @@ def decline_friend_request(request, *args, **kwargs):
 
 
 @login_required
-def cancel_friend_request(request, *args, **kwargs):
+def cancel_friend_request(request):
     """View to cancel a friend request."""
     user = request.user
     result = {}

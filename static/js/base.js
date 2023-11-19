@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
-  var headerContent = document.getElementById("header-content").innerHTML.trim();
-  var pageHeader = document.querySelector(".page-header");
+  let headerContent = document.getElementById("header-content").innerHTML.trim();
+  let pageHeader = document.querySelector(".page-header");
 
   if (headerContent.length > 0) {
     pageHeader.classList.add("border-bottom");
@@ -8,17 +8,17 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 document.addEventListener('DOMContentLoaded', function() {
-  var closeButtons = document.querySelectorAll('.message .close');
+  let closeButtons = document.querySelectorAll('.message .close');
 
   closeButtons.forEach(function(button) {
     button.addEventListener('click', function() {
-      var alertDiv = button.closest('.alert');
+      let alertDiv = button.closest('.alert');
       alertDiv.classList.add('fade-out');
 
       setTimeout(function() {
         alertDiv.style.display = 'none';
 
-        var visibleAlerts = document.querySelectorAll('.message .alert:not([style="display: none;"])');
+        let visibleAlerts = document.querySelectorAll('.message .alert:not([style="display: none;"])');
 
         if (visibleAlerts.length === 0) {
           document.querySelector('.message').style.display = 'none';

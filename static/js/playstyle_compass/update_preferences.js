@@ -36,10 +36,10 @@ document.addEventListener('DOMContentLoaded', function() {
       });
     });
 
-    function updateCheckboxStates(checkboxes) {
+    const updateCheckboxStates = (checkboxes) => {
       const selectedCount = Array.from(checkboxes).filter((cb) => cb.checked).length;
       checkboxes.forEach((checkbox) => {
         checkbox.disabled = selectedCount >= maxSelections && !checkbox.checked;
       });
-    }
+    };
   });

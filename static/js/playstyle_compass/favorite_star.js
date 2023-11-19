@@ -1,24 +1,27 @@
-$(document).ready(function() {
-  function getCSRFToken() {
-    var cookieValue = null;
-    if (document.cookie && document.cookie !== '') {
-      var cookies = document.cookie.split(';');
-      for (var i = 0; i < cookies.length; i++) {
-        var cookie = cookies[i].trim();
-        if (cookie.substring(0, 10) === 'csrftoken=') {
-          cookieValue = decodeURIComponent(cookie.substring(10));
-          break;
-        }
-      }
+const getCookie = (name) => {
+  const cookieString = document.cookie;
+  const cookies = cookieString.split('; ');
+
+  for (const cookie of cookies) {
+    const [cookieName, cookieValue] = cookie.split('=');
+    if (cookieName === name) {
+      return decodeURIComponent(cookieValue);
     }
-    return cookieValue;
   }
 
+  return null;
+};
+
+$(document).ready(() => {
+  const getCSRFToken = () => {
+    return getCookie('csrftoken');
+  };
+
   $('.favorite-toggle').on('click', function() {
-    var gameID = $(this).data('game-id');
-    var icon = $(this).find('i');
-    var isFavorite = $(this).data('is-favorite');
-    var csrfToken = getCSRFToken();
+    let gameID = $(this).data('game-id');
+    let icon = $(this).find('i');
+    let isFavorite = $(this).data('is-favorite');
+    let csrfToken = getCSRFToken();
 
     $.ajax({
       type: 'POST',

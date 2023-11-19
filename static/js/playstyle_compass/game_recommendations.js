@@ -1,15 +1,15 @@
 document.querySelectorAll(".overview").forEach(function(truncatedText) {
-    var fullText = truncatedText.parentNode.querySelector(".full-text");
-    var readButton = truncatedText.parentNode.querySelector(".read-button");
+    let fullText = truncatedText.parentNode.querySelector(".full-text");
+    let readButton = truncatedText.parentNode.querySelector(".read-button");
     if (truncatedText.innerHTML === fullText.innerHTML) {
       readButton.style.display = "none";
     }
   });
 
   function readMore(button) {
-    var parent = button.parentNode;
-    var truncatedText = parent.querySelector(".overview");
-    var fullText = parent.querySelector(".full-text");
+    let parent = button.parentNode;
+    let truncatedText = parent.querySelector(".overview");
+    let fullText = parent.querySelector(".full-text");
 
     if (truncatedText.style.display === "none") {
       truncatedText.style.display = "inline";

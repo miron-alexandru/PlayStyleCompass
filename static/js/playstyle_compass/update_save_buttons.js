@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', () => {
   const maxSelections = 3;
   const gamingHistoryInput = document.getElementById('gaming_history');
   const historySaveButton = document.getElementById('save-history-button');
@@ -9,27 +9,25 @@ document.addEventListener('DOMContentLoaded', function() {
   const favoriteGenreCheckboxes = document.querySelectorAll('input[name="favorite_genres"]');
   const favoritePlatformCheckboxes = document.querySelectorAll('input[name="platforms"]');
 
-  function updateSaveButtons() {
-    function hasValue(inputElement) {
-      return inputElement.value.trim() !== '';
-    }
+  const hasValue = (inputElement) => inputElement.value.trim() !== '';
 
-    function hasSelectedCheckboxes(checkboxes, maxSelections) {
-      const selectedCheckboxes = Array.from(checkboxes).filter(cb => cb.checked);
-      return selectedCheckboxes.length >= 1 && selectedCheckboxes.length <= maxSelections;
-    }
+  const hasSelectedCheckboxes = (checkboxes, maxSelections) => {
+    const selectedCheckboxes = Array.from(checkboxes).filter(cb => cb.checked);
+    return selectedCheckboxes.length >= 1 && selectedCheckboxes.length <= maxSelections;
+  };
 
-    function isAnyCheckboxListEmpty(checkboxLists) {
-      return Array.from(checkboxLists).some(checkboxList => {
-        return Array.from(checkboxList).every(cb => !cb.checked);
-      });
-    }
+  const isAnyCheckboxListEmpty = (checkboxLists) => {
+    return Array.from(checkboxLists).some(checkboxList => {
+      return Array.from(checkboxList).every(cb => !cb.checked);
+    });
+  };
 
-    function isValidGamingHistory(inputElement) {
-      const regex = /^[A-Za-z0-9\s]+$/;
-      return regex.test(inputElement.value);
-    }
+  const isValidGamingHistory = (inputElement) => {
+    const regex = /^[A-Za-z0-9\s]+$/;
+    return regex.test(inputElement.value);
+  };
 
+  const updateSaveButtons = () => {
     historySaveButton.disabled = !hasValue(gamingHistoryInput) || !isValidGamingHistory(gamingHistoryInput);
     genresSaveButton.disabled = !hasSelectedCheckboxes(favoriteGenreCheckboxes, maxSelections);
     platformsSaveButton.disabled = !hasSelectedCheckboxes(favoritePlatformCheckboxes, maxSelections);
@@ -40,15 +38,15 @@ document.addEventListener('DOMContentLoaded', function() {
       hasSelectedCheckboxes(favoritePlatformCheckboxes, maxSelections) &&
       !isAnyCheckboxListEmpty([favoriteGenreCheckboxes, favoritePlatformCheckboxes])
     );
-  }
+  };
 
-  function addEventListenerToCheckboxes(checkboxes) {
+  const addEventListenerToCheckboxes = (checkboxes) => {
     checkboxes.forEach(checkbox => {
       checkbox.addEventListener('change', () => {
         updateSaveButtons();
       });
     });
-  }
+  };
 
   gamingHistoryInput.addEventListener('input', updateSaveButtons);
   

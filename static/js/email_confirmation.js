@@ -2,8 +2,7 @@ $(document).ready(function() {
     $("#resend-link").click(function(e) {
         e.preventDefault();
 
-        // Retrieve the URL from the data-url attribute
-        var url = $(this).data("url");
+        let url = $(this).data("url");
 
         $.get(url, function(data) {
             if (data.success) {

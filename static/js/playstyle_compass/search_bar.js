@@ -27,7 +27,7 @@ function fillSearchBar(value) {
 }
 
 searchResults.addEventListener('click', function (event) {
-  const target = event.target;
+  const {target} = event;
   if (target.classList.contains('result')) {
     const clickedTitle = target.textContent;
     fillSearchBar(clickedTitle);
