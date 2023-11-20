@@ -5,14 +5,6 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 
-from django.contrib.contenttypes.fields import GenericRelation
-from django.contrib.contenttypes.models import ContentType
-from django.db import models
-from django.conf import settings
-from django.utils import timezone
-from django.db.models.signals import post_save
-from django.dispatch import receiver
-
 
 class UserProfile(models.Model):
     """User profile model."""
@@ -68,21 +60,25 @@ class FriendList(models.Model):
         return self.user.username
 
     def add_friend(self, account):
-        if not account in self.friends.all():
+        """Add a friend to the friends list."""
+        if account not in self.friends.all():
             self.friends.add(account)
             self.save()
 
     def remove_friend(self, account):
+        """Remove a friend from the friends list."""
         if account in self.friends.all():
             self.friends.remove(account)
 
     def unfriend(self, removee):
+        """Unfriend someone from the friends list."""
         remover_friends_list = self
         remover_friends_list.remove_friend(removee)
         friends_list = FriendList.objects.get(user=removee)
         friends_list.remove_friend(remover_friends_list.user)
 
     def is_friend(self, account):
+        """Check if an user is a friend."""
         return self.friends.filter(pk=account.id).exists()
 
 
@@ -101,6 +97,7 @@ class FriendRequest(models.Model):
         return self.sender.username
 
     def accept(self):
+        """Accept a friend request."""
         receiver_friend_list = FriendList.objects.get(user=self.receiver)
         sender_friend_list = FriendList.objects.get(user=self.sender)
         if receiver_friend_list:
@@ -110,18 +107,22 @@ class FriendRequest(models.Model):
             sender_friend_list.add_friend(self.receiver)
 
     def decline(self):
+        """Decline friend request."""
         self.is_active = False
         self.save()
 
     def cancel(self):
+        """Cancel friend request."""
         self.is_active = False
         self.save()
 
     def delete(self):
+        """Delete friend request."""
         self.is_active = False
         self.save()
         super().delete()
 
     def activate(self):
+        """Activate a friend request."""
         self.is_active = True
         self.save()

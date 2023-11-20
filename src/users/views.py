@@ -12,6 +12,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.core.mail import send_mail
+from django.core.exceptions import ObjectDoesNotExist
 from django.conf import settings
 from django.contrib.auth.views import LoginView
 
@@ -62,9 +63,7 @@ class ProfileUpdateView(LoginRequiredMixin, UpdateView):
         return self.request.user.userprofile
 
     def dispatch(self, request, *args, **kwargs):
-        last_update_time = self.request.user.userprofile.name_last_update_time
-
-        if last_update_time:
+        if last_update_time := self.request.user.userprofile.name_last_update_time:
             one_hour_ago = timezone.now() - timedelta(hours=1)
             if last_update_time > one_hour_ago:
                 messages.error(
@@ -82,7 +81,6 @@ class ProfileUpdateView(LoginRequiredMixin, UpdateView):
         self.object.save()
         return super().form_valid(form)
 
-
 class CustomLoginView(LoginView):
     """Cusotm user login view."""
 
@@ -96,7 +94,7 @@ def activate(request, uidb64, token):
     try:
         uid = force_str(urlsafe_base64_decode(uidb64))
         user = User.objects.get(pk=uid)
-    except Exception:
+    except ObjectDoesNotExist:
         user = None
 
     if user is not None and account_activation_token.check_token(user, token):
@@ -110,7 +108,6 @@ def activate(request, uidb64, token):
         messages.error(request, "Activation link is invalid!")
 
     return redirect("playstyle_compass:index")
-
 
 @login_required
 def activateEmail(request, user, to_email):
@@ -162,28 +159,32 @@ def register(request):
         form = CustomRegistrationForm(data=request.POST)
 
         if form.is_valid():
-            new_user = form.save(commit=False)
-            new_user.save()
-
-            user_profile = UserProfile(
-                user=new_user,
-                profile_name=form.cleaned_data["profile_name"],
-            )
-
-            user_profile.save()
-            new_user.save()
-
-            activateEmail(request, new_user, form.cleaned_data.get("email"))
-            login(request, new_user)
-
-            return redirect("playstyle_compass:index")
-
+            return register_user(form, request)
     else:
         form = CustomRegistrationForm()
 
     context = {"form": form, "page_title": "Register :: PlayStyle Compass"}
 
     return render(request, "registration/register.html", context)
+
+
+def register_user(form, request):
+    """Function to successfully register an user."""
+    new_user = form.save(commit=False)
+    new_user.save()
+
+    user_profile = UserProfile(
+        user=new_user,
+        profile_name=form.cleaned_data["profile_name"],
+    )
+
+    user_profile.save()
+    new_user.save()
+
+    login(request, new_user)
+    activateEmail(request, new_user, form.cleaned_data.get("email"))
+
+    return redirect("playstyle_compass:index")
 
 
 @login_required
@@ -249,17 +250,16 @@ def change_email(request):
 
 def confirm_email_change(request, uidb64, token):
     """View for email change confirmation."""
-    if "email_change_token" in request.session:
+    if "email_change_token" in request.session and request.session["email_change_token"] == token:
         user = request.user
 
-        if request.session["email_change_token"] == token:
-            user.email = request.session["email_change_temp"]
-            user.save()
+        user.email = request.session["email_change_temp"]
+        user.save()
 
-            del request.session["email_change_temp"]
-            del request.session["email_change_token"]
+        del request.session["email_change_temp"]
+        del request.session["email_change_token"]
 
-            return redirect("users:change_email_success")
+        return redirect("users:change_email_success")
 
     return HttpResponse("Invalid token for email change.")
 
@@ -360,25 +360,30 @@ def contact(request):
     if request.method == "POST":
         form = ContactForm(request.POST)
         if form.is_valid():
-            contact_message = form.save()
-            subject = "New Conctat Us Submission"
-            message = f"""
-                Name: {contact_message.name}
-                Email: {contact_message.email}
-                Subject: {contact_message.subject}
-                Message: {contact_message.message}
-                Time: {contact_message.formatted_timestamp()}
-            """
-            from_email = settings.DEFAULT_FROM_EMAIL
-            recipient_list = [settings.EMAIL_USER_CONTACT]
-            send_mail(subject, message, from_email, recipient_list, fail_silently=False)
-            return redirect("users:contact_success")
+            return send_contact_form(form)
     else:
         form = ContactForm()
 
     context = {"form": form, "page_title": "Contact Us :: PlayStyle Compass"}
 
     return render(request, "account_actions/contact.html", context)
+
+
+def send_contact_form(form):
+    """Function to send a contact form."""
+    contact_message = form.save()
+    subject = "New Conctat Us Submission"
+    message = f"""
+                Name: {contact_message.name}
+                Email: {contact_message.email}
+                Subject: {contact_message.subject}
+                Message: {contact_message.message}
+                Time: {contact_message.formatted_timestamp()}
+            """
+    from_email = settings.DEFAULT_FROM_EMAIL
+    recipient_list = [settings.EMAIL_USER_CONTACT]
+    send_mail(subject, message, from_email, recipient_list, fail_silently=False)
+    return redirect("users:contact_success")
 
 
 def contact_success(request):
@@ -404,13 +409,11 @@ def friends_list_view(request, *args, **kwargs):
     this_user = get_object_or_404(User, pk=user_id)
 
     friend_list, created = FriendList.objects.get_or_create(user=this_user)
-    friends = []
-
     auth_user_friend_list = FriendList.objects.get(user=request.user)
 
-    for friend in friend_list.friends.all():
-        friends.append((friend, auth_user_friend_list))
-
+    friends = [
+        (friend, auth_user_friend_list) for friend in friend_list.friends.all()
+    ]
     context = {
         "page_title": "Friends List :: PlayStyle Compass",
         "this_user": this_user,
@@ -421,26 +424,24 @@ def friends_list_view(request, *args, **kwargs):
 
 
 @login_required
-def friend_requests(request, *args, **kwargs):
+def friend_requests_view(request, *args, **kwargs):
     """View to see all friend requests."""
     user = request.user
 
-    if user.is_authenticated:
-        user_id = kwargs.get("user_id")
-        account = User.objects.get(pk=user_id)
-
-        if account == user:
-            friend_requests = FriendRequest.objects.filter(
-                receiver=account, is_active=True
-            )
-            user_sent_friend_requests = FriendRequest.objects.filter(
-                sender=user, is_active=True
-            )
-        else:
-            return HttpResponse("You can't view another users friend requets.")
-    else:
+    if not user.is_authenticated:
         return redirect("playstyle_compass:index")
 
+    user_id = kwargs.get("user_id")
+    account = User.objects.get(pk=user_id)
+
+    if account != user:
+        return HttpResponse("You can't view another users friend requets.")
+    friend_requests = FriendRequest.objects.filter(
+        receiver=account, is_active=True
+    )
+    user_sent_friend_requests = FriendRequest.objects.filter(
+        sender=user, is_active=True
+    )
     context = {
         "page_title": "Friend Requests :: PlayStyle Compass",
         "friend_requests": friend_requests,
@@ -510,9 +511,7 @@ def accept_friend_request(request, *args, **kwargs):
     result = {}
 
     if request.method == "GET" and user.is_authenticated:
-        friend_request_id = kwargs.get("friend_request_id")
-
-        if friend_request_id:
+        if friend_request_id := kwargs.get("friend_request_id"):
             friend_request = get_object_or_404(FriendRequest, pk=friend_request_id)
 
             if friend_request.receiver == user:
@@ -545,9 +544,7 @@ def remove_friend(request):
     result = {}
 
     if request.method == "POST" and user.is_authenticated:
-        receiver_user_id = request.POST.get("receiver_user_id")
-
-        if receiver_user_id:
+        if receiver_user_id := request.POST.get("receiver_user_id"):
             friend_to_remove = get_object_or_404(User, pk=receiver_user_id)
             friend_list = get_object_or_404(FriendList, user=user)
 
@@ -561,7 +558,7 @@ def remove_friend(request):
                     ),
                 )
             except Exception as e:
-                result["message"] = f"Something went wrong: {str(e)}"
+                result["message"] = str(e)
         else:
             result["message"] = "There was an error. Unable to remove that friend."
     else:
@@ -577,9 +574,7 @@ def decline_friend_request(request, *args, **kwargs):
     result = {}
 
     if request.method == "GET" and user.is_authenticated:
-        friend_request_id = kwargs.get("friend_request_id")
-
-        if friend_request_id:
+        if friend_request_id := kwargs.get("friend_request_id"):
             friend_request = get_object_or_404(FriendRequest, pk=friend_request_id)
 
             if friend_request.receiver == user:
@@ -611,9 +606,7 @@ def cancel_friend_request(request):
     result = {}
 
     if request.method == "POST" and user.is_authenticated:
-        receiver_user_id = request.POST.get("receiver_user_id")
-
-        if receiver_user_id:
+        if receiver_user_id := request.POST.get("receiver_user_id"):
             receiver = get_object_or_404(User, pk=receiver_user_id)
             try:
                 friend_requests = FriendRequest.objects.filter(

@@ -70,12 +70,14 @@ class CustomRegistrationForm(UserCreationForm):
         ]
 
     def clean_email(self):
+        """Clean email."""
         email = self.cleaned_data["email"]
         if User.objects.filter(email=email).exists():
             raise forms.ValidationError("This email address is already in use.")
         return email
 
     def clean_profile_name(self):
+        """Clean profile name."""
         profile_name = self.cleaned_data["profile_name"]
         if UserProfile.objects.filter(profile_name=profile_name).exists():
             raise forms.ValidationError("This profile name is already in use.")
@@ -127,12 +129,14 @@ class EmailChangeForm(forms.ModelForm):
         super(EmailChangeForm, self).__init__(*args, **kwargs)
 
     def clean_current_password(self):
+        """Clean current password."""
         current_password = self.cleaned_data["current_password"]
         if not self.user.check_password(current_password):
             raise forms.ValidationError("Current password is incorrect.")
         return current_password
 
     def clean_new_email(self):
+        """Clean new email."""
         new_email = self.cleaned_data.get("new_email")
 
         if new_email:
@@ -147,6 +151,7 @@ class EmailChangeForm(forms.ModelForm):
         return new_email
 
     def clean_confirm_email(self):
+        """Clean confirm email."""
         confirm_email = self.cleaned_data["confirm_email"]
         new_email = self.cleaned_data.get("new_email")
 
@@ -157,6 +162,7 @@ class EmailChangeForm(forms.ModelForm):
 
 
 class CustomPasswordChangeForm(PasswordChangeForm):
+    """Password change form."""
     old_password = forms.CharField(
         label="Current Password",
         widget=forms.PasswordInput(attrs={"class": "form-control"}),
@@ -173,13 +179,15 @@ class CustomPasswordChangeForm(PasswordChangeForm):
     )
 
     def clean_new_password1(self):
-        password1 = self.cleaned_data.get("new_password1")
-        if len(password1) < 8:
-            raise forms.ValidationError("Password must be at least 8 characters long.")
-        return password1
+        """Clean new password."""
+        return self.clean_passwords("new_password1")
 
     def clean_new_password2(self):
-        password1 = self.cleaned_data.get("new_password2")
+        """Clean new password confirmation."""
+        return self.clean_passwords("new_password2")
+
+    def clean_passwords(self, arg0):
+        password1 = self.cleaned_data.get(arg0)
         if len(password1) < 8:
             raise forms.ValidationError("Password must be at least 8 characters long.")
         return password1
@@ -222,6 +230,7 @@ class ContactForm(forms.ModelForm):
 
 
 class ProfileUpdateForm(forms.ModelForm):
+    """Profile name update form."""
     profile_name = forms.CharField(
         max_length=15,
         required=True,
@@ -233,6 +242,7 @@ class ProfileUpdateForm(forms.ModelForm):
         fields = ["profile_name"]
 
     def clean_profile_name(self):
+        """Clean profile name."""
         profile_name = self.cleaned_data.get("profile_name")
         if (
             UserProfile.objects.filter(profile_name=profile_name)

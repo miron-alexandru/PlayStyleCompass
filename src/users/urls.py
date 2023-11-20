@@ -60,7 +60,7 @@ urlpatterns = [
         views.cancel_friend_request,
         name="friend_request_cancel",
     ),
-    path("friend_requests/<user_id>/", views.friend_requests, name="friend_requests"),
+    path("friend_requests/<user_id>/", views.friend_requests_view, name="friend_requests"),
     path(
         "friend_request_accept/<friend_request_id>/",
         views.accept_friend_request,
