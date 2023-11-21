@@ -35,4 +35,6 @@ urlpatterns = [
         name="edit_review",
     ),
     path("upcoming_games/", views.upcoming_games, name="upcoming_games"),
+    path("toggle_game_queue/", views.toggle_game_queue, name="toggle_game_queue"),
+    path("game_queue/", views.game_queue, name="game_queue"),
 ]

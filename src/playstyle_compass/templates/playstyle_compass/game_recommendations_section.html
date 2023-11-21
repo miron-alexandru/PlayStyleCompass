@@ -8,67 +8,78 @@
 {% endblock %}
 
 <div class="game-container" data-game-id="{{ game.id }}" data-reviews-url="{% url 'playstyle_compass:get_game_reviews' game.id %}" data-friend-req="{% url 'users:friend_request' 0 %}">
-<li>
-  <div class="game-image">
-    {% if game.image %}
-    <span>Rating:</span><span class="star-rating"><span class="score-hidden" style="display: none">{{ game.average_score }}</span></span> <small><span>({{ game.total_reviews }} {{ game.total_reviews|pluralize_reviews }})</span></small></p>
-    <img src="{{ game.image }}" alt="Game Image">
-    {% else %}
-    <p><strong>Image not available</strong></p>
-    {% endif %}
-  </div>
-  <div class="game-info">
-    <h4>{{ game.title|default:"Game Title not available" }}</h4>
-    <p>{{ game.description|default:"Game description not available" }}</p>
-    <p><strong>Release date:</strong> {{ game.release_date|default:"N/A"}}</p>
-    <p><strong>Developer:</strong> {{ game.developers|default:"N/A"}}</p>
-    <p><strong>Genres:</strong> {{ game.genres|default:"N/A" }}</p>
-    <p><strong>Platforms:</strong> {{ game.platforms|default:"N/A" }}</p>
-    <p><strong>Themes:</strong> {{ game.themes|default:"N/A" }}</p>
-    <p><strong>Similar games:</strong> {{ game.similar_games|default:"N/A"}}</p>
-    <p><strong>Overview:</strong>
-      <span class="overview">{{ game.overview|default:"N/A"|truncatewords_html:"50" }}</span>
-      <span class="full-text" style="display: none;">{{ game.overview|default:"N/A" }}</span>
-      <button class="read-button" onclick="readMore(this);">[Read more...]</button>
-    </p>
-    <p>
-      <strong>Images:</strong>
-      <span><small>(Click on the image to open gallery)</small></span>
-    </p>
-    {% if game.game_images %}
-    <div class="image-gallery">
-      {% with game_images=game.game_images|split_by_comma %}
-      {% for game_image in game_images %}
-      {% if forloop.counter == 1 %}
-      <a href="{{ game_image }}" data-lightbox="game-images-{{ game.id }}" class="gallery-image">
-        <img src="{{ game_image }}" alt="Game Image">
-      </a>
+  <li>
+    <div class="game-image">
+      {% if game.image %}
+      <span>Rating:</span><span class="star-rating"><span class="score-hidden" style="display: none">{{ game.average_score }}</span></span> <small><span>({{ game.total_reviews }} {{ game.total_reviews|pluralize_reviews }})</span></small></p>
+      <img src="{{ game.image }}" alt="Game Image">
       {% else %}
-      <a href="{{ game_image }}" data-lightbox="game-images-{{ game.id }}" style="display: none;">
-        <img src="{{ game_image }}" alt="Game Image">
-      </a>
+      <p><strong>Image not available</strong></p>
       {% endif %}
-      {% endfor %}
-      {% endwith %}
     </div>
-    {% else %}
-    <p><strong>Images not available</strong></p>
-    {% endif %}
-    <div class="reviews-section">
-      <p><strong>Reviews:</strong></p>
-      <button class="show-hide-button" data-game-id="{{ game.id }}">Show Reviews</button> <a href="{% url 'playstyle_compass:add_review' game.id %}?next={{ request.get_full_path }}" class="add-review-btn">Write a Review</a> <a href="{% url 'playstyle_compass:delete_reviews' game.id %}?next={{ request.get_full_path }}" class="delete-review-btn">Delete your Review</a> <a href="{% url 'playstyle_compass:edit_review' game.id %}?next={{ request.get_full_path }}" class="edit-review-btn">Edit your Review</a>
-      <div class="reviews-list" style="display: none;">
+    <div class="game-info">
+      <h4>{{ game.title|default:"Game Title not available" }}</h4>
+      <p>{{ game.description|default:"Game description not available" }}</p>
+      <p><strong>Release date:</strong> {{ game.release_date|default:"N/A"}}</p>
+      <p><strong>Developer:</strong> {{ game.developers|default:"N/A"}}</p>
+      <p><strong>Genres:</strong> {{ game.genres|default:"N/A" }}</p>
+      <p><strong>Platforms:</strong> {{ game.platforms|default:"N/A" }}</p>
+      <p><strong>Themes:</strong> {{ game.themes|default:"N/A" }}</p>
+      <p><strong>Similar games:</strong> {{ game.similar_games|default:"N/A"}}</p>
+      <p><strong>Overview:</strong>
+        <span class="overview">{{ game.overview|default:"N/A"|truncatewords_html:"50" }}</span>
+        <span class="full-text" style="display: none;">{{ game.overview|default:"N/A" }}</span>
+        <button class="read-button" onclick="readMore(this);">[Read more...]</button>
+      </p>
+      <p>
+        <strong>Images:</strong>
+        <span><small>(Click on the image to open gallery)</small></span>
+      </p>
+      {% if game.game_images %}
+      <div class="image-gallery">
+        {% with game_images=game.game_images|split_by_comma %}
+        {% for game_image in game_images %}
+        {% if forloop.counter == 1 %}
+        <a href="{{ game_image }}" data-lightbox="game-images-{{ game.id }}" class="gallery-image">
+          <img src="{{ game_image }}" alt="Game Image">
+        </a>
+        {% else %}
+        <a href="{{ game_image }}" data-lightbox="game-images-{{ game.id }}" style="display: none;">
+          <img src="{{ game_image }}" alt="Game Image">
+        </a>
+        {% endif %}
+        {% endfor %}
+        {% endwith %}
+      </div>
+      {% else %}
+      <p><strong>Images not available</strong></p>
+      {% endif %}
+      <div class="reviews-section">
+        <p><strong>Reviews:</strong></p>
+        <button class="show-hide-button" data-game-id="{{ game.id }}">Show Reviews</button> <a href="{% url 'playstyle_compass:add_review' game.id %}?next={{ request.get_full_path }}" class="add-review-btn">Write a Review</a> <a href="{% url 'playstyle_compass:delete_reviews' game.id %}?next={{ request.get_full_path }}" class="delete-review-btn">Delete your Review</a> <a href="{% url 'playstyle_compass:edit_review' game.id %}?next={{ request.get_full_path }}" class="edit-review-btn">Edit your Review</a>
+        <div class="reviews-list" style="display: none;">
+        </div>
       </div>
     </div>
-  </div>
-  <span class="favorite-toggle" data-game-id="{{ game.id }}">
+    <span class="favorite-toggle" data-game-id="{{ game.id }}" title="Add to Favorites">
   {% if game.id|is_favorite:user_preferences.favorite_games %}
     <i class="fas fa-star" id="star-{{ game.id }}"></i>
   {% else %}
     <i class="far fa-star" id="star-{{ game.id }}"></i>
   {% endif %}
 </span>
-</li>
+
+    <span class="icon-divider">|</span>
+
+    <span class="queue-toggle" data-game-id="{{ game.id }}" title="Add to Games Queue">
+  {% if game.id|in_queue:user_preferences.game_queue %}
+    <i class="fa-solid fa-clock" id="queue-{{ game.id }}"></i>
+  {% else %}
+    <i class="fa-regular fa-clock" id="queue-{{ game.id }}"></i>
+  {% endif %}
+</span>
+
+  </li>
 </div>
 
 <script src="{% static 'js/lightbox-plus-jquery.min.js' %}"></script>

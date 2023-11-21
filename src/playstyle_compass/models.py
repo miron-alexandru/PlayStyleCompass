@@ -25,8 +25,10 @@ class UserPreferences(models.Model):
     platforms = models.CharField(max_length=255, blank=True)
     favorite_games = models.CharField(max_length=255, blank=True)
     upcoming_games = models.CharField(max_length=255, blank=True)
+    game_queue = models.CharField(max_length=255, blank=True)
 
     def add_favorite_game(self, game_id):
+        """Add a game to favorites."""
         favorite_games_list = self.favorite_games.split(",")
         if str(game_id) not in favorite_games_list:
             favorite_games_list.append(str(game_id))
@@ -34,6 +36,7 @@ class UserPreferences(models.Model):
             self.save()
 
     def remove_favorite_game(self, game_id):
+        """Remove a game from favorites."""
         favorite_games_list = self.favorite_games.split(",")
         if str(game_id) in favorite_games_list:
             favorite_games_list.remove(str(game_id))
@@ -41,11 +44,36 @@ class UserPreferences(models.Model):
             self.save()
 
     def get_favorite_games(self):
+        """Get the favorite games."""
         favorite_games_list = self.favorite_games.split(",")
         favorite_games_ids = [
             int(game_id.strip()) for game_id in favorite_games_list if game_id.strip()
         ]
         return favorite_games_ids
+
+    def add_game_to_queue(self, game_id):
+        """Add a game to queue."""
+        game_queue_list = self.game_queue.split(",")
+        if str(game_id) not in game_queue_list:
+            game_queue_list.append(str(game_id))
+            self.game_queue = ",".join(game_queue_list)
+            self.save()
+
+    def remove_game_from_queue(self, game_id):
+        """Remove a game from queue."""
+        game_queue_list = self.game_queue.split(",")
+        if str(game_id) in game_queue_list:
+            game_queue_list.remove(str(game_id))
+            self.game_queue = ",".join(game_queue_list)
+            self.save()
+
+    def get_game_queue(self):
+        """Get games queue."""
+        game_queue_list = self.game_queue.split(",")
+        game_queue_ids = [
+            int(game_id.strip()) for game_id in game_queue_list if game_id.strip()
+        ]
+        return game_queue_ids
 
     def __str__(self):
         return self.user.username

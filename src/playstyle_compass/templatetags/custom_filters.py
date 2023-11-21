@@ -43,6 +43,12 @@ def is_favorite(game_id, user_favorites):
         return True
     return False
 
+@register.filter(name="in_queue")
+def in_queue(game_id, user_queue):
+    if str(game_id) in user_queue.split(","):
+        return True
+    return False
+
 
 @register.simple_tag
 def zip_lists(reviewers, review_deck, review_text, score):

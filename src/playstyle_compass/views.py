@@ -254,30 +254,56 @@ def toggle_favorite(request):
 
         return JsonResponse({"is_favorite": is_favorite})
 
+@login_required
+def toggle_game_queue(request):
+    """View for toggling a game's queued status for the current user."""
+    if request.method == "POST":
+        game_id = request.POST.get("game_id")
+        user = request.user
+        user_preferences = UserPreferences.objects.get(user=user)
+
+        game_queue = user_preferences.get_game_queue()
+
+        if int(game_id) in game_queue:
+            user_preferences.remove_game_from_queue(game_id)
+            in_queue = False
+        else:
+            user_preferences.add_game_to_queue(game_id)
+            in_queue = True
+
+        return JsonResponse({"in_queue": in_queue})
+
 
 @login_required
 def favorite_games(request):
-    """View for displaying a user's list of favorite games."""
+    return _get_games_view(request, "Favorites :: PlayStyle Compass", "favorite_games", "playstyle_compass/favorite_games.html")
+
+@login_required
+def game_queue(request):
+    return _get_games_view(request, "Game Queue :: PlayStyle Compass", "game_queue", "playstyle_compass/game_queue.html")
+
+def _get_games_view(request, page_title, list_name, template_name):
+    """Helper view function to get games in a similar way for different pages."""
     user = request.user
 
     try:
         user_preferences = UserPreferences.objects.get(user=user)
-        favorite_games_list = user_preferences.get_favorite_games()
+        game_list = getattr(user_preferences, f"get_{list_name}")()
     except ObjectDoesNotExist:
         user_preferences = UserPreferences.objects.create(user=user)
-        favorite_games_list = []
+        game_list = []
 
-    games = Game.objects.filter(id__in=favorite_games_list)
+    games = Game.objects.filter(id__in=game_list)
     games = calculate_game_scores(games)
 
     context = {
-        "page_title": "Favorites :: PlayStyle Compass",
+        "page_title": page_title,
         "user_preferences": user_preferences,
-        "favorite_games": favorite_games_list,
+        list_name: game_list,
         "games": games,
     }
 
-    return render(request, "playstyle_compass/favorite_games.html", context)
+    return render(request, template_name, context)
 
 
 def top_rated_games(request):

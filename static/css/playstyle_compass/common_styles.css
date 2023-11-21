@@ -49,7 +49,7 @@
   box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
 }
 
-.favorite-games li, .top-games li, .results li {
+.favorite-games li, .top-games li, .results li, .games-queue li {
   display: flex;
   align-items: start;
   border: 1px solid #ddd;
@@ -67,4 +67,9 @@
 .review-message {
   padding: 5px;
   font-size: 17px;
+}
+
+.icon-divider {
+  margin: 0px 6px 0px 5px;
+  color: #ccc;
 }
