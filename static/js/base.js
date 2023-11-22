@@ -29,32 +29,38 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 
-document.getElementById('profile-picture-upload').addEventListener('change', function () {
-  const fileInput = this;
-  const file = fileInput.files[0];
+const profilePictureUpload = document.getElementById('profile-picture-upload');
 
-  if (file) {
-    const reader = new FileReader();
+if (profilePictureUpload) {
+  profilePictureUpload.addEventListener('change', function () {
+    const fileInput = this;
+    const file = fileInput.files[0];
 
-    reader.onload = function (e) {
-      const profilePicture = document.getElementById('profile-picture');
-      profilePicture.src = e.target.result;
+    if (file) {
+      const reader = new FileReader();
 
-      const formData = new FormData();
-      formData.append('profile_picture', file);
+      reader.onload = function (e) {
+        const profilePicture = document.getElementById('profile-picture');
+        if (profilePicture) {
+          profilePicture.src = e.target.result;
+        }
 
-      const profileUrl = fileInput.getAttribute('data-profile-url');
-      const csrfToken = fileInput.getAttribute('data-csrf-token');
+        const formData = new FormData();
+        formData.append('profile_picture', file);
 
-      fetch(profileUrl, {
-        method: 'POST',
-        body: formData,
-        headers: {
-          'X-CSRFToken': csrfToken,
-        },
-      });
-    };
+        const profileUrl = fileInput.getAttribute('data-profile-url');
+        const csrfToken = fileInput.getAttribute('data-csrf-token');
 
-    reader.readAsDataURL(file);
-  }
-});
+        fetch(profileUrl, {
+          method: 'POST',
+          body: formData,
+          headers: {
+            'X-CSRFToken': csrfToken,
+          },
+        });
+      };
+
+      reader.readAsDataURL(file);
+    }
+  });
+}

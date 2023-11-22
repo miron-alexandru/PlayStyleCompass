@@ -31,6 +31,8 @@ Websites for .env configuration: [GiantBomb](https://www.giantbomb.com/) / [Send
 <summary><h2>PlayStyle Compass Changelog</h2></summary>
 
 ### Version v1.4
+* Added Show/Hide functionality for passwords.
+* Implemented Games Queue page.
 * Code refactoring / Bugs solved in reviews description.
 * Friends List improvements: Users are no longer able to send friend requests to users that are already their friends.
 * Friends List Implementation:

@@ -23,10 +23,10 @@ class CustomAuthenticationForm(AuthenticationForm):
         ),
     }
     username = forms.CharField(
-        widget=forms.TextInput(attrs={"placeholder": "", "autofocus": "autofocus"})
+        widget=forms.TextInput(attrs={"placeholder": "", "autofocus": "autofocus", "autocomplete": "username"})
     )
     password = forms.CharField(
-        widget=forms.PasswordInput(attrs={"placeholder": ""}),
+        widget=forms.PasswordInput(attrs={"placeholder": "", "autocomplete": "current-password"}),
     )
 
 
@@ -39,21 +39,21 @@ class CustomRegistrationForm(UserCreationForm):
         widget=forms.TextInput(attrs={"autofocus": "autofocus", "placeholder": ""}),
     )
     username = forms.CharField(
-        help_text="", widget=forms.TextInput(attrs={"placeholder": ""})
+        help_text="", widget=forms.TextInput(attrs={"placeholder": "", "autocomplete": "username"})
     )
     email = forms.EmailField(
         label="Email",
         help_text="",
-        widget=forms.EmailInput(attrs={"placeholder": ""}),
+        widget=forms.EmailInput(attrs={"placeholder": "", "autocomplete": "email"}),
     )
     password1 = forms.CharField(
         label="Password",
-        widget=forms.PasswordInput(attrs={"placeholder": ""}),
+        widget=forms.PasswordInput(attrs={"placeholder": "", "autocomplete": "new-password"}),
         help_text=(""),
     )
     password2 = forms.CharField(
         label="Password Confirmation",
-        widget=forms.PasswordInput(attrs={"placeholder": ""}),
+        widget=forms.PasswordInput(attrs={"placeholder": "", "autocomplete": "new-password"}),
         help_text="Enter the same password as before, for verification.",
     )
     captcha = ReCaptchaField(error_messages={"required": "Please complete reCAPTCHA."})

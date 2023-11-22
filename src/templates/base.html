@@ -49,20 +49,20 @@
             </a>
           </li>
           <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navItemDropdown" role="button" data-toggle="dropdown">
-            More
-        </a>
-        <div class="dropdown-menu">
-          <a class="dropdown-item" href="{% url 'playstyle_compass:top_rated_games'%}">
+            <a class="nav-link dropdown-toggle" href="#" id="navItemDropdown" role="button" data-toggle="dropdown">
+              More
+            </a>
+            <div class="dropdown-menu">
+              <a class="dropdown-item" href="{% url 'playstyle_compass:top_rated_games'%}">
                 Top Rated Games
-            </a>
-            <a class="dropdown-item" href="{% url 'playstyle_compass:upcoming_games'%}">
+              </a>
+              <a class="dropdown-item" href="{% url 'playstyle_compass:upcoming_games'%}">
                 Upcoming Games
-            </a>
-        </div>
-    </li>
-    {% else %}
-        <li class="nav-item">
+              </a>
+            </div>
+          </li>
+          {% else %}
+          <li class="nav-item">
             <a class="nav-link" href="{% url 'playstyle_compass:top_rated_games'%}">
               Top Rated Games
             </a>
@@ -72,7 +72,7 @@
               Upcoming Games
             </a>
           </li>
-    {% endif %}
+          {% endif %}
         </ul>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
@@ -129,6 +129,14 @@
     <script src="{% static 'js/base.js' %}"></script>
     <script src="{% static 'js/dropdown.js' %}"></script>
     <script src="{% static 'js/email_confirmation.js' %}"></script>
+    <script>
+      window.passwordInputIdLogIn = '{{ form.password.id_for_label }}';
+      window.passwordInputId1Register = '{{ form.password1.id_for_label }}';
+      window.passwordInputId2Register = '{{ form.password2.id_for_label }}';
+      window.passwordInputId1NewChange = '{{ form.new_password1.id_for_label }}';
+      window.passwordInputId2NewChange = '{{ form.new_password2.id_for_label }}';
+    </script>
+    <script defer src="{% static 'js/users/show_hide_password.js' %}"></script>
 
     <main role="main" class="container">
       <div class="page-header">

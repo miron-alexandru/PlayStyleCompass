@@ -42,3 +42,27 @@ button[type="submit"] {
 button[type="submit"]:hover {
     background-color: #0056b3;
 }
+
+.show-hide-button {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    border: none;
+    background-color: #fff;
+    font-size: 15px;
+    color: #007c89;
+    font-weight: bold;
+}
+
+.show-hide-button:hover, .show-hide-button:focus {
+    background-color: #fff;
+    border: none;
+    color: #00323a;
+}
+
+.custom-input-group {
+  position: relative;
+  display: flex;
+  width: 100%;
+}
