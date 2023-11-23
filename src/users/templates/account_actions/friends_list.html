@@ -3,7 +3,7 @@
 
 {% block page_header %}
 <div class="header">
-<h3>MY FRIENDS</h3>
+  <h3>MY FRIENDS</h3>
 </div>
 <p class="header-desc">Explore and manage your connections. See who's on your friends list, and stay connected with your social circle.</p>
 {% endblock page_header %}
@@ -14,38 +14,47 @@
 
 <div class="container">
   <div class="card p-2">
-
     {% if friends %}
     <div class="d-flex flex-row flex-wrap">
       {% for friend in friends %}
       <div class="card flex-row flex-grow-1 p-2 mx-2 my-2 align-items-center">
+        <div class="friend-profile-picture">
+          {% if friend.0.userprofile.profile_picture %}
+          <label>
+            <img src="{{ friend.0.userprofile.profile_picture.url }}" alt="{{ friend.username }}'s Profile Picture" class="profile-picture mr-2" id="profile-picture">
+          </label>
+          {% else %}
+          <label>
+            <img src="{% static 'images/default_profile_picture.png' %}" alt="{{ user.username }}'s Default Profile Picture" class="profile-picture mr-2" id="profile-picture">
+          </label>
+          {% endif %}
+        </div>
         <div class="card-center px-2">
-          <h5 class="card-title">{{friend.0.userprofile.profile_name}}</h5>
+          <p class="card-title">{{ friend.0.userprofile.profile_name }}</p>
         </div>
 
-        <div class="d-flex flex-row friends-text-container p-2">
-          <p class="friends-text m-auto">
+        <div class="d-flex flex-column friends-text-container p-2">
+          <p class="friends-text mb-0">
             Friend
           </p>
         </div>
 
         <div class="d-flex flex-row card-right flex-grow-1 justify-content-end mx-2">
-          <button id="id_cancel_{{request.sender.id}}" class="remove-friend-btn" onclick='triggerRemoveFriend("{{friend.0.id}}")'>Unfriend</button>
+          <button id="id_cancel_{{ request.sender.id }}" class="remove-friend-btn" onclick='triggerRemoveFriend("{{ friend.0.id }}")'>Unfriend</button>
         </div>
-
       </div>
+
       {% if forloop.counter|divisibleby:2 %}
     </div>
     <div class="d-flex flex-row flex-wrap">
       {% endif %}
       {% endfor %}
-      
-      {% else %}
-      <div class="d-flex flex-row flex-grow-1 justify-content-center align-items-center p-4">
+    </div>
+    {% else %}
+    <div class="d-flex flex-row flex-grow-1 justify-content-center align-items-center p-4">
       <p>Your friends list is currently empty. Connect with others by sending friend requests!</p>
     </div>
-      {% endif %}
-    </div>
+    {% endif %}
   </div>
 </div>
 
@@ -57,7 +66,6 @@
   function triggerRemoveFriend(friend_id) {
     removeFriend(friend_id, onRemoveFriend)
   }
-
 </script>
 
 {% include 'snippets/remove_friend.html' %}

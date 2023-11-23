@@ -414,6 +414,7 @@ def friends_list_view(request, *args, **kwargs):
     friends = [
         (friend, auth_user_friend_list) for friend in friend_list.friends.all()
     ]
+
     context = {
         "page_title": "Friends List :: PlayStyle Compass",
         "this_user": this_user,

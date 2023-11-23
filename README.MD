@@ -31,6 +31,7 @@ Websites for .env configuration: [GiantBomb](https://www.giantbomb.com/) / [Send
 <summary><h2>PlayStyle Compass Changelog</h2></summary>
 
 ### Version v1.4
+* Profile image of user added on Friends List and Friend Requests pages.
 * Added Show/Hide functionality for passwords.
 * Implemented Games Queue page.
 * Code refactoring / Bugs solved in reviews description.

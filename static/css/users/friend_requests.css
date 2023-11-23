@@ -58,3 +58,15 @@
   font-weight: bold;
   text-transform: uppercase;
 }
+
+.friend-profile-picture {
+  padding: 7px 3px 0px 6px;
+}
+
+.friend-profile-picture img {
+  max-width: 110px;
+  max-height: 110px;
+  object-fit: cover;
+  border-radius: 50px;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
+}

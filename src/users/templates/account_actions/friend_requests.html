@@ -19,11 +19,20 @@
     <div class="d-flex flex-row flex-wrap">
       {% for request in friend_requests %}
       <div class="card flex-row flex-grow-1 p-2 mx-2 my-2 align-items-center">
-        </a>
+        <div class="friend-profile-picture mr-2">
+          {% if request.sender.userprofile.profile_picture %}
+          <label>
+            <img src="{{ request.sender.userprofile.profile_picture.url }}" alt="{{ request.sender.username }}'s Profile Picture" class="profile-picture" id="profile-picture">
+          </label>
+          {% else %}
+          <label>
+            <img src="{% static 'images/default_profile_picture.png' %}" alt="{{ request.sender.username }}'s Default Profile Picture" class="profile-picture" id="profile-picture">
+          </label>
+          {% endif %}
+        </div>
         <div class="card-center px-2">
           <h4 class="card-title">{{request.sender.userprofile.profile_name}}</h4>
         </div>
-        </a>
         <div class="d-flex flex-row card-right flex-grow-1 justify-content-end mx-2">
           <button id="id_cancel_{{request.sender.id}}" class="decline-friend-request material-icons p-1" onclick='triggerDeclineFriendRequest("{{request.id}}")'>Decline</button>
           <button id="id_confirm_{{request.sender.id}}" class="confirm-friend-request material-icons p-1" onclick='triggerAcceptFriendRequest("{{request.id}}")'>Accept</button>
@@ -43,19 +52,26 @@
   </div>
 
   <div class="sent-friend-requests">
-
     <div class="card p-2">
       <p class="sent-requests">Sent by you</p>
       {% if user_sent_friend_requests %}
       <div class="d-flex flex-row flex-wrap">
         {% for request in user_sent_friend_requests %}
-
         <div class="card flex-row flex-grow-1 p-2 mx-2 my-2 align-items-center">
-          </a>
+          <div class="friend-profile-picture mr-2">
+            {% if request.receiver.userprofile.profile_picture %}
+            <label>
+              <img src="{{ request.receiver.userprofile.profile_picture.url }}" alt="{{ request.receiver.username }}'s Profile Picture" class="profile-picture" id="profile-picture">
+            </label>
+            {% else %}
+            <label>
+              <img src="{% static 'images/default_profile_picture.png' %}" alt="{{ request.receiver.username }}'s Default Profile Picture" class="profile-picture" id="profile-picture">
+            </label>
+            {% endif %}
+          </div>
           <div class="card-center px-2">
             <h4 class="card-title">{{request.receiver.userprofile.profile_name}}</h4>
           </div>
-          </a>
           <div class="d-flex flex-row card-right flex-grow-1 justify-content-end mx-2">
             <button id="id_cancel_{{request.receiver.id}}" class="decline-friend-request material-icons p-1" onclick='triggerCancelFriendRequest("{{request.receiver.id}}")'>Cancel</button>
           </div>
@@ -71,37 +87,11 @@
         </div>
         {% endif %}
       </div>
-
     </div>
   </div>
-
 </div>
 
-<script type="text/javascript">
-  function onFriendRequestAccepted() {
-    location.reload();
-  }
-
-  function onFriendRequestDeclined() {
-    location.reload();
-  }
-
-  function onCancelFriendRequest() {
-    location.reload();
-  }
-
-  function triggerAcceptFriendRequest(friend_request_id) {
-    acceptFriendRequest(friend_request_id, onFriendRequestAccepted)
-  }
-
-  function triggerDeclineFriendRequest(friend_request_id) {
-    declineFriendRequest(friend_request_id, onFriendRequestDeclined)
-  }
-
-  function triggerCancelFriendRequest(request_id) {
-    cancelFriendRequest(request_id, onCancelFriendRequest)
-  }
-</script>
+<script src="{% static 'js/users/friend_requests.js' %}"></script>
 
 {% include 'snippets/accept_friend_request.html' %}
 {% include 'snippets/decline_friend_request.html' %}
