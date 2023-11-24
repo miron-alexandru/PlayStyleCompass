@@ -61,6 +61,7 @@
         </div>
       </div>
     </div>
+    {% if user.is_authenticated %}
     <span class="favorite-toggle" data-game-id="{{ game.id }}" title="Add to Favorites">
   {% if game.id|is_favorite:user_preferences.favorite_games %}
     <i class="fas fa-star" id="star-{{ game.id }}"></i>
@@ -78,6 +79,7 @@
     <i class="fa-regular fa-clock" id="queue-{{ game.id }}"></i>
   {% endif %}
 </span>
+{% endif %}
 
   </li>
 </div>

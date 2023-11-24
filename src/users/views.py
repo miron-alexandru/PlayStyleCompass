@@ -452,7 +452,6 @@ def friend_requests_view(request, *args, **kwargs):
     return render(request, "account_actions/friend_requests.html", context)
 
 
-@login_required
 def send_friend_request(request, *args, **kwargs):
     """View to send a friend request."""
     user = request.user
@@ -500,7 +499,7 @@ def send_friend_request(request, *args, **kwargs):
         else:
             result["message"] = "The user does not exist or has deleted their account."
     else:
-        result["message"] = "Invalid request method."
+        result["message"] = "You must be logged in to send a friend request."
 
     return HttpResponse(json.dumps(result), content_type="application/json")
 

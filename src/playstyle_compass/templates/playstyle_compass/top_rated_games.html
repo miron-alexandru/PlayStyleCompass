@@ -1,23 +1,5 @@
-{% extends "base.html" %}
-{% load static %}
+{% extends "playstyle_compass/games_collection.html" %}
 
-{% block page_header %}
-<div class="header">
-  <h3>TOP RATED GAMES</h3>
-</div>
-<p class="header-desc">Explore the best-rated games as chosen by the gaming community.</p>
-{% endblock page_header %}
-
-{% block content %}
-<link rel="stylesheet" type="text/css" href="{% static 'css/playstyle_compass/common_styles.css' %}">
-<ul>
-  {% for game in top_games %}
-  <div class=top-games>
-    {% include "playstyle_compass/game_recommendations_section.html" %}
-  </div>
-  {% endfor %}
-</ul>
-
-<script src="{% static 'js/playstyle_compass/favorite_star.js' %}"></script>
-<script src="{% static 'js/playstyle_compass/reviews_section.js' %}"></script>
-{% endblock content %}
+{% block header_desc %}TOP RATED GAMES{% endblock header_desc %}
+{% block description %}Explore the best-rated games as chosen by the gaming community.{% endblock description %}
+{% block empty_message %}Empty for now, come back later!{% endblock empty_message %}

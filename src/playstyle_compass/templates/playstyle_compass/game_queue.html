@@ -1,25 +1,5 @@
-{% extends "base.html" %}
-{% load static %}
+{% extends "playstyle_compass/games_collection.html" %}
 
-{% block page_header %}
-<div class="header">
-  <h3>GAMES QUEUE</h3>
-</div>
-<p class="header-desc">Build your gaming future with a curated collection of games you haven't played yet, but wish to experience soon.</p>
-{% endblock page_header %}
-
-{% block content %}
-<link rel="stylesheet" type="text/css" href="{% static 'css/playstyle_compass/common_styles.css' %}">
-{% if games %}
-{% for game in games %}
-<div class="games-queue">
-  {% include "playstyle_compass/game_recommendations_section.html" %}
-</div>
-{% endfor %}
-{% else %}
-<p class="text-center">You haven't added any games to your Queue yet.</p>
-{% endif %}
-
-<script src="{% static 'js/playstyle_compass/favorite_star.js' %}"></script>
-<script src="{% static 'js/playstyle_compass/reviews_section.js' %}"></script>
-{% endblock content %}
+{% block header_desc %}GAMES QUEUE{% endblock header_desc %}
+{% block description %}Build your gaming future with a curated collection of games you haven't played yet, but wish to experience soon.{% endblock description %}
+{% block empty_message %}You haven't added any games to your Queue yet.{% endblock empty_message %}

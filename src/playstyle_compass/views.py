@@ -273,13 +273,35 @@ def toggle_game_queue(request):
 
         return JsonResponse({"in_queue": in_queue})
 
+@login_required
+def user_reviews(request):
+    """View to get the user reviews."""
+    user = request.user
+
+    user_reviews = Review.objects.filter(user=user)
+    user_preferences = UserPreferences.objects.get(user=user)
+
+    user_games = [review.game for review in user_reviews]
+    user_games = calculate_game_scores(user_games)
+
+    context = {
+        "page_title": "My Reviews :: PlayStyle Compass",
+        "games": user_games,
+        "user_preferences": user_preferences,
+    }
+
+    return render(request, 'playstyle_compass/user_reviews.html', context)
+
+
 
 @login_required
 def favorite_games(request):
+    """View for the favorite games."""
     return _get_games_view(request, "Favorites :: PlayStyle Compass", "favorite_games", "playstyle_compass/favorite_games.html")
 
 @login_required
 def game_queue(request):
+    """View for the games queue."""
     return _get_games_view(request, "Game Queue :: PlayStyle Compass", "game_queue", "playstyle_compass/game_queue.html")
 
 def _get_games_view(request, page_title, list_name, template_name):
@@ -308,6 +330,12 @@ def _get_games_view(request, page_title, list_name, template_name):
 
 def top_rated_games(request):
     """View to display top rated games."""
+    user = request.user
+    user_preferences = None
+
+    if user.is_authenticated:
+        user_preferences = UserPreferences.objects.get(user=request.user)
+
     top_games = Game.objects.annotate(average_score=Avg("review__score")).filter(
         average_score__gt=4
     )
@@ -316,15 +344,21 @@ def top_rated_games(request):
 
     context = {
         "page_title": "Top Rated Games :: PlayStyle Compass",
-        "top_games": top_games,
+        "games": top_games,
+        "user_preferences": user_preferences,
     }
 
     return render(request, "playstyle_compass/top_rated_games.html", context)
 
 
 def upcoming_games(request):
-    current_date = date.today()
+    user = request.user
+    user_preferences = None
 
+    if user.is_authenticated:
+        user_preferences = UserPreferences.objects.get(user=request.user)
+
+    current_date = date.today()
     upcoming_filter = Q(release_date__gte=current_date)
 
     upcoming_games = Game.objects.filter(upcoming_filter)
@@ -334,6 +368,7 @@ def upcoming_games(request):
     context = {
         "page_title": "Upcoming Games :: PlayStyle Compass",
         "upcoming_games": paginated_games,
+        "user_preferences": user_preferences,
     }
 
     return render(request, "playstyle_compass/upcoming_games.html", context)

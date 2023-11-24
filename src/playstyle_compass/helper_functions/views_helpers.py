@@ -85,7 +85,6 @@ def apply_filters(favorite_genres, preferred_platforms, matching_games):
     matching_games["preferred_platforms"] = Game.objects.filter(
         platform_filters
     ).exclude(upcoming_filter)
-    matching_games["upcoming_games"] = Game.objects.filter(upcoming_filter)
 
     return matching_games
 
@@ -97,7 +96,6 @@ def initialize_matching_games():
         "favorite_genres": [],
         "common_genres_platforms": [],
         "preferred_platforms": [],
-        "upcoming_games": [],
     }
 
 
