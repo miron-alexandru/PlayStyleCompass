@@ -17,6 +17,7 @@ from django.conf import settings
 from django.contrib.auth.views import LoginView
 
 from django.template.loader import render_to_string
+from django.templatetags.static import static
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils import timezone
 from django.utils.http import (
@@ -415,10 +416,13 @@ def friends_list_view(request, *args, **kwargs):
         (friend, auth_user_friend_list) for friend in friend_list.friends.all()
     ]
 
+    default_profile_picture = static('images/default_profile_picture.png')
+
     context = {
         "page_title": "Friends List :: PlayStyle Compass",
         "this_user": this_user,
         "friends": friends,
+        "default_profile_picture": default_profile_picture,
     }
 
     return render(request, "account_actions/friends_list.html", context)
@@ -443,10 +447,13 @@ def friend_requests_view(request, *args, **kwargs):
     user_sent_friend_requests = FriendRequest.objects.filter(
         sender=user, is_active=True
     )
+    default_profile_picture = static('images/default_profile_picture.png')
+
     context = {
         "page_title": "Friend Requests :: PlayStyle Compass",
         "friend_requests": friend_requests,
         "user_sent_friend_requests": user_sent_friend_requests,
+        'default_profile_picture': default_profile_picture,
     }
 
     return render(request, "account_actions/friend_requests.html", context)

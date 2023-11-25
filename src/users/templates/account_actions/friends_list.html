@@ -21,11 +21,11 @@
         <div class="friend-profile-picture">
           {% if friend.0.userprofile.profile_picture %}
           <label>
-            <img src="{{ friend.0.userprofile.profile_picture.url }}" alt="{{ friend.username }}'s Profile Picture" class="profile-picture mr-2" id="profile-picture">
+            <img src="{{ friend.0.userprofile.profile_picture.url }}" alt="{{ friend.0.userprofile.profile_name }}'s Profile Picture" class="profile-picture mr-2" id="profile-picture">
           </label>
           {% else %}
           <label>
-            <img src="{% static 'images/default_profile_picture.png' %}" alt="{{ user.username }}'s Default Profile Picture" class="profile-picture mr-2" id="profile-picture">
+            <img src="{{ default_profile_picture }}" alt="{{ friend.0.userprofile.profile_name }}'s Default Profile Picture" class="profile-picture mr-2" id="profile-picture">
           </label>
           {% endif %}
         </div>

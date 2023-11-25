@@ -1,0 +1,30 @@
+<div class="card flex-row flex-grow-1 p-2 mx-2 my-2 align-items-center">
+  <div class="friend-profile-picture mr-2">
+    {% if profile_picture %}
+    <label>
+      <img src="{{ profile_picture }}" alt="{{ profile_name }}'s Profile Picture" class="profile-picture" id="profile-picture">
+    </label>
+    {% else %}
+    <label>
+      <img src="{{ default_profile_picture }}" alt="{{ profile_name }}'s Default Profile Picture" class="profile-picture" id="profile-picture">
+    </label>
+    {% endif %}
+  </div>
+  <div class="card-center px-2">
+    <h4 class="card-title">{{ profile_name }}</h4>
+  </div>
+  <div class="d-flex flex-row card-right flex-grow-1 justify-content-end mx-2">
+    {% block action_buttons %}
+    {% if action == 'sent' %}
+    <div class="d-flex flex-row card-right flex-grow-1 justify-content-end mx-2">
+      <button id="id_cancel_{{request.receiver.id}}" class="decline-friend-request material-icons p-1" onclick='triggerCancelFriendRequest("{{request.receiver.id}}")'>Cancel</button>
+    </div>
+    {% elif action == 'received' %}
+    <div class="d-flex flex-row card-right flex-grow-1 justify-content-end mx-2">
+      <button id="id_cancel_{{request.sender.id}}" class="decline-friend-request material-icons p-1" onclick='triggerDeclineFriendRequest("{{request.id}}")'>Decline</button>
+      <button id="id_confirm_{{request.sender.id}}" class="confirm-friend-request material-icons p-1" onclick='triggerAcceptFriendRequest("{{request.id}}")'>Accept</button>
+    </div>
+    {% endif %}
+    {% endblock %}
+  </div>
+</div>
