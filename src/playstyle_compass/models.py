@@ -112,6 +112,9 @@ class Review(models.Model):
     review_description = models.TextField()
     SCORE_CHOICES = [(1, "1"), (2, "2"), (3, "3"), (4, "4"), (5, "5")]
     score = models.PositiveSmallIntegerField(choices=SCORE_CHOICES)
+    likes = models.IntegerField(default=0)
+    dislikes = models.IntegerField(default=0)
+
 
     def __str__(self):
         return f"Review by {self.reviewers} for {self.game.title}"

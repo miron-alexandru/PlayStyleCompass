@@ -473,14 +473,18 @@ def edit_review(request, game_id):
 def get_game_reviews(request, game_id):
     """View to get the reviews for a game."""
     game_reviews = Review.objects.filter(game_id=game_id)
-    default_user_id = "invalid_user"
+    invalid_user_id = "invalid_user"
+
     reviews_data = [
         {
+            "id": review.id,
             "reviewer": review.reviewers,
             "title": review.review_deck,
             "description": review.review_description,
             "score": review.score,
-            "user_id": default_user_id
+            "likes": review.likes,
+            "dislikes": review.dislikes,
+            "user_id": invalid_user_id
             if "-" in str(review.user_id)
             else review.user_id,
         }
@@ -488,6 +492,37 @@ def get_game_reviews(request, game_id):
     ]
     return JsonResponse({"reviews": reviews_data})
 
+def like_review(request):
+    """View used to like a reivew."""
+    if request.method == "POST" and request.user.is_authenticated:
+        review_id = request.POST.get('review_id', None)
+        
+        if review_id is not None and isinstance(review_id, int):
+            review = get_object_or_404(Review, id=review_id)
+            review.likes += 1
+            review.save()
+
+            return JsonResponse({'likes': review.likes})
+        else:
+            return JsonResponse({'error': 'Review ID invalid.'})
+
+    return JsonResponse({'message': 'You must be logged in to like or dislike a review.'})
+
+def dislike_review(request):
+    """View used to dislike a review."""
+    if request.method == "POST" and request.user.is_authenticated:
+        review_id = request.POST.get('review_id', None)
+        
+        if review_id is not None and isinstance(review_id, int):
+            review = get_object_or_404(Review, id=review_id)
+            review.dislikes += 1
+            review.save()
+
+            return JsonResponse({'dislikes': review.dislikes})
+        else:
+            return JsonResponse({'error': 'Review ID invalid.'})
+
+    return JsonResponse({'message': 'You must be logged in to like or dislike a review.'})
 
 @login_required
 def delete_reviews(request, game_id):

@@ -60,8 +60,12 @@ $(document).ready(function() {
                             </span>`;
 
                     let reviewHtml = `
-                        <div class="review">
+                        <div class="review" data-review-id="${review.id}">
                             <div class="review-header">
+                            <div class="like-dislike">
+                                <i class="fa-solid fa-thumbs-up thumbs-up"></i> <span class="like-count">${review.likes}</span> | 
+                                <i class="fa-solid fa-thumbs-down thumbs-down"></i> <span class="dislike-count">${review.dislikes}</span>
+                            </div>
                                 <p><strong>Author:</strong> ${authorName} - 
                                     <span class="star-rating">${getStarRating(review.score)}</span>
                                 </p>
@@ -129,6 +133,48 @@ $(document).ready(function() {
                     showMessage(this_container, data['message']);
                 }
             });
+        });
+
+        function sendRatingAction(actionType, event) {
+            event.preventDefault();
+
+            let csrfToken = document.cookie.match(/csrftoken=([^ ;]+)/)[1];
+            let reviewId = $(event.target).closest('.review').data('review-id');
+            let ratingUrl = $(event.target).closest('.game-container').data(`${actionType}-url`);
+            let this_container = $(event.target).closest('.like-dislike');
+
+            $.ajax({
+                type: 'POST',
+                url: ratingUrl,
+                headers: {
+                    'X-CSRFToken': csrfToken,
+                },
+                data: {
+                    "review_id": reviewId,
+                },
+                success: function (data) {
+                    showMessage(this_container, data['message']);
+                    let likeCountElement = $(event.target).closest('.like-dislike').find('.like-count');
+                    let dislikeCountElement = $(event.target).closest('.like-dislike').find('.dislike-count');
+
+                    if (actionType === 'like') {
+                        likeCountElement.text(data.likes);
+                    } else if (actionType === 'dislike') {
+                        dislikeCountElement.text(data.dislikes);
+                    }
+                },
+                error: function (error) {
+                    console.error(`Error incrementing ${actionType}:`, error);
+                }
+            });
+        }
+
+        container.on('click', '.thumbs-up', function (event) {
+            sendRatingAction('like', event);
+        });
+
+        container.on('click', '.thumbs-down', function (event) {
+            sendRatingAction('dislike', event);
         });
 
         container.on('click', '.show-hide-button', toggleReviewVisibility);

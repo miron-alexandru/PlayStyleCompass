@@ -38,4 +38,6 @@ urlpatterns = [
     path("toggle_game_queue/", views.toggle_game_queue, name="toggle_game_queue"),
     path("game_queue/", views.game_queue, name="game_queue"),
     path("user_reviews/", views.user_reviews, name="user_reviews"),
+    path('increment_likes/', views.like_review, name='like'),
+    path('decrement_dislikes/', views.dislike_review, name='dislike'),
 ]
