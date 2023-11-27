@@ -490,39 +490,59 @@ def get_game_reviews(request, game_id):
         }
         for review in game_reviews
     ]
+
     return JsonResponse({"reviews": reviews_data})
 
+
 def like_review(request):
-    """View used to like a reivew."""
+    """View used to like a review."""
     if request.method == "POST" and request.user.is_authenticated:
         review_id = request.POST.get('review_id', None)
-        
-        if review_id is not None and isinstance(review_id, int):
-            review = get_object_or_404(Review, id=review_id)
-            review.likes += 1
-            review.save()
+        user_id = request.user.id
 
-            return JsonResponse({'likes': review.likes})
+        if review_id:
+            review = get_object_or_404(Review, id=review_id)
+
+            if "-" in str(review.user_id):
+                review.user_id = -1
+
+            if review.user_has_liked(user_id):
+                review.remove_like(user_id)
+                return JsonResponse({'likes': review.likes, 'message': ''})
+            else:
+                review.add_like(user_id)
+                return JsonResponse({'likes': review.likes, 'message': ''})
+
         else:
             return JsonResponse({'error': 'Review ID invalid.'})
 
     return JsonResponse({'message': 'You must be logged in to like or dislike a review.'})
+
 
 def dislike_review(request):
     """View used to dislike a review."""
     if request.method == "POST" and request.user.is_authenticated:
         review_id = request.POST.get('review_id', None)
-        
-        if review_id is not None and isinstance(review_id, int):
-            review = get_object_or_404(Review, id=review_id)
-            review.dislikes += 1
-            review.save()
+        user_id = request.user.id
 
-            return JsonResponse({'dislikes': review.dislikes})
+        if review_id:
+            review = get_object_or_404(Review, id=review_id)
+
+            if "-" in str(review.user_id):
+                review.user_id = -1
+
+            if review.user_has_disliked(user_id):
+                review.remove_dislike(user_id)
+                return JsonResponse({'dislikes': review.dislikes, 'message': ''})
+            else:
+                review.add_dislike(user_id)
+                return JsonResponse({'dislikes': review.dislikes, 'message': ''})
+
         else:
             return JsonResponse({'error': 'Review ID invalid.'})
 
     return JsonResponse({'message': 'You must be logged in to like or dislike a review.'})
+
 
 @login_required
 def delete_reviews(request, game_id):

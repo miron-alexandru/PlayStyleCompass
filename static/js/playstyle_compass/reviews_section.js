@@ -63,8 +63,9 @@ $(document).ready(function() {
                         <div class="review" data-review-id="${review.id}">
                             <div class="review-header">
                             <div class="like-dislike">
-                                <i class="fa-solid fa-thumbs-up thumbs-up"></i> <span class="like-count">${review.likes}</span> | 
-                                <i class="fa-solid fa-thumbs-down thumbs-down"></i> <span class="dislike-count">${review.dislikes}</span>
+                                <i class="fa-solid fa-thumbs-up thumbs-up"></i><span class="like-count">${review.likes}</span>
+                                <span class="like-dislike-divider">|</span>
+                                <i class="fa-solid fa-thumbs-down thumbs-down"></i><span class="dislike-count">${review.dislikes}</span>
                             </div>
                                 <p><strong>Author:</strong> ${authorName} - 
                                     <span class="star-rating">${getStarRating(review.score)}</span>

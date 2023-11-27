@@ -104,7 +104,6 @@ class Game(models.Model):
 
 class Review(models.Model):
     """Represents a review for a game."""
-
     game = models.ForeignKey(Game, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     reviewers = models.CharField(max_length=25)
@@ -114,6 +113,54 @@ class Review(models.Model):
     score = models.PositiveSmallIntegerField(choices=SCORE_CHOICES)
     likes = models.IntegerField(default=0)
     dislikes = models.IntegerField(default=0)
+    liked_by = models.TextField(blank=True, default='')
+    disliked_by = models.TextField(blank=True, default='')
+
+    def add_like(self, user_id):
+        """Add a like to the review."""
+        if not self.user_has_liked(user_id):
+            self.liked_by += f"{user_id},"
+            self.likes += 1
+            self.save()
+
+    def remove_like(self, user_id):
+        """Remove a like from the review.."""
+        liked_by_list = self.liked_by.split(',')
+        if str(user_id) in liked_by_list:
+            liked_by_list.remove(str(user_id))
+            self.liked_by = ','.join(liked_by_list)
+            self.likes -= 1
+            self.save()
+
+    def user_has_liked(self, user_id):
+        """Check if the user has already liked the review."""
+        liked_by = self.liked_by
+        if liked_by is not None:
+            return str(user_id) in liked_by.split(',')
+        return False
+
+    def add_dislike(self, user_id):
+        """Add a dislike to the review."""
+        if not self.user_has_disliked(user_id):
+            self.disliked_by += f"{user_id},"
+            self.dislikes += 1
+            self.save()
+
+    def remove_dislike(self, user_id):
+        """Remove a dislike from the review."""
+        disliked_by_list = self.disliked_by.split(',')
+        if str(user_id) in disliked_by_list:
+            disliked_by_list.remove(str(user_id))
+            self.disliked_by = ','.join(disliked_by_list)
+            self.dislikes -= 1
+            self.save()
+
+    def user_has_disliked(self, user_id):
+        """Check if the user has already disliked the review."""
+        disliked_by = self.disliked_by
+        if disliked_by is not None:
+            return str(user_id) in disliked_by.split(',')
+        return False
 
 
     def __str__(self):
