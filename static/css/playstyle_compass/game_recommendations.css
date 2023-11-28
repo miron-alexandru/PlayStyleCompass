@@ -73,3 +73,10 @@ label[for="sort-select"] {
 #sort-select:hover, #sort-select:focus {
   border: 1px solid #007bff;
 }
+
+@media screen and (max-width: 600px) {
+  .game-recommendations-container li {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}

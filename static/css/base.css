@@ -264,3 +264,115 @@ input[type="email"]:focus,
 .profile-picture-label:hover img {
   opacity: 1;
 }
+
+@media screen and (max-width: 600px) {
+  .navbar {
+    max-height: none;
+    padding: 20px;
+  }
+
+  .navbar-nav {
+    flex-grow: 1;
+  }
+
+  .navbar-nav .nav-item {
+    height: auto;
+    margin-right: 10px;
+  }
+
+  .navbar-nav .nav-item:last-child {
+    margin-right: 0;
+  }
+
+  .navbar-nav .nav-item img {
+    max-width: 70px;
+    max-height: 70px;
+    margin-top: 0;
+  }
+
+  .container {
+    padding: 0 20px;
+  }
+
+  .page-header {
+    padding-bottom: 5px;
+    margin-bottom: 10px;
+  }
+
+  .footer {
+    padding: 15px;
+  }
+
+  .dropdown-menu:before,
+  .dropdown-menu:after {
+    display: none;
+  }
+
+  .dropdown-menu {
+    background-color: #fff;
+    border: none;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    transition: transform 0.2s ease-in-out, opacity 0.2s ease-in-out;
+    position: absolute;
+    width: 100%;
+  }
+
+  .dropdown-menu:before,
+  .dropdown-menu:after {
+    display: none; 
+  }
+
+  .dropdown-item {
+    font-size: 15px;
+    color: #333;
+    padding: 10px 15px;
+    transition: background-color 0.3s;
+    border-radius: 0px;
+    overflow: hidden;
+  }
+
+  .dropdown-item.active,
+  .dropdown-item:active {
+    background-color: initial;
+    color: initial;
+  }
+
+  .dropdown-toggle {
+    color: #333;
+    border: none;
+  }
+
+  .dropdown-toggle:focus {
+    outline: none !important;
+    box-shadow: none !important;
+  }
+
+  .dropdown.show .dropdown-menu {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  .dropdown-divider {
+    margin: 5px 0;
+    border-color: rgba(0, 0, 0, 0.1);
+  }
+
+  .profile-picture-label:hover::before {
+    content: "Upload";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -45%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    padding: 5px;
+    border-radius: 50px;
+    font-size: 10px;
+    opacity: 1;
+  }
+
+  .profile-picture-label:hover img {
+    opacity: 1;
+  }
+}

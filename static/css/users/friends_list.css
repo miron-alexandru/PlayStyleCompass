@@ -58,3 +58,27 @@
   border-radius: 50px;
   box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
 }
+
+@media screen and (max-width: 600px) {
+  .card {
+    padding: 10px;
+  }
+
+  .card-title {
+    font-size: 14px;
+  }
+
+  .friends-text-container {
+    padding: 8px;
+  }
+
+  .remove-friend-btn {
+    padding: 4px 8px;
+    font-size: 10px;
+  }
+
+  .friend-profile-picture img {
+    max-width: 60px;
+    max-height: 60px;
+  }
+}
