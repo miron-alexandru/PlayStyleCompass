@@ -1,9 +1,9 @@
 document.addEventListener("DOMContentLoaded", function () {
-  let headerContent = document.getElementById("header-content").innerHTML.trim();
-  let pageHeader = document.querySelector(".page-header");
+  let descriptionContent = document.getElementById("description-content").innerHTML.trim();
+  let pageDescription = document.querySelector(".header-desc");
 
-  if (headerContent.length > 0) {
-    pageHeader.classList.add("border-bottom");
+  if (descriptionContent.length > 0) {
+    pageDescription.classList.add("border-bottom");
   }
 });
 

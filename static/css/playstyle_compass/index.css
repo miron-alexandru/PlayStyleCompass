@@ -2,11 +2,10 @@
   color: fff;
   padding-top: 15px;
   padding-bottom: 20px;
-  padding-left: 111px;
-  padding-right: 111px;
-  margin-bottom: 20px;
-  width: 100vw;
-  margin-left: calc(-50vw + 50%);
+  padding-left: 105px;
+  padding-right: 105px;
+  margin-bottom: 0px;
+  width: 100%;
 }
 
 .jumbotron h1 {

@@ -6,23 +6,22 @@
 .header {
   background-color: #2f4255;
   padding: 15px;
-  width: 100vw;
-  margin-left: calc(-50vw + 50%);
+  width: 100%;
 }
 
 .header h3 {
   font-size: 19px;
   font-weight: bold;
   color: #fff;
-  margin-left: 100px;
+  margin-left: 90px;
   letter-spacing: 2px;
 }
 
 .header-desc {
   color: #555;
   font-size: 17px;
-  margin-top: 25px;
-  margin-bottom: 10px;
+  margin-top: 5px;
+  padding-bottom: 20px;
 }
 
 .btn-primary {
