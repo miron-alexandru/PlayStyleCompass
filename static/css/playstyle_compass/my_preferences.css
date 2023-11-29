@@ -1,36 +1,43 @@
-:root {
+:root
+{
   --primary-color: #3498db;
   --secondary-color: #e74c3c;
   --text-color: #333;
 }
 
-.playstyle-title {
+.playstyle-title
+{
   font-size: 18px;
   margin-bottom: 5px;
   color: var(--text-color);
 }
 
-.playstyle-text {
+.playstyle-text
+{
   font-size: 15px;
   line-height: 1.6;
   color: var(--text-color);
 }
 
-.text-center {
+.text-center
+{
   text-align: center;
 }
 
-a {
+a
+{
   color: var(--primary-color);
   text-decoration: none;
   transition: color 0.3s ease-in-out;
 }
 
-a:hover {
+a:hover
+{
   color: var(--secondary-color);
 }
 
-.btn-danger {
+.btn-danger
+{
   font-size: 13px;
   background-color: #dc3545;
   color: white;
@@ -39,28 +46,33 @@ a:hover {
   border-radius: 4px;
   cursor: pointer;
 }
-  
-.btn-danger:hover {
+
+.btn-danger:hover
+{
   background-color: #c82333;
 }
 
-.btn-danger:focus {
+.btn-danger:focus
+{
   outline: none;
   box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.5);
 }
 
-.button-container {
+.button-container
+{
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.button-container button {
+.button-container button
+{
   margin: 0 5px;
   margin-bottom: 20px;
 }
 
-.change-button, .save-button, .save-all-button {
+.change-button, .save-button, .save-all-button
+{
   border: none;
   padding: 6px 10px;
   font-size: 10px;
@@ -73,35 +85,41 @@ a:hover {
   outline: none;
 }
 
-
-.change-button {
+.change-button
+{
   background-color: var(--primary-color);
   border-color: var(--primary-color);
 }
 
-.save-button, .save-all-button{
+.save-button, .save-all-button
+{
   background-color: #27ae60;
   border-color: #27ae60;
 }
 
-.change-button:hover {
+.change-button:hover
+{
   background-color: #007bff;
   border-color: #007bff;
 }
 
-.save-button:hover, .save-all-button:hover {
+.save-button:hover, .save-all-button:hover
+{
   background-color: #1e8449;
   border-color: #1e8449;
 }
 
-.save-all-button {
+.save-all-button
+{
   font-size: 1.05rem;
 }
 
-.save-button:disabled, .save-all-button:disabled {
+.save-button:disabled, .save-all-button:disabled
+{
   opacity: .65;
 }
 
-.form-label {
+.form-label
+{
   font-size: 18px;
 }

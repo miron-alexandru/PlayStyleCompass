@@ -15,4 +15,5 @@ def create_user_models(sender, instance, created, **kwargs):
             UserProfile.objects.create(user=instance)
         UserPreferences.objects.create(user=instance)
 
+
 post_save.connect(create_user_models, sender=User)

@@ -1,50 +1,61 @@
-.review {
+.review
+{
   border: 1px solid #ccc;
   padding: 10px;
   margin: 10px;
   border-radius: 5px;
 }
 
-.review-header {
+.review-header
+{
   background-color: #f2f2f2;
   padding: 5px;
   border-bottom: 1px solid #ccc;
 }
 
-.review-header p {
+.review-header p
+{
   margin: 5px 0;
 }
 
-.review-body {
+.review-body
+{
   margin: 10px 0;
 }
 
-.review-description-container {
+.review-description-container
+{
   max-width: 100%;
 }
 
-.review-description, .review-description-full {
+.review-description, .review-description-full
+{
   margin: 10px 0;
   word-break: break-word;
 }
 
-.review-footer {
+.review-footer
+{
   margin-top: 10px;
 }
 
-.review-footer p {
+.review-footer p
+{
   margin: 5px 0;
 }
 
-.gold-star {
+.gold-star
+{
   color: gold;
 }
 
-.empty-star {
+.empty-star
+{
   color: lightgrey;
 }
 
-.show-hide-button, .add-review-btn, .delete-review-btn, .edit-review-btn {
+.show-hide-button, .add-review-btn, .delete-review-btn, .edit-review-btn
+{
   background: none;
   border: none;
   color: #007BFF;
@@ -54,55 +65,65 @@
   padding: 5px;
 }
 
-.friend-request-text {
-    display: inline-block;
-    padding: 6px 10px;
-    background-color: green;
-    color: #ffffff; 
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    font-size: 11px;
+.friend-request-text
+{
+  display: inline-block;
+  padding: 6px 10px;
+  background-color: green;
+  color: #ffffff;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-size: 11px;
 }
 
-.friend-request-text:hover {
-    background-color: darkgreen;
+.friend-request-text:hover
+{
+  background-color: darkgreen;
 }
 
-.author-link {
+.author-link
+{
   font-weight: bold;
   text-decoration: none !important;
 }
 
-.author-name {
+.author-name
+{
   font-weight: bolder;
 }
 
 .thumbs-up,
-.thumbs-down {
-    cursor: pointer;
-    transition: color 0.3s ease;
-    padding-right: 5px;
+.thumbs-down
+{
+  cursor: pointer;
+  transition: color 0.3s ease;
+  padding-right: 5px;
 }
 
-.thumbs-up:hover {
-    color: #007bff;
+.thumbs-up:hover
+{
+  color: #007bff;
 }
 
-.thumbs-down:hover {
-    color: #dc3545;
+.thumbs-down:hover
+{
+  color: #dc3545;
 }
 
 .thumbs-up:active,
-.thumbs-down:active {
-    transform: scale(1.2);
+.thumbs-down:active
+{
+  transform: scale(1.2);
 }
 
-.like-dislike-divider {
+.like-dislike-divider
+{
   margin-right: 2px;
   color: #ccc;
 }
 
-.like-dislike {
+.like-dislike
+{
   user-select: none;
 }

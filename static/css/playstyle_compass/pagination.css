@@ -1,15 +1,18 @@
-.pagination {
+.pagination
+{
   text-align: center;
   margin-top: 20px;
 }
 
-.step-links {
+.step-links
+{
   display: inline-block;
   margin: 0;
   padding: 0;
 }
 
-.step-links a {
+.step-links a
+{
   font-size: 12px;
   display: inline-block;
   padding: 8px 12px;
@@ -21,11 +24,13 @@
   transition: background-color 0.3s ease;
 }
 
-.step-links a:hover {
+.step-links a:hover
+{
   background-color: #2980b9;
 }
 
-.current-page {
+.current-page
+{
   display: inline-block;
   padding: 4px;
   margin: 0 2px;

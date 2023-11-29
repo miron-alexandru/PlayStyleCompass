@@ -1,20 +1,9 @@
-{% extends "base.html" %}
-{% load static %}
-{% load bootstrap4 %}
+{% extends "playstyle_compass/review_form_base.html" %}
 
-{% block page_header %}
-<div class="header">
-  <h3>WRITE A REVIEW FOR: {{ game.title }}</h3>
-</div>
-{% endblock page_header %}
+{% block header_title %}
+  WRITE A REVIEW FOR:
+{% endblock header_title %}
 
-{% block content %}
-<link rel="stylesheet" type="text/css" href="{% static 'css/playstyle_compass/common_styles.css' %}">
-
-<form method="post">
-  {% csrf_token %}
-  {% bootstrap_form form %}
-  <button class="btn btn-primary" type="submit">Submit Review</button>
-</form>
-
-{% endblock content %}
+{% block button_label %}
+  Submit Review
+{% endblock button_label %}

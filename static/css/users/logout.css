@@ -1,4 +1,5 @@
-.logout-container {
+.logout-container
+{
   background-color: #f5f5f5;
   display: flex;
   justify-content: center;
@@ -6,7 +7,8 @@
   min-height: 40vh;
 }
 
-.logout-content {
+.logout-content
+{
   text-align: center;
   padding: 30px;
   border-radius: 8px;
@@ -19,13 +21,15 @@
   margin-bottom: 0px;
 }
 
-.logout-content h2 {
+.logout-content h2
+{
   font-size: 28px;
   margin-bottom: 20px;
   color: #333;
 }
 
-.logout-content p {
+.logout-content p
+{
   font-size: 18px;
   color: #555;
   line-height: 1.6;

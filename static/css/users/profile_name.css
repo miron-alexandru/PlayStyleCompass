@@ -1,14 +1,17 @@
-label[for="id_profile_name"] {
-    display: none;
+label[for="id_profile_name"]
+{
+  display: none;
 }
 
-form h1 {
-    padding: 10px 0;
-    text-align: center;
-    margin-bottom: 15px;
-    font-size: 24px;
+form h1
+{
+  padding: 10px 0;
+  text-align: center;
+  margin-bottom: 15px;
+  font-size: 24px;
 }
 
-form {
-    margin-top: -49px;
+form
+{
+  margin-top: -49px;
 }

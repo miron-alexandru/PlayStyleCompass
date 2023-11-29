@@ -1,16 +1,20 @@
-p {
+p
+{
   margin: 0;
 }
 
-strong {
+strong
+{
   font-weight: bold;
 }
 
-small {
+small
+{
   font-size: 0.7em;
 }
 
-.gallery-image img {
+.gallery-image img
+{
   max-width: 150px;
   max-height: 300px;
   border: none;
@@ -18,12 +22,14 @@ small {
   object-fit: cover;
 }
 
-.game-info {
+.game-info
+{
   flex: 1;
   padding: 5px 10px 5px 10px;
 }
 
-.game-image img {
+.game-image img
+{
   max-width: 210px;
   max-height: 500px;
   border: 1px solid #ddd;
@@ -32,7 +38,8 @@ small {
   margin-left: 5;
 }
 
-.read-button, .read-button-review {
+.read-button, .read-button-review
+{
   background: none;
   border: none;
   padding: 0;
@@ -42,6 +49,7 @@ small {
   text-decoration: underline;
 }
 
-.read-button:hover, .read-button-review:hover {
+.read-button:hover, .read-button-review:hover
+{
   text-decoration: none;
 }

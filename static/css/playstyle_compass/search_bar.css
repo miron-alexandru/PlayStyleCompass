@@ -1,4 +1,5 @@
-.result {
+.result
+{
   padding: 10px;
   cursor: pointer;
   border-bottom: 1px solid #ccc;
@@ -6,50 +7,58 @@
   transition: background-color 0.3s;
 }
 
-.result:last-child {
+.result:last-child
+{
   border-bottom: none;
 }
 
-.result:hover {
+.result:hover
+{
   background-color: #f0f0f0;
 }
 
-.result i {
+.result i
+{
   margin-right: 5px;
 }
 
-.search-description h3 {
-    color: #2f6187;
-    osition: relative;
-    width: 100%;
-    overflow: hidden;
-    clear: both;
-    font-size: 18px;
-    line-height: 1;
-    margin: 0 0 20px;
-    color: #3e6a91;
+.search-description h3
+{
+  color: #2f6187;
+  osition: relative;
+  width: 100%;
+  overflow: hidden;
+  clear: both;
+  font-size: 18px;
+  line-height: 1;
+  margin: 0 0 20px;
+  color: #3e6a91;
 }
 
-.search-description-text {
+.search-description-text
+{
   color: #555;
   font-size: 16px;
   padding-bottom: 25px;
 }
 
-.search-bar {
+.search-bar
+{
   position: relative;
   display: flex;
   align-items: center;
 }
 
-.search-input-container {
+.search-input-container
+{
   display: flex;
   align-items: center;
   width: 100%;
 }
 
-#search-input {
-  flex: 1; 
+#search-input
+{
+  flex: 1;
   padding: 6px 10px;
   border-radius: 21px;
   border: 1px solid #d5dee6;
@@ -58,7 +67,8 @@
   font-size: 15px;
 }
 
-button[type="submit"] {
+button[type="submit"]
+{
   position: absolute;
   right: 0;
   font-size: 19px;
@@ -70,10 +80,14 @@ button[type="submit"] {
   cursor: pointer;
   transition: background 0.3s ease;
 }
-button[type="submit"] i {
+
+button[type="submit"] i
+{
   font-size: 18px;
 }
-button[type="submit"]:hover {
+
+button[type="submit"]:hover
+{
   background: #d5dee6;
   color: #fff;
 }

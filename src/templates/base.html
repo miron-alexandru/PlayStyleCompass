@@ -6,7 +6,7 @@
 
   <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <link rel="icon" href="{% static 'images/pscicon.ico' %}" type="image/x-icon">
     <title>{% block title %}{{ page_title }}{% endblock title %}</title>
     {% bootstrap_css %}
@@ -171,7 +171,7 @@
     </div>
     </div>
 
-    <main role="main" class="container">
+     <main role="main" class="container">
       <div class="header-description">
         <p class="header-desc" id="description-content">{% block description %}{% endblock description %}</p>
       </div>

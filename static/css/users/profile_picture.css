@@ -1,19 +1,23 @@
-.title {
-    padding: 10px 0;
-    text-align: center;
-    margin-bottom: 5px;
-    font-size: 24px;
+.title
+{
+  padding: 10px 0;
+  text-align: center;
+  margin-bottom: 5px;
+  font-size: 24px;
 }
 
-input[type="file"] {
+input[type="file"]
+{
   display: none;
 }
 
-label[for="id_profile_picture"] {
+label[for="id_profile_picture"]
+{
   margin-bottom: 0px;
 }
 
-label[for="id_profile_picture"]::before {
+label[for="id_profile_picture"]::before
+{
   content: "Choose File";
   background-color: #007bff;
   color: #fff;
@@ -24,7 +28,8 @@ label[for="id_profile_picture"]::before {
   text-align: center;
 }
 
-.current-image p {
+.current-image p
+{
   font-size: 15px;
   font-weight: bold;
   margin: 0;
@@ -35,11 +40,13 @@ label[for="id_profile_picture"]::before {
   margin-bottom: 10px;
 }
 
-.current-image a {
+.current-image a
+{
   color: #007bff;
   text-decoration: none;
 }
 
-.current-image a:hover {
+.current-image a:hover
+{
   text-decoration: underline;
 }

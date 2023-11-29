@@ -55,6 +55,7 @@ from .tokens import account_activation_token
 
 class ProfileUpdateView(LoginRequiredMixin, UpdateView):
     """View used to update the profile name for users."""
+
     model = UserProfile
     template_name = "account_actions/profile_name_update.html"
     form_class = ProfileUpdateForm
@@ -81,6 +82,7 @@ class ProfileUpdateView(LoginRequiredMixin, UpdateView):
         self.object.name_last_update_time = timezone.now()
         self.object.save()
         return super().form_valid(form)
+
 
 class CustomLoginView(LoginView):
     """Cusotm user login view."""
@@ -109,6 +111,7 @@ def activate(request, uidb64, token):
         messages.error(request, "Activation link is invalid!")
 
     return redirect("playstyle_compass:index")
+
 
 @login_required
 def activateEmail(request, user, to_email):
@@ -251,7 +254,10 @@ def change_email(request):
 
 def confirm_email_change(request, uidb64, token):
     """View for email change confirmation."""
-    if "email_change_token" in request.session and request.session["email_change_token"] == token:
+    if (
+        "email_change_token" in request.session
+        and request.session["email_change_token"] == token
+    ):
         user = request.user
 
         user.email = request.session["email_change_temp"]
@@ -412,11 +418,9 @@ def friends_list_view(request, *args, **kwargs):
     friend_list, created = FriendList.objects.get_or_create(user=this_user)
     auth_user_friend_list = FriendList.objects.get(user=request.user)
 
-    friends = [
-        (friend, auth_user_friend_list) for friend in friend_list.friends.all()
-    ]
+    friends = [(friend, auth_user_friend_list) for friend in friend_list.friends.all()]
 
-    default_profile_picture = static('images/default_profile_picture.png')
+    default_profile_picture = static("images/default_profile_picture.png")
 
     context = {
         "page_title": "Friends List :: PlayStyle Compass",
@@ -441,19 +445,17 @@ def friend_requests_view(request, *args, **kwargs):
 
     if account != user:
         return HttpResponse("You can't view another users friend requets.")
-    friend_requests = FriendRequest.objects.filter(
-        receiver=account, is_active=True
-    )
+    friend_requests = FriendRequest.objects.filter(receiver=account, is_active=True)
     user_sent_friend_requests = FriendRequest.objects.filter(
         sender=user, is_active=True
     )
-    default_profile_picture = static('images/default_profile_picture.png')
+    default_profile_picture = static("images/default_profile_picture.png")
 
     context = {
         "page_title": "Friend Requests :: PlayStyle Compass",
         "friend_requests": friend_requests,
         "user_sent_friend_requests": user_sent_friend_requests,
-        'default_profile_picture': default_profile_picture,
+        "default_profile_picture": default_profile_picture,
     }
 
     return render(request, "account_actions/friend_requests.html", context)

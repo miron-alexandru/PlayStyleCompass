@@ -1,19 +1,23 @@
-:root {
+:root
+{
   --primary-color: #3498db;
   --secondary-color: #e74c3c;
   --text-color: #333;
 }
 
-.form-group {
+.form-group
+{
   margin-bottom: 25px;
 }
 
-.form-label {
+.form-label
+{
   font-size: 18px;
   color: var(--text-color);
 }
 
-.form-control {
+.form-control
+{
   border: 1px solid var(--text-color);
   border-radius: 5px;
   padding: 8px;
@@ -21,12 +25,14 @@
   transition: border-color 0.3s ease-in-out;
 }
 
-.form-control:focus {
+.form-control:focus
+{
   border-color: var(--primary-color);
   box-shadow: 0 0 0 1px rgba(52, 152, 219, 0.5);
 }
 
-.warning {
+.warning
+{
   color: var(--secondary-color);
   font-size: 13px;
   margin-top: 5px;

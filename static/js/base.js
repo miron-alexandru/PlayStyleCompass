@@ -4,6 +4,20 @@ document.addEventListener("DOMContentLoaded", function () {
 
   if (descriptionContent.length > 0) {
     pageDescription.classList.add("border-bottom");
+  } else {
+    pageDescription.style.display = "none";
+  }
+});
+
+
+document.addEventListener("DOMContentLoaded", function () {
+  let descriptionContent = document.getElementById("description-content").innerHTML.trim();
+  let pageDescription = document.querySelector(".header-desc");
+
+  if (descriptionContent.length > 0) {
+    pageDescription.classList.add("border-bottom");
+  } else {
+    pageDescription.style.display = "none";
   }
 });
 

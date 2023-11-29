@@ -23,10 +23,18 @@ class CustomAuthenticationForm(AuthenticationForm):
         ),
     }
     username = forms.CharField(
-        widget=forms.TextInput(attrs={"placeholder": "", "autofocus": "autofocus", "autocomplete": "username"})
+        widget=forms.TextInput(
+            attrs={
+                "placeholder": "",
+                "autofocus": "autofocus",
+                "autocomplete": "username",
+            }
+        )
     )
     password = forms.CharField(
-        widget=forms.PasswordInput(attrs={"placeholder": "", "autocomplete": "current-password"}),
+        widget=forms.PasswordInput(
+            attrs={"placeholder": "", "autocomplete": "current-password"}
+        ),
     )
 
 
@@ -39,7 +47,8 @@ class CustomRegistrationForm(UserCreationForm):
         widget=forms.TextInput(attrs={"autofocus": "autofocus", "placeholder": ""}),
     )
     username = forms.CharField(
-        help_text="", widget=forms.TextInput(attrs={"placeholder": "", "autocomplete": "username"})
+        help_text="",
+        widget=forms.TextInput(attrs={"placeholder": "", "autocomplete": "username"}),
     )
     email = forms.EmailField(
         label="Email",
@@ -48,12 +57,16 @@ class CustomRegistrationForm(UserCreationForm):
     )
     password1 = forms.CharField(
         label="Password",
-        widget=forms.PasswordInput(attrs={"placeholder": "", "autocomplete": "new-password"}),
+        widget=forms.PasswordInput(
+            attrs={"placeholder": "", "autocomplete": "new-password"}
+        ),
         help_text=(""),
     )
     password2 = forms.CharField(
         label="Password Confirmation",
-        widget=forms.PasswordInput(attrs={"placeholder": "", "autocomplete": "new-password"}),
+        widget=forms.PasswordInput(
+            attrs={"placeholder": "", "autocomplete": "new-password"}
+        ),
         help_text="Enter the same password as before, for verification.",
     )
     captcha = ReCaptchaField(error_messages={"required": "Please complete reCAPTCHA."})
@@ -163,6 +176,7 @@ class EmailChangeForm(forms.ModelForm):
 
 class CustomPasswordChangeForm(PasswordChangeForm):
     """Password change form."""
+
     old_password = forms.CharField(
         label="Current Password",
         widget=forms.PasswordInput(attrs={"class": "form-control"}),
@@ -231,6 +245,7 @@ class ContactForm(forms.ModelForm):
 
 class ProfileUpdateForm(forms.ModelForm):
     """Profile name update form."""
+
     profile_name = forms.CharField(
         max_length=15,
         required=True,

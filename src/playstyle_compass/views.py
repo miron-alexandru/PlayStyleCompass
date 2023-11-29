@@ -254,6 +254,7 @@ def toggle_favorite(request):
 
         return JsonResponse({"is_favorite": is_favorite})
 
+
 @login_required
 def toggle_game_queue(request):
     """View for toggling a game's queued status for the current user."""
@@ -273,6 +274,7 @@ def toggle_game_queue(request):
 
         return JsonResponse({"in_queue": in_queue})
 
+
 @login_required
 def user_reviews(request):
     """View to get the user reviews."""
@@ -290,19 +292,30 @@ def user_reviews(request):
         "user_preferences": user_preferences,
     }
 
-    return render(request, 'playstyle_compass/user_reviews.html', context)
-
+    return render(request, "playstyle_compass/user_reviews.html", context)
 
 
 @login_required
 def favorite_games(request):
     """View for the favorite games."""
-    return _get_games_view(request, "Favorites :: PlayStyle Compass", "favorite_games", "playstyle_compass/favorite_games.html")
+    return _get_games_view(
+        request,
+        "Favorites :: PlayStyle Compass",
+        "favorite_games",
+        "playstyle_compass/favorite_games.html",
+    )
+
 
 @login_required
 def game_queue(request):
     """View for the games queue."""
-    return _get_games_view(request, "Game Queue :: PlayStyle Compass", "game_queue", "playstyle_compass/game_queue.html")
+    return _get_games_view(
+        request,
+        "Game Queue :: PlayStyle Compass",
+        "game_queue",
+        "playstyle_compass/game_queue.html",
+    )
+
 
 def _get_games_view(request, page_title, list_name, template_name):
     """Helper view function to get games in a similar way for different pages."""
@@ -497,7 +510,7 @@ def get_game_reviews(request, game_id):
 def like_review(request):
     """View used to like a review."""
     if request.method == "POST" and request.user.is_authenticated:
-        review_id = request.POST.get('review_id', None)
+        review_id = request.POST.get("review_id", None)
         user_id = request.user.id
 
         if review_id:
@@ -508,21 +521,23 @@ def like_review(request):
 
             if review.user_has_liked(user_id):
                 review.remove_like(user_id)
-                return JsonResponse({'likes': review.likes, 'message': ''})
+                return JsonResponse({"likes": review.likes, "message": ""})
             else:
                 review.add_like(user_id)
-                return JsonResponse({'likes': review.likes, 'message': ''})
+                return JsonResponse({"likes": review.likes, "message": ""})
 
         else:
-            return JsonResponse({'error': 'Review ID invalid.'})
+            return JsonResponse({"error": "Review ID invalid."})
 
-    return JsonResponse({'message': 'You must be logged in to like or dislike a review.'})
+    return JsonResponse(
+        {"message": "You must be logged in to like or dislike a review."}
+    )
 
 
 def dislike_review(request):
     """View used to dislike a review."""
     if request.method == "POST" and request.user.is_authenticated:
-        review_id = request.POST.get('review_id', None)
+        review_id = request.POST.get("review_id", None)
         user_id = request.user.id
 
         if review_id:
@@ -533,15 +548,17 @@ def dislike_review(request):
 
             if review.user_has_disliked(user_id):
                 review.remove_dislike(user_id)
-                return JsonResponse({'dislikes': review.dislikes, 'message': ''})
+                return JsonResponse({"dislikes": review.dislikes, "message": ""})
             else:
                 review.add_dislike(user_id)
-                return JsonResponse({'dislikes': review.dislikes, 'message': ''})
+                return JsonResponse({"dislikes": review.dislikes, "message": ""})
 
         else:
-            return JsonResponse({'error': 'Review ID invalid.'})
+            return JsonResponse({"error": "Review ID invalid."})
 
-    return JsonResponse({'message': 'You must be logged in to like or dislike a review.'})
+    return JsonResponse(
+        {"message": "You must be logged in to like or dislike a review."}
+    )
 
 
 @login_required
