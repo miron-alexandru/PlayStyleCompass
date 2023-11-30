@@ -8,11 +8,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <link rel="icon" href="{% static 'images/pscicon.ico' %}" type="image/x-icon">
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin="">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin="">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Concert+One&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:400,600,700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <title>{% block title %}{{ page_title }}{% endblock title %}</title>
     {% bootstrap_css %}
     {% bootstrap_javascript jquery='full' %}
     <link rel="stylesheet" type="text/css" href="{% static 'css/base.css' %}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
   </head>
 
   <body>
@@ -96,7 +100,7 @@
               <input type="file" id="profile-picture-upload" class="sr-only" accept="image/*" data-profile-url="{% url 'users:profile' %}" data-csrf-token="{{ csrf_token }}">
             </li>
             <li class="nav-item">
-              <span class="navbar-text mr-3">Hello, <a href="{% url 'users:change_profile_name' %}" style="color: inherit;">{{ user.userprofile.profile_name|default:user.username }}</a>.</span>
+              <span class="navbar-text mr-3 user-profile-name"><a href="{% url 'users:change_profile_name' %}" style="color: inherit;">{{ user.userprofile.profile_name|default:user.username }}</a></span>
             </li>
 
             <li class="nav-item dropdown" id="hoverDropdown">

@@ -7,7 +7,7 @@ html
 
 body
 {
-  font-family: 'Arial', sans-serif;
+  font-family: "Open Sans", Helvetica, Arial, sans-serif;
   background-color: #f7f7f7;
   margin: 0;
   padding: 0;
@@ -119,17 +119,17 @@ input[type="email"]:focus,
 {
   display: flex;
   align-items: center;
-  height: 80px;
+  max-height: 80px;
 }
 
 .nav-item img
 {
-  max-width: 110px;
-  max-height: 110px;
-  object-fit: cover;
+  max-width: 100px;
+  max-height: 80px;
   border-radius: 50px;
   box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
   margin-top: 5px;
+  overflow: hidden;
 }
 
 .page-header
@@ -333,6 +333,17 @@ input[type="email"]:focus,
 .profile-picture-label:hover img
 {
   opacity: 1;
+}
+
+.user-profile-name a {
+  font-size: 16px;
+  font-weight: bolder;
+  margin-left: -9px;
+  text-decoration: none;
+}
+
+.user-profile-name a:hover {
+  color: #333!important;
 }
 
 @media screen and (max-width: 767px)

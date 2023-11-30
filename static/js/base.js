@@ -2,11 +2,20 @@ document.addEventListener("DOMContentLoaded", function () {
   let descriptionContent = document.getElementById("description-content").innerHTML.trim();
   let pageDescription = document.querySelector(".header-desc");
 
+  let headerContent = document.getElementById("header-content").innerHTML.trim();
+  let pageHeader = document.querySelector(".page-header");
+
   if (descriptionContent.length > 0) {
     pageDescription.classList.add("border-bottom");
   } else {
     pageDescription.style.display = "none";
+    pageHeader.style.marginBottom = "7px";
   }
+
+  if (headerContent.length === 0) {
+  pageHeader.style.display = "none";
+}
+
 });
 
 
