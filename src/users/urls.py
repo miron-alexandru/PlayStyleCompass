@@ -23,7 +23,7 @@ urlpatterns = [
     path("change_password/", views.change_password, name="change_password"),
     path("change_email/", views.change_email, name="change_email"),
     path("delete_account/", views.delete_account, name="delete_account"),
-    path("profile/", views.update_profile, name="profile"),
+    path("profile_picture/", views.update_profile, name="profile_picture"),
     path(
         "change-profile-name/",
         views.ProfileUpdateView.as_view(),
@@ -73,4 +73,8 @@ urlpatterns = [
         views.decline_friend_request,
         name="friend_request_decline",
     ),
+    path(
+        "view_user_profile/<str:profile_name>/",
+        views.view_user_profile,
+        name="view_user_profile",)
 ]

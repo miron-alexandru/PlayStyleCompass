@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'css/users/user_profile.css' %}">
+
+<div class="user-profile-card">
+  <div class="user-profile-picture">
+    {% if user_profile.profile_picture %}
+      <label>
+        <img src="{{ user_profile.profile_picture.url }}" alt="{{ user_profile.profile_name }}'s Profile Picture" class="profile-image"> 
+      </label>
+    {% else %}
+      <img src="{{ default_profile_picture }}" alt="{{ friend.0.userprofile.profile_name }}'s Default Profile Picture">
+    {% endif %}
+  </div>
+  <div class="user-actions">
+  <h2>{{ user_profile.profile_name }}</h2>
+</div>
+</div>
+
+{% endblock content %}
