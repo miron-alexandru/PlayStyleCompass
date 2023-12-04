@@ -13,8 +13,13 @@
 
 .card-title
 {
+  color: #333;
   font-size: 19px;
   margin-top: 10px;
+}
+
+.card-title:hover {
+  text-decoration: none!important;
 }
 
 .decline-friend-request

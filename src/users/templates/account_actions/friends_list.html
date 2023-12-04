@@ -31,7 +31,7 @@
           {% endif %}
         </div>
         <div class="card-center px-2">
-          <p class="card-title">{{ friend.0.userprofile.profile_name }}</p>
+          <a href="{% url 'users:view_profile' profile_name=friend.0.userprofile.profile_name %}" class="card-title">{{ friend.0.userprofile.profile_name }}</a>
         </div>
 
         <div class="d-flex flex-column friends-text-container p-2">

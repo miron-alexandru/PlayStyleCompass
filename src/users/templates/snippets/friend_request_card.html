@@ -11,7 +11,7 @@
     {% endif %}
   </div>
   <div class="card-center px-2">
-    <h4 class="card-title">{{ profile_name }}</h4>
+    <a href="{% url 'users:view_profile' profile_name=profile_name %}" class="card-title">{{ profile_name }}</a>
   </div>
   <div class="d-flex flex-row card-right flex-grow-1 justify-content-end mx-2">
     {% block action_buttons %}

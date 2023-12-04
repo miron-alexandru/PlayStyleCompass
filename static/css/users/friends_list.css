@@ -13,9 +13,15 @@
 
 .card-title
 {
+  color: #333;
   font-size: 20px;
   margin-top: 10px;
   padding-right: 5px;
+}
+
+.card-title:hover
+{
+  text-decoration: none!important;
 }
 
 .friends-text

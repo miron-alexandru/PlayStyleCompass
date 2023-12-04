@@ -30,7 +30,7 @@ from django.utils.encoding import (
 )
 from django.core.mail import EmailMessage
 from django.utils.safestring import mark_safe
-from django.http import JsonResponse, HttpResponse
+from django.http import JsonResponse, HttpResponse, Http404
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.edit import UpdateView
@@ -642,20 +642,35 @@ def cancel_friend_request(request):
     return HttpResponse(json.dumps(result), content_type="application/json")
 
 
-def view_user_profile(request, profile_name=None):
+def view_profile(request, profile_name):
     """View used to view the profile of users."""
-    if profile_name is None:
-        print('a')
-        user_profile = request.user.userprofile
-    else:
-        user_profile = get_object_or_404(UserProfile, profile_name=profile_name)
-
-    default_profile_picture = static("images/default_profile_picture.png")
-
     context = {
         "page_title": "User Profile :: PlayStyle Compass",
-        "default_profile_picture": default_profile_picture,
-        "user_profile": user_profile,
     }
 
+    try:
+        user_profile = get_object_or_404(UserProfile, profile_name=profile_name)
+
+        request_user = request.user
+        profile_to_view = user_profile.user
+
+        if request_user == profile_to_view:
+            is_friend = "You"
+        elif are_friends(request_user, profile_to_view):
+            is_friend = 'Friend'
+        else:
+            is_friend = 'Not Friend'
+
+        default_profile_picture = static("images/default_profile_picture.png")
+        context["default_profile_picture"] = default_profile_picture
+        context["user_profile"] = user_profile
+        context["is_friend"] = is_friend
+
+    except Http404:
+        messages.error(request, "The user does not exist or has deleted their account.")
+        return redirect(
+                    request.META.get("HTTP_REFERER", "playstyle_compass:index")
+                )
+
     return render(request, "account_actions/user_profile.html", context)
+

@@ -74,7 +74,8 @@ urlpatterns = [
         name="friend_request_decline",
     ),
     path(
-        "view_user_profile/<str:profile_name>/",
-        views.view_user_profile,
-        name="view_user_profile",)
+        "view_profile/<str:profile_name>/",
+        views.view_profile,
+        name="view_profile"),
+
 ]
