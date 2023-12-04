@@ -31,6 +31,7 @@ Websites for .env configuration: [GiantBomb](https://www.giantbomb.com/) / [Send
 <summary><h2>PlayStyle Compass Changelog</h2></summary>
 
 ### Version v1.4
+* Implemented User Profile: Now users are able to see their profile and the profile of other users.
 * CSS/HTML Refactoring / Improvements.
 * Added css adjustments for small screens.
 * Implemented Likes and Dislikes for the reviews: Users are able to like or dislike a review.
