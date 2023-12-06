@@ -1,9 +1,28 @@
+.custom-header
+{
+  background-color: #2f4255;
+  padding: 15px;
+  width: 100%;
+  text-align: center;
+}
+
+.custom-header h3
+{
+  font-size: 19px;
+  font-weight: bold;
+  color: #fff;
+  margin-left: 90px;
+  letter-spacing: 2px;
+  max-width: 1139px;
+  margin: 0 auto;
+}
+
 .user-profile-card
 {
   background-color: #f7f7f7;
   max-width: 350px;
-  margin: 20px auto;
-  padding: 20px;
+  margin: -15px auto;
+  padding: 15px;
   border: 1px solid #ddd;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -45,7 +64,7 @@
 {
   border: none;
   border-radius: 50px;
-  padding: 5px;
+  padding: 3px;
   display: inline-block;
 }
 
@@ -66,4 +85,32 @@
 .friends-text-container.not-friend
 {
   background-color: silver;
+}
+
+.friend-request
+{
+  margin-left: 10px;
+}
+
+.friend-request-button
+{
+  padding: 6px 10px;
+  background-color: green;
+  color: #ffffff;
+  border-radius: 50px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-size: 11px;
+}
+
+.friend-request-button:hover
+{
+  background-color: darkgreen;
+}
+
+.friend-request-message
+{
+  padding-top: 2px;
+  font-size: 15px;
 }

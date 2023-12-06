@@ -91,6 +91,12 @@
 .author-name
 {
   font-weight: bolder;
+  color: #333;
+}
+
+.author-name:hover
+{
+  text-decoration: none!important;
 }
 
 .thumbs-up,

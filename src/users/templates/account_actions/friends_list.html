@@ -35,9 +35,11 @@
         </div>
 
         <div class="d-flex flex-column friends-text-container p-2">
-          <p class="friends-text mb-0">
-            Friend
-          </p>
+          {% if this_user == friend.0 %}
+            <p class="friends-text mb-0">You</p>
+          {% else %}
+            <p class="friends-text mb-0">Friend</p>
+          {% endif %}
         </div>
 
         <div class="d-flex flex-row card-right flex-grow-1 justify-content-end mx-2">
@@ -59,15 +61,7 @@
   </div>
 </div>
 
-<script type="text/javascript">
-  function onRemoveFriend() {
-    location.reload();
-  }
-
-  function triggerRemoveFriend(friend_id) {
-    removeFriend(friend_id, onRemoveFriend)
-  }
-</script>
+<script src="{% static 'js/users/friends_list.js' %}"></script>
 
 {% include 'snippets/remove_friend.html' %}
 

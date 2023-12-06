@@ -53,7 +53,7 @@ $(document).ready(function() {
                     let truncated = description.length < review.description.length;
                     let buttonHtml = truncated ? `<button class="read-button-review" data-toggle="read-more">[Read more...]</button>` : '';
                     let authorName = `<span class="author-container">
-                                <span class="author-name" data-profile-name="${review.reviewer}">${review.reviewer}</span>
+                                <a href="/users/view_profile/${review.reviewer}" class="author-name">${review.reviewer}</a>
                                 <a href="#" class="author-link" data-user-id="${review.user_id}">
                                     <span class="friend-request-text" style="display: none;">Friend Request</span>
                                 </a>
@@ -135,18 +135,6 @@ $(document).ready(function() {
                 }
             });
         });
-
-
-        container.on('click', '.author-name', function () {
-            let profileName = $(this).closest('.author-name').data('profile-name');
-            let this_container = $(this).closest('.author-container');
-
-            if (profileName) {
-                userProfileUrl = '/users/view_profile/' + profileName
-                window.location.href = userProfileUrl;
-            }
-        });
-
 
         function sendRatingAction(actionType, event) {
             event.preventDefault();

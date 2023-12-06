@@ -650,6 +650,7 @@ def view_profile(request, profile_name):
 
     try:
         user_profile = get_object_or_404(UserProfile, profile_name=profile_name)
+        user_id = user_profile.id
 
         request_user = request.user
         profile_to_view = user_profile.user
@@ -665,6 +666,7 @@ def view_profile(request, profile_name):
         context["default_profile_picture"] = default_profile_picture
         context["user_profile"] = user_profile
         context["is_friend"] = is_friend
+        context["user_id"] = user_id
 
     except Http404:
         messages.error(request, "The user does not exist or has deleted their account.")

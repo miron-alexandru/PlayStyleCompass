@@ -1,6 +1,12 @@
 {% extends "base.html" %}
 {% load static %}
 
+{% block page_header %}
+<div class="custom-header">
+  <h3>{{ user_profile.profile_name|upper }}'s PROFILE</h3>
+</div>
+{% endblock page_header %}
+
 {% block content %}
 
 <link rel="stylesheet" type="text/css" href="{% static 'css/users/user_profile.css' %}">
@@ -12,15 +18,34 @@
           <img src="{{ user_profile.profile_picture.url }}" alt="{{ user_profile.profile_name }}'s Profile Picture" class="profile-image"> 
         </label>
       {% else %}
-        <img src="{{ default_profile_picture }}" alt="{{ friend.0.userprofile.profile_name }}'s Default Profile Picture">
+        <img src="{{ default_profile_picture }}" alt="{{ user_profile.profile_name }}'s Default Profile Picture">
       {% endif %}
     </div>
     <div class="user-actions">
       <p class="user-name">{{ user_profile.profile_name }}<p>
-      <div class="friends-text-container {% if is_friend == 'Friend' or is_friend == 'You' %}friend{% else %}not-friend{% endif %}">
+      <div class="d-flex justify-content-center align-items-center">
+        <div class="friends-text-container {% if is_friend == 'Friend' or is_friend == 'You' %}friend{% else %}not-friend{% endif %}">
           <span class="friend-status">{{ is_friend }}</span>
+        </div>
+        <div class="friend-request">
+          <button class="friend-request-button" id="friend_req_btn">
+            Friend Request
+          </button>
+        </div>
       </div>
     </div>
 </div>
+
+<script>
+  var sendFriendRequestBtn = document.getElementById("friend_req_btn");
+
+  if (sendFriendRequestBtn != null) {
+      sendFriendRequestBtn.addEventListener("click", function() {
+        sendFriendRequest("{{user_id}}");
+      });
+    }
+</script>
+
+{% include 'snippets/send_friend_request.html' %}
 
 {% endblock content %}
