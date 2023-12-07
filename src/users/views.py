@@ -340,7 +340,7 @@ def change_password_done(request):
 
 
 @login_required
-def update_profile(request):
+def update_profile_picture(request):
     """View for profile image update."""
     if request.method == "POST":
         form = ProfilePictureForm(
@@ -359,7 +359,7 @@ def update_profile(request):
         "page_title": "Change Profile Picture :: PlayStyle Compass",
     }
 
-    return render(request, "account_actions/update_profile.html", context)
+    return render(request, "account_actions/update_profile_picture.html", context)
 
 
 def contact(request):
@@ -479,6 +479,10 @@ def send_friend_request(request, *args, **kwargs):
                     result[
                         "message"
                     ] = f"<strong>{receiver.userprofile.profile_name}</strong> is already in your friends list."
+                elif user == receiver:
+                    result[
+                        "message"
+                    ] = f"You cannot send a friend request to <strong>yourself.</strong>"
                 else:
                     friend_requests = FriendRequest.objects.filter(
                         sender=user, receiver=receiver, is_active=True
@@ -655,12 +659,15 @@ def view_profile(request, profile_name):
         request_user = request.user
         profile_to_view = user_profile.user
 
-        if request_user == profile_to_view:
-            is_friend = "You"
-        elif are_friends(request_user, profile_to_view):
-            is_friend = 'Friend'
+        if request.user.is_authenticated:
+            if request_user == profile_to_view:
+                is_friend = "You"
+            elif are_friends(request_user, profile_to_view):
+                is_friend = 'Friend'
+            else:
+                is_friend = 'Not Friend'
         else:
-            is_friend = 'Not Friend'
+            is_friend = None
 
         default_profile_picture = static("images/default_profile_picture.png")
         context["default_profile_picture"] = default_profile_picture

@@ -23,7 +23,7 @@ urlpatterns = [
     path("change_password/", views.change_password, name="change_password"),
     path("change_email/", views.change_email, name="change_email"),
     path("delete_account/", views.delete_account, name="delete_account"),
-    path("profile_picture/", views.update_profile, name="profile_picture"),
+    path("profile_picture/", views.update_profile_picture, name="profile_picture"),
     path(
         "change-profile-name/",
         views.ProfileUpdateView.as_view(),

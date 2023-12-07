@@ -2,8 +2,12 @@
 {% load static %}
 
 {% block page_header %}
-<div class="custom-header">
-  <h3>{{ user_profile.profile_name|upper }}'s PROFILE</h3>
+<div class="profile-header">
+  {% if is_friend == 'You' %}
+  <h3>YOUR PROFILE</h3>
+  {% else %}
+  <h3>{{ user_profile.profile_name|upper }}'S PROFILE</h3>
+  {% endif %}
 </div>
 {% endblock page_header %}
 
@@ -14,24 +18,39 @@
 <div class="user-profile-card">
     <div class="user-profile-picture">
       {% if user_profile.profile_picture %}
-        <label>
-          <img src="{{ user_profile.profile_picture.url }}" alt="{{ user_profile.profile_name }}'s Profile Picture" class="profile-image"> 
-        </label>
+        {% if is_friend == 'You' %}
+          <label for="profile-picture-upload" class="profile-picture-label">
+            <img src="{{ user_profile.profile_picture.url }}" alt="{{ user_profile.profile_name }}'s Profile Picture" class="profile-image"> 
+          </label>
+        {% else %}
+          <label>
+            <img src="{{ user_profile.profile_picture.url }}" alt="{{ user_profile.profile_name }}'s Profile Picture" class="profile-image"> 
+          </label>
+        {% endif %}
       {% else %}
         <img src="{{ default_profile_picture }}" alt="{{ user_profile.profile_name }}'s Default Profile Picture">
       {% endif %}
     </div>
     <div class="user-actions">
       <p class="user-name">{{ user_profile.profile_name }}<p>
+        {% if user.is_authenticated %}
       <div class="d-flex justify-content-center align-items-center">
         <div class="friends-text-container {% if is_friend == 'Friend' or is_friend == 'You' %}friend{% else %}not-friend{% endif %}">
           <span class="friend-status">{{ is_friend }}</span>
         </div>
+        {% if is_friend == 'Not Friend' %}
         <div class="friend-request">
           <button class="friend-request-button" id="friend_req_btn">
             Friend Request
           </button>
         </div>
+        {% endif %}
+        {% if is_friend == 'Friend' %}
+      <div class="remove-friend">
+        <button class="remove-friend-button" onclick='triggerRemoveFriend("{{ user_id }}")'>Unfriend</button>
+      </div>
+      {% endif %}
+    {% endif %}
       </div>
     </div>
 </div>
@@ -46,6 +65,9 @@
     }
 </script>
 
+<script src="{% static 'js/users/remove_friend.js' %}"></script>
+
 {% include 'snippets/send_friend_request.html' %}
+{% include 'snippets/remove_friend.html' %}
 
 {% endblock content %}

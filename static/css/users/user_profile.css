@@ -1,22 +1,3 @@
-.custom-header
-{
-  background-color: #2f4255;
-  padding: 15px;
-  width: 100%;
-  text-align: center;
-}
-
-.custom-header h3
-{
-  font-size: 19px;
-  font-weight: bold;
-  color: #fff;
-  margin-left: 90px;
-  letter-spacing: 2px;
-  max-width: 1139px;
-  margin: 0 auto;
-}
-
 .user-profile-card
 {
   background-color: #f7f7f7;
@@ -63,15 +44,14 @@
 .friends-text-container
 {
   border: none;
-  border-radius: 50px;
-  padding: 3px;
+  border-radius: 50%;
+  padding: 5px;
   display: inline-block;
 }
 
 .friend-status
 {
   color: #1a1a1a;
-  margin: 0 auto;
   font-weight: bold;
   font-size: 12px;
   padding: 5px;
@@ -87,16 +67,14 @@
   background-color: silver;
 }
 
-.friend-request
+.friend-request, .remove-friend
 {
   margin-left: 10px;
 }
 
-.friend-request-button
+.friend-request-button, .remove-friend-button
 {
   padding: 6px 10px;
-  background-color: green;
-  color: #ffffff;
   border-radius: 50px;
   border: none;
   cursor: pointer;
@@ -104,10 +82,28 @@
   font-size: 11px;
 }
 
+.friend-request-button
+{
+  background-color: green;
+  color: #ffffff;
+}
+
+.remove-friend-button
+{
+  background-color: red;
+  color: #ffffff;
+}
+
 .friend-request-button:hover
 {
   background-color: darkgreen;
 }
+
+.remove-friend-button:hover
+{
+  background-color: darkred;
+}
+
 
 .friend-request-message
 {

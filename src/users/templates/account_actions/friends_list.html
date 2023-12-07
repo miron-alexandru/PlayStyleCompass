@@ -43,7 +43,7 @@
         </div>
 
         <div class="d-flex flex-row card-right flex-grow-1 justify-content-end mx-2">
-          <button id="id_cancel_{{ request.sender.id }}" class="remove-friend-btn" onclick='triggerRemoveFriend("{{ friend.0.id }}")'>Unfriend</button>
+          <button class="remove-friend-btn" onclick='triggerRemoveFriend("{{ friend.0.id }}")'>Unfriend</button>
         </div>
       </div>
 
@@ -61,7 +61,7 @@
   </div>
 </div>
 
-<script src="{% static 'js/users/friends_list.js' %}"></script>
+<script src="{% static 'js/users/remove_friend.js' %}"></script>
 
 {% include 'snippets/remove_friend.html' %}
 

@@ -9,11 +9,6 @@
 			timeout: 5000,
 			success: function(data) {
 				console.log("SUCCESS", data)
-				if(data['message'] == "Friend request declined."){
-				}
-				else if(data['message'] != null){
-					alert(data['message'])
-				}
 			},
 			error: function(data) {
 				console.error("ERROR...", data)

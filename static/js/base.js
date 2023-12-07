@@ -84,6 +84,7 @@ if (profilePictureUpload) {
       };
 
       reader.readAsDataURL(file);
+      window.location.reload();
     }
   });
 }

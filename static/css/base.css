@@ -162,6 +162,25 @@ input[type="email"]:focus,
   margin: 0 auto;
 }
 
+.profile-header
+{
+  background-color: #2f4255;
+  padding: 15px;
+  width: 100%;
+  text-align: center;
+}
+
+.profile-header h3
+{
+  font-size: 19px;
+  font-weight: bold;
+  color: #fff;
+  margin-left: 90px;
+  letter-spacing: 2px;
+  max-width: 1139px;
+  margin: 0 auto;
+}
+
 .header-desc
 {
   color: #555;

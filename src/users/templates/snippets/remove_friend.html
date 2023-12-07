@@ -14,11 +14,6 @@
 			data: result,
 			success: function(data) {
 				console.log("SUCCESS", data)
-				if(data['message'] == "Successfully removed that friend."){
-				}
-				else if(data['message'] != null){
-					alert(data['message'])
-				}
 			},
 			error: function(data) {
 				console.error("ERROR...", data)
