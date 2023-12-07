@@ -349,7 +349,7 @@ def update_profile_picture(request):
 
         if form.is_valid():
             form.save()
-            return redirect("users:profile")
+            return redirect("users:profile_picture")
 
     else:
         form = ProfilePictureForm(instance=request.user.userprofile)
