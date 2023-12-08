@@ -64,8 +64,14 @@ if (profilePictureUpload) {
 
       reader.onload = function (e) {
         const profilePicture = document.getElementById('profile-picture');
+        const userProfilePicture = document.getElementById('profile-picture-user-profile');
+
         if (profilePicture) {
           profilePicture.src = e.target.result;
+        }
+
+        if (userProfilePicture) {
+          userProfilePicture.src = e.target.result;
         }
 
         const formData = new FormData();
@@ -84,7 +90,7 @@ if (profilePictureUpload) {
       };
 
       reader.readAsDataURL(file);
-      window.location.reload();
     }
   });
 }
+

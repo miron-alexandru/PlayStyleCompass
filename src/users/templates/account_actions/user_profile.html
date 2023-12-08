@@ -20,7 +20,7 @@
       {% if user_profile.profile_picture %}
         {% if is_friend == 'You' %}
           <label for="profile-picture-upload" class="profile-picture-label">
-            <img src="{{ user_profile.profile_picture.url }}" alt="{{ user_profile.profile_name }}'s Profile Picture" class="profile-image"> 
+            <img src="{{ user_profile.profile_picture.url }}" alt="{{ user_profile.profile_name }}'s Profile Picture" class="profile-image" id="profile-picture-user-profile"> 
           </label>
         {% else %}
           <label>
@@ -28,7 +28,13 @@
           </label>
         {% endif %}
       {% else %}
-        <img src="{{ default_profile_picture }}" alt="{{ user_profile.profile_name }}'s Default Profile Picture">
+        {% if is_friend == 'You' %}
+        <label for="profile-picture-upload" class="profile-picture-label">
+        <img src="{{ default_profile_picture }}" alt="{{ user_profile.profile_name }}'s Default Profile Picture" class="profile-image" id="profile-picture-user-profile">
+        </label>
+        {% else %}
+        <img src="{{ default_profile_picture }}" alt="{{ user_profile.profile_name }}'s Default Profile Picture" class="profile-image">
+        {% endif %}
       {% endif %}
     </div>
     <div class="user-actions">
