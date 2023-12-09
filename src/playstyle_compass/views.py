@@ -3,6 +3,7 @@
 from datetime import date, datetime
 from collections import defaultdict
 from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.http import JsonResponse, HttpResponseRedirect
@@ -276,9 +277,12 @@ def toggle_game_queue(request):
 
 
 @login_required
-def user_reviews(request):
+def user_reviews(request, user_id=None):
     """View to get the user reviews."""
-    user = request.user
+    if user_id is None:
+        user = request.user
+    else:
+        user = get_object_or_404(User, id=user_id)
 
     user_reviews = Review.objects.filter(user=user)
     user_preferences = UserPreferences.objects.get(user=user)
@@ -296,30 +300,35 @@ def user_reviews(request):
 
 
 @login_required
-def favorite_games(request):
+def favorite_games(request, user_id=None):
     """View for the favorite games."""
     return _get_games_view(
         request,
         "Favorites :: PlayStyle Compass",
         "favorite_games",
         "playstyle_compass/favorite_games.html",
+        user_id=user_id,
     )
 
-
 @login_required
-def game_queue(request):
+def game_queue(request, user_id=None):
     """View for the games queue."""
     return _get_games_view(
         request,
         "Game Queue :: PlayStyle Compass",
         "game_queue",
         "playstyle_compass/game_queue.html",
+        user_id=user_id,
     )
 
 
-def _get_games_view(request, page_title, list_name, template_name):
+
+def _get_games_view(request, page_title, list_name, template_name, user_id=None):
     """Helper view function to get games in a similar way for different pages."""
-    user = request.user
+    if user_id is None:
+        user = request.user
+    else:
+        user = get_object_or_404(User, id=user_id)
 
     try:
         user_preferences = UserPreferences.objects.get(user=user)

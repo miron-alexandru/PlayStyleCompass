@@ -74,6 +74,18 @@ class UserPreferences(models.Model):
         ]
         return game_queue_ids
 
+    def get_list_length(self, attribute):
+        if getattr(self, attribute):
+            elements = [element for element in getattr(self, attribute).split(",") if element.strip()]
+            return len(elements)
+        return 0
+
+    def get_favorite_games_number(self):
+        return self.get_list_length("favorite_games")
+
+    def get_game_queue_number(self):
+        return self.get_list_length("game_queue")
+
     def __str__(self):
         return self.user.username
 

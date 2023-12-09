@@ -52,6 +52,8 @@ from .misc.helper_functions import are_friends
 from .models import UserProfile, FriendList, FriendRequest
 from .tokens import account_activation_token
 
+from playstyle_compass.models import UserPreferences, Review
+
 
 class ProfileUpdateView(LoginRequiredMixin, UpdateView):
     """View used to update the profile name for users."""
@@ -407,13 +409,17 @@ def contact_success(request):
 @login_required
 def friends_list_view(request, *args, **kwargs):
     """View to display the friends list."""
+    viewer = request.user
     context = {}
 
-    if not request.user.is_authenticated:
+    if not viewer.is_authenticated:
         return HttpResponse("You must be authenticated to view the friends list.")
 
     user_id = kwargs.get("user_id")
     this_user = get_object_or_404(User, pk=user_id)
+
+    if viewer != this_user:
+        return HttpResponse("You cannot view the friends list of another user.")
 
     friend_list, created = FriendList.objects.get_or_create(user=this_user)
     auth_user_friend_list = FriendList.objects.get(user=request.user)
@@ -444,7 +450,8 @@ def friend_requests_view(request, *args, **kwargs):
     account = User.objects.get(pk=user_id)
 
     if account != user:
-        return HttpResponse("You can't view another users friend requets.")
+        return HttpResponse("You can't view the friend requests of another user.")
+
     friend_requests = FriendRequest.objects.filter(receiver=account, is_active=True)
     user_sent_friend_requests = FriendRequest.objects.filter(
         sender=user, is_active=True
@@ -656,6 +663,8 @@ def view_profile(request, profile_name):
         user_profile = get_object_or_404(UserProfile, profile_name=profile_name)
         user_id = user_profile.id
 
+        user_stats = get_user_stats(user_id)
+
         request_user = request.user
         profile_to_view = user_profile.user
 
@@ -674,12 +683,34 @@ def view_profile(request, profile_name):
         context["user_profile"] = user_profile
         context["is_friend"] = is_friend
         context["user_id"] = user_id
+        context["user_preferences"] = user_stats["user_preferences"]
+        context["user_reviews_count"] = user_stats["user_reviews_count"]
+        context["review_likes_count"] = user_stats["review_likes_count"]
 
     except Http404:
         messages.error(request, "The user does not exist or has deleted their account.")
-        return redirect(
-                    request.META.get("HTTP_REFERER", "playstyle_compass:index")
-                )
+        return redirect(request.META.get("HTTP_REFERER", "playstyle_compass:index"))
 
     return render(request, "account_actions/user_profile.html", context)
+
+
+def get_user_stats(user_id):
+    user = get_object_or_404(User, id=user_id)
+    user_preferences = UserPreferences.objects.get(user=user)
+
+    reviews = Review.objects.filter(user=user)
+    user_reviews_count = reviews.count()
+
+    review_likes_count = 0
+    for review in reviews:
+        review_likes_count += review.likes
+
+    return {
+        "user_preferences": user_preferences,
+        "user_reviews_count": user_reviews_count,
+        "review_likes_count": review_likes_count,
+    }
+
+
+
 

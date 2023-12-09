@@ -30,9 +30,13 @@ Websites for .env configuration: [GiantBomb](https://www.giantbomb.com/) / [Send
 <details>
 <summary><h2>PlayStyle Compass Changelog</h2></summary>
 
-### Version v1.4
-* User profile improvements: Remove friend / Friend request / Profile picture change.
+
+### Version v1.5
+* User profile improvements: Reviews, Likes, Favorites, Game Queue stats are displayed on the profile.
+* User profile improvements: Remove friend / Friend request / Profile picture change functionality.
 * Implemented User Profile: Now users are able to see their profile and the profile of other users.
+
+### Version v1.4
 * CSS/HTML Refactoring / Improvements.
 * Added css adjustments for small screens.
 * Implemented Likes and Dislikes for the reviews: Users are able to like or dislike a review.

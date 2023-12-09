@@ -1,7 +1,7 @@
 .user-profile-card
 {
   background-color: #f7f7f7;
-  max-width: 350px;
+  max-width: 360px;
   margin: -15px auto;
   padding: 15px;
   border: 1px solid #ddd;
@@ -12,7 +12,7 @@
 
 .user-profile-picture 
 {
-  padding-top: 10px;
+  padding-top: 2px;
   padding-bottom: 7px;
   border-bottom: 0.1px solid #333;
 }
@@ -22,22 +22,21 @@
   padding-top: 10px;
 }
 
-.profile-image {
+.profile-image 
+{
   max-width: 230px;
   max-height: 230px;
   border-radius: 50px;
   border: 3px solid #333;
   box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
-  margin-top: 5px;
   overflow: hidden;
 }
 
 .user-name
 {
-  font-size: 22px;
+  font-size: 24px;
   font-weight: bold;
   color: #1a1a1a;
-  padding-bottom: 5px;
 }
 
 
@@ -109,4 +108,40 @@
 {
   padding-top: 2px;
   font-size: 15px;
+}
+
+.user-stats 
+{
+  margin-top: 20px;
+}
+
+.stat-item 
+{
+  text-align: center;
+  margin: 0 10px;
+}
+
+.stat-label
+{
+  font-size: 14px;
+  color: #1598f4;
+  white-space: nowrap;
+}
+
+.stat-label a, .stat-label a:visited 
+{
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.stat-label a:hover
+{
+  text-decoration: none;
+}
+
+.stat-value
+{
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
 }

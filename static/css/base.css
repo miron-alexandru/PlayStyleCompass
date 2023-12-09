@@ -329,7 +329,7 @@ input[type="email"]:focus,
   position: relative;
   cursor: pointer;
   display: inline-block;
-  padding: 10px;
+  padding: 5px;
 }
 
 .profile-picture-label:hover::before
@@ -357,7 +357,7 @@ input[type="email"]:focus,
 .user-profile-name a {
   font-size: 16px;
   font-weight: bolder;
-  margin-left: -9px;
+  margin-left: -5px;
   text-decoration: none;
 }
 
