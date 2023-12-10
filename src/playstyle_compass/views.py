@@ -517,57 +517,61 @@ def get_game_reviews(request, game_id):
 
 
 def like_review(request):
-    """View used to like a review."""
     if request.method == "POST" and request.user.is_authenticated:
-        review_id = request.POST.get("review_id", None)
+        review_id = request.POST.get("review_id")
         user_id = request.user.id
 
         if review_id:
             review = get_object_or_404(Review, id=review_id)
 
-            if "-" in str(review.user_id):
-                review.user_id = -1
-
-            if review.user_has_liked(user_id):
-                review.remove_like(user_id)
-                return JsonResponse({"likes": review.likes, "message": ""})
-            else:
-                review.add_like(user_id)
-                return JsonResponse({"likes": review.likes, "message": ""})
-
-        else:
-            return JsonResponse({"error": "Review ID invalid."})
-
-    return JsonResponse(
-        {"message": "You must be logged in to like or dislike a review."}
-    )
-
-
-def dislike_review(request):
-    """View used to dislike a review."""
-    if request.method == "POST" and request.user.is_authenticated:
-        review_id = request.POST.get("review_id", None)
-        user_id = request.user.id
-
-        if review_id:
-            review = get_object_or_404(Review, id=review_id)
+            if review.user_id == user_id:
+                return JsonResponse({"message": "You cannot like your own review."})
 
             if "-" in str(review.user_id):
                 review.user_id = -1
 
             if review.user_has_disliked(user_id):
                 review.remove_dislike(user_id)
-                return JsonResponse({"dislikes": review.dislikes, "message": ""})
+
+            if review.user_has_liked(user_id):
+                review.remove_like(user_id)
+            else:
+                review.add_like(user_id)
+
+            return JsonResponse({"likes": review.likes, "dislikes": review.dislikes, "message": ""})
+
+        return JsonResponse({"error": "Review ID invalid."})
+
+    return JsonResponse({"message": "You must be logged in to like or dislike a review."})
+
+
+def dislike_review(request):
+    if request.method == "POST" and request.user.is_authenticated:
+        review_id = request.POST.get("review_id")
+        user_id = request.user.id
+
+        if review_id:
+            review = get_object_or_404(Review, id=review_id)
+
+            if review.user_id == user_id:
+                return JsonResponse({"message": "You cannot dislike your own review."})
+
+            if "-" in str(review.user_id):
+                review.user_id = -1
+
+            if review.user_has_liked(user_id):
+                review.remove_like(user_id)
+
+            if review.user_has_disliked(user_id):
+                review.remove_dislike(user_id)
             else:
                 review.add_dislike(user_id)
-                return JsonResponse({"dislikes": review.dislikes, "message": ""})
 
-        else:
-            return JsonResponse({"error": "Review ID invalid."})
+            return JsonResponse({"dislikes": review.dislikes, "likes": review.likes, "message": ""})
 
-    return JsonResponse(
-        {"message": "You must be logged in to like or dislike a review."}
-    )
+        return JsonResponse({"error": "Review ID invalid."})
+
+    return JsonResponse({"message": "You must be logged in to like or dislike a review."})
 
 
 @login_required

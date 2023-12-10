@@ -32,6 +32,7 @@ Websites for .env configuration: [GiantBomb](https://www.giantbomb.com/) / [Send
 
 
 ### Version v1.5
+* Like-dislike feature improved.
 * User profile improvements: Reviews, Likes, Favorites, Game Queue stats are displayed on the profile.
 * User profile improvements: Remove friend / Friend request / Profile picture change functionality.
 * Implemented User Profile: Now users are able to see their profile and the profile of other users.
