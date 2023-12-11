@@ -9,10 +9,15 @@
   <div class="my-header">
     <h1 class="display-5">Discover Your Perfect Games</h1>
 
-    <p class="lead">Welcome to PlayStyle Compass – your personalized gateway to uncovering video games perfectly tailored to your unique preferences, gaming history, and genre inclinations. Whether you're a casual enthusiast or a dedicated gaming passionate, our application meticulously analyzes your individual gaming profile, curating recommendations that align with your distinct tastes. Embark on an exhilarating journey through the realm of gaming possibilities by creating an account with us!</p>
+    <p class="lead">Welcome to PlayStyle Compass – your personalized gateway to uncovering video games perfectly
+      tailored to your unique preferences, gaming history, and genre inclinations. Whether you're a casual enthusiast or
+      a dedicated gaming passionate, our application meticulously analyzes your individual gaming profile, curating
+      recommendations that align with your distinct tastes. Embark on an exhilarating journey through the realm of
+      gaming possibilities by creating an account with us!</p>
 
     {% if not user.is_authenticated %}
-    <a class="btn btn-lg btn-primary register-button" href="{% url 'users:register' %}" role="button">Register &raquo;</a>
+    <a class="btn btn-lg btn-primary register-button" href="{% url 'users:register' %}" role="button">Register
+      &raquo;</a>
     {% endif %}
   </div>
 </div>
@@ -22,11 +27,12 @@
 
 <div class="search-description">
   <h3>SEARCH FOR YOUR FAVORITE GAMES</h3>
-  <p class="search-description-text">Looking for your favorite games? You're in the right place! Use our search bar to find games from various genres, platforms, and eras.</p>
+  <p class="search-description-text">Looking for your favorite games? You're in the right place! Use our search bar to
+    find games from various genres, platforms, and eras.</p>
 </div>
 
 <div class="search-bar-only">
-{% include "playstyle_compass/search_bar_only.html" %}
+  {% include "playstyle_compass/search_bar_only.html" %}
 </div>
 
 <div class="games">
@@ -43,7 +49,8 @@
 
 <div class="games">
   <h3>UPCOMING GAMES</h3>
-  <p class="games-description">Explore the latest and most anticipated games coming soon. Don't miss out on the gaming excitement!</p>
+  <p class="games-description">Explore the latest and most anticipated games coming soon. Don't miss out on the gaming
+    excitement!</p>
   <div class="game-container">
     <ul>
       {% for game in upcoming_games %}

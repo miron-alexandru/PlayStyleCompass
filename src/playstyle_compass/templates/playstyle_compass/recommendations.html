@@ -8,7 +8,9 @@
 </div>
 {% endblock page_header %}
 
-{% block description %}Discover a curated selection of game recommendations tailored specifically to your gaming history, preferred platforms, favorite genres, and more. Explore the information about each game to make informed choices for your next gaming adventure.{% endblock description %}
+{% block description %}Discover a curated selection of game recommendations tailored specifically to your gaming
+history, preferred platforms, favorite genres, and more. Explore the information about each game to make informed
+choices for your next gaming adventure.{% endblock description %}
 
 {% block content %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/playstyle_compass/common_styles.css' %}">
@@ -46,22 +48,29 @@
   <div class="pagination">
     <span class="step-links">
       {% if paginated_page.has_previous %}
-        <a href="?category={{ category }}&{{ category|slugify }}_page=1{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}">&laquo; First</a>
-    <a href="?category={{ category }}&{{ category|slugify }}_page={{ paginated_page.previous_page_number }}{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}">Previous</a>
+      <a
+        href="?category={{ category }}&{{ category|slugify }}_page=1{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}">&laquo;
+        First</a>
+      <a
+        href="?category={{ category }}&{{ category|slugify }}_page={{ paginated_page.previous_page_number }}{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}">Previous</a>
       {% endif %}
 
-    <span class="current-page">
+      <span class="current-page">
         Page {{ paginated_page.number }} of {{ paginated_page.paginator.num_pages }}
-    </span>
+      </span>
 
-    {% if paginated_page.has_next %}
-    <a href="?category={{ category }}&{{ category|slugify }}_page={{ paginated_page.next_page_number }}{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}">Next</a>
-    <a href="?category={{ category }}&{{ category|slugify }}_page={{ paginated_page.paginator.num_pages }}{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}">Last &raquo;</a>
-    {% endif %}
+      {% if paginated_page.has_next %}
+      <a
+        href="?category={{ category }}&{{ category|slugify }}_page={{ paginated_page.next_page_number }}{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}">Next</a>
+      <a
+        href="?category={{ category }}&{{ category|slugify }}_page={{ paginated_page.paginator.num_pages }}{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}">Last
+        &raquo;</a>
+      {% endif %}
     </span>
   </div>
   {% else %}
-  <h4>No game recommendations based on your {{ category|format_category_label }}: {{ user_preferences|getattr:category }}</h4>
+  <h4>No game recommendations based on your {{ category|format_category_label }}: {{ user_preferences|getattr:category
+    }}</h4>
   {% endif %}
 </div>
 {% endfor %}

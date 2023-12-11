@@ -7,12 +7,17 @@
 <link rel="stylesheet" href="{% static 'css/lightbox.min.css' %}">
 {% endblock %}
 
-<div class="game-container" data-game-id="{{ game.id }}" data-reviews-url="{% url 'playstyle_compass:get_game_reviews' game.id %}" data-friend-req="{% url 'users:friend_request' 0 %}" data-like-url="{% url 'playstyle_compass:like' %}" data-dislike-url="{% url 'playstyle_compass:dislike' %}">
+<div class="game-container" data-game-id="{{ game.id }}"
+  data-reviews-url="{% url 'playstyle_compass:get_game_reviews' game.id %}"
+  data-friend-req="{% url 'users:friend_request' 0 %}" data-like-url="{% url 'playstyle_compass:like' %}"
+  data-dislike-url="{% url 'playstyle_compass:dislike' %}">
 
   <li>
     <div class="game-image">
       {% if game.image %}
-      <span>Rating:</span><span class="star-rating"><span class="score-hidden" style="display: none">{{ game.average_score }}</span></span> <small><span>({{ game.total_reviews }} {{ game.total_reviews|pluralize_reviews }})</span></small></p>
+      <span>Rating: </span><span class="star-rating"><span class="score-hidden" style="display: none">
+        {{game.average_score }}</span></span> <small><span>({{ game.total_reviews }} 
+        {{ game.total_reviews|pluralize_reviews }})</span></small></p>
       <img src="{{ game.image }}" alt="Game Image">
       {% else %}
       <p><strong>Image not available</strong></p>
@@ -57,30 +62,36 @@
       {% endif %}
       <div class="reviews-section">
         <p><strong>Reviews:</strong></p>
-        <button class="show-hide-button" data-game-id="{{ game.id }}">Show Reviews</button> <a href="{% url 'playstyle_compass:add_review' game.id %}?next={{ request.get_full_path }}" class="add-review-btn">Write a Review</a> <a href="{% url 'playstyle_compass:delete_reviews' game.id %}?next={{ request.get_full_path }}" class="delete-review-btn">Delete your Review</a> <a href="{% url 'playstyle_compass:edit_review' game.id %}?next={{ request.get_full_path }}" class="edit-review-btn">Edit your Review</a>
+        <button class="show-hide-button" data-game-id="{{ game.id }}">Show Reviews</button><a 
+          href="{% url 'playstyle_compass:add_review' game.id %}?next={{ request.get_full_path }}"
+          class="add-review-btn">Write a Review</a> <a
+          href="{% url 'playstyle_compass:delete_reviews' game.id %}?next={{ request.get_full_path }}"
+          class="delete-review-btn">Delete your Review</a> <a
+          href="{% url 'playstyle_compass:edit_review' game.id %}?next={{ request.get_full_path }}"
+          class="edit-review-btn">Edit your Review</a>
         <div class="reviews-list" style="display: none;">
         </div>
       </div>
     </div>
     {% if user.is_authenticated %}
     <span class="favorite-toggle" data-game-id="{{ game.id }}" title="Add to Favorites">
-  {% if game.id|is_favorite:user_preferences.favorite_games %}
-    <i class="fas fa-star" id="star-{{ game.id }}"></i>
-  {% else %}
-    <i class="far fa-star" id="star-{{ game.id }}"></i>
-  {% endif %}
-</span>
+      {% if game.id|is_favorite:user_preferences.favorite_games %}
+      <i class="fas fa-star" id="star-{{ game.id }}"></i>
+      {% else %}
+      <i class="far fa-star" id="star-{{ game.id }}"></i>
+      {% endif %}
+    </span>
 
     <span class="icon-divider">|</span>
 
     <span class="queue-toggle" data-game-id="{{ game.id }}" title="Add to Games Queue">
-  {% if game.id|in_queue:user_preferences.game_queue %}
-    <i class="fa-solid fa-clock" id="queue-{{ game.id }}"></i>
-  {% else %}
-    <i class="fa-regular fa-clock" id="queue-{{ game.id }}"></i>
-  {% endif %}
-</span>
-{% endif %}
+      {% if game.id|in_queue:user_preferences.game_queue %}
+      <i class="fa-solid fa-clock" id="queue-{{ game.id }}"></i>
+      {% else %}
+      <i class="fa-regular fa-clock" id="queue-{{ game.id }}"></i>
+      {% endif %}
+    </span>
+    {% endif %}
 
   </li>
 </div>

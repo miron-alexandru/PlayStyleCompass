@@ -310,6 +310,7 @@ def favorite_games(request, user_id=None):
         user_id=user_id,
     )
 
+
 @login_required
 def game_queue(request, user_id=None):
     """View for the games queue."""
@@ -320,7 +321,6 @@ def game_queue(request, user_id=None):
         "playstyle_compass/game_queue.html",
         user_id=user_id,
     )
-
 
 
 def _get_games_view(request, page_title, list_name, template_name, user_id=None):
@@ -538,11 +538,15 @@ def like_review(request):
             else:
                 review.add_like(user_id)
 
-            return JsonResponse({"likes": review.likes, "dislikes": review.dislikes, "message": ""})
+            return JsonResponse(
+                {"likes": review.likes, "dislikes": review.dislikes, "message": ""}
+            )
 
         return JsonResponse({"error": "Review ID invalid."})
 
-    return JsonResponse({"message": "You must be logged in to like or dislike a review."})
+    return JsonResponse(
+        {"message": "You must be logged in to like or dislike a review."}
+    )
 
 
 def dislike_review(request):
@@ -567,11 +571,15 @@ def dislike_review(request):
             else:
                 review.add_dislike(user_id)
 
-            return JsonResponse({"dislikes": review.dislikes, "likes": review.likes, "message": ""})
+            return JsonResponse(
+                {"dislikes": review.dislikes, "likes": review.likes, "message": ""}
+            )
 
         return JsonResponse({"error": "Review ID invalid."})
 
-    return JsonResponse({"message": "You must be logged in to like or dislike a review."})
+    return JsonResponse(
+        {"message": "You must be logged in to like or dislike a review."}
+    )
 
 
 @login_required

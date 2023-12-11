@@ -76,7 +76,11 @@ class UserPreferences(models.Model):
 
     def get_list_length(self, attribute):
         if getattr(self, attribute):
-            elements = [element for element in getattr(self, attribute).split(",") if element.strip()]
+            elements = [
+                element
+                for element in getattr(self, attribute).split(",")
+                if element.strip()
+            ]
             return len(elements)
         return 0
 

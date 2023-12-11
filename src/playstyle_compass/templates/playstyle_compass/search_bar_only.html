@@ -4,7 +4,8 @@
 <link rel="stylesheet" type="text/css" href="{% static 'css/playstyle_compass/search_bar.css' %}">
 {% endblock styles %}
 
-<form action="{% url 'playstyle_compass:search_results' %}" method="GET" class="search-form" onsubmit="return validateSearch()">
+<form action="{% url 'playstyle_compass:search_results' %}" method="GET" class="search-form"
+  onsubmit="return validateSearch()">
   <div class="search-bar">
     <div class="search-input-container">
       <input type="text" name="query" id="search-input" placeholder="Search for games...">

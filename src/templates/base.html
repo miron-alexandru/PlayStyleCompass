@@ -4,193 +4,201 @@
 <!DOCTYPE html>
 <html lang="en-GB">
 
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <link rel="icon" href="{% static 'images/pscicon.ico' %}" type="image/x-icon">
-    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin="">
-    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin="">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Concert+One&display=swap">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700&display=swap">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <title>{% block title %}{{ page_title }}{% endblock title %}</title>
-    {% bootstrap_css %}
-    {% bootstrap_javascript jquery='full' %}
-    <link rel="stylesheet" type="text/css" href="{% static 'css/base.css' %}">
-  </head>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+  <link rel="icon" href="{% static 'images/pscicon.ico' %}" type="image/x-icon">
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin="">
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin="">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Concert+One&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <title>{% block title %}{{ page_title }}{% endblock title %}</title>
+  {% bootstrap_css %}
+  {% bootstrap_javascript jquery='full' %}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/base.css' %}">
+</head>
 
-  <body>
-    <nav class="navbar navbar-expand-md navbar-light">
-      <div class="container">
-        <a class="navbar-brand" href="{% url 'playstyle_compass:index'%}">
-          <img src="{% static 'images/playstyle.png' %}" alt="PlayStyle Compass Logo">
-        </a>
-        <ul class="navbar-nav ml-auto">
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'playstyle_compass:gaming_preferences'%}">
-              Create Playstyle
+<body>
+  <nav class="navbar navbar-expand-md navbar-light">
+    <div class="container">
+      <a class="navbar-brand" href="{% url 'playstyle_compass:index'%}">
+        <img src="{% static 'images/playstyle.png' %}" alt="PlayStyle Compass Logo">
+      </a>
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'playstyle_compass:gaming_preferences'%}">
+            Create Playstyle
+          </a>
+        </li>
+        {% if user.is_authenticated %}
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'playstyle_compass:update_preferences'%}">
+            Your Playstyle
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'playstyle_compass:get_recommendations'%}">
+            Game Recommendations
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'playstyle_compass:favorite_games'%}">
+            Favorite Games
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'playstyle_compass:game_queue'%}">
+            Games Queue
+          </a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navItemDropdown" role="button" data-toggle="dropdown">
+            More
+          </a>
+          <div class="dropdown-menu">
+            <a class="dropdown-item" href="{% url 'playstyle_compass:user_reviews'%}">
+              My Reviews
             </a>
-          </li>
+            <a class="dropdown-item" href="{% url 'playstyle_compass:top_rated_games'%}">
+              Top Rated Games
+            </a>
+            <a class="dropdown-item" href="{% url 'playstyle_compass:upcoming_games'%}">
+              Upcoming Games
+            </a>
+          </div>
+        </li>
+        {% else %}
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'playstyle_compass:top_rated_games'%}">
+            Top Rated Games
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'playstyle_compass:upcoming_games'%}">
+            Upcoming Games
+          </a>
+        </li>
+        {% endif %}
+      </ul>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"
+        aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav ml-auto-custom">
           {% if user.is_authenticated %}
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'playstyle_compass:update_preferences'%}">
-              Your Playstyle
-            </a>
+          <li class="nav-item profile-picture">
+            {% if user.userprofile.profile_picture %}
+            <label for="profile-picture-upload" class="profile-picture-label">
+              <img src="{{ user.userprofile.profile_picture.url }}" alt="{{ user.username }}'s Profile Picture"
+                class="profile-picture mr-2" id="profile-picture">
+            </label>
+            {% else %}
+            <label for="profile-picture-upload" class="profile-picture-label">
+              <img src="{% static 'images/default_profile_picture.png' %}"
+                alt="{{ user.username }}'s Default Profile Picture" class="profile-picture mr-2" id="profile-picture">
+            </label>
+            {% endif %}
+            <input type="file" id="profile-picture-upload" class="sr-only" accept="image/*"
+              data-profile-url="{% url 'users:profile_picture' %}" data-csrf-token="{{ csrf_token }}">
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{% url 'playstyle_compass:get_recommendations'%}">
-              Game Recommendations
-            </a>
+            <span class="navbar-text mr-3 user-profile-name"><a href="{% url 'users:change_profile_name' %}"
+                style="color: inherit;">{{ user.userprofile.profile_name|default:user.username }}</a></span>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'playstyle_compass:favorite_games'%}">
-              Favorite Games
+
+          <li class="nav-item dropdown" id="hoverDropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button" data-toggle="dropdown"
+              aria-haspopup="true" aria-expanded="false">
+              Account Actions
             </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'playstyle_compass:game_queue'%}">
-              Games Queue
-            </a>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navItemDropdown" role="button" data-toggle="dropdown">
-              More
-            </a>
-            <div class="dropdown-menu">
-              <a class="dropdown-item" href="{% url 'playstyle_compass:user_reviews'%}">
-                My Reviews
-              </a>
-              <a class="dropdown-item" href="{% url 'playstyle_compass:top_rated_games'%}">
-                Top Rated Games
-              </a>
-              <a class="dropdown-item" href="{% url 'playstyle_compass:upcoming_games'%}">
-                Upcoming Games
-              </a>
+            <div class="dropdown-menu" aria-labelledby="profileDropdown">
+              <a class="dropdown-item" href="{% url 'users:view_profile' user.userprofile.profile_name %}">My
+                Profile</a>
+              <a class="dropdown-item" href="{% url 'users:friends_list' user.id %}">Friends List</a>
+              <a class="dropdown-item" href="{% url 'users:friend_requests' user.id %}">Friend Requests</a>
+              <a class="dropdown-item" href="{% url 'users:profile_picture' %}">Change Profile Picture</a>
+              <a class="dropdown-item" href="{% url 'users:change_profile_name' %}">Change Profile Name</a>
+              <a class="dropdown-item" href="{% url 'users:change_password' %}">Change Password</a>
+              <a class="dropdown-item" href="{% url 'users:change_email' %}">Change Email</a>
+              <a class="dropdown-item" href="{% url 'users:delete_account' %}">Delete Account</a>
+              <a class="dropdown-item" href="{% url 'users:logout' %}">Log Out</a>
             </div>
           </li>
           {% else %}
           <li class="nav-item">
-            <a class="nav-link" href="{% url 'playstyle_compass:top_rated_games'%}">
-              Top Rated Games
-            </a>
+            <a class="nav-link" href="{% url 'users:register' %}">Register</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{% url 'playstyle_compass:upcoming_games'%}">
-              Upcoming Games
-            </a>
+            <a class="nav-link" href="{% url 'users:login' %}">Log in</a>
           </li>
           {% endif %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'users:contact' %}">Contact Us</a>
+          </li>
         </ul>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarCollapse">
-          <ul class="navbar-nav ml-auto-custom">
-            {% if user.is_authenticated %}
-            <li class="nav-item profile-picture">
-              {% if user.userprofile.profile_picture %}
-              <label for="profile-picture-upload" class="profile-picture-label">
-                <img src="{{ user.userprofile.profile_picture.url }}" alt="{{ user.username }}'s Profile Picture" class="profile-picture mr-2" id="profile-picture">
-              </label>
-              {% else %}
-              <label for="profile-picture-upload" class="profile-picture-label">
-                <img src="{% static 'images/default_profile_picture.png' %}" alt="{{ user.username }}'s Default Profile Picture" class="profile-picture mr-2" id="profile-picture">
-              </label>
-              {% endif %}
-              <input type="file" id="profile-picture-upload" class="sr-only" accept="image/*" data-profile-url="{% url 'users:profile_picture' %}" data-csrf-token="{{ csrf_token }}">
-            </li>
-            <li class="nav-item">
-              <span class="navbar-text mr-3 user-profile-name"><a href="{% url 'users:change_profile_name' %}" style="color: inherit;">{{ user.userprofile.profile_name|default:user.username }}</a></span>
-            </li>
-
-            <li class="nav-item dropdown" id="hoverDropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Account Actions
-              </a>
-              <div class="dropdown-menu" aria-labelledby="profileDropdown">
-                <a class="dropdown-item" href="{% url 'users:view_profile' user.userprofile.profile_name %}">My Profile</a>
-                <a class="dropdown-item" href="{% url 'users:friends_list' user.id %}">Friends List</a>
-                <a class="dropdown-item" href="{% url 'users:friend_requests' user.id %}">Friend Requests</a>
-                <a class="dropdown-item" href="{% url 'users:profile_picture' %}">Change Profile Picture</a>
-                <a class="dropdown-item" href="{% url 'users:change_profile_name' %}">Change Profile Name</a>
-                <a class="dropdown-item" href="{% url 'users:change_password' %}">Change Password</a>
-                <a class="dropdown-item" href="{% url 'users:change_email' %}">Change Email</a>
-                <a class="dropdown-item" href="{% url 'users:delete_account' %}">Delete Account</a>
-                <a class="dropdown-item" href="{% url 'users:logout' %}">Log Out</a>
-              </div>
-            </li>
-            {% else %}
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'users:register' %}">Register</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'users:login' %}">Log in</a>
-            </li>
-            {% endif %}
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'users:contact' %}">Contact Us</a>
-            </li>
-          </ul>
-        </div>
       </div>
-    </nav>
-    <script src="{% static 'js/base.js' %}"></script>
-    <script src="{% static 'js/dropdown.js' %}"></script>
-    <script src="{% static 'js/email_confirmation.js' %}"></script>
-    <script>
-      window.passwordInputIdLogIn = '{{ form.password.id_for_label }}';
-      window.passwordInputId1Register = '{{ form.password1.id_for_label }}';
-      window.passwordInputId2Register = '{{ form.password2.id_for_label }}';
-      window.passwordInputId1NewChange = '{{ form.new_password1.id_for_label }}';
-      window.passwordInputId2NewChange = '{{ form.new_password2.id_for_label }}';
-    </script>
-    <script defer src="{% static 'js/users/show_hide_password.js' %}"></script>
+    </div>
+  </nav>
+  <script src="{% static 'js/base.js' %}"></script>
+  <script src="{% static 'js/dropdown.js' %}"></script>
+  <script src="{% static 'js/email_confirmation.js' %}"></script>
+  <script>
+    window.passwordInputIdLogIn = '{{ form.password.id_for_label }}';
+    window.passwordInputId1Register = '{{ form.password1.id_for_label }}';
+    window.passwordInputId2Register = '{{ form.password2.id_for_label }}';
+    window.passwordInputId1NewChange = '{{ form.new_password1.id_for_label }}';
+    window.passwordInputId2NewChange = '{{ form.new_password2.id_for_label }}';
+  </script>
+  <script defer src="{% static 'js/users/show_hide_password.js' %}"></script>
 
-    <div class="page-header">
-      <div id="header-content">
-        {% if messages %}
-        <div class="message">
-          {% for message in messages %}
-          <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-            {{ message }}
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          {% endfor %}
+  <div class="page-header">
+    <div id="header-content">
+      {% if messages %}
+      <div class="message">
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+          {{ message }}
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
         </div>
-        {% endif %}
-        {% if user.is_authenticated %}
-        {% if not user.userprofile.email_confirmed %}
-        <div class="message">
-          <div class="alert alert-warning">
-            Please confirm your email address to unlock all features.
-            <a href="#" class="resend-link" id="resend-link" data-url="{% url 'users:resend_activation_link' %}">Resend verification link</a>
-            <div id="success-message"></div>
-          </div>
-        </div>
+        {% endfor %}
       </div>
       {% endif %}
-      {% endif %}
-      {% block page_header %}{% endblock page_header %}
+      {% if user.is_authenticated %}
+      {% if not user.userprofile.email_confirmed %}
+      <div class="message">
+        <div class="alert alert-warning">
+          Please confirm your email address to unlock all features.
+          <a href="#" class="resend-link" id="resend-link" data-url="{% url 'users:resend_activation_link' %}">Resend
+            verification link</a>
+          <div id="success-message"></div>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+    {% endif %}
+    {% block page_header %}{% endblock page_header %}
+  </div>
+  </div>
+
+  <main role="main" class="container">
+    <div class="header-description">
+      <p class="header-desc" id="description-content">{% block description %}{% endblock description %}</p>
+    </div>
+    <div class="content">
+      {% block content %}{% endblock content %}
     </div>
     </div>
+  </main>
 
-     <main role="main" class="container">
-      <div class="header-description">
-        <p class="header-desc" id="description-content">{% block description %}{% endblock description %}</p>
-      </div>
-      <div class="content">
-        {% block content %}{% endblock content %}
-      </div>
-      </div>
-    </main>
-
-    <footer class="footer">
-      <div class="my-footer">
-        <p>&copy; {{ current_year }} PlayStyle Compass. All rights reserved.</p>
-      </div>
-    </footer>
-  </body>
+  <footer class="footer">
+    <div class="my-footer">
+      <p>&copy; {{ current_year }} PlayStyle Compass. All rights reserved.</p>
+    </div>
+  </footer>
+</body>
 
 </html>

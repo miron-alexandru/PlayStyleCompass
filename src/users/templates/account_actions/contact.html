@@ -5,8 +5,8 @@
 <link rel="stylesheet" type="text/css" href="{% static 'css/users/common.css' %}">
 
 <div class=my-container>
-<h2>Contact Us</h2>
-<form method="post">
+  <h2>Contact Us</h2>
+  <form method="post">
     {% csrf_token %}
 
     <div class="form-group">
@@ -30,6 +30,6 @@
     </div>
 
     <button type="submit">Submit</button>
-</form>
+  </form>
 </div>
 {% endblock %}

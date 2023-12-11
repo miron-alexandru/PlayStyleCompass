@@ -12,11 +12,11 @@
 <link rel="stylesheet" type="text/css" href="{% static 'css/playstyle_compass/common_styles.css' %}">
 
 <div class="create-review">
-<form method="post">
-  {% csrf_token %}
-  {% bootstrap_form form %}
-  <button class="btn btn-primary" type="submit">{% block button_label %}{% endblock button_label %}</button>
-</form>
+  <form method="post">
+    {% csrf_token %}
+    {% bootstrap_form form %}
+    <button class="btn btn-primary" type="submit">{% block button_label %}{% endblock button_label %}</button>
+  </form>
 </div>
 
 {% endblock content %}

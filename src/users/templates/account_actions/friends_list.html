@@ -7,7 +7,8 @@
 </div>
 {% endblock page_header %}
 
-{% block description %}Explore and manage your connections. See who's on your friends list, and stay connected with your social circle.{% endblock description %}
+{% block description %}Explore and manage your connections. See who's on your friends list, and stay connected with your
+social circle.{% endblock description %}
 
 {% block content %}
 <link rel="stylesheet" href="{% static 'css/users/friends_list.css' %}">
@@ -22,23 +23,28 @@
         <div class="friend-profile-picture">
           {% if friend.0.userprofile.profile_picture %}
           <label>
-            <img src="{{ friend.0.userprofile.profile_picture.url }}" alt="{{ friend.0.userprofile.profile_name }}'s Profile Picture" class="profile-picture mr-2" id="profile-picture">
+            <img src="{{ friend.0.userprofile.profile_picture.url }}"
+              alt="{{ friend.0.userprofile.profile_name }}'s Profile Picture" class="profile-picture mr-2"
+              id="profile-picture">
           </label>
           {% else %}
           <label>
-            <img src="{{ default_profile_picture }}" alt="{{ friend.0.userprofile.profile_name }}'s Default Profile Picture" class="profile-picture mr-2" id="profile-picture">
+            <img src="{{ default_profile_picture }}"
+              alt="{{ friend.0.userprofile.profile_name }}'s Default Profile Picture" class="profile-picture mr-2"
+              id="profile-picture">
           </label>
           {% endif %}
         </div>
         <div class="card-center px-2">
-          <a href="{% url 'users:view_profile' profile_name=friend.0.userprofile.profile_name %}" class="card-title">{{ friend.0.userprofile.profile_name }}</a>
+          <a href="{% url 'users:view_profile' profile_name=friend.0.userprofile.profile_name %}"
+            class="card-title">{{friend.0.userprofile.profile_name }}</a>
         </div>
 
         <div class="d-flex flex-column friends-text-container p-2">
           {% if this_user == friend.0 %}
-            <p class="friends-text mb-0">You</p>
+          <p class="friends-text mb-0">You</p>
           {% else %}
-            <p class="friends-text mb-0">Friend</p>
+          <p class="friends-text mb-0">Friend</p>
           {% endif %}
         </div>
 

@@ -16,87 +16,96 @@
 <link rel="stylesheet" type="text/css" href="{% static 'css/users/user_profile.css' %}">
 
 <div class="user-profile-card">
-  <p class="user-name">{{ user_profile.profile_name }}<p>
-    <div class="user-profile-picture">
-      {% if user_profile.profile_picture %}
-        {% if is_friend == 'You' %}
-          <label for="profile-picture-upload" class="profile-picture-label">
-            <img src="{{ user_profile.profile_picture.url }}" alt="{{ user_profile.profile_name }}'s Profile Picture" class="profile-image" id="profile-picture-user-profile"> 
-          </label>
-        {% else %}
-          <label style="padding:5px">
-            <img src="{{ user_profile.profile_picture.url }}" alt="{{ user_profile.profile_name }}'s Profile Picture" class="profile-image"> 
-          </label>
-        {% endif %}
+  {% if is_friend == 'You' %}
+  <span class="user-name"><a href="{% url 'users:change_profile_name' %}">
+      {{user_profile.profile_name }}</a><span>
       {% else %}
+      <p class="user-name">{{ user_profile.profile_name }}</p>
+      {% endif %}
+      <div class="user-profile-picture">
+        {% if user_profile.profile_picture %}
         {% if is_friend == 'You' %}
-        <label for="profile-picture-upload" class="profile-picture-label" style="padding:5px">
-        <img src="{{ default_profile_picture }}" alt="{{ user_profile.profile_name }}'s Default Profile Picture" class="profile-image" id="profile-picture-user-profile">
+        <label for="profile-picture-upload" class="profile-picture-label">
+          <img src="{{ user_profile.profile_picture.url }}" alt="{{ user_profile.profile_name }}'s Profile Picture"
+            class="profile-image" id="profile-picture-user-profile">
         </label>
         {% else %}
         <label style="padding:5px">
-        <img src="{{ default_profile_picture }}" alt="{{ user_profile.profile_name }}'s Default Profile Picture" class="profile-image">
-      </label>
+          <img src="{{ user_profile.profile_picture.url }}" alt="{{ user_profile.profile_name }}'s Profile Picture"
+            class="profile-image">
+        </label>
         {% endif %}
-      {% endif %}
-    </div>
-    <div class="user-actions">
+        {% else %}
+        {% if is_friend == 'You' %}
+        <label for="profile-picture-upload" class="profile-picture-label" style="padding:5px">
+          <img src="{{ default_profile_picture }}" alt="{{ user_profile.profile_name }}'s Default Profile Picture"
+            class="profile-image" id="profile-picture-user-profile">
+        </label>
+        {% else %}
+        <label style="padding:5px">
+          <img src="{{ default_profile_picture }}" alt="{{ user_profile.profile_name }}'s Default Profile Picture"
+            class="profile-image">
+        </label>
+        {% endif %}
+        {% endif %}
+      </div>
+      <div class="user-actions">
         {% if user.is_authenticated %}
-      <div class="d-flex justify-content-center align-items-center">
-        <div class="friends-text-container {% if is_friend == 'Friend' or is_friend == 'You' %}friend{% else %}not-friend{% endif %}">
-          <span class="friend-status">{{ is_friend }}</span>
+        <div class="d-flex justify-content-center align-items-center">
+          <div
+            class="friends-text-container {% if is_friend == 'Friend' or is_friend == 'You' %}friend{% else %}not-friend{% endif %}">
+            <span class="friend-status">{{ is_friend }}</span>
+          </div>
+          {% if is_friend == 'Not Friend' %}
+          <div class="friend-request">
+            <button class="friend-request-button" id="friend_req_btn">
+              Friend Request
+            </button>
+          </div>
+          {% endif %}
+          {% if is_friend == 'Friend' %}
+          <div class="remove-friend">
+            <button class="remove-friend-button" onclick='triggerRemoveFriend("{{ user_id }}")'>Unfriend</button>
+          </div>
+          {% endif %}
+          {% endif %}
         </div>
-        {% if is_friend == 'Not Friend' %}
-        <div class="friend-request">
-          <button class="friend-request-button" id="friend_req_btn">
-            Friend Request
-          </button>
+        <div class="d-flex justify-content-center align-items-center user-stats">
+          <div class="stat-item">
+            <p class="stat-label">
+              <a href="{% url 'playstyle_compass:favorite_games_with_id' user_id=user_id %}">Favorites</a>
+            </p>
+            <p class="stat-value">{{user_preferences.get_favorite_games_number}}</p>
+          </div>
+          <div class="stat-item">
+            <p class="stat-label">
+              <a href="{% url 'playstyle_compass:game_queue_with_id' user_id=user_id %}">In
+                Queue</a>
+            </p>
+            <p class="stat-value">{{ user_preferences.get_game_queue_number }}</p>
+          </div>
+          <div class="stat-item">
+            <p class="stat-label">
+              <a href="{% url 'playstyle_compass:user_reviews_with_id' user_id=user_id %}">Reviews</a>
+            </p>
+            <p class="stat-value">{{ user_reviews_count }}</p>
+          </div>
+          <div class="stat-item">
+            <p class="stat-label">Review Likes</p>
+            <p class="stat-value">{{ review_likes_count }}</p>
+          </div>
         </div>
-        {% endif %}
-        {% if is_friend == 'Friend' %}
-      <div class="remove-friend">
-        <button class="remove-friend-button" onclick='triggerRemoveFriend("{{ user_id }}")'>Unfriend</button>
       </div>
-      {% endif %}
-    {% endif %}
-      </div>
-      <div class="d-flex justify-content-center align-items-center user-stats">
-    <div class="stat-item">
-        <p class="stat-label">
-            <a href="{% url 'playstyle_compass:favorite_games_with_id' user_id=user_id %}">Favorites</a>
-        </p>
-        <p class="stat-value">{{ user_preferences.get_favorite_games_number }}</p>
-    </div>
-    <div class="stat-item">
-        <p class="stat-label">
-            <a href="{% url 'playstyle_compass:game_queue_with_id' user_id=user_id %}">In Queue</a>
-        </p>
-        <p class="stat-value">{{ user_preferences.get_game_queue_number }}</p>
-    </div>
-    <div class="stat-item">
-      <p class="stat-label">
-        <a href="{% url 'playstyle_compass:user_reviews_with_id' user_id=user_id %}">Reviews</a>
-      </p>
-        <p class="stat-value">{{ user_reviews_count }}</p>
-    </div>
-    <div class="stat-item">
-        <p class="stat-label">Review Likes</p>
-        <p class="stat-value">{{ review_likes_count }}</p>
-    </div>
-</div>
-
-
-    </div>
 </div>
 
 <script>
   var sendFriendRequestBtn = document.getElementById("friend_req_btn");
 
   if (sendFriendRequestBtn != null) {
-      sendFriendRequestBtn.addEventListener("click", function() {
-        sendFriendRequest("{{user_id}}");
-      });
-    }
+    sendFriendRequestBtn.addEventListener("click", function () {
+      sendFriendRequest("{{user_id}}");
+    });
+  }
 </script>
 
 <script src="{% static 'js/users/remove_friend.js' %}"></script>

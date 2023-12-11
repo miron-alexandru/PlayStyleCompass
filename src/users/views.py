@@ -672,9 +672,9 @@ def view_profile(request, profile_name):
             if request_user == profile_to_view:
                 is_friend = "You"
             elif are_friends(request_user, profile_to_view):
-                is_friend = 'Friend'
+                is_friend = "Friend"
             else:
-                is_friend = 'Not Friend'
+                is_friend = "Not Friend"
         else:
             is_friend = None
 
@@ -710,7 +710,3 @@ def get_user_stats(user_id):
         "user_reviews_count": user_reviews_count,
         "review_likes_count": review_likes_count,
     }
-
-
-
-

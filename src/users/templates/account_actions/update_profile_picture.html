@@ -14,7 +14,9 @@
         {% bootstrap_form form %}
         <div class="current-image">
           {% if form.instance.profile_picture %}
-          <p>Current: <a href="{{ form.instance.profile_picture.url }}" target="_blank">{{ form.instance.profile_picture.url }}</a></p>
+          <p>Current: <a href="{{ form.instance.profile_picture.url }}" target="_blank">{% spaceless %}
+              {{ form.instance.profile_picture.url }}
+              {% endspaceless %}</a></p>
           {% endif %}
         </div>
         <button id="uploadButton" type="submit" class="btn btn-primary" disabled>Change</button>

@@ -3,7 +3,7 @@
 
 {% block page_header %}
 <div class="header">
-<h3>YOU SEARCHED FOR: "{{ query }}"</h3>
+  <h3>YOU SEARCHED FOR: "{{ query }}"</h3>
 </div>
 {% endblock page_header %}
 
@@ -11,17 +11,17 @@
 <link rel="stylesheet" href="{% static 'css/playstyle_compass/common_styles.css' %}">
 
 <div class="search-bar-only">
-{% include "playstyle_compass/search_bar_only.html" %}
+  {% include "playstyle_compass/search_bar_only.html" %}
 </div>
 
 <div class="results">
   <ul>
     {% if games %}
-      {% for game in games %}
-        {% include "playstyle_compass/game_recommendations_section.html" %}
-      {% endfor %}
+    {% for game in games %}
+    {% include "playstyle_compass/game_recommendations_section.html" %}
+    {% endfor %}
     {% else %}
-      <p><strong>Sorry, there are no results for your search.</strong></p>
+    <p><strong>Sorry, there are no results for your search.</strong></p>
     {% endif %}
   </ul>
 </div>

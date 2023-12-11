@@ -7,16 +7,12 @@
 {% block content %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/users/profile_name.css' %}">
 
-<div class="container text-center mt-5">
-  <div class="row justify-content-center">
-    <div class="col-md-6">
-      <form method="post" class="border rounded p-4">
+<div class="profile-container d-flex align-items-center justify-content-center">
+    <form method="post">
         <h1>Change Profile Name</h1>
         {% csrf_token %}
         {% bootstrap_form form %}
         <button type="submit" class="btn btn-primary">Change</button>
-      </form>
-    </div>
-  </div>
+    </form>
 </div>
 {% endblock content %}
