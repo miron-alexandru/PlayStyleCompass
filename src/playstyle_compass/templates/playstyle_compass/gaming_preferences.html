@@ -30,8 +30,8 @@ and preferred platforms. Once you've defined your PlayStyle, you can get persona
       <div>
         {% for genre in genres %}
         <label>
-          <input type="checkbox" name="favorite_genres" value="{{ genre }}" {% if genre in
-            user_preferences.favorite_genres %}checked{% endif %}>
+          <input type="checkbox" name="favorite_genres" value="{{ genre }}"
+          {% if genre in user_preferences.favorite_genres %}checked{% endif %}>
           {{ genre }}
         </label>
         {% endfor %}
@@ -45,8 +45,8 @@ and preferred platforms. Once you've defined your PlayStyle, you can get persona
       <div>
         {% for platform in platforms %}
         <label>
-          <input type="checkbox" name="platforms" value="{{ platform }}" {% if platform in user_preferences.platforms
-            %}checked{% endif %}>
+          <input type="checkbox" name="platforms" value="{{ platform }}"
+          {% if platform in user_preferences.platforms %}checked{% endif %}>
           {{ platform }}
         </label>
         {% endfor %}

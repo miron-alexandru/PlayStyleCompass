@@ -3,6 +3,7 @@ html
   height: 100%;
   margin: 0;
   padding: 0;
+  -webkit-tap-highlight-color: rgba(255, 255, 255, 0.6);
 }
 
 body
@@ -82,8 +83,7 @@ input[type="email"]:focus,
   background-image: none;
 }
 
-.navbar
-{
+.navbar {
   background-color: #3498db;
   border: none;
   border-radius: 0;
@@ -91,6 +91,14 @@ input[type="email"]:focus,
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
   max-height: 85px;
   width: 100%;
+  opacity: 1;
+}
+
+.navbar.fixed {
+  position: fixed;
+  top: 0;
+  z-index: 1030;
+  opacity: 0.9;
 }
 
 .navbar-text
@@ -495,4 +503,20 @@ input[type="email"]:focus,
   {
     opacity: 1;
   }
+}
+
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f7f7f7;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #b1b1b1;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a0a0a0;
 }

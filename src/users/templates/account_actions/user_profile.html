@@ -18,7 +18,7 @@
 <div class="user-profile-card">
   {% if is_friend == 'You' %}
   <span class="user-name"><a href="{% url 'users:change_profile_name' %}">
-      {{user_profile.profile_name }}</a><span>
+      {{user_profile.profile_name }}</a></span>
       {% else %}
       <p class="user-name">{{ user_profile.profile_name }}</p>
       {% endif %}
@@ -52,8 +52,8 @@
       <div class="user-actions">
         {% if user.is_authenticated %}
         <div class="d-flex justify-content-center align-items-center">
-          <div
-            class="friends-text-container {% if is_friend == 'Friend' or is_friend == 'You' %}friend{% else %}not-friend{% endif %}">
+          <div class="friends-text-container 
+          {% if is_friend == 'Friend' or is_friend == 'You' %}friend{% else %}not-friend{%endif%}">
             <span class="friend-status">{{ is_friend }}</span>
           </div>
           {% if is_friend == 'Not Friend' %}

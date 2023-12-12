@@ -77,6 +77,14 @@ class ProfileUpdateView(LoginRequiredMixin, UpdateView):
                     request.META.get("HTTP_REFERER", "playstyle_compass:index")
                 )
 
+        new_name = request.POST.get('profile_name').lower()  # Convert to lowercase
+        current_name = self.get_object().profile_name.lower()  # Convert to lowercase
+
+        # Check if the new name (case-insensitive) is the same as the current name
+        if new_name == current_name:
+            messages.error(request, "The new name is the same as the current name.")
+            return redirect(request.META.get("HTTP_REFERER", "playstyle_compass:index"))
+
         return super().dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):

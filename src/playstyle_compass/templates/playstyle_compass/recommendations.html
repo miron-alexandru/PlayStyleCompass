@@ -69,8 +69,7 @@ choices for your next gaming adventure.{% endblock description %}
     </span>
   </div>
   {% else %}
-  <h4>No game recommendations based on your {{ category|format_category_label }}: {{ user_preferences|getattr:category
-    }}</h4>
+  <h4>No game recommendations based on your {{ category|format_category_label }}: {{ user_preferences|getattr:category }}</h4>
   {% endif %}
 </div>
 {% endfor %}

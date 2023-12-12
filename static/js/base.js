@@ -94,3 +94,13 @@ if (profilePictureUpload) {
   });
 }
 
+$(document).ready(function() {
+  var navbar = $('.navbar');
+  var offset = navbar.offset().top;
+  var scrollThreshold = 350;
+
+  $(window).scroll(function() {
+    var shouldFixNavbar = $(window).scrollTop() > offset + scrollThreshold;
+    navbar.toggleClass('fixed', shouldFixNavbar);
+  });
+});
