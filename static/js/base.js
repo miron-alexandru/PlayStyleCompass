@@ -94,13 +94,19 @@ if (profilePictureUpload) {
   });
 }
 
-$(document).ready(function() {
-  var navbar = $('.navbar');
-  var offset = navbar.offset().top;
-  var scrollThreshold = 350;
 
-  $(window).scroll(function() {
-    var shouldFixNavbar = $(window).scrollTop() > offset + scrollThreshold;
-    navbar.toggleClass('fixed', shouldFixNavbar);
-  });
-});
+function checkScroll(){
+    const startY = $('.navbar').height() * 2;
+
+    if($(window).scrollTop() > startY){
+        $('.navbar').addClass("fixed");
+    }else{
+        $('.navbar').removeClass("fixed");
+    }
+}
+
+if($('.navbar').length > 0){
+    $(window).on("scroll load resize", function(){
+        checkScroll();
+    });
+}
