@@ -123,3 +123,20 @@ a:hover
 {
   font-size: 18px;
 }
+
+
+#saving-spinner {
+  display: inline-block;
+  margin-left: 5px;
+}
+
+.spinner-border {
+  width: 1.5rem;
+  height: 1.5rem;
+  border-width: 0.2em;
+}
+
+.save-all-container {
+  display: flex;
+  align-items: baseline;
+}

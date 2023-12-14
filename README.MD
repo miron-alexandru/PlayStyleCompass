@@ -32,6 +32,10 @@ Websites for .env configuration: [GiantBomb](https://www.giantbomb.com/) / [Send
 
 
 ### Version v1.5
+* Save all button on preferences page improved.
+* Profile name change functionality improved.
+* Profile image resized before change for better performance.
+* Navbar / Scrollbar / Css changes and/or improvements. 
 * Like-dislike feature improved.
 * User profile improvements: Reviews, Likes, Favorites, Game Queue stats are displayed on the profile.
 * User profile improvements: Remove friend / Friend request / Profile picture change functionality.

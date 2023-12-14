@@ -18,7 +18,7 @@
       <span>Rating: </span><span class="star-rating"><span class="score-hidden" style="display: none">
         {{game.average_score }}</span></span> <small><span>({{ game.total_reviews }} 
         {{ game.total_reviews|pluralize_reviews }})</span></small></p>
-      <img src="{{ game.image }}" alt="Game Image">
+      <img src="{{ game.image }}" alt="Game Image" loading="lazy">
       {% else %}
       <p><strong>Image not available</strong></p>
       {% endif %}
@@ -47,11 +47,11 @@
         {% for game_image in game_images %}
         {% if forloop.counter == 1 %}
         <a href="{{ game_image }}" data-lightbox="game-images-{{ game.id }}" class="gallery-image">
-          <img src="{{ game_image }}" alt="Game Image">
+          <img src="{{ game_image }}" alt="Game Image" loading="lazy">
         </a>
         {% else %}
         <a href="{{ game_image }}" data-lightbox="game-images-{{ game.id }}" style="display: none;">
-          <img src="{{ game_image }}" alt="Game Image">
+          <img src="{{ game_image }}" alt="Game Image" loading="lazy">
         </a>
         {% endif %}
         {% endfor %}
@@ -96,6 +96,5 @@
   </li>
 </div>
 
-<script src="{% static 'js/lightbox-plus-jquery.min.js' %}"></script>
-<script src="{% static 'js/playstyle_compass/game_recommendations.js' %}"></script>
-<script src="{% static 'js/playstyle_compass/star_rating.js' %}"></script>
+<script src="{% static 'js/playstyle_compass/game_recommendations.js' %}" defer></script>
+<script src="{% static 'js/playstyle_compass/star_rating.js' %}" defer></script>

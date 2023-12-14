@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
+  let changesMade = false;
   const maxSelections = 3;
   const gamingHistoryInput = document.getElementById('gaming_history');
   const historySaveButton = document.getElementById('save-history-button');
@@ -31,7 +32,8 @@ document.addEventListener('DOMContentLoaded', () => {
     historySaveButton.disabled = !hasValue(gamingHistoryInput) || !isValidGamingHistory(gamingHistoryInput);
     genresSaveButton.disabled = !hasSelectedCheckboxes(favoriteGenreCheckboxes, maxSelections);
     platformsSaveButton.disabled = !hasSelectedCheckboxes(favoritePlatformCheckboxes, maxSelections);
-    saveAllButton.disabled = !(
+
+    saveAllButton.disabled = !changesMade || !(
       hasValue(gamingHistoryInput) &&
       isValidGamingHistory(gamingHistoryInput) &&
       hasSelectedCheckboxes(favoriteGenreCheckboxes, maxSelections) &&
@@ -40,18 +42,33 @@ document.addEventListener('DOMContentLoaded', () => {
     );
   };
 
+  const updateSaveButtonTitle = () => {
+    if (saveAllButton.disabled) {
+      saveAllButton.title = "Update preferences to save changes";
+    } else {
+      saveAllButton.title = "Save all preferences";
+    }
+  };
+
   const addEventListenerToCheckboxes = (checkboxes) => {
     checkboxes.forEach(checkbox => {
       checkbox.addEventListener('change', () => {
+        changesMade = true;
         updateSaveButtons();
+        updateSaveButtonTitle();
       });
     });
   };
 
-  gamingHistoryInput.addEventListener('input', updateSaveButtons);
-  
+  gamingHistoryInput.addEventListener('input', () => {
+    changesMade = true;
+    updateSaveButtons();
+    updateSaveButtonTitle();
+  });
+
   addEventListenerToCheckboxes(favoriteGenreCheckboxes);
   addEventListenerToCheckboxes(favoritePlatformCheckboxes);
 
   updateSaveButtons();
+  updateSaveButtonTitle();
 });

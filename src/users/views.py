@@ -77,20 +77,24 @@ class ProfileUpdateView(LoginRequiredMixin, UpdateView):
                     request.META.get("HTTP_REFERER", "playstyle_compass:index")
                 )
 
-        new_name = request.POST.get('profile_name').lower()  # Convert to lowercase
-        current_name = self.get_object().profile_name.lower()  # Convert to lowercase
-
-        # Check if the new name (case-insensitive) is the same as the current name
-        if new_name == current_name:
-            messages.error(request, "The new name is the same as the current name.")
-            return redirect(request.META.get("HTTP_REFERER", "playstyle_compass:index"))
-
         return super().dispatch(request, *args, **kwargs)
 
+    def update_user_reviews(self, new_profile_name):
+        user_reviews = Review.objects.filter(user=self.request.user)
+
+        for review in user_reviews:
+            review.reviewers = new_profile_name
+            review.save()
+
     def form_valid(self, form):
+        new_profile_name = self.object.profile_name
+
         self.object = form.save(commit=False)
         self.object.name_last_update_time = timezone.now()
         self.object.save()
+
+        self.update_user_reviews(new_profile_name)
+
         return super().form_valid(form)
 
 

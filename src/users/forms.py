@@ -300,10 +300,16 @@ class ProfileUpdateForm(forms.ModelForm):
     def clean_profile_name(self):
         """Clean profile name."""
         profile_name = self.cleaned_data.get("profile_name")
+
+        if profile_name.lower() == self.instance.profile_name.lower():
+            raise forms.ValidationError("The new profile name is the same as the existing one.")
+
         if (
             UserProfile.objects.filter(profile_name=profile_name)
             .exclude(user=self.instance.user)
             .exists()
         ):
             raise forms.ValidationError("This profile name is already in use.")
+
         return profile_name
+
