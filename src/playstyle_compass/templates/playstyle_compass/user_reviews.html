@@ -1,5 +1,20 @@
 {% extends "playstyle_compass/games_collection.html" %}
 
-{% block header_desc %}REVIEWS{% endblock header_desc %}
+
+{% block header_desc %}
+  {% if other_user %}
+    {{ user_name|upper }}'S REVIEWED GAMES
+  {% else %}
+    MY REVIEWED GAMES
+  {% endif %}
+{% endblock header_desc %}
+
 {% block description %}Discover and manage the games you've reviewed, curate your gaming experiences with precision.{% endblock description %}
-{% block empty_message %}You haven't reviewed any games yet.{% endblock empty_message %}
+
+{% block empty_message %}
+  {% if other_user %}
+    {{ user_name }} hasn't reviewed any games yet.
+  {% else %}
+You haven't reviewed any games yet.
+  {% endif %}
+{% endblock empty_message %}

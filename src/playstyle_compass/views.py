@@ -13,7 +13,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Avg, Q
 
 from utils.constants import genres, all_platforms
-from .models import GamingPreferences, UserPreferences, Game, Review
+from .models import UserPreferences, Game, Review
 from .forms import ReviewForm
 
 from .helper_functions.views_helpers import (
@@ -65,13 +65,8 @@ def index(request):
 @login_required
 def gaming_preferences(request):
     """Display and manage a user's gaming preferences."""
-    preferences = GamingPreferences.objects.filter(owner=request.user).order_by(
-        "date_added"
-    )
-
     context = {
         "page_title": "Define PlayStyle :: PlayStyle Compass",
-        "gaming_preferences": preferences,
         "genres": genres,
         "platforms": all_platforms,
     }
@@ -279,21 +274,18 @@ def toggle_game_queue(request):
 @login_required
 def user_reviews(request, user_id=None):
     """View to get the user reviews."""
-    if user_id is None:
-        user = request.user
-    else:
-        user = get_object_or_404(User, id=user_id)
+    user = request.user if user_id is None else get_object_or_404(User, id=user_id)
+    other_user_profile = user != request.user
 
     user_reviews = Review.objects.filter(user=user)
-    user_preferences = UserPreferences.objects.get(user=user)
-
-    user_games = [review.game for review in user_reviews]
-    user_games = calculate_game_scores(user_games)
+    user_games = calculate_game_scores([review.game for review in user_reviews])
 
     context = {
-        "page_title": "My Reviews :: PlayStyle Compass",
+        "page_title": "Games Reviewed :: PlayStyle Compass",
         "games": user_games,
-        "user_preferences": user_preferences,
+        "user_preferences": UserPreferences.objects.get(user=user),
+        "other_user": other_user_profile,
+        "user_name": user.userprofile.profile_name,
     }
 
     return render(request, "playstyle_compass/user_reviews.html", context)
@@ -325,26 +317,21 @@ def game_queue(request, user_id=None):
 
 def _get_games_view(request, page_title, list_name, template_name, user_id=None):
     """Helper view function to get games in a similar way for different pages."""
-    if user_id is None:
-        user = request.user
-    else:
-        user = get_object_or_404(User, id=user_id)
+    user = request.user if user_id is None else get_object_or_404(User, id=user_id)
 
-    try:
-        user_preferences = UserPreferences.objects.get(user=user)
-        game_list = getattr(user_preferences, f"get_{list_name}")()
-    except ObjectDoesNotExist:
-        user_preferences = UserPreferences.objects.create(user=user)
-        game_list = []
+    other_user_profile = user != request.user
+    user_preferences, created = UserPreferences.objects.get_or_create(user=user)
+    game_list = getattr(user_preferences, f"get_{list_name}")() if not created else []
 
-    games = Game.objects.filter(id__in=game_list)
-    games = calculate_game_scores(games)
+    games = calculate_game_scores(Game.objects.filter(id__in=game_list))
 
     context = {
         "page_title": page_title,
         "user_preferences": user_preferences,
         list_name: game_list,
         "games": games,
+        "other_user": other_user_profile,
+        "user_name": user.userprofile.profile_name,
     }
 
     return render(request, template_name, context)

@@ -4,17 +4,6 @@ from django.db import models
 from django.contrib.auth.models import User
 
 
-class GamingPreferences(models.Model):
-    """Represents a user's gaming preferences."""
-
-    id = models.BigAutoField(primary_key=True)
-    text = models.CharField(max_length=200)
-    date_added = models.DateTimeField(auto_now_add=True)
-    owner = models.ForeignKey(User, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return str(self.text)
-
 
 class UserPreferences(models.Model):
     """Represents user-specific gaming preferences."""
@@ -91,7 +80,7 @@ class UserPreferences(models.Model):
         return self.get_list_length("game_queue")
 
     def __str__(self):
-        return self.user.username
+        return f"{self.user}'s user preferences"
 
 
 class Game(models.Model):

@@ -32,6 +32,8 @@ Websites for .env configuration: [GiantBomb](https://www.giantbomb.com/) / [Send
 
 
 ### Version v1.5
+* Default profile picture at registration.
+* Dynamic page headers for Reviews, Game Queue, Favorites
 * Save all button on preferences page improved.
 * Profile name change functionality improved.
 * Profile image resized before change for better performance.

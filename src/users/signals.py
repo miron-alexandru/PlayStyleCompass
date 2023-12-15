@@ -12,7 +12,9 @@ def create_user_models(sender, instance, created, **kwargs):
     """Create user models."""
     if created:
         if instance.is_superuser:
-            UserProfile.objects.create(user=instance)
+            user_profile = UserProfile.objects.create(user=instance)
+            user_profile.profile_name = 'admin'
+            user_profile.save()
         UserPreferences.objects.create(user=instance)
 
 

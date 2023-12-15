@@ -1,6 +1,21 @@
 {% extends "playstyle_compass/games_collection.html" %}
 
-{% block header_desc %}FAVORITES{% endblock header_desc %}
+
+{% block header_desc %}
+  {% if other_user %}
+    {{ user_name|upper }}'S FAVORITES
+  {% else %}
+    MY FAVORITES
+  {% endif %}
+{% endblock header_desc %}
+
 {% block description %}A curated collection of games you love. Explore and enjoy your handpicked selection of favorite
 games that bring you joy and excitement.{% endblock description %}
-{% block empty_message %}You haven't added any games to your Favorites yet.{% endblock empty_message %}
+
+{% block empty_message %}
+  {% if other_user %}
+    {{ user_name }} hasn't added any games to their Favorites yet.
+  {% else %}
+You haven't added any games to your Favorites yet.
+  {% endif %}
+{% endblock empty_message %}

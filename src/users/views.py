@@ -12,6 +12,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.core.mail import send_mail
+from django.core.files import File
 from django.core.exceptions import ObjectDoesNotExist
 from django.conf import settings
 from django.contrib.auth.views import LoginView
@@ -187,7 +188,7 @@ def register(request):
 
 
 def register_user(form, request):
-    """Function to successfully register an user."""
+    """Function to successfully register a user."""
     new_user = form.save(commit=False)
     new_user.save()
 
@@ -195,6 +196,8 @@ def register_user(form, request):
         user=new_user,
         profile_name=form.cleaned_data["profile_name"],
     )
+
+    user_profile.profile_picture = "profile_pictures/default_profile_picture.png"
 
     user_profile.save()
     new_user.save()
@@ -667,37 +670,28 @@ def cancel_friend_request(request):
 
 def view_profile(request, profile_name):
     """View used to view the profile of users."""
-    context = {
-        "page_title": "User Profile :: PlayStyle Compass",
-    }
+    context = {"page_title": "User Profile :: PlayStyle Compass"}
 
     try:
         user_profile = get_object_or_404(UserProfile, profile_name=profile_name)
-        user_id = user_profile.id
+        user = get_object_or_404(User, id=user_profile.user.id)
 
-        user_stats = get_user_stats(user_id)
+        user_stats = get_user_stats(user)
 
         request_user = request.user
         profile_to_view = user_profile.user
 
-        if request.user.is_authenticated:
-            if request_user == profile_to_view:
-                is_friend = "You"
-            elif are_friends(request_user, profile_to_view):
-                is_friend = "Friend"
-            else:
-                is_friend = "Not Friend"
-        else:
-            is_friend = None
+        is_friend = get_friend_status(request_user, profile_to_view)
 
-        default_profile_picture = static("images/default_profile_picture.png")
-        context["default_profile_picture"] = default_profile_picture
-        context["user_profile"] = user_profile
-        context["is_friend"] = is_friend
-        context["user_id"] = user_id
-        context["user_preferences"] = user_stats["user_preferences"]
-        context["user_reviews_count"] = user_stats["user_reviews_count"]
-        context["review_likes_count"] = user_stats["review_likes_count"]
+        context.update({
+            "default_profile_picture": static("images/default_profile_picture.png"),
+            "user_profile": user_profile,
+            "is_friend": is_friend,
+            "user_id": user.id,
+            "user_preferences": user_stats["user_preferences"],
+            "user_reviews_count": user_stats["user_reviews_count"],
+            "review_likes_count": user_stats["review_likes_count"],
+        })
 
     except Http404:
         messages.error(request, "The user does not exist or has deleted their account.")
@@ -705,9 +699,20 @@ def view_profile(request, profile_name):
 
     return render(request, "account_actions/user_profile.html", context)
 
+def get_friend_status(request_user, profile_to_view):
+    """Determine the friend status."""
+    if request_user.is_authenticated:
+        if request_user == profile_to_view:
+            return "You"
+        elif are_friends(request_user, profile_to_view):
+            return "Friend"
+        else:
+            return "Not Friend"
+    else:
+        return None
 
-def get_user_stats(user_id):
-    user = get_object_or_404(User, id=user_id)
+
+def get_user_stats(user):
     user_preferences = UserPreferences.objects.get(user=user)
 
     reviews = Review.objects.filter(user=user)

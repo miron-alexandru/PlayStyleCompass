@@ -1,5 +1,7 @@
 from django.contrib import admin
 
-from .models import GamingPreferences
+from .models import UserPreferences, Game, Review
 
-admin.site.register(GamingPreferences)
+admin.site.register(UserPreferences)
+admin.site.register(Game)
+admin.site.register(Review)
