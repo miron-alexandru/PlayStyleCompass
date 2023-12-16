@@ -39,7 +39,7 @@
       {% if user_sent_friend_requests %}
       <div class="d-flex flex-row flex-wrap">
         {% for request in user_sent_friend_requests %}
-        {% include 'snippets/friend_request_card.html' with profile_picture=request.receiver.userprofile.profile_picture.url profile_name=request.receiver.userprofile.profile_name action='sent' default_pfp=default_profile_picture %}
+        {% include 'snippets/friend_request_card.html' with profile_picture=request.receiver.userprofile.profile_picture.url profile_name=request.receiver.userprofile.profile_name action='sent' %}
         {% if forloop.counter|divisibleby:2 %}
       </div>
       <div class="d-flex flex-row flex-wrap">

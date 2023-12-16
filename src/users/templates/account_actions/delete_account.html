@@ -22,7 +22,7 @@
         {% endif %}
       </div>
       {% if not user.userprofile.email_confirmed %}
-      <button type="button" class="btn btn-danger disabled" title="Confirm your email address to unlock this!">Delete Account</button>
+      <button type="button" class="btn btn-danger disabled" id="delete-button-disabled" title="Confirm your email address to unlock this!">Delete Account</button>
       {% else %}
       <button type="button" class="btn btn-danger" id="delete-button">Delete Account</button>
       {% endif %}

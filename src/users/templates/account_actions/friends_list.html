@@ -27,12 +27,6 @@ social circle.{% endblock description %}
               alt="{{ friend.0.userprofile.profile_name }}'s Profile Picture" class="profile-picture mr-2"
               id="profile-picture">
           </label>
-          {% else %}
-          <label>
-            <img src="{{ default_profile_picture }}"
-              alt="{{ friend.0.userprofile.profile_name }}'s Default Profile Picture" class="profile-picture mr-2"
-              id="profile-picture">
-          </label>
           {% endif %}
         </div>
         <div class="card-center px-2">

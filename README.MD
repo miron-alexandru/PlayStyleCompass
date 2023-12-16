@@ -32,6 +32,8 @@ Websites for .env configuration: [GiantBomb](https://www.giantbomb.com/) / [Send
 
 
 ### Version v1.5
+* Solved delete account BUG which caused users to be able to delete their account without email confirmation.
+* Refactored recommendation helper functions into a RecommendationEngine class.
 * Default profile picture at registration.
 * Dynamic page headers for Reviews, Game Queue, Favorites
 * Save all button on preferences page improved.

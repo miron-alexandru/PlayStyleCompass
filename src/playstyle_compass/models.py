@@ -4,7 +4,6 @@ from django.db import models
 from django.contrib.auth.models import User
 
 
-
 class UserPreferences(models.Model):
     """Represents user-specific gaming preferences."""
 

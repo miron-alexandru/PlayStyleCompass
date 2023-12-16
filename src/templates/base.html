@@ -95,11 +95,6 @@
               <img src="{{ user.userprofile.profile_picture.url }}" alt="{{ user.username }}'s Profile Picture"
                 class="profile-picture mr-2" id="profile-picture">
             </label>
-            {% else %}
-            <label for="profile-picture-upload" class="profile-picture-label">
-              <img src="{% static 'images/default_profile_picture.png' %}"
-                alt="{{ user.username }}'s Default Profile Picture" class="profile-picture mr-2" id="profile-picture">
-            </label>
             {% endif %}
             <input type="file" id="profile-picture-upload" class="sr-only" accept="image/*"
               data-profile-url="{% url 'users:profile_picture' %}" data-csrf-token="{{ csrf_token }}">

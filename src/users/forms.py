@@ -225,7 +225,7 @@ class ProfilePictureForm(forms.ModelForm):
         required=False,
         widget=CustomClearableFileInput(),
         label=" ",
-    ) 
+    )
 
     def save(self, commit=True):
         instance = super().save(commit=False)
@@ -246,7 +246,6 @@ class ProfilePictureForm(forms.ModelForm):
 
         original_name = os.path.basename(image_field.name)
         self.processed_image_to_file(image, image_field, original_name)
-
 
     def processed_image_to_file(self, image, image_field, original_name=None):
         """Convert a processed image to a file."""
@@ -302,7 +301,9 @@ class ProfileUpdateForm(forms.ModelForm):
         profile_name = self.cleaned_data.get("profile_name")
 
         if profile_name.lower() == self.instance.profile_name.lower():
-            raise forms.ValidationError("The new profile name is the same as the existing one.")
+            raise forms.ValidationError(
+                "The new profile name is the same as the existing one."
+            )
 
         if (
             UserProfile.objects.filter(profile_name=profile_name)
@@ -312,4 +313,3 @@ class ProfileUpdateForm(forms.ModelForm):
             raise forms.ValidationError("This profile name is already in use.")
 
         return profile_name
-

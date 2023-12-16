@@ -197,7 +197,9 @@ def register_user(form, request):
         profile_name=form.cleaned_data["profile_name"],
     )
 
-    user_profile.profile_picture = "profile_pictures/default_profile_picture.png"
+    user_profile.profile_picture = (
+        "profile_pictures/default_pfp/default_profile_picture.png"
+    )
 
     user_profile.save()
     new_user.save()
@@ -441,13 +443,10 @@ def friends_list_view(request, *args, **kwargs):
 
     friends = [(friend, auth_user_friend_list) for friend in friend_list.friends.all()]
 
-    default_profile_picture = static("images/default_profile_picture.png")
-
     context = {
         "page_title": "Friends List :: PlayStyle Compass",
         "this_user": this_user,
         "friends": friends,
-        "default_profile_picture": default_profile_picture,
     }
 
     return render(request, "account_actions/friends_list.html", context)
@@ -471,13 +470,11 @@ def friend_requests_view(request, *args, **kwargs):
     user_sent_friend_requests = FriendRequest.objects.filter(
         sender=user, is_active=True
     )
-    default_profile_picture = static("images/default_profile_picture.png")
 
     context = {
         "page_title": "Friend Requests :: PlayStyle Compass",
         "friend_requests": friend_requests,
         "user_sent_friend_requests": user_sent_friend_requests,
-        "default_profile_picture": default_profile_picture,
     }
 
     return render(request, "account_actions/friend_requests.html", context)
@@ -683,21 +680,23 @@ def view_profile(request, profile_name):
 
         is_friend = get_friend_status(request_user, profile_to_view)
 
-        context.update({
-            "default_profile_picture": static("images/default_profile_picture.png"),
-            "user_profile": user_profile,
-            "is_friend": is_friend,
-            "user_id": user.id,
-            "user_preferences": user_stats["user_preferences"],
-            "user_reviews_count": user_stats["user_reviews_count"],
-            "review_likes_count": user_stats["review_likes_count"],
-        })
+        context.update(
+            {
+                "user_profile": user_profile,
+                "is_friend": is_friend,
+                "user_id": user.id,
+                "user_preferences": user_stats["user_preferences"],
+                "user_reviews_count": user_stats["user_reviews_count"],
+                "review_likes_count": user_stats["review_likes_count"],
+            }
+        )
 
     except Http404:
         messages.error(request, "The user does not exist or has deleted their account.")
         return redirect(request.META.get("HTTP_REFERER", "playstyle_compass:index"))
 
     return render(request, "account_actions/user_profile.html", context)
+
 
 def get_friend_status(request_user, profile_to_view):
     """Determine the friend status."""
