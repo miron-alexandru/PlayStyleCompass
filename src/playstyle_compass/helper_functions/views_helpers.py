@@ -28,7 +28,7 @@ class RecommendationEngine:
 
         for game in games:
             similarity = fuzz.ratio(history_game.lower(), game.title.lower())
-            if similarity > 80:
+            if similarity > 65:
                 matches.append(game)
 
         return matches

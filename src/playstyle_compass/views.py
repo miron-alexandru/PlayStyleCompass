@@ -300,6 +300,7 @@ def _get_games_view(request, page_title, list_name, template_name, user_id=None)
     game_list = getattr(user_preferences, f"get_{list_name}")() if not created else []
 
     games = calculate_game_scores(Game.objects.filter(id__in=game_list))
+    current_viewer_preferences, created = UserPreferences.objects.get_or_create(user=request.user)
 
     context = {
         "page_title": page_title,
@@ -308,6 +309,7 @@ def _get_games_view(request, page_title, list_name, template_name, user_id=None)
         "games": games,
         "other_user": other_user_profile,
         "user_name": user.userprofile.profile_name,
+        "current_viewer_preferences": current_viewer_preferences,
     }
 
     return render(request, template_name, context)
