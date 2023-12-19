@@ -74,4 +74,5 @@ urlpatterns = [
         name="friend_request_decline",
     ),
     path("view_profile/<str:profile_name>/", views.view_profile, name="view_profile"),
+    path("toggle_show_stats/", views.toggle_show_stat, name="toggle_show_stat"),
 ]

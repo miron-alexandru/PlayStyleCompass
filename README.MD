@@ -32,6 +32,8 @@ Websites for .env configuration: [GiantBomb](https://www.giantbomb.com/) / [Send
 
 
 ### Version v1.5
+* Users are now able to show or hide their favorites, game queue and reviews on their profile. 
+* Views refactored in playstyle_compass and users.
 * Solved delete account BUG which caused users to be able to delete their account without email confirmation.
 * Refactored recommendation helper functions into a RecommendationEngine class.
 * Default profile picture at registration.

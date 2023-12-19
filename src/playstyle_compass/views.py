@@ -75,19 +75,13 @@ def gaming_preferences(request):
 def update_preferences(request):
     """Update user preferences."""
     user = request.user
-    try:
-        user_preferences = UserPreferences.objects.get(user=user)
-    except UserPreferences.DoesNotExist:
-        user_preferences = None
+    user_preferences, created = UserPreferences.objects.get_or_create(user=user)
 
     if request.method == "POST":
-        # Process the form submission and update the user's preferences
         gaming_history = request.POST.get("gaming_history")
         favorite_genres = request.POST.getlist("favorite_genres")
         platforms = request.POST.getlist("platforms")
 
-        # Update the user's preferences in the database
-        user_preferences, created = UserPreferences.objects.get_or_create(user=user)
         user_preferences.gaming_history = gaming_history
         user_preferences.favorite_genres = ", ".join(favorite_genres)
         user_preferences.platforms = ", ".join(platforms)
@@ -106,36 +100,36 @@ def update_preferences(request):
 @login_required
 def save_gaming_history(request):
     """Save gaming history for the user."""
-    if request.method == "POST":
-        new_gaming_history = request.POST.get("gaming_history")
-        user_preferences = UserPreferences.objects.get(user=request.user)
-        user_preferences.gaming_history = new_gaming_history
-        user_preferences.save()
-    return redirect("playstyle_compass:update_preferences")
+    return _save_user_preference(
+        request, "gaming_history", "playstyle_compass:update_preferences"
+    )
 
 
 @login_required
 def save_favorite_genres(request):
     """Save favorite genres for the user."""
-    if request.method == "POST":
-        new_favorite_genres = request.POST.getlist("favorite_genres")
-        user_preferences = UserPreferences.objects.get(user=request.user)
-        user_preferences.favorite_genres = ", ".join(new_favorite_genres)
-        user_preferences.save()
-
-    return redirect("playstyle_compass:update_preferences")
+    return _save_user_preference(
+        request, "favorite_genres", "playstyle_compass:update_preferences"
+    )
 
 
 @login_required
 def save_platforms(request):
     """Save platforms for the user."""
+    return _save_user_preference(
+        request, "platforms", "playstyle_compass:update_preferences"
+    )
+
+
+def _save_user_preference(request, field_name, redirect_view):
+    """Common function to save user preferences."""
     if request.method == "POST":
-        new_platforms = request.POST.getlist("platforms")
+        new_values = request.POST.getlist(field_name)
         user_preferences = UserPreferences.objects.get(user=request.user)
-        user_preferences.platforms = ", ".join(new_platforms)
+        setattr(user_preferences, field_name, ", ".join(new_values))
         user_preferences.save()
 
-    return redirect("playstyle_compass:update_preferences")
+    return redirect(redirect_view)
 
 
 @login_required
@@ -252,16 +246,26 @@ def user_reviews(request, user_id=None):
     """View to get the user reviews."""
     user = request.user if user_id is None else get_object_or_404(User, id=user_id)
     other_user_profile = user != request.user
+    user_preferences, created = UserPreferences.objects.get_or_create(user=user)
+
+    if other_user_profile:
+        if not user_preferences.show_reviews:
+            messages.error(request, "You don't have permission to view this content.")
+            return redirect("playstyle_compass:index")
 
     user_reviews = Review.objects.filter(user=user)
     user_games = calculate_game_scores([review.game for review in user_reviews])
+    current_viewer_preferences, created = UserPreferences.objects.get_or_create(
+        user=request.user
+    )
 
     context = {
         "page_title": "Games Reviewed :: PlayStyle Compass",
         "games": user_games,
-        "user_preferences": UserPreferences.objects.get(user=user),
+        "user_preferences": user_preferences,
         "other_user": other_user_profile,
         "user_name": user.userprofile.profile_name,
+        "current_viewer_preferences": current_viewer_preferences,
     }
 
     return render(request, "playstyle_compass/user_reviews.html", context)
@@ -297,10 +301,22 @@ def _get_games_view(request, page_title, list_name, template_name, user_id=None)
 
     other_user_profile = user != request.user
     user_preferences, created = UserPreferences.objects.get_or_create(user=user)
+
+    if other_user_profile:
+        if not user_preferences.show_favorites and list_name == "favorite_games":
+            messages.error(request, "You don't have permission to view this content.")
+            return redirect("playstyle_compass:index")
+
+        if not user_preferences.show_in_queue and list_name == "game_queue":
+            messages.error(request, "You don't have permission to view this content.")
+            return redirect("playstyle_compass:index")
+
     game_list = getattr(user_preferences, f"get_{list_name}")() if not created else []
 
     games = calculate_game_scores(Game.objects.filter(id__in=game_list))
-    current_viewer_preferences, created = UserPreferences.objects.get_or_create(user=request.user)
+    current_viewer_preferences, created = UserPreferences.objects.get_or_create(
+        user=request.user
+    )
 
     context = {
         "page_title": page_title,
@@ -318,10 +334,11 @@ def _get_games_view(request, page_title, list_name, template_name, user_id=None)
 def top_rated_games(request):
     """View to display top rated games."""
     user = request.user
-    user_preferences = None
-
-    if user.is_authenticated:
-        user_preferences = UserPreferences.objects.get(user=request.user)
+    user_preferences = (
+        UserPreferences.objects.get(user=request.user)
+        if user.is_authenticated
+        else None
+    )
 
     top_games = Game.objects.annotate(average_score=Avg("review__score")).filter(
         average_score__gt=4
@@ -340,10 +357,11 @@ def top_rated_games(request):
 
 def upcoming_games(request):
     user = request.user
-    user_preferences = None
-
-    if user.is_authenticated:
-        user_preferences = UserPreferences.objects.get(user=request.user)
+    user_preferences = (
+        UserPreferences.objects.get(user=request.user)
+        if user.is_authenticated
+        else None
+    )
 
     current_date = date.today()
     upcoming_filter = Q(release_date__gte=current_date)
@@ -371,30 +389,28 @@ def add_review(request, game_id):
 
     if existing_review:
         messages.error(request, "You have already reviewed this game!")
-        next_url = request.META.get("HTTP_REFERER")
-
-        return HttpResponseRedirect(next_url)
+        return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
 
     if request.method == "POST":
         form = ReviewForm(request.POST)
         if form.is_valid():
             profile_name = request.user.userprofile.profile_name
 
-            review = Review(
-                game=game,
-                user=user,
-                reviewers=profile_name,
-                review_deck=form.cleaned_data["review_deck"],
-                review_description=form.cleaned_data["review_description"],
-                score=form.cleaned_data["score"],
-            )
+            review_data = {
+                "game": game,
+                "user": user,
+                "reviewers": profile_name,
+                "review_deck": form.cleaned_data["review_deck"],
+                "review_description": form.cleaned_data["review_description"],
+                "score": form.cleaned_data["score"],
+            }
 
-            review.save()
+            Review.objects.create(**review_data)
 
             messages.success(request, "Your review has been successfully submitted.")
-            next_url = request.GET.get("next", reverse("playstyle_compass:index"))
-
-            return HttpResponseRedirect(next_url)
+            return HttpResponseRedirect(
+                request.GET.get("next", reverse("playstyle_compass:index"))
+            )
 
     else:
         form = ReviewForm()
@@ -412,21 +428,20 @@ def add_review(request, game_id):
 def edit_review(request, game_id):
     """View to edit reviews for games."""
     game = get_object_or_404(Game, id=game_id)
+    user = request.user
+    next_url = request.GET.get("next", reverse("playstyle_compass:index"))
+
     try:
-        user = request.user
         review = Review.objects.get(game=game, user=user)
     except Review.DoesNotExist:
         messages.error(request, "You haven't written any reviews for this game!")
-        next_url = request.META.get("HTTP_REFERER")
         return HttpResponseRedirect(next_url)
 
     if request.method == "POST":
         form = ReviewForm(request.POST, instance=review)
         if form.is_valid():
             form.save()
-
             messages.success(request, "Your review has been successfully updated.")
-            next_url = request.GET.get("next", reverse("playstyle_compass:index"))
             return HttpResponseRedirect(next_url)
     else:
         form = ReviewForm(instance=review)
@@ -535,15 +550,13 @@ def delete_reviews(request, game_id):
     """View for deleting user reviews."""
     game = get_object_or_404(Game, id=game_id)
     user = request.user
+    next_url = request.GET.get("next", reverse("playstyle_compass:index"))
 
     try:
         review = Review.objects.get(game=game, user=user)
         review.delete()
-
         messages.success(request, "Your review has been successfully deleted!")
-        next_url = request.GET.get("next", reverse("playstyle_compass:index"))
-        return HttpResponseRedirect(next_url)
     except Review.DoesNotExist:
         messages.error(request, "You haven't written any reviews for this game!")
-        next_url = request.GET.get("next", reverse("playstyle_compass:index"))
-        return HttpResponseRedirect(next_url)
+
+    return HttpResponseRedirect(next_url)

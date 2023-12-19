@@ -10,6 +10,7 @@ from django.contrib.auth import (
 )
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.http import require_POST
 from django.contrib import messages
 from django.core.mail import send_mail
 from django.core.files import File
@@ -399,6 +400,7 @@ def send_contact_form(form):
     """Function to send a contact form."""
     contact_message = form.save()
     subject = "New Conctat Us Submission"
+
     message = f"""
                 Name: {contact_message.name}
                 Email: {contact_message.email}
@@ -406,20 +408,24 @@ def send_contact_form(form):
                 Message: {contact_message.message}
                 Time: {contact_message.formatted_timestamp()}
             """
+
     from_email = settings.DEFAULT_FROM_EMAIL
     recipient_list = [settings.EMAIL_USER_CONTACT]
     send_mail(subject, message, from_email, recipient_list, fail_silently=False)
+
     return redirect("users:contact_success")
 
 
 def contact_success(request):
     """Contact confirmation view."""
     messages.success(request, "Your message has been successfully submitted!")
+
     context = {
         "page_title": "Contact Us Done :: PlayStyle Compass",
         "response": "Thank you for contacting us! Our team will review it within 48 hours and get back to you as soon as possible. \
     Go to the homepage by clicking the button below.",
     }
+
     return render(request, "account_actions/change_succeeded.html", context)
 
 
@@ -671,7 +677,7 @@ def view_profile(request, profile_name):
 
     try:
         user_profile = get_object_or_404(UserProfile, profile_name=profile_name)
-        user = get_object_or_404(User, id=user_profile.user.id)
+        user = user_profile.user
 
         user_stats = get_user_stats(user)
 
@@ -688,6 +694,9 @@ def view_profile(request, profile_name):
                 "user_preferences": user_stats["user_preferences"],
                 "user_reviews_count": user_stats["user_reviews_count"],
                 "review_likes_count": user_stats["review_likes_count"],
+                "show_in_queue": user_stats["user_preferences"].show_in_queue,
+                "show_reviews": user_stats["user_preferences"].show_reviews,
+                "show_favorites": user_stats["user_preferences"].show_favorites,
             }
         )
 
@@ -696,6 +705,24 @@ def view_profile(request, profile_name):
         return redirect(request.META.get("HTTP_REFERER", "playstyle_compass:index"))
 
     return render(request, "account_actions/user_profile.html", context)
+
+
+@login_required
+@require_POST
+def toggle_show_stat(request):
+    stat_name = request.POST.get("statName")
+    user_id = request.POST.get("userId")
+
+    user_preferences = UserPreferences.objects.get(user__id=user_id)
+
+    attribute_name = f"show_{stat_name}"
+    show_value = getattr(user_preferences, attribute_name, False)
+    show_value = not show_value
+
+    setattr(user_preferences, attribute_name, show_value)
+    user_preferences.save()
+
+    return JsonResponse({"show": show_value})
 
 
 def get_friend_status(request_user, profile_to_view):
