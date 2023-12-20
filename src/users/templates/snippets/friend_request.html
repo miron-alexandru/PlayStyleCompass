@@ -1,0 +1,9 @@
+<script>
+  let sendFriendRequestBtn = document.getElementById("friend_req_btn");
+
+  if (sendFriendRequestBtn != null) {
+    sendFriendRequestBtn.addEventListener("click", function () {
+      sendFriendRequest("{{ user_id }}");
+    });
+  }
+</script>

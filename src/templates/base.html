@@ -137,17 +137,6 @@
       </div>
     </div>
   </nav>
-  <script src="{% static 'js/base.js' %}"></script>
-  <script src="{% static 'js/dropdown.js' %}"></script>
-  <script src="{% static 'js/email_confirmation.js' %}"></script>
-  <script>
-    window.passwordInputIdLogIn = '{{ form.password.id_for_label }}';
-    window.passwordInputId1Register = '{{ form.password1.id_for_label }}';
-    window.passwordInputId2Register = '{{ form.password2.id_for_label }}';
-    window.passwordInputId1NewChange = '{{ form.new_password1.id_for_label }}';
-    window.passwordInputId2NewChange = '{{ form.new_password2.id_for_label }}';
-  </script>
-  <script defer src="{% static 'js/users/show_hide_password.js' %}"></script>
 
   <div class="page-header">
     <div id="header-content">
@@ -195,6 +184,15 @@
       <p>&copy; {{ current_year }} PlayStyle Compass. All rights reserved.</p>
     </div>
   </footer>
+
+  {% include 'csfr_token.html' %}
+  {% include 'password_input_ids.html' %}
+
+  <script src="{% static 'js/base.js' %}" defer></script>
+  <script src="{% static 'js/dropdown.js' %}" defer></script>
+  <script src="{% static 'js/email_confirmation.js' %}" defer></script>
+  <script src="{% static 'js/users/show_hide_password.js' %}" defer></script>
+
 </body>
 
 </html>

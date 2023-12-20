@@ -1,27 +1,8 @@
-const getCookie = (name) => {
-  const cookieString = document.cookie;
-  const cookies = cookieString.split('; ');
-
-  for (const cookie of cookies) {
-    const [cookieName, cookieValue] = cookie.split('=');
-    if (cookieName === name) {
-      return decodeURIComponent(cookieValue);
-    }
-  }
-
-  return null;
-};
-
 $(document).ready(() => {
-  const getCSRFToken = () => {
-    return getCookie('csrftoken');
-  };
-
   const handleToggle = (url, dataKey, iconClasses, successCallback) => {
     return function () {
       let gameID = $(this).data('game-id');
       let icon = $(this).find('i');
-      let csrfToken = getCSRFToken();
 
       $.ajax({
         type: 'POST',

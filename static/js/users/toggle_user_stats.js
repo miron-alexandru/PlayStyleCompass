@@ -19,7 +19,6 @@ document.addEventListener("DOMContentLoaded", function () {
             })
             .then(response => response.json())
             .then(data => {
-                console.log(data);
 
                 let icon = button.querySelector('i');
                 if (data.show) {

@@ -134,19 +134,10 @@
   </div>
 </div>
 
-<script>
-  let sendFriendRequestBtn = document.getElementById("friend_req_btn");
-
-  if (sendFriendRequestBtn != null) {
-    sendFriendRequestBtn.addEventListener("click", function () {
-      sendFriendRequest("{{user_id}}");
-    });
-  }
-</script>
-
 <script src="{% static 'js/users/remove_friend.js' %}"></script>
 <script src="{% static 'js/users/toggle_user_stats.js' %}"></script>
 
+{% include 'snippets/friend_request.html' %}
 {% include 'snippets/send_friend_request.html' %}
 {% include 'snippets/remove_friend.html' %}
 {% include 'snippets/user_stats_urls.html' %}
