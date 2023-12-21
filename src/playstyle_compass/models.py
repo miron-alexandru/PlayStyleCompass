@@ -110,6 +110,20 @@ class Game(models.Model):
         ordering = ["title"]
 
 
+class Message(models.Model):
+    sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name='sent_messages')
+    receiver = models.ForeignKey(User, on_delete=models.CASCADE, related_name='received_messages')
+    content = models.TextField()
+    timestamp = models.DateTimeField(auto_now_add=True)
+    is_read = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f'Message from {self.sender} to {self.receiver} about {self.game}'
+
+    class Meta:
+        db_table = "Message"
+
+
 class Review(models.Model):
     """Represents a review for a game."""
 

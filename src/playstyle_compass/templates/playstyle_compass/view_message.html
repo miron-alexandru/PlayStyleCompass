@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>Games Shared</h2>
+  {% for game_message in messages_received %}
+  <p><strong>From:</strong> {{ game_message.sender }}</p>
+  <p><strong>Sent at:</strong> {{ game_message.timestamp }}</p>
+  <p><strong>Message:</strong> {{ game_message.content|safe }}</p>
+  {% endfor %}
+{% endblock %}

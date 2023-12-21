@@ -166,9 +166,7 @@ def calculate_game_scores(games):
         game_reviews = Review.objects.filter(game_id=game.id)
         total_score = 0
 
-        for review in game_reviews:
-            total_score += int(review.score)
-
+        total_score = sum(int(review.score) for review in game_reviews)
         average_score = total_score / len(game_reviews) if game_reviews else 0
         total_reviews = len(game_reviews)
 
@@ -176,6 +174,19 @@ def calculate_game_scores(games):
         game.total_reviews = total_reviews
 
     return games
+
+def calculate_single_game_score(game):
+    """Calculate average score and total reviews for a single game."""
+    game_reviews = Review.objects.filter(game_id=game.id)
+    total_score = sum(int(review.score) for review in game_reviews)
+
+    average_score = total_score / len(game_reviews) if game_reviews else 0
+    total_reviews = len(game_reviews)
+
+    game.average_score = average_score
+    game.total_reviews = total_reviews
+
+    return game
 
 
 def paginate_matching_games_dict(request, matching_games):

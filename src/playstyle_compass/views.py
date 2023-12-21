@@ -5,18 +5,19 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from django.http import JsonResponse, HttpResponseRedirect
+from django.http import JsonResponse, HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Avg, Q
 
 from utils.constants import genres, all_platforms
-from .models import UserPreferences, Game, Review
+from .models import UserPreferences, Game, Review, Message
 from .forms import ReviewForm
 
 from .helper_functions.views_helpers import (
     RecommendationEngine,
     calculate_game_scores,
+    calculate_single_game_score,
     paginate_matching_games_query,
     paginate_matching_games_dict,
 )
@@ -175,6 +176,8 @@ def search_results(request):
     """Retrieves games from the database that match a given
     search query and renders a search results page.
     """
+    user_preferences = UserPreferences.objects.get_or_create(user=request.user)[0] if request.user.is_authenticated else None
+
     query = request.GET.get("query")
     games = Game.objects.filter(title__icontains=query)
 
@@ -184,6 +187,7 @@ def search_results(request):
         "page_title": "Serach Results :: PlayStyle Compass",
         "query": query,
         "games": games,
+        "user_preferences": user_preferences
     }
 
     return render(request, "playstyle_compass/search_results.html", context)
@@ -560,3 +564,37 @@ def delete_reviews(request, game_id):
         messages.error(request, "You haven't written any reviews for this game!")
 
     return HttpResponseRedirect(next_url)
+
+
+def view_game(request, game_id):
+    user_preferences = UserPreferences.objects.get_or_create(user=request.user)[0] if request.user.is_authenticated else None
+    game = get_object_or_404(Game, id=game_id)
+    game = calculate_single_game_score(game)
+
+    context = {
+        "page_title": "Game :: PlayStyle Compass",
+        "game": game,
+        "user_preferences": user_preferences,
+    }
+
+    return render(request, "playstyle_compass/view_game.html", context)
+
+
+@login_required
+def send_message(request, game_id, receiver_id):
+    game = get_object_or_404(Game, id=game_id)
+    receiver = get_object_or_404(User, id=receiver_id)
+
+    message_content = f"Check out {game.title}: <a href='{reverse('playstyle_compass:view_game', args=[game.id])}' target='_blank'>View Game</a>"
+
+    message = Message.objects.create(sender=request.user, receiver=receiver, content=message_content)
+
+    messages.success(request, f"Game shared with {receiver.username}")
+
+    return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
+
+@login_required
+def view_messages(request):
+    messages_received = Message.objects.filter(receiver=request.user)
+
+    return render(request, 'playstyle_compass/view_message.html', {'messages_received': messages_received})
