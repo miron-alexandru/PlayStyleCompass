@@ -10,7 +10,8 @@
 <div class="game-container" data-game-id="{{ game.id }}"
   data-reviews-url="{% url 'playstyle_compass:get_game_reviews' game.id %}"
   data-friend-req="{% url 'users:friend_request' 0 %}" data-like-url="{% url 'playstyle_compass:like' %}"
-  data-dislike-url="{% url 'playstyle_compass:dislike' %}">
+  data-dislike-url="{% url 'playstyle_compass:dislike' %}"
+  data-share-game="{% url 'playstyle_compass:send_message' game.id %}">
 
   <li>
     <div class="game-image">
@@ -24,7 +25,6 @@
       {% endif %}
     </div>
     <div class="game-info">
-      <a href="{% url 'playstyle_compass:send_message' game.id user.id %}">Share this game (testing)</a>
       <h4>{{ game.title|default:"Game Title not available" }}</h4>
       <p>{{ game.description|default:"Game description not available" }}</p>
       <p><strong>Release date:</strong> {{ game.release_date|default:"N/A"}}</p>
@@ -108,6 +108,17 @@
       {% endif %}
       {% endif %}
     </span>
+
+    <span class="icon-divider">|</span>
+
+    <div class="friend-dropdown">
+        <button class="shareButton">Share with ...</button>
+        <div class="friend-dropdown-content">
+          {% for friend in user_friends %}
+            <a class="friend-link" href="#" data-friend-id="{{ friend.id }}">{{ friend.userprofile.profile_name }}</a>
+          {% endfor %}
+        </div>
+      </div>
     {% endif %}
 
   </li>

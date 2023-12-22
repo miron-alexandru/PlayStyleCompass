@@ -1,0 +1,30 @@
+.inbox-container
+{
+  max-width: 600px;
+  margin: 20px auto;
+}
+
+.message
+{
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-bottom: 15px;
+  padding: 10px;
+}
+
+.message-header
+{
+  background-color: #f1f1f1;
+  padding: 8px;
+  border-bottom: 1px solid #ddd;
+}
+
+.message-content
+{
+  padding: 10px;
+}
+
+p
+{
+  margin: 5px 0;
+}

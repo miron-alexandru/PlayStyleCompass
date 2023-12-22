@@ -9,6 +9,7 @@ from fuzzywuzzy import fuzz
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db.models import Q
 from ..models import Game, Review
+from users.models import FriendList
 
 
 class RecommendationEngine:
@@ -225,3 +226,10 @@ def paginate_matching_games_query(request, matching_games):
     paginated_games = calculate_game_scores(paginated_games)
 
     return paginated_games
+
+
+def get_friend_list(user):
+    friends_list = FriendList.objects.get(user=user)
+    user_friends = friends_list.friends.all()
+
+    return user_friends

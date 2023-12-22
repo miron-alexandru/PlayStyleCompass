@@ -20,6 +20,7 @@ from .helper_functions.views_helpers import (
     calculate_single_game_score,
     paginate_matching_games_query,
     paginate_matching_games_dict,
+    get_friend_list,
 )
 
 
@@ -163,10 +164,13 @@ def get_recommendations(request):
     matching_games = recommendation_engine.matching_games
     paginated_games = paginate_matching_games_dict(request, matching_games)
 
+    user_friends = get_friend_list(user)
+
     context = {
         "page_title": "Recommendations :: PlayStyle Compass",
         "user_preferences": user_preferences,
         "paginated_games": dict(paginated_games),
+        "user_friends": user_friends,
     }
 
     return render(request, "playstyle_compass/recommendations.html", context)
@@ -183,11 +187,14 @@ def search_results(request):
 
     games = calculate_game_scores(games)
 
+    user_friends = get_friend_list(request.user)
+
     context = {
         "page_title": "Serach Results :: PlayStyle Compass",
         "query": query,
         "games": games,
-        "user_preferences": user_preferences
+        "user_preferences": user_preferences,
+        "user_friends": user_friends,
     }
 
     return render(request, "playstyle_compass/search_results.html", context)
@@ -263,6 +270,8 @@ def user_reviews(request, user_id=None):
         user=request.user
     )
 
+    user_friends = get_friend_list(request.user)
+
     context = {
         "page_title": "Games Reviewed :: PlayStyle Compass",
         "games": user_games,
@@ -270,6 +279,7 @@ def user_reviews(request, user_id=None):
         "other_user": other_user_profile,
         "user_name": user.userprofile.profile_name,
         "current_viewer_preferences": current_viewer_preferences,
+        "user_friends": user_friends,
     }
 
     return render(request, "playstyle_compass/user_reviews.html", context)
@@ -322,6 +332,8 @@ def _get_games_view(request, page_title, list_name, template_name, user_id=None)
         user=request.user
     )
 
+    user_friends = get_friend_list(request.user)
+
     context = {
         "page_title": page_title,
         "user_preferences": user_preferences,
@@ -330,6 +342,7 @@ def _get_games_view(request, page_title, list_name, template_name, user_id=None)
         "other_user": other_user_profile,
         "user_name": user.userprofile.profile_name,
         "current_viewer_preferences": current_viewer_preferences,
+        "user_friends": user_friends,
     }
 
     return render(request, template_name, context)
@@ -337,12 +350,12 @@ def _get_games_view(request, page_title, list_name, template_name, user_id=None)
 
 def top_rated_games(request):
     """View to display top rated games."""
-    user = request.user
-    user_preferences = (
-        UserPreferences.objects.get(user=request.user)
-        if user.is_authenticated
-        else None
-    )
+    if request.user.is_authenticated:
+        user = request.user
+        user_preferences = UserPreferences.objects.get(user=user)
+    else:
+        user = None
+        user_preferences = None
 
     top_games = Game.objects.annotate(average_score=Avg("review__score")).filter(
         average_score__gt=4
@@ -350,22 +363,26 @@ def top_rated_games(request):
 
     top_games = calculate_game_scores(top_games)
 
+    user_friends = get_friend_list(user) if user else []
+
     context = {
         "page_title": "Top Rated Games :: PlayStyle Compass",
         "games": top_games,
         "user_preferences": user_preferences,
+        "user_friends": user_friends,
     }
 
     return render(request, "playstyle_compass/top_rated_games.html", context)
 
 
 def upcoming_games(request):
-    user = request.user
-    user_preferences = (
-        UserPreferences.objects.get(user=request.user)
-        if user.is_authenticated
-        else None
-    )
+    """View the upcoming games."""
+    if request.user.is_authenticated:
+        user = request.user
+        user_preferences = UserPreferences.objects.get(user=user)
+    else:
+        user = None
+        user_preferences = None
 
     current_date = date.today()
     upcoming_filter = Q(release_date__gte=current_date)
@@ -374,10 +391,13 @@ def upcoming_games(request):
     upcoming_games = calculate_game_scores(upcoming_games)
     paginated_games = paginate_matching_games_query(request, upcoming_games)
 
+    user_friends = get_friend_list(user) if user else []
+
     context = {
         "page_title": "Upcoming Games :: PlayStyle Compass",
         "upcoming_games": paginated_games,
         "user_preferences": user_preferences,
+        "user_friends": user_friends,
     }
 
     return render(request, "playstyle_compass/upcoming_games.html", context)
@@ -567,34 +587,64 @@ def delete_reviews(request, game_id):
 
 
 def view_game(request, game_id):
-    user_preferences = UserPreferences.objects.get_or_create(user=request.user)[0] if request.user.is_authenticated else None
+    """View used to view a single game."""
+    if request.user.is_authenticated:
+        user = request.user
+        user_preferences = UserPreferences.objects.get(user=user)
+    else:
+        user = None
+        user_preferences = None
+
     game = get_object_or_404(Game, id=game_id)
     game = calculate_single_game_score(game)
+
+    user_friends = get_friend_list(user) if user else []
 
     context = {
         "page_title": "Game :: PlayStyle Compass",
         "game": game,
         "user_preferences": user_preferences,
+        "user_friends": user_friends
     }
 
     return render(request, "playstyle_compass/view_game.html", context)
 
 
 @login_required
-def send_message(request, game_id, receiver_id):
-    game = get_object_or_404(Game, id=game_id)
-    receiver = get_object_or_404(User, id=receiver_id)
+def send_message(request, game_id):
+    """View used to send a message to another user."""
+    if request.method == 'POST':
+        receiver_id = request.POST.get('receiver_id')
+        if receiver_id is not None:
+            game = get_object_or_404(Game, id=game_id)
+            receiver = get_object_or_404(User, id=receiver_id)
 
-    message_content = f"Check out {game.title}: <a href='{reverse('playstyle_compass:view_game', args=[game.id])}' target='_blank'>View Game</a>"
+            message_content = f"""
+                <p><strong>Hello {receiver.userprofile.profile_name}!</strong></p>
+                <p>I just wanted to share this awesome game named <strong>{game.title}</strong> with you:</p>
+                <div style="border: 1px solid #ddd; border-radius: 8px; padding: 10px; background-color: #f9f9f9;">
+                    <p>Check it out <a href='{reverse('playstyle_compass:view_game', args=[game.id])}' target='_blank'>here</a>!</p>
+                </div>
+            """
 
-    message = Message.objects.create(sender=request.user, receiver=receiver, content=message_content)
 
-    messages.success(request, f"Game shared with {receiver.username}")
+            message = Message.objects.create(sender=request.user, receiver=receiver, content=message_content)
 
-    return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
+            return JsonResponse({'status': 'success'})
+        else:
+            return JsonResponse({'status': 'error', 'message': 'Receiver ID not provided'})
+
+    return JsonResponse({'status': 'error', 'message': 'Invalid request method'})
+
 
 @login_required
 def view_messages(request):
+    """View used to display user messages."""
     messages_received = Message.objects.filter(receiver=request.user)
 
-    return render(request, 'playstyle_compass/view_message.html', {'messages_received': messages_received})
+    context = {
+        "page_title": "Messages :: PlayStyle Compass",
+        'messages_received': messages_received
+    }
+
+    return render(request, 'playstyle_compass/view_message.html', context)
