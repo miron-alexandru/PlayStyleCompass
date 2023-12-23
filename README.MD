@@ -32,7 +32,8 @@ Websites for .env configuration: [GiantBomb](https://www.giantbomb.com/) / [Send
 
 
 ### Version v1.5
-* Users are able to view their messages.
+* Selective deletion of shared games.
+* Users are able to view both games other users shared with them and games they shared with other users.
 * Implemented Game Sharing: Users are now able to share games with the other users.
 * Users are now able to show or hide their favorites, game queue and reviews on their profile. 
 * Views refactored in playstyle_compass and users.

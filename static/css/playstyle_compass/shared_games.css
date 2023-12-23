@@ -1,0 +1,148 @@
+.shared-games-container
+{
+  margin: 0 auto;
+}
+
+.shared-games-buttons
+{
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
+
+.shared-games-button
+{
+  font-size: 14px;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+  border-radius: 5px;
+  flex-grow: 1;
+  margin-right: 10px;
+}
+
+.shared-games-button:last-child
+{
+  margin-right: 0;
+}
+
+.shared-games-button:hover
+{
+  background-color: #2980b9;
+}
+
+.games-grid
+{
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+  gap: 15px;
+}
+
+.shared-game-card
+{
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  overflow: hidden;
+  transition: box-shadow 0.3s ease-in-out;
+}
+
+.shared-game-card:hover
+{
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+}
+
+
+.game-header
+{
+  background-color: #3498db;
+  color: white;
+  padding: 10px;
+  text-align: left;
+}
+
+.user-info
+{
+  font-weight: bold;
+  color: black;
+}
+
+.timestamp
+{
+  color: black;
+}
+
+.message-content
+{
+  padding: 15px;
+}
+}
+
+p
+{
+  margin: 6px 0;
+}
+
+.no-games
+{
+  text-align: center;
+  font-weight: bolder;
+  font-size: 20px;
+  padding: 20px;
+}
+
+.user-name
+{
+  text-decoration: none!important;
+  font-weight: bold;
+  color: #555;
+  transition: color 0.3s ease-in-out;
+}
+
+.user-name:hover
+{
+  color: #333;
+}
+
+#delete-games-form
+{
+  margin-top: 15px;
+}
+
+.delete-button
+{
+  background-color: #e74c3c;
+  color: #fff;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+  border-radius: 5px;
+  font-size: 14px;
+  margin-top: 15px;
+}
+
+.delete-button:hover
+{
+  background-color: #c0392b;
+}
+
+.select-all-button
+{
+  font-size: 14px;
+  padding: 5px 10px;
+  background-color: #f39c12;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.select-all-button:hover
+{
+  background-color: #d35400;
+}

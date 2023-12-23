@@ -112,7 +112,7 @@
             <div class="dropdown-menu" aria-labelledby="profileDropdown">
               <a class="dropdown-item" href="{% url 'users:view_profile' user.userprofile.profile_name %}">My
                 Profile</a>
-              <a class="dropdown-item" href="{% url 'playstyle_compass:view_messages'%}">Shared Games</a>
+              <a class="dropdown-item" href="{% url 'playstyle_compass:games_shared'%}">Shared Games</a>
               <a class="dropdown-item" href="{% url 'users:friends_list' user.id %}">Friends List</a>
               <a class="dropdown-item" href="{% url 'users:friend_requests' user.id %}">Friend Requests</a>
               <a class="dropdown-item" href="{% url 'users:profile_picture' %}">Change Profile Picture</a>

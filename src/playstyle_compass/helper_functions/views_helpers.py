@@ -176,6 +176,7 @@ def calculate_game_scores(games):
 
     return games
 
+
 def calculate_single_game_score(game):
     """Calculate average score and total reviews for a single game."""
     game_reviews = Review.objects.filter(game_id=game.id)

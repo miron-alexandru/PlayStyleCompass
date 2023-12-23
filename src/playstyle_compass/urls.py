@@ -49,8 +49,8 @@ urlpatterns = [
     ),
     path("increment_likes/", views.like_review, name="like"),
     path("decrement_dislikes/", views.dislike_review, name="dislike"),
-    path('game/<int:game_id>/', views.view_game, name='view_game'),
-    path('send_message/<int:game_id>/', views.send_message, name='send_message'),
-    path('view_messages/', views.view_messages, name='view_messages'),
+    path("game/<int:game_id>/", views.view_game, name="view_game"),
+    path("share_game/<int:game_id>/", views.share_game, name="share_game"),
+    path("games_shared/", views.view_games_shared, name="games_shared"),
+    path("delete_shared_games/", views.delete_shared_games, name="delete_shared_games"),
 ]
-

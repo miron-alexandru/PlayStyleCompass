@@ -180,7 +180,11 @@ def search_results(request):
     """Retrieves games from the database that match a given
     search query and renders a search results page.
     """
-    user_preferences = UserPreferences.objects.get_or_create(user=request.user)[0] if request.user.is_authenticated else None
+    user_preferences = (
+        UserPreferences.objects.get_or_create(user=request.user)[0]
+        if request.user.is_authenticated
+        else None
+    )
 
     query = request.GET.get("query")
     games = Game.objects.filter(title__icontains=query)
@@ -604,47 +608,69 @@ def view_game(request, game_id):
         "page_title": "Game :: PlayStyle Compass",
         "game": game,
         "user_preferences": user_preferences,
-        "user_friends": user_friends
+        "user_friends": user_friends,
     }
 
     return render(request, "playstyle_compass/view_game.html", context)
 
 
 @login_required
-def send_message(request, game_id):
+def share_game(request, game_id):
     """View used to send a message to another user."""
-    if request.method == 'POST':
-        receiver_id = request.POST.get('receiver_id')
+    if request.method == "POST":
+        receiver_id = request.POST.get("receiver_id")
         if receiver_id is not None:
             game = get_object_or_404(Game, id=game_id)
             receiver = get_object_or_404(User, id=receiver_id)
 
             message_content = f"""
                 <p><strong>Hello {receiver.userprofile.profile_name}!</strong></p>
-                <p>I just wanted to share this awesome game named <strong>{game.title}</strong> with you:</p>
-                <div style="border: 1px solid #ddd; border-radius: 8px; padding: 10px; background-color: #f9f9f9;">
+                <p>I just wanted to share this awesome game named <strong>{game.title}</strong> with you.</p>
+                <div class="game-message">
                     <p>Check it out <a href='{reverse('playstyle_compass:view_game', args=[game.id])}' target='_blank'>here</a>!</p>
                 </div>
             """
 
+            message = Message.objects.create(
+                sender=request.user, receiver=receiver, content=message_content
+            )
 
-            message = Message.objects.create(sender=request.user, receiver=receiver, content=message_content)
-
-            return JsonResponse({'status': 'success'})
+            return JsonResponse({"status": "success"})
         else:
-            return JsonResponse({'status': 'error', 'message': 'Receiver ID not provided'})
+            return JsonResponse(
+                {"status": "error", "message": "Receiver ID not provided"}
+            )
 
-    return JsonResponse({'status': 'error', 'message': 'Invalid request method'})
+    return JsonResponse({"status": "error", "message": "Invalid request method"})
 
 
 @login_required
-def view_messages(request):
+def view_games_shared(request):
     """View used to display user messages."""
-    messages_received = Message.objects.filter(receiver=request.user)
+    games_received = Message.objects.filter(receiver=request.user)
+    games_shared = Message.objects.filter(sender=request.user)
 
     context = {
-        "page_title": "Messages :: PlayStyle Compass",
-        'messages_received': messages_received
+        "page_title": "Shared games :: PlayStyle Compass",
+        "games_received": games_received,
+        "games_shared": games_shared,
     }
 
-    return render(request, 'playstyle_compass/view_message.html', context)
+    return render(request, "playstyle_compass/games_shared.html", context)
+
+
+@login_required
+def delete_shared_games(request):
+    """View used to delete selected shared games."""
+    if request.method == "POST":
+        received_games_to_delete = request.POST.getlist("received_games[]")
+        shared_games_to_delete = request.POST.getlist("shared_games[]")
+
+        Message.objects.filter(
+            id__in=received_games_to_delete, receiver=request.user
+        ).delete()
+        Message.objects.filter(
+            id__in=shared_games_to_delete, sender=request.user
+        ).delete()
+
+    return redirect("playstyle_compass:games_shared")

@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block page_header %}
+<div class="header">
+  <h3>SHARED GAMES</h3>
+</div>
+{% endblock page_header %}
+
+{% block description %}
+Get ready for some shared gaming fun! Check out the games you've swapped with others and dive into the ones they've shared with you.
+{% endblock description %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/playstyle_compass/shared_games.css' %}">
+
+<div class="shared-games-container">
+    <div class="shared-games-buttons">
+      <button id="received-games-btn" class="shared-games-button active">Games other users shared with you</button>
+      <button id="shared-games-btn" class="shared-games-button">Games you shared with other users</button>
+    </div>
+
+    <form method="post" action="{% url 'playstyle_compass:delete_shared_games' %}" id="delete-games-form">
+    {% csrf_token %}
+    <div id="received-games" class="games-grid received-games">
+      {% if games_received %}
+        {% for received_game in games_received %}
+          <div class="shared-game-card">
+            <div class="game-header">
+              <input type="checkbox" name="received_games[]" value="{{ received_game.id }}" class="shared-game-checkbox">
+              <span class="user-info"><strong>Sender: </strong><a href="{% url 'users:view_profile' profile_name=received_game.sender.userprofile.profile_name %}" class="user-name">{{ received_game.sender.userprofile.profile_name }}</a></span>
+              <p class="timestamp"><strong>Date:</strong> {{ received_game.timestamp }}</p>
+            </div>
+            <div class="message-content">
+              <p>{{ received_game.content|safe }}</p>
+            </div>
+          </div>
+        {% endfor %}
+      {% else %}
+        <p class="no-games">No shared games with you yet.</p>
+      {% endif %}
+    </div>
+
+    <div id="shared-games" class="games-grid shared-games" style="display:none">
+      {% if games_shared %}
+        {% for shared_game in games_shared %}
+          <div class="shared-game-card">
+            <div class="game-header">
+              <input type="checkbox" name="shared_games[]" value="{{ shared_game.id }}" class="shared-game-checkbox">
+              <span class="user-info"><strong>To: </strong><a href="{% url 'users:view_profile' profile_name=shared_game.sender.userprofile.profile_name %}" class="user-name">{{ shared_game.receiver.userprofile.profile_name }}</a></span>
+              <p class="timestamp"><strong>Date:</strong> {{ shared_game.timestamp }}</p>
+            </div>
+            <div class="message-content">
+              <p>{{ shared_game.content|safe }}</p>
+            </div>
+          </div>
+        {% endfor %}
+      {% else %}
+        <p class="no-games">You haven't shared any games with someone yet.</p>
+      {% endif %}
+    </div>
+
+    <button type="button" class="select-all-button">Select All</button>
+    <button type="submit" class="delete-button">Delete Selected</button>
+  </form>
+</div>
+
+<script src="{% static 'js/playstyle_compass/games_shared.js' %}" defer></script>
+
+
+{% endblock %}
