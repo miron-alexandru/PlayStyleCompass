@@ -1,10 +1,8 @@
-.game-recommendations-container
-{
+.game-recommendations-container {
   display: none;
 }
 
-.game-recommendations-container li
-{
+.game-recommendations-container li {
   display: flex;
   align-items: start;
   border: 1px solid #ddd;
@@ -15,14 +13,12 @@
   background-color: #f5f5f5;
 }
 
-.category-buttons
-{
+.category-buttons {
   margin-bottom: 20px;
   text-align: start;
 }
 
-.category-button
-{
+.category-button {
   font-size: 14px;
   background-color: #3498db;
   color: white;
@@ -33,27 +29,23 @@
   border-radius: 5px;
 }
 
-.category-button:hover
-{
+.category-button:hover {
   background-color: #2980b9;
 }
 
-h4
-{
+h4 {
   font-size: 1.2rem;
   font-weight: bolder;
   margin: 0;
   padding-bottom: 5px;
 }
 
-ul
-{
+ul {
   list-style: none;
   padding: 0;
 }
 
-label[for="sort-select"]
-{
+label[for="sort-select"] {
   font-size: 15px;
   font-weight: bold;
   margin-right: 5px;
@@ -61,8 +53,7 @@ label[for="sort-select"]
   color: #333;
 }
 
-#sort-select
-{
+#sort-select {
   padding: 5px;
   font-size: 14px;
   border: 1px solid #ccc;
@@ -73,22 +64,19 @@ label[for="sort-select"]
   outline: none;
 }
 
-#sort-select option
-{
+#sort-select option {
   font-size: 14px;
   background-color: #f9f9f9;
   color: #333;
 }
 
-#sort-select:hover, #sort-select:focus
-{
+#sort-select:hover,
+#sort-select:focus {
   border: 1px solid #007bff;
 }
 
-@media screen and (max-width: 600px)
-{
-  .game-recommendations-container li
-  {
+@media screen and (max-width: 1000px) {
+  .game-recommendations-container li {
     flex-direction: column;
     align-items: stretch;
   }

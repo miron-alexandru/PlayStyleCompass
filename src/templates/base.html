@@ -57,7 +57,7 @@
           <a class="nav-link dropdown-toggle" href="#" id="navItemDropdown" role="button" data-toggle="dropdown">
             More
           </a>
-          <div class="dropdown-menu">
+          <div class="dropdown-container dropdown-menu">
             <a class="dropdown-item" href="{% url 'playstyle_compass:user_reviews'%}">
               My Reviews
             </a>
@@ -109,7 +109,7 @@
               aria-haspopup="true" aria-expanded="false">
               Account Actions
             </a>
-            <div class="dropdown-menu" aria-labelledby="profileDropdown">
+            <div class="dropdown-container dropdown-menu" aria-labelledby="profileDropdown">
               <a class="dropdown-item" href="{% url 'users:view_profile' user.userprofile.profile_name %}">My
                 Profile</a>
               <a class="dropdown-item" href="{% url 'playstyle_compass:games_shared'%}">Shared Games</a>
@@ -182,9 +182,15 @@
 
   <footer class="footer">
     <div class="my-footer">
-      <p>&copy; {{ current_year }} PlayStyle Compass. All rights reserved.</p>
+      <p>&copy; 2023-{{ current_year }} PlayStyle Compass. All rights reserved.</p>
     </div>
   </footer>
+
+  <div class="scroll-top-container">
+    <button class="scroll-top-btn" id="scroll-top" title="Go top">
+      <span>&#9650;</span>
+    </button>
+  </div>
 
   {% include 'csfr_token.html' %}
   {% include 'password_input_ids.html' %}

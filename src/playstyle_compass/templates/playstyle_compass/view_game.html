@@ -1,6 +1,15 @@
 {% extends "base.html" %}
 {% load static %}
 
+{% block page_header %}
+<div class="header">
+  <h3>{% if game %}
+  {{game.title|upper}}
+  {% endif %}
+</h3>
+</div>
+{% endblock page_header %}
+
 {% block content %}
 <link rel="stylesheet" href="{% static 'css/playstyle_compass/common_styles.css' %}">
 

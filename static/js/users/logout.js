@@ -7,6 +7,6 @@ const countdownInterval = setInterval(function () {
   countdownElement.textContent = seconds + " seconds";
   if (seconds <= 0) {
     clearInterval(countdownInterval);
-    window.location.href = "/"; 
+    window.location.href = "/";
   }
 }, 1000);

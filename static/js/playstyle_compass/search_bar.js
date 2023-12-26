@@ -1,7 +1,7 @@
 const searchInput = document.getElementById('search-input');
 const searchResults = document.getElementById('search-results');
 
-searchInput.addEventListener('input', function() {
+searchInput.addEventListener('input', function () {
   const query = searchInput.value.trim();
 
   if (query === '') {
@@ -27,7 +27,7 @@ function fillSearchBar(value) {
 }
 
 searchResults.addEventListener('click', function (event) {
-  const {target} = event;
+  const { target } = event;
   if (target.classList.contains('result')) {
     const clickedTitle = target.textContent;
     fillSearchBar(clickedTitle);
@@ -35,12 +35,12 @@ searchResults.addEventListener('click', function (event) {
 });
 
 function validateSearch() {
-    const searchInput = document.getElementById('search-input');
-    const query = searchInput.value.trim();
+  const searchInput = document.getElementById('search-input');
+  const query = searchInput.value.trim();
 
-    if (query === '') {
-      return false;
-    }
-
-    return true;
+  if (query === '') {
+    return false;
   }
+
+  return true;
+}

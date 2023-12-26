@@ -27,9 +27,9 @@ $(document).ready(function () {
         },
         body: formData.toString(),
       })
-      .then(response => response.json())
-      .then(data => console.log(data))
-      .catch(error => console.error('Fetch operation error:', error));
+        .then(response => response.json())
+        .then(data => console.log(data))
+        .catch(error => console.error('Fetch operation error:', error));
     });
   });
 

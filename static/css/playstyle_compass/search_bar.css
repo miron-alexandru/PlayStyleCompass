@@ -1,5 +1,4 @@
-.result
-{
+.result {
   padding: 10px;
   cursor: pointer;
   border-bottom: 1px solid #ccc;
@@ -7,23 +6,19 @@
   transition: background-color 0.3s;
 }
 
-.result:last-child
-{
+.result:last-child {
   border-bottom: none;
 }
 
-.result:hover
-{
+.result:hover {
   background-color: #f0f0f0;
 }
 
-.result i
-{
+.result i {
   margin-right: 5px;
 }
 
-.search-description h3
-{
+.search-description h3 {
   color: #2f6187;
   osition: relative;
   width: 100%;
@@ -35,29 +30,25 @@
   color: #3e6a91;
 }
 
-.search-description-text
-{
+.search-description-text {
   color: #555;
   font-size: 16px;
   padding-bottom: 25px;
 }
 
-.search-bar
-{
+.search-bar {
   position: relative;
   display: flex;
   align-items: center;
 }
 
-.search-input-container
-{
+.search-input-container {
   display: flex;
   align-items: center;
   width: 100%;
 }
 
-#search-input
-{
+#search-input {
   flex: 1;
   padding: 6px 10px;
   border-radius: 21px;
@@ -67,8 +58,7 @@
   font-size: 15px;
 }
 
-button[type="submit"]
-{
+button[type="submit"] {
   position: absolute;
   right: 0;
   font-size: 19px;
@@ -81,13 +71,11 @@ button[type="submit"]
   transition: background 0.3s ease;
 }
 
-button[type="submit"] i
-{
+button[type="submit"] i {
   font-size: 18px;
 }
 
-button[type="submit"]:hover
-{
+button[type="submit"]:hover {
   background: #d5dee6;
   color: #fff;
 }

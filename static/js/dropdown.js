@@ -1,14 +1,14 @@
-$(document).ready(function() {
+$(document).ready(function () {
   $('.nav-item.dropdown').hover(
-    function() {
+    function () {
       $(this).find('.dropdown-menu').stop(true, true).delay(200).fadeIn(300);
     },
-    function() {
+    function () {
       $(this).find('.dropdown-menu').stop(true, true).delay(200).fadeOut(300);
     }
   );
 
-  $('.nav-item.dropdown').on('click', function(e) {
+  $('.nav-item.dropdown').on('click', function (e) {
     e.stopPropagation();
   });
 });

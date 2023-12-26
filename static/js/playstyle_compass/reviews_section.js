@@ -1,5 +1,5 @@
-$(document).ready(function() {
-    $('.game-container').each(function() {
+$(document).ready(function () {
+    $('.game-container').each(function () {
         let container = $(this);
 
         let initialFetch = true;
@@ -31,12 +31,12 @@ $(document).ready(function() {
                 url: reviewsURL,
                 method: 'GET',
                 data: { game_id: game_id },
-                success: function(data) {
-                    let {reviews} = data;
+                success: function (data) {
+                    let { reviews } = data;
                     renderReviews(reviewsList, reviews);
                     container.find('.show-hide-button').text(reviewsList.is(':visible') ? 'Hide Reviews' : 'Show Reviews');
                 },
-                error: function() {
+                error: function () {
                     reviewsList.html('Failed to retrieve reviews.');
                     reviewsList.show();
                 }
@@ -48,7 +48,7 @@ $(document).ready(function() {
             if (reviews.length === 0) {
                 reviewsList.html('<p><strong>No reviews for this game yet.</strong></p>');
             } else {
-                $.each(reviews, function(index, review) {
+                $.each(reviews, function (index, review) {
                     let description = review.description.substring(0, 300);
                     let truncated = description.length < review.description.length;
                     let buttonHtml = truncated ? `<button class="read-button-review" data-toggle="read-more">[Read more...]</button>` : '';
@@ -125,11 +125,11 @@ $(document).ready(function() {
                 data: {
                     "user_id": user_id,
                 },
-                success: function(data) {
+                success: function (data) {
                     console.log(data['message']);
                     showMessage(this_container, data['message']);
                 },
-                error: function(error) {
+                error: function (error) {
                     console.error('Error sending friend request:', error);
                     showMessage(this_container, data['message']);
                 }
@@ -177,7 +177,7 @@ $(document).ready(function() {
         });
 
         container.on('click', '.show-hide-button', toggleReviewVisibility);
-        container.on('click', '.read-button-review', function() {
+        container.on('click', '.read-button-review', function () {
             let $description = $(this).parent().find('.review-description');
             let $fullDescription = $(this).parent().find('.review-description-full');
             let buttonText = $(this).text();

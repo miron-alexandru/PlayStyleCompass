@@ -1,10 +1,10 @@
-$(document).ready(function() {
-    $("#resend-link").click(function(e) {
+$(document).ready(function () {
+    $("#resend-link").click(function (e) {
         e.preventDefault();
 
         let url = $(this).data("url");
 
-        $.get(url, function(data) {
+        $.get(url, function (data) {
             if (data.success) {
                 $("#success-message").html(data.message);
             } else {
@@ -12,7 +12,7 @@ $(document).ready(function() {
             }
         });
 
-        setTimeout(function() {
+        setTimeout(function () {
             location.reload();
         }, 1500);
     });

@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", function () {
     toggleStat.forEach(function (button) {
         button.addEventListener("click", function () {
             const statName = button.dataset.stat;
-            let userId = button.dataset.userId;
+            let {userId} = button.dataset;
 
             fetch(toggleStatUrl, {
                 method: 'POST',
@@ -17,24 +17,24 @@ document.addEventListener("DOMContentLoaded", function () {
                     'userId': userId
                 }),
             })
-            .then(response => response.json())
-            .then(data => {
+                .then(response => response.json())
+                .then(data => {
 
-                let icon = button.querySelector('i');
-                if (data.show) {
-                    icon.classList.remove('fa-eye-slash');
-                    icon.classList.add('fa-eye');
-                } else {
-                    icon.classList.remove('fa-eye');
-                    icon.classList.add('fa-eye-slash');
-                }
+                    let icon = button.querySelector('i');
+                    if (data.show) {
+                        icon.classList.remove('fa-eye-slash');
+                        icon.classList.add('fa-eye');
+                    } else {
+                        icon.classList.remove('fa-eye');
+                        icon.classList.add('fa-eye-slash');
+                    }
 
-                var statContent = button.closest('.stat-item').querySelector('.stat-content');
-                statContent.innerHTML = data.show ? `<a href="${statUrls[statName]}">${statDisplayText[statName]}</a>` : `<span>${statDisplayText[statName]}</span>`;
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
+                    let statContent = button.closest('.stat-item').querySelector('.stat-content');
+                    statContent.innerHTML = data.show ? `<a href="${statUrls[statName]}">${statDisplayText[statName]}</a>` : `<span>${statDisplayText[statName]}</span>`;
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
         });
     });
 });

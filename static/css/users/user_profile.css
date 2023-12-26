@@ -1,5 +1,4 @@
-.user-profile-card
-{
+.user-profile-card {
   background-color: #f7f7f7;
   max-width: 400px;
   margin: -15px auto;
@@ -11,20 +10,17 @@
   margin-bottom: 100px;
 }
 
-.user-profile-picture 
-{
+.user-profile-picture {
   padding-top: 2px;
   padding-bottom: 7px;
   border-bottom: 0.1px solid #333;
 }
 
-.user-actions
-{
+.user-actions {
   padding-top: 10px;
 }
 
-.profile-image 
-{
+.profile-image {
   max-width: 230px;
   max-height: 230px;
   border-radius: 50px;
@@ -33,27 +29,23 @@
   overflow: hidden;
 }
 
-.user-name
-{
+.user-name {
   font-size: 24px;
   font-weight: bold;
   color: #1a1a1a;
 }
 
-.user-name a
-{
+.user-name a {
   color: #333;
   text-decoration: none;
 }
 
-.user-name a:hover
-{
-  color: #555!important;
+.user-name a:hover {
+  color: #555 !important;
 }
 
 
-.friends-text-container
-{
+.friends-text-container {
   border: none;
   border-radius: 50%;
   padding: 5px;
@@ -61,31 +53,28 @@
   display: inline-block;
 }
 
-.friend-status
-{
+.friend-status {
   color: #1a1a1a;
   font-weight: bold;
   font-size: 12px;
   padding: 5px;
 }
 
-.friends-text-container.friend
-{
+.friends-text-container.friend {
   background-color: lightgreen;
 }
 
-.friends-text-container.not-friend
-{
+.friends-text-container.not-friend {
   background-color: silver;
 }
 
-.friend-request, .remove-friend
-{
+.friend-request,
+.remove-friend {
   margin-left: 10px;
 }
 
-.friend-request-button, .remove-friend-button
-{
+.friend-request-button,
+.remove-friend-button {
   padding: 6px 10px;
   border-radius: 50px;
   border: none;
@@ -94,68 +83,58 @@
   font-size: 11px;
 }
 
-.friend-request-button
-{
+.friend-request-button {
   background-color: green;
   color: #ffffff;
 }
 
-.remove-friend-button
-{
+.remove-friend-button {
   background-color: red;
   color: #ffffff;
 }
 
-.friend-request-button:hover
-{
+.friend-request-button:hover {
   background-color: darkgreen;
 }
 
-.remove-friend-button:hover
-{
+.remove-friend-button:hover {
   background-color: darkred;
 }
 
 
-.friend-request-message
-{
+.friend-request-message {
   padding-top: 2px;
   font-size: 15px;
 }
 
-.user-stats 
-{
+.user-stats {
   margin-top: 20px;
 }
 
-.stat-item 
-{
+.stat-item {
   text-align: center;
   margin: 0 10px;
 }
 
-.stat-label
-{
+.stat-label {
   font-size: 14px;
   color: #0e76c3;
   white-space: nowrap;
 }
 
-.stat-label a:link, .stat-label a:visited 
-{
+.stat-label a:link,
+.stat-label a:visited {
   text-decoration: none;
   font-weight: bold;
   color: #1598f4;
 }
 
-.stat-label a:hover
-{
-  color: #1ca7ff!important;
+.stat-label a:hover {
+  color: #1ca7ff !important;
   text-decoration: none;
 }
 
-.stat-value
-{
+.stat-value {
   font-size: 18px;
   font-weight: bold;
   color: #333;

@@ -1,5 +1,5 @@
 function onRemoveFriend() {
-    location.reload();
+  location.reload();
 }
 
 function triggerRemoveFriend(friend_id) {

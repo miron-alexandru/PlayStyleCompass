@@ -1,5 +1,4 @@
-.message-container
-{
+.message-container {
   max-width: 400px;
   margin: 0 auto;
   padding: 20px;
@@ -9,20 +8,17 @@
   text-align: center;
 }
 
-h2
-{
+h2 {
   color: #007bff;
   margin-bottom: 10px;
   font-size: 20px;
 }
 
-p
-{
+p {
   margin-bottom: 20px;
 }
 
-.btn-primary
-{
+.btn-primary {
   font-size: 14px;
   background-color: #007bff;
   color: #fff;
@@ -32,8 +28,7 @@ p
   display: inline-block;
 }
 
-.btn-primary:hover
-{
+.btn-primary:hover {
   background-color: #0056b3;
   color: #fff;
 }

@@ -1,5 +1,4 @@
-.my-container
-{
+.my-container {
   max-width: 400px;
   margin: 0 auto;
   padding: 20px;
@@ -8,31 +7,28 @@
   background-color: #f9f9f9;
 }
 
-.custom-error-list, .custom-error-list ul
-{
+.custom-error-list,
+.custom-error-list ul {
   color: #dc3545;
   font-size: 14px;
   list-style: none;
   padding: 5px 0px 0px 0px;
 }
 
-.my-container h2
-{
+.my-container h2 {
   padding: 10px 0;
   text-align: center;
   margin-bottom: 15px;
   font-size: 24px;
 }
 
-.my-container form label
-{
+.my-container form label {
   font-weight: bold;
   display: block;
   margin-bottom: 5px;
 }
 
-button[type="submit"]
-{
+button[type="submit"] {
   background-color: #007bff;
   color: #fff;
   padding: 9px 17px;
@@ -44,13 +40,11 @@ button[type="submit"]
   margin: 0 auto;
 }
 
-button[type="submit"]:hover
-{
+button[type="submit"]:hover {
   background-color: #0056b3;
 }
 
-.show-hide-button
-{
+.show-hide-button {
   position: absolute;
   right: 10px;
   top: 50%;
@@ -62,15 +56,14 @@ button[type="submit"]:hover
   font-weight: bold;
 }
 
-.show-hide-button:hover, .show-hide-button:focus
-{
+.show-hide-button:hover,
+.show-hide-button:focus {
   background-color: #fff;
   border: none;
   color: #00323a;
 }
 
-.custom-input-group
-{
+.custom-input-group {
   position: relative;
   display: flex;
   width: 100%;

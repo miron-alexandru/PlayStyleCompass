@@ -112,7 +112,7 @@
     <span class="icon-divider">|</span>
 
     <div class="friend-dropdown">
-        <button class="shareButton">Share with ...</button>
+        <button class="shareButton" title="Share with friends">Share with ...</button>
         <div class="friend-dropdown-content">
           {% for friend in user_friends %}
             <a class="friend-link" href="#" data-friend-id="{{ friend.id }}">{{ friend.userprofile.profile_name }}</a>

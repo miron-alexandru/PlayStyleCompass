@@ -55,7 +55,7 @@ def index(request):
     context = {
         "upcoming_games": upcoming_games,
         "popular_games": popular_games,
-        "page_title": "Index :: PlayStyle Compass",
+        "page_title": "Home :: PlayStyle Compass",
     }
 
     return render(request, "playstyle_compass/index.html", context)
@@ -605,7 +605,7 @@ def view_game(request, game_id):
     user_friends = get_friend_list(user) if user else []
 
     context = {
-        "page_title": "Game :: PlayStyle Compass",
+        "page_title": f"{game.title} :: PlayStyle Compass",
         "game": game,
         "user_preferences": user_preferences,
         "user_friends": user_friends,
@@ -651,7 +651,7 @@ def view_games_shared(request):
     games_shared = Message.objects.filter(sender=request.user)
 
     context = {
-        "page_title": "Shared games :: PlayStyle Compass",
+        "page_title": "Shared Games :: PlayStyle Compass",
         "games_received": games_received,
         "games_shared": games_shared,
     }
