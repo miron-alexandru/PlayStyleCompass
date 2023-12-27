@@ -121,7 +121,8 @@ class Message(models.Model):
     )
     content = models.TextField()
     timestamp = models.DateTimeField(auto_now_add=True)
-    is_read = models.BooleanField(default=False)
+    is_deleted_by_sender = models.BooleanField(default=False)
+    is_deleted_by_receiver = models.BooleanField(default=False)
 
     def __str__(self):
         return f"Message from {self.sender} to {self.receiver}"
@@ -134,7 +135,7 @@ class Review(models.Model):
     """Represents a review for a game."""
 
     game = models.ForeignKey(Game, on_delete=models.CASCADE)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     reviewers = models.CharField(max_length=25)
     review_deck = models.CharField(max_length=50)
     review_description = models.TextField()

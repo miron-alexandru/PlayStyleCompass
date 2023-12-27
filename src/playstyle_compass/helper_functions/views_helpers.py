@@ -230,7 +230,7 @@ def paginate_matching_games_query(request, matching_games):
 
 
 def get_friend_list(user):
-    friends_list = FriendList.objects.get(user=user)
+    friends_list, created = FriendList.objects.get_or_create(user=user)
     user_friends = friends_list.friends.all()
 
     return user_friends

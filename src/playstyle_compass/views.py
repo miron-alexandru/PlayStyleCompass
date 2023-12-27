@@ -647,8 +647,8 @@ def share_game(request, game_id):
 @login_required
 def view_games_shared(request):
     """View used to display user messages."""
-    games_received = Message.objects.filter(receiver=request.user)
-    games_shared = Message.objects.filter(sender=request.user)
+    games_received = Message.objects.filter(receiver=request.user, is_deleted_by_receiver=False)
+    games_shared = Message.objects.filter(sender=request.user, is_deleted_by_sender=False)
 
     context = {
         "page_title": "Shared Games :: PlayStyle Compass",
@@ -668,9 +668,17 @@ def delete_shared_games(request):
 
         Message.objects.filter(
             id__in=received_games_to_delete, receiver=request.user
-        ).delete()
+        ).update(is_deleted_by_receiver=True)
+
+
         Message.objects.filter(
             id__in=shared_games_to_delete, sender=request.user
+        ).update(is_deleted_by_sender=True)
+
+        Message.objects.filter(
+            Q(is_deleted_by_receiver=True, is_deleted_by_sender=True) |
+            Q(is_deleted_by_receiver=True, sender__isnull=True) |
+            Q(is_deleted_by_sender=True, receiver__isnull=True)
         ).delete()
 
     return redirect("playstyle_compass:games_shared")
