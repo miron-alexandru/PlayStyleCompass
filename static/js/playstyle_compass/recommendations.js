@@ -48,11 +48,18 @@ document.addEventListener("DOMContentLoaded", () => {
   buttons.forEach(button => {
     button.addEventListener('click', () => {
       const selectedCategory = button.dataset.category;
-      hideAllContainers();
-      showCategoryContainer(selectedCategory);
-
       const newUrl = `?category=${selectedCategory}&${selectedCategory}_page=1&sort=${sort}`;
-      history.pushState(null, null, newUrl);
+
+      window.location.href = newUrl;
+
+      const onUrlChange = () => {
+        hideAllContainers();
+        showCategoryContainer(selectedCategory);
+
+        window.removeEventListener('popstate', onUrlChange);
+      };
+
+      window.addEventListener('popstate', onUrlChange);
     });
   });
 

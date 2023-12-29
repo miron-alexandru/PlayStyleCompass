@@ -25,7 +25,11 @@ CREATE TABLE IF NOT EXISTS Reviews (
     review_description TEXT,
     score TEXT,
     user_id INTEGER,
-    game_id INTEGER
+    game_id INTEGER,
+    likes INTEGER default 0,
+    dislikes INTEGER default 0,
+    liked_by TEXT default '',
+    disliked_by TEXT default ''
 );
 """
 
@@ -46,10 +50,10 @@ DELETE FROM Games
 
 remove_duplicates_reviews = """
 DELETE FROM Reviews 
-where rowid NOT IN (
-SELECT MIN(rowid)
-FROM Reviews
-GROUP BY reviewers
+WHERE rowid NOT IN (
+    SELECT MIN(rowid)
+    FROM Reviews
+    GROUP BY reviewers, game_id
 );
 """
 

@@ -29,7 +29,7 @@ def fetch_game_ids_by_platforms(platform_ids, api_key):
     """
     all_game_ids = set()
     current_date = datetime.now().date()
-    current_date = datetime(2019, 1, 1).date()
+    current_date = datetime(2023, 1, 1).date()
 
     for platform_id in platform_ids:
         url = f"{BASE_URL}games/?api_key={api_key}&format=json&platforms={platform_id}&filter=original_release_date:|{current_date}&sort=original_release_date:desc&limit=20"

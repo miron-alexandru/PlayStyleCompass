@@ -63,12 +63,12 @@
       {% endif %}
       <div class="reviews-section">
         <p><strong>Reviews:</strong></p>
-        <button class="show-hide-button" data-game-id="{{ game.id }}">Show Reviews</button><a 
-          href="{% url 'playstyle_compass:add_review' game.id %}?next={{ request.get_full_path }}"
-          class="add-review-btn">Write a Review</a> <a
-          href="{% url 'playstyle_compass:delete_reviews' game.id %}?next={{ request.get_full_path }}"
-          class="delete-review-btn">Delete your Review</a> <a
-          href="{% url 'playstyle_compass:edit_review' game.id %}?next={{ request.get_full_path }}"
+        <button class="show-hide-button" data-game-id="{{ game.id }}">Show Reviews</button>
+        <a href="{% url 'playstyle_compass:add_review' game.id %}?next={{ request.get_full_path }}"
+          class="add-review-btn">Write a Review</a>
+          <a href="{% url 'playstyle_compass:delete_reviews' game.id %}?next={{ request.get_full_path }}"
+          class="delete-review-btn">Delete your Review</a>
+          <a href="{% url 'playstyle_compass:edit_review' game.id %}?next={{ request.get_full_path }}"
           class="edit-review-btn">Edit your Review</a>
         <div class="reviews-list" style="display: none;">
         </div>
