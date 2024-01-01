@@ -682,3 +682,38 @@ def delete_shared_games(request):
         ).delete()
 
     return redirect("playstyle_compass:games_shared")
+
+
+@login_required
+def similar_playstyles(request):
+    user_preferences, created = UserPreferences.objects.get_or_create(user=request.user)
+
+    def calculate_similarity(set1, set2):
+        intersection = len(set1.intersection(set2))
+        union = len(set1.union(set2))
+        similarity_score = intersection / union if union > 0 else 0
+        return similarity_score
+
+    def calculate_average_similarity(user1, user2, preferences):
+        total_similarity_score = sum(
+            calculate_similarity(set(getattr(user1, pref).split(',')), set(getattr(user2, pref).split(',')))
+            for pref in preferences
+        )
+        return total_similarity_score / len(preferences)
+
+    preferences_to_compare = ['gaming_history', 'favorite_genres', 'platforms']
+    similarity_threshold = 0.6
+
+    all_user_prefs = UserPreferences.objects.exclude(user=request.user)
+
+    similar_user_playstyles = [
+        user for user in all_user_prefs
+        if calculate_average_similarity(user_preferences, user, preferences_to_compare) >= similarity_threshold
+    ]
+
+    context = {
+        "page_title": "Similar PlayStyles :: PlayStyle Compass",
+        'similar_user_playstyles': similar_user_playstyles
+    }
+
+    return render(request, 'playstyle_compass/similar_playstyles.html', context)

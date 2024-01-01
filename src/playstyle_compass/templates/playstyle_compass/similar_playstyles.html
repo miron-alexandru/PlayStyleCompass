@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block page_header %}
+<div class="header">
+    <h3>SIMILAR PLAYSTYLES</h3>
+</div>
+{% endblock page_header %}
+
+{% block description %}Find gamers with similar playstyles and make new connections in the gaming world.
+{% endblock description %}
+
+{% block content %}
+
+{% if similar_user_playstyles %}
+<ul>
+    {% for user_playstyle in similar_user_playstyles %}
+    <p>
+        <strong>{{ user_playstyle.user.userprofile.profile_name }}:</strong>
+        <ul>
+            <p>Gaming History: {{ user_playstyle.gaming_history }}</p>
+            <p>Favorite Genres: {{ user_playstyle.favorite_genres }}</p>
+            <p>Platforms: {{ user_playstyle.platforms }}</p>
+        </ul>
+    </p>
+    {% endfor %}
+</ul>
+{% else %}
+<p>No similar users found.</p>
+{% endif %}
+
+{% endblock content %}
