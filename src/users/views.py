@@ -58,7 +58,15 @@ from playstyle_compass.models import UserPreferences, Review
 
 
 class ProfileUpdateView(LoginRequiredMixin, UpdateView):
-    """View used to update the profile name for users."""
+    """
+    This view allows users to update their profile name and restricts the frequency of updates.
+
+    Attributes:
+    - model: The model to be updated (UserProfile).
+    - template_name: The template used for rendering the update form.
+    - form_class: The form class used for the update.
+    - success_url: The URL to redirect to after a successful update.
+    """
 
     model = UserProfile
     template_name = "account_actions/profile_name_update.html"
@@ -66,9 +74,11 @@ class ProfileUpdateView(LoginRequiredMixin, UpdateView):
     success_url = reverse_lazy("playstyle_compass:index")
 
     def get_object(self, queryset=None):
+        """Get the UserProfile object associated with the current user."""
         return self.request.user.userprofile
 
     def dispatch(self, request, *args, **kwargs):
+        """Check the time since the last profile name update and restrict frequent updates."""
         if last_update_time := self.request.user.userprofile.name_last_update_time:
             one_hour_ago = timezone.now() - timedelta(hours=1)
             if last_update_time > one_hour_ago:
@@ -82,6 +92,7 @@ class ProfileUpdateView(LoginRequiredMixin, UpdateView):
         return super().dispatch(request, *args, **kwargs)
 
     def update_user_reviews(self, new_profile_name):
+        """Update the profile name in user reviews after a profile name change."""
         user_reviews = Review.objects.filter(user=self.request.user)
 
         for review in user_reviews:
@@ -89,6 +100,7 @@ class ProfileUpdateView(LoginRequiredMixin, UpdateView):
             review.save()
 
     def form_valid(self, form):
+        """Save the form data and update the user profile and associated reviews."""
         new_profile_name = self.object.profile_name
 
         self.object = form.save(commit=False)
@@ -225,7 +237,6 @@ def delete_account(request):
                 return redirect("playstyle_compass:index")
             else:
                 form.add_error("password", "Incorrect password. Please try again.")
-
     else:
         form = DeleteAccountForm()
 
@@ -236,31 +247,46 @@ def delete_account(request):
 
 @login_required
 def change_email(request):
-    """View for email change with verification."""
+    """This view allows authenticated users to request a change of their email address
+    and sends a confirmation email.
+    """
+
     if request.method == "POST":
         form = EmailChangeForm(request.POST, user=request.user)
+
         if form.is_valid():
+            # Get the new email from the form's cleaned data
             new_email = form.cleaned_data["new_email"]
+
+            # Generate a token for email verification
             token = default_token_generator.make_token(request.user)
+
+            # Encode the user ID for inclusion in the verification URL
             uid = urlsafe_base64_encode(force_bytes(request.user.pk))
 
+            # Store the new email and token in the session for verification
             request.session["email_change_temp"] = new_email
             request.session["email_change_token"] = token
 
+            # Build the confirmation URL
             confirm_url = request.build_absolute_uri(
                 reverse(
                     "users:confirm_email_change", kwargs={"uidb64": uid, "token": token}
                 )
             )
 
+            # Email subject, sender, and message
             subject = "Confirm Email Change"
             from_email = settings.DEFAULT_FROM_EMAIL
             message = render_to_string(
                 "account_actions/confirm_email_change.txt",
                 {"confirm_url": confirm_url, "new_email": new_email},
             )
+
+            # Send the confirmation email
             send_mail(subject, message, from_email, [request.user.email])
 
+            # Redirect to a success page after initiating the email change
             return redirect("users:change_email_done")
     else:
         form = EmailChangeForm(
@@ -317,19 +343,28 @@ def change_email_done(request):
 
 @login_required
 def change_password(request):
-    """View for changing a user's password."""
+    """This view allows authenticated users to change their passwords."""
+
     if request.method == "POST":
         form = CustomPasswordChangeForm(user=request.user, data=request.POST)
+
         if form.is_valid():
+            # Get the new passwords from the form's cleaned data
             password1 = form.cleaned_data["new_password1"]
             password2 = form.cleaned_data["new_password2"]
 
+            # Check if the new passwords match
             if password1 == password2:
+                # Check if the new password is different from the old password
                 if not request.user.check_password(password1):
+                    # Set and save the new password for the user
                     request.user.set_password(password1)
                     request.user.save()
 
+                    # Update the session auth hash to prevent log out
                     update_session_auth_hash(request, request.user)
+
+                    # Redirect to a success page after changing the password
                     return redirect("users:change_password_done")
                 else:
                     messages.error(
@@ -486,8 +521,10 @@ def friend_requests_view(request, *args, **kwargs):
     return render(request, "account_actions/friend_requests.html", context)
 
 
+@login_required
 def send_friend_request(request, *args, **kwargs):
-    """View to send a friend request."""
+    """This view allows users to send friend requests to other users."""
+
     user = request.user
     result = {}
 
@@ -495,34 +532,42 @@ def send_friend_request(request, *args, **kwargs):
         user_id = request.POST.get("user_id", "invalid_user")
 
         if user_id and user_id != "invalid_user":
+            # Get the receiver user object based on the provided user ID
             receiver_queryset = User.objects.filter(pk=user_id)
 
             if receiver_queryset.exists():
+                # Get the first user from the queryset
                 receiver = receiver_queryset.first()
 
+                # Check if the users are already friends
                 if are_friends(user, receiver):
                     result[
                         "message"
                     ] = f"<strong>{receiver.userprofile.profile_name}</strong> is already in your friends list."
+                # Check if the user is trying to send a request to themselves
                 elif user == receiver:
                     result[
                         "message"
                     ] = f"You cannot send a friend request to <strong>yourself.</strong>"
                 else:
+                    # Check if there are existing active friend requests from the current user to the receiver
                     friend_requests = FriendRequest.objects.filter(
                         sender=user, receiver=receiver, is_active=True
                     )
 
+                    # Check if the user has already sent a friend request to the receiver
                     if friend_requests.exists():
                         result["message"] = "You already sent them a friend request."
                     else:
                         try:
+                            # Attempt to retrieve an existing friend request (may not exist)
                             friend_request = FriendRequest.objects.get(
                                 sender=user, receiver=receiver
                             )
                             friend_request.is_active = True
                             friend_request.save()
                         except FriendRequest.DoesNotExist:
+                            # Create a new friend request if it doesn't exist
                             friend_request = FriendRequest(
                                 sender=user, receiver=receiver, is_active=True
                             )
@@ -533,7 +578,6 @@ def send_friend_request(request, *args, **kwargs):
                 result[
                     "message"
                 ] = "The user does not exist or has deleted their account."
-
         else:
             result["message"] = "The user does not exist or has deleted their account."
     else:
@@ -640,23 +684,30 @@ def decline_friend_request(request, *args, **kwargs):
 @login_required
 def cancel_friend_request(request):
     """View to cancel a friend request."""
+
     user = request.user
     result = {}
 
     if request.method == "POST" and user.is_authenticated:
+        # Get the receiver's user ID from the POST data and then the receiver
         if receiver_user_id := request.POST.get("receiver_user_id"):
             receiver = get_object_or_404(User, pk=receiver_user_id)
+
             try:
+                # Attempt to retrieve active friend requests from the current user to the receiver
                 friend_requests = FriendRequest.objects.filter(
                     sender=user, receiver=receiver, is_active=True
                 )
             except FriendRequest.DoesNotExist:
+                # Handle the case where no friend request exists
                 result["message"] = "Nothing to cancel. Friend request does not exist."
             else:
+                # Cancel each friend request
                 for friend_request in friend_requests:
                     friend_request.cancel()
 
                 result["message"] = "Friend request canceled."
+
                 messages.success(
                     request,
                     mark_safe(
@@ -739,6 +790,7 @@ def get_friend_status(request_user, profile_to_view):
 
 
 def get_user_stats(user):
+    """Get user stats."""
     user_preferences = UserPreferences.objects.get(user=user)
 
     reviews = Review.objects.filter(user=user)

@@ -17,7 +17,7 @@ SECRET_KEY = str(os.getenv("SECRET_KEY"))
 
 DEBUG = True
 
-ALLOWED_HOSTS  = []
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -65,7 +65,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
-                'playstyle_compass.context_processors.current_year',
+                "playstyle_compass.context_processors.current_year",
             ],
         },
     },

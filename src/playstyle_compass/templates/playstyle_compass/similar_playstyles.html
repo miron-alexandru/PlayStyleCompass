@@ -3,30 +3,46 @@
 
 {% block page_header %}
 <div class="header">
-    <h3>SIMILAR PLAYSTYLES</h3>
+    <h3>USERS WITH SIMILAR PLAYSTYLES</h3>
 </div>
 {% endblock page_header %}
 
-{% block description %}Find gamers with similar playstyles and make new connections in the gaming world.
+{% block description %}
+Find gamers with similar playstyles and make new connections in the gaming world.
 {% endblock description %}
 
 {% block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/playstyle_compass/similar_playstyles.css' %}">
 
 {% if similar_user_playstyles %}
-<ul>
+<div class="user-playstyles-container">
     {% for user_playstyle in similar_user_playstyles %}
-    <p>
-        <strong>{{ user_playstyle.user.userprofile.profile_name }}:</strong>
-        <ul>
-            <p>Gaming History: {{ user_playstyle.gaming_history }}</p>
-            <p>Favorite Genres: {{ user_playstyle.favorite_genres }}</p>
-            <p>Platforms: {{ user_playstyle.platforms }}</p>
-        </ul>
-    </p>
+    <div class="user-playstyle">
+        <div class="user-name">
+            <a href="{% url 'users:view_profile' profile_name=user_playstyle.user.userprofile.profile_name %}">
+                {{user_playstyle.user.userprofile.profile_name }}
+            </a>
+        </div>
+        <div class="user-profile-picture">
+            {% if user_playstyle.user.userprofile.profile_picture %}
+            <img src="{{ user_playstyle.user.userprofile.profile_picture.url }}"
+                alt="{{ user_playstyle.user.userprofile.profile_name }}'s Profile Picture" class="profile-image">
+
+            {% else %}
+            <img src="{{ user_playstyle.user.userprofile.profile_picture.url }}"
+                alt="{{ user_playstyle.user.userprofile.profile_name }}'s Profile Picture" class="profile-image">
+            {% endif %}
+        </div>
+        <div class="user-details">
+            <p><strong>Games played:</strong> {{ user_playstyle.gaming_history }}</p>
+            <p><strong>Favorite genres:</strong> {{ user_playstyle.favorite_genres }}</p>
+            <p><strong>Preferred platforms:</strong> {{ user_playstyle.platforms }}</p>
+        </div>
+    </div>
     {% endfor %}
-</ul>
+</div>
 {% else %}
-<p>No similar users found.</p>
+<p class="no-results">No users with similar playstyles found.</p>
 {% endif %}
 
 {% endblock content %}

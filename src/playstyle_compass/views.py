@@ -87,6 +87,7 @@ def update_preferences(request):
         user_preferences.gaming_history = gaming_history
         user_preferences.favorite_genres = ", ".join(favorite_genres)
         user_preferences.platforms = ", ".join(platforms)
+
         user_preferences.save()
 
     context = {
@@ -226,6 +227,7 @@ def toggle_favorite(request):
 
         favorite_games_list = user_preferences.get_favorite_games()
 
+        # Check if the game is already in the favorites and make the necessary changes
         if int(game_id) in favorite_games_list:
             user_preferences.remove_favorite_game(game_id)
             is_favorite = False
@@ -246,6 +248,7 @@ def toggle_game_queue(request):
 
         game_queue = user_preferences.get_game_queue()
 
+        # Check if the game is already in the queue and make the necessary changes
         if int(game_id) in game_queue:
             user_preferences.remove_game_from_queue(game_id)
             in_queue = False
@@ -259,10 +262,13 @@ def toggle_game_queue(request):
 @login_required
 def user_reviews(request, user_id=None):
     """View to get the user reviews."""
+    # Determine the user based on the provided user_id or the authenticated user
     user = request.user if user_id is None else get_object_or_404(User, id=user_id)
+
     other_user_profile = user != request.user
     user_preferences, created = UserPreferences.objects.get_or_create(user=user)
 
+    # Check permissions for viewing user reviews in other user profiles
     if other_user_profile:
         if not user_preferences.show_reviews:
             messages.error(request, "You don't have permission to view this content.")
@@ -314,12 +320,27 @@ def game_queue(request, user_id=None):
 
 
 def _get_games_view(request, page_title, list_name, template_name, user_id=None):
-    """Helper view function to get games in a similar way for different pages."""
+    """
+    Helper view function to get games in a similar way for different pages.
+
+    Args:
+    - request: The Django request object.
+    - page_title: The title of the page.
+    - list_name: The name of the game list (e.g., "favorite_games", "game_queue").
+    - template_name: The name of the template to render.
+    - user_id: The ID of the user whose games are being viewed (default is None, which means the authenticated user).
+    """
+
+    # Determine the user based on the provided user_id or the authenticated user
     user = request.user if user_id is None else get_object_or_404(User, id=user_id)
 
+    # Check if the viewed profile is not the current user's profile
     other_user_profile = user != request.user
+
+    # Get or create the UserPreferences object for the specified user
     user_preferences, created = UserPreferences.objects.get_or_create(user=user)
 
+    # Check permissions for viewing certain content in other user profiles
     if other_user_profile:
         if not user_preferences.show_favorites and list_name == "favorite_games":
             messages.error(request, "You don't have permission to view this content.")
@@ -329,9 +350,11 @@ def _get_games_view(request, page_title, list_name, template_name, user_id=None)
             messages.error(request, "You don't have permission to view this content.")
             return redirect("playstyle_compass:index")
 
+    # Get the list of game IDs based on the specified list_name and user_preferences
     game_list = getattr(user_preferences, f"get_{list_name}")() if not created else []
 
     games = calculate_game_scores(Game.objects.filter(id__in=game_list))
+
     current_viewer_preferences, created = UserPreferences.objects.get_or_create(
         user=request.user
     )
@@ -354,19 +377,14 @@ def _get_games_view(request, page_title, list_name, template_name, user_id=None)
 
 def top_rated_games(request):
     """View to display top rated games."""
-    if request.user.is_authenticated:
-        user = request.user
-        user_preferences = UserPreferences.objects.get(user=user)
-    else:
-        user = None
-        user_preferences = None
+    user = request.user if request.user.is_authenticated else None
+    user_preferences = UserPreferences.objects.get(user=user) if user else None
 
     top_games = Game.objects.annotate(average_score=Avg("review__score")).filter(
         average_score__gt=4
     )
 
     top_games = calculate_game_scores(top_games)
-
     user_friends = get_friend_list(user) if user else []
 
     context = {
@@ -381,20 +399,15 @@ def top_rated_games(request):
 
 def upcoming_games(request):
     """View the upcoming games."""
-    if request.user.is_authenticated:
-        user = request.user
-        user_preferences = UserPreferences.objects.get(user=user)
-    else:
-        user = None
-        user_preferences = None
-
+    user = request.user if request.user.is_authenticated else None
+    user_preferences = UserPreferences.objects.get(user=user) if user else None
     current_date = date.today()
+
+    # Define the filter for upcoming games based on release date
     upcoming_filter = Q(release_date__gte=current_date)
 
-    upcoming_games = Game.objects.filter(upcoming_filter)
-    upcoming_games = calculate_game_scores(upcoming_games)
+    upcoming_games = calculate_game_scores(Game.objects.filter(upcoming_filter))
     paginated_games = paginate_matching_games_query(request, upcoming_games)
-
     user_friends = get_friend_list(user) if user else []
 
     context = {
@@ -460,8 +473,10 @@ def edit_review(request, game_id):
     next_url = request.GET.get("next", reverse("playstyle_compass:index"))
 
     try:
+        # Attempt to retrieve the user's existing review for the specified game
         review = Review.objects.get(game=game, user=user)
     except Review.DoesNotExist:
+        # Handle the case where the user hasn't written any reviews for this game
         messages.error(request, "You haven't written any reviews for this game!")
         return HttpResponseRedirect(next_url)
 
@@ -592,12 +607,8 @@ def delete_reviews(request, game_id):
 
 def view_game(request, game_id):
     """View used to view a single game."""
-    if request.user.is_authenticated:
-        user = request.user
-        user_preferences = UserPreferences.objects.get(user=user)
-    else:
-        user = None
-        user_preferences = None
+    user = request.user if request.user.is_authenticated else None
+    user_preferences = UserPreferences.objects.get(user=user) if user else None
 
     game = get_object_or_404(Game, id=game_id)
     game = calculate_single_game_score(game)
@@ -616,13 +627,18 @@ def view_game(request, game_id):
 
 @login_required
 def share_game(request, game_id):
-    """View used to send a message to another user."""
+    """View used to share a game with another user."""
+
     if request.method == "POST":
         receiver_id = request.POST.get("receiver_id")
+
+        # Check if receiver_id is provided
         if receiver_id is not None:
+            # Get the Game and User objects
             game = get_object_or_404(Game, id=game_id)
             receiver = get_object_or_404(User, id=receiver_id)
 
+            # Create the message content with information about the shared game
             message_content = f"""
                 <p><strong>Hello {receiver.userprofile.profile_name}!</strong></p>
                 <p>I just wanted to share this awesome game named <strong>{game.title}</strong> with you.</p>
@@ -631,6 +647,7 @@ def share_game(request, game_id):
                 </div>
             """
 
+            # Create a new Message object
             message = Message.objects.create(
                 sender=request.user, receiver=receiver, content=message_content
             )
@@ -646,9 +663,13 @@ def share_game(request, game_id):
 
 @login_required
 def view_games_shared(request):
-    """View used to display user messages."""
-    games_received = Message.objects.filter(receiver=request.user, is_deleted_by_receiver=False)
-    games_shared = Message.objects.filter(sender=request.user, is_deleted_by_sender=False)
+    """View used to display games shared between users."""
+    games_received = Message.objects.filter(
+        receiver=request.user, is_deleted_by_receiver=False
+    )
+    games_shared = Message.objects.filter(
+        sender=request.user, is_deleted_by_sender=False
+    )
 
     context = {
         "page_title": "Shared Games :: PlayStyle Compass",
@@ -662,23 +683,30 @@ def view_games_shared(request):
 @login_required
 def delete_shared_games(request):
     """View used to delete selected shared games."""
+
     if request.method == "POST":
+        # Get the list of received games and shared games
         received_games_to_delete = request.POST.getlist("received_games[]")
         shared_games_to_delete = request.POST.getlist("shared_games[]")
 
+        # Update the 'is_deleted_by_receiver' and 'is_deketed_by_sender'
+        # fields for received games and shared games
         Message.objects.filter(
             id__in=received_games_to_delete, receiver=request.user
         ).update(is_deleted_by_receiver=True)
-
 
         Message.objects.filter(
             id__in=shared_games_to_delete, sender=request.user
         ).update(is_deleted_by_sender=True)
 
+        # Delete messages that meet certain conditions:
+        # 1. Both sender and receiver marked as deleted
+        # 2. Marked as deleted by receiver and sender is null
+        # 3. Marked as deleted by sender and receiver is null
         Message.objects.filter(
-            Q(is_deleted_by_receiver=True, is_deleted_by_sender=True) |
-            Q(is_deleted_by_receiver=True, sender__isnull=True) |
-            Q(is_deleted_by_sender=True, receiver__isnull=True)
+            Q(is_deleted_by_receiver=True, is_deleted_by_sender=True)
+            | Q(is_deleted_by_receiver=True, sender__isnull=True)
+            | Q(is_deleted_by_sender=True, receiver__isnull=True)
         ).delete()
 
     return redirect("playstyle_compass:games_shared")
@@ -686,34 +714,43 @@ def delete_shared_games(request):
 
 @login_required
 def similar_playstyles(request):
+    """View used to show users with similar playstyles."""
     user_preferences, created = UserPreferences.objects.get_or_create(user=request.user)
 
     def calculate_similarity(set1, set2):
+        """Function used to calculate Jaccard similarity between two sets."""
         intersection = len(set1.intersection(set2))
         union = len(set1.union(set2))
         similarity_score = intersection / union if union > 0 else 0
         return similarity_score
 
     def calculate_average_similarity(user1, user2, preferences):
+        """Function used to calculate average similarity across multiple preferences"""
         total_similarity_score = sum(
-            calculate_similarity(set(getattr(user1, pref).split(',')), set(getattr(user2, pref).split(',')))
+            calculate_similarity(
+                set(getattr(user1, pref).split(",")),
+                set(getattr(user2, pref).split(",")),
+            )
             for pref in preferences
         )
         return total_similarity_score / len(preferences)
 
-    preferences_to_compare = ['gaming_history', 'favorite_genres', 'platforms']
+    preferences_to_compare = ["gaming_history", "favorite_genres", "platforms"]
     similarity_threshold = 0.6
 
     all_user_prefs = UserPreferences.objects.exclude(user=request.user)
 
+    # Find users with similar playstyles based on preferences
     similar_user_playstyles = [
-        user for user in all_user_prefs
-        if calculate_average_similarity(user_preferences, user, preferences_to_compare) >= similarity_threshold
+        user
+        for user in all_user_prefs
+        if calculate_average_similarity(user_preferences, user, preferences_to_compare)
+        >= similarity_threshold
     ]
 
     context = {
         "page_title": "Similar PlayStyles :: PlayStyle Compass",
-        'similar_user_playstyles': similar_user_playstyles
+        "similar_user_playstyles": similar_user_playstyles,
     }
 
-    return render(request, 'playstyle_compass/similar_playstyles.html', context)
+    return render(request, "playstyle_compass/similar_playstyles.html", context)
