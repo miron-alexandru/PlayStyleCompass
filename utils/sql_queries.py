@@ -13,7 +13,8 @@ CREATE TABLE IF NOT EXISTS Games (
     release_date TEXT,
     developers TEXT,
     game_images TEXT,
-    similar_games TEXT
+    similar_games TEXT,
+    dlcs TEXT
 );
 """
 
@@ -75,6 +76,6 @@ WHERE title IS NULL
 
 inserting_sql = """
 INSERT INTO Games 
-(title, description, overview, genres, platforms, themes, image, release_date, developers, game_images, similar_games) 
-VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+(title, description, overview, genres, platforms, themes, image, release_date, developers, game_images, similar_games, dlcs) 
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
 """

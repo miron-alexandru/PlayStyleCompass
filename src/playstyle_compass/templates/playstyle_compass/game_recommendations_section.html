@@ -32,6 +32,7 @@
       <p><strong>Genres:</strong> {{ game.genres|default:"N/A" }}</p>
       <p><strong>Platforms:</strong> {{ game.platforms|default:"N/A" }}</p>
       <p><strong>Themes:</strong> {{ game.themes|default:"N/A" }}</p>
+      <p><strong>DLC:</strong> {{ game.dlcs|default:"N/A" }}</p>
       <p><strong>Similar games:</strong> {{ game.similar_games|default:"N/A"}}</p>
       <p><strong>Overview:</strong>
         <span class="overview">{{ game.overview|default:"N/A"|truncatewords_html:"50" }}</span>
@@ -64,11 +65,11 @@
       <div class="reviews-section">
         <p><strong>Reviews:</strong></p>
         <button class="show-hide-button" data-game-id="{{ game.id }}">Show Reviews</button>
-        <a href="{% url 'playstyle_compass:add_review' game.id %}?next={{ request.get_full_path }}"
+        <a href="{% url 'playstyle_compass:add_review' game.id %}?next={{ request.get_full_path|urlencode }}"
           class="add-review-btn">Write a Review</a>
-          <a href="{% url 'playstyle_compass:delete_reviews' game.id %}?next={{ request.get_full_path }}"
+          <a href="{% url 'playstyle_compass:delete_reviews' game.id %}?next={{ request.get_full_path|urlencode }}"
           class="delete-review-btn">Delete your Review</a>
-          <a href="{% url 'playstyle_compass:edit_review' game.id %}?next={{ request.get_full_path }}"
+          <a href="{% url 'playstyle_compass:edit_review' game.id %}?next={{ request.get_full_path|urlencode }}"
           class="edit-review-btn">Edit your Review</a>
         <div class="reviews-list" style="display: none;">
         </div>

@@ -31,6 +31,7 @@ Websites for .env configuration: [GiantBomb](https://www.giantbomb.com/) / [Send
 <summary><h2>PlayStyle Compass Changelog</h2></summary>
 
 ### Version v1.6
+* Added DLC in game info.
 * Added comments to views where necessary
 * Improved Similar Playstyles (HTML/CSS)
 * Similar Playstyles page implemented: Users can find other users with a similar playstyle.

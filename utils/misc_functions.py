@@ -28,7 +28,8 @@ def fetch_game_ids_by_platforms(platform_ids, api_key):
     Fetches game IDs for multiple platform IDs and returns a set of all fetched game IDs.
     """
     all_game_ids = set()
-    current_date = datetime.now().date()
+    #add_custom_game_ids(all_game_ids, game_ids_to_add)
+    #current_date = datetime.now().date()
     current_date = datetime(2023, 1, 1).date()
 
     for platform_id in platform_ids:
@@ -41,7 +42,6 @@ def fetch_game_ids_by_platforms(platform_ids, api_key):
         except requests.exceptions.RequestException as e:
             print(f"Error fetching game IDs for platform {platform_id}: {e}")
 
-    # add_custom_game_ids(all_game_ids, game_ids_to_add)
     return all_game_ids
 
 
@@ -133,6 +133,7 @@ def parse_game_data(game_id):
     release_date = get_release_date(game_data)
     developers = get_developers(game_data)
     similar_games = get_similar_games(game_data)
+    dlcs = get_dlcs(game_data)
 
     return (
         title,
@@ -147,6 +148,7 @@ def parse_game_data(game_id):
         game_images,
         similar_games,
         reviews_data,
+        dlcs,
     )
 
 
@@ -177,16 +179,22 @@ def get_platforms(game_data):
 
 
 def get_similar_games(game_data, max_count=5):
-    if not isinstance(game_data, dict):
-        return None
-    similar_games = game_data.get("similar_games")
-    if similar_games is not None:
-        similar_games = [game["name"] for game in similar_games]
+    if isinstance(game_data, dict):
+        similar_games = game_data.get("similar_games")
+        
+        if similar_games is not None:
+            similar_games = [game["name"] for game in similar_games[:max_count]]
+            return ", ".join(similar_games) if similar_games else None
+        
+    return None
 
-        if max_count:
-            similar_games = similar_games[:max_count]
 
-        return ", ".join(similar_games) if similar_games else None
+def get_dlcs(game_data):
+    if isinstance(game_data, dict):
+        dlcs = set()
+        for dlc in game_data.get("dlcs", []):
+            dlcs.add(dlc["name"])
+        return ", ".join(dlcs) if dlcs else None
     return None
 
 
@@ -299,6 +307,7 @@ def create_games_data_db(game_ids):
                 game_images,
                 similar_games,
                 reviews_data,
+                dlcs,
             ) = parse_game_data(game_id)
 
             game_values = (
@@ -313,6 +322,7 @@ def create_games_data_db(game_ids):
                 developers,
                 game_images,
                 similar_games,
+                dlcs,
             )
             cursor.execute(inserting_sql, game_values)
 

@@ -101,6 +101,7 @@ class Game(models.Model):
     developers = models.CharField(max_length=100)
     game_images = models.TextField()
     similar_games = models.CharField(max_length=200)
+    dlcs = models.CharField(max_length=200)
 
     def __str__(self):
         return str(self.title)

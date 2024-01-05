@@ -430,7 +430,8 @@ def add_review(request, game_id):
 
     if existing_review:
         messages.error(request, "You have already reviewed this game!")
-        return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
+        return HttpResponseRedirect(request.META.get("HTTP_REFERER", reverse("playstyle_compass:index")))
+
 
     if request.method == "POST":
         form = ReviewForm(request.POST)
