@@ -126,3 +126,25 @@ class FriendRequest(models.Model):
         """Activate a friend request."""
         self.is_active = True
         self.save()
+
+
+class Message(models.Model):
+    """Represents a message sent by an user to another user."""
+
+    sender = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="sent_messages"
+    )
+    receiver = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="received_messages"
+    )
+    title = models.TextField(max_length=30)
+    message = models.TextField(max_length=3500)
+    timestamp = models.DateTimeField(auto_now_add=True)
+    is_deleted_by_sender = models.BooleanField(default=False)
+    is_deleted_by_receiver = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"Message from {self.sender} to {self.receiver}"
+
+    class Meta:
+        db_table = "UserMessages"

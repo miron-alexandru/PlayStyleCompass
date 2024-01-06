@@ -12,7 +12,7 @@ from django.contrib.auth.models import User
 from django.utils.translation import gettext as _
 from captcha.fields import ReCaptchaField
 
-from .models import UserProfile, ContactMessage
+from .models import UserProfile, ContactMessage, Message
 
 
 class CustomAuthenticationForm(AuthenticationForm):
@@ -313,3 +313,13 @@ class ProfileUpdateForm(forms.ModelForm):
             raise forms.ValidationError("This profile name is already in use.")
 
         return profile_name
+
+
+class MessageForm(forms.ModelForm):
+    class Meta:
+        model = Message
+        fields = ['title', 'message']
+        widgets = {
+            "title": forms.TextInput(attrs={"placeholder": "", "autofocus": "autofocus"}),
+            "message": forms.Textarea(attrs={"placeholder": ""}),
+        }

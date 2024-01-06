@@ -139,3 +139,15 @@
   font-weight: bold;
   color: #333;
 }
+
+.send-message a {
+  text-decoration: none;
+  color: #3498db;
+  padding: 7px;
+  font-weight: bold;
+}
+
+.send-message a:hover {
+  text-decoration: none;
+  color: #1f78bb;
+}

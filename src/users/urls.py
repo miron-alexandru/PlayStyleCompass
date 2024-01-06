@@ -75,4 +75,7 @@ urlpatterns = [
     ),
     path("view_profile/<str:profile_name>/", views.view_profile, name="view_profile"),
     path("toggle_show_stats/", views.toggle_show_stat, name="toggle_show_stat"),
+    path("send_message/<int:user_id>", views.send_message, name="send_message"),
+    path("inbox/", views.inbox, name="inbox"),
+    path("delete_messages/", views.delete_messages, name="delete_messages"),
 ]

@@ -12,23 +12,23 @@ Get ready for some shared gaming fun! Check out the games you've swapped with ot
 {% endblock description %}
 
 {% block content %}
-<link rel="stylesheet" href="{% static 'css/playstyle_compass/shared_games.css' %}">
+<link rel="stylesheet" href="{% static 'css/playstyle_compass/messages_common.css' %}">
 
-<div class="shared-games-container">
-    <div class="shared-games-buttons">
-      <button id="received-games-btn" class="shared-games-button active">Games other users shared with you</button>
-      <button id="shared-games-btn" class="shared-games-button">Games you shared with other users</button>
+<div class="messages-container">
+    <div class="category-buttons">
+      <button id="messages-received-btn" class="category-button active">Games other users shared with you</button>
+      <button id="messages-sent-btn" class="category-button">Games you shared with other users</button>
     </div>
 
-    <form method="post" action="{% url 'playstyle_compass:delete_shared_games' %}" id="delete-games-form">
+    <form method="post" action="{% url 'playstyle_compass:delete_shared_games' %}" id="delete-messages-from">
     {% csrf_token %}
-    <div id="received-games" class="games-grid received-games">
+    <div id="received-messages" class="messages-grid received-messages">
       {% if games_received %}
         {% for received_game in games_received %}
-          <div class="shared-game-card">
-            <div class="game-header">
-              <input type="checkbox" name="received_games[]" value="{{ received_game.id }}" class="shared-game-checkbox">
-              <span class="user-info"><strong>Sender: </strong><a href="{% url 'users:view_profile' profile_name=received_game.sender.userprofile.profile_name %}" class="user-name">{{ received_game.sender.userprofile.profile_name }}</a></span>
+          <div class="message-card">
+            <div class="message-header">
+              <input type="checkbox" name="received_games[]" value="{{ received_game.id }}" class="message-checkbox">
+              <span class="user-info"><strong>From: </strong><a href="{% url 'users:view_profile' profile_name=received_game.sender.userprofile.profile_name %}" class="user-name">{{ received_game.sender.userprofile.profile_name }}</a></span>
               <p class="timestamp"><strong>Date:</strong> {{ received_game.timestamp }}</p>
             </div>
             <div class="message-content">
@@ -37,16 +37,16 @@ Get ready for some shared gaming fun! Check out the games you've swapped with ot
           </div>
         {% endfor %}
       {% else %}
-        <p class="no-games">No shared games with you yet.</p>
+        <p class="empty-category">No shared games with you yet.</p>
       {% endif %}
     </div>
 
-    <div id="shared-games" class="games-grid shared-games" style="display:none">
+    <div id="sent-messages" class="messages-grid sent-messages" style="display:none">
       {% if games_shared %}
         {% for shared_game in games_shared %}
-          <div class="shared-game-card">
-            <div class="game-header">
-              <input type="checkbox" name="shared_games[]" value="{{ shared_game.id }}" class="shared-game-checkbox">
+          <div class="message-card">
+            <div class="message-header">
+              <input type="checkbox" name="shared_games[]" value="{{ shared_game.id }}" class="message-checkbox">
               <span class="user-info"><strong>To: </strong><a href="{% url 'users:view_profile' profile_name=shared_game.sender.userprofile.profile_name %}" class="user-name">{{ shared_game.receiver.userprofile.profile_name }}</a></span>
               <p class="timestamp"><strong>Date:</strong> {{ shared_game.timestamp }}</p>
             </div>
@@ -56,7 +56,7 @@ Get ready for some shared gaming fun! Check out the games you've swapped with ot
           </div>
         {% endfor %}
       {% else %}
-        <p class="no-games">You haven't shared any games with someone yet.</p>
+        <p class="empty-category">You haven't shared any games with someone yet.</p>
       {% endif %}
     </div>
 
@@ -65,7 +65,7 @@ Get ready for some shared gaming fun! Check out the games you've swapped with ot
   </form>
 </div>
 
-<script src="{% static 'js/playstyle_compass/games_shared.js' %}" defer></script>
+<script src="{% static 'js/playstyle_compass/messages_common.js' %}" defer></script>
 
 
 {% endblock %}

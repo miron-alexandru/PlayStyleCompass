@@ -67,6 +67,9 @@
       <div class="remove-friend">
         <button class="remove-friend-button" onclick='triggerRemoveFriend("{{ user_id }}")'>Unfriend</button>
       </div>
+      <div class="send-message">
+        <a href="{% url 'users:send_message' user_id=user_id %}">Send message</a>
+    </div>
       {% endif %}
       {% endif %}
     </div>

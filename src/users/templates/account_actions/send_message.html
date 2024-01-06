@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block page_header %}
+<div class="header">
+    <h3>SEND A MESSAGE TO <a class="profile-link" href="{% url 'users:view_profile' receiver %}">{{ receiver|upper }}</a></h3>
+</div>
+{% endblock page_header %}
+
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/users/send_message.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/users/common.css' %}">
+<form method="post" class="send-message-form">
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="{{ form.title.id_for_label }}"><i class="fas fa-pencil-alt"></i> Subject</label>
+        {{ form.title }}
+    </div>
+
+    <div class="form-group">
+        <label for="{{ form.message.id_for_label }}"><i class="fas fa-comment-dots"></i> Message</label>
+        {{ form.message }}
+    </div>
+    <button type="submit" class="submit-button">Send Message</button>
+</form>
+{% endblock content %}

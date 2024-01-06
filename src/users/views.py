@@ -8,6 +8,7 @@ from django.contrib.auth import (
     login,
     update_session_auth_hash,
 )
+from django.db.models import Q
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
@@ -48,10 +49,11 @@ from .forms import (
     ContactForm,
     CustomAuthenticationForm,
     ProfileUpdateForm,
+    MessageForm,
 )
 
 from .misc.helper_functions import are_friends
-from .models import UserProfile, FriendList, FriendRequest
+from .models import UserProfile, FriendList, FriendRequest, Message
 from .tokens import account_activation_token
 
 from playstyle_compass.models import UserPreferences, Review
@@ -764,7 +766,7 @@ def toggle_show_stat(request):
     stat_name = request.POST.get("statName")
     user_id = request.POST.get("userId")
 
-    user_preferences = UserPreferences.objects.get(user__id=user_id)
+    user_preferences = UserPreferences.objects.get(user_id=user_id)
 
     attribute_name = f"show_{stat_name}"
     show_value = getattr(user_preferences, attribute_name, False)
@@ -805,3 +807,78 @@ def get_user_stats(user):
         "user_reviews_count": user_reviews_count,
         "review_likes_count": review_likes_count,
     }
+
+@login_required
+def send_message(request, user_id):
+    message_sender = request.user
+    message_receiver = User.objects.get(pk=user_id)
+
+    if request.method == 'POST':
+        form = MessageForm(request.POST)
+        if form.is_valid():
+            message = form.save(commit=False)
+            message.sender = message_sender
+            message.receiver = message_receiver
+            message.save()
+            messages.success(request, 'Message sent successfully!')
+            return redirect('users:inbox')
+    else:
+        form = MessageForm()
+
+    context = {
+        "page_title": "Send message :: PlayStyle Compass",
+        "form": form,
+        "receiver": message_receiver.userprofile.profile_name
+    }
+    
+    return render(request, 'account_actions/send_message.html', context)
+
+
+@login_required
+def inbox(request):
+    messages_received = Message.objects.filter(
+        receiver=request.user, is_deleted_by_receiver=False
+    )
+    messages_sent = Message.objects.filter(
+        sender=request.user, is_deleted_by_sender=False
+    )
+
+    context = {
+        "page_title": "Inbox :: PlayStyle Compass",
+        "messages_received": messages_received,
+        "messages_sent": messages_sent,
+    }
+
+    return render(request, "account_actions/inbox.html", context)
+
+
+@login_required
+def delete_messages(request):
+    """View used to delete selected shared games."""
+
+    if request.method == "POST":
+        # Get the list of received and sent messages
+        received_messages_to_delete = request.POST.getlist("received_messages[]")
+        sent_messages_to_delete = request.POST.getlist("sent_messages[]")
+
+        # Update the 'is_deleted_by_receiver' and 'is_deleted_by_sender'
+        # fields for both received and sent messages
+        Message.objects.filter(
+            id__in=received_messages_to_delete, receiver=request.user
+        ).update(is_deleted_by_receiver=True)
+
+        Message.objects.filter(
+            id__in=sent_messages_to_delete, sender=request.user
+        ).update(is_deleted_by_sender=True)
+
+        # Delete messages that meet certain conditions:
+        # 1. Both sender and receiver marked as deleted
+        # 2. Marked as deleted by receiver and sender is null
+        # 3. Marked as deleted by sender and receiver is null
+        Message.objects.filter(
+            Q(is_deleted_by_receiver=True, is_deleted_by_sender=True)
+            | Q(is_deleted_by_receiver=True, sender__isnull=True)
+            | Q(is_deleted_by_sender=True, receiver__isnull=True)
+        ).delete()
+
+    return redirect("users:inbox")

@@ -111,14 +111,14 @@ class Game(models.Model):
         ordering = ["title"]
 
 
-class Message(models.Model):
-    """Represents a message sent by an user."""
+class SharedGame(models.Model):
+    """Represents a game shared between users."""
 
     sender = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="sent_messages"
+        User, on_delete=models.CASCADE, related_name="sent_games"
     )
     receiver = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="received_messages"
+        User, on_delete=models.CASCADE, related_name="received_games"
     )
     content = models.TextField()
     timestamp = models.DateTimeField(auto_now_add=True)
@@ -126,7 +126,7 @@ class Message(models.Model):
     is_deleted_by_receiver = models.BooleanField(default=False)
 
     def __str__(self):
-        return f"Message from {self.sender} to {self.receiver}"
+        return f"SharedGame from {self.sender} to {self.receiver}"
 
     class Meta:
         db_table = "Message"

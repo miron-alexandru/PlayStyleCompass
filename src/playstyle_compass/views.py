@@ -11,7 +11,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Avg, Q
 
 from utils.constants import genres, all_platforms
-from .models import UserPreferences, Game, Review, Message
+from .models import UserPreferences, Game, Review, SharedGame
 from .forms import ReviewForm
 
 from .helper_functions.views_helpers import (
@@ -649,7 +649,7 @@ def share_game(request, game_id):
             """
 
             # Create a new Message object
-            message = Message.objects.create(
+            message = SharedGame.objects.create(
                 sender=request.user, receiver=receiver, content=message_content
             )
 
@@ -665,10 +665,10 @@ def share_game(request, game_id):
 @login_required
 def view_games_shared(request):
     """View used to display games shared between users."""
-    games_received = Message.objects.filter(
+    games_received = SharedGame.objects.filter(
         receiver=request.user, is_deleted_by_receiver=False
     )
-    games_shared = Message.objects.filter(
+    games_shared = SharedGame.objects.filter(
         sender=request.user, is_deleted_by_sender=False
     )
 
@@ -692,11 +692,11 @@ def delete_shared_games(request):
 
         # Update the 'is_deleted_by_receiver' and 'is_deketed_by_sender'
         # fields for received games and shared games
-        Message.objects.filter(
+        SharedGame.objects.filter(
             id__in=received_games_to_delete, receiver=request.user
         ).update(is_deleted_by_receiver=True)
 
-        Message.objects.filter(
+        SharedGame.objects.filter(
             id__in=shared_games_to_delete, sender=request.user
         ).update(is_deleted_by_sender=True)
 
@@ -704,7 +704,7 @@ def delete_shared_games(request):
         # 1. Both sender and receiver marked as deleted
         # 2. Marked as deleted by receiver and sender is null
         # 3. Marked as deleted by sender and receiver is null
-        Message.objects.filter(
+        SharedGame.objects.filter(
             Q(is_deleted_by_receiver=True, is_deleted_by_sender=True)
             | Q(is_deleted_by_receiver=True, sender__isnull=True)
             | Q(is_deleted_by_sender=True, receiver__isnull=True)
