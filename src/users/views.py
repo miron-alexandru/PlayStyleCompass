@@ -813,17 +813,23 @@ def send_message(request, user_id):
     message_sender = request.user
     message_receiver = User.objects.get(pk=user_id)
 
-    if request.method == 'POST':
-        form = MessageForm(request.POST)
-        if form.is_valid():
-            message = form.save(commit=False)
-            message.sender = message_sender
-            message.receiver = message_receiver
-            message.save()
-            messages.success(request, 'Message sent successfully!')
-            return redirect('users:inbox')
+    if are_friends(message_sender, message_receiver):
+        if request.method == 'POST':
+            form = MessageForm(request.POST)
+            if form.is_valid():
+                message = form.save(commit=False)
+                message.sender = message_sender
+                message.receiver = message_receiver
+                message.save()
+                messages.success(request, 'Message sent successfully!')
+                return redirect(
+                        request.META.get("HTTP_REFERER", "users:inbox")
+                    )
+        else:
+            form = MessageForm()
     else:
-        form = MessageForm()
+        messages.error(request, "You have to be friends with someone to send them a message.")
+        return redirect('playstyle_compass:index')
 
     context = {
         "page_title": "Send message :: PlayStyle Compass",

@@ -41,6 +41,9 @@ social circle.{% endblock description %}
           <p class="friends-text mb-0">Friend</p>
           {% endif %}
         </div>
+        <div class="send-message">
+        <a href="{% url 'users:send_message' user_id=friend.0.id %}">Send message</a>
+    </div>
 
         <div class="d-flex flex-row card-right flex-grow-1 justify-content-end mx-2">
           <button class="remove-friend-btn" onclick='triggerRemoveFriend("{{ friend.0.id }}")'>Unfriend</button>
