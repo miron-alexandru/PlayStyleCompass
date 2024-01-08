@@ -67,7 +67,7 @@
   color: black;
 }
 
-.timestamp {
+.timestamp, .subject {
   color: black;
 }
 
@@ -116,6 +116,12 @@ p {
 
 .delete-button:hover {
   background-color: #c0392b;
+}
+
+.delete-button:disabled {
+  background-color: #ddd;
+  color: #999;
+  cursor: not-allowed;
 }
 
 .select-all-button {

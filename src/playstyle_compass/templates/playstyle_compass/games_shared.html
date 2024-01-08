@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load custom_filters %}
 
 {% block page_header %}
 <div class="header">
@@ -20,12 +21,20 @@ Get ready for some shared gaming fun! Check out the games you've swapped with ot
       <button id="messages-sent-btn" class="category-button">Games you shared with other users</button>
     </div>
 
+    <div class="sort-container">
+      <label for="sort-order">Sort by:</label>
+      <select id="sort-order">
+        <option value="asc">Date (Asc)</option>
+        <option value="desc">Date (Desc)</option>
+      </select>
+    </div>
+
     <form method="post" action="{% url 'playstyle_compass:delete_shared_games' %}" id="delete-messages-from">
     {% csrf_token %}
-    <div id="received-messages" class="messages-grid received-messages">
+    <div id="received-messages" class="messages-grid received-messages" data-empty-message="No games have been shared with you so far.">
       {% if games_received %}
         {% for received_game in games_received %}
-          <div class="message-card">
+          <div class="message-card" data-timestamp="{{ received_game.timestamp|format_timestamp }}">
             <div class="message-header">
               <input type="checkbox" name="received_games[]" value="{{ received_game.id }}" class="message-checkbox">
               <span class="user-info"><strong>From: </strong><a href="{% url 'users:view_profile' profile_name=received_game.sender.userprofile.profile_name %}" class="user-name">{{ received_game.sender.userprofile.profile_name }}</a></span>
@@ -37,14 +46,14 @@ Get ready for some shared gaming fun! Check out the games you've swapped with ot
           </div>
         {% endfor %}
       {% else %}
-        <p class="empty-category">No shared games with you yet.</p>
+        <p class="empty-category">No games have been shared with you so far.</p>
       {% endif %}
     </div>
 
-    <div id="sent-messages" class="messages-grid sent-messages" style="display:none">
+    <div id="sent-messages" class="messages-grid sent-messages" data-empty-message="You haven't yet shared games with anyone." style="display:none">
       {% if games_shared %}
         {% for shared_game in games_shared %}
-          <div class="message-card">
+          <div class="message-card" data-timestamp="{{ shared_game.timestamp|format_timestamp }}">
             <div class="message-header">
               <input type="checkbox" name="shared_games[]" value="{{ shared_game.id }}" class="message-checkbox">
               <span class="user-info"><strong>To: </strong><a href="{% url 'users:view_profile' profile_name=shared_game.sender.userprofile.profile_name %}" class="user-name">{{ shared_game.receiver.userprofile.profile_name }}</a></span>
@@ -56,7 +65,7 @@ Get ready for some shared gaming fun! Check out the games you've swapped with ot
           </div>
         {% endfor %}
       {% else %}
-        <p class="empty-category">You haven't shared any games with someone yet.</p>
+        <p class="empty-category">You haven't yet shared games with anyone.</p>
       {% endif %}
     </div>
 

@@ -115,17 +115,22 @@
               Account Actions
             </a>
             <div class="dropdown-container dropdown-menu" aria-labelledby="profileDropdown">
-              <a class="dropdown-item" href="{% url 'users:view_profile' user.userprofile.profile_name %}">My
-                Profile</a>
+              <a class="dropdown-item" href="{% url 'users:view_profile' user.userprofile.profile_name %}">My Profile</a>
               <a class="dropdown-item" href="{% url 'users:inbox'%}">Inbox</a>
+              <div class="dropdown-divider"></div>
               <a class="dropdown-item" href="{% url 'playstyle_compass:games_shared'%}">Shared Games</a>
+              <div class="dropdown-divider"></div>
               <a class="dropdown-item" href="{% url 'users:friends_list' user.id %}">Friends List</a>
               <a class="dropdown-item" href="{% url 'users:friend_requests' user.id %}">Friend Requests</a>
+              <div class="dropdown-divider"></div>
               <a class="dropdown-item" href="{% url 'users:profile_picture' %}">Change Profile Picture</a>
               <a class="dropdown-item" href="{% url 'users:change_profile_name' %}">Change Profile Name</a>
+              <div class="dropdown-divider"></div>
               <a class="dropdown-item" href="{% url 'users:change_password' %}">Change Password</a>
               <a class="dropdown-item" href="{% url 'users:change_email' %}">Change Email</a>
+              <div class="dropdown-divider"></div>
               <a class="dropdown-item" href="{% url 'users:delete_account' %}">Delete Account</a>
+              <div class="dropdown-divider"></div>
               <a class="dropdown-item" href="{% url 'users:logout' %}">Log Out</a>
             </div>
           </li>

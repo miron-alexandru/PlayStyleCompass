@@ -1,6 +1,7 @@
 """Custom filters."""
 
 
+from datetime import datetime
 from django import template
 from itertools import zip_longest
 
@@ -70,3 +71,9 @@ def zip_lists(reviewers, review_deck, review_text, score):
 @register.filter
 def pluralize_reviews(count):
     return "review" if count == 1 else "reviews"
+
+
+@register.filter(name='format_timestamp')
+def format_timestamp(value):
+    if isinstance(value, datetime):
+        return value.isoformat()
