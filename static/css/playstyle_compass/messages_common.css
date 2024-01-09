@@ -138,3 +138,31 @@ p {
 .select-all-button:hover {
   background-color: #d35400;
 }
+
+label[for="sort-order"] {
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+  padding: 5px;
+}
+
+#sort-order {
+  padding: 5px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  color: #333;
+  outline: none;
+}
+
+#sort-order option {
+  font-size: 14px;
+  background-color: #f9f9f9;
+  color: #333;
+}
+
+#sort-order:hover,
+#sort-order:focus {
+  border: 1px solid #333;
+}

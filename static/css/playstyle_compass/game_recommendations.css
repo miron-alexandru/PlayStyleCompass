@@ -72,7 +72,7 @@ label[for="sort-select"] {
 
 #sort-select:hover,
 #sort-select:focus {
-  border: 1px solid #007bff;
+  border: 1px solid #333;
 }
 
 @media screen and (max-width: 1000px) {
