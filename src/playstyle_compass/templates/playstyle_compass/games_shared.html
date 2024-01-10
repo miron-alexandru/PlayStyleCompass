@@ -74,7 +74,11 @@ Get ready for some shared gaming fun! Check out the games you've swapped with ot
   </form>
 </div>
 
-<script src="{% static 'js/playstyle_compass/messages_common.js' %}" defer></script>
+<script>
+  $("#received-messages").hide();
+  $("#sent-messages").hide();
+</script>
 
+<script src="{% static 'js/playstyle_compass/messages_common.js' %}" defer></script>
 
 {% endblock %}
