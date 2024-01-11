@@ -808,40 +808,43 @@ def get_user_stats(user):
         "review_likes_count": review_likes_count,
     }
 
+
 @login_required
 def send_message(request, user_id):
     message_sender = request.user
     message_receiver = User.objects.get(pk=user_id)
 
     if are_friends(message_sender, message_receiver):
-        if request.method == 'POST':
+        if request.method == "POST":
             form = MessageForm(request.POST)
             if form.is_valid():
                 message = form.save(commit=False)
                 message.sender = message_sender
                 message.receiver = message_receiver
                 message.save()
-                messages.success(request, 'Message sent successfully!')
-                return redirect(
-                        request.META.get("HTTP_REFERER", "users:inbox")
-                    )
+                messages.success(request, "Message sent successfully!")
+                return redirect(request.META.get("HTTP_REFERER", "users:inbox"))
         else:
             form = MessageForm()
     else:
-        messages.error(request, "You have to be friends with someone to send them a message.")
-        return redirect('playstyle_compass:index')
+        messages.error(
+            request, "You have to be friends with someone to send them a message."
+        )
+        return redirect("playstyle_compass:index")
 
     context = {
         "page_title": "Send message :: PlayStyle Compass",
         "form": form,
-        "receiver": message_receiver.userprofile.profile_name
+        "receiver": message_receiver.userprofile.profile_name,
     }
-    
-    return render(request, 'account_actions/send_message.html', context)
+
+    return render(request, "account_actions/send_message.html", context)
 
 
 @login_required
 def inbox(request):
+    """View used to display messages received and sent by the user."""
+    sort_order = request.GET.get("sort_order", None)
     messages_received = Message.objects.filter(
         receiver=request.user, is_deleted_by_receiver=False
     )
@@ -849,10 +852,19 @@ def inbox(request):
         sender=request.user, is_deleted_by_sender=False
     )
 
+    # Sort the messages based on the selected order
+    if sort_order == "asc":
+        messages_received = messages_received.order_by("timestamp")
+        messages_sent = messages_sent.order_by("timestamp")
+    else:
+        messages_received = messages_received.order_by("-timestamp")
+        messages_sent = messages_sent.order_by("-timestamp")
+
     context = {
         "page_title": "Inbox :: PlayStyle Compass",
         "messages_received": messages_received,
         "messages_sent": messages_sent,
+        "selected_sort_order": sort_order,
     }
 
     return render(request, "account_actions/inbox.html", context)

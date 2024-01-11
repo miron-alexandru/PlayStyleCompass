@@ -166,3 +166,18 @@ label[for="sort-order"] {
 #sort-order:focus {
   border: 1px solid #333;
 }
+
+.sort-container form {
+  display: inline-block;
+}
+
+.apply-button {
+  font-size: 14px;
+  padding: 5px 10px;
+  background-color: #607d8b;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-left: 5px;
+}

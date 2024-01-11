@@ -1,90 +1,40 @@
 document.addEventListener('DOMContentLoaded', function () {
   const receivedBtn = document.getElementById('messages-received-btn');
   const sentBtn = document.getElementById('messages-sent-btn');
-  const urlParams = new URLSearchParams(window.location.search);
-  let category = urlParams.get('category');
-  let sortOrder = $("#sort-order").val();
+  const storedCategory = localStorage.getItem('activeCategory') || 'received';
 
-  if (urlParams.has('category') && urlParams.has('sort')) {
-    sortOrder = urlParams.get('sort');
-    $("#sort-order").val(sortOrder);
-  }
-  
-  if (category === 'sent') {
-    setTimeout(() => sentBtn.click(), 50);
+  if (storedCategory === 'received') {
+    toggleMessages("#received-messages", "#sent-messages");
+    toggleActiveClass(receivedBtn, sentBtn);
   } else {
-    setTimeout(() => receivedBtn.click(), 50);
+    toggleMessages("#sent-messages", "#received-messages");
+    toggleActiveClass(sentBtn, receivedBtn);
   }
+
 
   receivedBtn.addEventListener('click', function () {
-    updateUrl('received', sortOrder);
-    $("#sent-messages").hide();
-    $("#received-messages").show();
+    toggleMessages("#received-messages", "#sent-messages",);
+    toggleActiveClass(receivedBtn, sentBtn);
 
-    $("#messages-received-btn").addClass("active");
-    $("#messages-sent-btn").removeClass("active");
-
-    sortMessages("#received-messages", sortOrder);
+    localStorage.setItem('activeCategory', 'received');
   });
 
   sentBtn.addEventListener('click', function () {
-    updateUrl('sent', sortOrder);
-    $("#received-messages").hide();
-    $("#sent-messages").show();
+    toggleMessages("#sent-messages", "#received-messages",);
+    toggleActiveClass(sentBtn, receivedBtn);
 
-    $("#messages-sent-btn").addClass("active");
-    $("#messages-received-btn").removeClass("active");
-
-    sortMessages("#sent-messages", sortOrder);
-  });
-
-  $("#sort-order").change(function () {
-    let sortOrder = $("#sort-order").val();
-    const activeTabId = $(".category-button.active").attr("id");
-    const messagesContainerId = (activeTabId === "messages-received-btn") ? "#received-messages" : "#sent-messages";
-
-    sortMessages(messagesContainerId, sortOrder);
+    localStorage.setItem('activeCategory', 'sent');
   });
 });
 
-
-function updateUrl(category, sortOrder = null) {
-  const urlParams = new URLSearchParams(window.location.search);
-  if (category !== null) {
-    urlParams.set('category', category);
-  }
-
-  if (sortOrder) {
-    urlParams.set('sort', sortOrder);
-  }
-  history.replaceState({}, '', `${window.location.pathname}?${urlParams}`);
+function toggleMessages(showContainer, hideContainer) {
+  $(hideContainer).hide();
+  $(showContainer).show();
 }
 
-
-function sortMessages(containerId, sortOrder, category=null) {
-  const messagesContainer = $(containerId);
-  const messages = messagesContainer.find(".message-card").toArray();
-
-  if (messages.length > 0) {
-    messages.sort(function(a, b) {
-      var timestampA = $(a).data("timestamp");
-      var timestampB = $(b).data("timestamp");
-
-      if (sortOrder === "asc") {
-        return timestampA.localeCompare(timestampB);
-      } else {
-        return timestampB.localeCompare(timestampA);
-      }
-    });
-
-    messagesContainer.empty().append(messages);
-    updateUrl(category, sortOrder)
-  } else {
-    updateUrl(category, sortOrder)
-    const emptyMessage = $("<p class='empty-category'></p>")
-      .text(messagesContainer.data("empty-message") || "Empty.");
-    messagesContainer.empty().append(emptyMessage);
-  }
+function toggleActiveClass(activateBtn, deactivateBtn) {
+  $(activateBtn).addClass("active");
+  $(deactivateBtn).removeClass("active");
 }
 
 

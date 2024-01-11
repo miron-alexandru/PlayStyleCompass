@@ -1,4 +1,15 @@
 $(document).ready(function () {
+  const showMessage = (container, message, isError = false) => {
+    let customMessage = $(`<div class="${isError ? 'shared-failed' : 'shared-success'}">${message}</div>`);
+    container.before(customMessage);
+
+    setTimeout(() => {
+      customMessage.fadeOut('slow', function () {
+        customMessage.remove();
+      });
+    }, 3000);
+  };
+
   $('.game-container').each(function () {
     const container = $(this);
     const shareButton = container.find('.shareButton');
@@ -28,8 +39,17 @@ $(document).ready(function () {
         body: formData.toString(),
       })
         .then(response => response.json())
-        .then(data => console.log(data))
-        .catch(error => console.error('Fetch operation error:', error));
+        .then(data => {
+          if (data.status === 'success') {
+            showMessage(container, data.message);
+          } else if (data.status === 'error') {
+            showMessage(container, data.message, true);
+          }
+        })
+        .catch(error => {
+          console.error('Fetch operation error:', error);
+          showMessage(container, 'An error occurred', true);
+        });
     });
   });
 

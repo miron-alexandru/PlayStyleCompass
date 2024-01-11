@@ -97,3 +97,24 @@ small {
 .friend-dropdown.show .friend-dropdown-content {
   display: block;
 }
+
+.shared-failed,
+.shared-success {
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+.shared-failed {
+  background-color: #ffdddd;
+  border: 1px solid #ff9999;
+  color: #cc0000;
+}
+
+.shared-success {
+  background-color: #d4edda;
+  border: 1px solid #c3e6cb;
+  color: #2d652b;
+}
+
+

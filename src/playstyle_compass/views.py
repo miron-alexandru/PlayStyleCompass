@@ -430,8 +430,9 @@ def add_review(request, game_id):
 
     if existing_review:
         messages.error(request, "You have already reviewed this game!")
-        return HttpResponseRedirect(request.META.get("HTTP_REFERER", reverse("playstyle_compass:index")))
-
+        return HttpResponseRedirect(
+            request.META.get("HTTP_REFERER", reverse("playstyle_compass:index"))
+        )
 
     if request.method == "POST":
         form = ReviewForm(request.POST)
@@ -639,6 +640,17 @@ def share_game(request, game_id):
             game = get_object_or_404(Game, id=game_id)
             receiver = get_object_or_404(User, id=receiver_id)
 
+            # Check if the game is already shared with the receiver
+            if SharedGame.objects.filter(
+                sender=request.user, receiver=receiver, game_id=game.id
+            ).exists():
+                return JsonResponse(
+                    {
+                        "status": "error",
+                        "message": f"You have already shared {game.title} with {receiver.userprofile.profile_name}.",
+                    }
+                )
+
             # Create the message content with information about the shared game
             message_content = f"""
                 <p><strong>Hello {receiver.userprofile.profile_name}!</strong></p>
@@ -650,10 +662,18 @@ def share_game(request, game_id):
 
             # Create a new Message object
             message = SharedGame.objects.create(
-                sender=request.user, receiver=receiver, content=message_content
+                sender=request.user,
+                receiver=receiver,
+                content=message_content,
+                game_id=game.id,
             )
 
-            return JsonResponse({"status": "success"})
+            return JsonResponse(
+                {
+                    "status": "success",
+                    "message": f"You have successfully shared {game.title} with {receiver.userprofile.profile_name}.",
+                }
+            )
         else:
             return JsonResponse(
                 {"status": "error", "message": "Receiver ID not provided"}
@@ -665,6 +685,7 @@ def share_game(request, game_id):
 @login_required
 def view_games_shared(request):
     """View used to display games shared between users."""
+    sort_order = request.GET.get("sort_order", None)
     games_received = SharedGame.objects.filter(
         receiver=request.user, is_deleted_by_receiver=False
     )
@@ -672,10 +693,19 @@ def view_games_shared(request):
         sender=request.user, is_deleted_by_sender=False
     )
 
+    # Sort the shared games based on the selected sort order
+    if sort_order == "asc":
+        games_received = games_received.order_by("timestamp")
+        games_shared = games_shared.order_by("timestamp")
+    else:
+        games_received = games_received.order_by("-timestamp")
+        games_shared = games_shared.order_by("-timestamp")
+
     context = {
         "page_title": "Shared Games :: PlayStyle Compass",
         "games_received": games_received,
         "games_shared": games_shared,
+        "selected_sort_order": sort_order,
     }
 
     return render(request, "playstyle_compass/games_shared.html", context)

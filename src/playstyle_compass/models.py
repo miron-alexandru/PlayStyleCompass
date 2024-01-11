@@ -124,6 +124,7 @@ class SharedGame(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     is_deleted_by_sender = models.BooleanField(default=False)
     is_deleted_by_receiver = models.BooleanField(default=False)
+    game_id = models.BigIntegerField()
 
     def __str__(self):
         return f"SharedGame from {self.sender} to {self.receiver}"

@@ -73,7 +73,7 @@ def pluralize_reviews(count):
     return "review" if count == 1 else "reviews"
 
 
-@register.filter(name='format_timestamp')
+@register.filter(name="format_timestamp")
 def format_timestamp(value):
     if isinstance(value, datetime):
         return value.isoformat()

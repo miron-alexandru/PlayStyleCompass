@@ -28,8 +28,8 @@ def fetch_game_ids_by_platforms(platform_ids, api_key):
     Fetches game IDs for multiple platform IDs and returns a set of all fetched game IDs.
     """
     all_game_ids = set()
-    #add_custom_game_ids(all_game_ids, game_ids_to_add)
-    #current_date = datetime.now().date()
+    # add_custom_game_ids(all_game_ids, game_ids_to_add)
+    # current_date = datetime.now().date()
     current_date = datetime(2023, 1, 1).date()
 
     for platform_id in platform_ids:
@@ -181,11 +181,11 @@ def get_platforms(game_data):
 def get_similar_games(game_data, max_count=5):
     if isinstance(game_data, dict):
         similar_games = game_data.get("similar_games")
-        
+
         if similar_games is not None:
             similar_games = [game["name"] for game in similar_games[:max_count]]
             return ", ".join(similar_games) if similar_games else None
-        
+
     return None
 
 

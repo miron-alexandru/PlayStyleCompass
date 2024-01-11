@@ -318,8 +318,10 @@ class ProfileUpdateForm(forms.ModelForm):
 class MessageForm(forms.ModelForm):
     class Meta:
         model = Message
-        fields = ['title', 'message']
+        fields = ["title", "message"]
         widgets = {
-            "title": forms.TextInput(attrs={"placeholder": "", "autofocus": "autofocus"}),
+            "title": forms.TextInput(
+                attrs={"placeholder": "", "autofocus": "autofocus"}
+            ),
             "message": forms.Textarea(attrs={"placeholder": ""}),
         }
