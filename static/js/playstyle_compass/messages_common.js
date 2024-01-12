@@ -1,7 +1,14 @@
 document.addEventListener('DOMContentLoaded', function () {
   const receivedBtn = document.getElementById('messages-received-btn');
   const sentBtn = document.getElementById('messages-sent-btn');
-  const storedCategory = localStorage.getItem('activeCategory') || 'received';
+  
+  const isPageRefresh = performance.navigation.type === 1;
+
+  if (!isPageRefresh) {
+    sessionStorage.removeItem('activeCategory');
+  }
+
+  const storedCategory = sessionStorage.getItem('activeCategory') || 'received';
 
   if (storedCategory === 'received') {
     toggleMessages("#received-messages", "#sent-messages");
@@ -11,19 +18,18 @@ document.addEventListener('DOMContentLoaded', function () {
     toggleActiveClass(sentBtn, receivedBtn);
   }
 
-
   receivedBtn.addEventListener('click', function () {
-    toggleMessages("#received-messages", "#sent-messages",);
+    toggleMessages("#received-messages", "#sent-messages");
     toggleActiveClass(receivedBtn, sentBtn);
 
-    localStorage.setItem('activeCategory', 'received');
+    sessionStorage.setItem('activeCategory', 'received');
   });
 
   sentBtn.addEventListener('click', function () {
-    toggleMessages("#sent-messages", "#received-messages",);
+    toggleMessages("#sent-messages", "#received-messages");
     toggleActiveClass(sentBtn, receivedBtn);
 
-    localStorage.setItem('activeCategory', 'sent');
+    sessionStorage.setItem('activeCategory', 'sent');
   });
 });
 

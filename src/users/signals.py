@@ -4,8 +4,10 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.contrib.auth.models import User
 from playstyle_compass.models import UserPreferences
-from .models import UserProfile
-
+from .models import UserProfile, Notification
+from channels.layers import get_channel_layer
+from asgiref.sync import async_to_sync
+from channels.db import database_sync_to_async
 
 @receiver(post_save, sender=User)
 def create_user_models(sender, instance, created, **kwargs):
@@ -19,3 +21,25 @@ def create_user_models(sender, instance, created, **kwargs):
 
 
 post_save.connect(create_user_models, sender=User)
+
+
+@database_sync_to_async
+def get_user_channel_name(user_id):
+    return f"user_{user_id}"
+
+
+@receiver(post_save, sender=Notification)
+def notification_created(sender, instance, created, **kwargs):
+    if created:
+        channel_layer = get_channel_layer()
+
+        user = instance.user
+        user_group_name = f"user_{user.id}"
+
+        async_to_sync(channel_layer.group_send)(
+            user_group_name,
+            {
+                "type": "send_notification",
+                "message": instance.message
+            }
+        )

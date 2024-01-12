@@ -27,6 +27,7 @@ INSTALLED_APPS = [
     "users",
     "bootstrap4",
     "captcha",
+    "daphne",
     # Default django apps.
     "django.contrib.admin",
     "django.contrib.auth",
@@ -72,7 +73,14 @@ TEMPLATES = [
 ]
 
 
-WSGI_APPLICATION = "playstyle_manager.wsgi.application"
+# WSGI_APPLICATION = "playstyle_manager.wsgi.application"
+ASGI_APPLICATION = 'playstyle_manager.asgi.application'
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': "channels.layers.InMemoryChannelLayer"
+    }
+}
 
 SENDGRID_SANDBOX_MODE_IN_DEBUG = False
 EMAIL_BACKEND = "sendgrid_backend.SendgridBackend"

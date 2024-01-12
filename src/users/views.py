@@ -53,7 +53,7 @@ from .forms import (
 )
 
 from .misc.helper_functions import are_friends
-from .models import UserProfile, FriendList, FriendRequest, Message
+from .models import UserProfile, FriendList, FriendRequest, Message, Notification
 from .tokens import account_activation_token
 
 from playstyle_compass.models import UserPreferences, Review
@@ -823,6 +823,8 @@ def send_message(request, user_id):
                 message.receiver = message_receiver
                 message.save()
                 messages.success(request, "Message sent successfully!")
+                notification = Notification(user=message_receiver, message=f"{message_sender.userprofile.profile_name} has sent you a message!")
+                notification.save()
                 return redirect(request.META.get("HTTP_REFERER", "users:inbox"))
         else:
             form = MessageForm()
