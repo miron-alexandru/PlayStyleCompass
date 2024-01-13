@@ -22,6 +22,11 @@ class NotificationConsumer(AsyncWebsocketConsumer):
                 self.channel_name
             )
 
+            past_notifications = await self.get_all_notifications(user)
+
+            for notification in past_notifications:
+                await self.send_notification({'message': notification.message})
+
     async def disconnect(self, close_code):
         if hasattr(self, 'user_id'):
             await self.channel_layer.group_discard(
@@ -48,3 +53,8 @@ class NotificationConsumer(AsyncWebsocketConsumer):
                 return AnonymousUser()
         else:
             return AnonymousUser()
+
+    @database_sync_to_async
+    def get_all_notifications(self, user):
+        return list(Notification.objects.filter(user=user, is_active=True))
+

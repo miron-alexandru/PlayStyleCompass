@@ -23,11 +23,6 @@ def create_user_models(sender, instance, created, **kwargs):
 post_save.connect(create_user_models, sender=User)
 
 
-@database_sync_to_async
-def get_user_channel_name(user_id):
-    return f"user_{user_id}"
-
-
 @receiver(post_save, sender=Notification)
 def notification_created(sender, instance, created, **kwargs):
     if created:

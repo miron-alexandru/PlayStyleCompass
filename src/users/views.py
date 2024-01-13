@@ -902,3 +902,21 @@ def delete_messages(request):
         ).delete()
 
     return redirect("users:inbox")
+
+@login_required
+def mark_notification_as_read(request, notification_id):
+    notification = Notification.objects.get(pk=notification_id)
+
+    notification.is_read = True
+    notification.save()
+
+    return JsonResponse({'status': 'success'})
+
+@login_required
+def mark_notification_inactive(request, notification_id):
+    notification = Notification.objects.get(pk=notification_id)
+
+    notification.is_active = False
+    notification.save()
+
+    return JsonResponse({'status': 'success'})

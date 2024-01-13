@@ -78,4 +78,6 @@ urlpatterns = [
     path("send_message/<int:user_id>", views.send_message, name="send_message"),
     path("inbox/", views.inbox, name="inbox"),
     path("delete_messages/", views.delete_messages, name="delete_messages"),
+    path('mark_notification_as_read/<int:notification_id>/', views.mark_notification_as_read, name='mark_notification_as_read'),
+    path('mark_notification_inactive/<int:notification_id>/', views.mark_notification_inactive, name='mark_notification_inactive'),
 ]
