@@ -16,48 +16,57 @@ notifySocket.onclose = function (e) {
 
 notifySocket.onmessage = function (e) {
     const data = JSON.parse(e.data);
-    const message = data.message;
-
-    addNotification(message);
+    addNotification(data);
 };
 
-function addNotification(message) {
-    notifications.push({ message });
+function addNotification(data) {
+    notifications.push(data);
     updateNotifications();
 }
 
-function removeNotification(index) {
-    const notificationId = 32;
+function handleNotificationAction(index, actionType) {
+    const notificationId = notifications[index].id;
+    const notificationsElement = document.getElementById('notifications');
+    let url;
 
-    fetch(`users/mark_notification_inactive/${notificationId}/`)
+    switch (actionType) {
+        case 'markRead':
+            url = notificationsElement.dataset.markRead;
+            break;
+        case 'markInactive':
+            url = notificationsElement.dataset.markInactive;
+            break;
+        default:
+            return;
+    }
+
+    url = url.replace("/0", `/${notificationId}`);
+
+    fetch(url)
         .then(response => response.json())
         .then(data => {
             if (data.status === 'success') {
-                notifications[index].is_active = false;
+                if (actionType === 'markRead') {
+                    notifications[index].is_read = true;
+                } else if (actionType === 'markInactive') {
+                    notifications[index].is_active = false;
+                }
 
+                console.log(data);
                 updateNotifications();
             } else {
-                console.error('Failed to mark notification as read');
+                console.error(`Failed to mark notification as ${actionType}`);
             }
         })
         .catch(error => console.error('Error:', error));
 }
 
 function markNotificationAsRead(index) {
-    const notificationId = 32;
+    handleNotificationAction(index, 'markRead');
+}
 
-    fetch(`users/mark_notification_as_read/${notificationId}/`)
-        .then(response => response.json())
-        .then(data => {
-            if (data.status === 'success') {
-                notifications[index].is_read = true;
-
-                updateNotifications();
-            } else {
-                console.error('Failed to mark notification as read');
-            }
-        })
-        .catch(error => console.error('Error:', error));
+function removeNotification(index) {
+    handleNotificationAction(index, 'markInactive');
 }
 
 function updateNotifications() {
@@ -67,7 +76,6 @@ function updateNotifications() {
     var unreadCount = 0;
 
     notifications.forEach(function (notification, index) {
-        console.log(notification);
         var newLi = document.createElement('li');
         var newAnchor = document.createElement('a');
         newAnchor.className = 'dropdown-item text-wrap';

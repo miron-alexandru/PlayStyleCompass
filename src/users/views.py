@@ -823,7 +823,10 @@ def send_message(request, user_id):
                 message.receiver = message_receiver
                 message.save()
                 messages.success(request, "Message sent successfully!")
-                notification = Notification(user=message_receiver, message=f"{message_sender.userprofile.profile_name} has sent you a message!")
+                notification = Notification(
+                    user=message_receiver,
+                    message=f"{message_sender.userprofile.profile_name} has sent you a message!",
+                )
                 notification.save()
                 return redirect(request.META.get("HTTP_REFERER", "users:inbox"))
         else:
@@ -903,20 +906,24 @@ def delete_messages(request):
 
     return redirect("users:inbox")
 
+
 @login_required
 def mark_notification_as_read(request, notification_id):
+    """View to mark notification as read."""
     notification = Notification.objects.get(pk=notification_id)
 
     notification.is_read = True
     notification.save()
 
-    return JsonResponse({'status': 'success'})
+    return JsonResponse({"status": "success"})
+
 
 @login_required
 def mark_notification_inactive(request, notification_id):
+    """View to mark notification as inactive."""
     notification = Notification.objects.get(pk=notification_id)
 
     notification.is_active = False
     notification.save()
 
-    return JsonResponse({'status': 'success'})
+    return JsonResponse({"status": "success"})

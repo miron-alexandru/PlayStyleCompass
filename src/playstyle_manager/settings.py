@@ -74,13 +74,9 @@ TEMPLATES = [
 
 
 # WSGI_APPLICATION = "playstyle_manager.wsgi.application"
-ASGI_APPLICATION = 'playstyle_manager.asgi.application'
+ASGI_APPLICATION = "playstyle_manager.asgi.application"
 
-CHANNEL_LAYERS = {
-    'default': {
-        'BACKEND': "channels.layers.InMemoryChannelLayer"
-    }
-}
+CHANNEL_LAYERS = {"default": {"BACKEND": "channels.layers.InMemoryChannelLayer"}}
 
 SENDGRID_SANDBOX_MODE_IN_DEBUG = False
 EMAIL_BACKEND = "sendgrid_backend.SendgridBackend"

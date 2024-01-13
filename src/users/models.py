@@ -156,7 +156,6 @@ class Notification(models.Model):
     message = models.CharField(max_length=100)
     is_read = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
-    created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.message
+        return f"Notification(id={self.id}, user={self.user.username}, message='{self.message}', is_read={self.is_read}, is_active={self.is_active})"

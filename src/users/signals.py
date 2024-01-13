@@ -9,6 +9,7 @@ from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
 from channels.db import database_sync_to_async
 
+
 @receiver(post_save, sender=User)
 def create_user_models(sender, instance, created, **kwargs):
     """Create user models."""
@@ -32,9 +33,5 @@ def notification_created(sender, instance, created, **kwargs):
         user_group_name = f"user_{user.id}"
 
         async_to_sync(channel_layer.group_send)(
-            user_group_name,
-            {
-                "type": "send_notification",
-                "message": instance.message
-            }
+            user_group_name, {"type": "send_notification", "message": instance.message}
         )

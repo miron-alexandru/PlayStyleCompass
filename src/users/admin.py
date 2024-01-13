@@ -1,6 +1,13 @@
 from django.contrib import admin
 
-from .models import UserProfile, ContactMessage, FriendList, FriendRequest, Notification, Message
+from .models import (
+    UserProfile,
+    ContactMessage,
+    FriendList,
+    FriendRequest,
+    Notification,
+    Message,
+)
 
 
 admin.site.register(UserProfile)

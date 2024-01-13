@@ -110,7 +110,8 @@
                 style="color: inherit;">{{ user.userprofile.profile_name|default:user.username }}</a></span>
           </li>
 
-          <div class="d-flex dropstart">
+          <div class="d-flex dropstart" id="notifications" data-mark-read="{% url 'users:mark_notification_as_read' 0 %}"
+          data-mark-inactive="{% url 'users:mark_notification_inactive' 0 %}">
             <div class="collapse navbar-collapse dropstart" id="navbarNavDarkDropdown">
               <ul class="navbar-nav">
                 <li class="nav-item dropdown dropdown-menu-start">
