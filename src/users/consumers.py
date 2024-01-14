@@ -29,6 +29,7 @@ class NotificationConsumer(AsyncWebsocketConsumer):
                         "message": notification.message,
                         "is_read": notification.is_read,
                         "is_active": notification.is_active,
+                        "timestamp": notification.timestamp.isoformat()[:-6],
                     }
                 )
 
@@ -42,6 +43,7 @@ class NotificationConsumer(AsyncWebsocketConsumer):
             "message": event.get("message"),
             "is_read": event.get("is_read"),
             "is_active": event.get("is_active"),
+            "timestamp": event.get("timestamp"),
         }
 
         await self.send(text_data=json.dumps(notification_data))

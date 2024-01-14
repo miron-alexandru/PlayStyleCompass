@@ -113,14 +113,12 @@
           <div class="d-flex dropstart" id="notifications" data-mark-read="{% url 'users:mark_notification_as_read' 0 %}"
           data-mark-inactive="{% url 'users:mark_notification_inactive' 0 %}">
             <div class="collapse navbar-collapse dropstart" id="navbarNavDarkDropdown">
-              <ul class="navbar-nav">
-                <li class="nav-item dropdown dropdown-menu-start">
+                <li class="nav-item dropdown">
                   <a class="nav-link " href="#"  data-bs-toggle="dropdown" aria-expanded="false">
                     <i id="bellCount" class="fa-solid fa-bell notification-bell" data-count="0" ></i>
                   </a>
-                  <ul class="dropdown-menu dropdown-menu-dark  text-wrap" id="notify" style="width: 200px !important;"></ul>
+                  <ul class="dropdown-menu notifications-dropdown text-wrap" id="notify"></ul>
                 </li>
-              </ul>
             </div>
           </div>
 

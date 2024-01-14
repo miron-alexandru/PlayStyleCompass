@@ -576,6 +576,13 @@ def send_friend_request(request, *args, **kwargs):
                             friend_request.save()
 
                         result["message"] = "Friend request sent."
+
+                        notification = Notification(
+                            user=receiver,
+                            message=f"{user.userprofile.profile_name} sent you a friend request!",
+                        )
+                        notification.save()
+
             else:
                 result[
                     "message"
@@ -609,6 +616,11 @@ def accept_friend_request(request, *args, **kwargs):
                             f"You are now friends with <strong>{friend_request.sender.userprofile.profile_name}</strong>."
                         ),
                     )
+                    notification = Notification(
+                        user=friend_request.sender,
+                        message=f"{friend_request.receiver.userprofile.profile_name} accepted your friend request!",
+                    )
+                    notification.save()
                 except Exception as e:
                     result["message"] = str(e)
             else:
@@ -671,6 +683,11 @@ def decline_friend_request(request, *args, **kwargs):
                             f"You refused to be friends with <strong>{friend_request.sender.userprofile.profile_name}</strong>."
                         ),
                     )
+                    notification = Notification(
+                        user=friend_request.sender,
+                        message=f"{friend_request.receiver.userprofile.profile_name} has declined your friend request!",
+                    )
+                    notification.save()
                 except Exception as e:
                     result["message"] = str(e)
             else:

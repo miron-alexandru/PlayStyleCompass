@@ -1,5 +1,6 @@
 """Defines models."""
 
+from django.utils import timezone
 from django.conf import settings
 from django.db import models
 from django.contrib.auth.models import User
@@ -156,6 +157,13 @@ class Notification(models.Model):
     message = models.CharField(max_length=100)
     is_read = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
+    timestamp = models.DateTimeField(blank=True, null=True)
 
     def __str__(self):
         return f"Notification(id={self.id}, user={self.user.username}, message='{self.message}', is_read={self.is_read}, is_active={self.is_active})"
+
+    def save(self, *args, **kwargs):
+        if self.timestamp is None:
+            self.timestamp = timezone.now().isoformat()
+
+        super().save(*args, **kwargs)

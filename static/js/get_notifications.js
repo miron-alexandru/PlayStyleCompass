@@ -1,10 +1,5 @@
 const notifications = [];
-
-const notifySocket = new WebSocket(
-    'ws://' +
-    window.location.host +
-    '/ws/notify/'
-);
+const notifySocket = new WebSocket(`ws://${window.location.host}/ws/notify/`);
 
 notifySocket.onopen = function (e) {
     console.log('Socket successfully connected.');
@@ -15,8 +10,10 @@ notifySocket.onclose = function (e) {
 };
 
 notifySocket.onmessage = function (e) {
-    const data = JSON.parse(e.data);
-    addNotification(data);
+    if (notifySocket.readyState === WebSocket.OPEN) {
+        const data = JSON.parse(e.data);
+        addNotification(data);
+    }
 };
 
 function addNotification(data) {
@@ -52,7 +49,6 @@ function handleNotificationAction(index, actionType) {
                     notifications[index].is_active = false;
                 }
 
-                console.log(data);
                 updateNotifications();
             } else {
                 console.error(`Failed to mark notification as ${actionType}`);
@@ -67,33 +63,78 @@ function markNotificationAsRead(index) {
 
 function removeNotification(index) {
     handleNotificationAction(index, 'markInactive');
+    notifications.splice(index, 1);
+
+    const ulElement = document.getElementById('notify');
+    const notificationElementToRemove = ulElement.children[index];
+    
+    if (notificationElementToRemove) {
+        notificationElementToRemove.remove();
+    }
+
+    updateNotifications();
+}
+
+function formatDate(timestamp) {
+    const date = new Date(timestamp);
+    return date.toLocaleString();
 }
 
 function updateNotifications() {
-    var ulElement = document.getElementById('notify');
+    const ulElement = document.getElementById('notify');
     ulElement.innerHTML = '';
 
-    var unreadCount = 0;
+    if (notifications.length === 0) {
+        const emptyMessage = document.createElement('li');
+        emptyMessage.textContent = 'Nothing to report';
+        emptyMessage.className = 'empty-notifications';
+        ulElement.appendChild(emptyMessage);
+        document.getElementById('bellCount').setAttribute('data-count', 0);
+        return;
+    }
+
+    let unreadCount = 0;
 
     notifications.forEach(function (notification, index) {
-        var newLi = document.createElement('li');
-        var newAnchor = document.createElement('a');
+        const newLi = document.createElement('li');
+        const notificationContainer = document.createElement('div');
+        notificationContainer.className = 'notification-container';
+
+        const newAnchor = document.createElement('a');
         newAnchor.className = 'dropdown-item text-wrap';
         newAnchor.href = '#';
-        newAnchor.textContent = notification.message;
+        newAnchor.title = 'Click to mark as read.';
 
         newAnchor.addEventListener('click', function () {
             markNotificationAsRead(index);
         });
 
-        var closeButton = document.createElement('button');
+        const notificationContent = document.createElement('div');
+        notificationContent.className = 'notification-content';
+
+        const message = document.createElement('div');
+        message.className = 'notification-message';
+        message.textContent = notification.message;
+
+        const timestamp = document.createElement('div');
+        timestamp.className = 'notification-timestamp';
+        timestamp.textContent = formatDate(notification.timestamp);
+
+        const closeButton = document.createElement('button');
         closeButton.className = 'btn-close';
+        closeButton.title = 'Delete this notification.'
+
         closeButton.addEventListener('click', function () {
             removeNotification(index);
         });
 
+        notificationContent.appendChild(message);
+        notificationContent.appendChild(timestamp);
+        notificationContainer.appendChild(notificationContent);
+        notificationContainer.appendChild(closeButton);
+        newAnchor.appendChild(notificationContainer);
         newLi.appendChild(newAnchor);
-        newLi.appendChild(closeButton);
+
         ulElement.appendChild(newLi);
 
         if (!notification.is_read) {
@@ -103,3 +144,5 @@ function updateNotifications() {
 
     document.getElementById('bellCount').setAttribute('data-count', unreadCount);
 }
+
+updateNotifications();

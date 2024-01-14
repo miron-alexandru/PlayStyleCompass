@@ -417,6 +417,71 @@ input[type="email"]:focus,
   font-weight: bold;
 }
 
+.btn-close {
+  background-color: transparent;
+  border: none;
+  color: #dc3545;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  outline: none;
+  position: relative;
+  padding: 5px;
+}
+
+.btn-close::before,
+.btn-close::after {
+  content: 'X';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+}
+
+.btn-close:hover {
+  color: #bd2130;
+}
+
+.notification-container {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #ccc;
+  padding: 5px;
+}
+
+.notification-content {
+    flex: 1;
+}
+
+.notification-message {
+  font-weight: bold;
+  font-size: 13px;
+  padding: 0px;
+}
+
+.notification-timestamp {
+  color: #888;
+  font-size: 11px;
+}
+
+.empty-notifications {
+  padding: 5px;
+  text-align: center;
+  font-style: italic;
+  color: #333;
+  font-size: 15px;
+}
+
+.notifications-dropdown {;
+  position: absolute;
+  width: 200px!important;
+  margin-left: -27px;
+  margin-top: 15px;
+}
+
+
 @media screen and (max-width: 1000px) {
   .navbar {
     max-height: none;
