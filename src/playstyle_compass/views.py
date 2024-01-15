@@ -13,6 +13,7 @@ from django.db.models import Avg, Q
 from utils.constants import genres, all_platforms
 from .models import UserPreferences, Game, Review, SharedGame
 from .forms import ReviewForm
+from users.models import Notification
 
 from .helper_functions.views_helpers import (
     RecommendationEngine,
@@ -668,12 +669,26 @@ def share_game(request, game_id):
                 game_id=game.id,
             )
 
+            user_in_notification = request.user.userprofile.profile_name
+            profile_url = reverse('users:view_profile', args=[user_in_notification])
+            navigation_url = reverse('playstyle_compass:games_shared')
+
+            message = (
+                f'<a class="notification-profile" title="View User Profile" href="{profile_url}">{user_in_notification}</a> '
+                'just shared a game with you!<br>'
+                f'<a class="notification-link" title="Navigate" href="{navigation_url}">Navigate to shared games</a>'
+            )
+
+            notification = Notification(user=receiver, message=message)
+            notification.save()
+
             return JsonResponse(
                 {
                     "status": "success",
                     "message": f"You have successfully shared {game.title} with {receiver.userprofile.profile_name}.",
                 }
             )
+
         else:
             return JsonResponse(
                 {"status": "error", "message": "Receiver ID not provided"}

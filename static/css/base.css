@@ -427,6 +427,7 @@ input[type="email"]:focus,
   outline: none;
   position: relative;
   padding: 5px;
+  margin-left: 1px;
 }
 
 .btn-close::before,
@@ -456,7 +457,6 @@ input[type="email"]:focus,
 }
 
 .notification-message {
-  font-weight: bold;
   font-size: 13px;
   padding: 0px;
 }
@@ -481,6 +481,23 @@ input[type="email"]:focus,
   margin-top: 15px;
 }
 
+.notification-profile {
+  font-weight: bold;
+  text-decoration: none;
+
+}
+
+.notification-profile:hover {
+  text-decoration: none;
+}
+
+.notification-link {
+  text-decoration: none;
+}
+
+.notification-link:hover {
+  text-decoration: none;
+}
 
 @media screen and (max-width: 1000px) {
   .navbar {

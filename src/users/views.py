@@ -577,10 +577,17 @@ def send_friend_request(request, *args, **kwargs):
 
                         result["message"] = "Friend request sent."
 
-                        notification = Notification(
-                            user=receiver,
-                            message=f"{user.userprofile.profile_name} sent you a friend request!",
+                        user_in_notification = user.userprofile.profile_name
+                        profile_url = reverse('users:view_profile', args=[user_in_notification])
+                        navigation_url = reverse('users:friend_requests', args=[receiver.id])
+
+                        message = (
+                            f'<a class="notification-profile" title="View User Profile" href="{profile_url}">{user_in_notification}</a> '
+                            'just sent you a friend request!<br>'
+                            f'<a class="notification-link" title="Navigate" href="{navigation_url}">View friend requests</a>'
                         )
+
+                        notification = Notification(user=receiver, message=message)
                         notification.save()
 
             else:
@@ -616,11 +623,18 @@ def accept_friend_request(request, *args, **kwargs):
                             f"You are now friends with <strong>{friend_request.sender.userprofile.profile_name}</strong>."
                         ),
                     )
-                    notification = Notification(
-                        user=friend_request.sender,
-                        message=f"{friend_request.receiver.userprofile.profile_name} accepted your friend request!",
+
+                    user_in_notification = friend_request.receiver.userprofile.profile_name
+                    profile_url = reverse('users:view_profile', args=[user_in_notification])
+
+                    message = (
+                        f'<a class="notification-profile" title="View User Profile" href="{profile_url}">{user_in_notification}</a> '
+                        'accepted your friend request!'
                     )
+
+                    notification = Notification(user=friend_request.sender, message=message)
                     notification.save()
+
                 except Exception as e:
                     result["message"] = str(e)
             else:
@@ -683,11 +697,19 @@ def decline_friend_request(request, *args, **kwargs):
                             f"You refused to be friends with <strong>{friend_request.sender.userprofile.profile_name}</strong>."
                         ),
                     )
-                    notification = Notification(
-                        user=friend_request.sender,
-                        message=f"{friend_request.receiver.userprofile.profile_name} has declined your friend request!",
+
+                    user_in_notification = friend_request.receiver.userprofile.profile_name
+                    profile_url = reverse('users:view_profile', args=[user_in_notification])
+
+                    message = (
+                        f'<a class="notification-profile" title="View User Profile" href="{profile_url}">{user_in_notification}</a> '
+                        'declined your friend request!'
                     )
+
+                    notification = Notification(user=friend_request.sender, message=message)
                     notification.save()
+
+
                 except Exception as e:
                     result["message"] = str(e)
             else:
@@ -840,11 +862,20 @@ def send_message(request, user_id):
                 message.receiver = message_receiver
                 message.save()
                 messages.success(request, "Message sent successfully!")
-                notification = Notification(
-                    user=message_receiver,
-                    message=f"{message_sender.userprofile.profile_name} has sent you a message!",
+
+                profile_url = reverse('users:view_profile', args=[message_sender.userprofile.profile_name])
+                navigation_url = reverse('users:inbox')
+                user_in_notification = message_sender.userprofile.profile_name
+
+                message = (
+                    f'<a class="notification-profile" title="View User Profile" href="{profile_url}">{user_in_notification}</a> '
+                    'just sent you a message!<br>'
+                    f'<a class="notification-link" title="Navigate" href="{navigation_url}">View inbox</a>'
                 )
+
+                notification = Notification(user=message_receiver, message=message)
                 notification.save()
+
                 return redirect(request.META.get("HTTP_REFERER", "users:inbox"))
         else:
             form = MessageForm()

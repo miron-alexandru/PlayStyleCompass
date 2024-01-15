@@ -114,7 +114,7 @@ function updateNotifications() {
 
         const message = document.createElement('div');
         message.className = 'notification-message';
-        message.textContent = notification.message;
+        message.innerHTML = notification.message;
 
         const timestamp = document.createElement('div');
         timestamp.className = 'notification-timestamp';
