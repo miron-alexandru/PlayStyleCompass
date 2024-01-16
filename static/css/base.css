@@ -427,7 +427,6 @@ input[type="email"]:focus,
   outline: none;
   position: relative;
   padding: 5px;
-  margin-left: 1px;
 }
 
 .btn-close::before,
@@ -448,12 +447,23 @@ input[type="email"]:focus,
 .notification-container {
   display: flex;
   justify-content: space-between;
-  border-bottom: 1px solid #ccc;
-  padding: 5px;
+}
+
+.notification-separator {
+  border-top: 1px solid #ddd;
+  margin: 5px 25px;
+}
+
+.notification-read {
+  background-color: #fff;
+}
+
+.notification-unread {
+  background-color: #dcdcdc;
 }
 
 .notification-content {
-    flex: 1;
+  flex: 1;
 }
 
 .notification-message {
@@ -464,6 +474,7 @@ input[type="email"]:focus,
 .notification-timestamp {
   color: #888;
   font-size: 11px;
+  margin-bottom: -2px;
 }
 
 .empty-notifications {
@@ -483,15 +494,9 @@ input[type="email"]:focus,
 
 .notification-profile {
   font-weight: bold;
-  text-decoration: none;
-
 }
 
 .notification-profile:hover {
-  text-decoration: none;
-}
-
-.notification-link {
   text-decoration: none;
 }
 

@@ -95,6 +95,8 @@ function updateNotifications() {
 
     let unreadCount = 0;
 
+    notifications.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+
     notifications.forEach(function (notification, index) {
         const newLi = document.createElement('li');
         const notificationContainer = document.createElement('div');
@@ -102,12 +104,14 @@ function updateNotifications() {
 
         const newAnchor = document.createElement('a');
         newAnchor.className = 'dropdown-item text-wrap';
-        newAnchor.href = '#';
+        newAnchor.classList.add(notification.is_read ? 'notification-read' : 'notification-unread');
         newAnchor.title = 'Click to mark as read.';
 
-        newAnchor.addEventListener('click', function () {
-            markNotificationAsRead(index);
-        });
+        if (!notification.is_read) {
+            newAnchor.addEventListener('click', function () {
+                markNotificationAsRead(index);
+            });
+        }
 
         const notificationContent = document.createElement('div');
         notificationContent.className = 'notification-content';
@@ -137,12 +141,19 @@ function updateNotifications() {
 
         ulElement.appendChild(newLi);
 
+        const separator = document.createElement('div');
+        separator.className = 'notification-separator';
+        ulElement.appendChild(separator);
+
         if (!notification.is_read) {
             unreadCount++;
         }
     });
 
+    ulElement.lastElementChild.remove();
+
     document.getElementById('bellCount').setAttribute('data-count', unreadCount);
 }
+
 
 updateNotifications();
