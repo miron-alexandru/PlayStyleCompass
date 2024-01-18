@@ -83,8 +83,14 @@ urlpatterns = [
         views.mark_notification_as_read,
         name="mark_notification_as_read",
     ),
+    path('mark_notification_as_read/', views.mark_notification_as_read, name='mark_notification_as_read'),
     path(
         "mark_notification_inactive/<int:notification_id>/",
+        views.mark_notification_inactive,
+        name="mark_notification_inactive",
+    ),
+    path(
+        "mark_notification_inactive/",
         views.mark_notification_inactive,
         name="mark_notification_inactive",
     ),

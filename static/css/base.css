@@ -426,7 +426,6 @@ input[type="email"]:focus,
   cursor: pointer;
   outline: none;
   position: relative;
-  padding: 5px;
 }
 
 .btn-close::before,
@@ -455,10 +454,16 @@ input[type="email"]:focus,
 }
 
 .notification-read {
-  background-color: #fff;
+  background-color: #fafafa;
+  border-radius: 10%;
 }
 
 .notification-unread {
+  background-color: #f0f0f0;
+  border-radius: 10%;
+}
+
+.notification-read:hover, .notification-unread:hover {
   background-color: #dcdcdc;
 }
 
@@ -503,6 +508,42 @@ input[type="email"]:focus,
 .notification-link:hover {
   text-decoration: none;
 }
+
+.button-container {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.mark-all-read-btn, .mark-all-inactive-btn {
+  padding: 5px 10px;
+  font-size: 10px;
+  cursor: pointer;
+  border: none;
+  border-radius: 50px;
+  transition: background-color 0.4s ease;
+}
+
+.mark-all-read-btn {
+  background-color: #00C300;
+  color: #fff;
+  margin-left: 5px;
+}
+
+.mark-all-inactive-btn {
+  background-color: #FF3333;
+  color: #fff;
+  margin-right: 5px;
+}
+
+.mark-all-inactive-btn:hover, .mark-all-read-btn:hover {
+  background-color: #00A300;
+}
+
+.mark-all-inactive-btn:hover, {
+  background-color: #FF0000;
+}
+
 
 @media screen and (max-width: 1000px) {
   .navbar {

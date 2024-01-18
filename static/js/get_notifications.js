@@ -39,7 +39,13 @@ function handleNotificationAction(index, actionType) {
 
     url = url.replace("/0", `/${notificationId}`);
 
-    fetch(url)
+    fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrfToken,
+        },
+    })
         .then(response => response.json())
         .then(data => {
             if (data.status === 'success') {
@@ -75,6 +81,15 @@ function removeNotification(index) {
     updateNotifications();
 }
 
+function removeAllNotifications() {
+    const ulElement = document.getElementById('notify');
+
+    ulElement.innerHTML = '';
+    notifications.length = 0;
+
+    updateNotifications();
+}
+
 function formatDate(timestamp) {
     const date = new Date(timestamp);
     return date.toLocaleString();
@@ -96,6 +111,27 @@ function updateNotifications() {
     let unreadCount = 0;
 
     notifications.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+
+    const buttonContainer = document.createElement('div');
+    buttonContainer.className = 'button-container';
+
+    const markAllReadBtn = document.createElement('button');
+    markAllReadBtn.className = 'mark-all-read-btn';
+    markAllReadBtn.innerHTML = 'Mark Read <span class="icon">✅</span>';
+    markAllReadBtn.title = 'Mark All Notifications as Read';
+    markAllReadBtn.addEventListener('click', () => markAllNotifications('markRead'));
+
+    const markAllInactiveBtn = document.createElement('button');
+    markAllInactiveBtn.className = 'mark-all-inactive-btn';
+    markAllInactiveBtn.innerHTML = 'Delete All <span class="icon">🗑️</span>';
+    markAllInactiveBtn.title = 'Delete All Notifications';
+    markAllInactiveBtn.addEventListener('click', () => markAllNotifications('markInactive'));
+
+    buttonContainer.appendChild(markAllReadBtn);
+    buttonContainer.appendChild(markAllInactiveBtn);
+
+    ulElement.appendChild(buttonContainer);
+
 
     notifications.forEach(function (notification, index) {
         const newLi = document.createElement('li');
@@ -155,5 +191,54 @@ function updateNotifications() {
     document.getElementById('bellCount').setAttribute('data-count', unreadCount);
 }
 
+
+function markAllNotifications(actionType) {
+    const notificationsElement = document.getElementById('notifications');
+    let url;
+
+    switch (actionType) {
+        case 'markRead':
+            url = notificationsElement.dataset.markReadAll;
+            break;
+        case 'markInactive':
+            url = notificationsElement.dataset.markInactiveAll;
+            break;
+        default:
+            console.error('Invalid actionType');
+            return;
+    }
+
+    fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrfToken,
+        },
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'success') {
+            notifications.forEach(notification => {
+                if (actionType === 'markRead' || actionType === 'markInactive') {
+                    if (actionType === 'markRead' && !notification.is_read) {
+                        notification.is_read = true;
+                    } else if (actionType === 'markInactive') {
+                        notification.is_active = false;
+                    }
+                }
+            });
+
+            if (actionType === 'markInactive') {
+                removeAllNotifications();
+            }
+
+            updateNotifications();
+
+        } else {
+            console.error(`Failed to mark all notifications as ${actionType}.`);
+        }
+    })
+    .catch(error => console.error('Error:', error));
+}
 
 updateNotifications();

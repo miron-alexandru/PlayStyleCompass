@@ -954,24 +954,37 @@ def delete_messages(request):
 
     return redirect("users:inbox")
 
-
+@require_POST
 @login_required
-def mark_notification_as_read(request, notification_id):
-    """View to mark notification as read."""
-    notification = Notification.objects.get(pk=notification_id)
+def mark_notification_as_read(request, notification_id=None):
+    """View to mark notification(s) as read."""
+    notifications = Notification.objects.filter(user=request.user)
 
-    notification.is_read = True
-    notification.save()
+    if notification_id is not None:
+        # Mark a specific notification as read
+        notification = notifications.get(pk=notification_id)
+        notification.is_read = True
+        notification.save()
+    else:
+        # Mark all notifications as read
+        notifications.update(is_read=True)
 
     return JsonResponse({"status": "success"})
 
 
+@require_POST
 @login_required
-def mark_notification_inactive(request, notification_id):
-    """View to mark notification as inactive."""
-    notification = Notification.objects.get(pk=notification_id)
+def mark_notification_inactive(request, notification_id=None):
+    """View to mark notification(s) as inactive."""
+    notifications = Notification.objects.filter(user=request.user)
 
-    notification.is_active = False
-    notification.save()
+    if notification_id is not None:
+        # Mark a specific notification as inactive
+        notification = notifications.get(pk=notification_id)
+        notification.is_active = False
+        notification.save()
+    else:
+        # Mark all notifications as inactive
+        notifications.update(is_active=False)
 
     return JsonResponse({"status": "success"})
