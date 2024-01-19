@@ -1,4 +1,8 @@
 const notifications = [];
+const notificationsElement = document.getElementById('notifications');
+const markReadUrl = notificationsElement.dataset.markRead;
+const markInactiveUrl = notificationsElement.dataset.markInactive;
+
 const notifySocket = new WebSocket(`ws://${window.location.host}/ws/notify/`);
 
 notifySocket.onopen = function (e) {
@@ -28,10 +32,10 @@ function handleNotificationAction(index, actionType) {
 
     switch (actionType) {
         case 'markRead':
-            url = notificationsElement.dataset.markRead;
+            url = markReadUrl;
             break;
         case 'markInactive':
-            url = notificationsElement.dataset.markInactive;
+            url = markInactiveUrl;
             break;
         default:
             return;
@@ -62,6 +66,59 @@ function handleNotificationAction(index, actionType) {
         })
         .catch(error => console.error('Error:', error));
 }
+
+
+function markAllNotifications(actionType) {
+    const notificationsElement = document.getElementById('notifications');
+    let url;
+
+    switch (actionType) {
+        case 'markRead':
+            url = markReadUrl;
+            break;
+        case 'markInactive':
+            url = markInactiveUrl;
+            break;
+        default:
+            console.error('Invalid actionType');
+            return;
+    }
+
+    url = url.replace("/0", "");
+
+    fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrfToken,
+        },
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'success') {
+            notifications.forEach(notification => {
+                if (actionType === 'markRead' || actionType === 'markInactive') {
+                    if (actionType === 'markRead' && !notification.is_read) {
+                        notification.is_read = true;
+                    } else if (actionType === 'markInactive') {
+                        notification.is_active = false;
+                    }
+                }
+            });
+
+            if (actionType === 'markInactive') {
+                removeAllNotifications();
+            }
+
+            updateNotifications();
+
+        } else {
+            console.error(`Failed to mark all notifications as ${actionType}.`);
+        }
+    })
+    .catch(error => console.error('Error:', error));
+}
+
 
 function markNotificationAsRead(index) {
     handleNotificationAction(index, 'markRead');
@@ -117,13 +174,13 @@ function updateNotifications() {
 
     const markAllReadBtn = document.createElement('button');
     markAllReadBtn.className = 'mark-all-read-btn';
-    markAllReadBtn.innerHTML = 'Mark Read <span class="icon">✅</span>';
+    markAllReadBtn.innerHTML = '<span class="mark-icon">&#10003;</span> Mark as read';
     markAllReadBtn.title = 'Mark All Notifications as Read';
     markAllReadBtn.addEventListener('click', () => markAllNotifications('markRead'));
 
     const markAllInactiveBtn = document.createElement('button');
     markAllInactiveBtn.className = 'mark-all-inactive-btn';
-    markAllInactiveBtn.innerHTML = 'Delete All <span class="icon">🗑️</span>';
+    markAllInactiveBtn.innerHTML = '<span class="delete-icon"><i class="fa-solid fa-xmark"></i></span> Delete All';
     markAllInactiveBtn.title = 'Delete All Notifications';
     markAllInactiveBtn.addEventListener('click', () => markAllNotifications('markInactive'));
 
@@ -162,6 +219,7 @@ function updateNotifications() {
 
         const closeButton = document.createElement('button');
         closeButton.className = 'btn-close';
+        closeButton.innerHTML = '<span class="single-delete-icon"><i class="fa-solid fa-circle-xmark"></i></span>';
         closeButton.title = 'Delete this notification.'
 
         closeButton.addEventListener('click', function () {
@@ -191,54 +249,5 @@ function updateNotifications() {
     document.getElementById('bellCount').setAttribute('data-count', unreadCount);
 }
 
-
-function markAllNotifications(actionType) {
-    const notificationsElement = document.getElementById('notifications');
-    let url;
-
-    switch (actionType) {
-        case 'markRead':
-            url = notificationsElement.dataset.markReadAll;
-            break;
-        case 'markInactive':
-            url = notificationsElement.dataset.markInactiveAll;
-            break;
-        default:
-            console.error('Invalid actionType');
-            return;
-    }
-
-    fetch(url, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRFToken': csrfToken,
-        },
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.status === 'success') {
-            notifications.forEach(notification => {
-                if (actionType === 'markRead' || actionType === 'markInactive') {
-                    if (actionType === 'markRead' && !notification.is_read) {
-                        notification.is_read = true;
-                    } else if (actionType === 'markInactive') {
-                        notification.is_active = false;
-                    }
-                }
-            });
-
-            if (actionType === 'markInactive') {
-                removeAllNotifications();
-            }
-
-            updateNotifications();
-
-        } else {
-            console.error(`Failed to mark all notifications as ${actionType}.`);
-        }
-    })
-    .catch(error => console.error('Error:', error));
-}
 
 updateNotifications();

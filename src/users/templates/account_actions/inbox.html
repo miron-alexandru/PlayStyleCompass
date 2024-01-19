@@ -35,6 +35,10 @@ See messages you sent and received from users.
 
   <form method="post" action="{% url 'users:delete_messages' %}" id="delete-messages-form">
     {% csrf_token %}
+    <div class="action-buttons">
+      <button type="button" class="select-all-button">Select All</button>
+      <button type="submit" class="delete-button">Delete Selected</button>
+    </div>
     <div id="received-messages" class="messages-grid-inbox received-messages">
       {% if messages_received %}
       {% for received_message in messages_received %}
@@ -78,9 +82,6 @@ See messages you sent and received from users.
       <p class="empty-category">You have not sent any messages.</p>
       {% endif %}
     </div>
-
-    <button type="button" class="select-all-button">Select All</button>
-    <button type="submit" class="delete-button">Delete Selected</button>
   </form>
 </div>
 

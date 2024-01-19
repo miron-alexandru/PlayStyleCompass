@@ -98,10 +98,6 @@ p {
   color: #333;
 }
 
-#delete-messages-form {
-  margin-top: 15px;
-}
-
 .delete-button {
   background-color: #e74c3c;
   color: #fff;
@@ -143,7 +139,6 @@ label[for="sort-order"] {
   font-size: 16px;
   font-weight: bold;
   color: #333;
-  padding: 5px;
 }
 
 #sort-order {
@@ -180,4 +175,8 @@ label[for="sort-order"] {
   border-radius: 5px;
   cursor: pointer;
   margin-left: 5px;
+}
+
+.action-buttons {
+  margin-bottom: 15px;
 }

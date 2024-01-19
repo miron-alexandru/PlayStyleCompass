@@ -36,6 +36,10 @@ shared with you.
 
   <form method="post" action="{% url 'playstyle_compass:delete_shared_games' %}" id="delete-messages-from">
     {% csrf_token %}
+    <div class="action-buttons">
+      <button type="button" class="select-all-button">Select All</button>
+      <button type="submit" class="delete-button">Delete Selected</button>
+    </div>
     <div id="received-messages" class="messages-grid received-messages">
       {% if games_received %}
       {% for received_game in games_received %}
@@ -77,9 +81,6 @@ shared with you.
       <p class="empty-category">You haven't yet shared games with anyone.</p>
       {% endif %}
     </div>
-
-    <button type="button" class="select-all-button">Select All</button>
-    <button type="submit" class="delete-button">Delete Selected</button>
   </form>
 </div>
 
