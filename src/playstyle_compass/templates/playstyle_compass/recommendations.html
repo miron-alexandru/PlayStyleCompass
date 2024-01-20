@@ -1,16 +1,18 @@
 {% extends "base.html" %}
+{% load i18n %}
 {% load static %}
 {% load custom_filters %}
 
 {% block page_header %}
 <div class="header">
-  <h3>GAME RECOMMENDATIONS</h3>
+  <h3>{% trans "GAME RECOMMENDATIONS" %}</h3>
 </div>
 {% endblock page_header %}
 
-{% block description %}Discover a curated selection of game recommendations tailored specifically to your gaming
-history, preferred platforms, favorite genres, and more. Explore the information about each game to make informed
-choices for your next gaming adventure.{% endblock description %}
+{% block description %}
+{% blocktrans %}Discover a curated selection of game recommendations tailored specifically to your gaming history, preferred platforms, favorite genres, and more. Explore the information about each game to make informed choices for your next gaming adventure.
+{% endblocktrans %}
+{% endblock description %}
 
 {% block content %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/playstyle_compass/common_styles.css' %}">
@@ -18,16 +20,16 @@ choices for your next gaming adventure.{% endblock description %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/playstyle_compass/game_recommendations.css' %}">
 
 <div class="category-buttons">
-  <button class="category-button" data-category="gaming_history">Gaming History</button>
-  <button class="category-button" data-category="preferred_platforms">Preferred Platforms</button>
-  <button class="category-button" data-category="favorite_genres">Favorite Genres</button>
-  <button class="category-button" data-category="common_genres_platforms">Common Genres and Platforms</button>
+  <button class="category-button" data-category="gaming_history">{% trans "Gaming History" %}</button>
+  <button class="category-button" data-category="preferred_platforms">{% trans "Preferred Platforms" %}</button>
+  <button class="category-button" data-category="favorite_genres">{% trans "Favorite Genres" %}</button>
+  <button class="category-button" data-category="common_genres_platforms">{% trans "Common Genres and Platforms" %}</button>
 
-  <label for="sort-select">Sort by:</label>
+  <label for="sort-select">{% trans "Sort by:" %}</label>
   <select id="sort-select" name="sort">
-    <option value="recommended">Recommended</option>
-    <option value="release_date_asc">Release Date (Asc)</option>
-    <option value="release_date_desc">Release Date (Desc)</option>
+    <option value="recommended">{% trans "Recommended" %}</option>
+    <option value="release_date_asc">{% trans "Release Date (Asc)" %}</option>
+    <option value="release_date_desc">{% trans "Release Date (Desc)" %}</option>
   </select>
 </div>
 
@@ -36,9 +38,9 @@ choices for your next gaming adventure.{% endblock description %}
   {% if paginated_page.object_list %}
   <h4>
     {% if category == "common_genres_platforms" %}
-    Games that match your preferred genres and platforms
+    {% trans "Games that match your preferred genres and platforms" %}
     {% else %}
-    Games you might like based on your {{ category|format_category_label }}: {{ user_preferences|getattr:category }}
+    {% trans "Games you might like based on your" %} {{ category|format_category_label }}: {{ user_preferences|getattr:category }}
     {% endif %}
   </h4>
   <ul>
@@ -53,24 +55,24 @@ choices for your next gaming adventure.{% endblock description %}
         href="?category={{ category }}&{{ category|slugify }}_page=1{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}">&laquo;
         First</a>
       <a
-        href="?category={{ category }}&{{ category|slugify }}_page={{ paginated_page.previous_page_number }}{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}">Previous</a>
+        href="?category={{ category }}&{{ category|slugify }}_page={{ paginated_page.previous_page_number }}{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}">{% trans "Previous" %}</a>
       {% endif %}
 
       <span class="current-page">
-        Page {{ paginated_page.number }} of {{ paginated_page.paginator.num_pages }}
+        {% trans "Page" %} {{ paginated_page.number }} {% trans "of" %} {{ paginated_page.paginator.num_pages }}
       </span>
 
       {% if paginated_page.has_next %}
       <a
-        href="?category={{ category }}&{{ category|slugify }}_page={{ paginated_page.next_page_number }}{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}">Next</a>
+        href="?category={{ category }}&{{ category|slugify }}_page={{ paginated_page.next_page_number }}{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}">{% trans "Next" %}</a>
       <a
-        href="?category={{ category }}&{{ category|slugify }}_page={{ paginated_page.paginator.num_pages }}{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}">Last
+        href="?category={{ category }}&{{ category|slugify }}_page={{ paginated_page.paginator.num_pages }}{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}">{% trans "Last" %}
         &raquo;</a>
       {% endif %}
     </span>
   </div>
   {% else %}
-  <h4>No game recommendations based on your {{ category|format_category_label }}: {{ user_preferences|getattr:category }}</h4>
+  <h4>{% trans "No game recommendations based on your" %} {{ category|format_category_label }}: {{ user_preferences|getattr:category }}</h4>
   {% endif %}
 </div>
 {% endfor %}

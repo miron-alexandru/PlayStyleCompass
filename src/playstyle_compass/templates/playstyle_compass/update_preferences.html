@@ -1,14 +1,16 @@
 {% extends "base.html" %}
+{% load i18n %}
 {% load static %}
 
 {% block page_header %}
 <div class="header">
-  <h3>MY PLAYSTYLE</h3>
+  <h3>{% trans "MY PLAYSTYLE" %}</h3>
 </div>
 {% endblock page_header %}
 
-{% block description %}Your gaming preferences are the key to unlocking a world of tailored gaming experiences. By
-sharing your preferences, you'll receive game recommendations perfectly suited to your unique tastes and interests.
+{% block description %}
+{% blocktrans %}Your gaming preferences are the key to unlocking a world of tailored gaming experiences. Bysharing your preferences, you'll receive game recommendations perfectly suited to your unique tastes and interests.
+{% endblocktrans %}
 {% endblock description %}
 
 {% block content %}
@@ -17,9 +19,9 @@ sharing your preferences, you'll receive game recommendations perfectly suited t
 
 {% if user_preferences.gaming_history or user_preferences.favorite_genres or user_preferences.platforms %}
 <div class="section" id="history-section">
-  <div class="playstyle-title">Your Gaming History:</div>
+  <div class="playstyle-title">{% trans "Your Gaming History:" %}</div>
   <p class="playstyle-text">{{ user_preferences.gaming_history|safe }}</p>
-  <button class="change-button" data-section="gaming_history">Change</button>
+  <button class="change-button" data-section="gaming_history">{% trans "Change" %}</button>
   <div class="editing-form" id="gaming_history-form" style="display: none;">
     <form method="post" action="{% url 'playstyle_compass:save_gaming_history' %}">
       {% csrf_token %}
@@ -27,16 +29,16 @@ sharing your preferences, you'll receive game recommendations perfectly suited t
         value="{{ user_preferences.gaming_history }}" pattern="[A-Za-z0-9\s]+" maxlength="255" 
         title="Only letters and numbers are allowed">
       <button type="submit" class="save-button" data-section="gaming_history" style="display: none;"
-        id="save-history-button">Save</button>
+        id="save-history-button">{% trans "Save" %}</button>
     </form>
   </div>
 </div>
 </div>
 
 <div class="section" id="genres-section">
-  <div class="playstyle-title">Your Favorite Genres:</div>
+  <div class="playstyle-title">{% trans "Your Favorite Genres:" %}</div>
   <p class="playstyle-text">{{ user_preferences.favorite_genres|safe }}</p>
-  <button class="change-button" data-section="favorite_genres">Change</button>
+  <button class="change-button" data-section="favorite_genres">{% trans "Change" %}</button>
   <div class="editing-form" id="favorite_genres-form" style="display: none;">
     <form method="post" action="{% url 'playstyle_compass:save_favorite_genres' %}">
       {% csrf_token %}
@@ -58,9 +60,9 @@ sharing your preferences, you'll receive game recommendations perfectly suited t
 </div>
 
 <div class="section" id="platforms-section">
-  <div class="playstyle-title">Your Preferred Platforms:</div>
+  <div class="playstyle-title">{% trans "Your Preferred Platforms:" %}</div>
   <p class="playstyle-text">{{ user_preferences.platforms|safe }}</p>
-  <button class="change-button" data-section="platforms">Change</button>
+  <button class="change-button" data-section="platforms">{% trans "Change" %}</button>
   <div class="editing-form" id="platforms-form" style="display: none;">
     <form method="post" action="{% url 'playstyle_compass:save_platforms' %}">
       {% csrf_token %}
@@ -75,7 +77,7 @@ sharing your preferences, you'll receive game recommendations perfectly suited t
         </div>
       </fieldset>
       <button type="submit" class="save-button" data-section="platforms" style="display: none;"
-        id="save-platforms-button">Save</button>
+        id="save-platforms-button">{% trans "Save" %}</button>
     </form>
   </div>
 </div>
@@ -83,29 +85,29 @@ sharing your preferences, you'll receive game recommendations perfectly suited t
 
 <div class="button-container">
   <form method="get" action="{% url 'playstyle_compass:get_recommendations' %}">
-    <button type="submit" class="btn btn-primary">Get Recommendations</button>
+    <button type="submit" class="btn btn-primary">{% trans "Get Recommendations" %}</button>
   </form>
 
   <div class="save-all-container">
-    <button id="save-all-button" class="save-all-button" disabled>Save All</button>
+    <button id="save-all-button" class="save-all-button" disabled>{% trans "Save All" %}</button>
 
     <div id="saving-spinner" style="display: none;">
-      Saving...
+      {% trans "Saving..." %}
       <div class="spinner-border" role="status"></div>
     </div>
 </div>
 
   <form method="post" action="{% url 'playstyle_compass:clear_preferences' %}">
     {% csrf_token %}
-    <button type="submit" class="btn btn-danger">Reset Preferences</button>
+    <button type="submit" class="btn btn-danger">{% trans "Reset Preferences" %}</button>
   </form>
 </div>
 
 
 
 {% else %}
-<p class="text-center">You have not defined your PlayStyle yet. <a
-    href="{% url 'playstyle_compass:gaming_preferences' %}">Click here to start</a>.</p>
+<p class="text-center">{% trans "You have not defined your PlayStyle yet." %}<a
+    href="{% url 'playstyle_compass:gaming_preferences' %}">{% trans "Click here to start" %}</a>.</p>
 {% endif %}
 
 <script src="{% static 'js/playstyle_compass/update_save_buttons.js' %}" defer></script>

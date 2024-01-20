@@ -24,6 +24,8 @@ from .helper_functions.views_helpers import (
     get_friend_list,
 )
 
+from django.utils.translation import gettext as _
+
 
 def index(request):
     """View for Home Page"""
@@ -56,7 +58,7 @@ def index(request):
     context = {
         "upcoming_games": upcoming_games,
         "popular_games": popular_games,
-        "page_title": "Home :: PlayStyle Compass",
+        "page_title": _("Home :: PlayStyle Compass"),
     }
 
     return render(request, "playstyle_compass/index.html", context)

@@ -1,14 +1,15 @@
 {% extends "base.html" %}
+{% load i18n %}
 {% load static %}
 
 {% block page_header %}
 <div class="header">
-    <h3>KINDRED PLAYSTYLES</h3>
+    <h3>{% trans "KINDRED PLAYSTYLES" %}</h3>
 </div>
 {% endblock page_header %}
 
 {% block description %}
-Find gamers with similar playstyles and make new connections in the gaming world.
+{% trans "Find gamers with similar playstyles and make new connections in the gaming world." %}
 {% endblock description %}
 
 {% block content %}
@@ -34,15 +35,15 @@ Find gamers with similar playstyles and make new connections in the gaming world
             {% endif %}
         </div>
         <div class="user-details">
-            <p><strong>Games played:</strong> {{ user_playstyle.gaming_history }}</p>
-            <p><strong>Favorite genres:</strong> {{ user_playstyle.favorite_genres }}</p>
-            <p><strong>Preferred platforms:</strong> {{ user_playstyle.platforms }}</p>
+            <p><strong>{% trans "Games played:" %}</strong> {{ user_playstyle.gaming_history }}</p>
+            <p><strong>{% trans "Favorite genres:" %}</strong> {{ user_playstyle.favorite_genres }}</p>
+            <p><strong>{% trans "Preferred platforms:" %}</strong> {{ user_playstyle.platforms }}</p>
         </div>
     </div>
     {% endfor %}
 </div>
 {% else %}
-<p class="no-results">No users with similar playstyles found.</p>
+<p class="no-results">{% trans "No users with similar playstyles found." %}</p>
 {% endif %}
 
 {% endblock content %}

@@ -1,14 +1,17 @@
 {% extends "base.html" %}
+{% load i18n %}
+
 {% load static %}
 
 {% block page_header %}
 <div class="header">
-  <h3>PERSONALIZE YOUR PLAYSTYLE</h3>
+  <h3>{% trans "PERSONALIZE YOUR PLAYSTYLE" %}</h3>
 </div>
 {% endblock page_header %}
 
-{% block description %}Explore and manage your gaming preferences. You can provide your gaming history, favorite genres,
-and preferred platforms. Once you've defined your PlayStyle, you can get personalized game recommendations.
+{% block description %}
+{% blocktrans %}Explore and manage your gaming preferences. You can provide your gaming history, favorite genres,and preferred platforms.
+Once you've defined your PlayStyle, you can get personalized game recommendations.{% endblocktrans %}
 {% endblock description %}
 
 {% block content %}
@@ -18,7 +21,7 @@ and preferred platforms. Once you've defined your PlayStyle, you can get persona
 <form method="post" action="{% url 'playstyle_compass:update_preferences' %}" id="preferences-form">
   {% csrf_token %}
   <div class="section">
-    <label for="gaming_history" class="form-label">Provide Your Gaming History:</label>
+    <label for="gaming_history" class="form-label">{% trans "Provide Your Gaming History:" %}</label>
     <input type="text" id="gaming_history" name="gaming_history" class="form-control"
       value="{{ user_preferences.gaming_history }}" pattern="[A-Za-z0-9\s]+" maxlength="255" 
       title="Only letters and numbers are allowed">
@@ -26,7 +29,7 @@ and preferred platforms. Once you've defined your PlayStyle, you can get persona
 
   <div class="section">
     <fieldset>
-      <legend class="form-label">Select Your Favorite Genres (Up to 3):</legend>
+      <legend class="form-label">{% trans "Select Your Favorite Genres (Up to 3):" %}</legend>
       <div>
         {% for genre in genres %}
         <label>
@@ -41,7 +44,7 @@ and preferred platforms. Once you've defined your PlayStyle, you can get persona
 
   <div class="section">
     <fieldset>
-      <legend class="form-label">Select Your Preferred Platforms (Up to 3):</legend>
+      <legend class="form-label">{% trans "Select Your Preferred Platforms (Up to 3):" %}</legend>
       <div>
         {% for platform in platforms %}
         <label>
@@ -55,9 +58,9 @@ and preferred platforms. Once you've defined your PlayStyle, you can get persona
   </div>
 
   <div class="warnings">
-    <p class="warning" id="history-warning">Please provide at least one game that you have played.</p>
-    <p class="warning" id="genre-warning">Please select at least one genre.</p>
-    <p class="warning" id="platform-warning">Please select at least one platform.</p>
+    <p class="warning" id="history-warning">{% trans "Please provide at least one game that you have played." %}</p>
+    <p class="warning" id="genre-warning">{% trans "Please select at least one genre." %}</p>
+    <p class="warning" id="platform-warning">{% trans "Please select at least one platform." %}</p>
   </div>
 
   <input class="btn btn-primary" type="submit" value="Update Preferences" id="update-button">
