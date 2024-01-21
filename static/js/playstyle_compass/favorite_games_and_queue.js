@@ -28,7 +28,6 @@ $(document).ready(() => {
     };
   };
 
-  $('.favorite-toggle').on('click', handleToggle('/toggle_favorite/', 'is_favorite', { active: 'fas', inactive: 'far' }));
-
-  $('.queue-toggle').on('click', handleToggle('/toggle_game_queue/', 'in_queue', { active: 'fa-solid', inactive: 'fa-regular' }));
+  $('.favorite-toggle').on('click', handleToggle(toggleFavoriteUrl, 'is_favorite', { active: 'fas', inactive: 'far' }));
+  $('.queue-toggle').on('click', handleToggle(toggleGameQueueUrl, 'in_queue', { active: 'fa-solid', inactive: 'fa-regular' }));
 });

@@ -1,3 +1,5 @@
+{% load i18n %}
+
 <div class="card flex-row flex-grow-1 p-2 mx-2 my-2 align-items-center">
   <div class="friend-profile-picture mr-2">
     {% if profile_picture %}
@@ -15,14 +17,14 @@
     {% if action == 'sent' %}
     <div class="d-flex flex-row card-right flex-grow-1 justify-content-end mx-2">
       <button id="id_cancel_{{request.receiver.id}}" class="decline-friend-request material-icons p-1"
-        onclick='triggerCancelFriendRequest("{{request.receiver.id}}")'>Cancel</button>
+        onclick='triggerCancelFriendRequest("{{request.receiver.id}}")'>{% trans "Cancel" %}</button>
     </div>
     {% elif action == 'received' %}
     <div class="d-flex flex-row card-right flex-grow-1 justify-content-end mx-2">
       <button id="id_cancel_{{request.sender.id}}" class="decline-friend-request material-icons p-1"
-        onclick='triggerDeclineFriendRequest("{{request.id}}")'>Decline</button>
+        onclick='triggerDeclineFriendRequest("{{request.id}}")'>{% trans "Decline" %}</button>
       <button id="id_confirm_{{request.sender.id}}" class="confirm-friend-request material-icons p-1"
-        onclick='triggerAcceptFriendRequest("{{request.id}}")'>Accept</button>
+        onclick='triggerAcceptFriendRequest("{{request.id}}")'>{% trans "Accept" %}</button>
     </div>
     {% endif %}
     {% endblock %}

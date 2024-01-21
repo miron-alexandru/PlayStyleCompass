@@ -1,13 +1,16 @@
 {% extends 'base.html' %}
+{% load i18n %}
 {% load static %}
 
 {% block page_header %}
 <div class="header">
-  <h3>FRIEND REQUESTS</h3>
+  <h3>{% trans "FRIEND REQUESTS" %}</h3>
 </div>
 {% endblock page_header %}
 
-{% block description %}Review and manage incoming and sent friend requests. Stay connected with new friends!{% endblock description %}
+{% block description %}
+{% blocktrans %}Review and manage incoming and sent friend requests. Stay connected with new friends!{% endblocktrans %}
+{% endblock description %}
 
 {% block content %}
 <link rel="stylesheet" href="{% static 'css/users/friend_requests.css' %}">
@@ -15,7 +18,7 @@
 
 <div class="container">
   <div class="card p-2">
-    <p class="incoming-requests">Requests received</p>
+    <p class="incoming-requests">{% trans "Requests received" %}</p>
     {% if friend_requests %}
     <div class="d-flex flex-row flex-wrap">
       {% for request in friend_requests %}
@@ -28,14 +31,14 @@
     </div>
     {% else %}
     <div class="d-flex flex-row flex-grow-1 justify-content-center align-items-center p-4">
-      <p>No friend requests received.</p>
+      <p>{% trans "No friend requests received." %}</p>
     </div>
     {% endif %}
   </div>
 
   <div class="sent-friend-requests">
     <div class="card p-2">
-      <p class="sent-requests">Sent by you</p>
+      <p class="sent-requests">{% trans "Sent by you" %}</p>
       {% if user_sent_friend_requests %}
       <div class="d-flex flex-row flex-wrap">
         {% for request in user_sent_friend_requests %}
@@ -48,7 +51,7 @@
       </div>
       {% else %}
       <div class="d-flex flex-row flex-grow-1 justify-content-center align-items-center p-4">
-        <p>No friend requests sent.</p>
+        <p>{% trans "No friend requests sent." %}</p>
       </div>
       {% endif %}
     </div>

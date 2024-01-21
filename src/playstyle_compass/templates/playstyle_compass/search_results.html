@@ -1,9 +1,10 @@
 {% extends "base.html" %}
+{% load i18n %}
 {% load static %}
 
 {% block page_header %}
 <div class="header">
-  <h3>SEARCH RESULTS FOR: "{{ query }}"</h3>
+  <h3>{% trans "SEARCH RESULTS FOR:" %} "{{ query }}"</h3>
 </div>
 {% endblock page_header %}
 
@@ -21,7 +22,7 @@
     {% include "playstyle_compass/game_recommendations_section.html" %}
     {% endfor %}
     {% else %}
-    <p><strong>Sorry, there are no results for your search.</strong></p>
+    <p><strong>{% trans "Sorry, there are no results for your search." %}</strong></p>
     {% endif %}
   </ul>
 </div>

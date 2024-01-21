@@ -1,3 +1,4 @@
+{% load i18n %}
 {% load static %}
 {% load custom_filters %}
 
@@ -21,27 +22,27 @@
         {{ game.total_reviews|pluralize_reviews }})</span></small></p>
       <img src="{{ game.image }}" alt="Game Image" loading="lazy">
       {% else %}
-      <p><strong>Image not available</strong></p>
+      <p><strong>{% trans "Image not available" %}</strong></p>
       {% endif %}
     </div>
     <div class="game-info">
-      <h4>{{ game.title|default:"Game Title not available" }}</h4>
-      <p>{{ game.description|default:"Game description not available" }}</p>
-      <p><strong>Release date:</strong> {{ game.release_date|default:"N/A"}}</p>
-      <p><strong>Developer:</strong> {{ game.developers|default:"N/A"}}</p>
-      <p><strong>Genres:</strong> {{ game.genres|default:"N/A" }}</p>
-      <p><strong>Platforms:</strong> {{ game.platforms|default:"N/A" }}</p>
-      <p><strong>Themes:</strong> {{ game.themes|default:"N/A" }}</p>
-      <p><strong>DLC:</strong> {{ game.dlcs|default:"N/A" }}</p>
-      <p><strong>Similar games:</strong> {{ game.similar_games|default:"N/A"}}</p>
-      <p><strong>Overview:</strong>
+      <h4>{{ game.title|default:"N/A" }}</h4>
+      <p>{{ game.description|default:"N/A" }}</p>
+      <p><strong>{% trans "Release date:" %}</strong> {{ game.release_date|default:"N/A"}}</p>
+      <p><strong>{% trans "Developer:" %}</strong> {{ game.developers|default:"N/A"}}</p>
+      <p><strong>{% trans "Genres:" %}</strong> {{ game.genres|default:"N/A" }}</p>
+      <p><strong>{% trans "Platforms:" %}</strong> {{ game.platforms|default:"N/A" }}</p>
+      <p><strong>{% trans "Themes:" %}</strong> {{ game.themes|default:"N/A" }}</p>
+      <p><strong>{% trans "DLC:" %}</strong> {{ game.dlcs|default:"N/A" }}</p>
+      <p><strong>{% trans "Similar games:" %}</strong> {{ game.similar_games|default:"N/A"}}</p>
+      <p><strong>{% trans "Overview:" %}</strong>
         <span class="overview">{{ game.overview|default:"N/A"|truncatewords_html:"50" }}</span>
         <span class="full-text" style="display: none;">{{ game.overview|default:"N/A" }}</span>
-        <button class="read-button" onclick="readMore(this);">[Read more...]</button>
+        <button class="read-button" onclick="readMore(this);">{% trans "[Read more...]" %}</button>
       </p>
       <p>
-        <strong>Images:</strong>
-        <span><small>(Click on the image to open gallery)</small></span>
+        <strong>{% trans "Images:" %}</strong>
+        <span><small>{% trans "(Click on the image to open gallery)" %}</small></span>
       </p>
       {% if game.game_images %}
       <div class="image-gallery">
@@ -60,17 +61,17 @@
         {% endwith %}
       </div>
       {% else %}
-      <p><strong>Images not available</strong></p>
+      <p><strong>{% trans "Images not available" %}</strong></p>
       {% endif %}
       <div class="reviews-section">
-        <p><strong>Reviews:</strong></p>
-        <button class="show-hide-button" data-game-id="{{ game.id }}">Show Reviews</button>
+        <p><strong>{% trans "Reviews:" %}</strong></p>
+        <button class="show-hide-button" data-game-id="{{ game.id }}">{% trans "Show Reviews" %}</button>
         <a href="{% url 'playstyle_compass:add_review' game.id %}?next={{ request.get_full_path|urlencode }}"
-          class="add-review-btn">Write a Review</a>
+          class="add-review-btn">{% trans "Write a Review" %}</a>
           <a href="{% url 'playstyle_compass:delete_reviews' game.id %}?next={{ request.get_full_path|urlencode }}"
-          class="delete-review-btn">Delete your Review</a>
+          class="delete-review-btn">{% trans "Delete your Review" %}</a>
           <a href="{% url 'playstyle_compass:edit_review' game.id %}?next={{ request.get_full_path|urlencode }}"
-          class="edit-review-btn">Edit your Review</a>
+          class="edit-review-btn">{% trans "Edit your Review" %}</a>
         <div class="reviews-list" style="display: none;">
         </div>
       </div>
@@ -113,7 +114,7 @@
     <span class="icon-divider">|</span>
 
     <div class="friend-dropdown">
-        <button class="shareButton" title="Share with friends">Share with ...</button>
+        <button class="shareButton" title="Share with friends">{% trans "Share with ..." %}</button>
         <div class="friend-dropdown-content">
           {% for friend in user_friends %}
             <a class="friend-link" href="#" data-friend-id="{{ friend.id }}">{{ friend.userprofile.profile_name }}</a>

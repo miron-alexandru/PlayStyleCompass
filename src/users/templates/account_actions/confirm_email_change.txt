@@ -1,12 +1,13 @@
-Hello,
+{% load i18n %}
+{% trans "Hello," %}
 
-You have requested to change your email address at PlayStyle Compass.
+{% trans "You have requested to change your email address at PlayStyle Compass." %}
 
-New email address: {{ new_email }}
+{% trans "New email address:" %} {{ new_email }}
 
-To confirm this change, please click on the following link:
+{% trans "To confirm this change, please click on the following link:" %}
 {{ confirm_url }}
 
-If you did not request this change, please ignore this email.
+{% trans "If you did not request this change, please ignore this email." %}
 
-Thank you for using PlayStyle Compass.
+{% trans "Thank you for using PlayStyle Compass." %}

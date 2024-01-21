@@ -1,34 +1,30 @@
-"""Django settings for the PlayStyle Compass."""
-
 import os
 import sys
-
 from dotenv import load_dotenv
+from django.utils.translation import gettext_lazy as _
 
+# Load environment variables from .env file
 load_dotenv()
 
-# Base Dir
+# Base directory
 BASE_DIR = os.path.dirname(
     os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 )
 sys.path.insert(0, os.path.join(BASE_DIR, "src"))
 
+# General Settings
 SECRET_KEY = str(os.getenv("SECRET_KEY"))
-
 DEBUG = True
-
 ALLOWED_HOSTS = []
 
-
-# Application definition
-
+# Installed Apps
 INSTALLED_APPS = [
     "playstyle_compass",
     "users",
     "bootstrap4",
     "captcha",
     "daphne",
-    # Default django apps.
+    "rosetta",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -38,14 +34,18 @@ INSTALLED_APPS = [
     "django.forms",
 ]
 
+# Recaptcha Settings
 RECAPTCHA_PUBLIC_KEY = str(os.getenv("RECAPTCHA_PUBLIC_KEY"))
 RECAPTCHA_PRIVATE_KEY = str(os.getenv("RECAPTCHA_PRIVATE_KEY"))
 
+# Form Renderer
 FORM_RENDERER = "django.forms.renderers.TemplatesSetting"
 
+# Middleware
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.locale.LocaleMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -53,8 +53,13 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
+# Locale Paths
+LOCALE_PATHS = [os.path.join(BASE_DIR, "src", "locale")]
+
+# URL Configuration
 ROOT_URLCONF = "playstyle_manager.urls"
 
+# Templates Configuration
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
@@ -72,12 +77,13 @@ TEMPLATES = [
     },
 ]
 
-
-# WSGI_APPLICATION = "playstyle_manager.wsgi.application"
+# ASGI Application
 ASGI_APPLICATION = "playstyle_manager.asgi.application"
 
+# Channel Layers
 CHANNEL_LAYERS = {"default": {"BACKEND": "channels.layers.InMemoryChannelLayer"}}
 
+# SendGrid Email Settings
 SENDGRID_SANDBOX_MODE_IN_DEBUG = False
 EMAIL_BACKEND = "sendgrid_backend.SendgridBackend"
 SENDGRID_API_KEY = str(os.getenv("SENDGRID_API_KEY"))
@@ -89,10 +95,10 @@ EMAIL_HOST_PASSWORD = SENDGRID_API_KEY
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
+# Password Reset Timeout
 PASSWORD_RESET_TIMEOUT = 1800
 
-# Database
-
+# Database Configuration
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
@@ -104,45 +110,34 @@ DATABASES = {
     },
 }
 
+# Database Routers
 DATABASE_ROUTERS = [
     "playstyle_compass.database_router.GameRouter",
     "playstyle_compass.database_router.ReviewRouter",
 ]
 
+# Default Auto Field
 DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
 
-
-# Password validation
-
+# Password Validation
 AUTH_PASSWORD_VALIDATORS = [
     {
-        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
+        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"
     },
-    {
-        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
-    },
-    {
-        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
-    },
-    {
-        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
-    },
+    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator"},
+    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"},
+    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
 ]
 
-
 # Internationalization
-
-LANGUAGE_CODE = "en-us"
-
-TIME_ZONE = "UTC"
-
+LANGUAGES = [("en", _("English")), ("ro", _("Romanian"))]
 USE_I18N = True
-
+LANGUAGE_CODE = "en"
+TIME_ZONE = "UTC"
 USE_L10N = True
-
 USE_TZ = True
 
-# Static files
+# Static and Media Files
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 STATIC_URL = "/static/"
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
@@ -150,5 +145,5 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
-# My settings
+# Authentication Settings
 LOGIN_URL = "users:login"

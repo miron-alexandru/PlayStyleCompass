@@ -1,8 +1,9 @@
 {% load bootstrap4 %}
 {% load static %}
+{% load i18n %}
 
 <!DOCTYPE html>
-<html lang="en-GB">
+<html lang="en">
 
 <head>
   <meta charset="UTF-8">
@@ -30,60 +31,60 @@
       <ul class="navbar-nav ml-auto">
         <li class="nav-item">
           <a class="nav-link" href="{% url 'playstyle_compass:gaming_preferences'%}">
-            Create Playstyle
+            {% trans "Create Playstyle" %}
           </a>
         </li>
         {% if user.is_authenticated %}
         <li class="nav-item">
           <a class="nav-link" href="{% url 'playstyle_compass:update_preferences'%}">
-            Your Playstyle
+            {% trans "Your Playstyle" %}
           </a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="{% url 'playstyle_compass:similar_playstyles'%}">
-            Similar Playstyles
+            {% trans "Similar Playstyles" %}
           </a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="{% url 'playstyle_compass:get_recommendations'%}">
-            Game Recommendations
+            {% trans "Game Recommendations" %}
           </a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="{% url 'playstyle_compass:favorite_games'%}">
-            Favorite Games
+            {% trans "Favorite Games" %}
           </a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="{% url 'playstyle_compass:game_queue'%}">
-            Games Queue
+            {% trans "Games Queue" %}
           </a>
         </li>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navItemDropdown" role="button" data-toggle="dropdown">
-            More
+            {% trans "More" %}
           </a>
           <div class="dropdown-container dropdown-menu">
             <a class="dropdown-item" href="{% url 'playstyle_compass:user_reviews'%}">
-              My Reviews
+              {% trans "My Reviews" %}
             </a>
             <a class="dropdown-item" href="{% url 'playstyle_compass:top_rated_games'%}">
-              Top Rated Games
+              {% trans "Top Rated Games" %}
             </a>
             <a class="dropdown-item" href="{% url 'playstyle_compass:upcoming_games'%}">
-              Upcoming Games
+              {% trans "Upcoming Games" %}
             </a>
           </div>
         </li>
         {% else %}
         <li class="nav-item">
           <a class="nav-link" href="{% url 'playstyle_compass:top_rated_games'%}">
-            Top Rated Games
+            {% trans "Top Rated Games" %}
           </a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="{% url 'playstyle_compass:upcoming_games'%}">
-            Upcoming Games
+            {% trans "Upcoming Games" %}
           </a>
         </li>
         {% endif %}
@@ -125,38 +126,38 @@
           <li class="nav-item dropdown" id="hoverDropdown">
             <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button" data-toggle="dropdown"
               aria-haspopup="true" aria-expanded="false">
-              Account Actions
+              {% trans "Account Actions" %}
             </a>
             <div class="dropdown-container dropdown-menu" aria-labelledby="profileDropdown">
-              <a class="dropdown-item" href="{% url 'users:view_profile' user.userprofile.profile_name %}">My Profile</a>
-              <a class="dropdown-item" href="{% url 'users:inbox'%}">Inbox</a>
+              <a class="dropdown-item" href="{% url 'users:view_profile' user.userprofile.profile_name %}">{% trans "My Profile" %}</a>
+              <a class="dropdown-item" href="{% url 'users:inbox'%}">{% trans "Inbox" %}</a>
               <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="{% url 'playstyle_compass:games_shared'%}">Shared Games</a>
+              <a class="dropdown-item" href="{% url 'playstyle_compass:games_shared'%}">{% trans "Shared Games" %}</a>
               <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="{% url 'users:friends_list' user.id %}">Friends List</a>
-              <a class="dropdown-item" href="{% url 'users:friend_requests' user.id %}">Friend Requests</a>
+              <a class="dropdown-item" href="{% url 'users:friends_list' user.id %}">{% trans "Friends List" %}</a>
+              <a class="dropdown-item" href="{% url 'users:friend_requests' user.id %}">{% trans "Friend Requests" %}</a>
               <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="{% url 'users:profile_picture' %}">Change Profile Picture</a>
-              <a class="dropdown-item" href="{% url 'users:change_profile_name' %}">Change Profile Name</a>
+              <a class="dropdown-item" href="{% url 'users:profile_picture' %}">{% trans "Change Profile Picture" %}</a>
+              <a class="dropdown-item" href="{% url 'users:change_profile_name' %}">{% trans "Change Profile Name" %}</a>
               <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="{% url 'users:change_password' %}">Change Password</a>
-              <a class="dropdown-item" href="{% url 'users:change_email' %}">Change Email</a>
+              <a class="dropdown-item" href="{% url 'users:change_password' %}">{% trans "Change Password" %}</a>
+              <a class="dropdown-item" href="{% url 'users:change_email' %}">{% trans "Change Email" %}</a>
               <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="{% url 'users:delete_account' %}">Delete Account</a>
+              <a class="dropdown-item" href="{% url 'users:delete_account' %}">{% trans "Delete Account" %}</a>
               <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="{% url 'users:logout' %}">Log Out</a>
-            </div>
+              <a class="dropdown-item" href="{% url 'users:logout' %}">{% trans "Log Out" %}</a>
+          </div>
           </li>
           {% else %}
           <li class="nav-item">
-            <a class="nav-link" href="{% url 'users:register' %}">Register</a>
+            <a class="nav-link" href="{% url 'users:register' %}">{% trans "Register" %}</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{% url 'users:login' %}">Log in</a>
+              <a class="nav-link" href="{% url 'users:login' %}">{% trans "Log in" %}</a>
           </li>
           {% endif %}
           <li class="nav-item">
-            <a class="nav-link" href="{% url 'users:contact' %}">Contact Us</a>
+              <a class="nav-link" href="{% url 'users:contact' %}">{% trans "Contact Us" %}</a>
           </li>
         </ul>
       </div>
@@ -181,9 +182,9 @@
       {% if not user.userprofile.email_confirmed %}
       <div class="message">
         <div class="alert alert-warning">
-          Please confirm your email address to unlock all features.
-          <a href="#" class="resend-link" id="resend-link" data-url="{% url 'users:resend_activation_link' %}">Resend
-            verification link</a>
+          {% trans "Please confirm your email address to unlock all features." %}
+          <a href="#" class="resend-link" id="resend-link" data-url="{% url 'users:resend_activation_link' %}">
+            {% trans "Resend verification link" %}</a>
           <div id="success-message"></div>
         </div>
       </div>
@@ -206,18 +207,18 @@
 
   <footer class="footer">
     <div class="my-footer">
-      <p>&copy; 2023-{{ current_year }} PlayStyle Compass. All rights reserved.</p>
+      <p>&copy; 2023-{{ current_year }} {% trans "PlayStyle Compass. All rights reserved." %}</p>
     </div>
   </footer>
 
   <div class="scroll-top-container">
-    <button class="scroll-top-btn" id="scroll-top" title="Go top">
+    <button class="scroll-top-btn" id="scroll-top" title="{% trans 'Go top' %}">
       <span>&#9650;</span>
     </button>
   </div>
 
   {% include 'csfr_token.html' %}
-  {% include 'password_input_ids.html' %}
+  {% include 'used_variables.html' %}
 
   <script src="{% static 'js/base.js' %}" defer></script>
   <script src="{% static 'js/dropdown.js' %}" defer></script>

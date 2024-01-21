@@ -68,7 +68,7 @@ def index(request):
 def gaming_preferences(request):
     """Display and manage a user's gaming preferences."""
     context = {
-        "page_title": "Define PlayStyle :: PlayStyle Compass",
+        "page_title": _("Define PlayStyle :: PlayStyle Compass"),
         "genres": genres,
         "platforms": all_platforms,
     }
@@ -94,7 +94,7 @@ def update_preferences(request):
         user_preferences.save()
 
     context = {
-        "page_title": "Your PlayStyle :: PlayStyle Compass",
+        "page_title": _("Your PlayStyle :: PlayStyle Compass"),
         "user_preferences": user_preferences,
         "genres": genres,
         "platforms": all_platforms,
@@ -171,7 +171,7 @@ def get_recommendations(request):
     user_friends = get_friend_list(user)
 
     context = {
-        "page_title": "Recommendations :: PlayStyle Compass",
+        "page_title": _("Recommendations :: PlayStyle Compass"),
         "user_preferences": user_preferences,
         "paginated_games": dict(paginated_games),
         "user_friends": user_friends,
@@ -198,7 +198,7 @@ def search_results(request):
     user_friends = get_friend_list(request.user)
 
     context = {
-        "page_title": "Serach Results :: PlayStyle Compass",
+        "page_title": _("Serach Results :: PlayStyle Compass"),
         "query": query,
         "games": games,
         "user_preferences": user_preferences,
@@ -224,6 +224,7 @@ def autocomplete_view(request):
 def toggle_favorite(request):
     """View for toggling a game's favorite status for the current user."""
     if request.method == "POST":
+        print('aaaaaaaaaaa')
         game_id = request.POST.get("game_id")
         user = request.user
         user_preferences = UserPreferences.objects.get(user=user)
@@ -274,7 +275,9 @@ def user_reviews(request, user_id=None):
     # Check permissions for viewing user reviews in other user profiles
     if other_user_profile:
         if not user_preferences.show_reviews:
-            messages.error(request, "You don't have permission to view this content.")
+            messages.error(
+                request, _("You don't have permission to view this content.")
+            )
             return redirect("playstyle_compass:index")
 
     user_reviews = Review.objects.filter(user=user)
@@ -286,7 +289,7 @@ def user_reviews(request, user_id=None):
     user_friends = get_friend_list(request.user)
 
     context = {
-        "page_title": "Games Reviewed :: PlayStyle Compass",
+        "page_title": _("Games Reviewed :: PlayStyle Compass"),
         "games": user_games,
         "user_preferences": user_preferences,
         "other_user": other_user_profile,
@@ -303,7 +306,7 @@ def favorite_games(request, user_id=None):
     """View for the favorite games."""
     return _get_games_view(
         request,
-        "Favorites :: PlayStyle Compass",
+        _("Favorites :: PlayStyle Compass"),
         "favorite_games",
         "playstyle_compass/favorite_games.html",
         user_id=user_id,
@@ -315,7 +318,7 @@ def game_queue(request, user_id=None):
     """View for the games queue."""
     return _get_games_view(
         request,
-        "Game Queue :: PlayStyle Compass",
+        _("Game Queue :: PlayStyle Compass"),
         "game_queue",
         "playstyle_compass/game_queue.html",
         user_id=user_id,
@@ -346,11 +349,15 @@ def _get_games_view(request, page_title, list_name, template_name, user_id=None)
     # Check permissions for viewing certain content in other user profiles
     if other_user_profile:
         if not user_preferences.show_favorites and list_name == "favorite_games":
-            messages.error(request, "You don't have permission to view this content.")
+            messages.error(
+                request, _("You don't have permission to view this content.")
+            )
             return redirect("playstyle_compass:index")
 
         if not user_preferences.show_in_queue and list_name == "game_queue":
-            messages.error(request, "You don't have permission to view this content.")
+            messages.error(
+                request, _("You don't have permission to view this content.")
+            )
             return redirect("playstyle_compass:index")
 
     # Get the list of game IDs based on the specified list_name and user_preferences
@@ -391,7 +398,7 @@ def top_rated_games(request):
     user_friends = get_friend_list(user) if user else []
 
     context = {
-        "page_title": "Top Rated Games :: PlayStyle Compass",
+        "page_title": _("Top Rated Games :: PlayStyle Compass"),
         "games": top_games,
         "user_preferences": user_preferences,
         "user_friends": user_friends,
@@ -414,7 +421,7 @@ def upcoming_games(request):
     user_friends = get_friend_list(user) if user else []
 
     context = {
-        "page_title": "Upcoming Games :: PlayStyle Compass",
+        "page_title": _("Upcoming Games :: PlayStyle Compass"),
         "upcoming_games": paginated_games,
         "user_preferences": user_preferences,
         "user_friends": user_friends,
@@ -432,7 +439,7 @@ def add_review(request, game_id):
     existing_review = Review.objects.filter(game=game, user=user).first()
 
     if existing_review:
-        messages.error(request, "You have already reviewed this game!")
+        messages.error(request, _("You have already reviewed this game!"))
         return HttpResponseRedirect(
             request.META.get("HTTP_REFERER", reverse("playstyle_compass:index"))
         )
@@ -453,7 +460,7 @@ def add_review(request, game_id):
 
             Review.objects.create(**review_data)
 
-            messages.success(request, "Your review has been successfully submitted.")
+            messages.success(request, _("Your review has been successfully submitted."))
             return HttpResponseRedirect(
                 request.GET.get("next", reverse("playstyle_compass:index"))
             )
@@ -462,7 +469,7 @@ def add_review(request, game_id):
         form = ReviewForm()
 
     context = {
-        "page_title": "Add Review :: PlayStyle Compass",
+        "page_title": _("Add Review :: PlayStyle Compass"),
         "form": form,
         "game": game,
     }
@@ -482,20 +489,20 @@ def edit_review(request, game_id):
         review = Review.objects.get(game=game, user=user)
     except Review.DoesNotExist:
         # Handle the case where the user hasn't written any reviews for this game
-        messages.error(request, "You haven't written any reviews for this game!")
+        messages.error(request, _("You haven't written any reviews for this game!"))
         return HttpResponseRedirect(next_url)
 
     if request.method == "POST":
         form = ReviewForm(request.POST, instance=review)
         if form.is_valid():
             form.save()
-            messages.success(request, "Your review has been successfully updated.")
+            messages.success(request, _("Your review has been successfully updated."))
             return HttpResponseRedirect(next_url)
     else:
         form = ReviewForm(instance=review)
 
     context = {
-        "page_title": "Edit Review :: PlayStyle Compass",
+        "page_title": _("Edit Review :: PlayStyle Compass"),
         "form": form,
         "game": game,
     }
@@ -536,7 +543,7 @@ def like_review(request):
             review = get_object_or_404(Review, id=review_id)
 
             if review.user_id == user_id:
-                return JsonResponse({"message": "You cannot like your own review."})
+                return JsonResponse({"message": _("You cannot like your own review.")})
 
             if "-" in str(review.user_id):
                 review.user_id = -1
@@ -553,10 +560,10 @@ def like_review(request):
                 {"likes": review.likes, "dislikes": review.dislikes, "message": ""}
             )
 
-        return JsonResponse({"error": "Review ID invalid."})
+        return JsonResponse({"error": _("Review ID invalid.")})
 
     return JsonResponse(
-        {"message": "You must be logged in to like or dislike a review."}
+        {"message": _("You must be logged in to like or dislike a review.")}
     )
 
 
@@ -569,7 +576,9 @@ def dislike_review(request):
             review = get_object_or_404(Review, id=review_id)
 
             if review.user_id == user_id:
-                return JsonResponse({"message": "You cannot dislike your own review."})
+                return JsonResponse(
+                    {"message": _("You cannot dislike your own review.")}
+                )
 
             if "-" in str(review.user_id):
                 review.user_id = -1
@@ -586,10 +595,10 @@ def dislike_review(request):
                 {"dislikes": review.dislikes, "likes": review.likes, "message": ""}
             )
 
-        return JsonResponse({"error": "Review ID invalid."})
+        return JsonResponse({"error": _("Review ID invalid.")})
 
     return JsonResponse(
-        {"message": "You must be logged in to like or dislike a review."}
+        {"message": _("You must be logged in to like or dislike a review.")}
     )
 
 
@@ -603,9 +612,9 @@ def delete_reviews(request, game_id):
     try:
         review = Review.objects.get(game=game, user=user)
         review.delete()
-        messages.success(request, "Your review has been successfully deleted!")
+        messages.success(request, _("Your review has been successfully deleted!"))
     except Review.DoesNotExist:
-        messages.error(request, "You haven't written any reviews for this game!")
+        messages.error(request, _("You haven't written any reviews for this game!"))
 
     return HttpResponseRedirect(next_url)
 
@@ -650,18 +659,29 @@ def share_game(request, game_id):
                 return JsonResponse(
                     {
                         "status": "error",
-                        "message": f"You have already shared {game.title} with {receiver.userprofile.profile_name}.",
-                    }
+                        "message": _(
+                            "You have already shared {game_title} with {receiver_name}."
+                        ).format(
+                            game_title=game.title,
+                            receiver_name=receiver.userprofile.profile_name,
+                        ),
+                    },
                 )
 
             # Create the message content with information about the shared game
-            message_content = f"""
-                <p><strong>Hello {receiver.userprofile.profile_name}!</strong></p>
-                <p>I just wanted to share this awesome game named <strong>{game.title}</strong> with you.</p>
+            message_content = _(
+                """
+                <p><strong>Hello {receiver_name}!</strong></p>
+                <p>I just wanted to share this awesome game named <strong>{game_title}</strong> with you.</p>
                 <div class="game-message">
-                    <p>Check it out <a href='{reverse('playstyle_compass:view_game', args=[game.id])}' target='_blank'>here</a>!</p>
+                    <p>Check it out <a href='{game_url}' target='_blank'>here</a>!</p>
                 </div>
-            """
+                """
+            ).format(
+                receiver_name=receiver.userprofile.profile_name,
+                game_title=game.title,
+                game_url=reverse("playstyle_compass:view_game", args=[game.id]),
+            )
 
             # Create a new Message object
             message = SharedGame.objects.create(
@@ -672,13 +692,19 @@ def share_game(request, game_id):
             )
 
             user_in_notification = request.user.userprofile.profile_name
-            profile_url = reverse('users:view_profile', args=[user_in_notification])
-            navigation_url = reverse('playstyle_compass:games_shared')
+            profile_url = reverse("users:view_profile", args=[user_in_notification])
+            navigation_url = reverse("playstyle_compass:games_shared")
 
-            message = (
-                f'<a class="notification-profile" title="View User Profile" href="{profile_url}">{user_in_notification}</a> '
-                'just shared a game with you!<br>'
-                f'<a class="notification-link" title="Navigate" href="{navigation_url}">Navigate to shared games</a>'
+            message = _(
+                """
+                <a class="notification-profile" title="View User Profile" href="{profile_url}">{user_in_notification}</a> 
+                just shared a game with you!<br>
+                <a class="notification-link" title="Navigate" href="{navigation_url}">Navigate to shared games</a>
+                """
+            ).format(
+                profile_url=profile_url,
+                user_in_notification=user_in_notification,
+                navigation_url=navigation_url,
             )
 
             notification = Notification(user=receiver, message=message)
@@ -687,16 +713,18 @@ def share_game(request, game_id):
             return JsonResponse(
                 {
                     "status": "success",
-                    "message": f"You have successfully shared {game.title} with {receiver.userprofile.profile_name}.",
+                    "message": _(
+                        f"You have successfully shared {game.title} with {receiver.userprofile.profile_name}."
+                    ),
                 }
             )
 
         else:
             return JsonResponse(
-                {"status": "error", "message": "Receiver ID not provided"}
+                {"status": "error", "message": _("Receiver ID not provided")}
             )
 
-    return JsonResponse({"status": "error", "message": "Invalid request method"})
+    return JsonResponse({"status": "error", "message": _("Invalid request method")})
 
 
 @login_required
@@ -719,7 +747,7 @@ def view_games_shared(request):
         games_shared = games_shared.order_by("-timestamp")
 
     context = {
-        "page_title": "Shared Games :: PlayStyle Compass",
+        "page_title": _("Shared Games :: PlayStyle Compass"),
         "games_received": games_received,
         "games_shared": games_shared,
         "selected_sort_order": sort_order,
@@ -797,7 +825,7 @@ def similar_playstyles(request):
     ]
 
     context = {
-        "page_title": "Similar PlayStyles :: PlayStyle Compass",
+        "page_title": _("Similar PlayStyles :: PlayStyle Compass"),
         "similar_user_playstyles": similar_user_playstyles,
     }
 

@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load i18n %}
 {% load static %}
 {% load bootstrap4 %}
 
@@ -9,17 +10,17 @@
   <div class="row justify-content-center">
     <div class="col-md-6">
       <form method="post" enctype="multipart/form-data" class="border rounded p-4">
-        <h2 class="title">Change Profile Picture</h2>
+        <h2 class="title">{% trans "Change Profile Picture" %}</h2>
         {% csrf_token %}
         {% bootstrap_form form %}
         <div class="current-image">
           {% if form.instance.profile_picture %}
-          <p>Current: <a href="{{ form.instance.profile_picture.url }}" target="_blank">{% spaceless %}
+          <p>{% trans "Current:" %} <a href="{{ form.instance.profile_picture.url }}" target="_blank">{% spaceless %}
               {{ form.instance.profile_picture.url }}
               {% endspaceless %}</a></p>
           {% endif %}
         </div>
-        <button id="uploadButton" type="submit" class="btn btn-primary" disabled>Change</button>
+        <button id="uploadButton" type="submit" class="btn btn-primary" disabled>{% trans "Change" %}</button>
       </form>
     </div>
   </div>

@@ -23,6 +23,7 @@ from django.template.loader import render_to_string
 from django.templatetags.static import static
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils import timezone
+from django.utils.translation import gettext as _
 from django.utils.http import (
     urlsafe_base64_encode,
     urlsafe_base64_decode,
@@ -85,7 +86,8 @@ class ProfileUpdateView(LoginRequiredMixin, UpdateView):
             one_hour_ago = timezone.now() - timedelta(hours=1)
             if last_update_time > one_hour_ago:
                 messages.error(
-                    self.request, "You can only update your profile name once per hour."
+                    self.request,
+                    _("You can only update your profile name once per hour."),
                 )
                 return redirect(
                     request.META.get("HTTP_REFERER", "playstyle_compass:index")
@@ -135,10 +137,10 @@ def activate(request, uidb64, token):
         user.userprofile.save()
         user.save()
 
-        messages.success(request, "Thank you for your email confirmation!")
+        messages.success(request, _("Thank you for your email confirmation!"))
         return redirect("playstyle_compass:index")
     else:
-        messages.error(request, "Activation link is invalid!")
+        messages.error(request, _("Activation link is invalid!"))
 
     return redirect("playstyle_compass:index")
 
@@ -146,7 +148,7 @@ def activate(request, uidb64, token):
 @login_required
 def activateEmail(request, user, to_email):
     """Send activation email to users."""
-    mail_subject = "Activate your user account."
+    mail_subject = _("Activate your user account.")
     message = render_to_string(
         "registration/activate_account.html",
         {
@@ -159,16 +161,14 @@ def activateEmail(request, user, to_email):
     )
     email = EmailMessage(mail_subject, message, to=[to_email])
     if email.send():
-        message = (
-            f"Hello <b>{user}</b>, please go to your email <b>{to_email}</b> inbox and click on "
-            f"received activation link to confirm your registration. \
-                  <b>Note:</b> If you cannot find the email in your inbox, we recommend checking your spam folder."
-        )
+        message = (_(
+            f"Hello <b>{user}</b>, please go to your email <b>{to_email}</b> inbox and click on received activation link to confirm your registration. <b>Note:</b> If you cannot find the email in your inbox, we recommend checking your spam folder."
+        ))
         messages.success(request, mark_safe(message))
     else:
         messages.error(
             request,
-            f"Problem sending email to {to_email}, check if you typed it correctly.",
+            _(f"Problem sending email to {to_email}, check if you typed it correctly."),
         )
 
 
@@ -177,7 +177,7 @@ def resend_activation_link(request):
     """Resend email activation link to the user."""
     if request.method != "GET":
         return JsonResponse(
-            {"success": False, "error_message": "Invalid request method"}
+            {"success": False, "error_message": _("Invalid request method")}
         )
 
     email = request.user.email
@@ -197,7 +197,7 @@ def register(request):
     else:
         form = CustomRegistrationForm()
 
-    context = {"form": form, "page_title": "Register :: PlayStyle Compass"}
+    context = {"form": form, "page_title": _("Register :: PlayStyle Compass")}
 
     return render(request, "registration/register.html", context)
 
@@ -235,14 +235,16 @@ def delete_account(request):
             password = form.cleaned_data["password"]
             if request.user.check_password(password):
                 request.user.delete()
-                messages.success(request, "Your account has been successfully deleted!")
+                messages.success(
+                    request, _("Your account has been successfully deleted!")
+                )
                 return redirect("playstyle_compass:index")
             else:
-                form.add_error("password", "Incorrect password. Please try again.")
+                form.add_error("password", _("Incorrect password. Please try again."))
     else:
         form = DeleteAccountForm()
 
-    context = {"form": form, "page_title": "Delete Account :: PlayStyle Compass"}
+    context = {"form": form, "page_title": _("Delete Account :: PlayStyle Compass")}
 
     return render(request, "account_actions/delete_account.html", context)
 
@@ -278,7 +280,7 @@ def change_email(request):
             )
 
             # Email subject, sender, and message
-            subject = "Confirm Email Change"
+            subject = _("Confirm Email Change")
             from_email = settings.DEFAULT_FROM_EMAIL
             message = render_to_string(
                 "account_actions/confirm_email_change.txt",
@@ -295,7 +297,7 @@ def change_email(request):
             user=request.user, initial={"current_email": request.user.email}
         )
 
-    context = {"form": form, "page_title": "Change Email :: PlayStyle Compass"}
+    context = {"form": form, "page_title": _("Change Email :: PlayStyle Compass")}
 
     return render(request, "account_actions/change_email.html", context)
 
@@ -316,17 +318,19 @@ def confirm_email_change(request, uidb64, token):
 
         return redirect("users:change_email_success")
 
-    return HttpResponse("Invalid token for email change.")
+    return HttpResponse(_("Invalid token for email change."))
 
 
 @login_required
 def change_email_success(request):
     """View for email change success."""
     new_email = request.user.email
-    messages.success(request, "Email Address successfully changed!")
+    messages.success(request, _("Email Address successfully changed!"))
     context = {
-        "page_title": "Email Change Success :: PlayStyle Compass",
-        "response": "You have successfully changed your email address, go to the homepage by clicking the button below.",
+        "page_title": _("Email Change Success :: PlayStyle Compass"),
+        "response": _(
+            "You have successfully changed your email address, go to the homepage by clicking the button below."
+        ),
         "additional_message": new_email,
     }
     return render(request, "account_actions/change_succeeded.html", context)
@@ -335,10 +339,12 @@ def change_email_success(request):
 @login_required
 def change_email_done(request):
     """View for email change confirmation."""
-    messages.success(request, "Confirmation email successfully sent!")
+    messages.success(request, _("Confirmation email successfully sent!"))
     context = {
-        "page_title": "Email Change Done :: PlayStyle Compass",
-        "response": "An email confirmation has been sent to your current email address. Please check your inbox and click the link provided to confirm the email change.",
+        "page_title": _("Email Change Done :: PlayStyle Compass"),
+        "response": _(
+            "An email confirmation has been sent to your current email address. Please check your inbox and click the link provided to confirm the email change."
+        ),
     }
     return render(request, "account_actions/change_succeeded.html", context)
 
@@ -370,16 +376,17 @@ def change_password(request):
                     return redirect("users:change_password_done")
                 else:
                     messages.error(
-                        request, "New password must be different from the old password!"
+                        request,
+                        _("New password must be different from the old password!"),
                     )
             else:
-                form.add_error("new_password2", "New passwords must match.")
+                form.add_error("new_password2", _("New passwords must match."))
     else:
         form = CustomPasswordChangeForm(user=request.user)
 
     context = {
         "form": form,
-        "page_title": "Change Password :: PlayStyle Compass",
+        "page_title": _("Change Password :: PlayStyle Compass"),
     }
 
     return render(request, "account_actions/password_change_form.html", context)
@@ -388,10 +395,12 @@ def change_password(request):
 @login_required
 def change_password_done(request):
     """View for password change confirmation."""
-    messages.success(request, "Password Changed Successfully!")
+    messages.success(request, _("Password Changed Successfully!"))
     context = {
-        "page_title": "Password Change Done :: PlayStyle Compass",
-        "response": "You have changed your password, go to the homepage by clicking the button below.",
+        "page_title": _("Password Change Done :: PlayStyle Compass"),
+        "response": _(
+            "You have changed your password, go to the homepage by clicking the button below."
+        ),
     }
     return render(request, "account_actions/change_succeeded.html", context)
 
@@ -413,7 +422,7 @@ def update_profile_picture(request):
 
     context = {
         "form": form,
-        "page_title": "Change Profile Picture :: PlayStyle Compass",
+        "page_title": _("Change Profile Picture :: PlayStyle Compass"),
     }
 
     return render(request, "account_actions/update_profile_picture.html", context)
@@ -428,7 +437,7 @@ def contact(request):
     else:
         form = ContactForm()
 
-    context = {"form": form, "page_title": "Contact Us :: PlayStyle Compass"}
+    context = {"form": form, "page_title": _("Contact Us :: PlayStyle Compass")}
 
     return render(request, "account_actions/contact.html", context)
 
@@ -455,12 +464,14 @@ def send_contact_form(form):
 
 def contact_success(request):
     """Contact confirmation view."""
-    messages.success(request, "Your message has been successfully submitted!")
+    messages.success(request, _("Your message has been successfully submitted!"))
 
     context = {
-        "page_title": "Contact Us Done :: PlayStyle Compass",
-        "response": "Thank you for contacting us! Our team will review it within 48 hours and get back to you as soon as possible. \
-    Go to the homepage by clicking the button below.",
+        "page_title": _("Contact Us Done :: PlayStyle Compass"),
+        "response": _(
+            "Thank you for contacting us! Our team will review it within 48 hours and get back to you as soon as possible. \
+    Go to the homepage by clicking the button below."
+        ),
     }
 
     return render(request, "account_actions/change_succeeded.html", context)
@@ -473,13 +484,13 @@ def friends_list_view(request, *args, **kwargs):
     context = {}
 
     if not viewer.is_authenticated:
-        return HttpResponse("You must be authenticated to view the friends list.")
+        return HttpResponse(_("You must be authenticated to view the friends list."))
 
     user_id = kwargs.get("user_id")
     this_user = get_object_or_404(User, pk=user_id)
 
     if viewer != this_user:
-        return HttpResponse("You cannot view the friends list of another user.")
+        return HttpResponse(_("You cannot view the friends list of another user."))
 
     friend_list, created = FriendList.objects.get_or_create(user=this_user)
     auth_user_friend_list = FriendList.objects.get(user=request.user)
@@ -487,7 +498,7 @@ def friends_list_view(request, *args, **kwargs):
     friends = [(friend, auth_user_friend_list) for friend in friend_list.friends.all()]
 
     context = {
-        "page_title": "Friends List :: PlayStyle Compass",
+        "page_title": _("Friends List :: PlayStyle Compass"),
         "this_user": this_user,
         "friends": friends,
     }
@@ -507,7 +518,7 @@ def friend_requests_view(request, *args, **kwargs):
     account = User.objects.get(pk=user_id)
 
     if account != user:
-        return HttpResponse("You can't view the friend requests of another user.")
+        return HttpResponse(_("You can't view the friend requests of another user."))
 
     friend_requests = FriendRequest.objects.filter(receiver=account, is_active=True)
     user_sent_friend_requests = FriendRequest.objects.filter(
@@ -515,7 +526,7 @@ def friend_requests_view(request, *args, **kwargs):
     )
 
     context = {
-        "page_title": "Friend Requests :: PlayStyle Compass",
+        "page_title": _("Friend Requests :: PlayStyle Compass"),
         "friend_requests": friend_requests,
         "user_sent_friend_requests": user_sent_friend_requests,
     }
@@ -543,14 +554,14 @@ def send_friend_request(request, *args, **kwargs):
 
                 # Check if the users are already friends
                 if are_friends(user, receiver):
-                    result[
-                        "message"
-                    ] = f"<strong>{receiver.userprofile.profile_name}</strong> is already in your friends list."
+                    result["message"] = _(
+                        f"<strong>{receiver.userprofile.profile_name}</strong> is already in your friends list."
+                    )
                 # Check if the user is trying to send a request to themselves
                 elif user == receiver:
-                    result[
-                        "message"
-                    ] = f"You cannot send a friend request to <strong>yourself.</strong>"
+                    result["message"] = _(
+                        f"You cannot send a friend request to <strong>yourself.</strong>"
+                    )
                 else:
                     # Check if there are existing active friend requests from the current user to the receiver
                     friend_requests = FriendRequest.objects.filter(
@@ -559,7 +570,7 @@ def send_friend_request(request, *args, **kwargs):
 
                     # Check if the user has already sent a friend request to the receiver
                     if friend_requests.exists():
-                        result["message"] = "You already sent them a friend request."
+                        result["message"] = _("You already sent them a friend request.")
                     else:
                         try:
                             # Attempt to retrieve an existing friend request (may not exist)
@@ -575,15 +586,19 @@ def send_friend_request(request, *args, **kwargs):
                             )
                             friend_request.save()
 
-                        result["message"] = "Friend request sent."
+                        result["message"] = _("Friend request sent.")
 
                         user_in_notification = user.userprofile.profile_name
-                        profile_url = reverse('users:view_profile', args=[user_in_notification])
-                        navigation_url = reverse('users:friend_requests', args=[receiver.id])
+                        profile_url = reverse(
+                            "users:view_profile", args=[user_in_notification]
+                        )
+                        navigation_url = reverse(
+                            "users:friend_requests", args=[receiver.id]
+                        )
 
-                        message = (
+                        message = _(
                             f'<a class="notification-profile" title="View User Profile" href="{profile_url}">{user_in_notification}</a> '
-                            'just sent you a friend request!<br>'
+                            "just sent you a friend request!<br>"
                             f'<a class="notification-link" title="Navigate" href="{navigation_url}">View friend requests</a>'
                         )
 
@@ -591,13 +606,15 @@ def send_friend_request(request, *args, **kwargs):
                         notification.save()
 
             else:
-                result[
-                    "message"
-                ] = "The user does not exist or has deleted their account."
+                result["message"] = _(
+                    "The user does not exist or has deleted their account."
+                )
         else:
-            result["message"] = "The user does not exist or has deleted their account."
+            result["message"] = _(
+                "The user does not exist or has deleted their account."
+            )
     else:
-        result["message"] = "You must be logged in to send a friend request."
+        result["message"] = _("You must be logged in to send a friend request.")
 
     return HttpResponse(json.dumps(result), content_type="application/json")
 
@@ -616,33 +633,41 @@ def accept_friend_request(request, *args, **kwargs):
                 try:
                     friend_request.accept()
                     friend_request.delete()
-                    result["message"] = "Friend request accepted."
+                    result["message"] = _("Friend request accepted.")
                     messages.success(
                         request,
                         mark_safe(
-                            f"You are now friends with <strong>{friend_request.sender.userprofile.profile_name}</strong>."
+                            _(
+                                f"You are now friends with <strong>{friend_request.sender.userprofile.profile_name}</strong>."
+                            )
                         ),
                     )
 
-                    user_in_notification = friend_request.receiver.userprofile.profile_name
-                    profile_url = reverse('users:view_profile', args=[user_in_notification])
-
-                    message = (
-                        f'<a class="notification-profile" title="View User Profile" href="{profile_url}">{user_in_notification}</a> '
-                        'accepted your friend request!'
+                    user_in_notification = (
+                        friend_request.receiver.userprofile.profile_name
+                    )
+                    profile_url = reverse(
+                        "users:view_profile", args=[user_in_notification]
                     )
 
-                    notification = Notification(user=friend_request.sender, message=message)
+                    message = _(
+                        f'<a class="notification-profile" title="View User Profile" href="{profile_url}">{user_in_notification}</a> '
+                        "accepted your friend request!"
+                    )
+
+                    notification = Notification(
+                        user=friend_request.sender, message=message
+                    )
                     notification.save()
 
                 except Exception as e:
                     result["message"] = str(e)
             else:
-                result["message"] = "That is not your request to accept."
+                result["message"] = _("That is not your request to accept.")
         else:
-            result["message"] = "Unable to accept that friend request."
+            result["message"] = _("Unable to accept that friend request.")
     else:
-        result["message"] = "You must be authenticated to accept a friend request."
+        result["message"] = _("You must be authenticated to accept a friend request.")
 
     return HttpResponse(json.dumps(result), content_type="application/json")
 
@@ -660,19 +685,21 @@ def remove_friend(request):
 
             try:
                 friend_list.unfriend(friend_to_remove)
-                result["message"] = "Successfully removed that friend."
+                result["message"] = _("Successfully removed that friend.")
                 messages.success(
                     request,
                     mark_safe(
-                        f"You are no longer friends with <strong>{friend_to_remove.userprofile.profile_name}</strong>."
+                        _(
+                            f"You are no longer friends with <strong>{friend_to_remove.userprofile.profile_name}</strong>."
+                        )
                     ),
                 )
             except Exception as e:
                 result["message"] = str(e)
         else:
-            result["message"] = "There was an error. Unable to remove that friend."
+            result["message"] = _("There was an error. Unable to remove that friend.")
     else:
-        result["message"] = "You must be authenticated to remove a friend."
+        result["message"] = _("You must be authenticated to remove a friend.")
 
     return HttpResponse(json.dumps(result), content_type="application/json")
 
@@ -690,34 +717,41 @@ def decline_friend_request(request, *args, **kwargs):
             if friend_request.receiver == user:
                 try:
                     friend_request.decline()
-                    result["message"] = "Friend request declined."
+                    result["message"] = _("Friend request declined.")
                     messages.success(
                         request,
                         mark_safe(
-                            f"You refused to be friends with <strong>{friend_request.sender.userprofile.profile_name}</strong>."
+                            _(
+                                f"You refused to be friends with <strong>{friend_request.sender.userprofile.profile_name}</strong>."
+                            )
                         ),
                     )
 
-                    user_in_notification = friend_request.receiver.userprofile.profile_name
-                    profile_url = reverse('users:view_profile', args=[user_in_notification])
-
-                    message = (
-                        f'<a class="notification-profile" title="View User Profile" href="{profile_url}">{user_in_notification}</a> '
-                        'declined your friend request!'
+                    user_in_notification = (
+                        friend_request.receiver.userprofile.profile_name
+                    )
+                    profile_url = reverse(
+                        "users:view_profile", args=[user_in_notification]
                     )
 
-                    notification = Notification(user=friend_request.sender, message=message)
-                    notification.save()
+                    message = _(
+                        f'<a class="notification-profile" title="View User Profile" href="{profile_url}">{user_in_notification}</a> '
+                        "declined your friend request!"
+                    )
 
+                    notification = Notification(
+                        user=friend_request.sender, message=message
+                    )
+                    notification.save()
 
                 except Exception as e:
                     result["message"] = str(e)
             else:
-                result["message"] = "That is not your friend request to decline."
+                result["message"] = _("That is not your friend request to decline.")
         else:
-            result["message"] = "Unable to decline that friend request."
+            result["message"] = _("Unable to decline that friend request.")
     else:
-        result["message"] = "You must be authenticated to decline a friend request."
+        result["message"] = _("You must be authenticated to decline a friend request.")
 
     return HttpResponse(json.dumps(result), content_type="application/json")
 
@@ -741,31 +775,35 @@ def cancel_friend_request(request):
                 )
             except FriendRequest.DoesNotExist:
                 # Handle the case where no friend request exists
-                result["message"] = "Nothing to cancel. Friend request does not exist."
+                result["message"] = _(
+                    "Nothing to cancel. Friend request does not exist."
+                )
             else:
                 # Cancel each friend request
                 for friend_request in friend_requests:
                     friend_request.cancel()
 
-                result["message"] = "Friend request canceled."
+                result["message"] = _("Friend request canceled.")
 
                 messages.success(
                     request,
                     mark_safe(
-                        f"You canceled your friend request for <strong>{receiver.userprofile.profile_name}</strong>."
+                        _(
+                            f"You canceled your friend request for <strong>{receiver.userprofile.profile_name}</strong>."
+                        )
                     ),
                 )
         else:
-            result["message"] = "Unable to cancel that friend request."
+            result["message"] = _("Unable to cancel that friend request.")
     else:
-        result["message"] = "You must be authenticated to cancel a friend request."
+        result["message"] = _("You must be authenticated to cancel a friend request.")
 
     return HttpResponse(json.dumps(result), content_type="application/json")
 
 
 def view_profile(request, profile_name):
     """View used to view the profile of users."""
-    context = {"page_title": "User Profile :: PlayStyle Compass"}
+    context = {"page_title": _("User Profile :: PlayStyle Compass")}
 
     try:
         user_profile = get_object_or_404(UserProfile, profile_name=profile_name)
@@ -793,7 +831,9 @@ def view_profile(request, profile_name):
         )
 
     except Http404:
-        messages.error(request, "The user does not exist or has deleted their account.")
+        messages.error(
+            request, _("The user does not exist or has deleted their account.")
+        )
         return redirect(request.META.get("HTTP_REFERER", "playstyle_compass:index"))
 
     return render(request, "account_actions/user_profile.html", context)
@@ -861,15 +901,17 @@ def send_message(request, user_id):
                 message.sender = message_sender
                 message.receiver = message_receiver
                 message.save()
-                messages.success(request, "Message sent successfully!")
+                messages.success(request, _("Message sent successfully!"))
 
-                profile_url = reverse('users:view_profile', args=[message_sender.userprofile.profile_name])
-                navigation_url = reverse('users:inbox')
+                profile_url = reverse(
+                    "users:view_profile", args=[message_sender.userprofile.profile_name]
+                )
+                navigation_url = reverse("users:inbox")
                 user_in_notification = message_sender.userprofile.profile_name
 
-                message = (
+                message = _(
                     f'<a class="notification-profile" title="View User Profile" href="{profile_url}">{user_in_notification}</a> '
-                    'just sent you a message!<br>'
+                    "just sent you a message!<br>"
                     f'<a class="notification-link" title="Navigate" href="{navigation_url}">View inbox</a>'
                 )
 
@@ -881,12 +923,12 @@ def send_message(request, user_id):
             form = MessageForm()
     else:
         messages.error(
-            request, "You have to be friends with someone to send them a message."
+            request, _("You have to be friends with someone to send them a message.")
         )
         return redirect("playstyle_compass:index")
 
     context = {
-        "page_title": "Send message :: PlayStyle Compass",
+        "page_title": _("Send message :: PlayStyle Compass"),
         "form": form,
         "receiver": message_receiver.userprofile.profile_name,
     }
@@ -914,7 +956,7 @@ def inbox(request):
         messages_sent = messages_sent.order_by("-timestamp")
 
     context = {
-        "page_title": "Inbox :: PlayStyle Compass",
+        "page_title": _("Inbox :: PlayStyle Compass"),
         "messages_received": messages_received,
         "messages_sent": messages_sent,
         "selected_sort_order": sort_order,
@@ -953,6 +995,7 @@ def delete_messages(request):
         ).delete()
 
     return redirect("users:inbox")
+
 
 @require_POST
 @login_required

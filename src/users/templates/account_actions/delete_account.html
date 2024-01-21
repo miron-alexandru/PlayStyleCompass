@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load i18n %}
 {% load static %}
 
 {% block content %}
@@ -6,14 +7,14 @@
 
 <div class="delete-container">
   <div class="delete-account">
-    <h2>Delete Account</h2>
+    <h2>{% trans "Delete Account" %}</h2>
     <div class="warning-message">
-      <p>Are you sure you want to delete your account? This action cannot be undone!!!</p>
+      <p>{% trans "Are you sure you want to delete your account? This action cannot be undone!!!" %}</p>
     </div>
     <form method="post" id="delete-form">
       {% csrf_token %}
       <div class="form-group">
-        <label for="{{ form.password.id_for_label }}"><i class="fas fa-lock"></i> Password</label>
+        <label for="{{ form.password.id_for_label }}"><i class="fas fa-lock"></i> {% trans "Password" %}</label>
         {{ form.password }}
         {% if form.password.errors %}
         <ul class="error-message">
@@ -22,9 +23,11 @@
         {% endif %}
       </div>
       {% if not user.userprofile.email_confirmed %}
-      <button type="button" class="btn btn-danger disabled" id="delete-button-disabled" title="Confirm your email address to unlock this!">Delete Account</button>
+      <button type="button" class="btn btn-danger disabled" id="delete-button-disabled" 
+      title="{% trans 'Confirm your email address to unlock this!' %}">
+      {% trans "Delete Account" %}</button>
       {% else %}
-      <button type="button" class="btn btn-danger" id="delete-button">Delete Account</button>
+      <button type="button" class="btn btn-danger" id="delete-button">{% trans "Delete Account" %}</button>
       {% endif %}
     </form>
   </div>

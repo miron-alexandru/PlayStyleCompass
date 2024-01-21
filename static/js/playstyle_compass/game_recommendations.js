@@ -6,6 +6,7 @@ document.querySelectorAll(".overview").forEach(function (truncatedText) {
   }
 });
 
+
 function readMore(button) {
   let parent = button.parentNode;
   let truncatedText = parent.querySelector(".overview");
@@ -14,10 +15,10 @@ function readMore(button) {
   if (truncatedText.style.display === "none") {
     truncatedText.style.display = "inline";
     fullText.style.display = "none";
-    button.innerHTML = "[Read more...]";
+    button.innerHTML = translate("[Read more...]");
   } else {
     truncatedText.style.display = "none";
     fullText.style.display = "inline";
-    button.innerHTML = "[Read less...]";
+    button.innerHTML = translate("[Read less...]");
   }
 }

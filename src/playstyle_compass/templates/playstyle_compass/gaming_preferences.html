@@ -1,6 +1,5 @@
 {% extends "base.html" %}
 {% load i18n %}
-
 {% load static %}
 
 {% block page_header %}
@@ -10,8 +9,9 @@
 {% endblock page_header %}
 
 {% block description %}
-{% blocktrans %}Explore and manage your gaming preferences. You can provide your gaming history, favorite genres,and preferred platforms.
-Once you've defined your PlayStyle, you can get personalized game recommendations.{% endblocktrans %}
+{% blocktrans %}
+Explore and manage your gaming preferences. You can provide your gaming history, favorite genres,and preferred platforms. Once you've defined your PlayStyle, you can get personalized game recommendations.
+{% endblocktrans %}
 {% endblock description %}
 
 {% block content %}
@@ -63,7 +63,7 @@ Once you've defined your PlayStyle, you can get personalized game recommendation
     <p class="warning" id="platform-warning">{% trans "Please select at least one platform." %}</p>
   </div>
 
-  <input class="btn btn-primary" type="submit" value="Update Preferences" id="update-button">
+  <input class="btn btn-primary" type="submit" value="{% trans 'Update Preferences' %}" id="update-button">
 </form>
 
 <script src="{% static 'js/playstyle_compass/gaming_preferences.js' %}" defer></script>

@@ -1,3 +1,28 @@
+const translate = (key) => {
+  const translations = {
+    'ro': {
+      'Show Reviews': 'Afișează Recenzii',
+      'Hide Reviews': 'Ascunde Recenzii',
+      'No reviews for this game yet.': 'Încă nu există recenzii pentru acest joc.',
+      '[Read more...]': '[Citește mai mult...]',
+      '[Read less...]': '[Citește mai puțin...]',
+      'Friend Request': 'Cerere de prietenie',
+      'Author': 'Autor',
+      'Title': 'Titlu',
+      'Summary': 'Rezumat',
+      'Rating': 'Evaluare',
+      'I like this': 'Îmi place asta',
+      'I dislike this': 'Nu-mi place asta',
+    },
+  };
+
+  const pathSegments = window.location.pathname.split('/');
+  const languageCode = pathSegments[1] || 'ro';
+
+  return translations[languageCode]?.[key] || key;
+};
+
+
 $(document).ready(function () {
     $('.game-container').each(function () {
         let container = $(this);
@@ -21,7 +46,7 @@ $(document).ready(function () {
             } else {
                 reviewsList.toggle();
             }
-            container.find('.show-hide-button').text(reviewsList.is(':visible') ? 'Hide Reviews' : 'Show Reviews');
+            container.find('.show-hide-button').text(reviewsList.is(':visible') ? translate('Hide Reviews') : translate('Show Reviews'));
         };
 
         const fetchReviews = (reviewsList) => {
@@ -34,10 +59,10 @@ $(document).ready(function () {
                 success: function (data) {
                     let { reviews } = data;
                     renderReviews(reviewsList, reviews);
-                    container.find('.show-hide-button').text(reviewsList.is(':visible') ? 'Hide Reviews' : 'Show Reviews');
+                    container.find('.show-hide-button').text(reviewsList.is(':visible') ? translate('Hide Reviews') : translate('Show Reviews'));
                 },
                 error: function () {
-                    reviewsList.html('Failed to retrieve reviews.');
+                    reviewsList.html(translate('Failed to retrieve reviews.'));
                     reviewsList.show();
                 }
             });
@@ -46,34 +71,34 @@ $(document).ready(function () {
         const renderReviews = (reviewsList, reviews) => {
             reviewsList.empty();
             if (reviews.length === 0) {
-                reviewsList.html('<p><strong>No reviews for this game yet.</strong></p>');
+                reviewsList.html('<p><strong>' + translate('No reviews for this game yet.') + '</strong></p>');
             } else {
                 $.each(reviews, function (index, review) {
                     let description = review.description.substring(0, 300);
                     let truncated = description.length < review.description.length;
-                    let buttonHtml = truncated ? `<button class="read-button-review" data-toggle="read-more">[Read more...]</button>` : '';
+                    let buttonHtml = truncated ? `<button class="read-button-review" data-toggle="read-more">${translate('[Read more...]')}</button>` : '';
                     let authorName = `<span class="author-container">
-                                <a href="/users/view_profile/${review.reviewer}" class="author-name">${review.reviewer}</a>
-                                <a href="#" class="author-link" data-user-id="${review.user_id}">
-                                    <span class="friend-request-text" style="display: none;">Friend Request</span>
-                                </a>
-                            </span>`;
+                                    <a href="/users/view_profile/${review.reviewer}" class="author-name">${review.reviewer}</a>
+                                    <a href="#" class="author-link" data-user-id="${review.user_id}">
+                                        <span class="friend-request-text" style="display: none;">${translate('Friend Request')}</span>
+                                    </a>
+                                </span>`;
 
                     let reviewHtml = `
                         <div class="review" data-review-id="${review.id}">
                             <div class="review-header">
                             <div class="like-dislike">
-                                <i class="fa-solid fa-thumbs-up thumbs-up" title="I like this"></i><span class="like-count">${review.likes}</span>
+                                <i class="fa-solid fa-thumbs-up thumbs-up" title="${translate('I like this')}"></i><span class="like-count">${review.likes}</span>
                                 <span class="like-dislike-divider">|</span>
-                                <i class="fa-solid fa-thumbs-down thumbs-down" title="I dislike this"></i><span class="dislike-count">${review.dislikes}</span>
+                                <i class="fa-solid fa-thumbs-down thumbs-down" title="${translate('I dislike this')}"></i><span class="dislike-count">${review.dislikes}</span>
                             </div>
-                                <p><strong>Author:</strong> ${authorName} - 
+                                <p><strong>${translate('Author')}:</strong> ${authorName} - 
                                     <span class="star-rating">${getStarRating(review.score)}</span>
                                 </p>
-                                <p><strong>Title:</strong> ${review.title}</p>
+                                <p><strong>${translate('Title')}:</strong> ${review.title}</p>
                             </div>
                             <div class="review-body">
-                                <p><strong>Summary:</strong></p>
+                                <p><strong>${translate('Summary')}:</strong></p>
                                 <div class="review-description-container">
                                     <span class="review-description" data-full-description="${review.description}">${description}</span>
                                     <span class="review-description-full" style="display: none;">${review.description}</span>
@@ -81,7 +106,7 @@ $(document).ready(function () {
                                 ${buttonHtml}
                             </div>
                             <div class="review-footer">
-                                <p><strong>Rating:</strong> ${review.score}</p>
+                                <p><strong>${translate('Rating')}:</strong> ${review.score}</p>
                             </div>
                         </div>
                     `;
@@ -90,6 +115,7 @@ $(document).ready(function () {
             }
             reviewsList.show();
         };
+
 
         const showMessage = (container, message) => {
             let customMessage = $(`<div class="success-message">${message}</div>`);
@@ -183,7 +209,7 @@ $(document).ready(function () {
             let buttonText = $(this).text();
             $description.toggle();
             $fullDescription.toggle();
-            $(this).text(buttonText === '[Read more...]' ? '[Read less]' : '[Read more...]');
+            $(this).text(buttonText === translate('[Read more...]') ? translate('[Read less...]') : translate('[Read more...]'));
         });
     });
 });

@@ -1,16 +1,16 @@
 {% extends 'base.html' %}
+{% load i18n %}
 {% load static %}
 {% load custom_filters %}
 
 {% block page_header %}
 <div class="header">
-  <h3>SHARED GAMES</h3>
+  <h3>{% trans "SHARED GAMES" %}</h3>
 </div>
 {% endblock page_header %}
 
 {% block description %}
-Get ready for some shared gaming fun! Check out the games you've swapped with others and dive into the ones they've
-shared with you.
+{% blocktrans %}Get ready for some shared gaming fun! Check out the games you've swapped with others and dive into the ones they've shared with you.{% endblocktrans %}
 {% endblock description %}
 
 {% block content %}
@@ -18,27 +18,27 @@ shared with you.
 
 <div class="messages-container">
   <div class="category-buttons">
-    <button id="messages-received-btn" class="category-button active">Games other users shared with you</button>
-    <button id="messages-sent-btn" class="category-button">Games you shared with other users</button>
+    <button id="messages-received-btn" class="category-button active">{% trans "Games other users shared with you" %}</button>
+    <button id="messages-sent-btn" class="category-button">{% trans "Games you shared with other users" %}</button>
   </div>
 
   <div class="sort-container">
-    <label for="sort-order">Sort by:</label>
+    <label for="sort-order">{% trans "Sort by:" %}</label>
     <form method="get" action="{% url 'playstyle_compass:games_shared' %}">
       <select id="sort-order" name="sort_order">
-        <option value="" {% if not selected_sort_order %}selected{% endif %}>-- Select --</option>
-        <option value="asc" {% if selected_sort_order == "asc" %}selected{% endif %}>Date (Asc)</option>
-        <option value="desc" {% if selected_sort_order == "desc" %}selected{% endif %}>Date (Desc)</option>
+        <option value="" {% if not selected_sort_order %}selected{% endif %}>{% trans "-- Select --" %}</option>
+        <option value="asc" {% if selected_sort_order == "asc" %}selected{% endif %}>{% trans "Date (Asc)" %}</option>
+        <option value="desc" {% if selected_sort_order == "desc" %}selected{% endif %}>{% trans "Date (Desc)" %}</option>
       </select>
-      <button class="apply-button" type="submit">Apply</button>
+      <button class="apply-button" type="submit">{% trans "Apply" %}</button>
     </form>
   </div>
 
   <form method="post" action="{% url 'playstyle_compass:delete_shared_games' %}" id="delete-messages-from">
     {% csrf_token %}
     <div class="action-buttons">
-      <button type="button" class="select-all-button">Select All</button>
-      <button type="submit" class="delete-button">Delete Selected</button>
+      <button type="button" class="select-all-button">{% trans "Select All" %}</button>
+      <button type="submit" class="delete-button">{% trans "Delete Selected" %}</button>
     </div>
     <div id="received-messages" class="messages-grid received-messages">
       {% if games_received %}
@@ -49,7 +49,7 @@ shared with you.
           <span class="user-info"><strong>From: </strong><a
               href="{% url 'users:view_profile' profile_name=received_game.sender.userprofile.profile_name %}"
               class="user-name">{{ received_game.sender.userprofile.profile_name }}</a></span>
-          <p class="timestamp"><strong>Date:</strong> {{ received_game.timestamp }}</p>
+          <p class="timestamp"><strong>{% trans "Date:" %}</strong> {{ received_game.timestamp }}</p>
         </div>
         <div class="message-content">
           <p>{{ received_game.content|safe }}</p>
@@ -57,7 +57,7 @@ shared with you.
       </div>
       {% endfor %}
       {% else %}
-      <p class="empty-category">No games have been shared with you so far.</p>
+      <p class="empty-category">{% trans "No games have been shared with you so far." %}</p>
       {% endif %}
     </div>
 
@@ -70,7 +70,7 @@ shared with you.
           <span class="user-info"><strong>To: </strong><a
               href="{% url 'users:view_profile' profile_name=shared_game.sender.userprofile.profile_name %}"
               class="user-name">{{ shared_game.receiver.userprofile.profile_name }}</a></span>
-          <p class="timestamp"><strong>Date:</strong> {{ shared_game.timestamp }}</p>
+          <p class="timestamp"><strong>{% trans "Date:" %}</strong> {{ shared_game.timestamp }}</p>
         </div>
         <div class="message-content">
           <p>{{ shared_game.content|safe }}</p>
@@ -78,7 +78,7 @@ shared with you.
       </div>
       {% endfor %}
       {% else %}
-      <p class="empty-category">You haven't yet shared games with anyone.</p>
+      <p class="empty-category">{% trans "You haven't yet shared games with anyone." %}</p>
       {% endif %}
     </div>
   </form>

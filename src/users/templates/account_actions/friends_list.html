@@ -1,14 +1,15 @@
 {% extends 'base.html' %}
+{% load i18n %}
 {% load static %}
 
 {% block page_header %}
 <div class="header">
-  <h3>MY FRIENDS</h3>
+  <h3>{% trans "MY FRIENDS" %}</h3>
 </div>
 {% endblock page_header %}
 
-{% block description %}Explore and manage your connections. See who's on your friends list, and stay connected with your
-social circle.{% endblock description %}
+{% block description %}{% blocktrans %}Explore and manage your connections. See who's on your friends list, and stay connected with your social circle.{% endblocktrans %}
+{% endblock description %}
 
 {% block content %}
 <link rel="stylesheet" href="{% static 'css/users/friends_list.css' %}">
@@ -36,17 +37,17 @@ social circle.{% endblock description %}
 
         <div class="d-flex flex-column friends-text-container p-2">
           {% if this_user == friend.0 %}
-          <p class="friends-text mb-0">You</p>
+          <p class="friends-text mb-0">{% trans "You" %}</p>
           {% else %}
-          <p class="friends-text mb-0">Friend</p>
+          <p class="friends-text mb-0">{% trans "Friend" %}</p>
           {% endif %}
         </div>
         <div class="send-message">
-        <a href="{% url 'users:send_message' user_id=friend.0.id %}">Send message</a>
+        <a href="{% url 'users:send_message' user_id=friend.0.id %}">{% trans "Send message" %}</a>
     </div>
 
         <div class="d-flex flex-row card-right flex-grow-1 justify-content-end mx-2">
-          <button class="remove-friend-btn" onclick='triggerRemoveFriend("{{ friend.0.id }}")'>Unfriend</button>
+          <button class="remove-friend-btn" onclick='triggerRemoveFriend("{{ friend.0.id }}")'>{% trans "Unfriend" %}</button>
         </div>
       </div>
 
@@ -58,7 +59,7 @@ social circle.{% endblock description %}
     </div>
     {% else %}
     <div class="d-flex flex-row flex-grow-1 justify-content-center align-items-center p-4">
-      <p>Your friends list is currently empty. Connect with others by sending friend requests!</p>
+      <p>{% trans "Your friends list is currently empty. Connect with others by sending friend requests!" %}</p>
     </div>
     {% endif %}
   </div>

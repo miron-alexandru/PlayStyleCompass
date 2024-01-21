@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load i18n %}
 {% load static %}
 
 {% block page_header %}
@@ -18,7 +19,7 @@
     {% if game %}
     {% include "playstyle_compass/game_recommendations_section.html" %}
     {% else %}
-    <p><strong>Sorry, the game does not exist.</strong></p>
+    <p><strong>{% trans "Sorry, the game does not exist." %}</strong></p>
     {% endif %}
   </ul>
 </div>

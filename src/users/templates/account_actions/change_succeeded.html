@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load i18n %}
 {% load static %}
 
 {% block content %}
@@ -6,8 +7,8 @@
 <div class="message-container">
   <h2>{{ response }}</h2>
   {% if additional_message %}
-  <h2>Your new email is: <strong>{{ additional_message }}</strong></h2>
+  <h2>{% trans "Your new email is:" %} <strong>{{ additional_message }}</strong></h2>
   {% endif %}
-  <p><a href="{% url 'playstyle_compass:index' %}" class="btn btn-primary">Home</a></p>
+  <p><a href="{% url 'playstyle_compass:index' %}" class="btn btn-primary">{% trans "Home" %}</a></p>
 </div>
 {% endblock %}

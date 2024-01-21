@@ -1,35 +1,36 @@
 {% extends 'base.html' %}
+{% load i18n %}
 {% load static %}
 
 {% block content %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/users/common.css' %}">
 
 <div class=my-container>
-  <h2>Contact Us</h2>
+  <h2>{% trans "Contact Us" %}</h2>
   <form method="post">
     {% csrf_token %}
 
     <div class="form-group">
-      <label for="{{ form.name.id_for_label }}"><i class="fas fa-user-circle"></i> Name</label>
+      <label for="{{ form.name.id_for_label }}"><i class="fas fa-user-circle"></i> {% trans "Name" %}</label>
       {{ form.name }}
     </div>
 
     <div class="form-group">
-      <label for="{{ form.email.id_for_label }}"><i class="fas fa-envelope"></i> Email</label>
+      <label for="{{ form.email.id_for_label }}"><i class="fas fa-envelope"></i> {% trans "Email" %}</label>
       {{ form.email }}
     </div>
 
     <div class="form-group">
-      <label for="{{ form.subject.id_for_label }}"><i class="fas fa-pencil-alt"></i> Subject</label>
+      <label for="{{ form.subject.id_for_label }}"><i class="fas fa-pencil-alt"></i> {% trans "Subject" %}</label>
       {{ form.subject }}
     </div>
 
     <div class="form-group">
-      <label for="{{ form.message.id_for_label }}"><i class="fas fa-comment-dots"></i> Message</label>
+      <label for="{{ form.message.id_for_label }}"><i class="fas fa-comment-dots"></i> {% trans "Message" %}</label>
       {{ form.message }}
     </div>
 
-    <button type="submit">Submit</button>
+    <button type="submit">{% trans "Submit" %}</button>
   </form>
 </div>
 {% endblock %}

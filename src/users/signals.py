@@ -35,10 +35,11 @@ def notification_created(sender, instance, created, **kwargs):
         async_to_sync(channel_layer.group_send)(
             user_group_name,
             {
-                "type": "send_notification", "id": instance.id,
+                "type": "send_notification",
+                "id": instance.id,
                 "message": instance.message,
                 "is_read": instance.is_read,
                 "is_active": instance.is_active,
                 "timestamp": instance.timestamp,
-            }
+            },
         )

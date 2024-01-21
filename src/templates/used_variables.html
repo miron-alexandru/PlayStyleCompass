@@ -1,4 +1,6 @@
 <script>
+    const toggleFavoriteUrl = "{% url 'playstyle_compass:toggle_favorite' %}";
+    const toggleGameQueueUrl = "{% url 'playstyle_compass:toggle_game_queue' %}";
     window.passwordInputIdLogIn = '{{ form.password.id_for_label }}';
     window.passwordInputId1Register = '{{ form.password1.id_for_label }}';
     window.passwordInputId2Register = '{{ form.password2.id_for_label }}';

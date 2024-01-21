@@ -1,5 +1,6 @@
 {% extends "playstyle_compass/games_collection.html" %}
+{% load i18n %}
 
-{% block header_desc %}TOP RATED GAMES{% endblock header_desc %}
-{% block description %}Explore the best-rated games as chosen by the gaming community.{% endblock description %}
-{% block empty_message %}Empty for now, come back later!{% endblock empty_message %}
+{% block header_desc %}{% trans "TOP RATED GAMES" %}{% endblock header_desc %}
+{% block description %}{% trans "Explore the best-rated games as chosen by the gaming community." %}{% endblock description %}
+{% block empty_message %}{% trans "Empty for now, come back later!" %}{% endblock empty_message %}
