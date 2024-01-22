@@ -9,10 +9,10 @@ from django.contrib.auth.forms import (
     AuthenticationForm,
 )
 from django.contrib.auth.models import User
-from django.utils.translation import gettext as _
 from captcha.fields import ReCaptchaField
 
 from .models import UserProfile, ContactMessage, Message
+from django.utils.translation import gettext as _
 
 
 class CustomAuthenticationForm(AuthenticationForm):
@@ -70,7 +70,7 @@ class CustomRegistrationForm(UserCreationForm):
         ),
         help_text="Enter the same password as before, for verification.",
     )
-    captcha = ReCaptchaField(error_messages={"required": "Please complete reCAPTCHA."})
+    captcha = ReCaptchaField(error_messages={"required": _("Please complete reCAPTCHA.")})
 
     class Meta:
         model = User
@@ -87,14 +87,14 @@ class CustomRegistrationForm(UserCreationForm):
         """Clean email."""
         email = self.cleaned_data["email"]
         if User.objects.filter(email=email).exists():
-            raise forms.ValidationError("This email address is already in use.")
+            raise forms.ValidationError(_("This email address is already in use."))
         return email
 
     def clean_profile_name(self):
         """Clean profile name."""
         profile_name = self.cleaned_data["profile_name"]
         if UserProfile.objects.filter(profile_name=profile_name).exists():
-            raise forms.ValidationError("This profile name is already in use.")
+            raise forms.ValidationError(_("This profile name is already in use."))
         return profile_name
 
 
@@ -146,7 +146,7 @@ class EmailChangeForm(forms.ModelForm):
         """Clean current password."""
         current_password = self.cleaned_data["current_password"]
         if not self.user.check_password(current_password):
-            raise forms.ValidationError("Current password is incorrect.")
+            raise forms.ValidationError(_("Current password is incorrect."))
         return current_password
 
     def clean_new_email(self):
@@ -155,11 +155,11 @@ class EmailChangeForm(forms.ModelForm):
 
         if new_email:
             if User.objects.filter(email=new_email).exclude(pk=self.user.pk).exists():
-                raise forms.ValidationError("This email address is already in use.")
+                raise forms.ValidationError(_("This email address is already in use."))
 
             if new_email == self.user.email:
                 raise forms.ValidationError(
-                    "New email address cannot be the current one."
+                    _("New email address cannot be the current one.")
                 )
 
         return new_email
@@ -170,7 +170,7 @@ class EmailChangeForm(forms.ModelForm):
         new_email = self.cleaned_data.get("new_email")
 
         if new_email and new_email != confirm_email:
-            raise forms.ValidationError("New email addresses must match.")
+            raise forms.ValidationError(_("New email addresses must match."))
 
         return confirm_email
 
@@ -204,7 +204,7 @@ class CustomPasswordChangeForm(PasswordChangeForm):
     def clean_passwords(self, arg0):
         password1 = self.cleaned_data.get(arg0)
         if len(password1) < 8:
-            raise forms.ValidationError("Password must be at least 8 characters long.")
+            raise forms.ValidationError(_("Password must be at least 8 characters long."))
         return password1
 
 
@@ -302,7 +302,7 @@ class ProfileUpdateForm(forms.ModelForm):
 
         if profile_name.lower() == self.instance.profile_name.lower():
             raise forms.ValidationError(
-                "The new profile name is the same as the existing one."
+                _("The new profile name is the same as the existing one.")
             )
 
         if (
@@ -310,7 +310,7 @@ class ProfileUpdateForm(forms.ModelForm):
             .exclude(user=self.instance.user)
             .exists()
         ):
-            raise forms.ValidationError("This profile name is already in use.")
+            raise forms.ValidationError(_("This profile name is already in use."))
 
         return profile_name
 

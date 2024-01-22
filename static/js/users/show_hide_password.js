@@ -1,4 +1,18 @@
 document.addEventListener('DOMContentLoaded', function () {
+    const translate = (key) => {
+      const translations = {
+        'ro': {
+          'Show': 'Afișează',
+          'Hide': 'Ascunde',
+        },
+      };
+
+      const pathSegments = window.location.pathname.split('/');
+      const languageCode = pathSegments[1] || 'ro';
+
+      return translations[languageCode]?.[key] || key;
+    };
+
     const initShowHidePassword = (passwordInputId, toggleButtonId, eyeIconId, toggleTextId) => {
         const passwordInput = document.getElementById(passwordInputId);
         const toggleButton = document.getElementById(toggleButtonId);
@@ -11,12 +25,12 @@ document.addEventListener('DOMContentLoaded', function () {
                     passwordInput.type = 'text';
                     eyeIcon.classList.remove('fa-eye');
                     eyeIcon.classList.add('fa-eye-slash');
-                    toggleText.textContent = 'Hide';
+                    toggleText.textContent = translate('Hide');
                 } else {
                     passwordInput.type = 'password';
                     eyeIcon.classList.remove('fa-eye-slash');
                     eyeIcon.classList.add('fa-eye');
-                    toggleText.textContent = 'Show';
+                    toggleText.textContent = translate('Show');
                 }
             });
         }

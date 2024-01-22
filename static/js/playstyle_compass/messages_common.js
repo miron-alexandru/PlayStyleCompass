@@ -1,3 +1,17 @@
+const translate = (key) => {
+      const translations = {
+        'ro': {
+          'Select All': 'Selectează Tot',
+          'Unselect All': 'Deselectează Tot',
+        },
+      };
+
+      const pathSegments = window.location.pathname.split('/');
+      const languageCode = pathSegments[1] || 'ro';
+
+      return translations[languageCode]?.[key] || key;
+    };
+
 document.addEventListener('DOMContentLoaded', function () {
   const receivedBtn = document.getElementById('messages-received-btn');
   const sentBtn = document.getElementById('messages-sent-btn');
@@ -51,14 +65,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
   function updateButtonText() {
     if (messagesCheckboxes.length === 0) {
-      selectAllButton.textContent = 'Select All';
+      selectAllButton.textContent = translate('Select All');
       deleteButton.disabled = true;
       return;
     }
 
     const allChecked = Array.from(messagesCheckboxes).every(checkbox => checkbox.checked);
-
-    selectAllButton.textContent = allChecked ? 'Unselect All' : 'Select All';
+    selectAllButton.textContent = allChecked ? translate('Unselect All') : translate('Select All');
     deleteButton.disabled = !Array.from(messagesCheckboxes).some(checkbox => checkbox.checked);
   }
 

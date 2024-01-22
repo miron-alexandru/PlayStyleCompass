@@ -161,14 +161,19 @@ def activateEmail(request, user, to_email):
     )
     email = EmailMessage(mail_subject, message, to=[to_email])
     if email.send():
-        message = (_(
-            f"Hello <b>{user}</b>, please go to your email <b>{to_email}</b> inbox and click on received activation link to confirm your registration. <b>Note:</b> If you cannot find the email in your inbox, we recommend checking your spam folder."
-        ))
+        message = _(
+            "Hello <b>%(user)s</b>, please go to your email <b>%(to_email)s</b> inbox and click on the received activation link to confirm your registration. <b>Note:</b> If you cannot find the email in your inbox, we recommend checking your spam folder."
+        ) % {
+            "user": user,
+            "to_email": to_email,
+        }
+
         messages.success(request, mark_safe(message))
     else:
         messages.error(
             request,
-            _(f"Problem sending email to {to_email}, check if you typed it correctly."),
+            _("Problem sending email to %(to_email)s, check if you typed it correctly.")
+            % {"to_email": to_email},
         )
 
 
@@ -555,8 +560,9 @@ def send_friend_request(request, *args, **kwargs):
                 # Check if the users are already friends
                 if are_friends(user, receiver):
                     result["message"] = _(
-                        f"<strong>{receiver.userprofile.profile_name}</strong> is already in your friends list."
-                    )
+                        "<strong>%(profile_name)s</strong> is already in your friends list."
+                    ) % {"profile_name": receiver.userprofile.profile_name}
+
                 # Check if the user is trying to send a request to themselves
                 elif user == receiver:
                     result["message"] = _(
@@ -570,7 +576,9 @@ def send_friend_request(request, *args, **kwargs):
 
                     # Check if the user has already sent a friend request to the receiver
                     if friend_requests.exists():
-                        result["message"] = _("You already sent them a friend request.")
+                        result["message"] = _(
+                            "You already sent a friend request to this user."
+                        )
                     else:
                         try:
                             # Attempt to retrieve an existing friend request (may not exist)
@@ -596,7 +604,7 @@ def send_friend_request(request, *args, **kwargs):
                             "users:friend_requests", args=[receiver.id]
                         )
 
-                        message = _(
+                        message = (
                             f'<a class="notification-profile" title="View User Profile" href="{profile_url}">{user_in_notification}</a> '
                             "just sent you a friend request!<br>"
                             f'<a class="notification-link" title="Navigate" href="{navigation_url}">View friend requests</a>'
@@ -638,8 +646,11 @@ def accept_friend_request(request, *args, **kwargs):
                         request,
                         mark_safe(
                             _(
-                                f"You are now friends with <strong>{friend_request.sender.userprofile.profile_name}</strong>."
+                                "You are now friends with <strong>%(profile_name)s</strong>."
                             )
+                            % {
+                                "profile_name": friend_request.sender.userprofile.profile_name
+                            }
                         ),
                     )
 
@@ -650,7 +661,7 @@ def accept_friend_request(request, *args, **kwargs):
                         "users:view_profile", args=[user_in_notification]
                     )
 
-                    message = _(
+                    message = (
                         f'<a class="notification-profile" title="View User Profile" href="{profile_url}">{user_in_notification}</a> '
                         "accepted your friend request!"
                     )
@@ -690,10 +701,12 @@ def remove_friend(request):
                     request,
                     mark_safe(
                         _(
-                            f"You are no longer friends with <strong>{friend_to_remove.userprofile.profile_name}</strong>."
+                            "You are no longer friends with <strong>%(profile_name)s</strong>."
                         )
+                        % {"profile_name": friend_to_remove.userprofile.profile_name}
                     ),
                 )
+
             except Exception as e:
                 result["message"] = str(e)
         else:
@@ -722,8 +735,11 @@ def decline_friend_request(request, *args, **kwargs):
                         request,
                         mark_safe(
                             _(
-                                f"You refused to be friends with <strong>{friend_request.sender.userprofile.profile_name}</strong>."
+                                "You refused to be friends with <strong>%(profile_name)s</strong>."
                             )
+                            % {
+                                "profile_name": friend_request.sender.userprofile.profile_name
+                            }
                         ),
                     )
 
@@ -734,7 +750,7 @@ def decline_friend_request(request, *args, **kwargs):
                         "users:view_profile", args=[user_in_notification]
                     )
 
-                    message = _(
+                    message = (
                         f'<a class="notification-profile" title="View User Profile" href="{profile_url}">{user_in_notification}</a> '
                         "declined your friend request!"
                     )
@@ -789,10 +805,12 @@ def cancel_friend_request(request):
                     request,
                     mark_safe(
                         _(
-                            f"You canceled your friend request for <strong>{receiver.userprofile.profile_name}</strong>."
+                            "You canceled your friend request for <strong>%(profile_name)s</strong>."
                         )
+                        % {"profile_name": receiver.userprofile.profile_name}
                     ),
                 )
+
         else:
             result["message"] = _("Unable to cancel that friend request.")
     else:
@@ -909,7 +927,7 @@ def send_message(request, user_id):
                 navigation_url = reverse("users:inbox")
                 user_in_notification = message_sender.userprofile.profile_name
 
-                message = _(
+                message = (
                     f'<a class="notification-profile" title="View User Profile" href="{profile_url}">{user_in_notification}</a> '
                     "just sent you a message!<br>"
                     f'<a class="notification-link" title="Navigate" href="{navigation_url}">View inbox</a>'

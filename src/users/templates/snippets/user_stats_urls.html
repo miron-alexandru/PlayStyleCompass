@@ -1,7 +1,6 @@
 <script type="text/javascript">
 
     const toggleStatUrl = '{% url 'users:toggle_show_stat' %}';
-    const csrfToken = '{{ csrf_token }}';
 
     const statUrls = {
         'favorites': '{% url 'playstyle_compass:favorite_games_with_id' user_id=user_id %}',

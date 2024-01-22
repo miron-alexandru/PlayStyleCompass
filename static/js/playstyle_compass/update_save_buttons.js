@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const updateSaveButtonTitle = () => {
     if (saveAllButton.disabled) {
-      saveAllButton.title = "Update preferences to save changes";
+      saveAllButton.title = "Update preferences in order to save changes";
     } else {
       saveAllButton.title = "Save all preferences";
     }

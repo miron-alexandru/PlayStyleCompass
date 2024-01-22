@@ -31,6 +31,7 @@ Websites for .env configuration: [GiantBomb](https://www.giantbomb.com/) / [Send
 <summary><h2>PlayStyle Compass Changelog</h2></summary>
 
 ### Version v1.6
+* Implemented multilanguage (English/Romanian).
 * Improved live notifications system.
 * Implemented live notifications using Websockets.
 * Implemented sorting by date for messages & shared games.

@@ -8,15 +8,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-01-21 13:50+0200\n"
-"PO-Revision-Date: 2024-01-21 13:50+0000\n"
+"POT-Creation-Date: 2024-01-22 18:08+0200\n"
+"PO-Revision-Date: 2024-01-22 18:07+0000\n"
 "Last-Translator:   <quality_xqs@yahoo.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n==1?0:(((n%100>19)||((n%100==0)&&(n!=0)))?2:1));\n"
+"Plural-Forms: nplurals=3; plural=(n==1?0:(((n%100>19)||((n%100==0)&&(n!=0)))?"
+"2:1));\n"
 "X-Translated-Using: django-rosetta 0.10.0\n"
 
 #: .\src\playstyle_compass\templates\playstyle_compass\add_review.html:5
@@ -37,7 +38,7 @@ msgstr "Actualizează Recenzia"
 
 #: .\src\playstyle_compass\templates\playstyle_compass\favorite_games.html:6
 msgid "'S FAVORITES"
-msgstr "FAVORITELE LUI/EI"
+msgstr " FAVORITELE"
 
 #: .\src\playstyle_compass\templates\playstyle_compass\favorite_games.html:8
 msgid "MY FAVORITES"
@@ -62,7 +63,7 @@ msgstr "Nu ai adăugat încă niciun joc la Favoritele tale."
 
 #: .\src\playstyle_compass\templates\playstyle_compass\game_queue.html:6
 msgid "'S GAME QUEUE"
-msgstr "JOCURI PROGRAMATE"
+msgstr " JOCURI PROGRAMATE"
 
 #: .\src\playstyle_compass\templates\playstyle_compass\game_queue.html:8
 msgid "MY GAME QUEUE"
@@ -241,15 +242,17 @@ msgid "PERSONALIZE YOUR PLAYSTYLE"
 msgstr "PERSONALIZEAZĂ-ȚI STILUL DE JOC"
 
 #: .\src\playstyle_compass\templates\playstyle_compass\gaming_preferences.html:12
-#| msgid ""
-#| "\n"
-#| "Explore and manage your gaming preferences. You can provide your gaming history, favorite genres, and preferred platforms. Once you've defined your PlayStyle, you can get personalized game recommendations.\n"
 msgid ""
 "\n"
-"Explore and manage your gaming preferences. You can provide your gaming history, favorite genres,and preferred platforms. Once you've defined your PlayStyle, you can get personalized game recommendations.\n"
+"Explore and manage your gaming preferences. You can provide your gaming "
+"history, favorite genres,and preferred platforms. Once you've defined your "
+"PlayStyle, you can get personalized game recommendations.\n"
 msgstr ""
 "\n"
-"Explorează și gestionează preferințele tale de jocuri. Poți furniza istoricul tău de jocuri, genurile tale preferate și platformele preferate. Odată ce ți-ai definit stilul, vei primi recomandări personalizate de jocuri.\n"
+"Explorează și gestionează preferințele tale de jocuri. Poți furniza "
+"istoricul tău de jocuri, genurile tale preferate și platformele preferate. "
+"Odată ce ți-ai definit stilul, vei primi recomandări personalizate de "
+"jocuri.\n"
 
 #: .\src\playstyle_compass\templates\playstyle_compass\gaming_preferences.html:24
 msgid "Provide Your Gaming History:"
@@ -286,18 +289,26 @@ msgstr "Descoperă-ți Jocurile Perfecte"
 #: .\src\playstyle_compass\templates\playstyle_compass\index.html:13
 msgid ""
 "\n"
-"      Welcome to PlayStyle Compass – your personalized gateway to uncovering video games perfectly\n"
-"      tailored to your unique preferences, gaming history, and genre inclinations. Whether you're a casual enthusiast or\n"
-"      a dedicated gaming passionate, our application meticulously analyzes your individual gaming profile, curating\n"
-"      recommendations that align with your distinct tastes. Embark on an exhilarating journey through the realm of\n"
+"      Welcome to PlayStyle Compass – your personalized gateway to uncovering "
+"video games perfectly\n"
+"      tailored to your unique preferences, gaming history, and genre "
+"inclinations. Whether you're a casual enthusiast or\n"
+"      a dedicated gaming passionate, our application meticulously analyzes "
+"your individual gaming profile, curating\n"
+"      recommendations that align with your distinct tastes. Embark on an "
+"exhilarating journey through the realm of\n"
 "      gaming possibilities by creating an account with us!\n"
 "      "
 msgstr ""
 "\n"
-"      Bine ați venit la PlayStyle Compass – poarta dvs. personalizată pentru a descoperi jocuri video perfect adaptate\n"
-"      preferințelor unice, istoricului dvs. de joc și inclinațiilor de gen. Fie că sunteți un entuziast casual sau\n"
-"      un pasionat dedicat al jocurilor, aplicația noastră analizează meticulos profilul dvs. individual de jocuri, creând\n"
-"      recomandări care se aliniază cu gusturile dvs. distincte. Începeți o călătorie incitantă prin lumea\n"
+"      Bine ați venit la PlayStyle Compass – poarta dvs. personalizată pentru "
+"a descoperi jocuri video perfect adaptate\n"
+"      preferințelor unice, istoricului dvs. de joc și inclinațiilor de gen. "
+"Fie că sunteți un entuziast casual sau\n"
+"      un pasionat dedicat al jocurilor, aplicația noastră analizează "
+"meticulos profilul dvs. individual de jocuri, creând\n"
+"      recomandări care se aliniază cu gusturile dvs. distincte. Începeți o "
+"călătorie incitantă prin lumea\n"
 "      posibilităților de jocuri, creând un cont cu noi!\n"
 "      "
 
@@ -334,12 +345,9 @@ msgid "UPCOMING GAMES"
 msgstr "JOCURI ÎN DEZVOLTARE"
 
 #: .\src\playstyle_compass\templates\playstyle_compass\index.html:55
-#| msgid ""
-#| "Discover the latest and most anticipated games set to launch soon and "
-#| "explore the future of gaming excitement.\n"
 msgid ""
-"Explore the latest and most anticipated games coming soon. Don't miss out on"
-" the gaming excitement!"
+"Explore the latest and most anticipated games coming soon. Don't miss out on "
+"the gaming excitement!"
 msgstr ""
 "Descoperiți cele mai noi și cele mai așteptate jocuri care urmează să fie "
 "lansate curând și explorați viitorul entuziasmului în jocuri."
@@ -467,7 +475,7 @@ msgstr "Nu s-au găsit utilizatori cu stiluri de joc similare."
 
 #: .\src\playstyle_compass\templates\playstyle_compass\top_rated_games.html:4
 msgid "TOP RATED GAMES"
-msgstr "JOCURI CLASATE ÎN TOP"
+msgstr "TOP JOCURI"
 
 #: .\src\playstyle_compass\templates\playstyle_compass\top_rated_games.html:5
 msgid "Explore the best-rated games as chosen by the gaming community."
@@ -492,11 +500,11 @@ msgstr "STILUL MEU"
 #: .\src\playstyle_compass\templates\playstyle_compass\update_preferences.html:12
 msgid ""
 "Your gaming preferences are the key to unlocking a world of tailored gaming "
-"experiences. Bysharing your preferences, you'll receive game recommendations"
-" perfectly suited to your unique tastes and interests.\n"
+"experiences. Bysharing your preferences, you'll receive game recommendations "
+"perfectly suited to your unique tastes and interests.\n"
 msgstr ""
-"Preferințele tale de jocuri sunt cheia pentru a debloca o lume de experiențe"
-" adaptate. Prin distribuirea preferințelor tale, vei primi recomandări de "
+"Preferințele tale de jocuri sunt cheia pentru a debloca o lume de experiențe "
+"adaptate. Prin distribuirea preferințelor tale, vei primi recomandări de "
 "jocuri perfect adaptate gusturilor și intereselor tale unice.\n"
 
 #: .\src\playstyle_compass\templates\playstyle_compass\update_preferences.html:22
@@ -550,7 +558,7 @@ msgstr "Click aici pentru a începe"
 
 #: .\src\playstyle_compass\templates\playstyle_compass\user_reviews.html:6
 msgid "'S REVIEWED GAMES"
-msgstr "JOCURI EVALUATE"
+msgstr " JOCURI EVALUATE"
 
 #: .\src\playstyle_compass\templates\playstyle_compass\user_reviews.html:8
 msgid "MY REVIEWED GAMES"
@@ -593,138 +601,101 @@ msgid "Recommendations :: PlayStyle Compass"
 msgstr "Recomandări :: PlayStyle Compass"
 
 #: .\src\playstyle_compass\views.py:201
-msgid "Serach Results :: PlayStyle Compass"
+msgid "Search Results :: PlayStyle Compass"
 msgstr "Rezultate Căutare :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:278 .\src\playstyle_compass\views.py:352
-#: .\src\playstyle_compass\views.py:358
+#: .\src\playstyle_compass\views.py:279 .\src\playstyle_compass\views.py:353
+#: .\src\playstyle_compass\views.py:359
 msgid "You don't have permission to view this content."
 msgstr "Nu ai permisiunea să vezi acest conținut."
 
-#: .\src\playstyle_compass\views.py:291
+#: .\src\playstyle_compass\views.py:292
 msgid "Games Reviewed :: PlayStyle Compass"
 msgstr "Jocuri Evaluate :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:308
+#: .\src\playstyle_compass\views.py:309
 msgid "Favorites :: PlayStyle Compass"
 msgstr "Favorite :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:320
+#: .\src\playstyle_compass\views.py:321
 msgid "Game Queue :: PlayStyle Compass"
 msgstr "Jocuri Programate :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:400
+#: .\src\playstyle_compass\views.py:401
 msgid "Top Rated Games :: PlayStyle Compass"
-msgstr "Jocuri Clasate în Top :: PlayStyle Compass"
+msgstr "Top Jocuri :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:423
+#: .\src\playstyle_compass\views.py:424
 msgid "Upcoming Games :: PlayStyle Compass"
 msgstr "Jocuri în Dezvoltare :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:441
+#: .\src\playstyle_compass\views.py:442
 msgid "You have already reviewed this game!"
 msgstr "Ai evaluat deja acest joc!"
 
-#: .\src\playstyle_compass\views.py:462
+#: .\src\playstyle_compass\views.py:463
 msgid "Your review has been successfully submitted."
 msgstr "Recenzia ta a fost trimisă cu succes."
 
-#: .\src\playstyle_compass\views.py:471
+#: .\src\playstyle_compass\views.py:472
 msgid "Add Review :: PlayStyle Compass"
 msgstr "Adaugă Recenzie :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:491 .\src\playstyle_compass\views.py:616
+#: .\src\playstyle_compass\views.py:492 .\src\playstyle_compass\views.py:617
 msgid "You haven't written any reviews for this game!"
 msgstr "Nu ai scris nicio recenzie pentru acest joc!"
 
-#: .\src\playstyle_compass\views.py:498
+#: .\src\playstyle_compass\views.py:499
 msgid "Your review has been successfully updated."
 msgstr "Recenzia ta a fost actualizată cu succes."
 
-#: .\src\playstyle_compass\views.py:504
+#: .\src\playstyle_compass\views.py:505
 msgid "Edit Review :: PlayStyle Compass"
 msgstr "Editează Recenzia :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:545
+#: .\src\playstyle_compass\views.py:546
 msgid "You cannot like your own review."
 msgstr "Nu poți aprecia propria recenzie."
 
-#: .\src\playstyle_compass\views.py:562 .\src\playstyle_compass\views.py:597
+#: .\src\playstyle_compass\views.py:563 .\src\playstyle_compass\views.py:598
 msgid "Review ID invalid."
 msgstr "ID recenzie invalid."
 
-#: .\src\playstyle_compass\views.py:565 .\src\playstyle_compass\views.py:600
+#: .\src\playstyle_compass\views.py:566 .\src\playstyle_compass\views.py:601
 msgid "You must be logged in to like or dislike a review."
 msgstr "Trebuie să fii autentificat pentru a aprecia sau critica o recenzie."
 
-#: .\src\playstyle_compass\views.py:579
+#: .\src\playstyle_compass\views.py:580
 msgid "You cannot dislike your own review."
 msgstr "Nu poți critica propria recenzie."
 
-#: .\src\playstyle_compass\views.py:614
+#: .\src\playstyle_compass\views.py:615
 msgid "Your review has been successfully deleted!"
 msgstr "Recenzia ta a fost ștearsă cu succes!"
 
-#: .\src\playstyle_compass\views.py:662
-#, python-brace-format
-msgid "You have already shared {game_title} with {receiver_name}."
-msgstr "Ai împărtășit deja {game_title} cu {receiver_name}."
+#: .\src\playstyle_compass\views.py:663
+#, python-format
+msgid "You have already shared %(game_title)s with %(profile_name)s."
+msgstr "Ai distribuit deja jocul \"%(game_title)s\" către %(profile_name)s."
 
-#: .\src\playstyle_compass\views.py:672
-#, python-brace-format
-msgid ""
-"\n"
-"                <p><strong>Hello {receiver_name}!</strong></p>\n"
-"                <p>I just wanted to share this awesome game named <strong>{game_title}</strong> with you.</p>\n"
-"                <div class=\"game-message\">\n"
-"                    <p>Check it out <a href='{game_url}' target='_blank'>here</a>!</p>\n"
-"                </div>\n"
-"                "
-msgstr ""
-"\n"
-"                <p><strong>Bună {receiver_name}!</strong></p>\n"
-"                <p>Voiam doar să împart acest joc minunat numit <strong>{game_title}</strong> cu tine.</p>\n"
-"                <div class=\"game-message\">\n"
-"                    <p>Verifică-l <a href='{game_url}' target='_blank'>aici</a>!</p>\n"
-"                </div>\n"
-"                "
-
-#: .\src\playstyle_compass\views.py:698
-#, python-brace-format
-msgid ""
-"\n"
-"                <a class=\"notification-profile\" title=\"View User Profile\" href=\"{profile_url}\">{user_in_notification}</a> \n"
-"                just shared a game with you!<br>\n"
-"                <a class=\"notification-link\" title=\"Navigate\" href=\"{navigation_url}\">Navigate to shared games</a>\n"
-"                "
-msgstr ""
-"\n"
-"                <a class=\"notification-profile\" title=\"Vezi Profilul Utilizatorului\" href=\"{profile_url}\">{user_in_notification}</a> \n"
-"                tocmai a împărțit un joc cu tine!<br>\n"
-"                <a class=\"notification-link\" title=\"Navighează\" href=\"{navigation_url}\">Navighează către jocurile partajate</a>\n"
-"                "
+#: .\src\playstyle_compass\views.py:705
+#, python-format
+msgid "You have successfully shared %(game_title)s with %(profile_name)s."
+msgstr "Ai distribuit cu succes jocul %(game_title)s către %(profile_name)s."
 
 #: .\src\playstyle_compass\views.py:716
-#, python-brace-format
-msgid ""
-"You have successfully shared {game.title} with "
-"{receiver.userprofile.profile_name}."
-msgstr ""
-"Ai împărtășit cu succes {game.title} cu {receiver.userprofile.profile_name}."
-
-#: .\src\playstyle_compass\views.py:723
 msgid "Receiver ID not provided"
 msgstr "ID destinatar lipsă"
 
-#: .\src\playstyle_compass\views.py:726 .\src\users\views.py:180
+#: .\src\playstyle_compass\views.py:719 .\src\users\views.py:185
 msgid "Invalid request method"
 msgstr "Metodă de cerere invalidă"
 
-#: .\src\playstyle_compass\views.py:749
+#: .\src\playstyle_compass\views.py:742
 msgid "Shared Games :: PlayStyle Compass"
 msgstr "Jocuri Distribuite :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:827
+#: .\src\playstyle_compass\views.py:820
 msgid "Similar PlayStyles :: PlayStyle Compass"
 msgstr "Stiluri de Joc Similare :: PlayStyle Compass"
 
@@ -758,7 +729,7 @@ msgstr "Jocuri Favorite"
 
 #: .\src\templates\base.html:60
 msgid "Games Queue"
-msgstr "Jocuri în Așteptare"
+msgstr "Jocuri Programate"
 
 #: .\src\templates\base.html:65
 msgid "More"
@@ -770,11 +741,11 @@ msgstr "Recenziile Mele"
 
 #: .\src\templates\base.html:72 .\src\templates\base.html:82
 msgid "Top Rated Games"
-msgstr "Jocuri Clasate în Top"
+msgstr "Top Jocuri"
 
 #: .\src\templates\base.html:75 .\src\templates\base.html:87
 msgid "Upcoming Games"
-msgstr "Jocuri În Dezvoltare"
+msgstr "Jocuri în Dezvoltare"
 
 #: .\src\templates\base.html:129
 msgid "Account Actions"
@@ -844,8 +815,7 @@ msgstr "Contactează-ne"
 
 #: .\src\templates\base.html:185
 msgid "Please confirm your email address to unlock all features."
-msgstr ""
-"Te rugăm să confirmi adresa de email pentru a debloca toate funcțiile."
+msgstr "Te rugăm să confirmi adresa de email pentru a debloca toate funcțiile."
 
 #: .\src\templates\base.html:187
 msgid "Resend verification link"
@@ -866,6 +836,38 @@ msgid ""
 msgstr ""
 "Nume de utilizator sau parolă incorecte. Te rugăm să te asiguri că ai "
 "introdus corect numele de utilizator și parola."
+
+#: .\src\users\forms.py:73
+msgid "Please complete reCAPTCHA."
+msgstr "Te rog, completează reCAPTCHA."
+
+#: .\src\users\forms.py:90 .\src\users\forms.py:158
+msgid "This email address is already in use."
+msgstr "Acest email este deja folosit."
+
+#: .\src\users\forms.py:97 .\src\users\forms.py:313
+msgid "This profile name is already in use."
+msgstr "Acest nume de profil este deja folosit."
+
+#: .\src\users\forms.py:149
+msgid "Current password is incorrect."
+msgstr "Parola Curentă este incorectă."
+
+#: .\src\users\forms.py:162
+msgid "New email address cannot be the current one."
+msgstr "Noua adresă de email nu poate fi cea curentă."
+
+#: .\src\users\forms.py:173
+msgid "New email addresses must match."
+msgstr "Noile adrese de email trebuie să coincidă."
+
+#: .\src\users\forms.py:207
+msgid "Password must be at least 8 characters long."
+msgstr "Parola trebuie să conțină cel puțin 8 caractere."
+
+#: .\src\users\forms.py:305
+msgid "The new profile name is the same as the existing one."
+msgstr "Noul nume de profil este același ca cel existent."
 
 #: .\src\users\templates\account_actions\change_email.html:9
 msgid "Change Email Address"
@@ -912,8 +914,7 @@ msgstr "Adresa nouă de email:"
 #: .\src\users\templates\account_actions\confirm_email_change.txt:8
 msgid "To confirm this change, please click on the following link:"
 msgstr ""
-"Pentru a confirma această schimbare, te rugăm să dai click pe următorul "
-"link:"
+"Pentru a confirma această schimbare, te rugăm să dai click pe următorul link:"
 
 #: .\src\users\templates\account_actions\confirm_email_change.txt:11
 msgid "If you did not request this change, please ignore this email."
@@ -949,8 +950,7 @@ msgstr "Trimite"
 
 #: .\src\users\templates\account_actions\delete_account.html:12
 msgid ""
-"Are you sure you want to delete your account? This action cannot be "
-"undone!!!"
+"Are you sure you want to delete your account? This action cannot be undone!!!"
 msgstr ""
 "Ești sigur că vrei să ștergi contul? Această acțiune nu poate fi anulată!!!"
 
@@ -970,8 +970,8 @@ msgstr "CERERI DE PRIETENIE"
 
 #: .\src\users\templates\account_actions\friend_requests.html:12
 msgid ""
-"Review and manage incoming and sent friend requests. Stay connected with new"
-" friends!"
+"Review and manage incoming and sent friend requests. Stay connected with new "
+"friends!"
 msgstr ""
 "Revizuiți și gestionați cererile de prietenie primite și trimise. Rămâneți "
 "conectat cu prietenii noi!"
@@ -1152,8 +1152,7 @@ msgstr "Linkul de resetare este disponibil doar timp de 30 de minute!"
 
 #: .\src\users\templates\account_actions\password_reset_email.html:97
 msgid "If you didn't request a password reset, please ignore this email."
-msgstr ""
-"Dacă nu ai cerut o resetare a parolei, te rugăm să ignori acest email."
+msgstr "Dacă nu ai cerut o resetare a parolei, te rugăm să ignori acest email."
 
 #: .\src\users\templates\account_actions\password_reset_email.html:100
 msgid "Thank you for using"
@@ -1209,7 +1208,7 @@ msgstr "PROFILUL TĂU"
 
 #: .\src\users\templates\account_actions\user_profile.html:10
 msgid "'S PROFILE"
-msgstr "PROFILUL LUI"
+msgstr " PROFIL"
 
 #: .\src\users\templates\account_actions\user_profile.html:88
 msgid "Favorites"
@@ -1218,7 +1217,7 @@ msgstr "Favorite"
 #: .\src\users\templates\account_actions\user_profile.html:106
 #: .\src\users\templates\account_actions\user_profile.html:108
 msgid "In Queue"
-msgstr "În așteptare"
+msgstr "Programate"
 
 #: .\src\users\templates\account_actions\user_profile.html:124
 #: .\src\users\templates\account_actions\user_profile.html:126
@@ -1325,58 +1324,62 @@ msgid "Activate your user account."
 msgstr "Activează-ți contul de utilizator."
 
 #: .\src\users\views.py:165
-#, python-brace-format
+#, python-format
 msgid ""
-"Hello <b>{user}</b>, please go to your email <b>{to_email}</b> inbox and "
-"click on received activation link to confirm your registration. <b>Note:</b>"
-" If you cannot find the email in your inbox, we recommend checking your spam"
-" folder."
+"Hello <b>%(user)s</b>, please go to your email <b>%(to_email)s</b> inbox and "
+"click on the received activation link to confirm your registration. <b>Note:"
+"</b> If you cannot find the email in your inbox, we recommend checking your "
+"spam folder."
 msgstr ""
+"Salut <b>%(user)s</b>, te rugăm să mergi la adresa ta de email <b>"
+"%(to_email)s</b> și să dai clic pe link-ul de activare primit pentru a-ți "
+"confirma înregistrarea. <b>Notă:</b> Dacă nu găsești email-ul în casuța ta "
+"de mesaje primite, îți recomandăm să verifici și folderul de spam."
 
-#: .\src\users\views.py:171
-#, python-brace-format
-msgid "Problem sending email to {to_email}, check if you typed it correctly."
+#: .\src\users\views.py:175
+#, python-format
+msgid "Problem sending email to %(to_email)s, check if you typed it correctly."
 msgstr ""
-"Probleme la trimiterea emailului către {to_email}, verifică dacă l-ai "
+"Probleme la trimiterea emailului către %(to_email)s, verifică dacă l-ai "
 "introdus corect."
 
-#: .\src\users\views.py:200
+#: .\src\users\views.py:205
 msgid "Register :: PlayStyle Compass"
 msgstr "Înregistrare :: PlayStyle Compass"
 
-#: .\src\users\views.py:239
+#: .\src\users\views.py:244
 msgid "Your account has been successfully deleted!"
 msgstr "Contul tău a fost șters cu succes!"
 
-#: .\src\users\views.py:243
+#: .\src\users\views.py:248
 msgid "Incorrect password. Please try again."
 msgstr "Parolă incorectă. Te rugăm să încerci din nou."
 
-#: .\src\users\views.py:247
+#: .\src\users\views.py:252
 msgid "Delete Account :: PlayStyle Compass"
 msgstr "Ștergere Cont :: PlayStyle Compass"
 
-#: .\src\users\views.py:283
+#: .\src\users\views.py:288
 msgid "Confirm Email Change"
 msgstr "Confirmare Schimbare Email"
 
-#: .\src\users\views.py:300
+#: .\src\users\views.py:305
 msgid "Change Email :: PlayStyle Compass"
 msgstr "Schimbare Email :: PlayStyle Compass"
 
-#: .\src\users\views.py:321
+#: .\src\users\views.py:326
 msgid "Invalid token for email change."
 msgstr "Token invalid pentru schimbarea emailului."
 
-#: .\src\users\views.py:328
+#: .\src\users\views.py:333
 msgid "Email Address successfully changed!"
 msgstr "Adresa de email a fost schimbată cu succes!"
 
-#: .\src\users\views.py:330
+#: .\src\users\views.py:335
 msgid "Email Change Success :: PlayStyle Compass"
 msgstr "Schimbare Email Reușită :: PlayStyle Compass"
 
-#: .\src\users\views.py:332
+#: .\src\users\views.py:337
 msgid ""
 "You have successfully changed your email address, go to the homepage by "
 "clicking the button below."
@@ -1384,44 +1387,44 @@ msgstr ""
 "Ți-ai schimbat cu succes adresa de email, mergi la pagina principală dând "
 "clic pe butonul de mai jos."
 
-#: .\src\users\views.py:342
+#: .\src\users\views.py:347
 msgid "Confirmation email successfully sent!"
 msgstr "Emailul de confirmare a fost trimis cu succes!"
 
-#: .\src\users\views.py:344
+#: .\src\users\views.py:349
 msgid "Email Change Done :: PlayStyle Compass"
 msgstr "Schimbare Email Finalizată :: PlayStyle Compass"
 
-#: .\src\users\views.py:346
+#: .\src\users\views.py:351
 msgid ""
 "An email confirmation has been sent to your current email address. Please "
 "check your inbox and click the link provided to confirm the email change."
 msgstr ""
-"Un email de confirmare a fost trimis la adresa ta de email actuală. Te rugăm"
-" să verifici inboxul și să dai clic pe link pentru a confirma schimbarea "
+"Un email de confirmare a fost trimis la adresa ta de email actuală. Te rugăm "
+"să verifici inboxul și să dai clic pe link pentru a confirma schimbarea "
 "emailului."
 
-#: .\src\users\views.py:380
+#: .\src\users\views.py:385
 msgid "New password must be different from the old password!"
 msgstr "Noua parolă trebuie să fie diferită de cea veche!"
 
-#: .\src\users\views.py:383
+#: .\src\users\views.py:388
 msgid "New passwords must match."
 msgstr "Noile parole trebuie să coincidă."
 
-#: .\src\users\views.py:389
+#: .\src\users\views.py:394
 msgid "Change Password :: PlayStyle Compass"
 msgstr "Schimbare Parolă :: PlayStyle Compass"
 
-#: .\src\users\views.py:398
+#: .\src\users\views.py:403
 msgid "Password Changed Successfully!"
 msgstr "Parola a fost schimbată cu succes!"
 
-#: .\src\users\views.py:400
+#: .\src\users\views.py:405
 msgid "Password Change Done :: PlayStyle Compass"
 msgstr "Schimbare Parolă Finalizată :: PlayStyle Compass"
 
-#: .\src\users\views.py:402
+#: .\src\users\views.py:407
 msgid ""
 "You have changed your password, go to the homepage by clicking the button "
 "below."
@@ -1429,247 +1432,176 @@ msgstr ""
 "Ți-ai schimbat parola, mergi la pagina principală dând clic pe butonul de "
 "mai jos."
 
-#: .\src\users\views.py:425
+#: .\src\users\views.py:430
 msgid "Change Profile Picture :: PlayStyle Compass"
 msgstr "Schimbare Imagine Profil :: PlayStyle Compass"
 
-#: .\src\users\views.py:440
+#: .\src\users\views.py:445
 msgid "Contact Us :: PlayStyle Compass"
 msgstr "Contactează-ne :: PlayStyle Compass"
 
-#: .\src\users\views.py:467
+#: .\src\users\views.py:472
 msgid "Your message has been successfully submitted!"
 msgstr "Mesajul tău a fost trimis cu succes!"
 
-#: .\src\users\views.py:470
+#: .\src\users\views.py:475
 msgid "Contact Us Done :: PlayStyle Compass"
 msgstr "Contactare Finalizată :: PlayStyle Compass"
 
-#: .\src\users\views.py:472
+#: .\src\users\views.py:477
 msgid ""
-"Thank you for contacting us! Our team will review it within 48 hours and get"
-" back to you as soon as possible.     Go to the homepage by clicking the "
+"Thank you for contacting us! Our team will review it within 48 hours and get "
+"back to you as soon as possible.     Go to the homepage by clicking the "
 "button below."
 msgstr ""
-"Îți mulțumim că ne-ai contactat! Echipa noastră va analiza mesajul în termen"
-" de 48 de ore și îți va răspunde cât mai curând posibil. Mergi la pagina "
+"Îți mulțumim că ne-ai contactat! Echipa noastră va analiza mesajul în termen "
+"de 48 de ore și îți va răspunde cât mai curând posibil. Mergi la pagina "
 "principală dând clic pe butonul de mai jos."
 
-#: .\src\users\views.py:487
+#: .\src\users\views.py:492
 msgid "You must be authenticated to view the friends list."
 msgstr "Trebuie să fii autentificat pentru a vedea lista de prieteni."
 
-#: .\src\users\views.py:493
+#: .\src\users\views.py:498
 msgid "You cannot view the friends list of another user."
 msgstr "Nu poți vedea lista de prieteni a altui utilizator."
 
-#: .\src\users\views.py:501
+#: .\src\users\views.py:506
 msgid "Friends List :: PlayStyle Compass"
 msgstr "Lista de Prieteni :: PlayStyle Compass"
 
-#: .\src\users\views.py:521
+#: .\src\users\views.py:526
 msgid "You can't view the friend requests of another user."
 msgstr "Nu poți vedea cererile de prietenie ale altui utilizator."
 
-#: .\src\users\views.py:529
+#: .\src\users\views.py:534
 msgid "Friend Requests :: PlayStyle Compass"
 msgstr "Cererile de Prietenie :: PlayStyle Compass"
 
-#: .\src\users\views.py:558
-#, python-brace-format
-msgid ""
-"<strong>{receiver.userprofile.profile_name}</strong> is already in your "
-"friends list."
-msgstr ""
-"<strong>{receiver.userprofile.profile_name}</strong> este deja în lista ta "
-"de prieteni."
-
 #: .\src\users\views.py:563
+#, python-format
+msgid "<strong>%(profile_name)s</strong> is already in your friends list."
+msgstr "<strong>%(profile_name)s</strong> este deja în lista ta de prieteni."
+
+#: .\src\users\views.py:569
 msgid "You cannot send a friend request to <strong>yourself.</strong>"
 msgstr ""
-"Nu poți trimite o cerere de prietenie către <strong>propria "
-"persoană.</strong>"
+"Nu poți trimite o cerere de prietenie către <strong>propria persoană.</"
+"strong>"
 
-#: .\src\users\views.py:573
-msgid "You already sent them a friend request."
+#: .\src\users\views.py:580
+msgid "You already sent a friend request to this user."
 msgstr "Ai trimis deja o cerere de prietenie către acest utilizator."
 
-#: .\src\users\views.py:589
+#: .\src\users\views.py:597
 msgid "Friend request sent."
 msgstr "Cerere de prietenie trimisă."
 
-#: .\src\users\views.py:600
-#, python-brace-format
-msgid ""
-"<a class=\"notification-profile\" title=\"View User Profile\" "
-"href=\"{profile_url}\">{user_in_notification}</a> just sent you a friend "
-"request!<br>"
-msgstr ""
-"<a class=\"notification-profile\" title=\"Vezi Profilul Utilizatorului\" "
-"href=\"{profile_url}\">{user_in_notification}</a> tocmai ți-a trimis o "
-"cerere de prietenie!<br>"
-
-#: .\src\users\views.py:610 .\src\users\views.py:614 .\src\users\views.py:835
+#: .\src\users\views.py:618 .\src\users\views.py:622 .\src\users\views.py:853
 msgid "The user does not exist or has deleted their account."
 msgstr "Utilizatorul nu există sau și-a șters contul."
 
-#: .\src\users\views.py:617
+#: .\src\users\views.py:625
 msgid "You must be logged in to send a friend request."
 msgstr "Trebuie să fii autentificat pentru a trimite o cerere de prietenie."
 
-#: .\src\users\views.py:636
+#: .\src\users\views.py:644
 msgid "Friend request accepted."
 msgstr "Cererea de prietenie a fost acceptată."
 
-#: .\src\users\views.py:641
-#, python-brace-format
-msgid ""
-"You are now friends with "
-"<strong>{friend_request.sender.userprofile.profile_name}</strong>."
-msgstr ""
-"Ați devenit acum prieteni cu "
-"<strong>{friend_request.sender.userprofile.profile_name}</strong>."
+#: .\src\users\views.py:649
+#, python-format
+msgid "You are now friends with <strong>%(profile_name)s</strong>."
+msgstr "Ați devenit acum prieteni cu <strong>{%(profile_name)s</strong>."
 
-#: .\src\users\views.py:654
-#, python-brace-format
-msgid ""
-"<a class=\"notification-profile\" title=\"View User Profile\" "
-"href=\"{profile_url}\">{user_in_notification}</a> accepted your friend "
-"request!"
-msgstr ""
-"<a class=\"notification-profile\" title=\"Vezi Profilul Utilizatorului\" "
-"href=\"{profile_url}\">{user_in_notification}</a> a acceptat cererea ta de "
-"prietenie!"
-
-#: .\src\users\views.py:666
+#: .\src\users\views.py:677
 msgid "That is not your request to accept."
 msgstr "Aceea nu este cererea ta de acceptat."
 
-#: .\src\users\views.py:668
+#: .\src\users\views.py:679
 msgid "Unable to accept that friend request."
 msgstr "Imposibil de acceptat cererea de prietenie."
 
-#: .\src\users\views.py:670
+#: .\src\users\views.py:681
 msgid "You must be authenticated to accept a friend request."
 msgstr "Trebuie să fii autentificat pentru a accepta o cerere de prietenie."
 
-#: .\src\users\views.py:688
+#: .\src\users\views.py:699
 msgid "Successfully removed that friend."
 msgstr "Prietenele au fost eliminate cu succes."
 
-#: .\src\users\views.py:693
-#, python-brace-format
-msgid ""
-"You are no longer friends with "
-"<strong>{friend_to_remove.userprofile.profile_name}</strong>."
-msgstr ""
-"Nu mai sunteți prieteni cu "
-"<strong>{friend_to_remove.userprofile.profile_name}</strong>."
+#: .\src\users\views.py:704
+#, python-format
+msgid "You are no longer friends with <strong>%(profile_name)s</strong>."
+msgstr "Nu mai sunteți prieteni cu <strong>%(profile_name)s</strong>."
 
-#: .\src\users\views.py:700
+#: .\src\users\views.py:713
 msgid "There was an error. Unable to remove that friend."
 msgstr "A apărut o eroare. Imposibil de eliminat această prietenie."
 
-#: .\src\users\views.py:702
+#: .\src\users\views.py:715
 msgid "You must be authenticated to remove a friend."
 msgstr "Trebuie să fii autentificat pentru a elimina un prieten."
 
-#: .\src\users\views.py:720
+#: .\src\users\views.py:733
 msgid "Friend request declined."
 msgstr "Cererea de prietenie a fost refuzată."
 
-#: .\src\users\views.py:725
-#, python-brace-format
-msgid ""
-"You refused to be friends with "
-"<strong>{friend_request.sender.userprofile.profile_name}</strong>."
-msgstr ""
-"Ai refuzat să fii prieten cu "
-"<strong>{friend_request.sender.userprofile.profile_name}</strong>."
-
 #: .\src\users\views.py:738
-#, python-brace-format
-msgid ""
-"<a class=\"notification-profile\" title=\"View User Profile\" "
-"href=\"{profile_url}\">{user_in_notification}</a> declined your friend "
-"request!"
-msgstr ""
-"<a class=\"notification-profile\" title=\"Vezi Profilul Utilizatorului\" "
-"href=\"{profile_url}\">{user_in_notification}</a> a refuzat cererea ta de "
-"prietenie!"
+#, python-format
+msgid "You refused to be friends with <strong>%(profile_name)s</strong>."
+msgstr "Ai refuzat să fii prieten cu <strong>%(profile_name)s</strong>."
 
-#: .\src\users\views.py:750
+#: .\src\users\views.py:766
 msgid "That is not your friend request to decline."
 msgstr "Aceea nu este cererea ta de prietenie de refuzat."
 
-#: .\src\users\views.py:752
+#: .\src\users\views.py:768
 msgid "Unable to decline that friend request."
 msgstr "Imposibil de refuzat cererea de prietenie."
 
-#: .\src\users\views.py:754
+#: .\src\users\views.py:770
 msgid "You must be authenticated to decline a friend request."
 msgstr "Trebuie să fii autentificat pentru a refuza o cerere de prietenie."
 
-#: .\src\users\views.py:779
+#: .\src\users\views.py:795
 msgid "Nothing to cancel. Friend request does not exist."
 msgstr "Nimic de anulat. Cererea de prietenie nu există."
 
-#: .\src\users\views.py:786
+#: .\src\users\views.py:802
 msgid "Friend request canceled."
 msgstr "Cererea de prietenie a fost anulată."
 
-#: .\src\users\views.py:792
-#, python-brace-format
-msgid ""
-"You canceled your friend request for "
-"<strong>{receiver.userprofile.profile_name}</strong>."
+#: .\src\users\views.py:808
+#, python-format
+msgid "You canceled your friend request for <strong>%(profile_name)s</strong>."
 msgstr ""
-"Ați anulat cererea de prietenie pentru "
-"<strong>{receiver.userprofile.profile_name}</strong>."
+"Ați anulat cererea de prietenie pentru <strong>%(profile_name)s</strong>."
 
-#: .\src\users\views.py:797
+#: .\src\users\views.py:815
 msgid "Unable to cancel that friend request."
 msgstr "Imposibil de anulat cererea de prietenie."
 
-#: .\src\users\views.py:799
+#: .\src\users\views.py:817
 msgid "You must be authenticated to cancel a friend request."
 msgstr "Trebuie să fii autentificat pentru a anula o cerere de prietenie."
 
-#: .\src\users\views.py:806
+#: .\src\users\views.py:824
 msgid "User Profile :: PlayStyle Compass"
 msgstr "Profilul Utilizatorului :: PlayStyle Compass"
 
-#: .\src\users\views.py:904
+#: .\src\users\views.py:922
 msgid "Message sent successfully!"
 msgstr "Mesaj trimis cu succes!"
 
-#: .\src\users\views.py:913
-#, python-brace-format
-msgid ""
-"<a class=\"notification-profile\" title=\"View User Profile\" "
-"href=\"{profile_url}\">{user_in_notification}</a> just sent you a "
-"message!<br>"
-msgstr ""
-"<a class=\"notification-profile\" title=\"Vezi Profilul Utilizatorului\" "
-"href=\"{profile_url}\">{user_in_notification}</a> tocmai ți-a trimis un "
-"mesaj!<br>"
-
-#: .\src\users\views.py:926
+#: .\src\users\views.py:944
 msgid "You have to be friends with someone to send them a message."
 msgstr "Trebuie să fii prieten cu cineva pentru a-i trimite un mesaj."
 
-#: .\src\users\views.py:931
+#: .\src\users\views.py:949
 msgid "Send message :: PlayStyle Compass"
 msgstr "Trimite mesaj :: PlayStyle Compass"
 
-#: .\src\users\views.py:959
+#: .\src\users\views.py:977
 msgid "Inbox :: PlayStyle Compass"
 msgstr "Inbox :: PlayStyle Compass"
-
-#, python-brace-format
-#~ msgid ""
-#~ "Hello <b>{user}</b>, please go to your email <b>{to_email}</b> inbox and "
-#~ "click on "
-#~ msgstr ""
-#~ "Sălut <b>{user}</b>, te rugăm să mergi la căsuța ta de email "
-#~ "<b>{to_email}</b> și să dai clic pe "

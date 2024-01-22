@@ -198,7 +198,7 @@ def search_results(request):
     user_friends = get_friend_list(request.user)
 
     context = {
-        "page_title": _("Serach Results :: PlayStyle Compass"),
+        "page_title": _("Search Results :: PlayStyle Compass"),
         "query": query,
         "games": games,
         "user_preferences": user_preferences,
@@ -224,7 +224,7 @@ def autocomplete_view(request):
 def toggle_favorite(request):
     """View for toggling a game's favorite status for the current user."""
     if request.method == "POST":
-        print('aaaaaaaaaaa')
+        print("aaaaaaaaaaa")
         game_id = request.POST.get("game_id")
         user = request.user
         user_preferences = UserPreferences.objects.get(user=user)
@@ -660,28 +660,23 @@ def share_game(request, game_id):
                     {
                         "status": "error",
                         "message": _(
-                            "You have already shared {game_title} with {receiver_name}."
-                        ).format(
-                            game_title=game.title,
-                            receiver_name=receiver.userprofile.profile_name,
-                        ),
-                    },
+                            "You have already shared %(game_title)s with %(profile_name)s."
+                        )
+                        % {
+                            "game_title": game.title,
+                            "profile_name": receiver.userprofile.profile_name,
+                        },
+                    }
                 )
 
             # Create the message content with information about the shared game
-            message_content = _(
-                """
-                <p><strong>Hello {receiver_name}!</strong></p>
-                <p>I just wanted to share this awesome game named <strong>{game_title}</strong> with you.</p>
+            message_content = f"""
+                <p><strong>Hello {receiver.userprofile.profile_name}!</strong></p>
+                <p>I just wanted to share this awesome game named <strong>{game.title}</strong> with you.</p>
                 <div class="game-message">
-                    <p>Check it out <a href='{game_url}' target='_blank'>here</a>!</p>
+                    <p>Check it out <a href='{reverse('playstyle_compass:view_game', args=[game.id])}' target='_blank'>here</a>!</p>
                 </div>
-                """
-            ).format(
-                receiver_name=receiver.userprofile.profile_name,
-                game_title=game.title,
-                game_url=reverse("playstyle_compass:view_game", args=[game.id]),
-            )
+            """
 
             # Create a new Message object
             message = SharedGame.objects.create(
@@ -695,17 +690,10 @@ def share_game(request, game_id):
             profile_url = reverse("users:view_profile", args=[user_in_notification])
             navigation_url = reverse("playstyle_compass:games_shared")
 
-            message = _(
-                """
-                <a class="notification-profile" title="View User Profile" href="{profile_url}">{user_in_notification}</a> 
-                just shared a game with you!<br>
+            message = f"""<a class="notification-profile" title="View User Profile" href="{profile_url}">{user_in_notification}</a>
+                just shared a game with you!<br> 
                 <a class="notification-link" title="Navigate" href="{navigation_url}">Navigate to shared games</a>
                 """
-            ).format(
-                profile_url=profile_url,
-                user_in_notification=user_in_notification,
-                navigation_url=navigation_url,
-            )
 
             notification = Notification(user=receiver, message=message)
             notification.save()
@@ -714,8 +702,12 @@ def share_game(request, game_id):
                 {
                     "status": "success",
                     "message": _(
-                        f"You have successfully shared {game.title} with {receiver.userprofile.profile_name}."
-                    ),
+                        "You have successfully shared %(game_title)s with %(profile_name)s."
+                    )
+                    % {
+                        "game_title": game.title,
+                        "profile_name": receiver.userprofile.profile_name,
+                    },
                 }
             )
 

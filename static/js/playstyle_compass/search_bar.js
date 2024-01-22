@@ -21,7 +21,7 @@ searchInput.addEventListener('input', function () {
 });
 
 function fillSearchBar(value) {
-  searchInput.value = decodeURIComponent(value); // Decode the encoded value
+  searchInput.value = decodeURIComponent(value);
   searchResults.innerHTML = '';
   document.querySelector('.search-form').submit();
 }
