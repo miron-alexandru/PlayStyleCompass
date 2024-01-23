@@ -1,17 +1,3 @@
-const translate = (key) => {
-      const translations = {
-        'ro': {
-          'Select All': 'Selectează Tot',
-          'Unselect All': 'Deselectează Tot',
-        },
-      };
-
-      const pathSegments = window.location.pathname.split('/');
-      const languageCode = pathSegments[1] || 'ro';
-
-      return translations[languageCode]?.[key] || key;
-    };
-
 document.addEventListener('DOMContentLoaded', function () {
   const receivedBtn = document.getElementById('messages-received-btn');
   const sentBtn = document.getElementById('messages-sent-btn');

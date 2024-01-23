@@ -1,4 +1,5 @@
 <script>
+    const authCheckUrl = "{% url 'users:check_authentication' %}";
     const toggleFavoriteUrl = "{% url 'playstyle_compass:toggle_favorite' %}";
     const toggleGameQueueUrl = "{% url 'playstyle_compass:toggle_game_queue' %}";
     window.passwordInputIdLogIn = '{{ form.password.id_for_label }}';

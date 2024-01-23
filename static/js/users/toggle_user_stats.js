@@ -1,18 +1,3 @@
-const translate = (key) => {
-      const translations = {
-        'ro': {
-          'Favorites': 'Favorite',
-          'In Queue': 'Programate',
-          'Reviews': 'Recenzii'
-        },
-      };
-
-      const pathSegments = window.location.pathname.split('/');
-      const languageCode = pathSegments[1] || 'ro';
-
-      return translations[languageCode]?.[key] || key;
-    };
-
 document.addEventListener("DOMContentLoaded", function () {
     let toggleStat = document.querySelectorAll(".toggle-stat");
 
@@ -43,7 +28,6 @@ document.addEventListener("DOMContentLoaded", function () {
                         icon.classList.remove('fa-eye');
                         icon.classList.add('fa-eye-slash');
                     }
-
                     let statContent = button.closest('.stat-item').querySelector('.stat-content');
                     statContent.innerHTML = data.show ? `<a href="${translate(statUrls[statName])}">${translate(statDisplayText[statName])}</a>` : `<span>${translate(statDisplayText[statName])}</span>`;
                 })

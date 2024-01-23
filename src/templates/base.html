@@ -19,6 +19,7 @@
   {% bootstrap_javascript jquery='full' %}
   <script src="{% static 'js/lightbox-plus-jquery.min.js' %}" defer></script>
   <script src="{% static 'js/get_notifications.js' %}" defer></script>
+  <script src="{% static 'js/translator.js' %}" defer></script>
   <link rel="stylesheet" type="text/css" href="{% static 'css/base.css' %}">
 </head>
 
@@ -205,6 +206,32 @@
     </div>
   </main>
 
+<div class="language-switcher">
+    <div class="globe-container">
+        <i class="fa-solid fa-globe globe-icon"></i>
+    </div>
+    <div class="language-options">
+        <ol>
+            <li>
+                <a class="nav-link nav-user waves-eff" href="/en{{ request.get_full_path|slice:'3:' }}" role="button">
+                  <span class="flag-icon en"></span>
+                    <span class="language-name en">
+                        {% trans "English" %}
+                    </span>
+                </a>
+            </li>
+            <li>
+                <a class="nav-link nav-user waves-eff" href="/ro{{ request.get_full_path|slice:'3:' }}" role="button">
+                  <span class="flag-icon ro"></span>
+                    <span class="language-name ro">
+                        {% trans "Romanian" %}
+                    </span>
+                </a>
+            </li>
+        </ol>
+    </div>
+</div>
+
   <footer class="footer">
     <div class="my-footer">
       <p>&copy; 2023-{{ current_year }} {% trans "PlayStyle Compass. All rights reserved." %}</p>
@@ -226,5 +253,4 @@
   <script src="{% static 'js/users/show_hide_password.js' %}" defer></script>
 
 </body>
-
 </html>

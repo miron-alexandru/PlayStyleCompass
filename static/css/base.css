@@ -534,6 +534,66 @@ input[type="email"]:focus,
   font-size: 12px;
 }
 
+.language-switcher {
+  position: fixed;
+  top: 50%;
+  left: 5px;
+  transform: translateY(-50%);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+}
+
+.globe-icon {
+  font-size: 20px;
+}
+
+.language-options {
+  display: none;
+  list-stylee: none;
+  paddinge: 0;
+  margin-left: -35px;
+  margin-top: 95px;
+}
+
+.language-options li {
+  display: flex;
+  align-items: center;
+}
+
+.language-name {
+  font-size: 14px;
+}
+
+.flag-icon {
+  width: 16px;
+  height: 16px;
+  background-size: cover;
+  display: inline-block;
+  cursor: pointer;
+  vertical-align: -3px;
+}
+
+.flag-icon.en:before {
+  content: '';
+  background-image: url(https://flagsapi.com/GB/shiny/16.png);
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+}
+
+.flag-icon.ro:before {
+  content: '';
+  background-image: url(https://flagsapi.com/RO/shiny/16.png);
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+}
+
+.language-switcher:hover .language-options {
+  display: block;
+}
+
 
 @media screen and (max-width: 1000px) {
   .navbar {

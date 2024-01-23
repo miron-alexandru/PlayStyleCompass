@@ -1049,3 +1049,9 @@ def mark_notification_inactive(request, notification_id=None):
         notifications.update(is_active=False)
 
     return JsonResponse({"status": "success"})
+
+def check_authentication(request):
+    if request.user.is_authenticated:
+        return JsonResponse({'authenticated': True})
+    else:
+        return JsonResponse({'authenticated': False})

@@ -4,7 +4,7 @@ let seconds = countdownDuration;
 
 const countdownInterval = setInterval(function () {
   seconds--;
-  countdownElement.textContent = seconds + " seconds";
+  countdownElement.textContent = seconds + translate(" seconds");
   if (seconds <= 0) {
     clearInterval(countdownInterval);
     window.location.href = "/";
