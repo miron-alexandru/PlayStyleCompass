@@ -4,6 +4,7 @@
 from datetime import datetime
 from django import template
 from itertools import zip_longest
+from django.utils.translation import gettext
 
 register = template.Library()
 
@@ -53,7 +54,7 @@ def in_queue(game_id, user_queue):
 
 
 @register.simple_tag
-def zip_lists(reviewers, review_deck, review_text, score):
+def zip_listse(reviewers, review_deck, review_text, score):
     if any([not reviewers, not review_deck, not review_text, not score]):
         return None
     else:
@@ -77,3 +78,11 @@ def pluralize_reviews(count):
 def format_timestamp(value):
     if isinstance(value, datetime):
         return value.isoformat()
+
+
+@register.filter(name='template_trans')
+def template_trans(text):
+    try:
+        return gettext(text)
+    except Exception:
+        return text

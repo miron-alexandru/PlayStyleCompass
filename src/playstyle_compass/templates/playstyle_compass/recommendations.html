@@ -38,9 +38,15 @@
   {% if paginated_page.object_list %}
   <h4>
     {% if category == "common_genres_platforms" %}
-    {% trans "Games that match your preferred genres and platforms" %}
+        {% trans "Games that match your preferred Genres and Platforms" %}
+    {% elif category == "gaming_history" %}
+        {% trans "Games recommended based on your Gaming History:" %} {{ user_preferences|getattr:category }}
+    {% elif category == "favorite_genres" %}
+        {% trans "Games matching your Favorite Genres:" %} {{ user_preferences|getattr:category }}
+    {% elif category == "preferred_platforms" %}
+        {% trans "Games recommended for your Preferred Platforms:" %} {{ user_preferences|getattr:category }}
     {% else %}
-    {% trans "Games you might like based on your" %} {{ category|format_category_label }}: {{ user_preferences|getattr:category }}
+        {% trans "No category" %}
     {% endif %}
   </h4>
   <ul>
@@ -53,7 +59,7 @@
       {% if paginated_page.has_previous %}
       <a
         href="?category={{ category }}&{{ category|slugify }}_page=1{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}">&laquo;
-        First</a>
+        {% trans "First" %}</a>
       <a
         href="?category={{ category }}&{{ category|slugify }}_page={{ paginated_page.previous_page_number }}{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}">{% trans "Previous" %}</a>
       {% endif %}
@@ -72,7 +78,7 @@
     </span>
   </div>
   {% else %}
-  <h4>{% trans "No game recommendations based on your" %} {{ category|format_category_label }}: {{ user_preferences|getattr:category }}</h4>
+  <h4>{% trans "No recommendations based on your" %} {% blocktrans with category|format_category_label|template_trans as category_name %} {{ category_name }}: {% endblocktrans %} {{ user_preferences|getattr:category }}</h4>
   {% endif %}
 </div>
 {% endfor %}

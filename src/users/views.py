@@ -122,6 +122,12 @@ class CustomLoginView(LoginView):
     authentication_form = CustomAuthenticationForm
     template_name = "registration/login.html"
 
+    def dispatch(self, request, *args, **kwargs):
+        if self.request.user.is_authenticated:
+            return redirect('playstyle_compass:index')
+
+        return super().dispatch(request, *args, **kwargs)
+
 
 @login_required
 def activate(request, uidb64, token):
@@ -194,6 +200,9 @@ def resend_activation_link(request):
 
 def register(request):
     """View function for user registration."""
+    if request.user.is_authenticated:
+            return redirect('playstyle_compass:index')
+
     if request.method == "POST":
         form = CustomRegistrationForm(data=request.POST)
 
