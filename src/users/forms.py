@@ -70,7 +70,9 @@ class CustomRegistrationForm(UserCreationForm):
         ),
         help_text="Enter the same password as before, for verification.",
     )
-    captcha = ReCaptchaField(error_messages={"required": _("Please complete reCAPTCHA.")})
+    captcha = ReCaptchaField(
+        error_messages={"required": _("Please complete reCAPTCHA.")}
+    )
 
     class Meta:
         model = User
@@ -211,7 +213,9 @@ class CustomPasswordChangeForm(PasswordChangeForm):
     def clean_passwords(self, arg0):
         password1 = self.cleaned_data.get(arg0)
         if len(password1) < 8:
-            raise forms.ValidationError(_("Password must be at least 8 characters long."))
+            raise forms.ValidationError(
+                _("Password must be at least 8 characters long.")
+            )
         return password1
 
 

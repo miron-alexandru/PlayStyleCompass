@@ -80,7 +80,7 @@ def format_timestamp(value):
         return value.isoformat()
 
 
-@register.filter(name='template_trans')
+@register.filter(name="template_trans")
 def template_trans(text):
     try:
         return gettext(text)

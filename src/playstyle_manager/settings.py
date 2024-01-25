@@ -122,29 +122,25 @@ DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
 # Password Validation
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'users.validators.validators.LowercaseValidator',
+        "NAME": "users.validators.validators.LowercaseValidator",
     },
     {
-        'NAME': 'users.validators.validators.UppercaseValidator',
+        "NAME": "users.validators.validators.UppercaseValidator",
     },
     {
-        'NAME': 'users.validators.validators.SpecialCharValidator',
+        "NAME": "users.validators.validators.SpecialCharValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-        'OPTIONS': {
-             'max_similarity': 0.7,
-             'user_attributes': ("username", "email")
-          }
+        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
+        "OPTIONS": {"max_similarity": 0.7, "user_attributes": ("username", "email")},
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
 ]
-
 
 
 # Internationalization

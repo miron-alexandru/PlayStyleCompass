@@ -98,5 +98,7 @@ urlpatterns = [
         views.mark_notification_inactive,
         name="mark_notification_inactive",
     ),
-    path("check_authentication/", views.check_authentication, name="check_authentication"),
+    path(
+        "check_authentication/", views.check_authentication, name="check_authentication"
+    ),
 ]

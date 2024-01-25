@@ -124,7 +124,7 @@ class CustomLoginView(LoginView):
 
     def dispatch(self, request, *args, **kwargs):
         if self.request.user.is_authenticated:
-            return redirect('playstyle_compass:index')
+            return redirect("playstyle_compass:index")
 
         return super().dispatch(request, *args, **kwargs)
 
@@ -201,7 +201,7 @@ def resend_activation_link(request):
 def register(request):
     """View function for user registration."""
     if request.user.is_authenticated:
-            return redirect('playstyle_compass:index')
+        return redirect("playstyle_compass:index")
 
     if request.method == "POST":
         form = CustomRegistrationForm(data=request.POST)
@@ -1059,8 +1059,9 @@ def mark_notification_inactive(request, notification_id=None):
 
     return JsonResponse({"status": "success"})
 
+
 def check_authentication(request):
     if request.user.is_authenticated:
-        return JsonResponse({'authenticated': True})
+        return JsonResponse({"authenticated": True})
     else:
-        return JsonResponse({'authenticated': False})
+        return JsonResponse({"authenticated": False})
