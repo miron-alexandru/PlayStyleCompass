@@ -103,11 +103,9 @@
   </form>
 </div>
 
-
-
 {% else %}
 <p class="text-center">{% trans "You have not defined your PlayStyle yet." %}<a
-    href="{% url 'playstyle_compass:gaming_preferences' %}">{% trans "Click here to start" %}</a>.</p>
+    href="{% url 'playstyle_compass:gaming_preferences' %}"> {% trans "Click here to start" %}</a>.</p>
 {% endif %}
 
 <script src="{% static 'js/playstyle_compass/update_save_buttons.js' %}" defer></script>

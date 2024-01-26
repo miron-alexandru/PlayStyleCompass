@@ -22,6 +22,7 @@ from .helper_functions.views_helpers import (
     paginate_matching_games_query,
     paginate_matching_games_dict,
     get_friend_list,
+    calculate_average_similarity,
 )
 
 from django.utils.translation import gettext as _
@@ -785,24 +786,6 @@ def similar_playstyles(request):
     """View used to show users with similar playstyles."""
     user_preferences, created = UserPreferences.objects.get_or_create(user=request.user)
 
-    def calculate_similarity(set1, set2):
-        """Function used to calculate Jaccard similarity between two sets."""
-        intersection = len(set1.intersection(set2))
-        union = len(set1.union(set2))
-        similarity_score = intersection / union if union > 0 else 0
-        return similarity_score
-
-    def calculate_average_similarity(user1, user2, preferences):
-        """Function used to calculate average similarity across multiple preferences"""
-        total_similarity_score = sum(
-            calculate_similarity(
-                set(getattr(user1, pref).split(",")),
-                set(getattr(user2, pref).split(",")),
-            )
-            for pref in preferences
-        )
-        return total_similarity_score / len(preferences)
-
     preferences_to_compare = ["gaming_history", "favorite_genres", "platforms"]
     similarity_threshold = 0.6
 
@@ -819,6 +802,7 @@ def similar_playstyles(request):
     context = {
         "page_title": _("Similar PlayStyles :: PlayStyle Compass"),
         "similar_user_playstyles": similar_user_playstyles,
+        "user_preferences": user_preferences,
     }
 
     return render(request, "playstyle_compass/similar_playstyles.html", context)

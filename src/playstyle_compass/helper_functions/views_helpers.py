@@ -234,3 +234,26 @@ def get_friend_list(user):
     user_friends = friends_list.friends.all()
 
     return user_friends
+
+
+def calculate_similarity(set1, set2):
+    """Function used to calculate Jaccard similarity between two sets."""
+    if not set1 or not set2:
+        return 0.0
+
+    intersection = len(set1.intersection(set2))
+    union = len(set1.union(set2))
+    similarity_score = intersection / union if union > 0 else 0
+
+    return similarity_score
+
+def calculate_average_similarity(user1, user2, preferences):
+    """Function used to calculate average similarity across multiple preferences"""
+    total_similarity_score = sum(
+        calculate_similarity(
+            set(getattr(user1, pref).split(",")),
+            set(getattr(user2, pref).split(",")),
+        )
+        for pref in preferences
+    )
+    return total_similarity_score / len(preferences)

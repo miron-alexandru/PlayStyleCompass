@@ -15,6 +15,7 @@
 {% block content %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/playstyle_compass/similar_playstyles.css' %}">
 
+{% if user_preferences.gaming_history or user_preferences.favorite_genres or user_preferences.platforms %}
 {% if similar_user_playstyles %}
 <div class="user-playstyles-container">
     {% for user_playstyle in similar_user_playstyles %}
@@ -42,8 +43,13 @@
     </div>
     {% endfor %}
 </div>
+
 {% else %}
 <p class="no-results">{% trans "No users with similar playstyles found." %}</p>
+{% endif %}
+{% else %}
+<p class="text-center">{% trans "You have not defined your PlayStyle yet." %}<a
+    href="{% url 'playstyle_compass:gaming_preferences' %}"> {% trans "Click here to start" %}</a>.</p>
 {% endif %}
 
 {% endblock content %}
