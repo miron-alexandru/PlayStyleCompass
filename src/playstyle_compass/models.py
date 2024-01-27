@@ -102,6 +102,7 @@ class Game(models.Model):
     game_images = models.TextField()
     similar_games = models.CharField(max_length=200)
     dlcs = models.CharField(max_length=200)
+    franchises = models.CharField(max_length=200)
 
     def __str__(self):
         return str(self.title)
@@ -199,3 +200,19 @@ class Review(models.Model):
 
     class Meta:
         db_table = "Reviews"
+
+
+class Franchise(models.Model):
+    """Represents a franchise."""
+    id = models.BigAutoField(primary_key=True)
+    title = models.CharField(max_length=100)
+    description = models.TextField()
+    overview = models.TextField()
+    games = models.CharField(max_length=200)
+    image = models.TextField()
+
+    def __str__(self):
+        return f"Franchise: {self.title}"
+
+    class Meta:
+        db_table = "Franchises"

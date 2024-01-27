@@ -11,7 +11,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Avg, Q
 
 from utils.constants import genres, all_platforms
-from .models import UserPreferences, Game, Review, SharedGame
+from .models import UserPreferences, Game, Review, SharedGame, Franchise
 from .forms import ReviewForm
 from users.models import Notification
 
@@ -806,3 +806,10 @@ def similar_playstyles(request):
     }
 
     return render(request, "playstyle_compass/similar_playstyles.html", context)
+
+
+### TODO !!!
+def view_franchises(request):
+    all_franchises = Franchise.objects.all()
+
+    return redirect("playstyle_compass:inddex")

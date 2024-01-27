@@ -14,7 +14,8 @@ CREATE TABLE IF NOT EXISTS Games (
     developers TEXT,
     game_images TEXT,
     similar_games TEXT,
-    dlcs TEXT
+    dlcs TEXT,
+    franchises TEXT
 );
 """
 
@@ -76,6 +77,32 @@ WHERE title IS NULL
 
 inserting_sql = """
 INSERT INTO Games 
-(title, description, overview, genres, platforms, themes, image, release_date, developers, game_images, similar_games, dlcs) 
-VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+(title, description, overview, genres, platforms, themes, image, release_date, developers, game_images, similar_games, dlcs, franchises) 
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+"""
+
+create_franchises_table = """
+CREATE TABLE IF NOT EXISTS Franchises (
+    id INTEGER PRIMARY KEY,
+    title TEXT,
+    overview TEXT,
+    description TEXT,
+    games TEXT,
+    image TEXT
+);
+"""
+
+insert_franchise_sql = """
+INSERT INTO Franchises
+(title, overview, description, games, image)
+VALUES (?, ?, ?, ?, ?);
+"""
+
+remove_duplicate_franchises = """
+DELETE FROM Franchises
+    WHERE rowid NOT IN (
+    SELECT MIN(rowid)
+    FROM Franchises
+    GROUP BY title
+);
 """

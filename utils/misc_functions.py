@@ -20,6 +20,9 @@ from sql_queries import (
     create_reviews_table,
     insert_reviews_sql,
     remove_duplicates_reviews,
+    create_franchises_table,
+    insert_franchise_sql,
+    remove_duplicate_franchises,
 )
 
 
@@ -28,12 +31,12 @@ def fetch_game_ids_by_platforms(platform_ids, api_key):
     Fetches game IDs for multiple platform IDs and returns a set of all fetched game IDs.
     """
     all_game_ids = set()
-    # add_custom_game_ids(all_game_ids, game_ids_to_add)
+    #add_custom_game_ids(all_game_ids, game_ids_to_add)
     # current_date = datetime.now().date()
-    current_date = datetime(2023, 1, 1).date()
+    current_date = datetime(2024, 1, 1).date()
 
     for platform_id in platform_ids:
-        url = f"{BASE_URL}games/?api_key={api_key}&format=json&platforms={platform_id}&filter=original_release_date:|{current_date}&sort=original_release_date:desc&limit=20"
+        url = f"{BASE_URL}games/?api_key={api_key}&format=json&platforms={platform_id}&filter=original_release_date:|{current_date}&sort=original_release_date:desc&limit=5"
         try:
             response = requests.get(url, headers=headers, timeout=10)
             if response.status_code == 200:
@@ -134,6 +137,7 @@ def parse_game_data(game_id):
     developers = get_developers(game_data)
     similar_games = get_similar_games(game_data)
     dlcs = get_dlcs(game_data)
+    franchises = get_franchises(game_data)
 
     return (
         title,
@@ -149,6 +153,7 @@ def parse_game_data(game_id):
         similar_games,
         reviews_data,
         dlcs,
+        franchises,
     )
 
 
@@ -168,6 +173,21 @@ def get_genres(game_data):
         return None
     genre_names = [genre["name"] for genre in game_data.get("genres", [])]
     return ", ".join(genre_names) if genre_names else None
+
+
+def get_franchises(game_data):
+    """Get game franchises."""
+    if not isinstance(game_data, dict):
+        return None
+
+    franchises_data = game_data.get('franchises')
+
+    if not franchises_data or not isinstance(franchises_data, list):
+        return None
+    
+    franchises_names = [franchise["name"] for franchise in franchises_data]
+    return ", ".join(franchises_names) if franchises_names else None
+
 
 
 def get_platforms(game_data):
@@ -308,6 +328,7 @@ def create_games_data_db(game_ids):
                 similar_games,
                 reviews_data,
                 dlcs,
+                franchises,
             ) = parse_game_data(game_id)
 
             game_values = (
@@ -323,6 +344,7 @@ def create_games_data_db(game_ids):
                 game_images,
                 similar_games,
                 dlcs,
+                franchises,
             )
             cursor.execute(inserting_sql, game_values)
 
@@ -353,6 +375,121 @@ def create_games_data_db(game_ids):
         cursor.execute(remove_duplicates_reviews)
         cursor.execute(remove_empty)
         db_connection.commit()
+
+
+def fetch_franchises(api_key, format='json', field_list=None, limit=2):
+    """Fetch franchises using the Giant Bomb's API."""
+    base_url = 'https://www.giantbomb.com/api/franchises/'
+    api_url = f'{base_url}?api_key={API_KEY}&format={format}'
+
+    if field_list:
+        api_url += f'&field_list={",".join(field_list)}'
+    api_url += f'&limit={limit}'
+
+    response = requests.get(api_url, headers=headers)
+
+    if response.status_code == 200:
+        data = response.json()
+        return data.get('results', [])
+    else:
+        print(f"Error: {response.status_code}")
+
+        return None
+
+
+def extract_guids(franchises):
+    """Extract "guid's" from each franchise."""
+    if franchises:
+        return {franchise['guid'] for franchise in franchises}
+    else:
+        return set()
+
+
+def fetch_franchise_data(guid, api_key, format='json', field_list=None):
+    """Fetch data for an individual franchise."""
+    base_url = 'https://www.giantbomb.com/api/franchise'
+    api_url = f'{base_url}/{guid}?api_key={API_KEY}&format={format}'
+
+    if field_list:
+        api_url += f'&field_list={",".join(field_list)}'
+
+    response = requests.get(api_url, headers=headers)
+
+    if response.status_code == 200:
+        data = response.json()
+        return data.get('results', [])
+    else:
+        print(f"Error: {response.status_code}")
+        return None
+
+
+def get_franchise_games(franchise_data):
+    """Get games that are from a particular franchise."""
+    if not isinstance(franchise_data, dict):
+        return None
+    if "games" not in franchise_data or not isinstance(franchise_data["games"], list):
+        return None
+
+    games = [game["name"] for game in franchise_data["games"]]
+
+    return ", ".join(games) if games else None
+
+
+def parse_franchise_data(franchise_id):
+    """Parse franchise data."""
+    try:
+        franchise_data = fetch_franchise_data(franchise_id, API_KEY, format='json', field_list=['name', 'deck', 'description', 'games', 'image'])
+    except FetchDataException as e:
+        print(f"Fetching data failed: {e}")
+        sys.exit()
+
+    raw_description = franchise_data.get('description', None)
+    description = extract_description_text(raw_description) if raw_description else ''
+
+    title = get_title(franchise_data)
+    overview = get_description(franchise_data)
+    games = get_franchise_games(franchise_data)
+    image = get_image(franchise_data)
+
+    return (
+        title,
+        overview,
+        description,
+        games,
+        image,
+    )
+
+def create_franchises_data(franchises_ids):
+    """Insert the data for each franchise in the database."""
+    with sqlite3.connect("games_data.db") as db_connection:
+        cursor = db_connection.cursor()
+        cursor.execute(create_franchises_table)
+        db_connection.commit()
+
+        for franchise_id in franchises_ids:
+            (
+                title,
+                overview,
+                description,
+                games,
+                image,
+                ) = parse_franchise_data(franchise_id)
+
+            franchise_values = (
+                title,
+                overview,
+                description,
+                games,
+                image,
+            )
+            cursor.execute(insert_franchise_sql, franchise_values)
+
+            db_connection.commit()
+
+        cursor.execute(remove_duplicate_franchises)
+
+        db_connection.commit()
+
 
 
 class FetchDataException(Exception):
