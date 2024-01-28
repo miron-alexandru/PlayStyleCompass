@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load static %}
+
+{% block page_header %}
+<div class="header">
+  <h3>{% trans "FRANCHISES" %}</h3>
+</div>
+{% endblock page_header %}
+
+{% block description %}
+{% blocktrans %}Discover awesome gaming franchises that have defined the fun. Explore iconic worlds, meet cool characters, and relive gaming history. Get ready for a blast of nostalgia and fun on our franchises page!{% endblocktrans %}
+{% endblock description %}
+
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/playstyle_compass/pagination.css' %}">
+
+<ul>
+    {% for franchise in franchises %}
+    {% include "playstyle_compass/franchise_template.html" %}
+    {% endfor %}
+</ul>
+
+<div class="pagination">
+  <span class="step-links">
+    {% if franchises.has_previous %}
+    <a href="?page=1">&laquo; First</a>
+    <a href="?page={{ franchises.previous_page_number }}">{% trans "Previous" %}</a>
+    {% endif %}
+
+    <span class="current-page">
+      {% trans "Page" %} {{ franchises.number }} {% trans "of" %} {{ franchises.paginator.num_pages }}
+    </span>
+
+    {% if franchises.has_next %}
+    <a href="?page={{ franchises.next_page_number }}">{% trans "Next" %}</a>
+    <a href="?page={{ franchises.paginator.num_pages }}">{% trans "Last" %} &raquo;</a>
+    {% endif %}
+  </span>
+</div>
+
+{% endblock content %}

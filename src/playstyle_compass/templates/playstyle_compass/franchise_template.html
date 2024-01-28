@@ -1,0 +1,30 @@
+{% load i18n %}
+{% load static %}
+
+{% block styles %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/playstyle_compass/franchises.css' %}">
+{% endblock styles %}
+
+<div class="franchise-container" data-franchise-id="{{ franchise.id }}">
+  <li>
+    <div class="franchise-image">
+      {% if franchise.image %}
+      <img src="{{ franchise.image }}" alt="Franchise Image" loading="lazy">
+      {% else %}
+      <p><strong>{% trans "Image not available" %}</strong></p>
+      {% endif %}
+    </div>
+    <div class="franchise-info">
+      <h4>{{ franchise.title|default:"N/A" }}</h4>
+      <p>{{ franchise.overview|default:"N/A" }}</p>
+      <p><strong>{% trans "Description:" %}</strong>
+        <span class="overview">{{ franchise.description|default:"N/A"|truncatewords_html:"50" }}</span>
+        <span class="full-text" style="display: none;">{{ franchise.description|default:"N/A" }}</span>
+        <button class="read-button" onclick="readMore(this);">{% trans "[Read more...]" %}</button>
+      </p>
+      <p><strong>{% trans "Games:" %}</strong> {{ franchise.games|default:"N/A" }}</p>
+     </div>
+ </li>
+</div>
+
+<script src="{% static 'js/playstyle_compass/franchises.js' %}" defer></script>

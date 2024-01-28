@@ -62,12 +62,18 @@ class ReviewRouter:
 
 class FranchiseRouter:
     def db_for_read(self, model, **hints):
-        if model._meta.app_label == "playstyle_compass" and model.__name__ == "Franchise":
+        if (
+            model._meta.app_label == "playstyle_compass"
+            and model.__name__ == "Franchise"
+        ):
             return "games_db"
         return None
 
     def db_for_write(self, model, **hints):
-        if model._meta.app_label == "playstyle_compass" and model.__name__ == "Franchise":
+        if (
+            model._meta.app_label == "playstyle_compass"
+            and model.__name__ == "Franchise"
+        ):
             return "games_db"
         return None
 

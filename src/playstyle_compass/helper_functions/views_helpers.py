@@ -8,7 +8,7 @@ from fuzzywuzzy import fuzz
 
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db.models import Q
-from ..models import Game, Review
+from ..models import Game, Review, Franchise
 from users.models import FriendList
 
 
@@ -247,6 +247,7 @@ def calculate_similarity(set1, set2):
 
     return similarity_score
 
+
 def calculate_average_similarity(user1, user2, preferences):
     """Function used to calculate average similarity across multiple preferences"""
     total_similarity_score = sum(
@@ -257,3 +258,18 @@ def calculate_average_similarity(user1, user2, preferences):
         for pref in preferences
     )
     return total_similarity_score / len(preferences)
+
+
+def paginate_franchises(request, franchises):
+    """Function to paginate franchises."""
+    franchises_per_page = 10
+
+    paginator = Paginator(franchises, franchises_per_page)
+    page_number = request.GET.get("page", 1)
+
+    try:
+        paginated_franchises = paginator.page(page_number)
+    except (PageNotAnInteger, EmptyPage):
+        paginated_franchises = paginator.page(1)
+
+    return paginated_franchises

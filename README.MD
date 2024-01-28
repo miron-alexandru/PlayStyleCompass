@@ -31,8 +31,10 @@ Websites for .env configuration: [GiantBomb](https://www.giantbomb.com/) / [Send
 <summary><h2>PlayStyle Compass Changelog</h2></summary>
 
 ### Version v1.6
-* Improved password validators
-* Finished translation + Language switcher
+* Added franchises page where users can explore different franchises and read details about each of them.
+* New game information: Franchise.
+* Improved password validators.
+* Finished translation + Language switcher.
 * Implemented multilanguage (English/Romanian).
 * Improved live notifications system.
 * Implemented live notifications using Websockets.

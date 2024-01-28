@@ -21,6 +21,7 @@ from .helper_functions.views_helpers import (
     calculate_single_game_score,
     paginate_matching_games_query,
     paginate_matching_games_dict,
+    paginate_franchises,
     get_friend_list,
     calculate_average_similarity,
 )
@@ -808,8 +809,12 @@ def similar_playstyles(request):
     return render(request, "playstyle_compass/similar_playstyles.html", context)
 
 
-### TODO !!!
 def view_franchises(request):
     all_franchises = Franchise.objects.all()
+    paginated_franchises = paginate_franchises(request, all_franchises)
 
-    return redirect("playstyle_compass:inddex")
+    context = {
+        "page_title": _("Franchises :: PlayStyle Compass"),
+        "franchises": paginated_franchises,
+    }
+    return render(request, "playstyle_compass/franchise_list.html", context)

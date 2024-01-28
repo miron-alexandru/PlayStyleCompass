@@ -204,6 +204,7 @@ class Review(models.Model):
 
 class Franchise(models.Model):
     """Represents a franchise."""
+
     id = models.BigAutoField(primary_key=True)
     title = models.CharField(max_length=100)
     description = models.TextField()
@@ -216,3 +217,4 @@ class Franchise(models.Model):
 
     class Meta:
         db_table = "Franchises"
+        ordering = ["title"]
