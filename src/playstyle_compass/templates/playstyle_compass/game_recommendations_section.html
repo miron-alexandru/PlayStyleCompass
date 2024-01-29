@@ -34,39 +34,11 @@
       <p><strong>{% trans "Platforms:" %}</strong> {{ game.platforms|default:"N/A" }}</p>
       <p><strong>{% trans "Themes:" %}</strong> {{ game.themes|default:"N/A" }}</p>
       <p><strong>{% trans "Franchises:" %}</strong>
-        {% if game.franchises %}
-        {% with franchise_names=game.franchises|split_commas %}
-        {% for franchise_name in franchise_names %}
-        {% with franchise_id=franchise_name|get_franchise_id %}
-        {% if franchise_id %}
-        <a href="{% url 'playstyle_compass:franchise' franchise_id %}">{{ franchise_name }}</a>{% if not forloop.last %}, {% endif %}
-        {% else %}
-        {{ franchise_name }}{% if not forloop.last %}, {% endif %}
-        {% endif %}
-        {% endwith %}
-        {% endfor %}
-        {% endwith %}
-        {% else %}
-        N/A
-        {% endif %}
+        {% include 'playstyle_compass/display_items.html' with items=game.franchises model_name='Franchise' view_name='playstyle_compass:franchise' %}
       </p>
       <p><strong>{% trans "DLC:" %}</strong> {{ game.dlcs|default:"N/A" }}</p>
       <p><strong>{% trans "Similar games:" %}</strong>
-        {% if game.similar_games %}
-        {% with game_names=game.similar_games|split_commas %}
-        {% for similar_game in game_names %}
-        {% with game_id=similar_game|get_game_id %}
-        {% if game_id %}
-        <a href="{% url 'playstyle_compass:view_game' game_id %}">{{ similar_game }}</a>{% if not forloop.last %}, {% endif %}
-        {% else %}
-        {{ similar_game }}{% if not forloop.last %}, {% endif %}
-        {% endif %}
-        {% endwith %}
-        {% endfor %}
-        {% endwith %}
-        {% else %}
-        N/A
-        {% endif %}
+        {% include 'playstyle_compass/display_items.html' with items=game.similar_games model_name='Game' view_name='playstyle_compass:view_game' %}
       </p>
       <p><strong>{% trans "Overview:" %}</strong>
         <span class="overview">{{ game.overview|default:"N/A"|truncatewords_html:"50" }}</span>

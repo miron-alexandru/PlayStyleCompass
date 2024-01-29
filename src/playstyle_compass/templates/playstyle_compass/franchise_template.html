@@ -24,21 +24,7 @@
         <button class="read-button" onclick="readMore(this);">{% trans "[Read more...]" %}</button>
       </p>
       <p><strong>{% trans "Games:" %}</strong>
-        {% if franchise.games %}
-            {% with game_names=franchise.games|split_commas %}
-                {% for game in game_names %}
-                    {% with game_id=game|get_game_id %}
-                        {% if game_id %}
-                            <a href="{% url 'playstyle_compass:view_game' game_id %}">{{ game }}</a>{% if not forloop.last %}, {% endif %}
-                        {% else %}
-                            {{ game }}{% if not forloop.last %}, {% endif %}
-                        {% endif %}
-                    {% endwith %}
-                {% endfor %}
-            {% endwith %}
-          {% else %}
-            N/A
-          {% endif %}
+        {% include 'playstyle_compass/display_items.html' with items=franchise.games model_name='Game' view_name='playstyle_compass:view_game' %}
       </p>
      </div>
  </li>

@@ -5,7 +5,7 @@ from datetime import datetime
 from django import template
 from itertools import zip_longest
 from django.utils.translation import gettext
-from playstyle_compass.models import Franchise, Game
+from django.apps import apps
 
 
 register = template.Library()
@@ -71,30 +71,17 @@ def template_trans(text):
     except Exception:
         return text
 
-
 @register.filter
-def get_franchise_id(franchise_name):
-    """Given a franchise name, return the id if it exists."""
+def get_object_id(object_name, model_name):
+    """
+    Given an object name and a model, return the id if it exists.
+    """
+    model = apps.get_model(app_label='playstyle_compass', model_name=model_name)
     try:
-        franchise = Franchise.objects.get(title=franchise_name)
-        return franchise.id
-    except Franchise.DoesNotExist:
+        obj = model.objects.get(title=object_name)
+        return obj.id
+    except model.DoesNotExist:
         return None
-
-    return None
-
-
-@register.filter
-def get_game_id(game_name):
-    """Given a game name, return the id if it exists."""
-    try:
-        game = Game.objects.get(title=game_name)
-        return game.id
-    except Game.DoesNotExist:
-        return None
-
-    return None
-
 
 @register.filter
 def split_commas(value):
