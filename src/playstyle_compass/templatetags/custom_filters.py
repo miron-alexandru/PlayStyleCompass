@@ -5,9 +5,10 @@ from datetime import datetime
 from django import template
 from itertools import zip_longest
 from django.utils.translation import gettext
+from playstyle_compass.models import Franchise, Game
+
 
 register = template.Library()
-
 
 @register.filter(name="format_category_label")
 def format_category_label(category):
@@ -52,23 +53,6 @@ def in_queue(game_id, user_queue):
         return True
     return False
 
-
-@register.simple_tag
-def zip_listse(reviewers, review_deck, review_text, score):
-    if any([not reviewers, not review_deck, not review_text, not score]):
-        return None
-    else:
-        zipped_data = zip_longest(
-            reviewers.split(" [REV_SEP] "),
-            review_deck.split(" [REV_SEP] "),
-            review_text.split(" [REV_SEP] "),
-            score.split(" [REV_SEP] "),
-            fillvalue="N/A",
-        )
-
-        return zipped_data
-
-
 @register.filter
 def pluralize_reviews(count):
     return "review" if count == 1 else "reviews"
@@ -86,3 +70,32 @@ def template_trans(text):
         return gettext(text)
     except Exception:
         return text
+
+
+@register.filter
+def get_franchise_id(franchise_name):
+    """Given a franchise name, return the id if it exists."""
+    try:
+        franchise = Franchise.objects.get(title=franchise_name)
+        return franchise.id
+    except Franchise.DoesNotExist:
+        return None
+
+    return None
+
+
+@register.filter
+def get_game_id(game_name):
+    """Given a game name, return the id if it exists."""
+    try:
+        game = Game.objects.get(title=game_name)
+        return game.id
+    except Game.DoesNotExist:
+        return None
+
+    return None
+
+
+@register.filter
+def split_commas(value):
+    return [item.strip() for item in value.split(',')]

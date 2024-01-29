@@ -15,11 +15,13 @@
 {% block content %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/playstyle_compass/pagination.css' %}">
 
+<div>
 <ul>
     {% for franchise in franchises %}
     {% include "playstyle_compass/franchise_template.html" %}
     {% endfor %}
 </ul>
+</div>
 
 <div class="pagination">
   <span class="step-links">

@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from django.http import JsonResponse, HttpResponseRedirect, HttpResponse
+from django.http import JsonResponse, HttpResponseRedirect, HttpResponse, Http404
 from django.urls import reverse
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Avg, Q
@@ -810,6 +810,7 @@ def similar_playstyles(request):
 
 
 def view_franchises(request):
+    """View used to view all franchises."""
     all_franchises = Franchise.objects.all()
     paginated_franchises = paginate_franchises(request, all_franchises)
 
@@ -818,3 +819,15 @@ def view_franchises(request):
         "franchises": paginated_franchises,
     }
     return render(request, "playstyle_compass/franchise_list.html", context)
+
+
+def franchise(request, franchise_id):
+    """View used to view a single franchise."""
+    franchise = get_object_or_404(Franchise, id=franchise_id)
+
+    context = {
+        "page_title": f"{franchise.title} :: PlayStyle Compass",
+        "franchise": franchise,
+    }
+
+    return render(request, "playstyle_compass/view_franchise.html", context)

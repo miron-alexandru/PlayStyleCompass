@@ -69,7 +69,7 @@
         <div class="message-header">
           <input type="checkbox" name="sent_messages[]" value="{{ sent_message.id }}" class="message-checkbox">
           <span class="user-info"><strong>To: </strong><a
-              href="{% url 'users:view_profile' profile_name=sent_message.sender.userprofile.profile_name %}"
+              href="{% url 'users:view_profile' profile_name=sent_message.receiver.userprofile.profile_name %}"
               class="user-name">{{ sent_message.receiver.userprofile.profile_name }}</a></span>
           <p class="subject"><strong>{% trans "Subject:" %}</strong> {{sent_message.title}}</p>
           <p class="timestamp"><strong>{% trans "Date:" %}</strong> {{ sent_message.timestamp }}</p>

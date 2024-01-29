@@ -18,8 +18,8 @@
     <div class="game-image">
       {% if game.image %}
       <span>Rating: </span><span class="star-rating"><span class="score-hidden" style="display: none">
-        {{game.average_score }}</span></span> <small><span>({{ game.total_reviews }} 
-        {{ game.total_reviews|pluralize_reviews }})</span></small></p>
+          {{game.average_score }}</span></span> <small><span>({{ game.total_reviews }}
+          {{ game.total_reviews|pluralize_reviews }})</span></small></p>
       <img src="{{ game.image }}" alt="Game Image" loading="lazy">
       {% else %}
       <p><strong>{% trans "Image not available" %}</strong></p>
@@ -33,9 +33,41 @@
       <p><strong>{% trans "Genres:" %}</strong> {{ game.genres|default:"N/A" }}</p>
       <p><strong>{% trans "Platforms:" %}</strong> {{ game.platforms|default:"N/A" }}</p>
       <p><strong>{% trans "Themes:" %}</strong> {{ game.themes|default:"N/A" }}</p>
-      <p><strong>{% trans "Franchises:" %}</strong> {{ game.franchises|default:"N/A" }}</p>
+      <p><strong>{% trans "Franchises:" %}</strong>
+        {% if game.franchises %}
+        {% with franchise_names=game.franchises|split_commas %}
+        {% for franchise_name in franchise_names %}
+        {% with franchise_id=franchise_name|get_franchise_id %}
+        {% if franchise_id %}
+        <a href="{% url 'playstyle_compass:franchise' franchise_id %}">{{ franchise_name }}</a>{% if not forloop.last %}, {% endif %}
+        {% else %}
+        {{ franchise_name }}{% if not forloop.last %}, {% endif %}
+        {% endif %}
+        {% endwith %}
+        {% endfor %}
+        {% endwith %}
+        {% else %}
+        N/A
+        {% endif %}
+      </p>
       <p><strong>{% trans "DLC:" %}</strong> {{ game.dlcs|default:"N/A" }}</p>
-      <p><strong>{% trans "Similar games:" %}</strong> {{ game.similar_games|default:"N/A"}}</p>
+      <p><strong>{% trans "Similar games:" %}</strong>
+        {% if game.similar_games %}
+        {% with game_names=game.similar_games|split_commas %}
+        {% for similar_game in game_names %}
+        {% with game_id=similar_game|get_game_id %}
+        {% if game_id %}
+        <a href="{% url 'playstyle_compass:view_game' game_id %}">{{ similar_game }}</a>{% if not forloop.last %}, {% endif %}
+        {% else %}
+        {{ similar_game }}{% if not forloop.last %}, {% endif %}
+        {% endif %}
+        {% endwith %}
+        {% endfor %}
+        {% endwith %}
+        {% else %}
+        N/A
+        {% endif %}
+      </p>
       <p><strong>{% trans "Overview:" %}</strong>
         <span class="overview">{{ game.overview|default:"N/A"|truncatewords_html:"50" }}</span>
         <span class="full-text" style="display: none;">{{ game.overview|default:"N/A" }}</span>
@@ -69,9 +101,9 @@
         <button class="show-hide-button" data-game-id="{{ game.id }}">{% trans "Show Reviews" %}</button>
         <a href="{% url 'playstyle_compass:add_review' game.id %}?next={{ request.get_full_path|urlencode }}"
           class="add-review-btn">{% trans "Write a Review" %}</a>
-          <a href="{% url 'playstyle_compass:delete_reviews' game.id %}?next={{ request.get_full_path|urlencode }}"
+        <a href="{% url 'playstyle_compass:delete_reviews' game.id %}?next={{ request.get_full_path|urlencode }}"
           class="delete-review-btn">{% trans "Delete your Review" %}</a>
-          <a href="{% url 'playstyle_compass:edit_review' game.id %}?next={{ request.get_full_path|urlencode }}"
+        <a href="{% url 'playstyle_compass:edit_review' game.id %}?next={{ request.get_full_path|urlencode }}"
           class="edit-review-btn">{% trans "Edit your Review" %}</a>
         <div class="reviews-list" style="display: none;">
         </div>
@@ -115,13 +147,13 @@
     <span class="icon-divider">|</span>
 
     <div class="friend-dropdown">
-        <button class="shareButton" title="Share with friends">{% trans "Share with ..." %}</button>
-        <div class="friend-dropdown-content">
-          {% for friend in user_friends %}
-            <a class="friend-link" href="#" data-friend-id="{{ friend.id }}">{{ friend.userprofile.profile_name }}</a>
-          {% endfor %}
-        </div>
+      <button class="shareButton" title="Share with friends">{% trans "Share with ..." %}</button>
+      <div class="friend-dropdown-content">
+        {% for friend in user_friends %}
+        <a class="friend-link" href="#" data-friend-id="{{ friend.id }}">{{ friend.userprofile.profile_name }}</a>
+        {% endfor %}
       </div>
+    </div>
     {% endif %}
 
   </li>

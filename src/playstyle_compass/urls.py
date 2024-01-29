@@ -55,4 +55,5 @@ urlpatterns = [
     path("delete_shared_games/", views.delete_shared_games, name="delete_shared_games"),
     path("similar_playstyles/", views.similar_playstyles, name="similar_playstyles"),
     path("view_franchises/", views.view_franchises, name="view_franchises"),
+    path("franchise/<int:franchise_id>/", views.franchise, name="franchise"),
 ]

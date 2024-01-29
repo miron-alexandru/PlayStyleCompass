@@ -68,7 +68,7 @@
         <div class="message-header">
           <input type="checkbox" name="shared_games[]" value="{{ shared_game.id }}" class="message-checkbox">
           <span class="user-info"><strong>To: </strong><a
-              href="{% url 'users:view_profile' profile_name=shared_game.sender.userprofile.profile_name %}"
+              href="{% url 'users:view_profile' profile_name=shared_game.receiver.userprofile.profile_name %}"
               class="user-name">{{ shared_game.receiver.userprofile.profile_name }}</a></span>
           <p class="timestamp"><strong>{% trans "Date:" %}</strong> {{ shared_game.timestamp }}</p>
         </div>
