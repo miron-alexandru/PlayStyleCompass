@@ -4,7 +4,7 @@
 
 {% block page_header %}
 <div class="header">
-  <h3>{% trans "GAME:" %} "{{ query }}"</h3>
+  <h3>{% trans "FRANCHISE:" %} "{{ query }}"</h3>
 </div>
 {% endblock page_header %}
 
@@ -17,18 +17,14 @@
 
 <div class="results">
   <ul>
-    {% if games %}
-    {% for game in games %}
-    {% include "playstyle_compass/game_recommendations_section.html" %}
+    {% if franchises %}
+    {% for franchise in franchises %}
+    {% include "playstyle_compass/franchise_template.html" %}
     {% endfor %}
     {% else %}
     <p><strong>{% trans "Sorry, there are no results for your search." %}</strong></p>
     {% endif %}
   </ul>
 </div>
-
-<script src="{% static 'js/playstyle_compass/share_game.js' %}" defer></script>
-<script src="{% static 'js/playstyle_compass/favorite_games_and_queue.js' %}"></script>
-<script src="{% static 'js/playstyle_compass/reviews_section.js' %}"></script>
 
 {% endblock content %}

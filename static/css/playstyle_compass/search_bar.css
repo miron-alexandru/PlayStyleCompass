@@ -79,3 +79,10 @@ button[type="submit"]:hover {
   background: #d5dee6;
   color: #fff;
 }
+
+.radio {
+  margin-top: 9px;
+  margin-left: 10px;
+  font-size: 15px;
+}
+

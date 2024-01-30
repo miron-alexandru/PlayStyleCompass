@@ -12,7 +12,7 @@ urlpatterns = [
     path("preferences/", views.update_preferences, name="update_preferences"),
     path("get-recommendations/", views.get_recommendations, name="get_recommendations"),
     path("search/", views.search_results, name="search_results"),
-    path("autocomplete/", views.autocomplete_view, name="autocomplete"),
+    path("autocomplete/games/", views.autocomplete_games, name="autocomplete"),
     path("clear_preferences/", views.clear_preferences, name="clear_preferences"),
     path("save_gaming_history/", views.save_gaming_history, name="save_gaming_history"),
     path(
@@ -56,4 +56,6 @@ urlpatterns = [
     path("similar_playstyles/", views.similar_playstyles, name="similar_playstyles"),
     path("view_franchises/", views.view_franchises, name="view_franchises"),
     path("franchise/<int:franchise_id>/", views.franchise, name="franchise"),
+    path("search/franchises", views.search_franchises, name="search_franchises"),
+    path("autocomplete/franchises/", views.autocomplete_franchises, name="autocomplete_franchises"),
 ]

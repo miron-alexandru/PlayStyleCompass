@@ -5,15 +5,23 @@
 <link rel="stylesheet" type="text/css" href="{% static 'css/playstyle_compass/search_bar.css' %}">
 {% endblock styles %}
 
-<form action="{% url 'playstyle_compass:search_results' %}" method="GET" class="search-form"
-  onsubmit="return validateSearch()">
+<form id="search-form" method="GET" class="search-form" onsubmit="return validateSearch()">
   <div class="search-bar">
     <div class="search-input-container">
-      <input type="text" name="query" id="search-input" placeholder="{% trans 'Search for games...' %}" maxlength="255">
+      <input type="text" name="query" id="search-input" placeholder="{% trans 'Search...' %}" maxlength="255">
       <button type="submit"><i class="fas fa-search"></i></button>
     </div>
   </div>
   <div id="search-results" class="search-results"></div>
+  <div class="radio">
+    <input type="radio" name="search_type" value="games" checked> {% trans 'Search games' %}
+    <input type="radio" name="search_type" value="franchises"> {% trans 'Search franchises' %}
+  </div>
 </form>
+
+<script>
+  const searchGames = "{% url 'playstyle_compass:search_results' %}";
+  const searchFranchises = "{% url 'playstyle_compass:search_franchises' %}";
+</script>
 
 <script src="{% static 'js/playstyle_compass/search_bar.js' %}"></script>

@@ -1,8 +1,12 @@
 document.addEventListener("DOMContentLoaded", function () {
-  let descriptionContent = document.getElementById("description-content").innerHTML.trim();
+  let descriptionContent = document
+    .getElementById("description-content")
+    .innerHTML.trim();
   let pageDescription = document.querySelector(".header-desc");
 
-  let headerContent = document.getElementById("header-content").innerHTML.trim();
+  let headerContent = document
+    .getElementById("header-content")
+    .innerHTML.trim();
   let pageHeader = document.querySelector(".page-header");
 
   if (descriptionContent.length > 0) {
@@ -15,12 +19,12 @@ document.addEventListener("DOMContentLoaded", function () {
   if (headerContent.length === 0) {
     pageHeader.style.display = "none";
   }
-
 });
 
-
 document.addEventListener("DOMContentLoaded", function () {
-  let descriptionContent = document.getElementById("description-content").innerHTML.trim();
+  let descriptionContent = document
+    .getElementById("description-content")
+    .innerHTML.trim();
   let pageDescription = document.querySelector(".header-desc");
 
   if (descriptionContent.length > 0) {
@@ -30,32 +34,33 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 
-document.addEventListener('DOMContentLoaded', function () {
-  let closeButtons = document.querySelectorAll('.message .close');
+document.addEventListener("DOMContentLoaded", function () {
+  let closeButtons = document.querySelectorAll(".message .close");
 
   closeButtons.forEach(function (button) {
-    button.addEventListener('click', function () {
-      let alertDiv = button.closest('.alert');
-      alertDiv.classList.add('fade-out');
+    button.addEventListener("click", function () {
+      let alertDiv = button.closest(".alert");
+      alertDiv.classList.add("fade-out");
 
       setTimeout(function () {
-        alertDiv.style.display = 'none';
+        alertDiv.style.display = "none";
 
-        let visibleAlerts = document.querySelectorAll('.message .alert:not([style="display: none;"])');
+        let visibleAlerts = document.querySelectorAll(
+          '.message .alert:not([style="display: none;"])'
+        );
 
         if (visibleAlerts.length === 0) {
-          document.querySelector('.message').style.display = 'none';
+          document.querySelector(".message").style.display = "none";
         }
       }, 500);
     });
   });
 });
 
-
-const profilePictureUpload = document.getElementById('profile-picture-upload');
+const profilePictureUpload = document.getElementById("profile-picture-upload");
 
 if (profilePictureUpload) {
-  profilePictureUpload.addEventListener('change', function () {
+  profilePictureUpload.addEventListener("change", function () {
     const fileInput = this;
     const file = fileInput.files[0];
 
@@ -63,8 +68,10 @@ if (profilePictureUpload) {
       const reader = new FileReader();
 
       reader.onload = function (e) {
-        const profilePicture = document.getElementById('profile-picture');
-        const userProfilePicture = document.getElementById('profile-picture-user-profile');
+        const profilePicture = document.getElementById("profile-picture");
+        const userProfilePicture = document.getElementById(
+          "profile-picture-user-profile"
+        );
 
         if (profilePicture) {
           profilePicture.src = e.target.result;
@@ -75,16 +82,16 @@ if (profilePictureUpload) {
         }
 
         const formData = new FormData();
-        formData.append('profile_picture', file);
+        formData.append("profile_picture", file);
 
-        const profileUrl = fileInput.getAttribute('data-profile-url');
-        const csrfToken = fileInput.getAttribute('data-csrf-token');
+        const profileUrl = fileInput.getAttribute("data-profile-url");
+        const csrfToken = fileInput.getAttribute("data-csrf-token");
 
         fetch(profileUrl, {
-          method: 'POST',
+          method: "POST",
           body: formData,
           headers: {
-            'X-CSRFToken': csrfToken,
+            "X-CSRFToken": csrfToken,
           },
         });
       };
@@ -94,63 +101,58 @@ if (profilePictureUpload) {
   });
 }
 
-
 function checkScroll() {
   const windowWidth = $(window).width();
 
   if (windowWidth > 1000) {
-    const startY = $('.navbar').height() * 2 + 500;
+    const startY = $(".navbar").height() * 2 + 500;
 
     if ($(window).scrollTop() > startY) {
-      $('.navbar').addClass("fixed");
+      $(".navbar").addClass("fixed");
     } else {
-      $('.navbar').removeClass("fixed");
+      $(".navbar").removeClass("fixed");
     }
   } else {
-    $('.navbar').removeClass("fixed");
+    $(".navbar").removeClass("fixed");
   }
 }
 
-if ($('.navbar').length > 0) {
+if ($(".navbar").length > 0) {
   $(window).on("scroll load resize", function () {
     checkScroll();
   });
 }
 
-
-
 $(document).ready(function () {
-  $('.nav-item.dropdown').each(function () {
-    let $dropdownToggle = $(this).find('.dropdown-toggle');
-    let $dropdownContainer = $(this).find('.dropdown-container');
+  $(".nav-item.dropdown").each(function () {
+    let $dropdownToggle = $(this).find(".dropdown-toggle");
+    let $dropdownContainer = $(this).find(".dropdown-container");
 
-    $dropdownToggle.on('click', function (e) {
-      e.preventDefault(); // Prevent the default link behavior
+    $dropdownToggle.on("click", function (e) {
+      e.preventDefault();
 
       $dropdownContainer.toggle();
     });
   });
 
-  // Hide dropdowns when clicking outside of them
-  $(document).on('click', function (event) {
-    if (!$(event.target).closest('.nav-item.dropdown').length) {
-      $('.dropdown-container').hide();
+  $(document).on("click", function (event) {
+    if (!$(event.target).closest(".nav-item.dropdown").length) {
+      $(".dropdown-container").hide();
     }
   });
 });
 
-
 $(document).ready(function () {
   $(window).scroll(function () {
     if ($(this).scrollTop() > 75) {
-      $('.scroll-top-container').addClass('scroll-top-visible');
+      $(".scroll-top-container").addClass("scroll-top-visible");
     } else {
-      $('.scroll-top-container').removeClass('scroll-top-visible');
+      $(".scroll-top-container").removeClass("scroll-top-visible");
     }
   });
 
-  $('#scroll-top').click(function () {
-    $('html, body').animate({ scrollTop: 0 }, 'slow');
+  $("#scroll-top").click(function () {
+    $("html, body").animate({ scrollTop: 0 }, "slow");
     return false;
   });
 });

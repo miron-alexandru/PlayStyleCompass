@@ -3,5 +3,5 @@ function onRemoveFriend() {
 }
 
 function triggerRemoveFriend(friend_id) {
-  removeFriend(friend_id, onRemoveFriend)
+  removeFriend(friend_id, onRemoveFriend);
 }

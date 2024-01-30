@@ -1,16 +1,16 @@
-document.addEventListener('DOMContentLoaded', function () {
-  const receivedBtn = document.getElementById('messages-received-btn');
-  const sentBtn = document.getElementById('messages-sent-btn');
-  
+document.addEventListener("DOMContentLoaded", function () {
+  const receivedBtn = document.getElementById("messages-received-btn");
+  const sentBtn = document.getElementById("messages-sent-btn");
+
   const isPageRefresh = performance.navigation.type === 1;
 
   if (!isPageRefresh) {
-    sessionStorage.removeItem('activeCategory');
+    sessionStorage.removeItem("activeCategory");
   }
 
-  const storedCategory = sessionStorage.getItem('activeCategory') || 'received';
+  const storedCategory = sessionStorage.getItem("activeCategory") || "received";
 
-  if (storedCategory === 'received') {
+  if (storedCategory === "received") {
     toggleMessages("#received-messages", "#sent-messages");
     toggleActiveClass(receivedBtn, sentBtn);
   } else {
@@ -18,18 +18,18 @@ document.addEventListener('DOMContentLoaded', function () {
     toggleActiveClass(sentBtn, receivedBtn);
   }
 
-  receivedBtn.addEventListener('click', function () {
+  receivedBtn.addEventListener("click", function () {
     toggleMessages("#received-messages", "#sent-messages");
     toggleActiveClass(receivedBtn, sentBtn);
 
-    sessionStorage.setItem('activeCategory', 'received');
+    sessionStorage.setItem("activeCategory", "received");
   });
 
-  sentBtn.addEventListener('click', function () {
+  sentBtn.addEventListener("click", function () {
     toggleMessages("#sent-messages", "#received-messages");
     toggleActiveClass(sentBtn, receivedBtn);
 
-    sessionStorage.setItem('activeCategory', 'sent');
+    sessionStorage.setItem("activeCategory", "sent");
   });
 });
 
@@ -43,52 +43,66 @@ function toggleActiveClass(activateBtn, deactivateBtn) {
   $(deactivateBtn).removeClass("active");
 }
 
-
-document.addEventListener('DOMContentLoaded', function () {
-  const selectAllButton = document.querySelector('.select-all-button');
-  const deleteButton = document.querySelector('.delete-button');
+document.addEventListener("DOMContentLoaded", function () {
+  const selectAllButton = document.querySelector(".select-all-button");
+  const deleteButton = document.querySelector(".delete-button");
   let messagesCheckboxes;
 
-  function updateButtonText() {
+  const updateButtonText = () => {
     if (messagesCheckboxes.length === 0) {
-      selectAllButton.textContent = translate('Select All');
+      selectAllButton.textContent = translate("Select All");
       deleteButton.disabled = true;
       return;
     }
 
-    const allChecked = Array.from(messagesCheckboxes).every(checkbox => checkbox.checked);
-    selectAllButton.textContent = allChecked ? translate('Unselect All') : translate('Select All');
-    deleteButton.disabled = !Array.from(messagesCheckboxes).some(checkbox => checkbox.checked);
-  }
+    const allChecked = Array.from(messagesCheckboxes).every(
+      (checkbox) => checkbox.checked
+    );
+    selectAllButton.textContent = allChecked
+      ? translate("Unselect All")
+      : translate("Select All");
+    deleteButton.disabled = !Array.from(messagesCheckboxes).some(
+      (checkbox) => checkbox.checked
+    );
+  };
 
-  function updateCheckboxes(tabId) {
-    const selector = (tabId === 'messages-received-btn') ? '.received-messages' : '.sent-messages';
-    messagesCheckboxes = document.querySelectorAll(`${selector} .message-checkbox`);
-  }
+  const updateCheckboxes = (tabId) => {
+    const selector =
+      tabId === "messages-received-btn"
+        ? ".received-messages"
+        : ".sent-messages";
+    messagesCheckboxes = document.querySelectorAll(
+      `${selector} .message-checkbox`
+    );
+  };
 
-  function toggleAllCheckboxes() {
-    const activeTab = document.querySelector('.category-button.active').id;
+  const toggleAllCheckboxes = () => {
+    const activeTab = document.querySelector(".category-button.active").id;
     updateCheckboxes(activeTab);
 
-    const allChecked = Array.from(messagesCheckboxes).every(checkbox => checkbox.checked);
+    const allChecked = Array.from(messagesCheckboxes).every(
+      (checkbox) => checkbox.checked
+    );
 
-    messagesCheckboxes.forEach(checkbox => checkbox.checked = !allChecked);
+    messagesCheckboxes.forEach((checkbox) => (checkbox.checked = !allChecked));
 
     updateButtonText();
-  }
+  };
 
-  let tabButtons = document.querySelectorAll('.category-button');
-  tabButtons.forEach(tabButton => {
-    tabButton.addEventListener('click', () => {
+  let tabButtons = document.querySelectorAll(".category-button");
+  tabButtons.forEach((tabButton) => {
+    tabButton.addEventListener("click", () => {
       updateCheckboxes(tabButton.id);
       updateButtonText();
     });
   });
 
-  messagesCheckboxes = document.querySelectorAll('.message-checkbox');
-  messagesCheckboxes.forEach(checkbox => checkbox.addEventListener('click', updateButtonText));
+  messagesCheckboxes = document.querySelectorAll(".message-checkbox");
+  messagesCheckboxes.forEach((checkbox) =>
+    checkbox.addEventListener("click", updateButtonText)
+  );
 
-  selectAllButton.addEventListener('click', toggleAllCheckboxes);
+  selectAllButton.addEventListener("click", toggleAllCheckboxes);
 
   updateButtonText();
 });

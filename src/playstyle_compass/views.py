@@ -209,9 +209,24 @@ def search_results(request):
 
     return render(request, "playstyle_compass/search_results.html", context)
 
+def search_franchises(request):
+    """Retrieves franchises from the database that match a given
+    search query and renders a search results page.
+    """
+    query = request.GET.get("query")
+    franchises = Franchise.objects.filter(title__icontains=query)
 
-def autocomplete_view(request):
-    """Provides autocomplete suggestions for game titles based on a user's query."""
+    context = {
+        "page_title": _("Search Results :: PlayStyle Compass"),
+        "query": query,
+        "franchises": franchises,
+    }
+
+    return render(request, "playstyle_compass/search_franchises.html", context)
+
+
+def autocomplete_games(request):
+    """Provides autocomplete suggestions for games based on a user's query."""
     query = request.GET.get("query", "")
     results = []
 
@@ -222,11 +237,22 @@ def autocomplete_view(request):
     return JsonResponse(results, safe=False)
 
 
+def autocomplete_franchises(request):
+    """Provides autocomplete suggestions for franchises based on a user's query."""
+    query = request.GET.get("query", "")
+    results = []
+
+    if query:
+        franchises = Franchise.objects.filter(title__icontains=query)
+        results = list(franchises.values("title"))
+
+    return JsonResponse(results, safe=False)
+
+
 @login_required
 def toggle_favorite(request):
     """View for toggling a game's favorite status for the current user."""
     if request.method == "POST":
-        print("aaaaaaaaaaa")
         game_id = request.POST.get("game_id")
         user = request.user
         user_preferences = UserPreferences.objects.get(user=user)

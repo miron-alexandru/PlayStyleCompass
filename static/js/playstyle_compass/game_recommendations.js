@@ -6,7 +6,6 @@ document.querySelectorAll(".overview").forEach(function (truncatedText) {
   }
 });
 
-
 function readMore(button) {
   let parent = button.parentNode;
   let truncatedText = parent.querySelector(".overview");

@@ -2,7 +2,7 @@ const countdownDuration = 5;
 const countdownElement = document.getElementById("countdown");
 let seconds = countdownDuration;
 
-const currentLanguage = window.location.pathname.split('/')[1];
+const currentLanguage = window.location.pathname.split("/")[1];
 
 const countdownInterval = setInterval(function () {
   seconds--;
