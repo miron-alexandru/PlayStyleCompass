@@ -86,3 +86,30 @@ button[type="submit"]:hover {
   font-size: 15px;
 }
 
+#search-results {
+  display: none;
+  max-height: 250px;
+  overflow-y: auto;
+  border: 1px solid #ccc;
+  border-radius: 13px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  position: absolute;
+  width: 100%;
+  margin-top: 4px;
+  z-index: 1;
+}
+
+#search-results::-webkit-scrollbar {
+  border-radius: 12px;
+}
+
+#search-results::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+  border-radius: 12px;
+}
+
+#search-results::-webkit-scrollbar-track {
+  background-color: transparent;
+  border-radius: 12px;
+}

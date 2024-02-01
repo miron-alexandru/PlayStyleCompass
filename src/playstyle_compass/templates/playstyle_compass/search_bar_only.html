@@ -12,12 +12,14 @@
       <button type="submit"><i class="fas fa-search"></i></button>
     </div>
   </div>
-  <div id="search-results" class="search-results"></div>
-  <div class="radio">
-    <input type="radio" name="search_type" value="games" checked> {% trans 'Search games' %}
-    <input type="radio" name="search_type" value="franchises"> {% trans 'Search franchises' %}
-  </div>
 </form>
+
+<div class="radio">
+  <input type="radio" name="search_type" value="games" checked> {% trans 'Search games' %}
+  <input type="radio" name="search_type" value="franchises"> {% trans 'Search franchises' %}
+</div>
+
+<div id="search-results" class="search-results"></div>
 
 <script>
   const searchGames = "{% url 'playstyle_compass:search_results' %}";

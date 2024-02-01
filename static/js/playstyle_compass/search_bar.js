@@ -2,16 +2,18 @@ const searchInput = document.getElementById("search-input");
 const searchResults = document.getElementById("search-results");
 const searchTypeRadios = document.getElementsByName("search_type");
 const searchForm = document.querySelector(".search-form");
+let currentSearchType = getSelectedSearchType(); 
 
 searchInput.addEventListener("input", function () {
   const query = searchInput.value.trim();
 
   if (query === "") {
     searchResults.innerHTML = "";
+    searchResults.style.display = "none";
     return;
   }
 
-  const searchType = getSelectedSearchType();
+  const searchType = currentSearchType;
   const autocompleteUrl = `/autocomplete/${searchType}/?query=${query}`;
 
   fetch(autocompleteUrl)
@@ -22,15 +24,12 @@ searchInput.addEventListener("input", function () {
         resultsHTML += `<div class="result" onclick="fillSearchBar('${result.title}')">${result.title}</div>`;
       });
       searchResults.innerHTML = resultsHTML;
+      searchResults.style.display = data.length > 0 ? "block" : "none";
     });
 });
 
-document
-  .getElementById("search-form")
-  .addEventListener("submit", function (event) {
-    let searchType = document.querySelector(
-      'input[name="search_type"]:checked'
-    ).value;
+document.getElementById("search-form").addEventListener("submit", function (event) {
+    let searchType = document.querySelector('input[name="search_type"]:checked').value;
 
     if (searchType === "games") {
       this.action = searchGames;
@@ -38,6 +37,13 @@ document
       this.action = searchFranchises;
     }
   });
+
+document.querySelectorAll('input[name="search_type"]').forEach(function (radio) {
+  radio.addEventListener("change", function () {
+    currentSearchType = getSelectedSearchType();
+    searchInput.dispatchEvent(new Event("input"));
+  });
+});
 
 function fillSearchBar(value) {
   searchInput.value = decodeURIComponent(value);
@@ -65,12 +71,14 @@ function validateSearch() {
   const searchInput = document.getElementById("search-input");
   const query = searchInput.value.trim();
 
-  if (query === "") {
+  if (query.length < 2) {
+    alert("Please enter at least 2 characters for your search.");
     return false;
   }
 
   return true;
 }
+
 
 function getSelectedSearchType() {
   for (const radio of searchTypeRadios) {

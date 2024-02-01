@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from django.http import JsonResponse, HttpResponseRedirect, HttpResponse, Http404
+from django.http import JsonResponse, HttpResponseRedirect, HttpResponse, HttpResponseBadRequest
 from django.urls import reverse
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Avg, Q
@@ -193,9 +193,14 @@ def search_results(request):
     )
 
     query = request.GET.get("query")
+
+    if query and len(query) < 2:
+        return HttpResponseBadRequest("Invalid query. Please enter at least 2 characters.")
+
     games = Game.objects.filter(title__icontains=query)
 
     games = calculate_game_scores(games)
+    games = paginate_matching_games_query(request, games)
 
     user_friends = get_friend_list(request.user)
 
@@ -214,7 +219,11 @@ def search_franchises(request):
     search query and renders a search results page.
     """
     query = request.GET.get("query")
+    if query and len(query) < 2:
+        return HttpResponseBadRequest("Invalid query. Please enter at least 2 characters.")
+
     franchises = Franchise.objects.filter(title__icontains=query)
+    franchises = paginate_franchises(request, franchises)
 
     context = {
         "page_title": _("Search Results :: PlayStyle Compass"),
