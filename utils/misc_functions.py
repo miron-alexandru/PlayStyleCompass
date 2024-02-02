@@ -437,6 +437,12 @@ def get_franchise_games(franchise_data):
 
     return ", ".join(games) if games else None
 
+def get_franchise_games_count(games):
+    """Get the number of games for a franchise."""
+    if games:
+        games_list = games.split(',')
+        return len(games_list)
+    return 0
 
 def parse_franchise_data(franchise_id):
     """Parse franchise data."""
@@ -456,6 +462,7 @@ def parse_franchise_data(franchise_id):
     overview = get_description(franchise_data)
     games = get_franchise_games(franchise_data)
     image = get_image(franchise_data)
+    games_count = get_franchise_games_count(games)
 
     return (
         title,
@@ -463,6 +470,7 @@ def parse_franchise_data(franchise_id):
         description,
         games,
         image,
+        games_count,
     )
 
 
@@ -480,6 +488,7 @@ def create_franchises_data(franchises_ids):
                 description,
                 games,
                 image,
+                games_count,
             ) = parse_franchise_data(franchise_id)
 
             franchise_values = (
@@ -488,6 +497,7 @@ def create_franchises_data(franchises_ids):
                 description,
                 games,
                 image,
+                games_count,
             )
             cursor.execute(insert_franchise_sql, franchise_values)
 

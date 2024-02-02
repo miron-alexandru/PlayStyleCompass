@@ -88,14 +88,15 @@ CREATE TABLE IF NOT EXISTS Franchises (
     overview TEXT,
     description TEXT,
     games TEXT,
-    image TEXT
+    image TEXT,
+    games_count INTEGER DEFAULT 0
 );
 """
 
 insert_franchise_sql = """
 INSERT INTO Franchises
-(title, overview, description, games, image)
-VALUES (?, ?, ?, ?, ?);
+(title, overview, description, games, image, games_count)
+VALUES (?, ?, ?, ?, ?, ?);
 """
 
 remove_duplicate_franchises = """

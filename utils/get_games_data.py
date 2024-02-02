@@ -14,7 +14,7 @@ from misc_functions import (
 )
 
 # Create Franchises
-franchises = fetch_franchises(API_KEY, offset=220, limit=50)
+franchises = fetch_franchises(API_KEY, offset=270, limit=50)
 franchises_ids = extract_guids(franchises)
 create_franchises_data(franchises_ids)
 

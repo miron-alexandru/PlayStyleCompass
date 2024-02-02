@@ -24,10 +24,17 @@
         <button class="read-button" onclick="readMore(this);">{% trans "[Read more...]" %}</button>
       </p>
       <p><strong>{% trans "Games:" %}</strong>
-        {% include 'playstyle_compass/display_items.html' with items=franchise.games model_name='Game' view_name='playstyle_compass:view_game' %}
+        <span class="games-list">{% with truncated_games=franchise.games|default:"N/A"|truncatewords_html:"60" %}
+          {% include 'playstyle_compass/display_items.html' with items=truncated_games model_name='Game' view_name='playstyle_compass:view_game' %}
+          {% endwith %}</span>
+        <span class="full-games" style="display: none;">
+          {% include 'playstyle_compass/display_items.html' with items=franchise.games model_name='Game' view_name='playstyle_compass:view_game' %}
+        </span>
+        <button class="read-button-games" onclick="readMoreGames(this);">{% trans "[Read more...]" %}</button>
       </p>
-     </div>
- </li>
+
+    </div>
+  </li>
 </div>
 
 <script src="{% static 'js/playstyle_compass/franchises.js' %}" defer></script>

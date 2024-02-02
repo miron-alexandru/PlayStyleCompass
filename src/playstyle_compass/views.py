@@ -847,12 +847,25 @@ def similar_playstyles(request):
 def view_franchises(request):
     """View used to view all franchises."""
     all_franchises = Franchise.objects.all()
+
+    sort_order = request.GET.get('sort_order', 'default')
+    if sort_order == 'asc':
+        all_franchises = all_franchises.order_by('title')
+    elif sort_order == 'desc':
+        all_franchises = all_franchises.order_by('-title')
+    elif sort_order == 'games_asc':
+        all_franchises = all_franchises.order_by('games_count')
+    elif sort_order == 'games_desc':
+        all_franchises = all_franchises.order_by('-games_count')
+
     paginated_franchises = paginate_franchises(request, all_franchises)
 
     context = {
         "page_title": _("Franchises :: PlayStyle Compass"),
         "franchises": paginated_franchises,
+        "sort_order": sort_order,
     }
+
     return render(request, "playstyle_compass/franchise_list.html", context)
 
 

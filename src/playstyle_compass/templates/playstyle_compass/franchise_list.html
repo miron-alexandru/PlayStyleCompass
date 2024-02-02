@@ -15,6 +15,16 @@
 {% block content %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/playstyle_compass/pagination.css' %}">
 
+<form method="get" action="{% url 'playstyle_compass:view_franchises' %}">
+  <label for="sort-order">{% trans "Sort by:" %}</label>
+  <select name="sort_order" id="sort-order" onchange="this.form.submit()">
+    <option value="asc" {% if sort_order == 'asc' %}selected{% endif %}>{% trans "Title (Asc)" %}</option>
+    <option value="desc" {% if sort_order == 'desc' %}selected{% endif %}>{% trans "Title (Desc)" %}</option>
+    <option value="games_asc" {% if sort_order == 'games_asc' %}selected{% endif %}>{% trans "Games num. (Asc)" %}</option>
+    <option value="games_desc" {% if sort_order == 'games_desc' %}selected{% endif %}>{% trans "Games num. (Desc)" %}</option>
+  </select>
+</form>
+
 <div>
 <ul>
     {% for franchise in franchises %}

@@ -2,6 +2,8 @@
 
 from django.db import models
 from django.contrib.auth.models import User
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 
 class UserPreferences(models.Model):
@@ -211,10 +213,17 @@ class Franchise(models.Model):
     overview = models.TextField()
     games = models.CharField(max_length=200)
     image = models.TextField()
+    games_count = models.IntegerField(default=0)
 
     def __str__(self):
         return f"Franchise: {self.title}"
 
+    def update_games_count(self):
+        games_list = self.games.split(',')
+        self.games_count = len(games_list)
+        self.save()
+
     class Meta:
         db_table = "Franchises"
-        ordering = ["title"]
+        ordering = ["title",
+                    "games_count"]
