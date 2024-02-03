@@ -89,6 +89,7 @@ game_ids_to_add = [
     "3030-81387",
     "3030-89239",
     "3030-83940",
+    "3030-32327",
 ]
 
 API_KEY = str(os.getenv("GBAPI_KEY"))

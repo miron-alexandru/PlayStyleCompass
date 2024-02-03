@@ -14,10 +14,10 @@ from misc_functions import (
 )
 
 # Create Franchises
-franchises = fetch_franchises(API_KEY, offset=270, limit=50)
-franchises_ids = extract_guids(franchises)
-create_franchises_data(franchises_ids)
+#franchises = fetch_franchises(API_KEY, offset=270, limit=50)
+#franchises_ids = extract_guids(franchises)
+#create_franchises_data(franchises_ids)
 
 # Create Games
-# game_ids = fetch_game_ids_by_platforms(platform_ids, API_KEY, offset=15, limit=5)
-# create_games_data_db(game_ids)
+game_ids = fetch_game_ids_by_platforms(platform_ids, API_KEY, offset=35, limit=5)
+create_games_data_db(game_ids)
