@@ -3,6 +3,8 @@ document.querySelectorAll(".overview").forEach(function (truncatedText) {
   let readButton = truncatedText.parentNode.querySelector(".read-button");
   if (truncatedText.innerHTML === fullText.innerHTML) {
     readButton.style.display = "none";
+  } else {
+    readButton.style.display = "inline";
   }
 });
 

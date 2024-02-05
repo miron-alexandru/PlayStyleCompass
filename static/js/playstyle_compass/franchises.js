@@ -5,6 +5,9 @@ document.querySelectorAll(".overview").forEach(function (truncatedText) {
   if (truncatedText.innerHTML === fullText.innerHTML) {
     readButton.style.display = "none";
   }
+  else {
+    readButton.style.display = "inline";
+  }
 });
 
 function readMore(button) {
@@ -27,11 +30,11 @@ function readMore(button) {
 document.querySelectorAll(".games-list").forEach(function (truncatedGames) {
   let fullGames = truncatedGames.parentNode.querySelector(".full-games");
   let readButtonGames = truncatedGames.parentNode.querySelector(".read-button-games");
-
-  console.log(truncatedGames.innerHTML.trim() === fullGames.innerHTML.trim());
   
   if (truncatedGames.innerHTML.trim() === fullGames.innerHTML.trim()) {
     readButtonGames.style.display = "none";
+    } else {
+    readButtonGames.style.display = "inline";
   }
 });
 

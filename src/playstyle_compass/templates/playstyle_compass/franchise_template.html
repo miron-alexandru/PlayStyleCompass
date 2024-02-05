@@ -21,7 +21,7 @@
       <p><strong>{% trans "Description:" %}</strong>
         <span class="overview">{{ franchise.description|default:"N/A"|truncatewords_html:"50" }}</span>
         <span class="full-text" style="display: none;">{{ franchise.description|default:"N/A" }}</span>
-        <button class="read-button" onclick="readMore(this);">{% trans "[Read more...]" %}</button>
+        <button class="read-button" style="display: none;" onclick="readMore(this);">{% trans "[Read more...]" %}</button>
       </p>
       <p><strong>{% trans "Games:" %}</strong>
         <span class="games-list">{% with truncated_games=franchise.games|default:"N/A"|truncatewords_html:"60" %}
@@ -30,7 +30,7 @@
         <span class="full-games" style="display: none;">
           {% include 'playstyle_compass/display_items.html' with items=franchise.games model_name='Game' view_name='playstyle_compass:view_game' %}
         </span>
-        <button class="read-button-games" onclick="readMoreGames(this);">{% trans "[Read more...]" %}</button>
+        <button class="read-button-games" style="display: none;" onclick="readMoreGames(this);">{% trans "[Read more...]" %}</button>
       </p>
 
     </div>

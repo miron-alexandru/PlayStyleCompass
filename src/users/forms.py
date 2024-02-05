@@ -12,8 +12,7 @@ from django.contrib.auth.models import User
 from captcha.fields import ReCaptchaField
 
 from .models import UserProfile, ContactMessage, Message
-from django.utils.translation import gettext as _
-
+from django.utils.translation import gettext_lazy as _
 
 class CustomAuthenticationForm(AuthenticationForm):
     """Custom authentication form."""
@@ -44,7 +43,7 @@ class CustomRegistrationForm(UserCreationForm):
 
     profile_name = forms.CharField(
         label="Profile Name",
-        help_text="Choose nickname that will be shown to other users on the site. This name is not used for login.",
+        help_text=_("Choose nickname that will be shown to other users on the platform. This name is not used for login."),
         widget=forms.TextInput(attrs={"autofocus": "autofocus", "placeholder": ""}),
     )
     username = forms.CharField(
@@ -61,14 +60,14 @@ class CustomRegistrationForm(UserCreationForm):
         widget=forms.PasswordInput(
             attrs={"placeholder": "", "autocomplete": "new-password"}
         ),
-        help_text=(""),
+        help_text="",
     )
     password2 = forms.CharField(
         label="Password Confirmation",
         widget=forms.PasswordInput(
             attrs={"placeholder": "", "autocomplete": "new-password"}
         ),
-        help_text="Enter the same password as before, for verification.",
+        help_text=_("Enter the same password as before for verification."),
     )
     captcha = ReCaptchaField(
         error_messages={"required": _("Please complete reCAPTCHA.")}

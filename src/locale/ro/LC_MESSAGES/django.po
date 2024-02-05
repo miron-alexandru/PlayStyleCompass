@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-02-03 16:11+0200\n"
-"PO-Revision-Date: 2024-02-03 16:12+0000\n"
+"POT-Creation-Date: 2024-02-05 13:19+0200\n"
+"PO-Revision-Date: 2024-02-05 13:23+0000\n"
 "Last-Translator:   <quality_xqs@yahoo.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -20,12 +20,10 @@ msgstr ""
 "X-Translated-Using: django-rosetta 0.10.0\n"
 
 #: .\src\playstyle_compass\forms.py:16
-#| msgid "Review Likes"
 msgid "Review Title"
 msgstr "Titlu Recenzie"
 
 #: .\src\playstyle_compass\forms.py:17
-#| msgid "Reviews"
 msgid "Review"
 msgstr "Recenzie"
 
@@ -413,7 +411,7 @@ msgstr ""
 
 #: .\src\playstyle_compass\templates\playstyle_compass\index.html:23
 #: .\src\templates\base.html:157
-#: .\src\users\templates\registration\register.html:89
+#: .\src\users\templates\registration\register.html:96
 msgid "Register"
 msgstr "Înregistrare"
 
@@ -694,122 +692,122 @@ msgstr "Îmi pare rău, nu există date disponibile pentru această franciză."
 msgid "Sorry, the game does not exist."
 msgstr "Ne pare rău, jocul nu există."
 
-#: .\src\playstyle_compass\views.py:63
+#: .\src\playstyle_compass\views.py:65
 msgid "Home :: PlayStyle Compass"
 msgstr "Acasă :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:73
+#: .\src\playstyle_compass\views.py:75
 msgid "Define PlayStyle :: PlayStyle Compass"
 msgstr "Definește Stilul de Joc :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:99
+#: .\src\playstyle_compass\views.py:101
 msgid "Your PlayStyle :: PlayStyle Compass"
 msgstr "Stilul tău de joc :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:176
+#: .\src\playstyle_compass\views.py:178
 msgid "Recommendations :: PlayStyle Compass"
 msgstr "Recomandări :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:208 .\src\playstyle_compass\views.py:229
+#: .\src\playstyle_compass\views.py:210 .\src\playstyle_compass\views.py:231
 msgid "Search Results :: PlayStyle Compass"
 msgstr "Rezultate Căutare :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:316 .\src\playstyle_compass\views.py:390
-#: .\src\playstyle_compass\views.py:396
+#: .\src\playstyle_compass\views.py:318 .\src\playstyle_compass\views.py:392
+#: .\src\playstyle_compass\views.py:398
 msgid "You don't have permission to view this content."
 msgstr "Nu ai permisiunea să vezi acest conținut."
 
-#: .\src\playstyle_compass\views.py:329
+#: .\src\playstyle_compass\views.py:331
 msgid "Games Reviewed :: PlayStyle Compass"
 msgstr "Jocuri Evaluate :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:346
+#: .\src\playstyle_compass\views.py:348
 msgid "Favorites :: PlayStyle Compass"
 msgstr "Favorite :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:358
+#: .\src\playstyle_compass\views.py:360
 msgid "Game Queue :: PlayStyle Compass"
 msgstr "Jocuri Programate :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:438
+#: .\src\playstyle_compass\views.py:440
 msgid "Top Rated Games :: PlayStyle Compass"
 msgstr "Top Jocuri :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:461
+#: .\src\playstyle_compass\views.py:465
 msgid "Upcoming Games :: PlayStyle Compass"
 msgstr "Jocuri în Dezvoltare :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:479
+#: .\src\playstyle_compass\views.py:482
 msgid "You have already reviewed this game!"
 msgstr "Ai evaluat deja acest joc!"
 
-#: .\src\playstyle_compass\views.py:500
+#: .\src\playstyle_compass\views.py:503
 msgid "Your review has been successfully submitted."
 msgstr "Recenzia ta a fost trimisă cu succes."
 
-#: .\src\playstyle_compass\views.py:509
+#: .\src\playstyle_compass\views.py:512
 msgid "Add Review :: PlayStyle Compass"
 msgstr "Adaugă Recenzie :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:529 .\src\playstyle_compass\views.py:654
+#: .\src\playstyle_compass\views.py:532 .\src\playstyle_compass\views.py:657
 msgid "You haven't written any reviews for this game!"
 msgstr "Nu ai scris nicio recenzie pentru acest joc!"
 
-#: .\src\playstyle_compass\views.py:536
+#: .\src\playstyle_compass\views.py:539
 msgid "Your review has been successfully updated."
 msgstr "Recenzia ta a fost actualizată cu succes."
 
-#: .\src\playstyle_compass\views.py:542
+#: .\src\playstyle_compass\views.py:545
 msgid "Edit Review :: PlayStyle Compass"
 msgstr "Editează Recenzia :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:583
+#: .\src\playstyle_compass\views.py:586
 msgid "You cannot like your own review."
 msgstr "Nu poți aprecia propria recenzie."
 
-#: .\src\playstyle_compass\views.py:600 .\src\playstyle_compass\views.py:635
+#: .\src\playstyle_compass\views.py:603 .\src\playstyle_compass\views.py:638
 msgid "Review ID invalid."
 msgstr "ID recenzie invalid."
 
-#: .\src\playstyle_compass\views.py:603 .\src\playstyle_compass\views.py:638
+#: .\src\playstyle_compass\views.py:606 .\src\playstyle_compass\views.py:641
 msgid "You must be logged in to like or dislike a review."
 msgstr "Trebuie să fii autentificat pentru a aprecia sau critica o recenzie."
 
-#: .\src\playstyle_compass\views.py:617
+#: .\src\playstyle_compass\views.py:620
 msgid "You cannot dislike your own review."
 msgstr "Nu poți critica propria recenzie."
 
-#: .\src\playstyle_compass\views.py:652
+#: .\src\playstyle_compass\views.py:655
 msgid "Your review has been successfully deleted!"
 msgstr "Recenzia ta a fost ștearsă cu succes!"
 
-#: .\src\playstyle_compass\views.py:700
+#: .\src\playstyle_compass\views.py:703
 #, python-format
 msgid "You have already shared %(game_title)s with %(profile_name)s."
 msgstr "Ai distribuit deja jocul \"%(game_title)s\" către %(profile_name)s."
 
-#: .\src\playstyle_compass\views.py:742
+#: .\src\playstyle_compass\views.py:745
 #, python-format
 msgid "You have successfully shared %(game_title)s with %(profile_name)s."
 msgstr "Ai distribuit cu succes jocul %(game_title)s către %(profile_name)s."
 
-#: .\src\playstyle_compass\views.py:753
+#: .\src\playstyle_compass\views.py:756
 msgid "Receiver ID not provided"
 msgstr "ID destinatar lipsă"
 
-#: .\src\playstyle_compass\views.py:756 .\src\users\views.py:191
+#: .\src\playstyle_compass\views.py:759 .\src\users\views.py:191
 msgid "Invalid request method"
 msgstr "Metodă de cerere invalidă"
 
-#: .\src\playstyle_compass\views.py:779
+#: .\src\playstyle_compass\views.py:782
 msgid "Shared Games :: PlayStyle Compass"
 msgstr "Jocuri Distribuite :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:839
+#: .\src\playstyle_compass\views.py:842
 msgid "Similar PlayStyles :: PlayStyle Compass"
 msgstr "Stiluri de Joc Similare :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:864
+#: .\src\playstyle_compass\views.py:867
 msgid "Franchises :: PlayStyle Compass"
 msgstr "Francize :: PlayStyle Compass"
 
@@ -948,7 +946,7 @@ msgstr "PlayStyle Compass. Toate drepturile rezervate."
 msgid "Go top"
 msgstr "Mergi sus"
 
-#: .\src\users\forms.py:23
+#: .\src\users\forms.py:22
 msgid ""
 "Incorrect username or password. Please make sure you entered your  username "
 "and password correctly."
@@ -956,39 +954,51 @@ msgstr ""
 "Nume de utilizator sau parolă incorecte. Te rugăm să te asiguri că ai "
 "introdus corect numele de utilizator și parola."
 
-#: .\src\users\forms.py:74
+#: .\src\users\forms.py:46
+msgid ""
+"Choose nickname that will be shown to other users on the platform. This name"
+" is not used for login."
+msgstr ""
+"Alegeți un nume care va fi afișat altor utilizatori pe platformă. Acest nume"
+" nu este folosit pentru autentificare."
+
+#: .\src\users\forms.py:70
+msgid "Enter the same password as before for verification."
+msgstr "Introduceți parola identică celei anterioare pentru verificare."
+
+#: .\src\users\forms.py:73
 msgid "Please complete reCAPTCHA."
 msgstr "Te rog, completează reCAPTCHA."
 
-#: .\src\users\forms.py:92
+#: .\src\users\forms.py:91
 msgid "This username is already in use."
 msgstr "Acest nume de utilizator este deja folosit."
 
-#: .\src\users\forms.py:99 .\src\users\forms.py:167
+#: .\src\users\forms.py:98 .\src\users\forms.py:166
 msgid "This email address is already in use."
 msgstr "Acest email este deja folosit."
 
-#: .\src\users\forms.py:106 .\src\users\forms.py:324
+#: .\src\users\forms.py:105 .\src\users\forms.py:323
 msgid "This profile name is already in use."
 msgstr "Acest nume de profil este deja folosit."
 
-#: .\src\users\forms.py:158
+#: .\src\users\forms.py:157
 msgid "Current password is incorrect."
 msgstr "Parola Curentă este incorectă."
 
-#: .\src\users\forms.py:171
+#: .\src\users\forms.py:170
 msgid "New email address cannot be the current one."
 msgstr "Noua adresă de email nu poate fi cea curentă."
 
-#: .\src\users\forms.py:182
+#: .\src\users\forms.py:181
 msgid "New email addresses must match."
 msgstr "Noile adrese de email trebuie să coincidă."
 
-#: .\src\users\forms.py:217
+#: .\src\users\forms.py:216
 msgid "Password must be at least 8 characters long."
 msgstr "Parola trebuie să conțină cel puțin 8 caractere."
 
-#: .\src\users\forms.py:316
+#: .\src\users\forms.py:315
 msgid "The new profile name is the same as the existing one."
 msgstr "Noul nume de profil este același ca cel existent."
 
@@ -1054,7 +1064,7 @@ msgid "Name"
 msgstr "Nume"
 
 #: .\src\users\templates\account_actions\contact.html:19
-#: .\src\users\templates\registration\register.html:36
+#: .\src\users\templates\registration\register.html:40
 msgid "Email"
 msgstr "Email"
 
@@ -1081,7 +1091,7 @@ msgstr ""
 
 #: .\src\users\templates\account_actions\delete_account.html:17
 #: .\src\users\templates\registration\login.html:30
-#: .\src\users\templates\registration\register.html:46
+#: .\src\users\templates\registration\register.html:50
 msgid "Password"
 msgstr "Parolă"
 
@@ -1194,8 +1204,8 @@ msgstr "Parolă Nouă"
 #: .\src\users\templates\account_actions\password_reset_confirm.html:23
 #: .\src\users\templates\account_actions\password_reset_confirm.html:40
 #: .\src\users\templates\registration\login.html:35
-#: .\src\users\templates\registration\register.html:51
-#: .\src\users\templates\registration\register.html:68
+#: .\src\users\templates\registration\register.html:55
+#: .\src\users\templates\registration\register.html:72
 msgid "Show"
 msgstr "Afișează"
 
@@ -1397,7 +1407,7 @@ msgid "Log in to your account"
 msgstr "Conectează-te la contul tău"
 
 #: .\src\users\templates\registration\login.html:25
-#: .\src\users\templates\registration\register.html:26
+#: .\src\users\templates\registration\register.html:30
 msgid "Username"
 msgstr "Nume utilizator"
 
@@ -1421,11 +1431,11 @@ msgstr "Creează-ți contul"
 msgid "Profile Name"
 msgstr "Nume Profil"
 
-#: .\src\users\templates\registration\register.html:63
+#: .\src\users\templates\registration\register.html:67
 msgid "Confirm Password"
 msgstr "Confirmă Parola"
 
-#: .\src\users\templates\registration\register.html:80
+#: .\src\users\templates\registration\register.html:87
 msgid "Captcha"
 msgstr "Captcha"
 

@@ -32,8 +32,8 @@ def fetch_game_ids_by_platforms(platform_ids, api_key, offset=0, limit=10):
     """
     all_game_ids = set()
     #add_custom_game_ids(all_game_ids, game_ids_to_add)
-    # current_date = datetime.now().date()
-    current_date = datetime(2022, 1, 1).date()
+    current_date = datetime.now().date()
+    #current_date = datetime(2023, 1, 1).date()
 
     for platform_id in platform_ids:
         url = (
@@ -49,7 +49,7 @@ def fetch_game_ids_by_platforms(platform_ids, api_key, offset=0, limit=10):
                 all_game_ids.update(game_ids)
         except requests.exceptions.RequestException as e:
             print(f"Error fetching game IDs for platform {platform_id}: {e}")
-    print(all_game_ids)
+
     return all_game_ids
 
 

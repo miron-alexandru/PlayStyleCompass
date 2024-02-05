@@ -19,5 +19,5 @@ from misc_functions import (
 #create_franchises_data(franchises_ids)
 
 # Create Games
-game_ids = fetch_game_ids_by_platforms(platform_ids, API_KEY, offset=35, limit=5)
+game_ids = fetch_game_ids_by_platforms(platform_ids, API_KEY, offset=25, limit=5)
 create_games_data_db(game_ids)

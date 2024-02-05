@@ -43,7 +43,7 @@
       <p><strong>{% trans "Overview:" %}</strong>
         <span class="overview">{{ game.overview|default:"N/A"|truncatewords_html:"50" }}</span>
         <span class="full-text" style="display: none;">{{ game.overview|default:"N/A" }}</span>
-        <button class="read-button" onclick="readMore(this);">{% trans "[Read more...]" %}</button>
+        <button class="read-button" style="display: none;" onclick="readMore(this);">{% trans "[Read more...]" %}</button>
       </p>
       <p>
         <strong>{% trans "Images:" %}</strong>

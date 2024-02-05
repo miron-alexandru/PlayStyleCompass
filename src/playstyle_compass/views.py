@@ -41,6 +41,7 @@ def index(request):
         "Anger Foot",
         "S.T.A.L.K.E.R. 2: Heart of Chornobyl",
         "Wuchang: Fallen Feathers",
+        "Zenless Zone Zero",
     ]
     popular_titles = [
         "Honkai: Star Rail",
@@ -52,6 +53,7 @@ def index(request):
         "League of Legends",
         "Hogwarts Legacy",
         "NieR:Automata",
+        "Palworld",
     ]
 
     upcoming_games = Game.objects.filter(title__in=upcoming_titles)
@@ -450,8 +452,10 @@ def upcoming_games(request):
     user_preferences = UserPreferences.objects.get(user=user) if user else None
     current_date = date.today()
 
-    # Define the filter for upcoming games based on release date
-    upcoming_filter = Q(release_date__gte=current_date)
+    upcoming_filter = (
+        Q(release_date__gte=current_date) |
+        Q(release_date__regex=r'^\d{4}$', release_date__gte=str(current_date.year))
+    )
 
     upcoming_games = calculate_game_scores(Game.objects.filter(upcoming_filter))
     paginated_games = paginate_matching_games_query(request, upcoming_games)
@@ -465,7 +469,6 @@ def upcoming_games(request):
     }
 
     return render(request, "playstyle_compass/upcoming_games.html", context)
-
 
 @login_required
 def add_review(request, game_id):

@@ -68,3 +68,9 @@ button[type="submit"]:hover {
   display: flex;
   width: 100%;
 }
+
+.help-text {
+  font-size: 12px;
+  color: #6c757d;
+  margin-top: 5px;
+}
