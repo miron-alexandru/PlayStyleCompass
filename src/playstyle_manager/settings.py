@@ -22,7 +22,7 @@ INSTALLED_APPS = [
     "playstyle_compass",
     "users",
     "bootstrap4",
-    "captcha",
+    "django_recaptcha",
     "daphne",
     "rosetta",
     "django.contrib.admin",

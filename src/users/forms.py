@@ -9,7 +9,7 @@ from django.contrib.auth.forms import (
     AuthenticationForm,
 )
 from django.contrib.auth.models import User
-from captcha.fields import ReCaptchaField
+from django_recaptcha.fields import ReCaptchaField
 
 from .models import UserProfile, ContactMessage, Message
 from django.utils.translation import gettext_lazy as _
@@ -252,7 +252,7 @@ class ProfilePictureForm(forms.ModelForm):
         """Resize the image."""
         image = Image.open(image_field)
         max_size = (300, 300)
-        image.thumbnail(max_size, Image.ANTIALIAS)
+        image.thumbnail(max_size, Image.LANCZOS)
 
         original_name = os.path.basename(image_field.name)
         self.processed_image_to_file(image, image_field, original_name)
