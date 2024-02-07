@@ -23,19 +23,21 @@
   padding: 8px 16px;
 }
 
-.game-container {
+.game-container, .franchise-container {
   display: flex;
   flex-wrap: nowrap;
   overflow-x: auto;
 }
 
-.game-container ul {
+.game-container ul,
+.franchise-container ul {
   list-style: none;
   display: flex;
   padding: 0;
   margin: 0;
   white-space: nowrap;
 }
+
 
 .my-header {
   max-width: 1150px;
@@ -61,7 +63,7 @@
     padding: 6px 10px;
   }
 
-  .game-container {
+  .game-container, .franchise-container {
     padding: 5px;
   }
 }

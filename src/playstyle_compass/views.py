@@ -56,13 +56,29 @@ def index(request):
         "Palworld",
     ]
 
+    popular_franchise_titles = [
+        "Assassin's Creed",
+        "Tomb Raider",
+        "Grand Theft Auto",
+        "Mortal Kombat",
+        "Halo",
+        "Battlefiled",
+        "God of War",
+        "The Witcher",
+        "The Sims",
+        "Final Fantasy",
+        "FIFA",
+    ]
+
     upcoming_games = Game.objects.filter(title__in=upcoming_titles)
     popular_games = Game.objects.filter(title__in=popular_titles)
+    popular_franchises = Franchise.objects.filter(title__in=popular_franchise_titles)
 
     context = {
+        "page_title": _("Home :: PlayStyle Compass"),
         "upcoming_games": upcoming_games,
         "popular_games": popular_games,
-        "page_title": _("Home :: PlayStyle Compass"),
+        "popular_franchises": popular_franchises,
     }
 
     return render(request, "playstyle_compass/index.html", context)

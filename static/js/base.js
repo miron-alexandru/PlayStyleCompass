@@ -105,7 +105,7 @@ function checkScroll() {
   const windowWidth = $(window).width();
 
   if (windowWidth > 1000) {
-    const startY = $(".navbar").height() * 2 + 500;
+    const startY = $(".navbar").height() * 2 + 400;
 
     if ($(window).scrollTop() > startY) {
       $(".navbar").addClass("fixed");

@@ -1,24 +1,24 @@
-.games-li {
+.games-li, .franchises-li {
   display: inline-block;
   vertical-align: top;
   padding: 5px;
 }
 
-.game-image img {
+.game-image img, .franchise-image img {
   max-width: 100%;
   max-height: 190px;
   border: 1px solid #ddd;
   border-radius: 5px;
 }
 
-.games {
+.games, .franchises {
   padding-bottom: 5px;
 }
 
-.games h3 {
+.games h3, .franchises h3 {
   padding-top: 40px;
   color: #2f6187;
-  osition: relative;
+  position: relative;
   width: 100%;
   overflow: hidden;
   clear: both;
@@ -28,7 +28,7 @@
   color: #3e6a91;
 }
 
-.games-description {
+.games-description, .franchises-description {
   color: #555;
   font-size: 16px;
   padding-bottom: 15px;

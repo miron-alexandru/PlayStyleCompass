@@ -62,4 +62,16 @@
   </div>
 </div>
 
+<div class="franchises">
+  <h3>{% trans "POPULAR FRANCHISES" %}</h3>
+<p class="franchises-description">{% trans "Discover some of the most iconic and beloved franchises across gaming history!" %}</p>
+  <div class="franchise-container">
+    <ul>
+      {% for franchise in popular_franchises %}
+      {% include "playstyle_compass/popular_franchises_listing.html" %}
+      {% endfor %}
+    </ul>
+  </div>
+</div>
+
 {% endblock content %}

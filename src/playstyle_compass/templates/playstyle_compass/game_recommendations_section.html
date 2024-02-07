@@ -28,6 +28,11 @@
     <div class="game-info">
       <h4>{{ game.title|default:"N/A" }}</h4>
       <p>{{ game.description|default:"N/A" }}</p>
+      <p><strong>{% trans "Description:" %}</strong>
+        <span class="overview">{{ game.overview|default:"N/A"|truncatewords_html:"50" }}</span>
+        <span class="full-text" style="display: none;">{{ game.overview|default:"N/A" }}</span>
+        <button class="read-button" style="display: none;" onclick="readMore(this);">{% trans "[Read more...]" %}</button>
+      </p>
       <p><strong>{% trans "Release date:" %}</strong> {{ game.release_date|default:"N/A"}}</p>
       <p><strong>{% trans "Developer:" %}</strong> {{ game.developers|default:"N/A"}}</p>
       <p><strong>{% trans "Genres:" %}</strong> {{ game.genres|default:"N/A" }}</p>
@@ -39,11 +44,6 @@
       <p><strong>{% trans "DLC:" %}</strong> {{ game.dlcs|default:"N/A" }}</p>
       <p><strong>{% trans "Similar games:" %}</strong>
         {% include 'playstyle_compass/display_items.html' with items=game.similar_games model_name='Game' view_name='playstyle_compass:view_game' %}
-      </p>
-      <p><strong>{% trans "Overview:" %}</strong>
-        <span class="overview">{{ game.overview|default:"N/A"|truncatewords_html:"50" }}</span>
-        <span class="full-text" style="display: none;">{{ game.overview|default:"N/A" }}</span>
-        <button class="read-button" style="display: none;" onclick="readMore(this);">{% trans "[Read more...]" %}</button>
       </p>
       <p>
         <strong>{% trans "Images:" %}</strong>

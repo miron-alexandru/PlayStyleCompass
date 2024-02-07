@@ -11,7 +11,7 @@ from datetime import datetime
 import requests
 from bs4 import BeautifulSoup
 
-from constants import BASE_URL, headers, API_KEY, game_ids_to_add
+from constants import BASE_URL, headers, API_KEY
 from sql_queries import (
     create_table_sql,
     remove_duplicates_sql,
@@ -26,12 +26,15 @@ from sql_queries import (
 )
 
 
-def fetch_game_ids_by_platforms(platform_ids, api_key, offset=0, limit=10):
+def fetch_game_ids_by_platforms(platform_ids, api_key, offset=0, limit=10, game_ids_to_add=None):
     """
     Fetches game IDs for multiple platform IDs and returns a set of all fetched game IDs.
     """
     all_game_ids = set()
-    #add_custom_game_ids(all_game_ids, game_ids_to_add)
+
+    if games_ids_to_add:
+        all_game_ids.update(game_ids_to_add)
+
     current_date = datetime.now().date()
     #current_date = datetime(2023, 1, 1).date()
 
@@ -51,11 +54,6 @@ def fetch_game_ids_by_platforms(platform_ids, api_key, offset=0, limit=10):
             print(f"Error fetching game IDs for platform {platform_id}: {e}")
 
     return all_game_ids
-
-
-def add_custom_game_ids(all_game_ids, game_ids_to_add):
-    """Add custom game ids's"""
-    all_game_ids.update(game_ids_to_add)
 
 
 def fetch_game_data(game_id):
@@ -400,12 +398,18 @@ def fetch_franchises(api_key, offset=0, format="json", field_list=None, limit=2)
         return None
 
 
-def extract_guids(franchises):
-    """Extract "guid's" from each franchise."""
+def extract_guids(franchises, franchises_ids_to_add=None):
+    """Extract "guid's" from each franchise and add specific ids if provided."""
+    franchises_ids = set()
+    
+    if franchises_ids_to_add:
+        franchises_ids.update(franchises_ids_to_add)
+
     if franchises:
-        return {franchise["guid"] for franchise in franchises}
-    else:
-        return set()
+        for franchise in franchises:
+            franchises_ids.add(franchise["guid"])
+
+    return franchises_ids
 
 
 def fetch_franchise_data(guid, api_key, format="json", field_list=None):
