@@ -31,6 +31,7 @@ Websites for .env configuration: [GiantBomb](https://www.giantbomb.com/) / [Send
 <summary><h2>PlayStyle Compass Changelog</h2></summary>
 
 ### Version v1.6
+* Added popular franchises on Index
 * Formatting / Refactoring.
 * Users are now able to search franchises just like searching games.
 * Added franchises page where users can explore different franchises and read details about each of them.
