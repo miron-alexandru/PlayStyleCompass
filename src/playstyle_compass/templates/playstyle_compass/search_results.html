@@ -13,8 +13,11 @@
 <link rel="stylesheet" type="text/css" href="{% static 'css/playstyle_compass/pagination.css' %}">
 
 <div class="search-bar-only">
+  {% with search_bar_type as bar_type %}
   {% include "playstyle_compass/search_bar_only.html" %}
+  {% endwith %}
 </div>
+
 
 <div class="results">
   <ul>

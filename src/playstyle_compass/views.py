@@ -79,6 +79,7 @@ def index(request):
         "upcoming_games": upcoming_games,
         "popular_games": popular_games,
         "popular_franchises": popular_franchises,
+        "search_bar_type": "search_games",
     }
 
     return render(request, "playstyle_compass/index.html", context)
@@ -228,6 +229,7 @@ def search_results(request):
         "games": games,
         "user_preferences": user_preferences,
         "user_friends": user_friends,
+        "search_bar_type": "search_games",
     }
 
     return render(request, "playstyle_compass/search_results.html", context)
@@ -247,6 +249,7 @@ def search_franchises(request):
         "page_title": _("Search Results :: PlayStyle Compass"),
         "query": query,
         "franchises": franchises,
+        "search_bar_type": "search_franchises",
     }
 
     return render(request, "playstyle_compass/search_franchises.html", context)

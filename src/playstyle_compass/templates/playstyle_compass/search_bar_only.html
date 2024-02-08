@@ -15,8 +15,8 @@
 </form>
 
 <div class="radio">
-  <input type="radio" name="search_type" value="games" checked> {% trans 'Search games' %}
-  <input type="radio" name="search_type" value="franchises"> {% trans 'Search franchises' %}
+  <input type="radio" name="search_type" value="games" {% if bar_type == 'search_games' %}checked{% endif %}> {% trans 'Search games' %}
+  <input type="radio" name="search_type" value="franchises" {% if bar_type == 'search_franchises' %}checked{% endif %}> {% trans 'Search franchises' %}
 </div>
 
 <div id="search-results" class="search-results"></div>

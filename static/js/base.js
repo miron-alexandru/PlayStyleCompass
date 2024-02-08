@@ -103,9 +103,12 @@ if (profilePictureUpload) {
 
 function checkScroll() {
   const windowWidth = $(window).width();
+  const documentHeight = $(document).height();
 
-  if (windowWidth > 1000) {
-    const startY = $(".navbar").height() * 2 + 400;
+
+  if (windowWidth > 1000 && documentHeight > 1200) {
+    const navbarHeight = $(".navbar").outerHeight();
+    const startY = (documentHeight - window.innerHeight) / 2 - navbarHeight / 2;
 
     if ($(window).scrollTop() > startY) {
       $(".navbar").addClass("fixed");
@@ -135,7 +138,7 @@ $(document).ready(function () {
     });
   });
 
-  $(document).on("click", function (event) {
+$(document).on("click", function (event) {
     if (!$(event.target).closest(".nav-item.dropdown").length) {
       $(".dropdown-container").hide();
     }
