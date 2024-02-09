@@ -260,16 +260,16 @@ def calculate_average_similarity(user1, user2, preferences):
     return total_similarity_score / len(preferences)
 
 
-def paginate_franchises(request, franchises):
-    """Function to paginate franchises."""
-    franchises_per_page = 10
+def paginate_objects(request, objects):
+    """Function to paginate objects."""
+    objects_per_page = 10
 
-    paginator = Paginator(franchises, franchises_per_page)
+    paginator = Paginator(objects, objects_per_page)
     page_number = request.GET.get("page", 1)
 
     try:
-        paginated_franchises = paginator.page(page_number)
+        paginated_objects = paginator.page(page_number)
     except (PageNotAnInteger, EmptyPage):
-        paginated_franchises = paginator.page(1)
+        paginated_objects = paginator.page(1)
 
-    return paginated_franchises
+    return paginated_objects

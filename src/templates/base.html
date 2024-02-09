@@ -72,6 +72,9 @@
             <a class="dropdown-item" href="{% url 'playstyle_compass:view_franchises'%}">
               {% trans "Franchises" %}
             </a>
+            <a class="dropdown-item" href="{% url 'playstyle_compass:characters'%}">
+              {% trans "Characters" %}
+            </a>
             <a class="dropdown-item" href="{% url 'playstyle_compass:top_rated_games'%}">
               {% trans "Top Rated Games" %}
             </a>
@@ -89,6 +92,16 @@
         <li class="nav-item">
           <a class="nav-link" href="{% url 'playstyle_compass:upcoming_games'%}">
             {% trans "Upcoming Games" %}
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'playstyle_compass:view_franchises'%}">
+            {% trans "Franchises" %}
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'playstyle_compass:characters'%}">
+            {% trans "Characters" %}
           </a>
         </li>
         {% endif %}
@@ -167,6 +180,25 @@
       </div>
     </div>
   </nav>
+
+<script>
+  function logout() {
+    $.ajax({
+      url: "{% url 'users:logout' %}",
+      method: "POST",
+      headers: { "X-CSRFToken": "{{ csrf_token }}" },
+      success: function(response) {
+        // Handle successful logout
+        console.log("Logout successful");
+        // Optionally redirect to another page after logout
+      },
+      error: function(xhr, status, error) {
+        // Handle logout failure
+        console.error("Logout failed:", error);
+      }
+    });
+  }
+</script>
 
   <div class="page-header">
     <div id="header-content">

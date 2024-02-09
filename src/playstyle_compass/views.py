@@ -11,7 +11,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Avg, Q
 
 from utils.constants import genres, all_platforms
-from .models import UserPreferences, Game, Review, SharedGame, Franchise
+from .models import UserPreferences, Game, Review, SharedGame, Franchise, Character
 from .forms import ReviewForm
 from users.models import Notification
 
@@ -21,7 +21,7 @@ from .helper_functions.views_helpers import (
     calculate_single_game_score,
     paginate_matching_games_query,
     paginate_matching_games_dict,
-    paginate_franchises,
+    paginate_objects,
     get_friend_list,
     calculate_average_similarity,
 )
@@ -243,7 +243,7 @@ def search_franchises(request):
         return HttpResponseBadRequest("Invalid query. Please enter at least 2 characters.")
 
     franchises = Franchise.objects.filter(title__icontains=query)
-    franchises = paginate_franchises(request, franchises)
+    franchises = paginate_objects(request, franchises)
 
     context = {
         "page_title": _("Search Results :: PlayStyle Compass"),
@@ -679,7 +679,7 @@ def delete_reviews(request, game_id):
 
 
 def view_game(request, game_id):
-    """View used to view a single game."""
+    """View used to display a single game."""
     user = request.user if request.user.is_authenticated else None
     user_preferences = UserPreferences.objects.get(user=user) if user else None
 
@@ -867,7 +867,7 @@ def similar_playstyles(request):
 
 
 def view_franchises(request):
-    """View used to view all franchises."""
+    """View used to display all franchises."""
     all_franchises = Franchise.objects.all()
 
     sort_order = request.GET.get('sort_order', 'default')
@@ -880,7 +880,7 @@ def view_franchises(request):
     elif sort_order == 'games_desc':
         all_franchises = all_franchises.order_by('-games_count')
 
-    paginated_franchises = paginate_franchises(request, all_franchises)
+    paginated_franchises = paginate_objects(request, all_franchises)
 
     context = {
         "page_title": _("Franchises :: PlayStyle Compass"),
@@ -892,7 +892,7 @@ def view_franchises(request):
 
 
 def franchise(request, franchise_id):
-    """View used to view a single franchise."""
+    """View used to display a single franchise."""
     franchise = get_object_or_404(Franchise, id=franchise_id)
 
     context = {
@@ -901,3 +901,35 @@ def franchise(request, franchise_id):
     }
 
     return render(request, "playstyle_compass/view_franchise.html", context)
+
+
+def view_characters(request):
+    """View used to display all characters."""
+    characters = Character.objects.all()
+
+    sort_order = request.GET.get('sort_order', 'default')
+    if sort_order == 'asc':
+        characters = characters.order_by('name')
+    elif sort_order == 'desc':
+        characters = characters.order_by('-name')
+
+    paginated_characters = paginate_objects(request, characters)
+
+    context = {
+        "page_title": _("Characters :: PlayStyle Compass"),
+        "characters": paginated_characters,
+        "sort_order": sort_order,
+    }
+
+    return render(request, "playstyle_compass/characters.html", context)
+
+def game_character(request, character_id):
+    """View used to display a single character"""
+    character = get_object_or_404(Character, id=character_id)
+
+    context = {
+        "page_title": f"{character.name} :: PlayStyle Compass",
+        "character": character,
+    }
+
+    return render(request, "playstyle_compass/game_character.html", context)

@@ -58,4 +58,6 @@ urlpatterns = [
     path("franchise/<int:franchise_id>/", views.franchise, name="franchise"),
     path("search/franchises", views.search_franchises, name="search_franchises"),
     path("autocomplete/franchises/", views.autocomplete_franchises, name="autocomplete_franchises"),
+    path("characters/", views.view_characters, name="characters"),
+    path("character/<int:character_id>/", views.game_character, name="character"),
 ]

@@ -6,6 +6,7 @@ import json
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import (
     login,
+    logout,
     update_session_auth_hash,
 )
 from django.db.models import Q
@@ -127,6 +128,13 @@ class CustomLoginView(LoginView):
             return redirect("playstyle_compass:index")
 
         return super().dispatch(request, *args, **kwargs)
+
+
+def custom_logout(request):
+    """Custom logout view."""
+    logout(request)
+
+    return render(request, "registration/logged_out.html")
 
 
 @login_required

@@ -23,6 +23,9 @@ from sql_queries import (
     create_franchises_table,
     insert_franchise_sql,
     remove_duplicate_franchises,
+    create_characters_table,
+    insert_characters_sql,
+    remove_duplicate_characters,
 )
 
 
@@ -32,7 +35,7 @@ def fetch_game_ids_by_platforms(platform_ids, api_key, offset=0, limit=10, game_
     """
     all_game_ids = set()
 
-    if games_ids_to_add:
+    if game_ids_to_add:
         all_game_ids.update(game_ids_to_add)
 
     current_date = datetime.now().date()
@@ -129,12 +132,12 @@ def parse_game_data(game_id):
     game_images = fetch_game_images(game_id)
     reviews_data = process_user_reviews(game_id)
 
-    title = get_title(game_data)
-    description = get_description(game_data)
+    title = extract_data(game_data, "name")
+    description = extract_data(game_data, "deck")
     overview = extract_overview_content(game_data)
-    genres = get_genres(game_data)
-    platforms = get_platforms(game_data)
-    themes = get_themes(game_data)
+    genres = extract_names(game_data, "genres")
+    platforms = extract_names(game_data, "platforms")
+    themes = extract_names(game_data, "themes")
     image = get_image(game_data)
     release_date = get_release_date(game_data)
     developers = get_developers(game_data)
@@ -159,24 +162,18 @@ def parse_game_data(game_id):
         franchises,
     )
 
+def extract_data(game_data, field_name):
+    """Extract data from game data based on the field name."""
+    return game_data.get(field_name, None) if isinstance(game_data, dict) else None
 
-def get_title(game_data):
-    """Get game title."""
-    return game_data.get("name", None) if isinstance(game_data, dict) else None
-
-
-def get_description(game_data):
-    """Get game description."""
-    return game_data.get("deck", None) if isinstance(game_data, dict) else None
-
-
-def get_genres(game_data):
-    """Get game genres."""
-    if not isinstance(game_data, dict):
+def extract_names(data, field_name):
+    """Extract names from data based on the field name."""
+    if not isinstance(data, dict):
         return None
-    genre_names = [genre["name"] for genre in game_data.get("genres", [])]
-    return ", ".join(genre_names) if genre_names else None
 
+    names = [item["name"] for item in data.get(field_name, [])]
+
+    return ", ".join(names) if names else None
 
 def get_franchises(game_data):
     """Get game franchises."""
@@ -189,23 +186,17 @@ def get_franchises(game_data):
         return None
 
     franchises_names = [franchise["name"] for franchise in franchises_data]
+
     return ", ".join(franchises_names) if franchises_names else None
 
 
-def get_platforms(game_data):
-    """Get game platforms."""
-    if not isinstance(game_data, dict):
-        return None
-    platform_names = [platform["name"] for platform in game_data["platforms"]]
-    return ", ".join(platform_names) if platform_names else None
-
-
-def get_similar_games(game_data, max_count=5):
+def get_similar_games(game_data, max_count=7):
     if isinstance(game_data, dict):
         similar_games = game_data.get("similar_games")
 
         if similar_games is not None:
             similar_games = [game["name"] for game in similar_games[:max_count]]
+
             return ", ".join(similar_games) if similar_games else None
 
     return None
@@ -218,14 +209,6 @@ def get_dlcs(game_data):
             dlcs.add(dlc["name"])
         return ", ".join(dlcs) if dlcs else None
     return None
-
-
-def get_themes(game_data):
-    """Get game platforms."""
-    if not isinstance(game_data, dict):
-        return None
-    theme_names = [theme["name"] for theme in game_data.get("themes", [])]
-    return ", ".join(theme_names) if theme_names else None
 
 
 def get_image(game_data):
@@ -260,7 +243,12 @@ def get_developers(game_data):
     if "developers" not in game_data or not isinstance(game_data["developers"], list):
         return None
     developer_names = [developer["name"] for developer in game_data["developers"]]
+
     return ", ".join(developer_names) if developer_names else None
+
+def extract_first_game(data):
+    """Return the first game a character has appeared in."""
+    return data["first_appeared_in_game"].get("name", None) if data["first_appeared_in_game"] else None
 
 
 def fetch_user_reviews(game_id):
@@ -379,14 +367,32 @@ def create_games_data_db(game_ids):
         db_connection.commit()
 
 
-def fetch_franchises(api_key, offset=0, format="json", field_list=None, limit=2):
-    """Fetch franchises using the Giant Bomb's API."""
-    base_url = "https://www.giantbomb.com/api/franchises/"
-    api_url = f"{base_url}?api_key={API_KEY}&format={format}&offset={offset}"
+def fetch_data(api_key, resource_type, offset=0, format="json", field_list=None, limit=1):
+    """Fetch data using the Giant Bomb's API."""
+    base_url = f"https://www.giantbomb.com/api/{resource_type}/"
+    api_url = f"{base_url}?api_key={api_key}&format={format}&offset={offset}"
 
     if field_list:
         api_url += f'&field_list={",".join(field_list)}'
     api_url += f"&limit={limit}"
+
+    response = requests.get(api_url, headers=headers)
+
+    if response.status_code == 200:
+        data = response.json()
+        return data.get("results", [])
+    else:
+        print(f"Error: {response.status_code}")
+        return None
+
+
+def fetch_data_by_guid(guid, api_key, resource_type, format="json", field_list=None):
+    """Fetch data for an individual resource (character or franchise)."""
+    base_url = f"https://www.giantbomb.com/api/{resource_type}"
+    api_url = f"{base_url}/{guid}?api_key={api_key}&format={format}"
+
+    if field_list:
+        api_url += f'&field_list={",".join(field_list)}'
 
     response = requests.get(api_url, headers=headers)
 
@@ -411,24 +417,18 @@ def extract_guids(franchises, franchises_ids_to_add=None):
 
     return franchises_ids
 
+def extract_character_guids(characters, characters_ids_to_add=None):
+    """Extract guid's from each character and add specifict character id's if provided."""
+    characters_ids = set()
 
-def fetch_franchise_data(guid, api_key, format="json", field_list=None):
-    """Fetch data for an individual franchise."""
-    base_url = "https://www.giantbomb.com/api/franchise"
-    api_url = f"{base_url}/{guid}?api_key={API_KEY}&format={format}"
+    if characters_ids_to_add:
+        characters_ids.update(characters_ids_to_add)
 
-    if field_list:
-        api_url += f'&field_list={",".join(field_list)}'
+    if characters:
+        for character in characters:
+            characters_ids.add(character["guid"])
 
-    response = requests.get(api_url, headers=headers)
-
-    if response.status_code == 200:
-        data = response.json()
-        return data.get("results", [])
-    else:
-        print(f"Error: {response.status_code}")
-        return None
-
+    return characters_ids
 
 def get_franchise_games(franchise_data):
     """Get games that are from a particular franchise."""
@@ -451,9 +451,10 @@ def get_franchise_games_count(games):
 def parse_franchise_data(franchise_id):
     """Parse franchise data."""
     try:
-        franchise_data = fetch_franchise_data(
+        franchise_data = fetch_data_by_guid(
             franchise_id,
             API_KEY,
+            resource_type="franchise",
             format="json",
             field_list=["name", "deck", "description", "games", "image"],
         )
@@ -462,8 +463,8 @@ def parse_franchise_data(franchise_id):
         sys.exit()
 
     description = extract_overview_content(franchise_data)
-    title = get_title(franchise_data)
-    overview = get_description(franchise_data)
+    title = extract_data(franchise_data, "name")
+    overview = extract_data(franchise_data, "deck")
     games = get_franchise_games(franchise_data)
     image = get_image(franchise_data)
     games_count = get_franchise_games_count(games)
@@ -510,6 +511,88 @@ def create_franchises_data(franchises_ids):
         cursor.execute(remove_duplicate_franchises)
 
         db_connection.commit()
+
+
+def parse_character_data(character_id):
+    """Parse character data."""
+    try:
+        character_data = fetch_data_by_guid(
+            character_id,
+            API_KEY,
+            resource_type="character",
+            format="json",
+            field_list=["name", "deck", "description", "friends", "enemies", "games", "franchises", "image", "first_appeared_in_game", "id"],
+        )
+    except FetchDataException as e:
+        print(f"Fetching data failed: {e}")
+        sys.exit()
+
+    name = extract_data(character_data, "name")
+    deck = extract_data(character_data, "deck")
+    description = extract_overview_content(character_data)
+    friends = extract_names(character_data, "friends")
+    enemies = extract_names(character_data, "enemies")
+    games = extract_names(character_data, "games")
+    first_game = extract_first_game(character_data)
+    franchises = extract_names(character_data, "franchises")
+    image = get_image(character_data)
+    character_id = character_data.get("id", None)
+
+    return (
+        name,
+        deck,
+        description,
+        friends,
+        enemies,
+        games,
+        first_game,
+        franchises,
+        image,
+        character_id,
+    )
+
+
+def create_characters_data(characters_ids):
+    """Insert the data for each franchise in the database."""
+    with sqlite3.connect("games_data.db") as db_connection:
+        cursor = db_connection.cursor()
+        cursor.execute(create_characters_table)
+        db_connection.commit()
+
+        for character_id in characters_ids:
+            (
+                name,
+                deck,
+                description,
+                friends,
+                enemies,
+                games,
+                first_game,
+                franchises,
+                image,
+                character_id,
+            ) = parse_character_data(character_id)
+
+            character_values = (
+                name,
+                deck,
+                description,
+                friends,
+                enemies,
+                games,
+                first_game,
+                franchises,
+                image,
+                character_id,
+            )
+            cursor.execute(insert_characters_sql, character_values)
+
+            db_connection.commit()
+
+        cursor.execute(remove_duplicate_characters)
+
+        db_connection.commit()
+
 
 
 class FetchDataException(Exception):

@@ -78,7 +78,10 @@ def get_object_id(object_name, model_name):
     """
     model = apps.get_model(app_label='playstyle_compass', model_name=model_name)
     try:
-        obj = model.objects.get(title=object_name)
+        if model_name == "Character":
+            obj = model.objects.get(name=object_name)
+        else:
+            obj = model.objects.get(title=object_name)
         return obj.id
     except model.DoesNotExist:
         return None

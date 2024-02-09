@@ -115,6 +115,7 @@ DATABASE_ROUTERS = [
     "playstyle_compass.database_router.GameRouter",
     "playstyle_compass.database_router.ReviewRouter",
     "playstyle_compass.database_router.FranchiseRouter",
+    "playstyle_compass.database_router.CharacterRouter",
 ]
 
 # Default Auto Field

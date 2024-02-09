@@ -35,11 +35,56 @@ CREATE TABLE IF NOT EXISTS Reviews (
 );
 """
 
+create_franchises_table = """
+CREATE TABLE IF NOT EXISTS Franchises (
+    id INTEGER PRIMARY KEY,
+    title TEXT,
+    overview TEXT,
+    description TEXT,
+    games TEXT,
+    image TEXT,
+    games_count INTEGER DEFAULT 0
+);
+"""
+
+create_characters_table = """
+CREATE TABLE IF NOT EXISTS Characters (
+    id INTEGER PRIMARY KEY,
+    name TEXT,
+    deck TEXT,
+    description TEXT,
+    friends TEXT,
+    enemies TEXT,
+    games TEXT,
+    first_game TEXT,
+    franchises TEXT,
+    image TEXT,
+    character_id INTEGER DEFAULT 0
+);
+"""
+
+inserting_sql = """
+INSERT INTO Games 
+(title, description, overview, genres, platforms, themes, image, release_date, developers, game_images, similar_games, dlcs, franchises) 
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+"""
+
 insert_reviews_sql = """
 INSERT INTO Reviews (reviewers, review_deck, review_description, score, user_id, game_id)
 VALUES (?, ?, ?, ?, ?, ?);
 """
 
+insert_franchise_sql = """
+INSERT INTO Franchises
+(title, overview, description, games, image, games_count)
+VALUES (?, ?, ?, ?, ?, ?);
+"""
+
+insert_characters_sql = """
+INSERT INTO Characters 
+(name, deck, description, friends, enemies, games, first_game, franchises, image, character_id) 
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+"""
 
 remove_duplicates_sql = """
 DELETE FROM Games
@@ -59,6 +104,25 @@ WHERE rowid NOT IN (
 );
 """
 
+remove_duplicate_franchises = """
+DELETE FROM Franchises
+    WHERE rowid NOT IN (
+    SELECT MIN(rowid)
+    FROM Franchises
+    GROUP BY title
+);
+"""
+
+remove_duplicate_characters = """
+DELETE FROM Characters
+    WHERE rowid NOT IN (
+    SELECT MIN(rowid)
+    FROM Characters
+    GROUP BY character_id, name
+);
+"""
+
+
 remove_empty = """
 DELETE FROM Games
 WHERE title IS NULL
@@ -74,36 +138,3 @@ WHERE title IS NULL
   AND similar_games is NULL;
 """
 
-
-inserting_sql = """
-INSERT INTO Games 
-(title, description, overview, genres, platforms, themes, image, release_date, developers, game_images, similar_games, dlcs, franchises) 
-VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
-"""
-
-create_franchises_table = """
-CREATE TABLE IF NOT EXISTS Franchises (
-    id INTEGER PRIMARY KEY,
-    title TEXT,
-    overview TEXT,
-    description TEXT,
-    games TEXT,
-    image TEXT,
-    games_count INTEGER DEFAULT 0
-);
-"""
-
-insert_franchise_sql = """
-INSERT INTO Franchises
-(title, overview, description, games, image, games_count)
-VALUES (?, ?, ?, ?, ?, ?);
-"""
-
-remove_duplicate_franchises = """
-DELETE FROM Franchises
-    WHERE rowid NOT IN (
-    SELECT MIN(rowid)
-    FROM Franchises
-    GROUP BY title
-);
-"""

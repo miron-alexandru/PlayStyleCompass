@@ -227,3 +227,26 @@ class Franchise(models.Model):
         db_table = "Franchises"
         ordering = ["title",
                     "games_count"]
+
+
+class Character(models.Model):
+    """Represents a character."""
+
+    id = models.BigAutoField(primary_key=True)
+    name = models.CharField(max_length=100)
+    deck = models.TextField()
+    description = models.TextField()
+    friends = models.TextField()
+    enemies = models.TextField()
+    games = models.TextField()
+    first_game = models.CharField(max_length=50)
+    franchises = models.TextField()
+    image = models.TextField()
+    character_id = models.IntegerField(default=0)
+
+    def __str__(self):
+        return f"Character: {self.name}"
+
+    class Meta:
+        db_table = "Characters"
+        ordering = ["name"]

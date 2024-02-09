@@ -9,7 +9,7 @@ app_name = "users"
 
 urlpatterns = [
     path("login/", views.CustomLoginView.as_view(), name="login"),
-    path("logout/", auth_views.LogoutView.as_view(), name="logout"),
+    path("logout/", views.custom_logout, name="logout"),
     path("register/", views.register, name="register"),
     path(
         "password-reset/",
