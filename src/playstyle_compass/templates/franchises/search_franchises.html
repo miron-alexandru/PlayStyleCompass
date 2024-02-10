@@ -1,0 +1,22 @@
+{% extends "base/base_search_content.html" %}
+{% load i18n %}
+
+{% block header_content %}
+{% trans "SERACH FRANCHISE:" %} "{{ query }}"
+{% endblock header_content %}
+
+{% block search_bar %}
+{% with search_bar_type as bar_type %}
+{% include "base/search_bar_only.html" %}
+{% endwith %}
+{% endblock search_bar %}
+
+{% block item %}
+{% if franchises %}
+{% for franchise in franchises %}
+{% include "franchises/franchise_template.html" %}
+{% endfor %}
+{% else %}
+<p><strong>{% trans "Sorry, there are no results for your search." %}</strong></p>
+{% endif %}
+{% endblock item %}

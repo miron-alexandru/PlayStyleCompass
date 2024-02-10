@@ -20,7 +20,7 @@ from misc_functions import (
 #franchises_ids = extract_guids(franchises)
 #create_franchises_data(franchises_ids)
 
-characters = fetch_data(API_KEY, resource_type="characters", offset=0, limit=3)
+characters = fetch_data(API_KEY, resource_type="characters", offset=163, limit=50)
 characters_ids = extract_character_guids(characters)
 create_characters_data(characters_ids)
 

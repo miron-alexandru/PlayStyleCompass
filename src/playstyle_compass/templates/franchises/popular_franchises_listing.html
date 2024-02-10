@@ -1,0 +1,15 @@
+{% load i18n %}
+{% load static %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'css/playstyle_compass/games_listing.css' %}">
+<li class="franchises-li">
+  <a href="{% url 'playstyle_compass:franchise' franchise.id %}">
+    <div class="franchise-image">
+      {% if franchise.image %}
+      <img src="{{ franchise.image }}" alt="Franchise Image">
+      {% else %}
+      <p>{% trans "Franchise image not available." %}</p>
+      {% endif %}
+    </div>
+  </a>
+</li>

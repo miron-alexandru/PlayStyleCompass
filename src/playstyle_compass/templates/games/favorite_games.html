@@ -1,0 +1,21 @@
+{% extends "games/games_collection.html" %}
+{% load i18n %}
+
+{% block header_desc %}
+  {% if other_user %}
+    {{ user_name|upper }}{% trans "'S FAVORITES" %}
+  {% else %}
+    {% trans "MY FAVORITES" %}
+  {% endif %}
+{% endblock header_desc %}
+
+{% block description %}{% blocktrans %}A curated collection of games you love. Explore and enjoy your handpicked selection of favorite games that bring you joy and excitement.{% endblocktrans %}
+{% endblock description %}
+
+{% block empty_message %}
+  {% if other_user %}
+    {{ user_name }} {% trans "hasn't added any games to their Favorites yet." %}
+  {% else %}
+{% trans "You haven't added any games to your Favorites yet." %}
+  {% endif %}
+{% endblock empty_message %}

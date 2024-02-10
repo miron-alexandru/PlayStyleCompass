@@ -1,0 +1,26 @@
+
+{% extends "base.html" %}
+{% load i18n %}
+{% load static %}
+
+{% block page_header %}
+<div class="header">
+  <h3>{% if character %}
+  {{character.name|upper }}
+  {% endif %}</h3>
+</div>
+{% endblock page_header %}
+
+{% block content %}
+
+<div>
+  <ul>
+    {% if character %}
+    {% include "characters/game_character_template.html" %}
+    {% else %}
+    <p><strong>{% trans "Sorry, no data for this character." %}</strong></p>
+    {% endif %}
+  </ul>
+</div>
+
+{% endblock content %}

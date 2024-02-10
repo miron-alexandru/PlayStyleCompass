@@ -56,8 +56,10 @@ urlpatterns = [
     path("similar_playstyles/", views.similar_playstyles, name="similar_playstyles"),
     path("view_franchises/", views.view_franchises, name="view_franchises"),
     path("franchise/<int:franchise_id>/", views.franchise, name="franchise"),
-    path("search/franchises", views.search_franchises, name="search_franchises"),
+    path("search/franchises/", views.search_franchises, name="search_franchises"),
     path("autocomplete/franchises/", views.autocomplete_franchises, name="autocomplete_franchises"),
     path("characters/", views.view_characters, name="characters"),
     path("character/<int:character_id>/", views.game_character, name="character"),
+    path("search/characters/", views.search_characters, name="search_characters"),
+    path("autocomplete/characters/", views.autocomplete_characters, name="autocomplete_characters"),
 ]

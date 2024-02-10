@@ -1,0 +1,22 @@
+{% load custom_filters %}
+
+{% if items %}
+  {% for item in items|split_commas %}
+    {% with item_id=item|get_object_id:model_name %}
+      {% if item_id %}
+        {% if item_id|length > 1 %}
+          {% for id in item_id %}
+            <a href="{% url view_name id %}">{{ item }}</a>{% if not forloop.last %}, {% endif %}
+          {% endfor %}
+        {% else %}
+          <a href="{% url view_name item_id %}">{{ item }}</a>
+        {% endif %}
+      {% else %}
+        {{ item }}
+      {% endif %}
+    {% endwith %}
+    {% if not forloop.last %}, {% endif %}
+  {% endfor %}
+{% else %}
+  N/A
+{% endif %}

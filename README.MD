@@ -31,7 +31,9 @@ Websites for .env configuration: [GiantBomb](https://www.giantbomb.com/) / [Send
 <summary><h2>PlayStyle Compass Changelog</h2></summary>
 
 ### Version v1.6
-* Refactored misc functions
+* Organized html files in different folders for easier maintainability.
+* Searching for characters is available in the search bar.
+* Refactored misc functions.
 * Implemented Characters: Users are able to view different game characters and specific details about them.
 * Fixed BUGS: Bug that caused the navbar to not appear / Updated translations / Made search bar dynamic based on the page that it exists.
 * Added popular franchises on Index

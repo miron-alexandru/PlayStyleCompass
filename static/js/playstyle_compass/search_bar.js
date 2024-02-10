@@ -21,8 +21,15 @@ searchInput.addEventListener("input", function () {
     .then((data) => {
       let resultsHTML = "";
       data.forEach((result) => {
-        resultsHTML += `<div class="result" onclick="fillSearchBar('${result.title}')">${result.title}</div>`;
+        let titleOrName = '';
+        if (searchType === 'characters') {
+          titleOrName = result.name;
+        } else {
+          titleOrName = result.title;
+        }
+        resultsHTML += `<div class="result" onclick="fillSearchBar('${titleOrName}')">${titleOrName}</div>`;
       });
+
       searchResults.innerHTML = resultsHTML;
       searchResults.style.display = data.length > 0 ? "block" : "none";
     });
@@ -35,6 +42,8 @@ document.getElementById("search-form").addEventListener("submit", function (even
       this.action = searchGames;
     } else if (searchType === "franchises") {
       this.action = searchFranchises;
+    } else if (searchType === "characters") {
+      this.action = searchCharacters;
     }
   });
 
@@ -53,6 +62,8 @@ function fillSearchBar(value) {
     searchForm.action = searchGames;
   } else if (searchType === "franchises") {
     searchForm.action = searchFranchises;
+  } else if (searchType === "characters" ) {
+    searchForm.action = searchCharacters;
   }
 
   searchResults.innerHTML = "";

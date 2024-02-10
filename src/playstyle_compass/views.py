@@ -82,7 +82,7 @@ def index(request):
         "search_bar_type": "search_games",
     }
 
-    return render(request, "playstyle_compass/index.html", context)
+    return render(request, "base/index.html", context)
 
 
 @login_required
@@ -94,7 +94,7 @@ def gaming_preferences(request):
         "platforms": all_platforms,
     }
 
-    return render(request, "playstyle_compass/gaming_preferences.html", context)
+    return render(request, "preferences/create_gaming_preferences.html", context)
 
 
 @login_required
@@ -121,7 +121,7 @@ def update_preferences(request):
         "platforms": all_platforms,
     }
 
-    return render(request, "playstyle_compass/update_preferences.html", context)
+    return render(request, "preferences/update_gaming_preferences.html", context)
 
 
 @login_required
@@ -198,7 +198,7 @@ def get_recommendations(request):
         "user_friends": user_friends,
     }
 
-    return render(request, "playstyle_compass/recommendations.html", context)
+    return render(request, "games/recommendations.html", context)
 
 
 def search_results(request):
@@ -221,7 +221,7 @@ def search_results(request):
     games = calculate_game_scores(games)
     games = paginate_matching_games_query(request, games)
 
-    user_friends = get_friend_list(request.user)
+    user_friends = get_friend_list(request.user) if request.user.is_authenticated else None
 
     context = {
         "page_title": _("Search Results :: PlayStyle Compass"),
@@ -232,7 +232,7 @@ def search_results(request):
         "search_bar_type": "search_games",
     }
 
-    return render(request, "playstyle_compass/search_results.html", context)
+    return render(request, "games/search_games.html", context)
 
 def search_franchises(request):
     """Retrieves franchises from the database that match a given
@@ -252,7 +252,7 @@ def search_franchises(request):
         "search_bar_type": "search_franchises",
     }
 
-    return render(request, "playstyle_compass/search_franchises.html", context)
+    return render(request, "franchises/search_franchises.html", context)
 
 
 def autocomplete_games(request):
@@ -356,7 +356,7 @@ def user_reviews(request, user_id=None):
         "user_friends": user_friends,
     }
 
-    return render(request, "playstyle_compass/user_reviews.html", context)
+    return render(request, "reviews/user_reviews.html", context)
 
 
 @login_required
@@ -366,7 +366,7 @@ def favorite_games(request, user_id=None):
         request,
         _("Favorites :: PlayStyle Compass"),
         "favorite_games",
-        "playstyle_compass/favorite_games.html",
+        "games/favorite_games.html",
         user_id=user_id,
     )
 
@@ -378,7 +378,7 @@ def game_queue(request, user_id=None):
         request,
         _("Game Queue :: PlayStyle Compass"),
         "game_queue",
-        "playstyle_compass/game_queue.html",
+        "games/game_queue.html",
         user_id=user_id,
     )
 
@@ -462,7 +462,7 @@ def top_rated_games(request):
         "user_friends": user_friends,
     }
 
-    return render(request, "playstyle_compass/top_rated_games.html", context)
+    return render(request, "games/top_rated_games.html", context)
 
 
 def upcoming_games(request):
@@ -487,7 +487,7 @@ def upcoming_games(request):
         "user_friends": user_friends,
     }
 
-    return render(request, "playstyle_compass/upcoming_games.html", context)
+    return render(request, "games/upcoming_games.html", context)
 
 @login_required
 def add_review(request, game_id):
@@ -533,7 +533,7 @@ def add_review(request, game_id):
         "game": game,
     }
 
-    return render(request, "playstyle_compass/add_review.html", context)
+    return render(request, "reviews/add_review.html", context)
 
 
 @login_required
@@ -566,7 +566,7 @@ def edit_review(request, game_id):
         "game": game,
     }
 
-    return render(request, "playstyle_compass/edit_review.html", context)
+    return render(request, "reviews/edit_review.html", context)
 
 
 def get_game_reviews(request, game_id):
@@ -695,7 +695,7 @@ def view_game(request, game_id):
         "user_friends": user_friends,
     }
 
-    return render(request, "playstyle_compass/view_game.html", context)
+    return render(request, "games/view_game.html", context)
 
 
 @login_required
@@ -804,7 +804,7 @@ def view_games_shared(request):
         "selected_sort_order": sort_order,
     }
 
-    return render(request, "playstyle_compass/games_shared.html", context)
+    return render(request, "games/games_shared.html", context)
 
 
 @login_required
@@ -863,7 +863,7 @@ def similar_playstyles(request):
         "user_preferences": user_preferences,
     }
 
-    return render(request, "playstyle_compass/similar_playstyles.html", context)
+    return render(request, "misc/similar_playstyles.html", context)
 
 
 def view_franchises(request):
@@ -888,7 +888,7 @@ def view_franchises(request):
         "sort_order": sort_order,
     }
 
-    return render(request, "playstyle_compass/franchise_list.html", context)
+    return render(request, "franchises/franchise_list.html", context)
 
 
 def franchise(request, franchise_id):
@@ -900,7 +900,7 @@ def franchise(request, franchise_id):
         "franchise": franchise,
     }
 
-    return render(request, "playstyle_compass/view_franchise.html", context)
+    return render(request, "franchises/view_franchise.html", context)
 
 
 def view_characters(request):
@@ -921,7 +921,7 @@ def view_characters(request):
         "sort_order": sort_order,
     }
 
-    return render(request, "playstyle_compass/characters.html", context)
+    return render(request, "characters/characters.html", context)
 
 def game_character(request, character_id):
     """View used to display a single character"""
@@ -932,4 +932,36 @@ def game_character(request, character_id):
         "character": character,
     }
 
-    return render(request, "playstyle_compass/game_character.html", context)
+    return render(request, "characters/game_character.html", context)
+
+
+def search_characters(request):
+    """Retrieves characters from the database that match a given
+    search query and renders a search results page.
+    """
+    query = request.GET.get("query")
+    if query and len(query) < 2:
+        return HttpResponseBadRequest("Invalid query. Please enter at least 2 characters.")
+
+    characters = Character.objects.filter(name__icontains=query)
+    characters = paginate_objects(request, characters)
+
+    context = {
+        "page_title": _("Search Results :: PlayStyle Compass"),
+        "query": query,
+        "characters": characters,
+        "search_bar_type": "search_characters",
+    }
+
+    return render(request, "characters/search_characters.html", context)
+
+def autocomplete_characters(request):
+    """Provides autocomplete suggestions for characters based on a user's query."""
+    query = request.GET.get("query", "")
+    results = []
+
+    if query:
+        characters = Character.objects.filter(name__icontains=query)
+        results = list(characters.values("name"))
+
+    return JsonResponse(results, safe=False)

@@ -74,16 +74,24 @@ def template_trans(text):
 @register.filter
 def get_object_id(object_name, model_name):
     """
-    Given an object name and a model, return the id if it exists.
+    Given an object name and a model, return the ID if it exists.
     """
     model = apps.get_model(app_label='playstyle_compass', model_name=model_name)
     try:
         if model_name == "Character":
-            obj = model.objects.get(name=object_name)
+            # Use filter instead of get for potentially multiple objects
+            objs = model.objects.filter(name=object_name)
         else:
-            obj = model.objects.get(title=object_name)
-        return obj.id
-    except model.DoesNotExist:
+            objs = model.objects.filter(title=object_name)
+
+        if objs.exists():
+            if objs.count() == 1:
+                return objs.first().id
+            else:
+                return [obj.id for obj in objs]
+        else:
+            return None
+    except ObjectDoesNotExist:
         return None
 
 @register.filter
