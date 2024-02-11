@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-02-10 16:44+0200\n"
-"PO-Revision-Date: 2024-02-10 16:47+0000\n"
+"POT-Creation-Date: 2024-02-11 16:41+0200\n"
+"PO-Revision-Date: 2024-02-11 16:43+0000\n"
 "Last-Translator:   <quality_xqs@yahoo.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -125,7 +125,6 @@ msgid "Search franchises"
 msgstr "Caută francize"
 
 #: .\src\playstyle_compass\templates\base\search_bar_only.html:20
-#| msgid "Search franchises"
 msgid "Search characters"
 msgstr "Caută caractere"
 
@@ -147,12 +146,10 @@ msgid "Sort by:"
 msgstr "Sortează după:"
 
 #: .\src\playstyle_compass\templates\characters\characters.html:21
-#| msgid "Date (Asc)"
 msgid "Name (Asc)"
 msgstr "Nume (Asc)"
 
 #: .\src\playstyle_compass\templates\characters\characters.html:22
-#| msgid "Date (Desc)"
 msgid "Name (Desc)"
 msgstr "Nume (Desc)"
 
@@ -203,7 +200,6 @@ msgid "Last"
 msgstr "Ultima"
 
 #: .\src\playstyle_compass\templates\characters\game_character.html:21
-#| msgid "Sorry, no data for this franchise."
 msgid "Sorry, no data for this character."
 msgstr "Îmi pare rău, nu există date disponibile pentru acest caracter."
 
@@ -228,7 +224,6 @@ msgid "[Read more...]"
 msgstr "[Citește mai mult...]"
 
 #: .\src\playstyle_compass\templates\characters\game_character_template.html:26
-#| msgid "Friend"
 msgid "Friends:"
 msgstr "Prieteni:"
 
@@ -296,7 +291,6 @@ msgid "Franchise image not available."
 msgstr "Imaginea francizei nu este disponibilă."
 
 #: .\src\playstyle_compass\templates\franchises\search_franchises.html:5
-#| msgid "FRANCHISE:"
 msgid "SERACH FRANCHISE:"
 msgstr "CAUTĂ FRANCIZĂ:"
 
@@ -561,7 +555,6 @@ msgid " %(category_name)s: "
 msgstr "%(category_name)s:"
 
 #: .\src\playstyle_compass\templates\games\search_games.html:7
-#| msgid "SHARED GAMES"
 msgid "SEARCH GAME:"
 msgstr "CAUTĂ JOC:"
 
@@ -689,7 +682,7 @@ msgstr "Istoricul tău de jocuri:"
 #: .\src\playstyle_compass\templates\preferences\update_gaming_preferences.html:41
 #: .\src\playstyle_compass\templates\preferences\update_gaming_preferences.html:65
 #: .\src\users\templates\account_actions\profile_name_update.html:16
-#: .\src\users\templates\account_actions\update_profile_picture.html:23
+#: .\src\users\templates\account_actions\update_profile_picture.html:21
 msgid "Change"
 msgstr "Schimbă"
 
@@ -883,7 +876,6 @@ msgid "Franchises :: PlayStyle Compass"
 msgstr "Francize :: PlayStyle Compass"
 
 #: .\src\playstyle_compass\views.py:919
-#| msgid "Favorites :: PlayStyle Compass"
 msgid "Characters :: PlayStyle Compass"
 msgstr "Caractere :: PlayStyle Compass"
 
@@ -1283,6 +1275,7 @@ msgstr "Parolă Nouă"
 #: .\src\users\templates\account_actions\password_change_form.html:48
 #: .\src\users\templates\account_actions\password_reset_confirm.html:23
 #: .\src\users\templates\account_actions\password_reset_confirm.html:40
+#: .\src\users\templates\account_actions\update_profile_picture.html:17
 #: .\src\users\templates\registration\login.html:35
 #: .\src\users\templates\registration\register.html:54
 #: .\src\users\templates\registration\register.html:71
@@ -1422,9 +1415,10 @@ msgstr "TRIMITE UN MESAJ CĂTRE"
 msgid "Send Message"
 msgstr "Trimite Mesaj"
 
-#: .\src\users\templates\account_actions\update_profile_picture.html:18
-msgid "Current:"
-msgstr "Curent:"
+#: .\src\users\templates\account_actions\update_profile_picture.html:17
+#| msgid "Current:"
+msgid "Currently:"
+msgstr "Acum:"
 
 #: .\src\users\templates\account_actions\user_profile.html:8
 msgid "YOUR PROFILE"

@@ -2,7 +2,7 @@ label[for="id_profile_name"] {
   display: none;
 }
 
-form h1 {
+.form-title {
   padding: 10px 0;
   text-align: center;
   margin-bottom: 15px;
@@ -20,4 +20,9 @@ form h1 {
 
 .profile-container form {
   text-align: center;
+}
+
+.change-btn {
+  font-size: 13px;
+  padding: 5px;
 }

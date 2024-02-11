@@ -6,21 +6,19 @@
 {% block content %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/users/profile_picture.css' %}">
 
-<div class="container text-center mt-0">
+<div class="container text-center mt-0 profile-picture-container">
   <div class="row justify-content-center">
     <div class="col-md-6">
-      <form method="post" enctype="multipart/form-data" class="border rounded p-4">
+      <form method="post" enctype="multipart/form-data" class="profile-picture-form">
         <h2 class="title">{% trans "Change Profile Picture" %}</h2>
         {% csrf_token %}
-        {% bootstrap_form form %}
         <div class="current-image">
           {% if form.instance.profile_picture %}
-          <p>{% trans "Current:" %} <a href="{{ form.instance.profile_picture.url }}" target="_blank">{% spaceless %}
-              {{ form.instance.profile_picture.url }}
-              {% endspaceless %}</a></p>
+          <p>{% trans "Currently:" %} <span id="image-container" style="display: none;"><img src="{{ form.instance.profile_picture.url }}" alt="Profile Picture"></span> <a href="#" id="toggle-image">{% trans "Show" %}</a></p>
           {% endif %}
         </div>
-        <button id="uploadButton" type="submit" class="btn btn-primary" disabled>{% trans "Change" %}</button>
+        {% bootstrap_form form %}
+        <button id="uploadButton" type="submit" class="btn btn-primary change-btn" disabled>{% trans "Change" %}</button>
       </form>
     </div>
   </div>
