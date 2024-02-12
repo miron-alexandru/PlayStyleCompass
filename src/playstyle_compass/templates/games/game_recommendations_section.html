@@ -35,9 +35,9 @@
       </p>
       <p><strong>{% trans "Release date:" %}</strong> {{ game.release_date|default:"N/A"}}</p>
       <p><strong>{% trans "Developer:" %}</strong> {{ game.developers|default:"N/A"}}</p>
-      <p><strong>{% trans "Genres:" %}</strong> {{ game.genres|default:"N/A" }}</p>
-      <p><strong>{% trans "Platforms:" %}</strong> {{ game.platforms|default:"N/A" }}</p>
-      <p><strong>{% trans "Themes:" %}</strong> {{ game.themes|default:"N/A" }}</p>
+      <p><strong>{% trans "Genre:" %}</strong> {{ game.genres|default:"N/A" }}</p>
+      <p><strong>{% trans "Platform:" %}</strong> {{ game.platforms|default:"N/A" }}</p>
+      <p><strong>{% trans "Theme:" %}</strong> {{ game.themes|default:"N/A" }}</p>
       <p><strong>{% trans "Franchises:" %}</strong>
         {% include 'base/display_items.html' with items=game.franchises model_name='Franchise' view_name='playstyle_compass:franchise' %}
       </p>

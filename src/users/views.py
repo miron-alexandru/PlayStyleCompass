@@ -559,7 +559,6 @@ def friend_requests_view(request, *args, **kwargs):
 @login_required
 def send_friend_request(request, *args, **kwargs):
     """This view allows users to send friend requests to other users."""
-
     user = request.user
     result = {}
 

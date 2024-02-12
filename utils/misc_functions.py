@@ -75,9 +75,9 @@ def fetch_game_data(game_id):
         raise FetchDataException(f"Failed to decode JSON data for game ID {game_id}")
 
 
-def fetch_game_images(game_id):
-    """Fetch images for a game using Giant Bomb's API."""
-    url = f"{BASE_URL}images/{game_id}/?api_key={API_KEY}&format=json&limit=15"
+def fetch_object_images(object_id):
+    """Fetch images for an object using Giant Bomb's API."""
+    url = f"{BASE_URL}images/{object_id}/?api_key={API_KEY}&format=json&limit=15"
 
     try:
         response = requests.get(url, headers=headers, timeout=10)
@@ -93,7 +93,7 @@ def fetch_game_images(game_id):
             return ", ".join(medium_urls) if medium_urls else None
 
     except requests.exceptions.RequestException as e:
-        print(f"Error fetching game images for game ID {game_id}: {e}")
+        print(f"Error fetching images for ID {object_id}: {e}")
 
     return None
 
@@ -129,7 +129,7 @@ def parse_game_data(game_id):
         print(f"Fetching data failed: {e}")
         sys.exit()
 
-    game_images = fetch_game_images(game_id)
+    game_images = fetch_object_images(game_id)
     reviews_data = process_user_reviews(game_id)
 
     title = extract_data(game_data, "name")

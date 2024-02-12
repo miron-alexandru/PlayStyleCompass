@@ -164,6 +164,11 @@ $(document).ready(function () {
       .on("click", ".friend-request-text", function (e) {
         e.preventDefault();
 
+        if (!isLoggedIn()) {
+            showMessage($(this).closest(".author-container"), "Please log in to send friend requests.");
+            return;
+        }
+
         let friendReqUrl = $(this)
           .closest(".game-container")
           .data("friend-req");
@@ -251,3 +256,20 @@ $(document).ready(function () {
     });
   });
 });
+
+
+function isLoggedIn() {
+    let authenticated = false;
+    $.ajax({
+        type: "GET",
+        url: authCheckUrl,
+        async: false,
+        success: function(response) {
+            authenticated = response.authenticated;
+        },
+        error: function(xhr, status, error) {
+            console.error("Error checking authentication:", error);
+        }
+    });
+    return authenticated;
+}
