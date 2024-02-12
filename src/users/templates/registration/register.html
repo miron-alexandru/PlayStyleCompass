@@ -2,9 +2,18 @@
 {% load i18n %}
 {% load static %}
 
-<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+{% block page_header %}
+<div class="header">
+  <h3>{% trans "REGISTER" %}</h3>
+</div>
+{% endblock page_header %}
+
+{% block description %}
+{% blocktrans %}Unlock a world of tailored gaming experiences. Register now to discover video games perfectly aligned with your unique tastes and preferences.{% endblocktrans %}
+{% endblock description %}
 
 {% block content %}
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
 <link rel="stylesheet" type="text/css" href="{% static 'css/users/common.css' %}">
 
 <div class="my-container">

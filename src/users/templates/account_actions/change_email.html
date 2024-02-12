@@ -2,11 +2,22 @@
 {% load i18n %}
 {% load static %}
 
+{% block page_header %}
+<div class="header">
+  <h3>{% trans "CHANGE EMAIL ADDRESS" %}</h3>
+</div>
+{% endblock page_header %}
+
+{% block description %}
+{% blocktrans %}Update your email address associated with your PlayStyle Compass account. Ensure you receive important notifications and updates by providing an active email address.{% endblocktrans %}
+{% endblock description %}
+
+
 {% block content %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/users/common.css' %}">
 
 <div class="my-container">
-  <h2>{% trans "Change Email Address" %}</h2>
+  <h2>{% trans "Change your email address" %}</h2>
   <form method="post">
     {% csrf_token %}
 

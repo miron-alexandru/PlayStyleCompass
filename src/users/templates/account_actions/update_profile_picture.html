@@ -3,6 +3,16 @@
 {% load static %}
 {% load bootstrap4 %}
 
+{% block page_header %}
+<div class="header">
+  <h3>{% trans "CHANGE PROFILE PICTURE" %}</h3>
+</div>
+{% endblock page_header %}
+
+{% block description %}
+{% blocktrans %}Update your profile picture to personalize your PlayStyle Compass experience. Choose an image that reflects your gaming style and personality.{% endblocktrans %}
+{% endblock description %}
+
 {% block content %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/users/profile_picture.css' %}">
 
@@ -10,7 +20,7 @@
   <div class="row justify-content-center">
     <div class="col-md-6">
       <form method="post" enctype="multipart/form-data" class="profile-picture-form">
-        <h2 class="title">{% trans "Change Profile Picture" %}</h2>
+        <h2 class="title">{% trans "Change your profile picture" %}</h2>
         {% csrf_token %}
         <div class="current-image">
           {% if form.instance.profile_picture %}

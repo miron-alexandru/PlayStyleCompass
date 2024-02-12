@@ -5,6 +5,16 @@
 
 {% block title %}{% trans "Log In :: PlayStyle Compass" %}{% endblock title %}
 
+{% block page_header %}
+<div class="header">
+  <h3>{% trans "LOG IN" %}</h3>
+</div>
+{% endblock page_header %}
+
+{% block description %}
+{% blocktrans %}Welcome back to PlayStyle Compass! Log in to access your personalized gaming recommendations and continue your gaming journey with ease.{% endblocktrans %}
+{% endblock description %}
+
 {% block content %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/users/common.css' %}">
 

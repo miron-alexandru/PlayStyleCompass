@@ -5,12 +5,22 @@
 
 {% block title %}{% trans "Change Profile Name :: PlayStyle Compass" %}{% endblock title %}
 
+{% block page_header %}
+<div class="header">
+  <h3>{% trans "CHANGE PROFILE NAME" %}</h3>
+</div>
+{% endblock page_header %}
+
+{% block description %}
+{% blocktrans %}Personalize your PlayStyle Compass profile by updating your display name. Choose a name that represents you and your gaming identity.{% endblocktrans %}
+{% endblock description %}
+
 {% block content %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/users/profile_name.css' %}">
 
 <div class="profile-container d-flex align-items-center justify-content-center">
     <form method="post">
-        <h1 class="form-title">{% trans "Change Profile Name" %}</h1>
+        <h1 class="form-title">{% trans "Choose your new profile name" %}</h1>
         {% csrf_token %}
         {% bootstrap_form form %}
         <button type="submit" class="btn btn-primary change-btn">{% trans "Change" %}</button>
