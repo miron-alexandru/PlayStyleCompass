@@ -467,6 +467,7 @@ def parse_franchise_data(franchise_id):
     overview = extract_data(franchise_data, "deck")
     games = get_franchise_games(franchise_data)
     image = get_image(franchise_data)
+    images = fetch_object_images(franchise_id)
     games_count = get_franchise_games_count(games)
 
     return (
@@ -475,6 +476,7 @@ def parse_franchise_data(franchise_id):
         description,
         games,
         image,
+        images,
         games_count,
     )
 
@@ -493,6 +495,7 @@ def create_franchises_data(franchises_ids):
                 description,
                 games,
                 image,
+                images,
                 games_count,
             ) = parse_franchise_data(franchise_id)
 
@@ -502,6 +505,7 @@ def create_franchises_data(franchises_ids):
                 description,
                 games,
                 image,
+                images,
                 games_count,
             )
             cursor.execute(insert_franchise_sql, franchise_values)
@@ -521,7 +525,7 @@ def parse_character_data(character_id):
             API_KEY,
             resource_type="character",
             format="json",
-            field_list=["name", "deck", "description", "friends", "enemies", "games", "franchises", "image", "first_appeared_in_game", "id"],
+            field_list=["name", "deck", "description", "birthday", "friends", "enemies", "games", "franchises", "image", "images", "first_appeared_in_game", "id"],
         )
     except FetchDataException as e:
         print(f"Fetching data failed: {e}")
@@ -530,24 +534,28 @@ def parse_character_data(character_id):
     name = extract_data(character_data, "name")
     deck = extract_data(character_data, "deck")
     description = extract_overview_content(character_data)
+    birthday = extract_data(character_data, "birthday")
     friends = extract_names(character_data, "friends")
     enemies = extract_names(character_data, "enemies")
     games = extract_names(character_data, "games")
     first_game = extract_first_game(character_data)
     franchises = extract_names(character_data, "franchises")
     image = get_image(character_data)
+    images = fetch_object_images(character_id)
     character_id = character_data.get("id", None)
 
     return (
         name,
         deck,
         description,
+        birthday,
         friends,
         enemies,
         games,
         first_game,
         franchises,
         image,
+        images,
         character_id,
     )
 
@@ -564,12 +572,14 @@ def create_characters_data(characters_ids):
                 name,
                 deck,
                 description,
+                birthday,
                 friends,
                 enemies,
                 games,
                 first_game,
                 franchises,
                 image,
+                images,
                 character_id,
             ) = parse_character_data(character_id)
 
@@ -577,12 +587,14 @@ def create_characters_data(characters_ids):
                 name,
                 deck,
                 description,
+                birthday,
                 friends,
                 enemies,
                 games,
                 first_game,
                 franchises,
                 image,
+                images,
                 character_id,
             )
             cursor.execute(insert_characters_sql, character_values)

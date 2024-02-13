@@ -213,6 +213,7 @@ class Franchise(models.Model):
     overview = models.TextField()
     games = models.CharField(max_length=200)
     image = models.TextField()
+    images = models.TextField()
     games_count = models.IntegerField(default=0)
 
     def __str__(self):
@@ -236,12 +237,14 @@ class Character(models.Model):
     name = models.CharField(max_length=100)
     deck = models.TextField()
     description = models.TextField()
+    birthday = models.TextField()
     friends = models.TextField()
     enemies = models.TextField()
     games = models.TextField()
     first_game = models.CharField(max_length=50)
     franchises = models.TextField()
     image = models.TextField()
+    images = models.TextField()
     character_id = models.IntegerField(default=0)
 
     def __str__(self):

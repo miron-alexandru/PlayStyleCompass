@@ -63,3 +63,19 @@ label[for="sort-order"] {
 #sort-order:focus {
   border: 1px solid #333;
 }
+
+.gallery-image img {
+  max-width: 150px;
+  max-height: 300px;
+  border: none;
+  border-radius: 5px;
+  object-fit: cover;
+}
+
+strong {
+  font-weight: bold;
+}
+
+small {
+  font-size: 0.7em;
+}

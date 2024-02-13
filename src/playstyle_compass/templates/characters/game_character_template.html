@@ -4,6 +4,7 @@
 
 {% block styles %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/playstyle_compass/display_content.css' %}">
+<link rel="stylesheet" href="{% static 'css/lightbox.min.css' %}">
 {% endblock styles %}
 
 <div class="character-container" data-franchise-id="{{ character.id }}">
@@ -23,6 +24,7 @@
         <span class="full-text" style="display: none;">{{ character.description|default:"N/A" }}</span>
         <button class="read-button" style="display: none;" onclick="readMore(this);">{% trans "[Read more...]" %}</button>
       </p>
+      <p><strong>{% trans "Birthday:" %}</strong> {{character.birthday|default:"N/A"}}</p>
       <p><strong>{% trans "Friends:" %}</strong>
         <span>{% include 'base/display_items.html' with items=character.friends model_name='Character' view_name='playstyle_compass:character' %}
         </span>
@@ -47,7 +49,28 @@
         <span>
           {% include 'base/display_items.html' with items=character.franchises model_name='Franchise' view_name='playstyle_compass:franchise' %}
         </span>
+      </p><strong>{% trans "Images:" %}</strong>
+        <span><small>{% trans "(Click on the image to open gallery)" %}</small></span>
       </p>
+      {% if character.images %}
+      <div class="image-gallery">
+        {% with character_images=character.images|split_by_comma %}
+        {% for character_image in character_images %}
+        {% if forloop.counter == 1 %}
+        <a href="{{ character_image }}" data-lightbox="character-images-{{ character.id }}" class="gallery-image">
+          <img src="{{ character_image }}" alt="Character Image" loading="lazy">
+        </a>
+        {% else %}
+        <a href="{{ character_image }}" data-lightbox="character-images-{{ character.id }}" style="display: none;">
+          <img src="{{ character_image }}" alt="Character Image" loading="lazy">
+        </a>
+        {% endif %}
+        {% endfor %}
+        {% endwith %}
+      </div>
+      {% else %}
+      <p><strong>{% trans "Images not available" %}</strong></p>
+      {% endif %}
     </div>
   </li>
 </div>

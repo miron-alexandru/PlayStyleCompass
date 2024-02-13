@@ -43,6 +43,7 @@ CREATE TABLE IF NOT EXISTS Franchises (
     description TEXT,
     games TEXT,
     image TEXT,
+    images TEXT,
     games_count INTEGER DEFAULT 0
 );
 """
@@ -53,12 +54,14 @@ CREATE TABLE IF NOT EXISTS Characters (
     name TEXT,
     deck TEXT,
     description TEXT,
+    birthday TEXT,
     friends TEXT,
     enemies TEXT,
     games TEXT,
     first_game TEXT,
     franchises TEXT,
     image TEXT,
+    images TEXT,
     character_id INTEGER DEFAULT 0
 );
 """
@@ -76,14 +79,14 @@ VALUES (?, ?, ?, ?, ?, ?);
 
 insert_franchise_sql = """
 INSERT INTO Franchises
-(title, overview, description, games, image, games_count)
-VALUES (?, ?, ?, ?, ?, ?);
+(title, overview, description, games, image, images, games_count)
+VALUES (?, ?, ?, ?, ?, ?, ?);
 """
 
 insert_characters_sql = """
 INSERT INTO Characters 
-(name, deck, description, friends, enemies, games, first_game, franchises, image, character_id) 
-VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+(name, deck, description, birthday, friends, enemies, games, first_game, franchises, image, images, character_id) 
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
 """
 
 remove_duplicates_sql = """
