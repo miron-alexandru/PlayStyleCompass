@@ -16,11 +16,11 @@ from misc_functions import (
 )
 
 # Create Franchises
-franchises = fetch_data(API_KEY, resource_type="franchises", offset=40, limit=10)
+franchises = fetch_data(API_KEY, resource_type="franchises", offset=100, limit=50)
 franchises_ids = extract_guids(franchises, franchises_ids_to_add)
 create_franchises_data(franchises_ids)
 
-characters = fetch_data(API_KEY, resource_type="characters", offset=50, limit=50)
+characters = fetch_data(API_KEY, resource_type="characters", offset=150, limit=50)
 characters_ids = extract_character_guids(characters)
 create_characters_data(characters_ids)
 

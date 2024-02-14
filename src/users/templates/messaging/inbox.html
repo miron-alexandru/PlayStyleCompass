@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load static %}
+{% load custom_filters %}
+
+{% block page_header %}
+<div class="header">
+  <h3>INBOX</h3>
+</div>
+{% endblock page_header %}
+
+{% block description %}
+{% trans "See messages you sent and received from users." %}
+{% endblock description %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/playstyle_compass/messages_common.css' %}">
+
+<div class="messages-container">
+  <div class="category-buttons">
+    <button id="messages-received-btn" class="category-button active">{% trans "Messages received" %}</button>
+    <button id="messages-sent-btn" class="category-button">{% trans "Messages sent" %}</button>
+  </div>
+
+  <div class="sort-container">
+    <label for="sort-order">{% trans "Sort by:" %}</label>
+    <form method="get" action="{% url 'users:inbox' %}">
+      <select id="sort-order" name="sort_order">
+        <option value="" {% if not selected_sort_oder %}selected{% endif %}>{% trans "-- Select --" %}</option>
+        <option value="asc" {% if selected_sort_order == "asc" %}selected{% endif %}>{% trans "Date (Asc)" %}</option>
+        <option value="desc" {% if selected_sort_order == "desc" %}selected{% endif %}>{% trans "Date (Desc)" %}</option>
+      </select>
+      <button type="submit" class="apply-button">{% trans "Apply" %}</button>
+    </form>
+  </div>
+
+  <form method="post" action="{% url 'users:delete_messages' %}" id="delete-messages-form">
+    {% csrf_token %}
+    <div class="action-buttons">
+      <button type="button" class="select-all-button">{% trans "Select All" %}</button>
+      <button type="submit" class="delete-button">{% trans "Delete Selected" %}</button>
+    </div>
+    <div id="received-messages" class="messages-grid-inbox received-messages">
+      {% if messages_received %}
+      {% for received_message in messages_received %}
+      <div class="message-card" data-timestamp="{{ received_message.timestamp|format_timestamp }}">
+        <div class="message-header">
+          <input type="checkbox" name="received_messages[]" value="{{ received_message.id }}" class="message-checkbox">
+          <span class="user-info"><strong>{% trans "From:" %} </strong><a
+              href="{% url 'users:view_profile' profile_name=received_message.sender.userprofile.profile_name %}"
+              class="user-name">{{ received_message.sender.userprofile.profile_name }}</a></span>
+          <p class="subject"><strong>{% trans "Subject:" %}</strong> {{received_message.title}}</p>
+          <p class="timestamp"><strong>{% trans "Date:" %}</strong> {{ received_message.timestamp }}</p>
+        </div>
+        <div class="message-content">
+          <p>{{ received_message.message }}</p>
+        </div>
+      </div>
+      {% endfor %}
+      {% else %}
+      <p class="empty-category">{% trans "You have not received any messages." %}</p>
+      {% endif %}
+    </div>
+
+    <div id="sent-messages" class="messages-grid-inbox sent-messages" style="display:none">
+      {% if messages_sent %}
+      {% for sent_message in messages_sent %}
+      <div class="message-card" data-timestamp="{{ sent_message.timestamp|format_timestamp }}">
+        <div class="message-header">
+          <input type="checkbox" name="sent_messages[]" value="{{ sent_message.id }}" class="message-checkbox">
+          <span class="user-info"><strong>To: </strong><a
+              href="{% url 'users:view_profile' profile_name=sent_message.receiver.userprofile.profile_name %}"
+              class="user-name">{{ sent_message.receiver.userprofile.profile_name }}</a></span>
+          <p class="subject"><strong>{% trans "Subject:" %}</strong> {{sent_message.title}}</p>
+          <p class="timestamp"><strong>{% trans "Date:" %}</strong> {{ sent_message.timestamp }}</p>
+        </div>
+        <div class="message-content">
+          <p>{{ sent_message.message }}</p>
+        </div>
+      </div>
+      {% endfor %}
+      {% else %}
+      <p class="empty-category">{% trans "You have not sent any messages." %}</p>
+      {% endif %}
+    </div>
+  </form>
+</div>
+
+<script>
+  $("#received-messages, #sent-messages").hide();
+</script>
+
+<script src="{% static 'js/playstyle_compass/messages_common.js' %}" defer></script>
+
+{% endblock %}

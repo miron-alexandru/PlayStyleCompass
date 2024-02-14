@@ -461,7 +461,7 @@ def contact(request):
 
     context = {"form": form, "page_title": _("Contact Us :: PlayStyle Compass")}
 
-    return render(request, "account_actions/contact.html", context)
+    return render(request, "general/contact.html", context)
 
 
 def send_contact_form(form):
@@ -525,7 +525,7 @@ def friends_list_view(request, *args, **kwargs):
         "friends": friends,
     }
 
-    return render(request, "account_actions/friends_list.html", context)
+    return render(request, "user_related/friends_list.html", context)
 
 
 @login_required
@@ -553,7 +553,7 @@ def friend_requests_view(request, *args, **kwargs):
         "user_sent_friend_requests": user_sent_friend_requests,
     }
 
-    return render(request, "account_actions/friend_requests.html", context)
+    return render(request, "user_related/friend_requests.html", context)
 
 
 @login_required
@@ -870,7 +870,7 @@ def view_profile(request, profile_name):
         )
         return redirect(request.META.get("HTTP_REFERER", "playstyle_compass:index"))
 
-    return render(request, "account_actions/user_profile.html", context)
+    return render(request, "user_related/user_profile.html", context)
 
 
 @login_required
@@ -967,7 +967,7 @@ def send_message(request, user_id):
         "receiver": message_receiver.userprofile.profile_name,
     }
 
-    return render(request, "account_actions/send_message.html", context)
+    return render(request, "messaging/send_message.html", context)
 
 
 @login_required
@@ -996,7 +996,7 @@ def inbox(request):
         "selected_sort_order": sort_order,
     }
 
-    return render(request, "account_actions/inbox.html", context)
+    return render(request, "messaging/inbox.html", context)
 
 
 @login_required
