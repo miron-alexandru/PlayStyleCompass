@@ -15,7 +15,8 @@ CREATE TABLE IF NOT EXISTS Games (
     game_images TEXT,
     similar_games TEXT,
     dlcs TEXT,
-    franchises TEXT
+    franchises TEXT,
+    videos TEXT
 );
 """
 
@@ -68,8 +69,8 @@ CREATE TABLE IF NOT EXISTS Characters (
 
 inserting_sql = """
 INSERT INTO Games 
-(title, description, overview, genres, platforms, themes, image, release_date, developers, game_images, similar_games, dlcs, franchises) 
-VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+(title, description, overview, genres, platforms, themes, image, release_date, developers, game_images, similar_games, dlcs, franchises, videos) 
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
 """
 
 insert_reviews_sql = """

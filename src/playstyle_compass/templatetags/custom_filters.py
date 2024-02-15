@@ -37,7 +37,8 @@ def getattr_filter(obj, attr_name):
 @register.filter(name="split_by_comma")
 def split_by_comma(value):
     """Split a string by commas and return a list."""
-    return value.split(", ")
+    if value:
+        return value.split(", ")
 
 
 @register.filter(name="is_favorite")

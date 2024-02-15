@@ -120,8 +120,25 @@ def extract_overview_content(data):
 
     return None
 
+def search_gameplay_videos(game_name, youtube_api_client):
+    search_response = youtube_api_client.search().list(
+        q=game_name + ' gameplay',
+        part='id',
+        type='video',
+        maxResults=2
+    ).execute()
+    
+    video_ids = [item['id']['videoId'] for item in search_response['items']]
+    return video_ids
 
-def parse_game_data(game_id):
+def get_embed_links(video_ids):
+    embed_links = []
+    for video_id in video_ids:
+        embed_links.append(f'https://www.youtube.com/embed/{video_id}')
+    return ', '.join(embed_links)
+
+
+def parse_game_data(game_id, youtube_api_client):
     """Parse the game data."""
     try:
         game_data = fetch_game_data(game_id)["results"]
@@ -133,6 +150,7 @@ def parse_game_data(game_id):
     reviews_data = process_user_reviews(game_id)
 
     title = extract_data(game_data, "name")
+    gameplay_video_ids = search_gameplay_videos(title, youtube_api_client)
     description = extract_data(game_data, "deck")
     overview = extract_overview_content(game_data)
     genres = extract_names(game_data, "genres")
@@ -144,6 +162,7 @@ def parse_game_data(game_id):
     similar_games = get_similar_games(game_data)
     dlcs = get_dlcs(game_data)
     franchises = get_franchises(game_data)
+    videos = get_embed_links(gameplay_video_ids)
 
     return (
         title,
@@ -160,6 +179,7 @@ def parse_game_data(game_id):
         reviews_data,
         dlcs,
         franchises,
+        videos,
     )
 
 def extract_data(game_data, field_name):
@@ -295,7 +315,7 @@ def process_user_reviews(game_id):
         return None
 
 
-def create_games_data_db(game_ids):
+def create_games_data_db(game_ids, youtube_api_client):
     """Inserts game data and reviews data into the database using the provided game IDs."""
     with sqlite3.connect("games_data.db") as db_connection:
         cursor = db_connection.cursor()
@@ -319,7 +339,8 @@ def create_games_data_db(game_ids):
                 reviews_data,
                 dlcs,
                 franchises,
-            ) = parse_game_data(game_id)
+                videos,
+            ) = parse_game_data(game_id, youtube_api_client)
 
             game_values = (
                 title,
@@ -335,6 +356,7 @@ def create_games_data_db(game_ids):
                 similar_games,
                 dlcs,
                 franchises,
+                videos,
             )
             cursor.execute(inserting_sql, game_values)
 

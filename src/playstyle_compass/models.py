@@ -105,6 +105,7 @@ class Game(models.Model):
     similar_games = models.CharField(max_length=200)
     dlcs = models.CharField(max_length=200)
     franchises = models.CharField(max_length=200)
+    videos = models.TextField()
 
     def __str__(self):
         return str(self.title)
