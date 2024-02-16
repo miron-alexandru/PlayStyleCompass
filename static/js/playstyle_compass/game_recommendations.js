@@ -23,3 +23,21 @@ function readMore(button) {
     button.innerHTML = translate("[Read less...]");
   }
 }
+
+function lazyLoadVideos() {
+    const lazyVideos = document.querySelectorAll('.lazy-video');
+    lazyVideos.forEach(video => {
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const videoUrl = video.getAttribute('data-src');
+                    video.innerHTML = `<iframe width="350" height="190" src="${videoUrl}" frameborder="0" allowfullscreen></iframe>`;
+                    observer.unobserve(video);
+                }
+            });
+        });
+        observer.observe(video);
+    });
+}
+
+document.addEventListener('DOMContentLoaded', lazyLoadVideos);

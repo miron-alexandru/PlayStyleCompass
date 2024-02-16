@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-02-12 19:33+0200\n"
-"PO-Revision-Date: 2024-02-12 19:41+0000\n"
+"POT-Creation-Date: 2024-02-16 15:52+0200\n"
+"PO-Revision-Date: 2024-02-16 15:55+0000\n"
 "Last-Translator:   <quality_xqs@yahoo.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -141,7 +141,7 @@ msgstr ""
 #: .\src\playstyle_compass\templates\franchises\franchise_list.html:19
 #: .\src\playstyle_compass\templates\games\games_shared.html:26
 #: .\src\playstyle_compass\templates\games\recommendations.html:28
-#: .\src\users\templates\account_actions\inbox.html:26
+#: .\src\users\templates\messaging\inbox.html:26
 msgid "Sort by:"
 msgstr "Sortează după:"
 
@@ -203,47 +203,69 @@ msgstr "Ultima"
 msgid "Sorry, no data for this character."
 msgstr "Îmi pare rău, nu există date disponibile pentru acest caracter."
 
-#: .\src\playstyle_compass\templates\characters\game_character_template.html:15
-#: .\src\playstyle_compass\templates\franchises\franchise_template.html:15
+#: .\src\playstyle_compass\templates\characters\game_character_template.html:16
+#: .\src\playstyle_compass\templates\franchises\franchise_template.html:16
 #: .\src\playstyle_compass\templates\games\game_recommendations_section.html:25
 msgid "Image not available"
 msgstr "Imagine indisponibilă"
 
-#: .\src\playstyle_compass\templates\characters\game_character_template.html:21
-#: .\src\playstyle_compass\templates\franchises\franchise_template.html:21
+#: .\src\playstyle_compass\templates\characters\game_character_template.html:22
+#: .\src\playstyle_compass\templates\franchises\franchise_template.html:22
 #: .\src\playstyle_compass\templates\games\game_recommendations_section.html:31
 msgid "Description:"
 msgstr "Descriere:"
 
-#: .\src\playstyle_compass\templates\characters\game_character_template.html:24
-#: .\src\playstyle_compass\templates\characters\game_character_template.html:44
-#: .\src\playstyle_compass\templates\franchises\franchise_template.html:24
-#: .\src\playstyle_compass\templates\franchises\franchise_template.html:33
+#: .\src\playstyle_compass\templates\characters\game_character_template.html:25
+#: .\src\playstyle_compass\templates\characters\game_character_template.html:46
+#: .\src\playstyle_compass\templates\franchises\franchise_template.html:25
+#: .\src\playstyle_compass\templates\franchises\franchise_template.html:34
 #: .\src\playstyle_compass\templates\games\game_recommendations_section.html:34
 msgid "[Read more...]"
 msgstr "[Citește mai mult...]"
 
-#: .\src\playstyle_compass\templates\characters\game_character_template.html:26
+#: .\src\playstyle_compass\templates\characters\game_character_template.html:27
+msgid "Birthday:"
+msgstr "Zi de naștere:"
+
+#: .\src\playstyle_compass\templates\characters\game_character_template.html:28
 msgid "Friends:"
 msgstr "Prieteni:"
 
-#: .\src\playstyle_compass\templates\characters\game_character_template.html:30
+#: .\src\playstyle_compass\templates\characters\game_character_template.html:32
 msgid "Enemies:"
 msgstr "Inamici:"
 
-#: .\src\playstyle_compass\templates\characters\game_character_template.html:34
+#: .\src\playstyle_compass\templates\characters\game_character_template.html:36
 msgid "First Game Appearance:"
 msgstr "Prima apariție în joc:"
 
-#: .\src\playstyle_compass\templates\characters\game_character_template.html:37
-#: .\src\playstyle_compass\templates\franchises\franchise_template.html:26
+#: .\src\playstyle_compass\templates\characters\game_character_template.html:39
+#: .\src\playstyle_compass\templates\franchises\franchise_template.html:27
 msgid "Games:"
 msgstr "Jocuri:"
 
-#: .\src\playstyle_compass\templates\characters\game_character_template.html:46
+#: .\src\playstyle_compass\templates\characters\game_character_template.html:48
 #: .\src\playstyle_compass\templates\games\game_recommendations_section.html:41
 msgid "Franchises:"
 msgstr "Francize:"
+
+#: .\src\playstyle_compass\templates\characters\game_character_template.html:52
+#: .\src\playstyle_compass\templates\franchises\franchise_template.html:36
+#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:49
+msgid "Images:"
+msgstr "Imagini:"
+
+#: .\src\playstyle_compass\templates\characters\game_character_template.html:53
+#: .\src\playstyle_compass\templates\franchises\franchise_template.html:37
+#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:50
+msgid "(Click on the image to open gallery)"
+msgstr "(Click pe imagine pentru a deschide galeria)"
+
+#: .\src\playstyle_compass\templates\characters\game_character_template.html:72
+#: .\src\playstyle_compass\templates\franchises\franchise_template.html:56
+#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:69
+msgid "Images not available"
+msgstr "Imagini indisponibile"
 
 #: .\src\playstyle_compass\templates\characters\search_characters.html:5
 msgid "SERACH CHARACTER:"
@@ -357,17 +379,14 @@ msgid "Developer:"
 msgstr "Dezvoltator:"
 
 #: .\src\playstyle_compass\templates\games\game_recommendations_section.html:38
-#| msgid "Genres:"
 msgid "Genre:"
 msgstr "Gen:"
 
 #: .\src\playstyle_compass\templates\games\game_recommendations_section.html:39
-#| msgid "Platforms:"
 msgid "Platform:"
-msgstr "Platformă"
+msgstr "Platformă:"
 
 #: .\src\playstyle_compass\templates\games\game_recommendations_section.html:40
-#| msgid "Themes:"
 msgid "Theme:"
 msgstr "Tematică:"
 
@@ -379,41 +398,34 @@ msgstr "Conținut descărcabil (DLC):"
 msgid "Similar games:"
 msgstr "Jocuri similare:"
 
-#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:49
-msgid "Images:"
-msgstr "Imagini:"
+#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:71
+#| msgid "Games played:"
+msgid "Gameplay videos:"
+msgstr "Videoclipuri cu gameplay:"
 
-#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:50
-msgid "(Click on the image to open gallery)"
-msgstr "(Click pe imagine pentru a deschide galeria)"
-
-#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:69
-msgid "Images not available"
-msgstr "Imagini indisponibile"
-
-#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:72
+#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:79
 msgid "Reviews:"
 msgstr "Recenzii:"
 
-#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:73
+#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:80
 msgid "Show Reviews"
 msgstr "Afișează Recenzii"
 
-#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:75
+#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:82
 msgid "Write a Review"
 msgstr "Scrie o Recenzie"
 
-#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:77
+#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:84
 msgid "Delete your Review"
 msgstr "Ștergeți Recenzia"
 
-#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:79
+#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:86
 msgid "Edit your Review"
 msgstr "Editați Recenzia"
 
-#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:122
-msgid "Share with ..."
-msgstr "Partajați cu ..."
+#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:129
+msgid "Share"
+msgstr "Distribuie"
 
 #: .\src\playstyle_compass\templates\games\games_list.html:11
 msgid "Game image not available."
@@ -440,39 +452,39 @@ msgid "Games you shared with other users"
 msgstr "Jocuri pe care le-ai distribuit cu alți utilizatori"
 
 #: .\src\playstyle_compass\templates\games\games_shared.html:29
-#: .\src\users\templates\account_actions\inbox.html:29
+#: .\src\users\templates\messaging\inbox.html:29
 msgid "-- Select --"
 msgstr "-- Selectați --"
 
 #: .\src\playstyle_compass\templates\games\games_shared.html:30
-#: .\src\users\templates\account_actions\inbox.html:30
+#: .\src\users\templates\messaging\inbox.html:30
 msgid "Date (Asc)"
 msgstr "Data (Asc)"
 
 #: .\src\playstyle_compass\templates\games\games_shared.html:31
-#: .\src\users\templates\account_actions\inbox.html:31
+#: .\src\users\templates\messaging\inbox.html:31
 msgid "Date (Desc)"
 msgstr "Data (Desc)"
 
 #: .\src\playstyle_compass\templates\games\games_shared.html:33
-#: .\src\users\templates\account_actions\inbox.html:33
+#: .\src\users\templates\messaging\inbox.html:33
 msgid "Apply"
 msgstr "Aplică"
 
 #: .\src\playstyle_compass\templates\games\games_shared.html:40
-#: .\src\users\templates\account_actions\inbox.html:40
+#: .\src\users\templates\messaging\inbox.html:40
 msgid "Select All"
 msgstr "Selectează Tot"
 
 #: .\src\playstyle_compass\templates\games\games_shared.html:41
-#: .\src\users\templates\account_actions\inbox.html:41
+#: .\src\users\templates\messaging\inbox.html:41
 msgid "Delete Selected"
 msgstr "Ștergeți Selecția"
 
 #: .\src\playstyle_compass\templates\games\games_shared.html:52
 #: .\src\playstyle_compass\templates\games\games_shared.html:73
-#: .\src\users\templates\account_actions\inbox.html:53
-#: .\src\users\templates\account_actions\inbox.html:75
+#: .\src\users\templates\messaging\inbox.html:53
+#: .\src\users\templates\messaging\inbox.html:75
 msgid "Date:"
 msgstr "Data:"
 
@@ -993,8 +1005,7 @@ msgstr "Deconectare"
 msgid "Log in"
 msgstr "Autentificare"
 
-#: .\src\templates\base.html:177
-#: .\src\users\templates\account_actions\contact.html:19
+#: .\src\templates\base.html:177 .\src\users\templates\general\contact.html:19
 msgid "Contact Us"
 msgstr "Contactează-ne"
 
@@ -1086,7 +1097,6 @@ msgstr ""
 "adresă de email activă."
 
 #: .\src\users\templates\account_actions\change_email.html:20
-#| msgid "Change Email Address"
 msgid "Change your email address"
 msgstr "Schimbă-ți adresa de email"
 
@@ -1143,42 +1153,6 @@ msgstr "Dacă nu ai cerut această schimbare, te rugăm să ignori acest email."
 msgid "Thank you for using PlayStyle Compass."
 msgstr "Mulțumim că folosești PlayStyle Compass."
 
-#: .\src\users\templates\account_actions\contact.html:7
-msgid "CONTACT US"
-msgstr "CONTACTEAZĂ-NE"
-
-#: .\src\users\templates\account_actions\contact.html:12
-msgid ""
-"Have a question or feedback? We're here to help! Reach out to us using the "
-"form below and our team will get back to you as soon as possible."
-msgstr ""
-"Ai o întrebare sau feedback? Suntem aici pentru a te ajuta! Contactează-ne "
-"folosind formularul de mai jos și echipa noastră îți va răspunde cât mai "
-"curând posibil."
-
-#: .\src\users\templates\account_actions\contact.html:24
-msgid "Name"
-msgstr "Nume"
-
-#: .\src\users\templates\account_actions\contact.html:29
-#: .\src\users\templates\registration\register.html:48
-msgid "Email"
-msgstr "Email"
-
-#: .\src\users\templates\account_actions\contact.html:34
-#: .\src\users\templates\account_actions\send_message.html:17
-msgid "Subject"
-msgstr "Subiect"
-
-#: .\src\users\templates\account_actions\contact.html:39
-#: .\src\users\templates\account_actions\send_message.html:22
-msgid "Message"
-msgstr "Mesaj"
-
-#: .\src\users\templates\account_actions\contact.html:43
-msgid "Submit"
-msgstr "Trimite"
-
 #: .\src\users\templates\account_actions\delete_account.html:7
 msgid "DELETE ACCOUNT"
 msgstr "ȘTERGE CONTUL"
@@ -1194,7 +1168,6 @@ msgstr ""
 " datele asociate vor fi eliminate permanent."
 
 #: .\src\users\templates\account_actions\delete_account.html:21
-#| msgid "Create your account"
 msgid "Delete your account"
 msgstr "Șterge-ți contul"
 
@@ -1217,104 +1190,8 @@ msgstr "Confirmă adresa ta de email pentru a debloca acest lucru!"
 
 #: .\src\users\templates\account_actions\delete_account.html:39
 #: .\src\users\templates\account_actions\delete_account.html:41
-#| msgid "Delete Account"
 msgid "Delete"
 msgstr "Șterge"
-
-#: .\src\users\templates\account_actions\friend_requests.html:7
-msgid "FRIEND REQUESTS"
-msgstr "CERERI DE PRIETENIE"
-
-#: .\src\users\templates\account_actions\friend_requests.html:12
-msgid ""
-"Review and manage incoming and sent friend requests. Stay connected with new"
-" friends!"
-msgstr ""
-"Revizuiți și gestionați cererile de prietenie primite și trimise. Rămâneți "
-"conectat cu prietenii noi!"
-
-#: .\src\users\templates\account_actions\friend_requests.html:21
-msgid "Requests received"
-msgstr "Cereri primite"
-
-#: .\src\users\templates\account_actions\friend_requests.html:34
-msgid "No friend requests received."
-msgstr "Nicio cerere de prietenie primită."
-
-#: .\src\users\templates\account_actions\friend_requests.html:41
-msgid "Sent by you"
-msgstr "Trimise de tine"
-
-#: .\src\users\templates\account_actions\friend_requests.html:54
-msgid "No friend requests sent."
-msgstr "Nicio cerere de prietenie trimisă."
-
-#: .\src\users\templates\account_actions\friends_list.html:7
-msgid "MY FRIENDS"
-msgstr "PRIETENII MEI"
-
-#: .\src\users\templates\account_actions\friends_list.html:11
-msgid ""
-"Explore and manage your connections. See who's on your friends list, and "
-"stay connected with your social circle."
-msgstr ""
-"Explorează și administrează conexiunile tale. Vezi cine este în lista ta de "
-"prieteni și rămâi conectat cu cercul tău social."
-
-#: .\src\users\templates\account_actions\friends_list.html:40
-msgid "You"
-msgstr "Tu"
-
-#: .\src\users\templates\account_actions\friends_list.html:42
-msgid "Friend"
-msgstr "Prieteni"
-
-#: .\src\users\templates\account_actions\friends_list.html:46
-#: .\src\users\templates\account_actions\user_profile.html:72
-msgid "Send message"
-msgstr "Trimite mesaj"
-
-#: .\src\users\templates\account_actions\friends_list.html:50
-#: .\src\users\templates\account_actions\user_profile.html:69
-msgid "Unfriend"
-msgstr "Șterge din prieteni"
-
-#: .\src\users\templates\account_actions\friends_list.html:62
-msgid ""
-"Your friends list is currently empty. Connect with others by sending friend "
-"requests!"
-msgstr ""
-"Lista ta de prieteni este momentan goală. Conectează-te cu alții trimitând "
-"cereri de prietenie!"
-
-#: .\src\users\templates\account_actions\inbox.html:13
-msgid "See messages you sent and received from users."
-msgstr "Vezi mesajele trimise și primite de la utilizatori."
-
-#: .\src\users\templates\account_actions\inbox.html:21
-msgid "Messages received"
-msgstr "Mesaje primite"
-
-#: .\src\users\templates\account_actions\inbox.html:22
-msgid "Messages sent"
-msgstr "Mesaje trimise"
-
-#: .\src\users\templates\account_actions\inbox.html:49
-msgid "From:"
-msgstr "De la:"
-
-#: .\src\users\templates\account_actions\inbox.html:52
-#: .\src\users\templates\account_actions\inbox.html:74
-msgid "Subject:"
-msgstr "Subiect:"
-
-#: .\src\users\templates\account_actions\inbox.html:61
-msgid "You have not received any messages."
-msgstr "Nu ai primit niciun mesaj."
-
-#: .\src\users\templates\account_actions\inbox.html:83
-msgid "You have not sent any messages."
-msgstr "Nu ai trimis niciun mesaj."
 
 #: .\src\users\templates\account_actions\password_change_form.html:7
 msgid "CHANGE PASSWORD"
@@ -1330,7 +1207,6 @@ msgstr ""
 "Alege o parolă puternică și unică pentru a-ți proteja profilul de joc."
 
 #: .\src\users\templates\account_actions\password_change_form.html:20
-#| msgid "Change Password"
 msgid "Change your password"
 msgstr "Schimbă-ți parola"
 
@@ -1488,17 +1364,8 @@ msgstr ""
 "Alege un nume care să te reprezinte pe tine și identitatea ta de jucător."
 
 #: .\src\users\templates\account_actions\profile_name_update.html:23
-#| msgid "Change Profile Name"
 msgid "Choose your new profile name"
 msgstr "Alege-ți noul nume de profil"
-
-#: .\src\users\templates\account_actions\send_message.html:7
-msgid "SEND A MESSAGE TO"
-msgstr "TRIMITE UN MESAJ CĂTRE"
-
-#: .\src\users\templates\account_actions\send_message.html:25
-msgid "Send Message"
-msgstr "Trimite Mesaj"
 
 #: .\src\users\templates\account_actions\update_profile_picture.html:8
 msgid "CHANGE PROFILE PICTURE"
@@ -1514,7 +1381,6 @@ msgstr ""
 "personalitatea."
 
 #: .\src\users\templates\account_actions\update_profile_picture.html:23
-#| msgid "Change Profile Picture"
 msgid "Change your profile picture"
 msgstr "Schimbă-ți poza de profil"
 
@@ -1522,31 +1388,78 @@ msgstr "Schimbă-ți poza de profil"
 msgid "Currently:"
 msgstr "Acum:"
 
-#: .\src\users\templates\account_actions\user_profile.html:8
-msgid "YOUR PROFILE"
-msgstr "PROFILUL TĂU"
+#: .\src\users\templates\general\contact.html:7
+msgid "CONTACT US"
+msgstr "CONTACTEAZĂ-NE"
 
-#: .\src\users\templates\account_actions\user_profile.html:10
-msgid "'S PROFILE"
-msgstr " PROFIL"
+#: .\src\users\templates\general\contact.html:12
+msgid ""
+"Have a question or feedback? We're here to help! Reach out to us using the "
+"form below and our team will get back to you as soon as possible."
+msgstr ""
+"Ai o întrebare sau feedback? Suntem aici pentru a te ajuta! Contactează-ne "
+"folosind formularul de mai jos și echipa noastră îți va răspunde cât mai "
+"curând posibil."
 
-#: .\src\users\templates\account_actions\user_profile.html:88
-msgid "Favorites"
-msgstr "Favorite"
+#: .\src\users\templates\general\contact.html:24
+msgid "Name"
+msgstr "Nume"
 
-#: .\src\users\templates\account_actions\user_profile.html:106
-#: .\src\users\templates\account_actions\user_profile.html:108
-msgid "In Queue"
-msgstr "Programate"
+#: .\src\users\templates\general\contact.html:29
+#: .\src\users\templates\registration\register.html:48
+msgid "Email"
+msgstr "Email"
 
-#: .\src\users\templates\account_actions\user_profile.html:124
-#: .\src\users\templates\account_actions\user_profile.html:126
-msgid "Reviews"
-msgstr "Recenzii"
+#: .\src\users\templates\general\contact.html:34
+#: .\src\users\templates\messaging\send_message.html:17
+msgid "Subject"
+msgstr "Subiect"
 
-#: .\src\users\templates\account_actions\user_profile.html:134
-msgid "Review Likes"
-msgstr "Aprecieri Recenzii"
+#: .\src\users\templates\general\contact.html:39
+#: .\src\users\templates\messaging\send_message.html:22
+msgid "Message"
+msgstr "Mesaj"
+
+#: .\src\users\templates\general\contact.html:43
+msgid "Submit"
+msgstr "Trimite"
+
+#: .\src\users\templates\messaging\inbox.html:13
+msgid "See messages you sent and received from users."
+msgstr "Vezi mesajele trimise și primite de la utilizatori."
+
+#: .\src\users\templates\messaging\inbox.html:21
+msgid "Messages received"
+msgstr "Mesaje primite"
+
+#: .\src\users\templates\messaging\inbox.html:22
+msgid "Messages sent"
+msgstr "Mesaje trimise"
+
+#: .\src\users\templates\messaging\inbox.html:49
+msgid "From:"
+msgstr "De la:"
+
+#: .\src\users\templates\messaging\inbox.html:52
+#: .\src\users\templates\messaging\inbox.html:74
+msgid "Subject:"
+msgstr "Subiect:"
+
+#: .\src\users\templates\messaging\inbox.html:61
+msgid "You have not received any messages."
+msgstr "Nu ai primit niciun mesaj."
+
+#: .\src\users\templates\messaging\inbox.html:83
+msgid "You have not sent any messages."
+msgstr "Nu ai trimis niciun mesaj."
+
+#: .\src\users\templates\messaging\send_message.html:7
+msgid "SEND A MESSAGE TO"
+msgstr "TRIMITE UN MESAJ CĂTRE"
+
+#: .\src\users\templates\messaging\send_message.html:25
+msgid "Send Message"
+msgstr "Trimite Mesaj"
 
 #: .\src\users\templates\registration\activate_account.html:3
 msgid "Hi"
@@ -1617,10 +1530,6 @@ msgid "REGISTER"
 msgstr "ÎNREGISTRARE"
 
 #: .\src\users\templates\registration\register.html:12
-#| msgid ""
-#| "Your gaming preferences are the key to unlocking a world of tailored gaming "
-#| "experiences. Bysharing your preferences, you'll receive game recommendations"
-#| " perfectly suited to your unique tastes and interests.\n"
 msgid ""
 "Unlock a world of tailored gaming experiences. Register now to discover "
 "video games perfectly aligned with your unique tastes and preferences."
@@ -1656,6 +1565,98 @@ msgstr "Respinge"
 #: .\src\users\templates\snippets\friend_request_card.html:27
 msgid "Accept"
 msgstr "Acceptă"
+
+#: .\src\users\templates\user_related\friend_requests.html:7
+msgid "FRIEND REQUESTS"
+msgstr "CERERI DE PRIETENIE"
+
+#: .\src\users\templates\user_related\friend_requests.html:12
+msgid ""
+"Review and manage incoming and sent friend requests. Stay connected with new"
+" friends!"
+msgstr ""
+"Revizuiți și gestionați cererile de prietenie primite și trimise. Rămâneți "
+"conectat cu prietenii noi!"
+
+#: .\src\users\templates\user_related\friend_requests.html:21
+msgid "Requests received"
+msgstr "Cereri primite"
+
+#: .\src\users\templates\user_related\friend_requests.html:34
+msgid "No friend requests received."
+msgstr "Nicio cerere de prietenie primită."
+
+#: .\src\users\templates\user_related\friend_requests.html:41
+msgid "Sent by you"
+msgstr "Trimise de tine"
+
+#: .\src\users\templates\user_related\friend_requests.html:54
+msgid "No friend requests sent."
+msgstr "Nicio cerere de prietenie trimisă."
+
+#: .\src\users\templates\user_related\friends_list.html:7
+msgid "MY FRIENDS"
+msgstr "PRIETENII MEI"
+
+#: .\src\users\templates\user_related\friends_list.html:11
+msgid ""
+"Explore and manage your connections. See who's on your friends list, and "
+"stay connected with your social circle."
+msgstr ""
+"Explorează și administrează conexiunile tale. Vezi cine este în lista ta de "
+"prieteni și rămâi conectat cu cercul tău social."
+
+#: .\src\users\templates\user_related\friends_list.html:40
+msgid "You"
+msgstr "Tu"
+
+#: .\src\users\templates\user_related\friends_list.html:42
+msgid "Friend"
+msgstr "Prieteni"
+
+#: .\src\users\templates\user_related\friends_list.html:46
+#: .\src\users\templates\user_related\user_profile.html:72
+msgid "Send message"
+msgstr "Trimite mesaj"
+
+#: .\src\users\templates\user_related\friends_list.html:50
+#: .\src\users\templates\user_related\user_profile.html:69
+msgid "Unfriend"
+msgstr "Șterge din prieteni"
+
+#: .\src\users\templates\user_related\friends_list.html:62
+msgid ""
+"Your friends list is currently empty. Connect with others by sending friend "
+"requests!"
+msgstr ""
+"Lista ta de prieteni este momentan goală. Conectează-te cu alții trimitând "
+"cereri de prietenie!"
+
+#: .\src\users\templates\user_related\user_profile.html:8
+msgid "YOUR PROFILE"
+msgstr "PROFILUL TĂU"
+
+#: .\src\users\templates\user_related\user_profile.html:10
+msgid "'S PROFILE"
+msgstr " PROFIL"
+
+#: .\src\users\templates\user_related\user_profile.html:88
+msgid "Favorites"
+msgstr "Favorite"
+
+#: .\src\users\templates\user_related\user_profile.html:106
+#: .\src\users\templates\user_related\user_profile.html:108
+msgid "In Queue"
+msgstr "Programate"
+
+#: .\src\users\templates\user_related\user_profile.html:124
+#: .\src\users\templates\user_related\user_profile.html:126
+msgid "Reviews"
+msgstr "Recenzii"
+
+#: .\src\users\templates\user_related\user_profile.html:134
+msgid "Review Likes"
+msgstr "Aprecieri Recenzii"
 
 #: .\src\users\validators\validators.py:14
 msgid "The password must contain at least 1 uppercase letter (A-Z)."

@@ -124,3 +124,6 @@ small {
     flex-wrap: nowrap;
 }
 
+.lazy-video {
+  margin-right: 10px;
+}
