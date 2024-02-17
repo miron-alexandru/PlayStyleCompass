@@ -105,19 +105,22 @@ $(document).ready(function () {
             review.dislikes
           }</span>
                             </div>
+                            <p><strong>${translate("Title")}:</strong> ${
+            review.title
+          }</p>
                                 <p><strong>${translate(
                                   "Author"
-                                )}:</strong> ${authorName} - 
-                                    <span class="star-rating">${getStarRating(
+                                )}:</strong> ${authorName}
+                                </p>
+                          <div class="review-score">
+                                <p><strong>${translate("Rating")}: </strong><span class="star-rating">${getStarRating(
                                       review.score
                                     )}</span>
                                 </p>
-                                <p><strong>${translate("Title")}:</strong> ${
-            review.title
-          }</p>
+                            </div>
                             </div>
                             <div class="review-body">
-                                <p><strong>${translate("Summary")}:</strong></p>
+                                <p><strong>${translate("Review")}:</strong></p>
                                 <div class="review-description-container">
                                     <span class="review-description" data-full-description="${
                                       review.description
@@ -127,11 +130,6 @@ $(document).ready(function () {
                                     }</span>
                                 </div>
                                 ${buttonHtml}
-                            </div>
-                            <div class="review-footer">
-                                <p><strong>${translate("Rating")}:</strong> ${
-            review.score
-          }</p>
                             </div>
                         </div>
                     `;

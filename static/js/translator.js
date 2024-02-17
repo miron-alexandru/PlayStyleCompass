@@ -4,6 +4,7 @@ const translate = (key) => {
             'Favorites': 'Favorite',
             'In Queue': 'Programate',
             'Reviews': 'Recenzii',
+            'Review': 'Recenzie',
             'Select All': 'Selectează Tot',
             'Unselect All': 'Deselectează Tot',
             'Show Reviews': 'Afișează Recenzii',

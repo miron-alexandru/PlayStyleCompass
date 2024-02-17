@@ -29,14 +29,6 @@
   word-break: break-word;
 }
 
-.review-footer {
-  margin-top: 10px;
-}
-
-.review-footer p {
-  margin: 5px 0;
-}
-
 .gold-star {
   color: gold;
 }
@@ -60,13 +52,13 @@
 
 .friend-request-text {
   display: inline-block;
-  padding: 6px 10px;
+  padding: 6px 12px;
   background-color: green;
   color: #ffffff;
   border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  font-size: 11px;
+  font-size: 10px;
 }
 
 .friend-request-text:hover {
