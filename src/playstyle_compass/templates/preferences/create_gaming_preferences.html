@@ -42,6 +42,21 @@ Explore and manage your gaming preferences. You can provide your gaming history,
     </fieldset>
   </div>
 
+   <div class="section">
+    <fieldset>
+      <legend class="form-label">{% trans "Select Your Favorite Themes (Up to 3):" %}</legend>
+      <div>
+        {% for theme in themes %}
+        <label>
+          <input type="checkbox" name="themes" value="{{ theme }}"
+          {% if theme in user_preferences.themes %}checked{% endif %}>
+          {{ theme }}
+        </label>
+        {% endfor %}
+      </div>
+    </fieldset>
+  </div>
+
   <div class="section">
     <fieldset>
       <legend class="form-label">{% trans "Select Your Preferred Platforms (Up to 3):" %}</legend>
@@ -60,6 +75,7 @@ Explore and manage your gaming preferences. You can provide your gaming history,
   <div class="warnings">
     <p class="warning" id="history-warning">{% trans "Please provide at least one game that you have played." %}</p>
     <p class="warning" id="genre-warning">{% trans "Please select at least one genre." %}</p>
+    <p class="warning" id="theme-warning">{% trans "Please select at least one theme." %}</p>
     <p class="warning" id="platform-warning">{% trans "Please select at least one platform." %}</p>
   </div>
 

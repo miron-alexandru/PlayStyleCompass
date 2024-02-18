@@ -26,5 +26,5 @@ from misc_functions import (
 
 # Create Games
 youtube = googleapiclient.discovery.build('youtube', 'v3', developerKey=GOOGLE_API_KEY)
-game_ids = fetch_game_ids_by_platforms(platform_ids, API_KEY, offset=35, limit=5)
+game_ids = fetch_game_ids_by_platforms(platform_ids, API_KEY, offset=40, limit=5)
 create_games_data_db(game_ids, youtube)

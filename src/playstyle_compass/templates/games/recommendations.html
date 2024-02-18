@@ -21,8 +21,9 @@
 
 <div class="category-buttons">
   <button class="category-button" data-category="gaming_history">{% trans "Gaming History" %}</button>
-  <button class="category-button" data-category="preferred_platforms">{% trans "Preferred Platforms" %}</button>
   <button class="category-button" data-category="favorite_genres">{% trans "Favorite Genres" %}</button>
+  <button class="category-button" data-category="themes">{% trans "Favorite Themes" %}</button>
+  <button class="category-button" data-category="preferred_platforms">{% trans "Preferred Platforms" %}</button>
   <button class="category-button" data-category="common_genres_platforms">{% trans "Common Genres and Platforms" %}</button>
 
   <label for="sort-select">{% trans "Sort by:" %}</label>
@@ -43,6 +44,8 @@
         {% trans "Games recommended based on your Gaming History:" %} {{ user_preferences|getattr:category }}
     {% elif category == "favorite_genres" %}
         {% trans "Games matching your Favorite Genres:" %} {{ user_preferences|getattr:category }}
+    {% elif category == "themes" %}
+        {% trans "Games matching your Favorite Themes:" %} {{ user_preferences|getattr:category }}
     {% elif category == "preferred_platforms" %}
         {% trans "Games recommended for your Preferred Platforms:" %} {{ user_preferences|getattr:category }}
     {% else %}

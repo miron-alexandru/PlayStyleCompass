@@ -3,14 +3,13 @@ $(document).ready(function () {
     event.preventDefault();
     let successfulSubmissions = 0;
     const totalForms = $(
-      "#history-section form, #genres-section form, #platforms-section form"
+      "#history-section form, #genres-section form, #themes-section form, #platforms-section form"
     ).length;
 
-    // Show loading spinner
     $("#saving-spinner").show();
 
     $(
-      "#history-section form, #genres-section form, #platforms-section form"
+      "#history-section form, #genres-section form, #themes-section form, #platforms-section form"
     ).each(function () {
       const currentForm = $(this);
 

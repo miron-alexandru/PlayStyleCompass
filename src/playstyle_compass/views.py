@@ -10,7 +10,7 @@ from django.urls import reverse
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Avg, Q
 
-from utils.constants import genres, all_platforms
+from utils.constants import genres, all_platforms, all_themes
 from .models import UserPreferences, Game, Review, SharedGame, Franchise, Character
 from .forms import ReviewForm
 from users.models import Notification
@@ -92,6 +92,7 @@ def gaming_preferences(request):
         "page_title": _("Define PlayStyle :: PlayStyle Compass"),
         "genres": genres,
         "platforms": all_platforms,
+        "themes": all_themes,
     }
 
     return render(request, "preferences/create_gaming_preferences.html", context)
@@ -106,10 +107,12 @@ def update_preferences(request):
     if request.method == "POST":
         gaming_history = request.POST.get("gaming_history")
         favorite_genres = request.POST.getlist("favorite_genres")
+        themes = request.POST.getlist("themes")
         platforms = request.POST.getlist("platforms")
 
         user_preferences.gaming_history = gaming_history
         user_preferences.favorite_genres = ", ".join(favorite_genres)
+        user_preferences.themes = ", ".join(themes)
         user_preferences.platforms = ", ".join(platforms)
 
         user_preferences.save()
@@ -118,6 +121,7 @@ def update_preferences(request):
         "page_title": _("Your PlayStyle :: PlayStyle Compass"),
         "user_preferences": user_preferences,
         "genres": genres,
+        "themes": all_themes,
         "platforms": all_platforms,
     }
 
@@ -137,6 +141,13 @@ def save_favorite_genres(request):
     """Save favorite genres for the user."""
     return _save_user_preference(
         request, "favorite_genres", "playstyle_compass:update_preferences"
+    )
+
+@login_required
+def save_themes(request):
+    """Save themes for user."""
+    return _save_user_preference(
+        request, "themes", "playstyle_compass:update_preferences"
     )
 
 
@@ -168,6 +179,7 @@ def clear_preferences(request):
     if user_preferences:
         user_preferences.gaming_history = ""
         user_preferences.favorite_genres = ""
+        user_preferences.themes = ""
         user_preferences.platforms = ""
         user_preferences.save()
 
@@ -844,7 +856,7 @@ def similar_playstyles(request):
     """View used to show users with similar playstyles."""
     user_preferences, created = UserPreferences.objects.get_or_create(user=request.user)
 
-    preferences_to_compare = ["gaming_history", "favorite_genres", "platforms"]
+    preferences_to_compare = ["gaming_history", "favorite_genres", "themes", "platforms"]
     similarity_threshold = 0.6
 
     all_user_prefs = UserPreferences.objects.exclude(user=request.user)

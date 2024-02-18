@@ -13,6 +13,7 @@ class UserPreferences(models.Model):
     gaming_history = models.TextField(blank=True)
     favorite_genres = models.CharField(max_length=255, blank=True)
     platforms = models.CharField(max_length=255, blank=True)
+    themes = models.CharField(max_length=255, blank=True)
     favorite_games = models.CharField(max_length=255, blank=True)
     game_queue = models.CharField(max_length=255, blank=True)
 

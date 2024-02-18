@@ -30,6 +30,13 @@ Websites for .env configuration: [GiantBomb](https://www.giantbomb.com/) / [Send
 <details>
 <summary><h2>PlayStyle Compass Changelog</h2></summary>
 
+### Version v1.7:
+* Now users can get recommendations based on their favorite themes.
+* New platforms and genres for users to choose for their favorites.
+* CSS improvements for better visual appeal.
+* Added gameplay videos for each game.
+* New data for characters: images & birthday / New data for franchises: images
+
 ### Version v1.6
 * Added headers & header descriptions to all pages that needed it.
 * Organized html files in different folders for easier maintainability.

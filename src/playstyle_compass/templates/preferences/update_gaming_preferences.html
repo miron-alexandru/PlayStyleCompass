@@ -17,7 +17,7 @@
 <link rel="stylesheet" type="text/css" href="{% static 'css/playstyle_compass/my_preferences.css' %}">
 <link rel="stylesheet" type="text/css" href="{% static 'css/playstyle_compass/common_styles.css' %}">
 
-{% if user_preferences.gaming_history or user_preferences.favorite_genres or user_preferences.platforms %}
+{% if user_preferences.gaming_history or user_preferences.favorite_genres or user_preferences.platforms or user_preferences.themes %}
 <div class="section" id="history-section">
   <div class="playstyle-title">{% trans "Your Gaming History:" %}</div>
   <p class="playstyle-text">{{ user_preferences.gaming_history|safe }}</p>
@@ -54,6 +54,30 @@
       </fieldset>
       <button class="save-button" data-section="favorite_genres" style="display: none;"
         id="save-genres-button">Save</button>
+    </form>
+  </div>
+</div>
+</div>
+
+<div class="section" id="themes-section">
+  <div class="playstyle-title">{% trans "Your Favorite Themes:" %}</div>
+  <p class="playstyle-text">{{ user_preferences.themes|safe }}</p>
+  <button class="change-button" data-section="themes">{% trans "Change" %}</button>
+  <div class="editing-form" id="themes-form" style="display: none;">
+    <form method="post" action="{% url 'playstyle_compass:save_themes' %}">
+      {% csrf_token %}
+      <fieldset>
+        <div>
+          {% for theme in themes %}
+          <label>
+            <input type="checkbox" name="themes" value="{{ theme }}" {% if theme in user_preferences.themes %}checked{% endif %}>
+            {{ theme }}
+          </label>
+          {% endfor %}
+        </div>
+      </fieldset>
+      <button class="save-button" data-section="themes" style="display: none;"
+        id="save-themes-button">Save</button>
     </form>
   </div>
 </div>

@@ -30,6 +30,8 @@ platform_ids = [
     "36",
     "157",
     "19",
+    "176",
+    "146",
 ]
 
 genres = [
@@ -45,6 +47,23 @@ genres = [
     "MMORPG",
     "MOBA",
     "Driving/Racing",
+    "Fighting",
+    "Anime",
+    "Platformer",
+]
+
+all_themes = [
+    "Fantasy",
+    "Anime",
+    "Comedy",
+    "Crime",
+    "Cyberpunk",
+    "Horror",
+    "Medieval",
+    "Sci-Fi",
+    "Superhero",
+    "Motorsports",
+    "Martial Arts",
 ]
 
 all_platforms = [
@@ -58,6 +77,8 @@ all_platforms = [
     "Linux",
     "Wii",
     "Browser",
+    "PlayStation 4",
+    "PlayStation 5",
 ]
 
 game_ids_to_add = [

@@ -4,6 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const gamingHistoryInput = document.getElementById("gaming_history");
   const historySaveButton = document.getElementById("save-history-button");
   const genresSaveButton = document.getElementById("save-genres-button");
+  const themesSaveButton = document.getElementById("save-themes-button");
   const platformsSaveButton = document.getElementById("save-platforms-button");
   const saveAllButton = document.getElementById("save-all-button");
 
@@ -12,6 +13,10 @@ document.addEventListener("DOMContentLoaded", () => {
   );
   const favoritePlatformCheckboxes = document.querySelectorAll(
     'input[name="platforms"]'
+  );
+
+  const themesCheckboxes = document.querySelectorAll(
+    'input[name="themes"]'
   );
 
   const hasValue = (inputElement) => inputElement.value.trim() !== "";
@@ -41,10 +46,17 @@ document.addEventListener("DOMContentLoaded", () => {
     historySaveButton.disabled =
       !hasValue(gamingHistoryInput) ||
       !isValidGamingHistory(gamingHistoryInput);
+
     genresSaveButton.disabled = !hasSelectedCheckboxes(
       favoriteGenreCheckboxes,
       maxSelections
     );
+
+    themesSaveButton.disabled = !hasSelectedCheckboxes(
+      themesCheckboxes,
+      maxSelections
+    );
+
     platformsSaveButton.disabled = !hasSelectedCheckboxes(
       favoritePlatformCheckboxes,
       maxSelections
@@ -56,9 +68,11 @@ document.addEventListener("DOMContentLoaded", () => {
         hasValue(gamingHistoryInput) &&
         isValidGamingHistory(gamingHistoryInput) &&
         hasSelectedCheckboxes(favoriteGenreCheckboxes, maxSelections) &&
+        hasSelectedCheckboxes(themesCheckboxes, maxSelections) &&
         hasSelectedCheckboxes(favoritePlatformCheckboxes, maxSelections) &&
         !isAnyCheckboxListEmpty([
           favoriteGenreCheckboxes,
+          themesCheckboxes,
           favoritePlatformCheckboxes,
         ])
       );
@@ -89,6 +103,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   addEventListenerToCheckboxes(favoriteGenreCheckboxes);
+  addEventListenerToCheckboxes(themesCheckboxes);
   addEventListenerToCheckboxes(favoritePlatformCheckboxes);
 
   updateSaveButtons();

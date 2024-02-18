@@ -78,22 +78,30 @@ class RecommendationEngine:
             if game not in games_to_exclude
         ]
 
-    def apply_filters(self, genres, platforms):
+    def apply_filters(self, genres, themes, platforms):
         """Apply genre and platform filters to matching games."""
         genre_filters = Q()
+        theme_filters = Q()
         platform_filters = Q()
 
         for genre in genres:
             genre_filters |= Q(genres__icontains=genre)
 
+        for theme in themes:
+            theme_filters |= Q(themes__icontains=theme)
+
         for platform in platforms:
             platform_filters |= Q(platforms__icontains=platform)
+
 
         common_filters = genre_filters & platform_filters
         upcoming_filter = Q(release_date__gte=self.current_date)
 
         self.matching_games["favorite_genres"] = Game.objects.filter(
             genre_filters
+        ).exclude(upcoming_filter)
+        self.matching_games["themes"] = Game.objects.filter(
+            theme_filters
         ).exclude(upcoming_filter)
         self.matching_games["common_genres_platforms"] = Game.objects.filter(
             common_filters
@@ -106,6 +114,9 @@ class RecommendationEngine:
         """Process user preferences, gaming history, and apply filters."""
         favorite_genres = [
             genre.strip() for genre in self.user_preferences.favorite_genres.split(",")
+        ]
+        themes = [
+            theme.strip() for theme in self.user_preferences.themes.split(",")
         ]
         preferred_platforms = [
             platform.strip() for platform in self.user_preferences.platforms.split(",")
@@ -121,19 +132,23 @@ class RecommendationEngine:
         favorite_genres = [
             genre.strip() for genre in self.user_preferences.favorite_genres.split(",")
         ]
+        themes = [
+            theme.strip() for theme in self.user_preferences.themes.split(",")
+        ]
         preferred_platforms = [
             platform.strip() for platform in self.user_preferences.platforms.split(",")
         ]
 
-        self.apply_filters(favorite_genres, preferred_platforms)
+        self.apply_filters(favorite_genres, themes, preferred_platforms)
 
     def initialize_matching_games(self):
         """Initialize a dictionary to store matching games in different categories."""
         return {
             "gaming_history": [],
             "favorite_genres": [],
-            "common_genres_platforms": [],
+            "themes": [],
             "preferred_platforms": [],
+            "common_genres_platforms": [],
         }
 
     def sort_matching_games(self):

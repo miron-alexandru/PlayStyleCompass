@@ -16,6 +16,7 @@ def format_category_label(category):
     category_labels = {
         "gaming_history": "gaming history",
         "favorite_genres": "favorite genres",
+        "themes": "favorite themes",
         "preferred_platforms": "preferred platforms",
         "common_genres_platforms": "common preferences",
     }
