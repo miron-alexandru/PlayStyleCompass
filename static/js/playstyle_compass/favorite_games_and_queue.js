@@ -3,7 +3,7 @@ $(document).ready(() => {
     return function () {
       let gameID = $(this).data("game-id");
       let icon = $(this).find("i");
-
+      console.log(gameID);
       $.ajax({
         type: "POST",
         url: url,

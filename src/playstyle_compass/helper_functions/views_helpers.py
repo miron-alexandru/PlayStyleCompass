@@ -179,7 +179,7 @@ class RecommendationEngine:
 def calculate_game_scores(games):
     """Calculate average scores and total reviews for games."""
     for game in games:
-        game_reviews = Review.objects.filter(game_id=game.id)
+        game_reviews = Review.objects.filter(game_id=game.guid)
         total_score = 0
 
         total_score = sum(int(review.score) for review in game_reviews)
@@ -194,7 +194,7 @@ def calculate_game_scores(games):
 
 def calculate_single_game_score(game):
     """Calculate average score and total reviews for a single game."""
-    game_reviews = Review.objects.filter(game_id=game.id)
+    game_reviews = Review.objects.filter(game_id=game.guid)
     total_score = sum(int(review.score) for review in game_reviews)
 
     average_score = total_score / len(game_reviews) if game_reviews else 0

@@ -93,6 +93,7 @@ class Game(models.Model):
     """Represents a game."""
 
     id = models.BigAutoField(primary_key=True)
+    guid = models.CharField(max_length=100, unique=True)
     title = models.CharField(max_length=100)
     description = models.TextField()
     overview = models.TextField()
@@ -141,7 +142,7 @@ class SharedGame(models.Model):
 class Review(models.Model):
     """Represents a review for a game."""
 
-    game = models.ForeignKey(Game, on_delete=models.CASCADE)
+    game = models.ForeignKey(Game, on_delete=models.CASCADE, to_field='guid')
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     reviewers = models.CharField(max_length=25)
     review_deck = models.CharField(max_length=50)

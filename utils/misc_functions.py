@@ -149,6 +149,7 @@ def parse_game_data(game_id, youtube_api_client):
     game_images = fetch_object_images(game_id)
     reviews_data = process_user_reviews(game_id)
 
+    guid = extract_data(game_data, "id")
     title = extract_data(game_data, "name")
     gameplay_video_ids = search_gameplay_videos(title, youtube_api_client)
     description = extract_data(game_data, "deck")
@@ -165,6 +166,7 @@ def parse_game_data(game_id, youtube_api_client):
     videos = get_embed_links(gameplay_video_ids)
 
     return (
+        guid,
         title,
         description,
         overview,
@@ -325,6 +327,7 @@ def create_games_data_db(game_ids, youtube_api_client):
 
         for game_id in game_ids:
             (
+                guid,
                 title,
                 description,
                 overview,
@@ -343,6 +346,7 @@ def create_games_data_db(game_ids, youtube_api_client):
             ) = parse_game_data(game_id, youtube_api_client)
 
             game_values = (
+                guid,
                 title,
                 description,
                 overview,
@@ -360,7 +364,7 @@ def create_games_data_db(game_ids, youtube_api_client):
             )
             cursor.execute(inserting_sql, game_values)
 
-            game_id = cursor.lastrowid
+            game_id = guid
 
             if reviews_data:
                 for review in reviews_data:

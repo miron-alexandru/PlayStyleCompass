@@ -31,6 +31,7 @@ Websites for .env configuration: [GiantBomb](https://www.giantbomb.com/) / [Send
 <summary><h2>PlayStyle Compass Changelog</h2></summary>
 
 ### Version v1.7:
+* Unique GUID retrieved from API for Game objects so the id remains consistent after any database changes.
 * Now users can get recommendations based on their favorite themes.
 * New platforms and genres for users to choose for their favorites.
 * CSS improvements for better visual appeal.

@@ -87,7 +87,9 @@ def get_object_id(object_name, model_name):
             objs = model.objects.filter(title=object_name)
 
         if objs.exists():
-            if objs.count() == 1:
+            if model_name == "Game":
+                return objs.first().guid
+            elif objs.count() == 1:
                 return objs.first().id
             else:
                 return [obj.id for obj in objs]

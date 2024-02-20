@@ -3,6 +3,7 @@
 create_table_sql = """
 CREATE TABLE IF NOT EXISTS Games (
     id INTEGER PRIMARY KEY,
+    guid INTEGER,
     title TEXT,
     description TEXT,
     overview TEXT,
@@ -28,7 +29,7 @@ CREATE TABLE IF NOT EXISTS Reviews (
     review_description TEXT,
     score TEXT,
     user_id INTEGER,
-    game_id INTEGER,
+    game_id TEXT,
     likes INTEGER default 0,
     dislikes INTEGER default 0,
     liked_by TEXT default '',
@@ -69,8 +70,8 @@ CREATE TABLE IF NOT EXISTS Characters (
 
 inserting_sql = """
 INSERT INTO Games 
-(title, description, overview, genres, platforms, themes, image, release_date, developers, game_images, similar_games, dlcs, franchises, videos) 
-VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+(guid, title, description, overview, genres, platforms, themes, image, release_date, developers, game_images, similar_games, dlcs, franchises, videos) 
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
 """
 
 insert_reviews_sql = """

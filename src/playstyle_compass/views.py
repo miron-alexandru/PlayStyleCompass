@@ -433,7 +433,7 @@ def _get_games_view(request, page_title, list_name, template_name, user_id=None)
     # Get the list of game IDs based on the specified list_name and user_preferences
     game_list = getattr(user_preferences, f"get_{list_name}")() if not created else []
 
-    games = calculate_game_scores(Game.objects.filter(id__in=game_list))
+    games = calculate_game_scores(Game.objects.filter(guid__in=game_list))
 
     current_viewer_preferences, created = UserPreferences.objects.get_or_create(
         user=request.user
@@ -504,7 +504,7 @@ def upcoming_games(request):
 @login_required
 def add_review(request, game_id):
     """View to add a review for a game."""
-    game = get_object_or_404(Game, pk=game_id)
+    game = get_object_or_404(Game, guid=game_id)
     user = request.user
 
     existing_review = Review.objects.filter(game=game, user=user).first()
@@ -551,7 +551,7 @@ def add_review(request, game_id):
 @login_required
 def edit_review(request, game_id):
     """View to edit reviews for games."""
-    game = get_object_or_404(Game, id=game_id)
+    game = get_object_or_404(Game, guid=game_id)
     user = request.user
     next_url = request.GET.get("next", reverse("playstyle_compass:index"))
 
@@ -676,7 +676,7 @@ def dislike_review(request):
 @login_required
 def delete_reviews(request, game_id):
     """View for deleting user reviews."""
-    game = get_object_or_404(Game, id=game_id)
+    game = get_object_or_404(Game, guid=game_id)
     user = request.user
     next_url = request.GET.get("next", reverse("playstyle_compass:index"))
 
@@ -695,7 +695,7 @@ def view_game(request, game_id):
     user = request.user if request.user.is_authenticated else None
     user_preferences = UserPreferences.objects.get(user=user) if user else None
 
-    game = get_object_or_404(Game, id=game_id)
+    game = get_object_or_404(Game, guid=game_id)
     game = calculate_single_game_score(game)
 
     user_friends = get_friend_list(user) if user else []
@@ -713,19 +713,18 @@ def view_game(request, game_id):
 @login_required
 def share_game(request, game_id):
     """View used to share a game with another user."""
-
     if request.method == "POST":
         receiver_id = request.POST.get("receiver_id")
 
         # Check if receiver_id is provided
         if receiver_id is not None:
             # Get the Game and User objects
-            game = get_object_or_404(Game, id=game_id)
+            game = get_object_or_404(Game, guid=game_id)
             receiver = get_object_or_404(User, id=receiver_id)
 
             # Check if the game is already shared with the receiver
             if SharedGame.objects.filter(
-                sender=request.user, receiver=receiver, game_id=game.id
+                sender=request.user, receiver=receiver, game_id=game.guid
             ).exists():
                 return JsonResponse(
                     {
@@ -745,7 +744,7 @@ def share_game(request, game_id):
                 <p><strong>Hello {receiver.userprofile.profile_name}!</strong></p>
                 <p>I just wanted to share this awesome game named <strong>{game.title}</strong> with you.</p>
                 <div class="game-message">
-                    <p>Check it out <a href='{reverse('playstyle_compass:view_game', args=[game.id])}' target='_blank'>here</a>!</p>
+                    <p>Check it out <a href='{reverse('playstyle_compass:view_game', args=[game.guid])}' target='_blank'>here</a>!</p>
                 </div>
             """
 
@@ -754,7 +753,7 @@ def share_game(request, game_id):
                 sender=request.user,
                 receiver=receiver,
                 content=message_content,
-                game_id=game.id,
+                game_id=game.guid,
             )
 
             user_in_notification = request.user.userprofile.profile_name
