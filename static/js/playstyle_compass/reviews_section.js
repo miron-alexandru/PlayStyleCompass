@@ -1,18 +1,12 @@
 $(document).ready(function () {
+  $.getScript("/static/js/playstyle_compass/reviews_template.js", function() {
+    console.log("Script loaded but not necessarily executed.");
+  });
+
   $(".game-container").each(function () {
     let container = $(this);
 
     let initialFetch = true;
-
-    const getStarRating = (score) => {
-      let starsHtml = "";
-      for (let i = 1; i <= 5; i++) {
-        starsHtml += `<i class="fas fa-star ${
-          i <= score ? "gold-star" : "empty-star"
-        }"></i>`;
-      }
-      return starsHtml;
-    };
 
     const toggleReviewVisibility = () => {
       let reviewsList = container.find(".reviews-list");
@@ -58,86 +52,28 @@ $(document).ready(function () {
     };
 
     const renderReviews = (reviewsList, reviews) => {
-      reviewsList.empty();
-      if (reviews.length === 0) {
+    reviewsList.empty();
+    if (reviews.length === 0) {
         reviewsList.html(
-          "<p><strong>" +
+            "<p><strong>" +
             translate("No reviews for this game yet.") +
             "</strong></p>"
         );
-      } else {
+    } else {
         $.each(reviews, function (index, review) {
-          let description = review.description.substring(0, 300);
-          let truncated = description.length < review.description.length;
-          let buttonHtml = truncated
-            ? `<button class="read-button-review" data-toggle="read-more">${translate(
-                "[Read more...]"
-              )}</button>`
-            : "";
-          let authorName = `<span class="author-container">
-                                    <a href="/users/view_profile/${
-                                      review.reviewer
-                                    }" class="author-name">${
-            review.reviewer
-          }</a>
-                                    <a href="#" class="author-link" data-user-id="${
-                                      review.user_id
-                                    }">
-                                        <span class="friend-request-text" style="display: none;">${translate(
-                                          "Friend Request"
-                                        )}</span>
-                                    </a>
-                                </span>`;
+            let description = review.description.substring(0, 300);
+            let truncated = description.length < review.description.length;
+            let buttonHtml = truncated
+                ? `<button class="read-button-review" data-toggle="read-more">${translate("[Read more...]")}</button>`
+                : "";
+            let authorName = authorNameTemplate(review);
 
-          let reviewHtml = `
-                        <div class="review" data-review-id="${review.id}">
-                            <div class="review-header">
-                            <div class="like-dislike">
-                                <i class="fa-solid fa-thumbs-up thumbs-up" title="${translate(
-                                  "I like this"
-                                )}"></i><span class="like-count">${
-            review.likes
-          }</span>
-                                <span class="like-dislike-divider">|</span>
-                                <i class="fa-solid fa-thumbs-down thumbs-down" title="${translate(
-                                  "I dislike this"
-                                )}"></i><span class="dislike-count">${
-            review.dislikes
-          }</span>
-                            </div>
-                            <p><strong>${translate("Title")}:</strong> ${
-            review.title
-          }</p>
-                                <p><strong>${translate(
-                                  "Author"
-                                )}:</strong> ${authorName}
-                                </p>
-                          <div class="review-score">
-                                <p><strong>${translate("Rating")}: </strong><span class="star-rating">${getStarRating(
-                                      review.score
-                                    )}</span>
-                                </p>
-                            </div>
-                            </div>
-                            <div class="review-body">
-                                <p><strong>${translate("Review")}:</strong></p>
-                                <div class="review-description-container">
-                                    <span class="review-description" data-full-description="${
-                                      review.description
-                                    }">${description}</span>
-                                    <span class="review-description-full" style="display: none;">${
-                                      review.description
-                                    }</span>
-                                </div>
-                                ${buttonHtml}
-                            </div>
-                        </div>
-                    `;
-          reviewsList.append(reviewHtml);
+            let reviewHtml = reviewTemplate(review, authorName, description, truncated, buttonHtml);
+            reviewsList.append(reviewHtml);
         });
-      }
-      reviewsList.show();
-    };
+    }
+    reviewsList.show();
+};
 
     const showMessage = (container, message) => {
       let customMessage = $(`<div class="success-message">${message}</div>`);
@@ -254,7 +190,6 @@ $(document).ready(function () {
     });
   });
 });
-
 
 function isLoggedIn() {
     let authenticated = false;
