@@ -793,6 +793,8 @@ def share_game(request, game_id):
 def view_games_shared(request):
     """View used to display games shared between users."""
     sort_order = request.GET.get("sort_order", None)
+    active_category = request.GET.get("category", "received")
+
     games_received = SharedGame.objects.filter(
         receiver=request.user, is_deleted_by_receiver=False
     )
@@ -813,10 +815,10 @@ def view_games_shared(request):
         "games_received": games_received,
         "games_shared": games_shared,
         "selected_sort_order": sort_order,
+        "category": active_category,
     }
 
     return render(request, "games/games_shared.html", context)
-
 
 @login_required
 def delete_shared_games(request):

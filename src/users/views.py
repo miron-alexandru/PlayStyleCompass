@@ -974,6 +974,8 @@ def send_message(request, user_id):
 def inbox(request):
     """View used to display messages received and sent by the user."""
     sort_order = request.GET.get("sort_order", None)
+    active_category = request.GET.get("category", "received")
+
     messages_received = Message.objects.filter(
         receiver=request.user, is_deleted_by_receiver=False
     )
@@ -994,6 +996,7 @@ def inbox(request):
         "messages_received": messages_received,
         "messages_sent": messages_sent,
         "selected_sort_order": sort_order,
+        "category": active_category,
     }
 
     return render(request, "messaging/inbox.html", context)

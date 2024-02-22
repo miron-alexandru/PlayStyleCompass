@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   const isPageRefresh = performance.navigation.type === 1;
 
-  if (!isPageRefresh) {
+  if (!isPageRefresh && !window.location.search.includes('sort_order')) {
     sessionStorage.removeItem("activeCategory");
   }
 
@@ -23,6 +23,7 @@ document.addEventListener("DOMContentLoaded", function () {
     toggleActiveClass(receivedBtn, sentBtn);
 
     sessionStorage.setItem("activeCategory", "received");
+    document.getElementById("active-category").value = "received";
   });
 
   sentBtn.addEventListener("click", function () {
@@ -30,6 +31,7 @@ document.addEventListener("DOMContentLoaded", function () {
     toggleActiveClass(sentBtn, receivedBtn);
 
     sessionStorage.setItem("activeCategory", "sent");
+    document.getElementById("active-category").value = "sent";
   });
 });
 
@@ -42,6 +44,7 @@ function toggleActiveClass(activateBtn, deactivateBtn) {
   $(activateBtn).addClass("active");
   $(deactivateBtn).removeClass("active");
 }
+
 
 document.addEventListener("DOMContentLoaded", function () {
   const selectAllButton = document.querySelector(".select-all-button");

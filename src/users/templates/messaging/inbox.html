@@ -24,6 +24,7 @@
 
   <div class="sort-container">
     <label for="sort-order">{% trans "Sort by:" %}</label>
+    <input type="hidden" id="active-category" name="category" value="{{ category }}">
     <form method="get" action="{% url 'users:inbox' %}">
       <select id="sort-order" name="sort_order">
         <option value="" {% if not selected_sort_oder %}selected{% endif %}>{% trans "-- Select --" %}</option>
