@@ -1,7 +1,7 @@
 django
 python-dotenv
 django-bootstrap4
-django-rechaptcha
+django-recaptcha
 django-sendgrid-v5
 daphne
 django-rosetta
@@ -14,3 +14,4 @@ fuzzywuzzy
 python-Levenshtein
 six
 beautifulsoup4
+google-api-python-client
