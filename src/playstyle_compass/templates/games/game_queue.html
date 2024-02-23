@@ -3,7 +3,9 @@
 
 {% block header_desc %}
   {% if other_user %}
-    {{ user_name|upper }}{% trans "'S GAME QUEUE" %}
+  {% blocktrans with user_name|upper as uppercase_user_name %}
+    {{ uppercase_user_name }}'S GAME QUEUE
+  {% endblocktrans %}
   {% else %}
     {% trans "MY GAME QUEUE" %}
   {% endif %}

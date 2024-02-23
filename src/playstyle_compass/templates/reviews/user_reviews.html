@@ -3,7 +3,9 @@
 
 {% block header_desc %}
   {% if other_user %}
-    {{ user_name|upper }}{% trans "'S REVIEWED GAMES" %}
+  {% blocktrans with user_name|upper as uppercase_user_name %}
+    {{ uppercase_user_name }}'S REVIEWED GAMES
+  {% endblocktrans %}
   {% else %}
     {% trans "MY REVIEWED GAMES" %}
   {% endif %}

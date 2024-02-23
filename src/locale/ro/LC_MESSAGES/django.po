@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-02-18 16:32+0200\n"
-"PO-Revision-Date: 2024-02-18 16:39+0000\n"
+"POT-Creation-Date: 2024-02-23 17:33+0200\n"
+"PO-Revision-Date: 2024-02-23 17:37+0000\n"
 "Last-Translator:   <quality_xqs@yahoo.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -321,14 +321,24 @@ msgid "Sorry, no data for this franchise."
 msgstr "Îmi pare rău, nu există date disponibile pentru această franciză."
 
 #: .\src\playstyle_compass\templates\games\favorite_games.html:6
-msgid "'S FAVORITES"
-msgstr " FAVORITELE"
+#, python-format
+#| msgid ""
+#| "\n"
+#| "    %(uppercase_user_name)s'S FAVORITES\n"
+#| "    "
+msgid ""
+"\n"
+"    %(uppercase_user_name)s'S FAVORITES\n"
+"  "
+msgstr ""
+"\n"
+"%(uppercase_user_name)s - JOCURI FAVORITE"
 
-#: .\src\playstyle_compass\templates\games\favorite_games.html:8
+#: .\src\playstyle_compass\templates\games\favorite_games.html:10
 msgid "MY FAVORITES"
 msgstr "FAVORITELE MELE"
 
-#: .\src\playstyle_compass\templates\games\favorite_games.html:12
+#: .\src\playstyle_compass\templates\games\favorite_games.html:14
 msgid ""
 "A curated collection of games you love. Explore and enjoy your handpicked "
 "selection of favorite games that bring you joy and excitement."
@@ -337,23 +347,33 @@ msgstr ""
 "bucură-te de selecția ta personalizată de jocuri favorite care îți aduc "
 "bucurie și emoție."
 
-#: .\src\playstyle_compass\templates\games\favorite_games.html:17
+#: .\src\playstyle_compass\templates\games\favorite_games.html:19
 msgid "hasn't added any games to their Favorites yet."
 msgstr "nu a adăugat niciun joc la Favoritele lui/ei încă."
 
-#: .\src\playstyle_compass\templates\games\favorite_games.html:19
+#: .\src\playstyle_compass\templates\games\favorite_games.html:21
 msgid "You haven't added any games to your Favorites yet."
 msgstr "Nu ai adăugat încă niciun joc la Favoritele tale."
 
 #: .\src\playstyle_compass\templates\games\game_queue.html:6
-msgid "'S GAME QUEUE"
-msgstr " JOCURI PROGRAMATE"
+#, python-format
+#| msgid ""
+#| "\n"
+#| "    %(uppercase_user_name)s'S FAVORITES\n"
+#| "    "
+msgid ""
+"\n"
+"    %(uppercase_user_name)s'S GAME QUEUE\n"
+"  "
+msgstr ""
+"\n"
+"%(uppercase_user_name)s - JOCURI PROGRAMATE"
 
-#: .\src\playstyle_compass\templates\games\game_queue.html:8
+#: .\src\playstyle_compass\templates\games\game_queue.html:10
 msgid "MY GAME QUEUE"
 msgstr "JOCURILE MELE PROGRAMATE"
 
-#: .\src\playstyle_compass\templates\games\game_queue.html:12
+#: .\src\playstyle_compass\templates\games\game_queue.html:14
 msgid ""
 "Build your gaming future with a curated collection of games you haven't "
 "played yet, but wish to experience soon."
@@ -362,11 +382,11 @@ msgstr ""
 "jocuri pe care nu le-ai jucat încă, dar dorești să le experimentezi în "
 "curând."
 
-#: .\src\playstyle_compass\templates\games\game_queue.html:17
+#: .\src\playstyle_compass\templates\games\game_queue.html:19
 msgid "hasn't added any games to their Game Queue yet."
 msgstr "nu a adăugat nici un joc în Jocurile Programate"
 
-#: .\src\playstyle_compass\templates\games\game_queue.html:19
+#: .\src\playstyle_compass\templates\games\game_queue.html:21
 msgid "You haven't added any games to your Game Queue yet."
 msgstr "Nu ai adăugat nici un joc în Jocurile Programate"
 
@@ -450,48 +470,48 @@ msgstr "Jocuri pe care alți utilizatori le-au distribuit cu tine"
 msgid "Games you shared with other users"
 msgstr "Jocuri pe care le-ai distribuit cu alți utilizatori"
 
-#: .\src\playstyle_compass\templates\games\games_shared.html:29
-#: .\src\users\templates\messaging\inbox.html:29
+#: .\src\playstyle_compass\templates\games\games_shared.html:30
+#: .\src\users\templates\messaging\inbox.html:30
 msgid "-- Select --"
 msgstr "-- Selectați --"
 
-#: .\src\playstyle_compass\templates\games\games_shared.html:30
-#: .\src\users\templates\messaging\inbox.html:30
+#: .\src\playstyle_compass\templates\games\games_shared.html:31
+#: .\src\users\templates\messaging\inbox.html:31
 msgid "Date (Asc)"
 msgstr "Data (Asc)"
 
-#: .\src\playstyle_compass\templates\games\games_shared.html:31
-#: .\src\users\templates\messaging\inbox.html:31
+#: .\src\playstyle_compass\templates\games\games_shared.html:32
+#: .\src\users\templates\messaging\inbox.html:32
 msgid "Date (Desc)"
 msgstr "Data (Desc)"
 
-#: .\src\playstyle_compass\templates\games\games_shared.html:33
-#: .\src\users\templates\messaging\inbox.html:33
+#: .\src\playstyle_compass\templates\games\games_shared.html:34
+#: .\src\users\templates\messaging\inbox.html:34
 msgid "Apply"
 msgstr "Aplică"
 
-#: .\src\playstyle_compass\templates\games\games_shared.html:40
-#: .\src\users\templates\messaging\inbox.html:40
+#: .\src\playstyle_compass\templates\games\games_shared.html:41
+#: .\src\users\templates\messaging\inbox.html:41
 msgid "Select All"
 msgstr "Selectează Tot"
 
-#: .\src\playstyle_compass\templates\games\games_shared.html:41
-#: .\src\users\templates\messaging\inbox.html:41
+#: .\src\playstyle_compass\templates\games\games_shared.html:42
+#: .\src\users\templates\messaging\inbox.html:42
 msgid "Delete Selected"
 msgstr "Ștergeți Selecția"
 
-#: .\src\playstyle_compass\templates\games\games_shared.html:52
-#: .\src\playstyle_compass\templates\games\games_shared.html:73
-#: .\src\users\templates\messaging\inbox.html:53
-#: .\src\users\templates\messaging\inbox.html:75
+#: .\src\playstyle_compass\templates\games\games_shared.html:53
+#: .\src\playstyle_compass\templates\games\games_shared.html:74
+#: .\src\users\templates\messaging\inbox.html:54
+#: .\src\users\templates\messaging\inbox.html:76
 msgid "Date:"
 msgstr "Data:"
 
-#: .\src\playstyle_compass\templates\games\games_shared.html:60
+#: .\src\playstyle_compass\templates\games\games_shared.html:61
 msgid "No games have been shared with you so far."
 msgstr "Până acum, nu ți-au fost distribuite jocuri."
 
-#: .\src\playstyle_compass\templates\games\games_shared.html:81
+#: .\src\playstyle_compass\templates\games\games_shared.html:82
 msgid "You haven't yet shared games with anyone."
 msgstr "Nu ai distribuit încă jocuri cu nimeni."
 
@@ -520,7 +540,6 @@ msgid "Favorite Genres"
 msgstr "Genuri Favorite"
 
 #: .\src\playstyle_compass\templates\games\recommendations.html:25
-#| msgid "Favorite Games"
 msgid "Favorite Themes"
 msgstr "Tematici Favorite"
 
@@ -557,7 +576,6 @@ msgid "Games matching your Favorite Genres:"
 msgstr "Jocuri care se potrivesc genurilor tale preferate:"
 
 #: .\src\playstyle_compass\templates\games\recommendations.html:48
-#| msgid "Games matching your Favorite Genres:"
 msgid "Games matching your Favorite Themes:"
 msgstr "Jocuri care se potrivesc tematicilor tale preferate:"
 
@@ -665,7 +683,6 @@ msgid "Select Your Favorite Genres (Up to 3):"
 msgstr "Selectați Genurile Preferate (Până la 3):"
 
 #: .\src\playstyle_compass\templates\preferences\create_gaming_preferences.html:47
-#| msgid "Select Your Favorite Genres (Up to 3):"
 msgid "Select Your Favorite Themes (Up to 3):"
 msgstr "Selectați Tematicile Preferate (Până la 3):"
 
@@ -682,7 +699,6 @@ msgid "Please select at least one genre."
 msgstr "Vă rugăm să selectați cel puțin un gen."
 
 #: .\src\playstyle_compass\templates\preferences\create_gaming_preferences.html:78
-#| msgid "Please select at least one genre."
 msgid "Please select at least one theme."
 msgstr "Vă rugăm să selectați cel puțin o tematica."
 
@@ -731,7 +747,6 @@ msgid "Your Favorite Genres:"
 msgstr "Genurile tale favorite:"
 
 #: .\src\playstyle_compass\templates\preferences\update_gaming_preferences.html:63
-#| msgid "Your Favorite Genres:"
 msgid "Your Favorite Themes:"
 msgstr "Tematicile tale favorite:"
 
@@ -772,14 +787,24 @@ msgid "Update Review"
 msgstr "Actualizează Recenzia"
 
 #: .\src\playstyle_compass\templates\reviews\user_reviews.html:6
-msgid "'S REVIEWED GAMES"
-msgstr " JOCURI EVALUATE"
+#, python-format
+#| msgid ""
+#| "\n"
+#| "    %(uppercase_user_name)s'S FAVORITES\n"
+#| "    "
+msgid ""
+"\n"
+"    %(uppercase_user_name)s'S REVIEWED GAMES\n"
+"  "
+msgstr ""
+"\n"
+"%(uppercase_user_name)s - RECENZII"
 
-#: .\src\playstyle_compass\templates\reviews\user_reviews.html:8
+#: .\src\playstyle_compass\templates\reviews\user_reviews.html:10
 msgid "MY REVIEWED GAMES"
 msgstr "JOCURILE MELE EVALUATE"
 
-#: .\src\playstyle_compass\templates\reviews\user_reviews.html:13
+#: .\src\playstyle_compass\templates\reviews\user_reviews.html:15
 msgid ""
 "Discover and manage the games you've reviewed, curate your gaming "
 "experiences with precision."
@@ -787,11 +812,11 @@ msgstr ""
 "Descoperă și administrează jocurile pe care le-ai evaluat, refinează-ți "
 "experiențele de joc cu precizie."
 
-#: .\src\playstyle_compass\templates\reviews\user_reviews.html:18
+#: .\src\playstyle_compass\templates\reviews\user_reviews.html:20
 msgid "hasn't reviewed any games yet."
 msgstr "nu a evaluat încă niciun joc."
 
-#: .\src\playstyle_compass\templates\reviews\user_reviews.html:20
+#: .\src\playstyle_compass\templates\reviews\user_reviews.html:22
 msgid "You haven't reviewed any games yet."
 msgstr "Nu ai evaluat încă niciun joc."
 
@@ -812,7 +837,7 @@ msgid "Recommendations :: PlayStyle Compass"
 msgstr "Recomandări :: PlayStyle Compass"
 
 #: .\src\playstyle_compass\views.py:239 .\src\playstyle_compass\views.py:261
-#: .\src\playstyle_compass\views.py:962
+#: .\src\playstyle_compass\views.py:963
 msgid "Search Results :: PlayStyle Compass"
 msgstr "Rezultate Căutare :: PlayStyle Compass"
 
@@ -885,37 +910,37 @@ msgstr "Nu poți critica propria recenzie."
 msgid "Your review has been successfully deleted!"
 msgstr "Recenzia ta a fost ștearsă cu succes!"
 
-#: .\src\playstyle_compass\views.py:734
+#: .\src\playstyle_compass\views.py:733
 #, python-format
 msgid "You have already shared %(game_title)s with %(profile_name)s."
 msgstr "Ai distribuit deja jocul \"%(game_title)s\" către %(profile_name)s."
 
-#: .\src\playstyle_compass\views.py:776
+#: .\src\playstyle_compass\views.py:775
 #, python-format
 msgid "You have successfully shared %(game_title)s with %(profile_name)s."
 msgstr "Ai distribuit cu succes jocul %(game_title)s către %(profile_name)s."
 
-#: .\src\playstyle_compass\views.py:787
+#: .\src\playstyle_compass\views.py:786
 msgid "Receiver ID not provided"
 msgstr "ID destinatar lipsă"
 
-#: .\src\playstyle_compass\views.py:790 .\src\users\views.py:199
+#: .\src\playstyle_compass\views.py:789 .\src\users\views.py:199
 msgid "Invalid request method"
 msgstr "Metodă de cerere invalidă"
 
-#: .\src\playstyle_compass\views.py:813
+#: .\src\playstyle_compass\views.py:814
 msgid "Shared Games :: PlayStyle Compass"
 msgstr "Jocuri Distribuite :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:873
+#: .\src\playstyle_compass\views.py:874
 msgid "Similar PlayStyles :: PlayStyle Compass"
 msgstr "Stiluri de Joc Similare :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:898
+#: .\src\playstyle_compass\views.py:899
 msgid "Franchises :: PlayStyle Compass"
 msgstr "Francize :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:931
+#: .\src\playstyle_compass\views.py:932
 msgid "Characters :: PlayStyle Compass"
 msgstr "Caractere :: PlayStyle Compass"
 
@@ -1461,20 +1486,20 @@ msgstr "Mesaje primite"
 msgid "Messages sent"
 msgstr "Mesaje trimise"
 
-#: .\src\users\templates\messaging\inbox.html:49
+#: .\src\users\templates\messaging\inbox.html:50
 msgid "From:"
 msgstr "De la:"
 
-#: .\src\users\templates\messaging\inbox.html:52
-#: .\src\users\templates\messaging\inbox.html:74
+#: .\src\users\templates\messaging\inbox.html:53
+#: .\src\users\templates\messaging\inbox.html:75
 msgid "Subject:"
 msgstr "Subiect:"
 
-#: .\src\users\templates\messaging\inbox.html:61
+#: .\src\users\templates\messaging\inbox.html:62
 msgid "You have not received any messages."
 msgstr "Nu ai primit niciun mesaj."
 
-#: .\src\users\templates\messaging\inbox.html:83
+#: .\src\users\templates\messaging\inbox.html:84
 msgid "You have not sent any messages."
 msgstr "Nu ai trimis niciun mesaj."
 
@@ -1640,12 +1665,12 @@ msgid "Friend"
 msgstr "Prieteni"
 
 #: .\src\users\templates\user_related\friends_list.html:46
-#: .\src\users\templates\user_related\user_profile.html:72
+#: .\src\users\templates\user_related\user_profile.html:74
 msgid "Send message"
 msgstr "Trimite mesaj"
 
 #: .\src\users\templates\user_related\friends_list.html:50
-#: .\src\users\templates\user_related\user_profile.html:69
+#: .\src\users\templates\user_related\user_profile.html:71
 msgid "Unfriend"
 msgstr "Șterge din prieteni"
 
@@ -1662,24 +1687,34 @@ msgid "YOUR PROFILE"
 msgstr "PROFILUL TĂU"
 
 #: .\src\users\templates\user_related\user_profile.html:10
-msgid "'S PROFILE"
-msgstr " PROFIL"
+#, python-format
+#| msgid ""
+#| "\n"
+#| "    %(uppercase_user_name)s'S FAVORITES\n"
+#| "    "
+msgid ""
+"\n"
+"  %(uppercase_profile_name)s'S PROFILE\n"
+"    "
+msgstr ""
+"\n"
+"%(uppercase_profile_name)s - PROFIL"
 
-#: .\src\users\templates\user_related\user_profile.html:88
+#: .\src\users\templates\user_related\user_profile.html:90
 msgid "Favorites"
 msgstr "Favorite"
 
-#: .\src\users\templates\user_related\user_profile.html:106
 #: .\src\users\templates\user_related\user_profile.html:108
+#: .\src\users\templates\user_related\user_profile.html:110
 msgid "In Queue"
 msgstr "Programate"
 
-#: .\src\users\templates\user_related\user_profile.html:124
 #: .\src\users\templates\user_related\user_profile.html:126
+#: .\src\users\templates\user_related\user_profile.html:128
 msgid "Reviews"
 msgstr "Recenzii"
 
-#: .\src\users\templates\user_related\user_profile.html:134
+#: .\src\users\templates\user_related\user_profile.html:136
 msgid "Review Likes"
 msgstr "Aprecieri Recenzii"
 
@@ -2004,14 +2039,14 @@ msgstr "Trebuie să fii prieten cu cineva pentru a-i trimite un mesaj."
 msgid "Send message :: PlayStyle Compass"
 msgstr "Trimite mesaj :: PlayStyle Compass"
 
-#: .\src\users\views.py:993
+#: .\src\users\views.py:995
 msgid "Inbox :: PlayStyle Compass"
 msgstr "Inbox :: PlayStyle Compass"
 
 msgid "favorite genres"
 msgstr "genurile favorite"
 
-msgid "themes"
+msgid "favorite themes"
 msgstr "tematicile favorite"
 
 msgid "gaming history"
@@ -2021,4 +2056,4 @@ msgid "preferred platforms"
 msgstr "platformele preferate"
 
 msgid "common preferences"
-msgstr "preferinte comune"
+msgstr "preferintele comune"

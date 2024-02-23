@@ -7,7 +7,9 @@
   {% if is_friend == 'You' %}
   <h3>{% trans "YOUR PROFILE" %}</h3>
   {% else %}
-  <h3>{{ user_profile.profile_name|upper }}{% trans "'S PROFILE" %}</h3>
+  <h3>{% blocktrans with user_profile.profile_name|upper as uppercase_profile_name %}
+  {{ uppercase_profile_name }}'S PROFILE
+    {% endblocktrans %}</h3>
   {% endif %}
 </div>
 {% endblock page_header %}

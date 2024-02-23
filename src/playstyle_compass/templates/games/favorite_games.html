@@ -3,7 +3,9 @@
 
 {% block header_desc %}
   {% if other_user %}
-    {{ user_name|upper }}{% trans "'S FAVORITES" %}
+  {% blocktrans with user_name|upper as uppercase_user_name %}
+    {{ uppercase_user_name }}'S FAVORITES
+  {% endblocktrans %}
   {% else %}
     {% trans "MY FAVORITES" %}
   {% endif %}
