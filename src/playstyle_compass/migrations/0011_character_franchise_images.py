@@ -6,35 +6,35 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('playstyle_compass', '0010_alter_franchise_options'),
+        ("playstyle_compass", "0010_alter_franchise_options"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Character',
+            name="Character",
             fields=[
-                ('id', models.BigAutoField(primary_key=True, serialize=False)),
-                ('name', models.CharField(max_length=100)),
-                ('deck', models.TextField()),
-                ('description', models.TextField()),
-                ('birthday', models.TextField()),
-                ('friends', models.TextField()),
-                ('enemies', models.TextField()),
-                ('games', models.TextField()),
-                ('first_game', models.CharField(max_length=50)),
-                ('franchises', models.TextField()),
-                ('image', models.TextField()),
-                ('images', models.TextField()),
-                ('character_id', models.IntegerField(default=0)),
+                ("id", models.BigAutoField(primary_key=True, serialize=False)),
+                ("name", models.CharField(max_length=100)),
+                ("deck", models.TextField()),
+                ("description", models.TextField()),
+                ("birthday", models.TextField()),
+                ("friends", models.TextField()),
+                ("enemies", models.TextField()),
+                ("games", models.TextField()),
+                ("first_game", models.CharField(max_length=50)),
+                ("franchises", models.TextField()),
+                ("image", models.TextField()),
+                ("images", models.TextField()),
+                ("character_id", models.IntegerField(default=0)),
             ],
             options={
-                'db_table': 'Characters',
-                'ordering': ['name'],
+                "db_table": "Characters",
+                "ordering": ["name"],
             },
         ),
         migrations.AddField(
-            model_name='franchise',
-            name='images',
+            model_name="franchise",
+            name="images",
             field=models.TextField(default=1),
             preserve_default=False,
         ),

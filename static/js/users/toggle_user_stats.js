@@ -31,9 +31,7 @@ document.addEventListener("DOMContentLoaded", function () {
             .closest(".stat-item")
             .querySelector(".stat-content");
           statContent.innerHTML = data.show
-            ? `<a href="${translate(statUrls[statName])}">${translate(
-                statDisplayText[statName]
-              )}</a>`
+            ? `<a href="${translate(statUrls[statName])}">${translate(statDisplayText[statName])}</a>`
             : `<span>${translate(statDisplayText[statName])}</span>`;
         })
         .catch((error) => {

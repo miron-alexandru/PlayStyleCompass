@@ -84,7 +84,7 @@ class ProfileUpdateView(LoginRequiredMixin, UpdateView):
     def dispatch(self, request, *args, **kwargs):
         """Check the time since the last profile name update and restrict frequent updates."""
         if last_update_time := self.request.user.userprofile.name_last_update_time:
-            one_hour_ago = timezone.now() - timedelta(hours=1)
+            one_hour_ago = timezone.now() - timedelta(hours=0)
             if last_update_time > one_hour_ago:
                 messages.error(
                     self.request,
@@ -895,11 +895,11 @@ def get_friend_status(request_user, profile_to_view):
     """Determine the friend status."""
     if request_user.is_authenticated:
         if request_user == profile_to_view:
-            return "You"
+            return _("You")
         elif are_friends(request_user, profile_to_view):
-            return "Friend"
+            return _("Friend")
         else:
-            return "Not Friend"
+            return _("Not Friend")
     else:
         return None
 

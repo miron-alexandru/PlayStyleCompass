@@ -1,6 +1,5 @@
 """Custom filters."""
 
-
 from datetime import datetime
 from django import template
 from itertools import zip_longest
@@ -9,6 +8,7 @@ from django.apps import apps
 
 
 register = template.Library()
+
 
 @register.filter(name="format_category_label")
 def format_category_label(category):
@@ -55,6 +55,7 @@ def in_queue(game_id, user_queue):
         return True
     return False
 
+
 @register.filter
 def pluralize_reviews(count):
     return "review" if count == 1 else "reviews"
@@ -73,12 +74,13 @@ def template_trans(text):
     except Exception:
         return text
 
+
 @register.filter
 def get_object_id(object_name, model_name):
     """
     Given an object name and a model, return the ID if it exists.
     """
-    model = apps.get_model(app_label='playstyle_compass', model_name=model_name)
+    model = apps.get_model(app_label="playstyle_compass", model_name=model_name)
     try:
         if model_name == "Character":
             # Use filter instead of get for potentially multiple objects
@@ -98,6 +100,7 @@ def get_object_id(object_name, model_name):
     except ObjectDoesNotExist:
         return None
 
+
 @register.filter
 def split_commas(value):
-    return [item.strip() for item in value.split(',')]
+    return [item.strip() for item in value.split(",")]

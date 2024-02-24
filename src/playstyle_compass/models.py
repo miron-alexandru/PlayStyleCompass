@@ -142,7 +142,7 @@ class SharedGame(models.Model):
 class Review(models.Model):
     """Represents a review for a game."""
 
-    game = models.ForeignKey(Game, on_delete=models.CASCADE, to_field='guid')
+    game = models.ForeignKey(Game, on_delete=models.CASCADE, to_field="guid")
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     reviewers = models.CharField(max_length=25)
     review_deck = models.CharField(max_length=50)
@@ -223,14 +223,13 @@ class Franchise(models.Model):
         return f"Franchise: {self.title}"
 
     def update_games_count(self):
-        games_list = self.games.split(',')
+        games_list = self.games.split(",")
         self.games_count = len(games_list)
         self.save()
 
     class Meta:
         db_table = "Franchises"
-        ordering = ["title",
-                    "games_count"]
+        ordering = ["title", "games_count"]
 
 
 class Character(models.Model):

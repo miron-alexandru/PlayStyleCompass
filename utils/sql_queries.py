@@ -142,4 +142,3 @@ WHERE title IS NULL
   AND game_images IS NULL
   AND similar_games is NULL;
 """
-

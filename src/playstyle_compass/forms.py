@@ -26,7 +26,9 @@ class ReviewForm(forms.ModelForm):
             ),
             "review_description": forms.Textarea(
                 attrs={
-                    "placeholder": _("Share your detailed review of the game, including your thoughts on gameplay, graphics, storyline, and overall experience...")
+                    "placeholder": _(
+                        "Share your detailed review of the game, including your thoughts on gameplay, graphics, storyline, and overall experience..."
+                    )
                 }
             ),
         }

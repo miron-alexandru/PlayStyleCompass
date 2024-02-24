@@ -6,19 +6,19 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('playstyle_compass', '0011_character_franchise_images'),
+        ("playstyle_compass", "0011_character_franchise_images"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='game',
-            name='videos',
-            field=models.TextField(default=''),
+            model_name="game",
+            name="videos",
+            field=models.TextField(default=""),
             preserve_default=False,
         ),
         migrations.AddField(
-            model_name='userpreferences',
-            name='themes',
+            model_name="userpreferences",
+            name="themes",
             field=models.CharField(blank=True, max_length=255),
         ),
     ]

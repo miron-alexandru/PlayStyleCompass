@@ -29,7 +29,9 @@ from sql_queries import (
 )
 
 
-def fetch_game_ids_by_platforms(platform_ids, api_key, offset=0, limit=10, game_ids_to_add=None):
+def fetch_game_ids_by_platforms(
+    platform_ids, api_key, offset=0, limit=10, game_ids_to_add=None
+):
     """
     Fetches game IDs for multiple platform IDs and returns a set of all fetched game IDs.
     """
@@ -39,7 +41,7 @@ def fetch_game_ids_by_platforms(platform_ids, api_key, offset=0, limit=10, game_
         all_game_ids.update(game_ids_to_add)
 
     current_date = datetime.now().date()
-    #current_date = datetime(2023, 1, 1).date()
+    # current_date = datetime(2023, 1, 1).date()
 
     for platform_id in platform_ids:
         url = (
@@ -120,22 +122,23 @@ def extract_overview_content(data):
 
     return None
 
+
 def search_gameplay_videos(game_name, youtube_api_client):
-    search_response = youtube_api_client.search().list(
-        q=game_name + ' gameplay',
-        part='id',
-        type='video',
-        maxResults=2
-    ).execute()
-    
-    video_ids = [item['id']['videoId'] for item in search_response['items']]
+    search_response = (
+        youtube_api_client.search()
+        .list(q=game_name + " gameplay", part="id", type="video", maxResults=2)
+        .execute()
+    )
+
+    video_ids = [item["id"]["videoId"] for item in search_response["items"]]
     return video_ids
+
 
 def get_embed_links(video_ids):
     embed_links = []
     for video_id in video_ids:
-        embed_links.append(f'https://www.youtube.com/embed/{video_id}')
-    return ', '.join(embed_links)
+        embed_links.append(f"https://www.youtube.com/embed/{video_id}")
+    return ", ".join(embed_links)
 
 
 def parse_game_data(game_id, youtube_api_client):
@@ -184,9 +187,11 @@ def parse_game_data(game_id, youtube_api_client):
         videos,
     )
 
+
 def extract_data(game_data, field_name):
     """Extract data from game data based on the field name."""
     return game_data.get(field_name, None) if isinstance(game_data, dict) else None
+
 
 def extract_names(data, field_name):
     """Extract names from data based on the field name."""
@@ -196,6 +201,7 @@ def extract_names(data, field_name):
     names = [item["name"] for item in data.get(field_name, [])]
 
     return ", ".join(names) if names else None
+
 
 def get_franchises(game_data):
     """Get game franchises."""
@@ -268,9 +274,14 @@ def get_developers(game_data):
 
     return ", ".join(developer_names) if developer_names else None
 
+
 def extract_first_game(data):
     """Return the first game a character has appeared in."""
-    return data["first_appeared_in_game"].get("name", None) if data["first_appeared_in_game"] else None
+    return (
+        data["first_appeared_in_game"].get("name", None)
+        if data["first_appeared_in_game"]
+        else None
+    )
 
 
 def fetch_user_reviews(game_id):
@@ -393,7 +404,9 @@ def create_games_data_db(game_ids, youtube_api_client):
         db_connection.commit()
 
 
-def fetch_data(api_key, resource_type, offset=0, format="json", field_list=None, limit=1):
+def fetch_data(
+    api_key, resource_type, offset=0, format="json", field_list=None, limit=1
+):
     """Fetch data using the Giant Bomb's API."""
     base_url = f"https://www.giantbomb.com/api/{resource_type}/"
     api_url = f"{base_url}?api_key={api_key}&format={format}&offset={offset}"
@@ -433,7 +446,7 @@ def fetch_data_by_guid(guid, api_key, resource_type, format="json", field_list=N
 def extract_guids(franchises, franchises_ids_to_add=None):
     """Extract "guid's" from each franchise and add specific ids if provided."""
     franchises_ids = set()
-    
+
     if franchises_ids_to_add:
         franchises_ids.update(franchises_ids_to_add)
 
@@ -442,6 +455,7 @@ def extract_guids(franchises, franchises_ids_to_add=None):
             franchises_ids.add(franchise["guid"])
 
     return franchises_ids
+
 
 def extract_character_guids(characters, characters_ids_to_add=None):
     """Extract guid's from each character and add specifict character id's if provided."""
@@ -456,6 +470,7 @@ def extract_character_guids(characters, characters_ids_to_add=None):
 
     return characters_ids
 
+
 def get_franchise_games(franchise_data):
     """Get games that are from a particular franchise."""
     if not isinstance(franchise_data, dict):
@@ -467,12 +482,14 @@ def get_franchise_games(franchise_data):
 
     return ", ".join(games) if games else None
 
+
 def get_franchise_games_count(games):
     """Get the number of games for a franchise."""
     if games:
-        games_list = games.split(',')
+        games_list = games.split(",")
         return len(games_list)
     return 0
+
 
 def parse_franchise_data(franchise_id):
     """Parse franchise data."""
@@ -551,7 +568,20 @@ def parse_character_data(character_id):
             API_KEY,
             resource_type="character",
             format="json",
-            field_list=["name", "deck", "description", "birthday", "friends", "enemies", "games", "franchises", "image", "images", "first_appeared_in_game", "id"],
+            field_list=[
+                "name",
+                "deck",
+                "description",
+                "birthday",
+                "friends",
+                "enemies",
+                "games",
+                "franchises",
+                "image",
+                "images",
+                "first_appeared_in_game",
+                "id",
+            ],
         )
     except FetchDataException as e:
         print(f"Fetching data failed: {e}")
@@ -630,7 +660,6 @@ def create_characters_data(characters_ids):
         cursor.execute(remove_duplicate_characters)
 
         db_connection.commit()
-
 
 
 class FetchDataException(Exception):

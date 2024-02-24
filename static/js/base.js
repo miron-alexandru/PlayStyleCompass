@@ -103,10 +103,9 @@ if (profilePictureUpload) {
 
 function checkScroll() {
   const windowWidth = $(window).width();
-  const documentHeight = $(document).height();
+  const documentHeight = $(document).height(); 
 
-
-  if (windowWidth > 1000 && documentHeight > 1200) {
+  if (windowWidth > 1000 && documentHeight > 3500) {
     const navbarHeight = $(".navbar").outerHeight();
     const startY = (documentHeight - window.innerHeight) / 2 - navbarHeight / 2;
 

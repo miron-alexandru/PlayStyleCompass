@@ -5,7 +5,12 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from django.http import JsonResponse, HttpResponseRedirect, HttpResponse, HttpResponseBadRequest
+from django.http import (
+    JsonResponse,
+    HttpResponseRedirect,
+    HttpResponse,
+    HttpResponseBadRequest,
+)
 from django.urls import reverse
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Avg, Q
@@ -143,6 +148,7 @@ def save_favorite_genres(request):
         request, "favorite_genres", "playstyle_compass:update_preferences"
     )
 
+
 @login_required
 def save_themes(request):
     """Save themes for user."""
@@ -226,14 +232,18 @@ def search_results(request):
     query = request.GET.get("query")
 
     if query and len(query) < 2:
-        return HttpResponseBadRequest("Invalid query. Please enter at least 2 characters.")
+        return HttpResponseBadRequest(
+            "Invalid query. Please enter at least 2 characters."
+        )
 
     games = Game.objects.filter(title__icontains=query)
 
     games = calculate_game_scores(games)
     games = paginate_matching_games_query(request, games)
 
-    user_friends = get_friend_list(request.user) if request.user.is_authenticated else None
+    user_friends = (
+        get_friend_list(request.user) if request.user.is_authenticated else None
+    )
 
     context = {
         "page_title": _("Search Results :: PlayStyle Compass"),
@@ -246,13 +256,16 @@ def search_results(request):
 
     return render(request, "games/search_games.html", context)
 
+
 def search_franchises(request):
     """Retrieves franchises from the database that match a given
     search query and renders a search results page.
     """
     query = request.GET.get("query")
     if query and len(query) < 2:
-        return HttpResponseBadRequest("Invalid query. Please enter at least 2 characters.")
+        return HttpResponseBadRequest(
+            "Invalid query. Please enter at least 2 characters."
+        )
 
     franchises = Franchise.objects.filter(title__icontains=query)
     franchises = paginate_objects(request, franchises)
@@ -483,9 +496,8 @@ def upcoming_games(request):
     user_preferences = UserPreferences.objects.get(user=user) if user else None
     current_date = date.today()
 
-    upcoming_filter = (
-        Q(release_date__gte=current_date) |
-        Q(release_date__regex=r'^\d{4}$', release_date__gte=str(current_date.year))
+    upcoming_filter = Q(release_date__gte=current_date) | Q(
+        release_date__regex=r"^\d{4}$", release_date__gte=str(current_date.year)
     )
 
     upcoming_games = calculate_game_scores(Game.objects.filter(upcoming_filter))
@@ -500,6 +512,7 @@ def upcoming_games(request):
     }
 
     return render(request, "games/upcoming_games.html", context)
+
 
 @login_required
 def add_review(request, game_id):
@@ -585,19 +598,24 @@ def get_game_reviews(request, game_id):
     """View to get the reviews for a game."""
     game_reviews = Review.objects.filter(game_id=game_id)
     invalid_user_id = "invalid_user"
+    inactive_user = "inactive-user"
 
     reviews_data = [
         {
             "id": review.id,
-            "reviewer": review.reviewers,
+            "reviewer": (
+                inactive_user
+                if "deactivated-" in str(review.reviewers)
+                else review.reviewers
+            ),
             "title": review.review_deck,
             "description": review.review_description,
             "score": review.score,
             "likes": review.likes,
             "dislikes": review.dislikes,
-            "user_id": invalid_user_id
-            if "-" in str(review.user_id)
-            else review.user_id,
+            "user_id": (
+                invalid_user_id if "-" in str(review.user_id) else review.user_id
+            ),
         }
         for review in game_reviews
     ]
@@ -820,6 +838,7 @@ def view_games_shared(request):
 
     return render(request, "games/games_shared.html", context)
 
+
 @login_required
 def delete_shared_games(request):
     """View used to delete selected shared games."""
@@ -857,7 +876,12 @@ def similar_playstyles(request):
     """View used to show users with similar playstyles."""
     user_preferences, created = UserPreferences.objects.get_or_create(user=request.user)
 
-    preferences_to_compare = ["gaming_history", "favorite_genres", "themes", "platforms"]
+    preferences_to_compare = [
+        "gaming_history",
+        "favorite_genres",
+        "themes",
+        "platforms",
+    ]
     similarity_threshold = 0.6
 
     all_user_prefs = UserPreferences.objects.exclude(user=request.user)
@@ -883,15 +907,15 @@ def view_franchises(request):
     """View used to display all franchises."""
     all_franchises = Franchise.objects.all()
 
-    sort_order = request.GET.get('sort_order', 'default')
-    if sort_order == 'asc':
-        all_franchises = all_franchises.order_by('title')
-    elif sort_order == 'desc':
-        all_franchises = all_franchises.order_by('-title')
-    elif sort_order == 'games_asc':
-        all_franchises = all_franchises.order_by('games_count')
-    elif sort_order == 'games_desc':
-        all_franchises = all_franchises.order_by('-games_count')
+    sort_order = request.GET.get("sort_order", "default")
+    if sort_order == "asc":
+        all_franchises = all_franchises.order_by("title")
+    elif sort_order == "desc":
+        all_franchises = all_franchises.order_by("-title")
+    elif sort_order == "games_asc":
+        all_franchises = all_franchises.order_by("games_count")
+    elif sort_order == "games_desc":
+        all_franchises = all_franchises.order_by("-games_count")
 
     paginated_franchises = paginate_objects(request, all_franchises)
 
@@ -920,11 +944,11 @@ def view_characters(request):
     """View used to display all characters."""
     characters = Character.objects.all()
 
-    sort_order = request.GET.get('sort_order', 'default')
-    if sort_order == 'asc':
-        characters = characters.order_by('name')
-    elif sort_order == 'desc':
-        characters = characters.order_by('-name')
+    sort_order = request.GET.get("sort_order", "default")
+    if sort_order == "asc":
+        characters = characters.order_by("name")
+    elif sort_order == "desc":
+        characters = characters.order_by("-name")
 
     paginated_characters = paginate_objects(request, characters)
 
@@ -935,6 +959,7 @@ def view_characters(request):
     }
 
     return render(request, "characters/characters.html", context)
+
 
 def game_character(request, character_id):
     """View used to display a single character"""
@@ -954,7 +979,9 @@ def search_characters(request):
     """
     query = request.GET.get("query")
     if query and len(query) < 2:
-        return HttpResponseBadRequest("Invalid query. Please enter at least 2 characters.")
+        return HttpResponseBadRequest(
+            "Invalid query. Please enter at least 2 characters."
+        )
 
     characters = Character.objects.filter(name__icontains=query)
     characters = paginate_objects(request, characters)
@@ -967,6 +994,7 @@ def search_characters(request):
     }
 
     return render(request, "characters/search_characters.html", context)
+
 
 def autocomplete_characters(request):
     """Provides autocomplete suggestions for characters based on a user's query."""

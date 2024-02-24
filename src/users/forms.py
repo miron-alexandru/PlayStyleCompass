@@ -1,6 +1,7 @@
 """Defines forms."""
 
 import os
+import re
 from PIL import Image
 from django import forms
 from django.contrib.auth.forms import (
@@ -13,6 +14,7 @@ from django_recaptcha.fields import ReCaptchaField
 
 from .models import UserProfile, ContactMessage, Message
 from django.utils.translation import gettext_lazy as _
+
 
 class CustomAuthenticationForm(AuthenticationForm):
     """Custom authentication form."""
@@ -43,18 +45,24 @@ class CustomRegistrationForm(UserCreationForm):
 
     profile_name = forms.CharField(
         label="Profile Name",
-        help_text=_("Choose nickname that will be shown to other users on the platform. This name is not used for login."),
+        help_text=_(
+            "Choose nickname that will be shown to other users on the platform. This name is not used for login."
+        ),
         widget=forms.TextInput(attrs={"autofocus": "autofocus", "placeholder": ""}),
+        max_length=32,
     )
     username = forms.CharField(
         help_text="",
         widget=forms.TextInput(attrs={"placeholder": "", "autocomplete": "username"}),
+        max_length=32,
     )
+
     email = forms.EmailField(
         label="Email",
         help_text="",
         widget=forms.EmailInput(attrs={"placeholder": "", "autocomplete": "email"}),
     )
+
     password1 = forms.CharField(
         label="Password",
         widget=forms.PasswordInput(
@@ -62,6 +70,7 @@ class CustomRegistrationForm(UserCreationForm):
         ),
         help_text="",
     )
+
     password2 = forms.CharField(
         label="Password Confirmation",
         widget=forms.PasswordInput(
@@ -69,6 +78,7 @@ class CustomRegistrationForm(UserCreationForm):
         ),
         help_text=_("Enter the same password as before for verification."),
     )
+
     captcha = ReCaptchaField(
         error_messages={"required": _("Please complete reCAPTCHA.")}
     )
@@ -87,6 +97,17 @@ class CustomRegistrationForm(UserCreationForm):
     def clean_username(self):
         """Clean username."""
         username = self.cleaned_data["username"]
+
+        if len(username) < 4:
+            raise forms.ValidationError(
+                _("Username should be at least 4 characters long.")
+            )
+
+        if not re.match("^[a-zA-Z0-9]+$", username):
+            raise forms.ValidationError(
+                _("Username should only contain letters and numbers.")
+            )
+
         if User.objects.filter(username=username).exists():
             raise forms.ValidationError(_("This username is already in use."))
         return username
@@ -101,8 +122,20 @@ class CustomRegistrationForm(UserCreationForm):
     def clean_profile_name(self):
         """Clean profile name."""
         profile_name = self.cleaned_data["profile_name"]
+
+        if len(profile_name) < 3:
+            raise forms.ValidationError(
+                _("Profile name should be at least three characters long.")
+            )
+
+        if not re.match("^[a-zA-Z0-9]+$", profile_name):
+            raise forms.ValidationError(
+                _("Profile name should only contain letters and numbers.")
+            )
+
         if UserProfile.objects.filter(profile_name=profile_name).exists():
             raise forms.ValidationError(_("This profile name is already in use."))
+
         return profile_name
 
 
@@ -309,6 +342,16 @@ class ProfileUpdateForm(forms.ModelForm):
     def clean_profile_name(self):
         """Clean profile name."""
         profile_name = self.cleaned_data.get("profile_name")
+
+        if not re.match("^[a-zA-Z0-9]+$", profile_name):
+            raise forms.ValidationError(
+                _("Profile name should only contain letters and numbers.")
+            )
+
+        if len(profile_name) < 3:
+            raise forms.ValidationError(
+                _("Profile name should be at least three characters long.")
+            )
 
         if profile_name.lower() == self.instance.profile_name.lower():
             raise forms.ValidationError(

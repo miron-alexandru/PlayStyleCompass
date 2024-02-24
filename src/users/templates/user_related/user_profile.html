@@ -59,14 +59,16 @@
           {% if is_friend == 'Friend' or is_friend == 'You' %}friend{% else %}not-friend{%endif%}">
         <span class="friend-status">{{ is_friend }}</span>
       </div>
-      {% if is_friend == 'Not Friend' %}
+      {% trans 'Not Friend' as not_friend %}
+      {% if is_friend == not_friend %}
       <div class="friend-request">
         <button class="friend-request-button" id="friend_req_btn">
-          Friend Request
+          {% trans "Friend Request" %}
         </button>
       </div>
       {% endif %}
-      {% if is_friend == 'Friend' %}
+      {% trans 'Friend' as friend %}
+      {% if is_friend == friend %}
       <div class="remove-friend">
         <button class="remove-friend-button" onclick='triggerRemoveFriend("{{ user_id }}")'>{% trans "Unfriend" %}</button>
       </div>
@@ -80,7 +82,8 @@
 
       <div class="stat-item">
         <p class="stat-label">
-          {% if is_friend == 'You' %}
+          {% trans "You" as you %}
+          {% if is_friend == you %}
           <span class="toggle-stat" data-stat="favorites" data-user-id="{{ user_id }}">
             <i class="fas {% if show_favorites %}fa-eye{% else %}fa-eye-slash{% endif %}"></i>
           </span>
@@ -89,7 +92,7 @@
             {% if show_favorites %}
             <a href="{% url 'playstyle_compass:favorite_games_with_id' user_id=user_id %}">{% trans "Favorites" %}</a>
             {% else %}
-            <span>Favorites</span>
+            <span>{% trans "Favorites" %}</span>
             {% endif %}
           </span>
         </p>
@@ -98,7 +101,8 @@
 
       <div class="stat-item">
         <p class="stat-label">
-          {% if is_friend == 'You' %}
+          {% trans "You" as you %}
+          {% if is_friend == you %}
           <span class="toggle-stat" data-stat="in_queue" data-user-id="{{ user_id }}">
             <i class="fas {% if show_in_queue %}fa-eye{% else %}fa-eye-slash{% endif %}"></i>
           </span>
@@ -116,7 +120,8 @@
 
       <div class="stat-item">
         <p class="stat-label">
-          {% if is_friend == 'You' %}
+          {% trans "You" as you %}
+          {% if is_friend == you %}
           <span class="toggle-stat" data-stat="reviews" data-user-id="{{ user_id }}">
             <i class="fas {% if show_reviews %}fa-eye{% else %}fa-eye-slash{% endif %}"></i>
           </span>

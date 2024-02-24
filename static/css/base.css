@@ -1,3 +1,19 @@
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f7f7f7;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #b1b1b1;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a0a0a0;
+}
+
 html {
   height: 100%;
   margin: 0;
@@ -542,21 +558,6 @@ input[type="email"]:focus,
   display: block;
 }
 
-::-webkit-scrollbar {
-  width: 0.85em;
-}
-
-::-webkit-scrollbar-track {
-  background: #f7f7f7;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #b1b1b1;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #a0a0a0;
-}
 
 .scroll-top-container {
   position: fixed;
