@@ -14,6 +14,12 @@
 {% block content %}
 <link rel="stylesheet" href="{% static 'css/playstyle_compass/common_styles.css' %}">
 
+<div class="search-bar-only">
+  {% with search_bar_type as bar_type %}
+  {% include "base/search_bar_only.html" %}
+  {% endwith %}
+</div>
+
 <div class="results">
   <ul>
     {% if game %}

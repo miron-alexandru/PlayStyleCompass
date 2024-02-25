@@ -20,6 +20,8 @@
   <script src="{% static 'js/lightbox-plus-jquery.min.js' %}" defer></script>
   <script src="{% static 'js/get_notifications.js' %}" defer></script>
   <script src="{% static 'js/translator.js' %}" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.8/umd/popper.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.min.js"></script>
   <link rel="stylesheet" type="text/css" href="{% static 'css/base.css' %}">
 </head>
 
@@ -123,10 +125,18 @@
             <input type="file" id="profile-picture-upload" class="sr-only" accept="image/*"
               data-profile-url="{% url 'users:profile_picture' %}" data-csrf-token="{{ csrf_token }}">
           </li>
-          <li class="nav-item">
-            <span class="navbar-text mr-3 user-profile-name"><a href="{% url 'users:change_profile_name' %}"
-                style="color: inherit;">{{ user.userprofile.profile_name|default:user.username }}</a></span>
-          </li>
+        <li class="nav-item">
+            <span class="navbar-text mr-3 user-profile-name">
+                <a href="{% url 'users:change_profile_name' %}" style="color: inherit;">
+                    <span class="d-inline-block text-truncate profile-name" style="max-width: 90px;">
+                        {{ user.userprofile.profile_name|default:user.username }}
+                    </span>
+                    <div class="custom-tooltip" style="display: none;">
+                        {{ user.userprofile.profile_name|default:user.username }}
+                    </div>
+                </a>
+            </span>
+        </li>
 
           <div class="d-flex dropstart" id="notifications" data-mark-read="{% url 'users:mark_notification_as_read' 0 %}"
           data-mark-inactive="{% url 'users:mark_notification_inactive' 0 %}">
@@ -180,25 +190,6 @@
       </div>
     </div>
   </nav>
-
-<script>
-  function logout() {
-    $.ajax({
-      url: "{% url 'users:logout' %}",
-      method: "POST",
-      headers: { "X-CSRFToken": "{{ csrf_token }}" },
-      success: function(response) {
-        // Handle successful logout
-        console.log("Logout successful");
-        // Optionally redirect to another page after logout
-      },
-      error: function(xhr, status, error) {
-        // Handle logout failure
-        console.error("Logout failed:", error);
-      }
-    });
-  }
-</script>
 
   <div class="page-header">
     <div id="header-content">

@@ -31,6 +31,10 @@ Websites for .env configuration: [GiantBomb](https://www.giantbomb.com/) / [Send
 <summary><h2>PlayStyle Compass Changelog</h2></summary>
 
 ### Version v1.7:
+* Search bar added on view game page.
+* Full profile name displayed on hover (for longer profile names).
+* Restricted length for username and profile name.
+* Updated translations.
 * Refactored js files.
 * Unique GUID retrieved from API for Game objects so the id remains consistent after any database changes.
 * Now users can get recommendations based on their favorite themes.

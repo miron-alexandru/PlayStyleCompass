@@ -723,6 +723,7 @@ def view_game(request, game_id):
         "game": game,
         "user_preferences": user_preferences,
         "user_friends": user_friends,
+        "search_bar_type": "search_games",
     }
 
     return render(request, "games/view_game.html", context)
