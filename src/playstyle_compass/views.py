@@ -175,6 +175,22 @@ def _save_user_preference(request, field_name, redirect_view):
 
     return redirect(redirect_view)
 
+@login_required
+def save_all_preferences(request):
+    """Save all preferences for the user."""
+    if request.method == "POST":
+        user_preferences = UserPreferences.objects.get(user=request.user)
+        
+        user_preferences.gaming_history = ", ".join(request.POST.getlist("gaming_history"))
+        user_preferences.favorite_genres = ", ".join(request.POST.getlist("favorite_genres"))
+        user_preferences.themes = ", ".join(request.POST.getlist("themes"))
+        user_preferences.platforms = ", ".join(request.POST.getlist("platforms"))
+        print(user_preferences.platforms)
+        user_preferences.save()
+
+    return JsonResponse({'success': True})
+
+
 
 @login_required
 def clear_preferences(request):
@@ -936,6 +952,7 @@ def franchise(request, franchise_id):
     context = {
         "page_title": f"{franchise.title} :: PlayStyle Compass",
         "franchise": franchise,
+        "search_bar_type": "search_franchises",
     }
 
     return render(request, "franchises/view_franchise.html", context)
@@ -969,6 +986,7 @@ def game_character(request, character_id):
     context = {
         "page_title": f"{character.name} :: PlayStyle Compass",
         "character": character,
+        "search_bar_type": "search_characters",
     }
 
     return render(request, "characters/game_character.html", context)

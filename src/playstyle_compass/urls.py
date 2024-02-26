@@ -20,6 +20,7 @@ urlpatterns = [
     ),
     path("save_themes/", views.save_themes, name="save_themes"),
     path("save_platforms/", views.save_platforms, name="save_platforms"),
+    path("save_all_preferences/", views.save_all_preferences, name="save_all_preferences"),
     path("toggle_favorite/", views.toggle_favorite, name="toggle_favorite"),
     path("favorite_games/", views.favorite_games, name="favorite_games"),
     path(

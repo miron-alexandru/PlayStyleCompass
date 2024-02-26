@@ -113,7 +113,7 @@
   </form>
 
   <div class="save-all-container">
-    <button id="save-all-button" class="save-all-button" disabled>{% trans "Save All" %}</button>
+    <button id="save-all-button" data-save-all-url="{% url 'playstyle_compass:save_all_preferences' %}" class="save-all-button" disabled>{% trans "Save All" %}</button>
 
     <div id="saving-spinner" style="display: none;">
       {% trans "Saving..." %}

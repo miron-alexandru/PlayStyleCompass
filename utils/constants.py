@@ -69,6 +69,8 @@ all_themes = [
 all_platforms = [
     "PC",
     "PlayStation",
+    "PlayStation 4",
+    "PlayStation 5",
     "Xbox",
     "Nintendo",
     "Android",
@@ -77,8 +79,6 @@ all_platforms = [
     "Linux",
     "Wii",
     "Browser",
-    "PlayStation 4",
-    "PlayStation 5",
 ]
 
 game_ids_to_add = [

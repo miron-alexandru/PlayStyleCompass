@@ -13,6 +13,12 @@
 
 {% block content %}
 
+<div class="search-bar-only">
+  {% with search_bar_type as bar_type %}
+  {% include "base/search_bar_only.html" %}
+  {% endwith %}
+</div>
+
 <div>
   <ul>
     {% if character %}

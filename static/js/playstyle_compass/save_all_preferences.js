@@ -1,33 +1,26 @@
 $(document).ready(function () {
-  $("#save-all-button").click(function (event) {
+  const saveAllButton = $("#save-all-button");
+
+  saveAllButton.click(function (event) {
     event.preventDefault();
-    let successfulSubmissions = 0;
-    const totalForms = $(
-      "#history-section form, #genres-section form, #themes-section form, #platforms-section form"
-    ).length;
+    
+    const formData = $("#history-section form, #genres-section form, #themes-section form, #platforms-section form").serialize();
 
     $("#saving-spinner").show();
 
-    $(
-      "#history-section form, #genres-section form, #themes-section form, #platforms-section form"
-    ).each(function () {
-      const currentForm = $(this);
-
-      $.ajax({
-        type: currentForm.attr("method"),
-        url: currentForm.attr("action"),
-        data: currentForm.serialize(),
-        success: function (response) {
-          successfulSubmissions++;
-
-          if (successfulSubmissions === totalForms) {
-            setTimeout(function () {
-              $("#saving-spinner").hide();
-              location.reload();
-            }, 1500);
-          }
-        },
-      });
+    $.ajax({
+      type: "POST",
+      url: saveAllButton.data("save-all-url"),
+      data: formData,
+      headers: {
+        "X-CSRFToken": csrfToken,
+      },
+      success: function (response) {
+        setTimeout(function () {
+          $("#saving-spinner").hide();
+          location.reload();
+        }, 1500);
+      },
     });
   });
 });
