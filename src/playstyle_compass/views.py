@@ -185,7 +185,7 @@ def save_all_preferences(request):
         user_preferences.favorite_genres = ", ".join(request.POST.getlist("favorite_genres"))
         user_preferences.themes = ", ".join(request.POST.getlist("themes"))
         user_preferences.platforms = ", ".join(request.POST.getlist("platforms"))
-        print(user_preferences.platforms)
+
         user_preferences.save()
 
     return JsonResponse({'success': True})

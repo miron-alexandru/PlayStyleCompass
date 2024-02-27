@@ -104,3 +104,16 @@ def get_object_id(object_name, model_name):
 @register.filter
 def split_commas(value):
     return [item.strip() for item in value.split(",")]
+
+
+@register.filter
+def check_platform(platform, user_platforms):
+    """Filter to check if a platform is present in the user preferences."""
+    # Note:
+    """This filter is used because checking with the "in" operator
+    always returns True for the 'PlayStation' platform when the user has 
+    'PlayStation 5' or 'PlayStation 4' in their preferrences."""
+    if not ',' in user_platforms:
+        return platform == user_platforms
+    else:
+        return platform in user_platforms

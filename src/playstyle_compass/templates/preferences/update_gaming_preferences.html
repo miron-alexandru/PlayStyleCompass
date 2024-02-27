@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% load i18n %}
 {% load static %}
+{% load custom_filters %}
 
 {% block page_header %}
 <div class="header">
@@ -94,7 +95,7 @@
         <div>
           {% for platform in platforms %}
           <label>
-            <input type="checkbox" name="platforms" value="{{ platform }}" {% if platform in user_preferences.platforms %}checked{% endif %}>
+            <input type="checkbox" name="platforms" value="{{ platform }}" {% if platform|check_platform:user_preferences.platforms %}checked{% endif %}>
             {{ platform }}
           </label>
           {% endfor %}
