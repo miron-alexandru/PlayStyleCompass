@@ -55,6 +55,14 @@ document.addEventListener("DOMContentLoaded", function () {
       }, 500);
     });
   });
+
+  let messages = document.querySelectorAll('.message .alert:not([style="display: none;"])');
+  messages.forEach(function (message) {
+    setTimeout(function () {
+      let closeButton = message.querySelector('.close');
+      closeButton.click();
+    }, 5000);
+  });
 });
 
 const profilePictureUpload = document.getElementById("profile-picture-upload");

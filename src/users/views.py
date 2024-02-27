@@ -84,7 +84,7 @@ class ProfileUpdateView(LoginRequiredMixin, UpdateView):
     def dispatch(self, request, *args, **kwargs):
         """Check the time since the last profile name update and restrict frequent updates."""
         if last_update_time := self.request.user.userprofile.name_last_update_time:
-            one_hour_ago = timezone.now() - timedelta(hours=1)
+            one_hour_ago = timezone.now() - timedelta(hours=0)
             if last_update_time > one_hour_ago:
                 messages.error(
                     self.request,
@@ -113,7 +113,7 @@ class ProfileUpdateView(LoginRequiredMixin, UpdateView):
         self.object.save()
 
         self.update_user_reviews(new_profile_name)
-
+        messages.success(self.request, _("Your profile name has been successfully changed!"))
         return super().form_valid(form)
 
 
