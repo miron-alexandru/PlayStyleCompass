@@ -109,11 +109,7 @@ input[type="email"]:focus,
   max-height: 85px;
   width: 100%;
   opacity: 1;
-  -webkit-transition: all 0.6s ease-out;
-  -moz-transition: all 0.6s ease-out;
-  -o-transition: all 0.6s ease-out;
-  -ms-transition: all 0.6s ease-out;
-  transition: all 0.6s ease-out;
+  transition: all 0.6s ease;
 }
 
 .navbar.fixed {

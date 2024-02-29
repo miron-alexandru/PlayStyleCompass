@@ -21,6 +21,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 
+
 document.addEventListener("DOMContentLoaded", function () {
   let descriptionContent = document
     .getElementById("description-content")
@@ -33,6 +34,7 @@ document.addEventListener("DOMContentLoaded", function () {
     pageDescription.style.display = "none";
   }
 });
+
 
 document.addEventListener("DOMContentLoaded", function () {
   let closeButtons = document.querySelectorAll(".message .close");
@@ -64,6 +66,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }, 5000);
   });
 });
+
 
 const profilePictureUpload = document.getElementById("profile-picture-upload");
 
@@ -109,29 +112,22 @@ if (profilePictureUpload) {
   });
 }
 
-function checkScroll() {
-  const windowWidth = $(window).width();
-  const documentHeight = $(document).height(); 
 
-  if (windowWidth > 1000 && documentHeight > 3500) {
-    const navbarHeight = $(".navbar").outerHeight();
-    const startY = (documentHeight - window.innerHeight) / 2 - navbarHeight / 2;
+let lastScrollTop = 0;
 
-    if ($(window).scrollTop() > startY) {
-      $(".navbar").addClass("fixed");
+$(window).on("scroll", function() {
+    const scrollTop = $(this).scrollTop();
+
+    if (scrollTop === 0) {
+        $(".navbar").removeClass("fixed");
+    } else if (scrollTop > lastScrollTop) {
+        $(".navbar").removeClass("fixed");
     } else {
-      $(".navbar").removeClass("fixed");
+        $(".navbar").addClass("fixed");
     }
-  } else {
-    $(".navbar").removeClass("fixed");
-  }
-}
+    lastScrollTop = scrollTop;
+});
 
-if ($(".navbar").length > 0) {
-  $(window).on("scroll load resize", function () {
-    checkScroll();
-  });
-}
 
 $(document).ready(function () {
   $(".nav-item.dropdown").each(function () {
@@ -145,12 +141,14 @@ $(document).ready(function () {
     });
   });
 
+
 $(document).on("click", function (event) {
     if (!$(event.target).closest(".nav-item.dropdown").length) {
       $(".dropdown-container").hide();
     }
   });
 });
+
 
 $(document).ready(function () {
   $(window).scroll(function () {
@@ -166,6 +164,7 @@ $(document).ready(function () {
     return false;
   });
 });
+
 
 $(document).ready(function () {
     $('.profile-name').mouseenter(function () {
