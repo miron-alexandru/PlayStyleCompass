@@ -22,10 +22,8 @@ from users.models import Notification
 
 from .helper_functions.views_helpers import (
     RecommendationEngine,
-    calculate_game_scores,
-    calculate_single_game_score,
-    paginate_matching_games_query,
-    paginate_matching_games_dict,
+    calculate_game_score,
+    paginate_matching_games,
     paginate_objects,
     get_friend_list,
     calculate_average_similarity,
@@ -221,7 +219,7 @@ def get_recommendations(request):
     recommendation_engine.process()
 
     matching_games = recommendation_engine.matching_games
-    paginated_games = paginate_matching_games_dict(request, matching_games)
+    paginated_games = paginate_matching_games(request, matching_games)
 
     user_friends = get_friend_list(user)
 
@@ -254,8 +252,8 @@ def search_results(request):
 
     games = Game.objects.filter(title__icontains=query)
 
-    games = calculate_game_scores(games)
-    games = paginate_matching_games_query(request, games)
+    games = calculate_game_score(games)
+    games = paginate_matching_games(request, games)
 
     user_friends = (
         get_friend_list(request.user) if request.user.is_authenticated else None
@@ -278,6 +276,7 @@ def search_franchises(request):
     search query and renders a search results page.
     """
     query = request.GET.get("query")
+
     if query and len(query) < 2:
         return HttpResponseBadRequest(
             "Invalid query. Please enter at least 2 characters."
@@ -380,7 +379,7 @@ def user_reviews(request, user_id=None):
             return redirect("playstyle_compass:index")
 
     user_reviews = Review.objects.filter(user=user)
-    user_games = calculate_game_scores([review.game for review in user_reviews])
+    user_games = calculate_game_score([review.game for review in user_reviews])
     current_viewer_preferences, created = UserPreferences.objects.get_or_create(
         user=request.user
     )
@@ -462,7 +461,7 @@ def _get_games_view(request, page_title, list_name, template_name, user_id=None)
     # Get the list of game IDs based on the specified list_name and user_preferences
     game_list = getattr(user_preferences, f"get_{list_name}")() if not created else []
 
-    games = calculate_game_scores(Game.objects.filter(guid__in=game_list))
+    games = calculate_game_score(Game.objects.filter(guid__in=game_list))
 
     current_viewer_preferences, created = UserPreferences.objects.get_or_create(
         user=request.user
@@ -491,9 +490,9 @@ def top_rated_games(request):
 
     top_games = Game.objects.annotate(average_score=Avg("review__score")).filter(
         average_score__gt=4
-    )
+    ).order_by('average_score')
 
-    top_games = calculate_game_scores(top_games)
+    top_games = calculate_game_score(top_games)
     user_friends = get_friend_list(user) if user else []
 
     context = {
@@ -516,8 +515,8 @@ def upcoming_games(request):
         release_date__regex=r"^\d{4}$", release_date__gte=str(current_date.year)
     )
 
-    upcoming_games = calculate_game_scores(Game.objects.filter(upcoming_filter))
-    paginated_games = paginate_matching_games_query(request, upcoming_games)
+    upcoming_games = calculate_game_score(Game.objects.filter(upcoming_filter))
+    paginated_games = paginate_matching_games(request, upcoming_games)
     user_friends = get_friend_list(user) if user else []
 
     context = {
@@ -642,24 +641,23 @@ def get_game_reviews(request, game_id):
 def like_review(request):
     if request.method == "POST" and request.user.is_authenticated:
         review_id = request.POST.get("review_id")
-        user_id = request.user.id
 
         if review_id:
             review = get_object_or_404(Review, id=review_id)
 
-            if review.user_id == user_id:
+            if review.user_id == request.user.id:
                 return JsonResponse({"message": _("You cannot like your own review.")})
 
             if "-" in str(review.user_id):
                 review.user_id = -1
 
-            if review.user_has_disliked(user_id):
-                review.remove_dislike(user_id)
+            if review.user_has_disliked(request.user.id):
+                review.remove_dislike(request.user.id)
 
-            if review.user_has_liked(user_id):
-                review.remove_like(user_id)
+            if review.user_has_liked(request.user.id):
+                review.remove_like(request.user.id)
             else:
-                review.add_like(user_id)
+                review.add_like(request.user.id)
 
             return JsonResponse(
                 {"likes": review.likes, "dislikes": review.dislikes, "message": ""}
@@ -675,12 +673,11 @@ def like_review(request):
 def dislike_review(request):
     if request.method == "POST" and request.user.is_authenticated:
         review_id = request.POST.get("review_id")
-        user_id = request.user.id
 
         if review_id:
             review = get_object_or_404(Review, id=review_id)
 
-            if review.user_id == user_id:
+            if review.user_id == request.user.id:
                 return JsonResponse(
                     {"message": _("You cannot dislike your own review.")}
                 )
@@ -688,13 +685,13 @@ def dislike_review(request):
             if "-" in str(review.user_id):
                 review.user_id = -1
 
-            if review.user_has_liked(user_id):
-                review.remove_like(user_id)
+            if review.user_has_liked(request.user.id):
+                review.remove_like(request.user.id)
 
-            if review.user_has_disliked(user_id):
-                review.remove_dislike(user_id)
+            if review.user_has_disliked(request.user.id):
+                review.remove_dislike(request.user.id)
             else:
-                review.add_dislike(user_id)
+                review.add_dislike(request.user.id)
 
             return JsonResponse(
                 {"dislikes": review.dislikes, "likes": review.likes, "message": ""}
@@ -711,11 +708,10 @@ def dislike_review(request):
 def delete_reviews(request, game_id):
     """View for deleting user reviews."""
     game = get_object_or_404(Game, guid=game_id)
-    user = request.user
     next_url = request.GET.get("next", reverse("playstyle_compass:index"))
 
     try:
-        review = Review.objects.get(game=game, user=user)
+        review = Review.objects.get(game=game, user=request.user)
         review.delete()
         messages.success(request, _("Your review has been successfully deleted!"))
     except Review.DoesNotExist:
@@ -730,7 +726,7 @@ def view_game(request, game_id):
     user_preferences = UserPreferences.objects.get(user=user) if user else None
 
     game = get_object_or_404(Game, guid=game_id)
-    game = calculate_single_game_score(game)
+    game = calculate_game_score(game, multiple_games=False)
 
     user_friends = get_friend_list(user) if user else []
 

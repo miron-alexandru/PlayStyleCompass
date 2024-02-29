@@ -171,70 +171,61 @@ class RecommendationEngine:
         self.sort_matching_games()
 
 
-def calculate_game_scores(games):
-    """Calculate average scores and total reviews for games."""
-    for game in games:
-        game_reviews = Review.objects.filter(game_id=game.guid)
-        total_score = 0
 
+def calculate_game_score(games, multiple_games=True):
+    """Calculate average scores and total reviews for games."""
+    if multiple_games:
+        game_reviews_dict = {game.guid: list(game.review_set.all()) for game in games}
+
+        for game in games:
+            game_reviews = game_reviews_dict.get(game.guid, [])
+            total_score = sum(int(review.score) for review in game_reviews)
+            total_reviews = len(game_reviews)
+            average_score = total_score / total_reviews if total_reviews > 0 else 0
+
+            game.average_score = average_score
+            game.total_reviews = total_reviews
+    else:  
+        game_reviews = Review.objects.filter(game_id=games.guid)
         total_score = sum(int(review.score) for review in game_reviews)
+
         average_score = total_score / len(game_reviews) if game_reviews else 0
         total_reviews = len(game_reviews)
 
-        game.average_score = average_score
-        game.total_reviews = total_reviews
+        games.average_score = average_score
+        games.total_reviews = total_reviews
 
     return games
 
 
-def calculate_single_game_score(game):
-    """Calculate average score and total reviews for a single game."""
-    game_reviews = Review.objects.filter(game_id=game.guid)
-    total_score = sum(int(review.score) for review in game_reviews)
-
-    average_score = total_score / len(game_reviews) if game_reviews else 0
-    total_reviews = len(game_reviews)
-
-    game.average_score = average_score
-    game.total_reviews = total_reviews
-
-    return game
-
-
-def paginate_matching_games_dict(request, matching_games):
+def paginate_matching_games(request, matching_games):
     """Function to paginate games and calculate average scores."""
     games_per_page = 10
     paginated_games = defaultdict(list)
 
-    for category, game_list in matching_games.items():
-        paginator = Paginator(game_list, games_per_page)
-        page_number = request.GET.get(f"{category}_page", 1)
+    if isinstance(matching_games, dict):
+        for category, game_list in matching_games.items():
+            paginator = Paginator(game_list, games_per_page)
+            page_number = request.GET.get(f"{category}_page", 1)
+
+            try:
+                page = paginator.page(page_number)
+            except (PageNotAnInteger, EmptyPage):
+                page = paginator.page(1)
+
+            paginated_games[category] = page
+
+            page = calculate_game_score(page)
+    else:
+        paginator = Paginator(matching_games, games_per_page)
+        page_number = request.GET.get("page", 1)
 
         try:
-            page = paginator.page(page_number)
+            paginated_games = paginator.page(page_number)
         except (PageNotAnInteger, EmptyPage):
-            page = paginator.page(1)
+            paginated_games = paginator.page(1)
 
-        paginated_games[category] = page
-
-        page = calculate_game_scores(page)
-
-    return paginated_games
-
-
-def paginate_matching_games_query(request, matching_games):
-    """Function to paginate games and calculate average scores."""
-    games_per_page = 10
-
-    paginator = Paginator(matching_games, games_per_page)
-    page_number = request.GET.get("page", 1)
-
-    try:
-        paginated_games = paginator.page(page_number)
-    except (PageNotAnInteger, EmptyPage):
-        paginated_games = paginator.page(1)
-
-    paginated_games = calculate_game_scores(paginated_games)
+        paginated_games = calculate_game_score(paginated_games)
 
     return paginated_games
 
