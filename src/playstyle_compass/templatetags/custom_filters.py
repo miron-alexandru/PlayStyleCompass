@@ -113,7 +113,7 @@ def check_platform(platform, user_platforms):
     """This filter is used because checking with the "in" operator
     always returns True for the 'PlayStation' platform when the user has 
     'PlayStation 5' or 'PlayStation 4' in their preferrences."""
-    if not ',' in user_platforms:
+    if not "," in user_platforms:
         return platform == user_platforms
     else:
         return platform in user_platforms

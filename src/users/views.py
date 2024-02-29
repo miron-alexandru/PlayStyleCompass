@@ -113,7 +113,9 @@ class ProfileUpdateView(LoginRequiredMixin, UpdateView):
         self.object.save()
 
         self.update_user_reviews(new_profile_name)
-        messages.success(self.request, _("Your profile name has been successfully changed!"))
+        messages.success(
+            self.request, _("Your profile name has been successfully changed!")
+        )
         return super().form_valid(form)
 
 

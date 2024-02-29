@@ -171,7 +171,6 @@ class RecommendationEngine:
         self.sort_matching_games()
 
 
-
 def calculate_game_score(games, multiple_games=True):
     """Calculate average scores and total reviews for games."""
     if multiple_games:
@@ -185,7 +184,7 @@ def calculate_game_score(games, multiple_games=True):
 
             game.average_score = average_score
             game.total_reviews = total_reviews
-    else:  
+    else:
         game_reviews = Review.objects.filter(game_id=games.guid)
         total_score = sum(int(review.score) for review in game_reviews)
 

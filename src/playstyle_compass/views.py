@@ -173,21 +173,25 @@ def _save_user_preference(request, field_name, redirect_view):
 
     return redirect(redirect_view)
 
+
 @login_required
 def save_all_preferences(request):
     """Save all preferences for the user."""
     if request.method == "POST":
         user_preferences = UserPreferences.objects.get(user=request.user)
-        
-        user_preferences.gaming_history = ", ".join(request.POST.getlist("gaming_history"))
-        user_preferences.favorite_genres = ", ".join(request.POST.getlist("favorite_genres"))
+
+        user_preferences.gaming_history = ", ".join(
+            request.POST.getlist("gaming_history")
+        )
+        user_preferences.favorite_genres = ", ".join(
+            request.POST.getlist("favorite_genres")
+        )
         user_preferences.themes = ", ".join(request.POST.getlist("themes"))
         user_preferences.platforms = ", ".join(request.POST.getlist("platforms"))
 
         user_preferences.save()
 
-    return JsonResponse({'success': True})
-
+    return JsonResponse({"success": True})
 
 
 @login_required
@@ -488,9 +492,11 @@ def top_rated_games(request):
     user = request.user if request.user.is_authenticated else None
     user_preferences = UserPreferences.objects.get(user=user) if user else None
 
-    top_games = Game.objects.annotate(average_score=Avg("review__score")).filter(
-        average_score__gt=4
-    ).order_by('average_score')
+    top_games = (
+        Game.objects.annotate(average_score=Avg("review__score"))
+        .filter(average_score__gt=4)
+        .order_by("average_score")
+    )
 
     top_games = calculate_game_score(top_games)
     user_friends = get_friend_list(user) if user else []
