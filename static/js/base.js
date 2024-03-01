@@ -170,8 +170,7 @@ $(document).ready(function () {
     $('.profile-name').mouseenter(function () {
         var $this = $(this);
         var $tooltip = $this.siblings('.custom-tooltip');
-        
-        // Check if the profile name is truncated
+
         if ($this[0].scrollWidth > $this.innerWidth()) {
             $tooltip.show();
         }

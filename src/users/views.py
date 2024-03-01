@@ -84,7 +84,7 @@ class ProfileUpdateView(LoginRequiredMixin, UpdateView):
     def dispatch(self, request, *args, **kwargs):
         """Check the time since the last profile name update and restrict frequent updates."""
         if last_update_time := self.request.user.userprofile.name_last_update_time:
-            one_hour_ago = timezone.now() - timedelta(hours=0)
+            one_hour_ago = timezone.now() - timedelta(hours=1)
             if last_update_time > one_hour_ago:
                 messages.error(
                     self.request,
@@ -239,6 +239,7 @@ def register_user(form, request):
     user_profile.profile_picture = (
         "profile_pictures/default_pfp/default_profile_picture.png"
     )
+    user_profile.timezone = request.headers.get('timezone')
 
     user_profile.save()
     new_user.save()

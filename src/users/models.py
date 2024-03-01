@@ -140,7 +140,7 @@ class Message(models.Model):
     )
     title = models.TextField(max_length=30)
     message = models.TextField(max_length=3500)
-    timestamp = models.DateTimeField(auto_now_add=True)
+    timestamp = models.DateTimeField(default=timezone.now)
     is_deleted_by_sender = models.BooleanField(default=False)
     is_deleted_by_receiver = models.BooleanField(default=False)
 

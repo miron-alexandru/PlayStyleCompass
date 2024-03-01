@@ -149,7 +149,7 @@ AUTH_PASSWORD_VALIDATORS = [
 LANGUAGES = [("en", _("English")), ("ro", _("Romanian"))]
 USE_I18N = True
 LANGUAGE_CODE = "en"
-TIME_ZONE = "UTC"
+TIME_ZONE = "Europe/Bucharest"
 USE_L10N = True
 USE_TZ = True
 
