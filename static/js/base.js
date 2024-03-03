@@ -168,14 +168,14 @@ $(document).ready(function () {
 
 $(document).ready(function () {
     $('.profile-name').mouseenter(function () {
-        var $this = $(this);
-        var $tooltip = $this.siblings('.custom-tooltip');
+        let $this = $(this);
+        let $tooltip = $this.siblings('.custom-tooltip');
 
-        if ($this[0].scrollWidth > $this.innerWidth()) {
+        if ($this[0].scrollWidth > $this[0].clientWidth) {
             $tooltip.show();
         }
     }).mouseleave(function () {
-        var $tooltip = $(this).siblings('.custom-tooltip');
+        let $tooltip = $(this).siblings('.custom-tooltip');
         $tooltip.hide();
     });
 });
