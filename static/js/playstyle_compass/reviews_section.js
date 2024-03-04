@@ -72,6 +72,32 @@ $(document).ready(function () {
             reviewsList.append(reviewHtml);
         });
     }
+
+    const authorNameLinks = document.querySelectorAll(".author-name");
+    authorNameLinks.forEach(function(link) {
+      link.addEventListener("click", function(event) {
+          event.preventDefault();
+          const profileUrl = "/users/view_profile/" + this.textContent;
+          
+          fetch(profileUrl)
+              .then(response => {
+                  if (!response.ok) {
+                      throw new Error("Bad network response.");
+                  }
+                  const contentType = response.headers.get("content-type");
+                  if (contentType && contentType.includes("application/json")) {
+                      showMessage($(this).closest(".author-container"), "The user does not exist or has deleted their account.");
+                      return;
+                  } else {
+                      window.location.href = profileUrl;
+                  }
+              })
+              .catch(error => {
+                  console.error("There was a problem with the fetch operation:", error);
+              });
+        });
+    });
+
     reviewsList.show();
 };
 
@@ -106,7 +132,6 @@ $(document).ready(function () {
         let friendReqUrl = $(this)
           .closest(".game-container")
           .data("friend-req");
-        let csrfToken = document.cookie.match(/csrftoken=([^ ;]+)/)[1];
         let user_id = $(this).closest(".author-link").data("user-id");
         let this_container = $(this).closest(".author-container");
 
@@ -133,7 +158,6 @@ $(document).ready(function () {
     const sendRatingAction = (actionType, event) => {
       event.preventDefault();
 
-      let csrfToken = document.cookie.match(/csrftoken=([^ ;]+)/)[1];
       let reviewId = $(event.target).closest(".review").data("review-id");
       let ratingUrl = $(event.target)
         .closest(".game-container")

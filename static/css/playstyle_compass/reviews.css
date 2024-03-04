@@ -73,9 +73,12 @@
 .author-name {
   font-weight: bolder;
   color: #333;
+  cursor: pointer;
+
 }
 
 .author-name:hover {
+  color: darkblue;
   text-decoration: none !important;
 }
 

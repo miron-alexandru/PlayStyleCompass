@@ -868,10 +868,7 @@ def view_profile(request, profile_name):
         )
 
     except Http404:
-        messages.error(
-            request, _("The user does not exist or has deleted their account.")
-        )
-        return redirect(request.META.get("HTTP_REFERER", "playstyle_compass:index"))
+        return JsonResponse({"exists": False})
 
     return render(request, "user_related/user_profile.html", context)
 

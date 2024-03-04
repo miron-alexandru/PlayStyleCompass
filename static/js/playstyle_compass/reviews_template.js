@@ -35,7 +35,7 @@ const reviewTemplate = (review, authorName, description, truncated, buttonHtml) 
 
 const authorNameTemplate = (review) => `
     <span class="author-container">
-        <a href="/users/view_profile/${review.reviewer}" class="author-name">${review.reviewer}</a>
+        <span class="author-name">${review.reviewer}</span>
         <a href="#" class="author-link" data-user-id="${review.user_id}">
             <span class="friend-request-text" style="display: none;">${translate("Friend Request")}</span>
         </a>
