@@ -7,17 +7,17 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('users', '0019_userprofile_timezone_alter_message_timestamp'),
+        ("users", "0019_userprofile_timezone_alter_message_timestamp"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='userprofile',
-            name='timezone',
+            model_name="userprofile",
+            name="timezone",
         ),
         migrations.AlterField(
-            model_name='message',
-            name='timestamp',
+            model_name="message",
+            name="timestamp",
             field=models.DateTimeField(default=django.utils.timezone.now),
         ),
     ]

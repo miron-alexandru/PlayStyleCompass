@@ -15,13 +15,11 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
 from django.contrib import messages
 from django.core.mail import send_mail
-from django.core.files import File
 from django.core.exceptions import ObjectDoesNotExist
 from django.conf import settings
 from django.contrib.auth.views import LoginView
 
 from django.template.loader import render_to_string
-from django.templatetags.static import static
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils import timezone
 from django.utils.translation import gettext as _
@@ -42,6 +40,8 @@ from django.views.generic.edit import UpdateView
 from django.urls import reverse, reverse_lazy
 from django.contrib.auth.tokens import default_token_generator
 
+from playstyle_compass.models import UserPreferences, Review
+
 from .forms import (
     CustomRegistrationForm,
     DeleteAccountForm,
@@ -57,8 +57,6 @@ from .forms import (
 from .misc.helper_functions import are_friends
 from .models import UserProfile, FriendList, FriendRequest, Message, Notification
 from .tokens import account_activation_token
-
-from playstyle_compass.models import UserPreferences, Review
 
 
 class ProfileUpdateView(LoginRequiredMixin, UpdateView):
@@ -162,7 +160,7 @@ def activate(request, uidb64, token):
 
 
 @login_required
-def activateEmail(request, user, to_email):
+def activate_email(request, user, to_email):
     """Send activation email to users."""
     mail_subject = _("Activate your user account.")
     message = render_to_string(
@@ -203,7 +201,7 @@ def resend_activation_link(request):
 
     email = request.user.email
     user = User.objects.get(email=email)
-    activateEmail(request, user, email)
+    activate_email(request, user, email)
 
     return JsonResponse({})
 
@@ -239,13 +237,13 @@ def register_user(form, request):
     user_profile.profile_picture = (
         "profile_pictures/default_pfp/default_profile_picture.png"
     )
-    user_profile.timezone = request.headers.get('timezone')
+    user_profile.timezone = request.headers.get("timezone")
 
     user_profile.save()
     new_user.save()
 
     login(request, new_user)
-    activateEmail(request, new_user, form.cleaned_data.get("email"))
+    activate_email(request, new_user, form.cleaned_data.get("email"))
 
     return redirect("playstyle_compass:index")
 
@@ -585,7 +583,7 @@ def send_friend_request(request, *args, **kwargs):
                 # Check if the user is trying to send a request to themselves
                 elif user == receiver:
                     result["message"] = _(
-                        f"You cannot send a friend request to <strong>yourself.</strong>"
+                        "You cannot send a friend request to <strong>yourself.</strong>"
                     )
                 else:
                     # Check if there are existing active friend requests from the current user to the receiver
@@ -876,6 +874,7 @@ def view_profile(request, profile_name):
 @login_required
 @require_POST
 def toggle_show_stat(request):
+    """Toggle the show/hide of user stats on their profile."""
     stat_name = request.POST.get("statName")
     user_id = request.POST.get("userId")
 
@@ -924,6 +923,7 @@ def get_user_stats(user):
 
 @login_required
 def send_message(request, user_id):
+    """View used to send messages between users."""
     message_sender = request.user
     message_receiver = User.objects.get(pk=user_id)
 
@@ -1071,6 +1071,7 @@ def mark_notification_inactive(request, notification_id=None):
 
 
 def check_authentication(request):
+    """Check if an user is authenticated."""
     if request.user.is_authenticated:
         return JsonResponse({"authenticated": True})
     else:

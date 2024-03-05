@@ -7,19 +7,23 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('playstyle_compass', '0012_game_videos_userpreferences_themes'),
+        ("playstyle_compass", "0012_game_videos_userpreferences_themes"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='game',
-            name='guid',
+            model_name="game",
+            name="guid",
             field=models.CharField(default=129, max_length=100, unique=True),
             preserve_default=False,
         ),
         migrations.AlterField(
-            model_name='review',
-            name='game',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='playstyle_compass.game', to_field='guid'),
+            model_name="review",
+            name="game",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                to="playstyle_compass.game",
+                to_field="guid",
+            ),
         ),
     ]

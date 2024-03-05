@@ -1,6 +1,6 @@
 """Views for the playstyle_compass app."""
 
-from datetime import date, datetime
+from datetime import date
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
@@ -8,17 +8,16 @@ from django.contrib import messages
 from django.http import (
     JsonResponse,
     HttpResponseRedirect,
-    HttpResponse,
     HttpResponseBadRequest,
 )
 from django.urls import reverse
-from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Avg, Q
+from django.utils.translation import gettext as _
 
 from utils.constants import genres, all_platforms, all_themes
+from users.models import Notification
 from .models import UserPreferences, Game, Review, SharedGame, Franchise, Character
 from .forms import ReviewForm
-from users.models import Notification
 
 from .helper_functions.views_helpers import (
     RecommendationEngine,
@@ -28,8 +27,6 @@ from .helper_functions.views_helpers import (
     get_friend_list,
     calculate_average_similarity,
 )
-
-from django.utils.translation import gettext as _
 
 
 def index(request):
@@ -645,6 +642,7 @@ def get_game_reviews(request, game_id):
 
 
 def like_review(request):
+    """View used to like / unlike reviews."""
     if request.method == "POST" and request.user.is_authenticated:
         review_id = request.POST.get("review_id")
 
@@ -677,6 +675,7 @@ def like_review(request):
 
 
 def dislike_review(request):
+    """View used to dislike / undislike a review."""
     if request.method == "POST" and request.user.is_authenticated:
         review_id = request.POST.get("review_id")
 

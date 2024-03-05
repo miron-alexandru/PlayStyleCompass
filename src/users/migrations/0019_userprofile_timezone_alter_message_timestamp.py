@@ -6,18 +6,18 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('users', '0018_alter_notification_timestamp'),
+        ("users", "0018_alter_notification_timestamp"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='userprofile',
-            name='timezone',
+            model_name="userprofile",
+            name="timezone",
             field=models.CharField(blank=True, max_length=100, null=True),
         ),
         migrations.AlterField(
-            model_name='message',
-            name='timestamp',
+            model_name="message",
+            name="timestamp",
             field=models.DateTimeField(),
         ),
     ]
