@@ -89,7 +89,7 @@ $(document).ready(function () {
                       showMessage($(this).closest(".author-container"), "The user does not exist or has deleted their account.");
                       return;
                   } else {
-                      window.location.href = profileUrl;
+                      window.open(profileUrl, '_blank');
                   }
               })
               .catch(error => {
