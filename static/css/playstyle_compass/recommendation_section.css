@@ -131,3 +131,22 @@ small {
 .lazy-video {
   margin-right: 10px;
 }
+
+.star-rating {
+  display: inline-block;
+  vertical-align: middle;
+  margin-top: 1px;
+}
+
+span.stars, span.stars span {
+  display: inline-block;
+  background: url(https://svgur.com/i/148G.svg) 0 0 repeat-x;
+  width: 100px;
+  height: 20px;
+  background-size: 20px 20px;
+}
+
+span.stars span {
+  background-position: 0 0;
+  background-image: url(https://www.svgrepo.com/show/157842/star.svg);
+}

@@ -1,25 +1,11 @@
-function fillStars(score, maxScore, starContainer) {
-  let stars = "";
-  for (let i = 1; i <= maxScore; i++) {
-    if (i <= score) {
-      stars += '<i class="fas fa-star gold-star"></i>';
-    } else {
-      stars += '<i class="far fa-star empty-star"></i>';
-    }
-  }
-  starContainer.innerHTML = stars;
-  starContainer.style.display = "inline";
+const starWidth = 20;
+
+$.fn.stars = function() {
+  return $(this).each(function() {
+    $(this).html($('<span />').width(Math.max(0, (Math.min(5, parseFloat($(this).html())))) * starWidth));
+  });
 }
 
-document.addEventListener("DOMContentLoaded", function () {
-  const starRatingElements = document.querySelectorAll(".star-rating");
-  starRatingElements.forEach(function (element) {
-    const scoreElement = element.querySelector(".score-hidden");
-
-    if (scoreElement) {
-      const score = parseInt(scoreElement.textContent);
-      const maxScore = 5;
-      fillStars(score, maxScore, element);
-    }
-  });
+$(document).ready(function() {
+  $('span.stars').stars();
 });
