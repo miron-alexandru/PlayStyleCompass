@@ -31,6 +31,9 @@ Websites for .env configuration: [GiantBomb](https://www.giantbomb.com/) / [Send
 <summary><h2>PlayStyle Compass Changelog</h2></summary>
 
 ### Version v1.7:
+* Implemented fractional star rating game ratings.
+* Refactored views for playstyle compass and users apps.
+* Improved reviews section profile clicking.
 * Search bar added on view game page.
 * Full profile name displayed on hover (for longer profile names).
 * Restricted length for username and profile name.
