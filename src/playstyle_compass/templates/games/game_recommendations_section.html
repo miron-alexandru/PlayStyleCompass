@@ -17,7 +17,7 @@
   <li>
     <div class="game-image">
       {% if game.image %}
-      <p>Rating: <span class="star-rating" title="{{ game.average_score }}"><span class="stars">{{ game.average_score }}</span></span> <small>({{ game.total_reviews }} {{ game.total_reviews|pluralize_reviews }})</small></p>
+      <p class="rating" style="display: none;">Rating: <span class="star-rating" title="{{ game.average_score }}"><span class="stars">{{ game.average_score }}</span></span> <small>({{ game.total_reviews }} {{ game.total_reviews|pluralize_reviews }})</small></p>
       <img src="{{ game.image }}" alt="Game Image" loading="lazy">
       {% else %}
       <p><strong>{% trans "Image not available" %}</strong></p>
@@ -137,4 +137,3 @@
 </div>
 
 <script src="{% static 'js/playstyle_compass/game_recommendations.js' %}" defer></script>
-<script src="{% static 'js/playstyle_compass/star_rating.js' %}" defer></script>

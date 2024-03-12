@@ -8,4 +8,7 @@ $.fn.stars = function() {
 
 $(document).ready(function() {
   $('span.stars').stars();
+  $('.rating').each(function() {
+    $(this).show();
+  });
 });

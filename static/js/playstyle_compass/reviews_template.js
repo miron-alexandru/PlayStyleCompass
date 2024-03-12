@@ -19,7 +19,7 @@ const reviewTemplate = (review, authorName, description, truncated, buttonHtml) 
             <p><strong>${translate("Title")}:</strong> ${review.title}</p>
             <p><strong>${translate("Author")}:</strong> ${authorName}</p>
             <div class="review-score">
-                <p><strong>${translate("Rating")}:</strong> <span class="star-rating">${getStarRating(review.score)}</span></p>
+                <p><strong>${translate("Rating")}:</strong> <span>${getStarRating(review.score)}</span></p>
             </div>
         </div>
         <div class="review-body">
