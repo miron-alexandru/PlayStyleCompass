@@ -1,0 +1,21 @@
+from django.utils import timezone
+
+
+class UserTimezoneMiddleware:
+    def __init__(self, get_response):
+        self.get_response = get_response
+        return
+
+    def __call__(self, request):
+        response = self.get_response(request)
+
+        if request.user.is_authenticated:
+            if request.session.get('detected_tz'):
+                tz = timezone.get_current_timezone()
+                if tz:
+                    tz = str(tz)
+                    if tz != request.user.userprofile.timezone:
+                        request.user.userprofile.timezone = tz
+                        request.user.userprofile.save()
+
+        return response

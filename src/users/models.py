@@ -17,6 +17,7 @@ class UserProfile(models.Model):
     profile_name = models.CharField(max_length=15, blank=True, null=True)
     name_last_update_time = models.DateTimeField(null=True, blank=True)
     email_confirmed = models.BooleanField(default=False)
+    timezone = models.CharField(max_length=50)
 
     def clean(self):
         profile_name = self.profile_name
@@ -128,9 +129,10 @@ class FriendRequest(models.Model):
         self.is_active = True
         self.save()
 
+import pytz
 
 class Message(models.Model):
-    """Represents a message sent by an user to another user."""
+    """Represents a message sent by a user to another user."""
 
     sender = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="sent_messages"
@@ -140,12 +142,19 @@ class Message(models.Model):
     )
     title = models.TextField(max_length=30)
     message = models.TextField(max_length=3500)
-    timestamp = models.DateTimeField(default=timezone.now)
+    timestamp = models.DateTimeField()
     is_deleted_by_sender = models.BooleanField(default=False)
     is_deleted_by_receiver = models.BooleanField(default=False)
 
     def __str__(self):
         return f"Message from {self.sender} to {self.receiver}"
+
+    def save(self, *args, **kwargs):
+        """Override save method to set timestamp based on receiver's timezone."""
+        receiver_timezone = self.receiver.userprofile.timezone
+        timezone_obj = pytz.timezone(receiver_timezone)
+        self.timestamp = timezone.localtime(timezone.now(), timezone=timezone_obj)
+        super().save(*args, **kwargs)
 
     class Meta:
         db_table = "UserMessages"

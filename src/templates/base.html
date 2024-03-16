@@ -25,6 +25,9 @@
   <link rel="stylesheet" type="text/css" href="{% static 'css/base.css' %}">
 </head>
 
+{% load tz_detect %}
+{% tz_detect %}
+
 <body>
   <nav class="navbar navbar-expand-md navbar-light">
     <div class="container">

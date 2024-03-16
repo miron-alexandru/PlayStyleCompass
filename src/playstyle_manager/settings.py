@@ -25,6 +25,7 @@ INSTALLED_APPS = [
     "django_recaptcha",
     "daphne",
     "rosetta",
+    "tz_detect",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -51,6 +52,8 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "tz_detect.middleware.TimezoneMiddleware",
+    "users.middleware.UserTimezoneMiddleware",
 ]
 
 # Locale Paths
@@ -149,7 +152,6 @@ AUTH_PASSWORD_VALIDATORS = [
 LANGUAGES = [("en", _("English")), ("ro", _("Romanian"))]
 USE_I18N = True
 LANGUAGE_CODE = "en"
-TIME_ZONE = "Europe/Bucharest"
 USE_L10N = True
 USE_TZ = True
 
