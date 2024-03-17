@@ -1,5 +1,6 @@
 """Defines models."""
 
+import pytz
 from django.utils import timezone
 from django.conf import settings
 from django.db import models
@@ -129,7 +130,6 @@ class FriendRequest(models.Model):
         self.is_active = True
         self.save()
 
-import pytz
 
 class Message(models.Model):
     """Represents a message sent by a user to another user."""
@@ -142,19 +142,12 @@ class Message(models.Model):
     )
     title = models.TextField(max_length=30)
     message = models.TextField(max_length=3500)
-    timestamp = models.DateTimeField()
+    timestamp = models.DateTimeField(auto_now_add=True)
     is_deleted_by_sender = models.BooleanField(default=False)
     is_deleted_by_receiver = models.BooleanField(default=False)
 
     def __str__(self):
         return f"Message from {self.sender} to {self.receiver}"
-
-    def save(self, *args, **kwargs):
-        """Override save method to set timestamp based on receiver's timezone."""
-        receiver_timezone = self.receiver.userprofile.timezone
-        timezone_obj = pytz.timezone(receiver_timezone)
-        self.timestamp = timezone.localtime(timezone.now(), timezone=timezone_obj)
-        super().save(*args, **kwargs)
 
     class Meta:
         db_table = "UserMessages"
@@ -167,12 +160,14 @@ class Notification(models.Model):
     is_read = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     timestamp = models.DateTimeField(blank=True, null=True)
-
-    def __str__(self):
-        return f"Notification(id={self.id}, user={self.user.username}, message='{self.message}', is_read={self.is_read}, is_active={self.is_active})"
-
+    
     def save(self, *args, **kwargs):
         if self.timestamp is None:
             self.timestamp = timezone.now().isoformat()
+
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f"Notification(id={self.id}, user={self.user.username}, message='{self.message}', is_read={self.is_read}, is_active={self.is_active})"
 
         super().save(*args, **kwargs)

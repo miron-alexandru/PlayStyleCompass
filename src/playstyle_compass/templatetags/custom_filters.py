@@ -5,6 +5,8 @@ from django import template
 from itertools import zip_longest
 from django.utils.translation import gettext
 from django.apps import apps
+from pytz import timezone
+from django.utils import timezone as django_timezone
 
 
 register = template.Library()
@@ -61,12 +63,6 @@ def pluralize_reviews(count):
     return "review" if count == 1 else "reviews"
 
 
-@register.filter(name="format_timestamp")
-def format_timestamp(value):
-    if isinstance(value, datetime):
-        return value.isoformat()
-
-
 @register.filter(name="template_trans")
 def template_trans(text):
     try:
@@ -117,3 +113,12 @@ def check_platform(platform, user_platforms):
         return platform == user_platforms
     else:
         return platform in user_platforms
+
+@register.filter
+def convert_to_user_timezone(timestamp, user_timezone):
+    timestamp = django_timezone.localtime(timestamp)
+    user_tz = timezone(user_timezone)
+    timestamp_in_user_tz = timestamp.astimezone(user_tz)
+    formatted_timestamp = timestamp_in_user_tz.strftime('%B %d, %Y, %I:%M %p')
+
+    return formatted_timestamp

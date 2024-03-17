@@ -29,7 +29,7 @@ class NotificationConsumer(AsyncWebsocketConsumer):
                         "message": notification.message,
                         "is_read": notification.is_read,
                         "is_active": notification.is_active,
-                        "timestamp": notification.timestamp.isoformat()[:-6],
+                        "timestamp": notification.timestamp.isoformat(),
                     }
                 )
 

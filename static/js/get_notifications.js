@@ -6,6 +6,8 @@ fetch(authCheckUrl)
       const notificationsElement = document.getElementById("notifications");
       const markReadUrl = notificationsElement.dataset.markRead;
       const markInactiveUrl = notificationsElement.dataset.markInactive;
+      const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+      document.cookie = "django_timezone=" + timezone;
 
       const notifySocket = new WebSocket(
         `ws://${window.location.host}/ws/notify/`
@@ -157,7 +159,18 @@ fetch(authCheckUrl)
 
       const formatDate = (timestamp) => {
         const date = new Date(timestamp);
-        return date.toLocaleString();
+        
+        const options = {
+          timeZone: timezone,
+          month: 'long',
+          day: 'numeric',
+          year: 'numeric',
+          hour: 'numeric',
+          minute: 'numeric',
+          hour12: true
+        };
+
+        return date.toLocaleString('en-US', options);
       };
 
       const updateNotifications = () => {
