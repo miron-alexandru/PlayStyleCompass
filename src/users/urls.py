@@ -89,14 +89,14 @@ urlpatterns = [
         name="mark_notification_as_read",
     ),
     path(
-        "mark_notification_inactive/<int:notification_id>/",
-        views.mark_notification_inactive,
-        name="mark_notification_inactive",
+        "delete_notification/<int:notification_id>/",
+        views.delete_notification,
+        name="delete_notification",
     ),
     path(
-        "mark_notification_inactive/",
-        views.mark_notification_inactive,
-        name="mark_notification_inactive",
+        "delete_notification/",
+        views.delete_notification,
+        name="delete_notification",
     ),
     path(
         "check_authentication/", views.check_authentication, name="check_authentication"

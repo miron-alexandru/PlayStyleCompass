@@ -1054,18 +1054,17 @@ def mark_notification_as_read(request, notification_id=None):
 
 @require_POST
 @login_required
-def mark_notification_inactive(request, notification_id=None):
-    """View to mark notification(s) as inactive."""
+def delete_notification(request, notification_id=None):
+    """View to delete notification(s)."""
     notifications = Notification.objects.filter(user=request.user)
 
     if notification_id is not None:
-        # Mark a specific notification as inactive
+        # Delete a specific notification
         notification = notifications.get(pk=notification_id)
-        notification.is_active = False
-        notification.save()
+        notification.delete()
     else:
-        # Mark all notifications as inactive
-        notifications.update(is_active=False)
+        # Delete all notifications
+        notifications.delete()
 
     return JsonResponse({"status": "success"})
 
