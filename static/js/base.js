@@ -112,23 +112,6 @@ if (profilePictureUpload) {
   });
 }
 
-
-let lastScrollTop = 0;
-
-$(window).on("scroll", function() {
-    const scrollTop = $(this).scrollTop();
-
-    if (scrollTop === 0) {
-        $(".navbar").removeClass("fixed");
-    } else if (scrollTop > lastScrollTop) {
-        $(".navbar").removeClass("fixed");
-    } else {
-        $(".navbar").addClass("fixed");
-    }
-    lastScrollTop = scrollTop;
-});
-
-
 $(document).ready(function () {
   $(".nav-item.dropdown").each(function () {
     let $dropdownToggle = $(this).find(".dropdown-toggle");
@@ -178,4 +161,20 @@ $(document).ready(function () {
         let $tooltip = $(this).siblings('.custom-tooltip');
         $tooltip.hide();
     });
+});
+
+
+let lastScrollTop = 0;
+
+$(window).on("scroll", function() {
+    const scrollTop = $(this).scrollTop();
+
+    if (scrollTop === 0) {
+        $(".navbar").removeClass("fixed");
+    } else if (scrollTop > lastScrollTop) {
+        $(".navbar").removeClass("fixed");
+    } else {
+        $(".navbar").addClass("fixed");
+    }
+    lastScrollTop = scrollTop;
 });

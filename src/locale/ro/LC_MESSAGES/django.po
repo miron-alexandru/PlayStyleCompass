@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-02-27 15:37+0200\n"
-"PO-Revision-Date: 2024-02-27 15:38+0000\n"
+"PO-Revision-Date: 2024-03-19 15:49+0122\n"
 "Last-Translator:   <quality_xqs@yahoo.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -966,11 +966,11 @@ msgstr "Jocuri Programate"
 
 #: .\src\templates\base.html:68
 msgid "More"
-msgstr "Mai Multe"
+msgstr "Mai multe"
 
 #: .\src\templates\base.html:72
 msgid "My Reviews"
-msgstr "Recenziile Mele"
+msgstr "Recenziile mele"
 
 #: .\src\templates\base.html:75 .\src\templates\base.html:101
 msgid "Franchises"
@@ -994,7 +994,7 @@ msgstr "Acțiuni Cont"
 
 #: .\src\templates\base.html:159
 msgid "My Profile"
-msgstr "Profilul Meu"
+msgstr "Profilul meu"
 
 #: .\src\templates\base.html:160
 msgid "Inbox"
