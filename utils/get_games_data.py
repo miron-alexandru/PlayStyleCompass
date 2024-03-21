@@ -19,6 +19,7 @@ from misc_functions import (
     extract_guids,
     extract_character_guids,
     create_characters_data,
+    create_game_modes_data,
 )
 
 # Create Franchises
@@ -31,6 +32,12 @@ from misc_functions import (
 # create_characters_data(characters_ids)
 
 # Create Games
-youtube = googleapiclient.discovery.build("youtube", "v3", developerKey=GOOGLE_API_KEY)
-game_ids = fetch_game_ids_by_platforms(platform_ids, API_KEY, offset=20, limit=5)
-create_games_data_db(game_ids, youtube)
+#youtube = googleapiclient.discovery.build("youtube", "v3", developerKey=GOOGLE_API_KEY)
+#game_ids = fetch_game_ids_by_platforms(platform_ids, API_KEY, offset=20, limit=5)
+#create_games_data_db(game_ids, youtube)
+
+guids = ["3015-6130", "3015-322"]
+mode_strings = ["Singleplayer", "Multiplayer"]
+
+create_game_modes_data(guids, mode_strings)
+

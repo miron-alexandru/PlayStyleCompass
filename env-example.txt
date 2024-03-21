@@ -5,3 +5,4 @@ EMAIL_USER_CONTACT = ''    # Add your Email to receive contact forms.
 GBAPI_KEY = ''    # Add your Giant Bomb's API KEY
 RECAPTCHA_PUBLIC_KEY = ''    # Add your recaptcha PUBLIC_KEY
 RECAPTCHA_PRIVATE_KEY = ''    # Add your recaptcha PRIVATE_KEY
+GOOGLE_API_KEY =    # Add your Google API KEY

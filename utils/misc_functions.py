@@ -26,6 +26,9 @@ from sql_queries import (
     create_characters_table,
     insert_characters_sql,
     remove_duplicate_characters,
+    create_game_modes_table,
+    insert_game_modes_sql,
+    remove_duplicate_game_modes,
 )
 
 
@@ -658,6 +661,53 @@ def create_characters_data(characters_ids):
             db_connection.commit()
 
         cursor.execute(remove_duplicate_characters)
+
+        db_connection.commit()
+
+
+def extract_game_data(game, data_name):
+    """Extract game data based on the data_name ."""
+    return game[data_name] if isinstance(game, dict) else None
+
+def parse_game_modes_data(game, game_mode):
+    """Parse game modes data."""
+
+    game_id = extract_game_data(game, "id")
+    game_name = extract_game_data(game, "name")
+
+    return (
+        game_id,
+        game_name,
+        game_mode
+    )
+
+def create_game_modes_data(guids, mode_strings):
+    """Insert game modes data into the database."""
+    with sqlite3.connect("games_data.db") as db_connection:
+        cursor = db_connection.cursor()
+        cursor.execute(create_game_modes_table)
+        db_connection.commit()
+
+        for guid, mode_string in zip(guids, mode_strings):
+            game_modes_data = fetch_data_by_guid(guid, API_KEY, 'concept', field_list=["games"])
+
+            for game in game_modes_data['games']:
+                (
+                    game_id,
+                    game_name,
+                    game_mode,
+                ) = parse_game_modes_data(game, mode_string)
+
+                game_mode_values = (
+                    game_id,
+                    game_name,
+                    game_mode,
+                )
+                cursor.execute(insert_game_modes_sql, game_mode_values)
+
+                db_connection.commit()
+
+        cursor.execute(remove_duplicate_game_modes)
 
         db_connection.commit()
 

@@ -68,6 +68,14 @@ CREATE TABLE IF NOT EXISTS Characters (
 );
 """
 
+create_game_modes_table = """
+CREATE TABLE IF NOT EXISTS GameModes (
+    game_id TEXT,
+    game_name TEXT,
+    game_mode TEXT
+);
+"""
+
 inserting_sql = """
 INSERT INTO Games 
 (guid, title, description, overview, genres, platforms, themes, image, release_date, developers, game_images, similar_games, dlcs, franchises, videos) 
@@ -89,6 +97,12 @@ insert_characters_sql = """
 INSERT INTO Characters 
 (name, deck, description, birthday, friends, enemies, games, first_game, franchises, image, images, character_id) 
 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+"""
+
+insert_game_modes_sql = """
+INSERT INTO GameModes
+(game_id, game_name, game_mode)
+VALUES (?, ?, ?);
 """
 
 remove_duplicates_sql = """
@@ -124,6 +138,15 @@ DELETE FROM Characters
     SELECT MIN(rowid)
     FROM Characters
     GROUP BY character_id, name
+);
+"""
+
+remove_duplicate_game_modes = """
+DELETE FROM GameModes
+    WHERE rowid NOT IN (
+    SELECT MIN(rowid)
+    FROM GameModes
+    GROUP BY game_id
 );
 """
 
