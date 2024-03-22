@@ -1,0 +1,13 @@
+{% extends "games/games_collection.html" %}
+{% load i18n %}
+
+{% block header_desc %}
+{% trans "MULTIPLAYER GAMES" %}
+{% endblock header_desc %}
+
+{% block description %}{% blocktrans %}Ready to team up or go head-to-head? Check out our multiplayer game collection for endless fun with friends and rivals.{% endblocktrans %}
+{% endblock description %}
+
+{% block empty_message %}
+    {% trans "No Multiplayer games have been added yet." %}
+{% endblock empty_message %}

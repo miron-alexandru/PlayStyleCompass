@@ -255,3 +255,17 @@ class Character(models.Model):
     class Meta:
         db_table = "Characters"
         ordering = ["name"]
+
+
+class GameModes(models.Model):
+    """Represents a game that is tied to a certain game mode."""
+    id = models.BigAutoField(primary_key=True)
+    game_id = models.CharField(max_length=100)
+    game_name = models.CharField(max_length=100)
+    game_mode = models.CharField(max_length=100)
+
+    class Meta:
+        db_table = "GameModes"
+
+    def __str__(self):
+        return f"{self.game_name} - {self.game_mode}"

@@ -31,6 +31,7 @@ Websites for .env configuration: [GiantBomb](https://www.giantbomb.com/) / [Send
 <summary><h2>PlayStyle Compass Changelog</h2></summary>
 
 ### Version v1.7:
+* Implemented pages with Single-player and Multiplayer games.
 * Dates for notifications / messages are displayed based on the user timezone.
 * Implemented fractional star rating game ratings.
 * Refactored views for playstyle compass and users apps.

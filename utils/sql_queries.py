@@ -70,6 +70,7 @@ CREATE TABLE IF NOT EXISTS Characters (
 
 create_game_modes_table = """
 CREATE TABLE IF NOT EXISTS GameModes (
+    id INTEGER PRIMARY KEY,
     game_id TEXT,
     game_name TEXT,
     game_mode TEXT
@@ -146,7 +147,7 @@ DELETE FROM GameModes
     WHERE rowid NOT IN (
     SELECT MIN(rowid)
     FROM GameModes
-    GROUP BY game_id
+    GROUP BY game_id, game_mode
 );
 """
 

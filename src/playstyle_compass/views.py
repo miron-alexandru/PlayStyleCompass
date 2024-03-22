@@ -16,7 +16,7 @@ from django.utils.translation import gettext as _
 
 from utils.constants import genres, all_platforms, all_themes
 from users.models import Notification
-from .models import UserPreferences, Game, Review, SharedGame, Franchise, Character
+from .models import UserPreferences, Game, Review, SharedGame, Franchise, Character, GameModes
 from .forms import ReviewForm
 
 from .helper_functions.views_helpers import (
@@ -1026,3 +1026,38 @@ def autocomplete_characters(request):
         results = list(characters.values("name"))
 
     return JsonResponse(results, safe=False)
+
+
+def get_games_and_context(request, game_mode):
+    """Prepare context data for displaying games based on the specified game mode."""
+    user = request.user if request.user.is_authenticated else None
+    user_preferences = UserPreferences.objects.get(user=user) if user else None
+    user_friends = get_friend_list(user) if user else []
+
+    games_query = GameModes.objects.filter(game_mode=game_mode)
+    game_ids = [game.game_id for game in games_query]
+    games = Game.objects.filter(guid__in=game_ids)
+    games = calculate_game_score(games)
+
+    context = {
+        "page_title": f"{game_mode.capitalize()} Games :: PlayStyle Compass",
+        "games": games,
+        "user_preferences": user_preferences,
+        "user_friends": user_friends,
+    }
+
+    return context
+
+
+def view_multiplayer_games(request):
+    """Display multiplayer games."""
+    context = get_games_and_context(request, 'Multiplayer')
+
+    return render(request, 'games/multiplayer_games.html', context)
+
+
+def view_singleplayer_games(request):
+    """Display single-player games."""
+    context = get_games_and_context(request, 'Singleplayer')
+
+    return render(request, 'games/singleplayer_games.html', context)
