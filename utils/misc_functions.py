@@ -707,79 +707,80 @@ def create_game_modes_data(guids, mode_strings, youtube_api_client=None):
 
                 db_connection.commit()
 
-        cursor.execute(remove_duplicate_game_modes)
+            game_ids = []
 
-        db_connection.commit()
+            for game in game_modes_data['games']:
+                game_id = extract_game_data(game, "id")
+                game_ids.append("3030-" + str(game_id))
 
-        game_ids = []
-        for game in game_modes_data['games']:
-            game_id = extract_game_data(game, "id")
-            game_ids.append(str(game_id))
+            for game_id in game_ids[:30]:
+                (
+                    guid,
+                    title,
+                    description,
+                    overview,
+                    genres,
+                    platforms,
+                    themes,
+                    image,
+                    release_date,
+                    developers,
+                    game_images,
+                    similar_games,
+                    reviews_data,
+                    dlcs,
+                    franchises,
+                    videos,
+                ) = parse_game_data(game_id, youtube_api_client)
 
-        for game_id in game_ids[:100]:
-            (
-                guid,
-                title,
-                description,
-                overview,
-                genres,
-                platforms,
-                themes,
-                image,
-                release_date,
-                developers,
-                game_images,
-                similar_games,
-                reviews_data,
-                dlcs,
-                franchises,
-                videos,
-            ) = parse_game_data(game_id, youtube_api_client)
+                game_values = (
+                    guid,
+                    title,
+                    description,
+                    overview,
+                    genres,
+                    platforms,
+                    themes,
+                    image,
+                    release_date,
+                    developers,
+                    game_images,
+                    similar_games,
+                    dlcs,
+                    franchises,
+                    videos,
+                )
+                cursor.execute(inserting_sql, game_values)
 
-            game_values = (
-                guid,
-                title,
-                description,
-                overview,
-                genres,
-                platforms,
-                themes,
-                image,
-                release_date,
-                developers,
-                game_images,
-                similar_games,
-                dlcs,
-                franchises,
-                videos,
-            )
-            cursor.execute(inserting_sql, game_values)
+                game_id = guid
 
-            game_id = guid
+                if reviews_data:
+                    for review in reviews_data:
+                        reviewers = review["reviewer"]
+                        review_deck = review["deck"]
+                        review_description = review["description"]
+                        score = str(review["score"])
 
-            if reviews_data:
-                for review in reviews_data:
-                    reviewers = review["reviewer"]
-                    review_deck = review["deck"]
-                    review_description = review["description"]
-                    score = str(review["score"])
+                        user_id = str(uuid.uuid4())
 
-                    user_id = str(uuid.uuid4())
+                        review_values = (
+                            reviewers,
+                            review_deck,
+                            review_description,
+                            score,
+                            user_id,
+                            game_id,
+                        )
+                        cursor.execute(insert_reviews_sql, review_values)
 
-                    review_values = (
-                        reviewers,
-                        review_deck,
-                        review_description,
-                        score,
-                        user_id,
-                        game_id,
-                    )
-                    cursor.execute(insert_reviews_sql, review_values)
+                db_connection.commit()
+
+            cursor.execute(remove_duplicates_sql)
+            cursor.execute(remove_duplicates_reviews)
 
             db_connection.commit()
 
-        cursor.execute(remove_duplicates_sql)
-        cursor.execute(remove_duplicates_reviews)
+        cursor.execute(remove_duplicate_game_modes)
 
         db_connection.commit()
 

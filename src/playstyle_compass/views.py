@@ -1040,7 +1040,7 @@ def get_games_and_context(request, game_mode):
     games = calculate_game_score(games)
 
     context = {
-        "page_title": f"{game_mode.capitalize()} Games :: PlayStyle Compass",
+        "page_title": ("Single-player" if game_mode == "Singleplayer" else "Multiplayer") + " Games :: PlayStyle Compass",
         "games": games,
         "user_preferences": user_preferences,
         "user_friends": user_friends,

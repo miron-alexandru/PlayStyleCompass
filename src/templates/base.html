@@ -71,14 +71,11 @@
             {% trans "More" %}
           </a>
           <div class="dropdown-container dropdown-menu">
-            <a class="dropdown-item" href="{% url 'playstyle_compass:user_reviews'%}">
-              {% trans "My Reviews" %}
+            <a class="dropdown-item" href="{% url 'playstyle_compass:singleplayer_games'%}">
+              {% trans "Single-player Games" %}
             </a>
-            <a class="dropdown-item" href="{% url 'playstyle_compass:view_franchises'%}">
-              {% trans "Franchises" %}
-            </a>
-            <a class="dropdown-item" href="{% url 'playstyle_compass:characters'%}">
-              {% trans "Characters" %}
+            <a class="dropdown-item" href="{% url 'playstyle_compass:multiplayer_games'%}">
+              {% trans "Multiplayer Games" %}
             </a>
             <a class="dropdown-item" href="{% url 'playstyle_compass:top_rated_games'%}">
               {% trans "Top Rated Games" %}
@@ -86,11 +83,14 @@
             <a class="dropdown-item" href="{% url 'playstyle_compass:upcoming_games'%}">
               {% trans "Upcoming Games" %}
             </a>
-            <a class="dropdown-item" href="{% url 'playstyle_compass:singleplayer_games'%}">
-              {% trans "Single-player Games" %}
+            <a class="dropdown-item" href="{% url 'playstyle_compass:view_franchises'%}">
+              {% trans "Franchises" %}
             </a>
-            <a class="dropdown-item" href="{% url 'playstyle_compass:multiplayer_games'%}">
-              {% trans "Multiplayer Games" %}
+            <a class="dropdown-item" href="{% url 'playstyle_compass:characters'%}">
+              {% trans "Characters" %}
+            </a>
+            <a class="dropdown-item" href="{% url 'playstyle_compass:user_reviews'%}">
+              {% trans "My Reviews" %}
             </a>
           </div>
         </li>

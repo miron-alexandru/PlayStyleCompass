@@ -33,7 +33,7 @@ from misc_functions import (
 
 # Create Games
 youtube = googleapiclient.discovery.build("youtube", "v3", developerKey=GOOGLE_API_KEY)
-#game_ids = fetch_game_ids_by_platforms(platform_ids, API_KEY, offset=25, limit=5)
+#game_ids = fetch_game_ids_by_platforms(platform_ids, API_KEY, offset=1, limit=5)
 #create_games_data_db(game_ids, youtube)
 
 guids = ["3015-6130", "3015-322"]
