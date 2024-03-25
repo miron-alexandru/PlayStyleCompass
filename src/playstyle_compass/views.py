@@ -1038,12 +1038,14 @@ def get_games_and_context(request, game_mode):
     game_ids = [game.game_id for game in games_query]
     games = Game.objects.filter(guid__in=game_ids)
     games = calculate_game_score(games)
+    games = paginate_matching_games(request, games)
 
     context = {
         "page_title": ("Single-player" if game_mode == "Singleplayer" else "Multiplayer") + " Games :: PlayStyle Compass",
         "games": games,
         "user_preferences": user_preferences,
         "user_friends": user_friends,
+        "pagination": True,
     }
 
     return context

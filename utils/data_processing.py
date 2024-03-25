@@ -385,7 +385,7 @@ def parse_game_modes_data(game, game_mode):
         game_mode
     )
 
-def create_game_modes_data(guids, mode_strings, youtube_api_client=None):
+def create_game_modes_data(guids, mode_strings, youtube_api_client=None, num_games=10, offset=0):
     """Insert game modes data into the database."""
     with sqlite3.connect("games_data.db") as db_connection:
         cursor = db_connection.cursor()
@@ -394,30 +394,16 @@ def create_game_modes_data(guids, mode_strings, youtube_api_client=None):
 
         for guid, mode_string in zip(guids, mode_strings):
             game_modes_data = fetch_data_by_guid(guid, API_KEY, 'concept', field_list=["games"])
-
-            for game in game_modes_data['games']:
-                (
-                    game_id,
-                    game_name,
-                    game_mode,
-                ) = parse_game_modes_data(game, mode_string)
-
-                game_mode_values = (
-                    game_id,
-                    game_name,
-                    game_mode,
-                )
-                cursor.execute(insert_game_modes_sql, game_mode_values)
-
-                db_connection.commit()
-
             game_ids = []
 
             for game in game_modes_data['games']:
                 game_id = extract_game_data(game, "id")
                 game_ids.append("3030-" + str(game_id))
 
-            for game_id in game_ids[:10]:
+            offset = min(offset, len(game_ids))
+            num_games = min(num_games, len(game_ids) - offset)
+
+            for game_id in game_ids[offset:offset+num_games]:
                 (
                     guid,
                     title,

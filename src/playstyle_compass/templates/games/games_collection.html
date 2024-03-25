@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load i18n %}
 
 {% block page_header %}
 <div class="header">
@@ -17,6 +18,27 @@
 {% endfor %}
 {% else %}
 <p class="text-center">{% block empty_message %}{% endblock empty_message %}</p>
+{% endif %}
+
+{% if pagination %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/playstyle_compass/pagination.css' %}">
+<div class="pagination">
+  <span class="step-links">
+    {% if games.has_previous %}
+    <a href="?page=1">&laquo; {% trans "First" %}</a>
+    <a href="?page={{ games.previous_page_number }}">{% trans "Previous" %}</a>
+    {% endif %}
+
+    <span class="current-page">
+      {% trans "Page" %} {{ games.number }} {% trans "of" %} {{ games.paginator.num_pages }}
+    </span>
+
+    {% if games.has_next %}
+    <a href="?page={{ games.next_page_number }}">{% trans "Next" %}</a>
+    <a href="?page={{ games.paginator.num_pages }}">{% trans "Last" %} &raquo;</a>
+    {% endif %}
+  </span>
+</div>
 {% endif %}
 
 <script src="{% static 'js/playstyle_compass/share_game.js' %}" defer></script>

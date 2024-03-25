@@ -41,4 +41,4 @@ youtube = googleapiclient.discovery.build("youtube", "v3", developerKey=GOOGLE_A
 # Obtain game modes data
 guids = ["3015-6130", "3015-322"]
 mode_strings = ["Singleplayer", "Multiplayer"]
-create_game_modes_data(guids, mode_strings, youtube)
+create_game_modes_data(guids, mode_strings, youtube, num_games=20, offset=90)
