@@ -4,6 +4,7 @@ from django.utils import timezone
 class UserTimezoneMiddleware:
     """Middleware to update the user's timezone based on the detected timezone
     stored in the session."""
+
     def __init__(self, get_response):
         self.get_response = get_response
         return
@@ -12,7 +13,7 @@ class UserTimezoneMiddleware:
         response = self.get_response(request)
 
         if request.user.is_authenticated:
-            if request.session.get('detected_tz'):
+            if request.session.get("detected_tz"):
                 tz = timezone.get_current_timezone()
                 if tz:
                     tz = str(tz)

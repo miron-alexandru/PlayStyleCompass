@@ -114,11 +114,12 @@ def check_platform(platform, user_platforms):
     else:
         return platform in user_platforms
 
+
 @register.filter
 def convert_to_user_timezone(timestamp, user_timezone):
     timestamp = django_timezone.localtime(timestamp)
     user_tz = timezone(user_timezone)
     timestamp_in_user_tz = timestamp.astimezone(user_tz)
-    formatted_timestamp = timestamp_in_user_tz.strftime('%B %d, %Y, %I:%M %p')
+    formatted_timestamp = timestamp_in_user_tz.strftime("%B %d, %Y, %I:%M %p")
 
     return formatted_timestamp

@@ -1,6 +1,5 @@
 """The "data_processing" module contains functions for parsing and creating/managing the database. """
 
-
 import uuid
 import sys
 import sqlite3
@@ -32,7 +31,7 @@ from data_extraction import (
     get_franchise_games,
     get_franchise_games_count,
     extract_game_data,
-    )
+)
 
 from sql_queries import (
     create_table_sql,
@@ -52,7 +51,6 @@ from sql_queries import (
     insert_game_modes_sql,
     remove_duplicate_game_modes,
 )
-
 
 
 def parse_game_data(game_id, youtube_api_client):
@@ -373,19 +371,19 @@ def create_characters_data(characters_ids):
 
         db_connection.commit()
 
+
 def parse_game_modes_data(game, game_mode):
     """Parse game modes data."""
 
     game_id = extract_game_data(game, "id")
     game_name = extract_game_data(game, "name")
 
-    return (
-        game_id,
-        game_name,
-        game_mode
-    )
+    return (game_id, game_name, game_mode)
 
-def create_game_modes_data(guids, mode_strings, youtube_api_client=None, num_games=10, offset=0):
+
+def create_game_modes_data(
+    guids, mode_strings, youtube_api_client=None, num_games=10, offset=0
+):
     """Insert game modes data into the database."""
     with sqlite3.connect("games_data.db") as db_connection:
         cursor = db_connection.cursor()
@@ -393,17 +391,19 @@ def create_game_modes_data(guids, mode_strings, youtube_api_client=None, num_gam
         db_connection.commit()
 
         for guid, mode_string in zip(guids, mode_strings):
-            game_modes_data = fetch_data_by_guid(guid, API_KEY, 'concept', field_list=["games"])
+            game_modes_data = fetch_data_by_guid(
+                guid, API_KEY, "concept", field_list=["games"]
+            )
             game_ids = []
 
-            for game in game_modes_data['games']:
+            for game in game_modes_data["games"]:
                 game_id = extract_game_data(game, "id")
                 game_ids.append("3030-" + str(game_id))
 
             offset = min(offset, len(game_ids))
             num_games = min(num_games, len(game_ids) - offset)
 
-            for game_id in game_ids[offset:offset+num_games]:
+            for game_id in game_ids[offset : offset + num_games]:
                 (
                     guid,
                     title,

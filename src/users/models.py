@@ -160,7 +160,7 @@ class Notification(models.Model):
     is_read = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     timestamp = models.DateTimeField(blank=True, null=True)
-    
+
     def save(self, *args, **kwargs):
         if self.timestamp is None:
             self.timestamp = timezone.now().isoformat()

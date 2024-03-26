@@ -74,6 +74,8 @@ urlpatterns = [
         views.autocomplete_characters,
         name="autocomplete_characters",
     ),
-    path("singleplayer-games/", views.view_singleplayer_games, name="singleplayer_games"),
+    path(
+        "singleplayer-games/", views.view_singleplayer_games, name="singleplayer_games"
+    ),
     path("multiplayer-games/", views.view_multiplayer_games, name="multiplayer_games"),
 ]

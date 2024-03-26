@@ -1,13 +1,10 @@
 """The "API_functions" module provides functions for making API calls and fetching data."""
 
-
 import datetime
 from datetime import datetime
 import requests
 
 from constants import BASE_URL, headers, API_KEY
-
-
 
 
 def fetch_game_ids_by_platforms(

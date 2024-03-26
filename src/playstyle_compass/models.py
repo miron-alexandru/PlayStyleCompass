@@ -259,6 +259,7 @@ class Character(models.Model):
 
 class GameModes(models.Model):
     """Represents a game that is tied to a certain game mode."""
+
     id = models.BigAutoField(primary_key=True)
     game_id = models.CharField(max_length=100)
     game_name = models.CharField(max_length=100)

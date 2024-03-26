@@ -1,6 +1,14 @@
 from django.contrib import admin
 
-from .models import UserPreferences, Game, Review, SharedGame, Franchise, Character, GameModes
+from .models import (
+    UserPreferences,
+    Game,
+    Review,
+    SharedGame,
+    Franchise,
+    Character,
+    GameModes,
+)
 
 admin.site.register(UserPreferences)
 admin.site.register(Game)

@@ -16,7 +16,15 @@ from django.utils.translation import gettext as _
 
 from utils.constants import genres, all_platforms, all_themes
 from users.models import Notification
-from .models import UserPreferences, Game, Review, SharedGame, Franchise, Character, GameModes
+from .models import (
+    UserPreferences,
+    Game,
+    Review,
+    SharedGame,
+    Franchise,
+    Character,
+    GameModes,
+)
 from .forms import ReviewForm
 
 from .helper_functions.views_helpers import (
@@ -1041,7 +1049,10 @@ def get_games_and_context(request, game_mode):
     games = paginate_matching_games(request, games)
 
     context = {
-        "page_title": ("Single-player" if game_mode == "Singleplayer" else "Multiplayer") + " Games :: PlayStyle Compass",
+        "page_title": (
+            "Single-player" if game_mode == "Singleplayer" else "Multiplayer"
+        )
+        + " Games :: PlayStyle Compass",
         "games": games,
         "user_preferences": user_preferences,
         "user_friends": user_friends,
@@ -1053,13 +1064,13 @@ def get_games_and_context(request, game_mode):
 
 def view_multiplayer_games(request):
     """Display multiplayer games."""
-    context = get_games_and_context(request, 'Multiplayer')
+    context = get_games_and_context(request, "Multiplayer")
 
-    return render(request, 'games/multiplayer_games.html', context)
+    return render(request, "games/multiplayer_games.html", context)
 
 
 def view_singleplayer_games(request):
     """Display single-player games."""
-    context = get_games_and_context(request, 'Singleplayer')
+    context = get_games_and_context(request, "Singleplayer")
 
-    return render(request, 'games/singleplayer_games.html', context)
+    return render(request, "games/singleplayer_games.html", context)

@@ -180,7 +180,9 @@ def calculate_game_score(games, multiple_games=True):
             game_reviews = game_reviews_dict.get(game.guid, [])
             total_score = sum(int(review.score) for review in game_reviews)
             total_reviews = len(game_reviews)
-            average_score = round(total_score / total_reviews, 2) if total_reviews > 0 else 0
+            average_score = (
+                round(total_score / total_reviews, 2) if total_reviews > 0 else 0
+            )
 
             game.average_score = average_score
             game.total_reviews = total_reviews
