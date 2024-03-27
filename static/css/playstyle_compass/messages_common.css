@@ -64,6 +64,8 @@
 }
 
 .user-info {
+  display: flex;
+  align-items: center;
   font-weight: bold;
   color: black;
 }
@@ -93,6 +95,7 @@ p {
   font-weight: bold;
   color: #555;
   transition: color 0.3s ease-in-out;
+  margin-left: 4px;
 }
 
 .user-name:hover {
@@ -180,4 +183,38 @@ label[for="sort-order"] {
 
 .action-buttons {
   margin-bottom: 15px;
+}
+
+.reply-button {
+  display: inline-block;
+  padding: 2px 4px;
+  margin-left: 6px;
+  font-size: 10px;
+  background-color: #444444;
+  color: #F0F0F0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.reply-button:hover {
+  background-color: #333333;
+  text-decoration: none!important;
+  color: #F0F0F0;
+}
+
+.arrow {
+  top: 50%;
+  left: calc(100% + 10px);
+  width: 0;
+  height: 0;
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  border-left: 8px solid white;
+  margin-left: 6px;
+}
+
+.message-checkbox {
+  margin-right: 0.24rem;
 }

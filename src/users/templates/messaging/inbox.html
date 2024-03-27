@@ -46,10 +46,13 @@
       {% for received_message in messages_received %}
       <div class="message-card">
         <div class="message-header">
-          <input type="checkbox" name="received_messages[]" value="{{ received_message.id }}" class="message-checkbox">
-          <span class="user-info"><strong>{% trans "From:" %} </strong><a
-              href="{% url 'users:view_profile' profile_name=received_message.sender.userprofile.profile_name %}"
-              class="user-name">{{ received_message.sender.userprofile.profile_name }}</a></span>
+          <span class="user-info">
+            <input type="checkbox" name="received_messages[]" value="{{ received_message.id }}" class="message-checkbox">
+            <strong>{% trans "From:" %} </strong><a href="{% url 'users:view_profile' profile_name=received_message.sender.userprofile.profile_name %}"
+              class="user-name">{{ received_message.sender.userprofile.profile_name }}</a>
+              <div class="arrow"></div>
+              <a href="{% url 'users:send_message' received_message.sender.userprofile.id %}" class="reply-button">Reply</a>
+          </span>
           <p class="subject"><strong>{% trans "Subject:" %}</strong> {{received_message.title}}</p>
           <p class="timestamp"><strong>{% trans "Date:" %}</strong> {{ received_message.timestamp|convert_to_user_timezone:received_message.receiver.userprofile.timezone }}</p>
         </div>
@@ -68,10 +71,11 @@
       {% for sent_message in messages_sent %}
       <div class="message-card">
         <div class="message-header">
-          <input type="checkbox" name="sent_messages[]" value="{{ sent_message.id }}" class="message-checkbox">
-          <span class="user-info"><strong>To: </strong><a
-              href="{% url 'users:view_profile' profile_name=sent_message.receiver.userprofile.profile_name %}"
-              class="user-name">{{ sent_message.receiver.userprofile.profile_name }}</a></span>
+          <span class="user-info">
+            <input type="checkbox" name="sent_messages[]" value="{{ sent_message.id }}" class="message-checkbox">
+            <strong>Sent to: </strong><a href="{% url 'users:view_profile' profile_name=sent_message.receiver.userprofile.profile_name %}"
+              class="user-name">{{ sent_message.receiver.userprofile.profile_name }}</a>
+            </span>
           <p class="subject"><strong>{% trans "Subject:" %}</strong> {{sent_message.title}}</p>
           <p class="timestamp"><strong>{% trans "Date:" %}</strong> {{ sent_message.timestamp|convert_to_user_timezone:sent_message.sender.userprofile.timezone }}</p>
         </div>

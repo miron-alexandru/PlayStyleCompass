@@ -46,9 +46,9 @@
       {% for received_game in games_received %}
       <div class="message-card">
         <div class="message-header">
-          <input type="checkbox" name="received_games[]" value="{{ received_game.id }}" class="message-checkbox">
-          <span class="user-info"><strong>From: </strong><a
-              href="{% url 'users:view_profile' profile_name=received_game.sender.userprofile.profile_name %}"
+          <span class="user-info">
+            <input type="checkbox" name="received_games[]" value="{{ received_game.id }}" class="message-checkbox">
+            <strong>From: </strong><a href="{% url 'users:view_profile' profile_name=received_game.sender.userprofile.profile_name %}"
               class="user-name">{{ received_game.sender.userprofile.profile_name }}</a></span>
           <p class="timestamp"><strong>{% trans "Date:" %}</strong> {{ received_game.timestamp|convert_to_user_timezone:received_game.receiver.userprofile.timezone }}</p>
         </div>
@@ -67,9 +67,9 @@
       {% for shared_game in games_shared %}
       <div class="message-card">
         <div class="message-header">
+          <span class="user-info">
           <input type="checkbox" name="shared_games[]" value="{{ shared_game.id }}" class="message-checkbox">
-          <span class="user-info"><strong>To: </strong><a
-              href="{% url 'users:view_profile' profile_name=shared_game.receiver.userprofile.profile_name %}"
+            <strong>Sent to:</strong><a href="{% url 'users:view_profile' profile_name=shared_game.receiver.userprofile.profile_name %}"
               class="user-name">{{ shared_game.receiver.userprofile.profile_name }}</a></span>
           <p class="timestamp"><strong>{% trans "Date:" %}</strong> {{ shared_game.timestamp|convert_to_user_timezone:shared_game.sender.userprofile.timezone }}</p>
         </div>
