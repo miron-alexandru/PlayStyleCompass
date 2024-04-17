@@ -7,6 +7,8 @@ from .models import (
     FriendRequest,
     Notification,
     Message,
+    QuizQuestion,
+    QuizUserResponse
 )
 
 
@@ -16,3 +18,5 @@ admin.site.register(FriendList)
 admin.site.register(FriendRequest)
 admin.site.register(Message)
 admin.site.register(Notification)
+admin.site.register(QuizQuestion)
+admin.site.register(QuizUserResponse)

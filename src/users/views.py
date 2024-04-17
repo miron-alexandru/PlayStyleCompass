@@ -52,10 +52,11 @@ from .forms import (
     CustomAuthenticationForm,
     ProfileUpdateForm,
     MessageForm,
+    QuizForm
 )
 
 from .misc.helper_functions import are_friends
-from .models import UserProfile, FriendList, FriendRequest, Message, Notification
+from .models import UserProfile, FriendList, FriendRequest, Message, Notification, QuizQuestion, QuizUserResponse
 from .tokens import account_activation_token
 
 
@@ -1075,3 +1076,28 @@ def check_authentication(request):
         return JsonResponse({"authenticated": True})
     else:
         return JsonResponse({"authenticated": False})
+
+
+@login_required
+def quiz_view(request):
+    """View used to display questions and submit answers."""
+    questions = QuizQuestion.objects.all()
+    if request.method == 'POST':
+        form = QuizForm(request.POST, questions=questions)
+        if form.is_valid():
+            user = request.user
+            for question in questions:
+                option_selected = form.cleaned_data.get(str(question.id))
+                if option_selected:
+                    response_text = getattr(question, option_selected)
+                    QuizUserResponse.objects.create(user=user, question=question, response_text=response_text)
+            return redirect('users:gaming_quiz')
+    else:
+        form = QuizForm(questions=questions)
+
+    context = {
+        "questions": questions,
+        "form": form,
+    }
+
+    return render(request, 'general/quiz_template.html', context)

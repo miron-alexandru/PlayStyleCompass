@@ -171,3 +171,27 @@ class Notification(models.Model):
         return f"Notification(id={self.id}, user={self.user.username}, message='{self.message}', is_read={self.is_read}, is_active={self.is_active})"
 
         super().save(*args, **kwargs)
+
+
+class QuizQuestion(models.Model):
+    """Model used to store quiz questions."""
+    name = models.CharField(max_length=100)
+    question_text = models.CharField(max_length=200)
+    option1 = models.CharField(max_length=100, default="")
+    option2 = models.CharField(max_length=100, default="")
+    option3 = models.CharField(max_length=100, default="")
+    option4 = models.CharField(max_length=100, default="")
+
+    def __str__(self):
+        return f"{self.name}"
+
+
+class QuizUserResponse(models.Model):
+    """Model used to store responses from users to a quiz question."""
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    question = models.ForeignKey(QuizQuestion, on_delete=models.CASCADE)
+    response_text = models.CharField(max_length=200, default="")
+
+    def __str__(self):
+        return f"Response from {self.user} for the question {self.question.name}"
+

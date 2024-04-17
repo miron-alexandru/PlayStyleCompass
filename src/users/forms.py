@@ -12,7 +12,7 @@ from django.contrib.auth.forms import (
 from django.contrib.auth.models import User
 from django_recaptcha.fields import ReCaptchaField
 
-from .models import UserProfile, ContactMessage, Message
+from .models import UserProfile, ContactMessage, Message, QuizUserResponse, QuizQuestion
 from django.utils.translation import gettext_lazy as _
 
 
@@ -369,6 +369,7 @@ class ProfileUpdateForm(forms.ModelForm):
 
 
 class MessageForm(forms.ModelForm):
+    """Message form."""
     class Meta:
         model = Message
         fields = ["title", "message"]
@@ -378,3 +379,22 @@ class MessageForm(forms.ModelForm):
             ),
             "message": forms.Textarea(attrs={"placeholder": ""}),
         }
+
+
+class QuizForm(forms.Form):
+    """QuizForm used to display questions with their options."""
+    def __init__(self, *args, **kwargs):
+        questions = kwargs.pop('questions')
+        super(QuizForm, self).__init__(*args, **kwargs)
+        for question in questions:
+            choices = [
+                ('option1', question.option1),
+                ('option2', question.option2),
+                ('option3', question.option3),
+                ('option4', question.option4),
+            ]
+            self.fields[str(question.id)] = forms.ChoiceField(
+                label=question.question_text,
+                choices=choices,
+                widget=forms.RadioSelect(attrs={'class': 'form-check-input'})
+            )
