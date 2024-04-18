@@ -1,6 +1,7 @@
 """Defines views."""
 
 from datetime import timedelta
+import random
 import json
 
 from django.shortcuts import render, redirect, get_object_or_404
@@ -1081,16 +1082,28 @@ def check_authentication(request):
 @login_required
 def quiz_view(request):
     """View used to display questions and submit answers."""
-    questions = QuizQuestion.objects.all()
+    # TODO
+    #pks = list(QuizQuestion.objects.values_list('pk', flat=True))
+    #random_pks = random.sample(pks, 2)
+    #questions = QuizQuestion.objects.filter(pk__in=random_pks)
+    questions = QuizQuestion.objects.all()[:10]
+    user = request.user
+
     if request.method == 'POST':
         form = QuizForm(request.POST, questions=questions)
         if form.is_valid():
-            user = request.user
             for question in questions:
                 option_selected = form.cleaned_data.get(str(question.id))
                 if option_selected:
-                    response_text = getattr(question, option_selected)
-                    QuizUserResponse.objects.create(user=user, question=question, response_text=response_text)
+                    # Check if the user has already responded to this question
+                    existing_response = QuizUserResponse.objects.filter(user=user, question=question).first()
+                    if existing_response:
+                        # Update existing response
+                        existing_response.response_text = getattr(question, option_selected)
+                        existing_response.save()
+                    else:
+                        # Create new response
+                        QuizUserResponse.objects.create(user=user, question=question, response_text=getattr(question, option_selected))
             return redirect('users:gaming_quiz')
     else:
         form = QuizForm(questions=questions)
