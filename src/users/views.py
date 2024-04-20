@@ -16,7 +16,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
 from django.contrib import messages
 from django.core.mail import send_mail
-from django.core.exceptions import ObjectDoesNotExist
+from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from django.conf import settings
 from django.contrib.auth.views import LoginView
 
@@ -53,7 +53,6 @@ from .forms import (
     CustomAuthenticationForm,
     ProfileUpdateForm,
     MessageForm,
-    QuizForm
 )
 
 from .misc.helper_functions import are_friends
@@ -1081,36 +1080,39 @@ def check_authentication(request):
 
 @login_required
 def quiz_view(request):
-    """View used to display questions and submit answers."""
-    # TODO
-    #pks = list(QuizQuestion.objects.values_list('pk', flat=True))
-    #random_pks = random.sample(pks, 2)
-    #questions = QuizQuestion.objects.filter(pk__in=random_pks)
-    questions = QuizQuestion.objects.all()[:10]
-    user = request.user
-
+    """View used for users to take a Gaming Preference Quiz."""
     if request.method == 'POST':
-        form = QuizForm(request.POST, questions=questions)
-        if form.is_valid():
-            for question in questions:
-                option_selected = form.cleaned_data.get(str(question.id))
-                if option_selected:
-                    # Check if the user has already responded to this question
-                    existing_response = QuizUserResponse.objects.filter(user=user, question=question).first()
-                    if existing_response:
-                        # Update existing response
-                        existing_response.response_text = getattr(question, option_selected)
-                        existing_response.save()
-                    else:
-                        # Create new response
-                        QuizUserResponse.objects.create(user=user, question=question, response_text=getattr(question, option_selected))
-            return redirect('users:gaming_quiz')
+        user = request.user
+        question_ids = [
+            int(key.replace('question_', ''))
+            for key in request.POST if key.startswith('question_')
+        ]
+        questions = QuizQuestion.objects.filter(pk__in=question_ids)
+
+        for question in questions:
+            input_name = f"question_{question.id}"
+            option_selected = request.POST.get(input_name)
+
+            if option_selected and option_selected in ['option1', 'option2', 'option3', 'option4']:
+                existing_response, created = QuizUserResponse.objects.get_or_create(
+                    user=user, question=question,
+                    defaults={'response_text': getattr(question, option_selected)}
+                )
+
+                if not created:
+                    existing_response.response_text = getattr(question, option_selected)
+                    existing_response.save()
+            else:
+                raise ValidationError("Invalid option selected")
+        return redirect('users:gaming_quiz')
+
     else:
-        form = QuizForm(questions=questions)
+        questions = QuizQuestion.objects.order_by('?')[:2]
 
     context = {
-        "questions": questions,
-        "form": form,
-    }
+        'page_title': 'PlayStyleCompass :: Preference Quiz',
+        'questions': questions
+        }
 
     return render(request, 'general/quiz_template.html', context)
+
