@@ -1,6 +1,13 @@
 # PlayStyle Compass: Your Personalized Video Game Guide
+- PlayStyle Compass is a personal guide to discovering video games tailored to your preferences, gaming history, and genre interests. Explore a vast library of games, franchises, and beloved characters, all tailored to your unique preferences and interests.
 
-### PlayStyle Compass is a personal guide to discovering video games tailored to your preferences, gaming history, and genre interests.
+- Craft your own playstyle based on your interests and take our preference quiz for tailored game recommendations. Our detailed game data includes videos, descriptions, and everything you need to make informed decisions about your next gaming adventure.
+
+- Create personalized lists of your favorite games and ones you can't wait to dive into. See who shares your gaming style and connect with like-minded players to discover new favorites together.
+
+- Write and read reviews from fellow gamers, sharing your thoughts and insights on your favorite titles. Connect with friends, create friend lists, send messages, share your gaming experiences, and many other things to be discovered.
+
+
 
 ### How to run the website locally:
 #### Option one:
