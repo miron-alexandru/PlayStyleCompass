@@ -17,27 +17,22 @@
 
 <form method="post">
     {% csrf_token %}
-    {% for question in questions %}
+    {% for field in form %}
     <div>
-        <label class="question">{{ question.question_text }}</label>
-        <ul class="errors">
-            {% for error in form.errors %}
-                <li>{{ error }}</li>
-            {% endfor %}
-        </ul>
+        <label class="question">{{ field.label }}</label>
+        {% if field.errors %}
+                <ul class="errors">
+                    {% for error in field.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
         <div>
+            {% for choice in field %}
             <label class="form-check-inline">
-                <input type="radio" name="question_{{ question.id }}" value="option1"> {{ question.option1 }}
+                {{ choice }}
             </label>
-            <label class="form-check-inline">
-                <input type="radio" name="question_{{ question.id }}" value="option2"> {{ question.option2 }}
-            </label>
-            <label class="form-check-inline">
-                <input type="radio" name="question_{{ question.id }}" value="option3"> {{ question.option3 }}
-            </label>
-            <label class="form-check-inline">
-                <input type="radio" name="question_{{ question.id }}" value="option4"> {{ question.option4 }}
-            </label>
+            {% endfor %}
         </div>
     </div>
     {% endfor %}

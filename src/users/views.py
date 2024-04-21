@@ -53,6 +53,7 @@ from .forms import (
     CustomAuthenticationForm,
     ProfileUpdateForm,
     MessageForm,
+    QuizForm,
 )
 
 from .misc.helper_functions import are_friends
@@ -1080,39 +1081,36 @@ def check_authentication(request):
 
 @login_required
 def quiz_view(request):
-    """View used for users to take a Gaming Preference Quiz."""
+    """View used to display quiz questions and processes submitted answers."""
     if request.method == 'POST':
         user = request.user
-        question_ids = [
-            int(key.replace('question_', ''))
-            for key in request.POST if key.startswith('question_')
-        ]
-        questions = QuizQuestion.objects.filter(pk__in=question_ids)
+        # Extract question IDs from form keys and retrieve corresponding questions
+        questions = QuizQuestion.objects.filter(pk__in=[int(key.replace('question_', '')) for key in request.POST if key.startswith('question_')])
+        form = QuizForm(request.POST, questions=questions)
 
-        for question in questions:
-            input_name = f"question_{question.id}"
-            option_selected = request.POST.get(input_name)
+        if form.is_valid():
+            for question in questions:
+                option_selected = form.cleaned_data.get(f"question_{question.id}")
 
-            if option_selected and option_selected in ['option1', 'option2', 'option3', 'option4']:
-                existing_response, created = QuizUserResponse.objects.get_or_create(
-                    user=user, question=question,
-                    defaults={'response_text': getattr(question, option_selected)}
-                )
-
-                if not created:
-                    existing_response.response_text = getattr(question, option_selected)
-                    existing_response.save()
-            else:
-                raise ValidationError("Invalid option selected")
-        return redirect('users:gaming_quiz')
-
+                if option_selected in ['option1', 'option2', 'option3', 'option4']:
+                    # If the selected option is valid update or create user response for the question
+                    QuizUserResponse.objects.update_or_create(
+                        user=user, question=question,
+                        defaults={'response_text': getattr(question, option_selected)}
+                    )
+                else:
+                    raise ValidationError('Invalid option selected')
+            return redirect('users:gaming_quiz')
     else:
-        questions = QuizQuestion.objects.order_by('?')[:2]
+        questions = QuizQuestion.objects.order_by('?')[:10]
+        form = QuizForm(questions=questions)
 
     context = {
         'page_title': 'PlayStyleCompass :: Preference Quiz',
-        'questions': questions
-        }
+        'questions': questions, 
+        'form': form
+    }
 
     return render(request, 'general/quiz_template.html', context)
+
 
