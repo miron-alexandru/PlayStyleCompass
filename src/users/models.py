@@ -17,6 +17,7 @@ class UserProfile(models.Model):
     )
     profile_name = models.CharField(max_length=15, blank=True, null=True)
     name_last_update_time = models.DateTimeField(null=True, blank=True)
+    quiz_taken_date = models.DateTimeField(null=True, blank=True)
     email_confirmed = models.BooleanField(default=False)
     timezone = models.CharField(max_length=50)
 
@@ -175,6 +176,7 @@ class Notification(models.Model):
 
 class QuizQuestion(models.Model):
     """Model used to store quiz questions."""
+
     name = models.CharField(max_length=100)
     question_text = models.CharField(max_length=200)
     option1 = models.CharField(max_length=100, default="")
@@ -188,10 +190,10 @@ class QuizQuestion(models.Model):
 
 class QuizUserResponse(models.Model):
     """Model used to store responses from users to a quiz question."""
+
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     question = models.ForeignKey(QuizQuestion, on_delete=models.CASCADE)
     response_text = models.CharField(max_length=200, default="")
 
     def __str__(self):
         return f"Response from {self.user} for the question {self.question.name}"
-

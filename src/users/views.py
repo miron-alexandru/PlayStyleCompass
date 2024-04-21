@@ -56,8 +56,16 @@ from .forms import (
     QuizForm,
 )
 
-from .misc.helper_functions import are_friends
-from .models import UserProfile, FriendList, FriendRequest, Message, Notification, QuizQuestion, QuizUserResponse
+from .misc.helper_functions import are_friends, check_quiz_time
+from .models import (
+    UserProfile,
+    FriendList,
+    FriendRequest,
+    Message,
+    Notification,
+    QuizQuestion,
+    QuizUserResponse,
+)
 from .tokens import account_activation_token
 
 
@@ -86,14 +94,16 @@ class ProfileUpdateView(LoginRequiredMixin, UpdateView):
         if last_update_time := self.request.user.userprofile.name_last_update_time:
             one_hour_ago = timezone.now() - timedelta(hours=1)
             if last_update_time > one_hour_ago:
-                messages.error(
-                    self.request,
-                    _("You can only update your profile name once per hour."),
-                )
+                time_remaining = last_update_time - one_hour_ago
+                minutes_remaining = int(time_remaining.total_seconds() // 60)
+                seconds_remaining = int(time_remaining.total_seconds() % 60)
+                error_message = _(
+                    "You can only update your profile name once per hour. Please try again in {} minutes and {} seconds."
+                ).format(minutes_remaining, seconds_remaining)
+                messages.error(self.request, error_message)
                 return redirect(
-                    request.META.get("HTTP_REFERER", "playstyle_compass:index")
+                    self.request.META.get("HTTP_REFERER", "playstyle_compass:index")
                 )
-
         return super().dispatch(request, *args, **kwargs)
 
     def update_user_reviews(self, new_profile_name):
@@ -1082,35 +1092,59 @@ def check_authentication(request):
 @login_required
 def quiz_view(request):
     """View used to display quiz questions and processes submitted answers."""
-    if request.method == 'POST':
-        user = request.user
+    user = request.user
+
+    if request.method == "POST":
         # Extract question IDs from form keys and retrieve corresponding questions
-        questions = QuizQuestion.objects.filter(pk__in=[int(key.replace('question_', '')) for key in request.POST if key.startswith('question_')])
+        questions = QuizQuestion.objects.filter(
+            pk__in=[
+                int(key.replace("question_", ""))
+                for key in request.POST
+                if key.startswith("question_")
+            ]
+        )
         form = QuizForm(request.POST, questions=questions)
 
         if form.is_valid():
             for question in questions:
                 option_selected = form.cleaned_data.get(f"question_{question.id}")
 
-                if option_selected in ['option1', 'option2', 'option3', 'option4']:
+                if option_selected in ["option1", "option2", "option3", "option4"]:
                     # If the selected option is valid update or create user response for the question
                     QuizUserResponse.objects.update_or_create(
-                        user=user, question=question,
-                        defaults={'response_text': getattr(question, option_selected)}
+                        user=user,
+                        question=question,
+                        defaults={"response_text": getattr(question, option_selected)},
                     )
                 else:
-                    raise ValidationError('Invalid option selected')
-            return redirect('users:gaming_quiz')
+                    raise ValidationError("Invalid option selected")
+
+            user.userprofile.quiz_taken_date = timezone.now()
+            user.userprofile.save()
+
+            messages.success(
+                request,
+                _(
+                    "Thank you for completing the Preference Quiz! Your responses will help us provide personalized game recommendations tailored just for you."
+                ),
+            )
+            return redirect("playstyle_compass:index")
     else:
-        questions = QuizQuestion.objects.order_by('?')[:10]
+        hours_remaining, minutes_remaining = check_quiz_time(user)
+        if hours_remaining is not None:
+            error_message = _(
+                "You can only take the quiz once per day. Please try again in {} hours and {} minutes."
+            ).format(hours_remaining, minutes_remaining)
+            messages.error(request, error_message)
+            return redirect("playstyle_compass:index")
+
+        questions = QuizQuestion.objects.order_by("?")[:10]
         form = QuizForm(questions=questions)
 
     context = {
-        'page_title': 'PlayStyleCompass :: Preference Quiz',
-        'questions': questions, 
-        'form': form
+        "page_title": "PlayStyleCompass :: Preference Quiz",
+        "questions": questions,
+        "form": form,
     }
 
-    return render(request, 'general/quiz_template.html', context)
-
-
+    return render(request, "general/quiz_template.html", context)

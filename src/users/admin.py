@@ -8,7 +8,7 @@ from .models import (
     Notification,
     Message,
     QuizQuestion,
-    QuizUserResponse
+    QuizUserResponse,
 )
 
 

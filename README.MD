@@ -30,6 +30,9 @@ Websites for .env configuration: [GiantBomb](https://www.giantbomb.com/) / [Send
 <details>
 <summary><h2>PlayStyle Compass Changelog</h2></summary>
 
+### Version v1.8:
+* Implemented Preference Quiz: Users are able to take a quiz with different questions related to gaming preferences and based on the responses to receive game recommendations.
+
 ### Version v1.7:
 * Implemented pages with Single-player and Multiplayer games.
 * Dates for notifications / messages are displayed based on the user timezone.
