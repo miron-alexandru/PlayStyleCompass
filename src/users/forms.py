@@ -2,6 +2,8 @@
 
 import os
 import re
+from io import BytesIO
+import uuid
 from PIL import Image
 from django import forms
 from django.contrib.auth.forms import (
@@ -9,10 +11,13 @@ from django.contrib.auth.forms import (
     PasswordChangeForm,
     AuthenticationForm,
 )
+
+from django.core.files.base import ContentFile
 from django.contrib.auth.models import User
 from django_recaptcha.fields import ReCaptchaField
 
 from .models import UserProfile, ContactMessage, Message, QuizUserResponse, QuizQuestion
+from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
 
@@ -274,12 +279,24 @@ class ProfilePictureForm(forms.ModelForm):
         instance = super().save(commit=False)
 
         if instance.profile_picture:
+            # Delete the old profile picture if it exists
+            self.delete_old_profile_picture(instance)
+
+            # Resize and save the new profile picture
             self.resize_image(instance.profile_picture)
 
         if commit:
             instance.save()
 
         return instance
+
+    def delete_old_profile_picture(self, instance):
+        """Delete the old profile picture if it exists."""
+        if instance.pk:
+            old_profile_picture = UserProfile.objects.get(pk=instance.pk).profile_picture
+            if old_profile_picture:
+                if os.path.isfile(old_profile_picture.path):
+                    os.remove(old_profile_picture.path)
 
     def resize_image(self, image_field):
         """Resize the image."""
@@ -292,20 +309,16 @@ class ProfilePictureForm(forms.ModelForm):
 
     def processed_image_to_file(self, image, image_field, original_name=None):
         """Convert a processed image to a file."""
-        from django.core.files.base import ContentFile
-        from io import BytesIO
-        import os
-        import uuid
 
         image_buffer = BytesIO()
         image.save(image_buffer, format="PNG")
 
         content_file = ContentFile(image_buffer.getvalue())
 
-        if original_name:
-            new_name = original_name
-        else:
-            new_name = f"{uuid.uuid4()}.png"
+        # Generate filename with timestamp and user's unique ID
+        timestamp = timezone.now().strftime("%Y.%m.%d.%H.%M")
+        user_id = self.instance.user.id
+        new_name = f"profile_picture_{timestamp}_{user_id}.png"
 
         image_field.save(new_name, content_file, save=False)
 

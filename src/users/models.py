@@ -19,7 +19,7 @@ class UserProfile(models.Model):
     name_last_update_time = models.DateTimeField(null=True, blank=True)
     quiz_taken_date = models.DateTimeField(null=True, blank=True)
     email_confirmed = models.BooleanField(default=False)
-    timezone = models.CharField(max_length=50)
+    timezone = models.CharField(max_length=50, null=True, blank=True)
 
     def clean(self):
         profile_name = self.profile_name
