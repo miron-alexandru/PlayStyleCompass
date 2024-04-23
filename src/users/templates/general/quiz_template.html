@@ -20,13 +20,6 @@
     {% for field in form %}
     <div>
         <label class="question">{{ field.label }}</label>
-        {% if field.errors %}
-                <ul class="errors">
-                    {% for error in field.errors %}
-                        <li>{{ error }}</li>
-                    {% endfor %}
-                </ul>
-            {% endif %}
         <div>
             {% for choice in field %}
             <label class="form-check-inline">
@@ -36,7 +29,7 @@
         </div>
     </div>
     {% endfor %}
-    <button type="submit">Submit</button>
+    <button type="submit" class="btn btn-primary submit-quiz">{% trans "Submit" %}</button>
 </form>
 
 

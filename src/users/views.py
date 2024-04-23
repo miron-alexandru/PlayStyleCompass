@@ -10,7 +10,7 @@ from django.contrib.auth import (
     logout,
     update_session_auth_hash,
 )
-from django.db.models import Q
+from django.db.models import Q, Max
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
@@ -1138,11 +1138,14 @@ def quiz_view(request):
             messages.error(request, error_message)
             return redirect("playstyle_compass:index")
 
-        questions = QuizQuestion.objects.order_by("?")[:10]
+        max_id = QuizQuestion.objects.all().aggregate(max_id=Max("id"))['max_id']
+        random_pks = random.sample(range(1, max_id + 1), 10)
+        questions = QuizQuestion.objects.filter(pk__in=random_pks)
+
         form = QuizForm(questions=questions)
 
     context = {
-        "page_title": "PlayStyleCompass :: Preference Quiz",
+        "page_title": _("Preference Quiz :: PlayStyle Compass"),
         "questions": questions,
         "form": form,
     }

@@ -203,7 +203,7 @@ input[type="email"]:focus,
   padding-bottom: 20px;
 }
 
-.message {
+.message, .email-message {
   text-align: center;
   margin-bottom: -16px;
 }
