@@ -108,6 +108,7 @@ class Game(models.Model):
     dlcs = models.CharField(max_length=200)
     franchises = models.CharField(max_length=200)
     videos = models.TextField()
+    concepts = models.CharField(max_length=200)
 
     def __str__(self):
         return str(self.title)

@@ -14,6 +14,7 @@ from constants import (
     franchises_ids_to_add,
     game_ids_to_add,
     GOOGLE_API_KEY,
+    concept_ids,
 )
 
 from data_processing import (
@@ -21,6 +22,7 @@ from data_processing import (
     create_franchises_data,
     create_characters_data,
     create_game_modes_data,
+    create_quiz_data,
 )
 
 # Obtain franchises data
@@ -34,11 +36,14 @@ from data_processing import (
 # create_characters_data(characters_ids)
 
 # Obtain games data
-youtube = googleapiclient.discovery.build("youtube", "v3", developerKey=GOOGLE_API_KEY)
-# game_ids = fetch_game_ids_by_platforms(platform_ids, API_KEY, offset=6, limit=1)
-# create_games_data_db(game_ids, youtube)
+#youtube = googleapiclient.discovery.build("youtube", "v3", developerKey=GOOGLE_API_KEY)
+#game_ids = fetch_game_ids_by_platforms(platform_ids, API_KEY, offset=0, limit=1)
+#create_games_data_db(game_ids)
 
 # Obtain game modes data
 guids = ["3015-6130", "3015-322"]
 mode_strings = ["Singleplayer", "Multiplayer"]
-create_game_modes_data(guids, mode_strings, youtube, num_games=20, offset=90)
+create_game_modes_data(guids, mode_strings, num_games=10, offset=0)
+
+# Obtain games based on concepts (used for preference quiz)
+#create_quiz_data(concept_ids, num_games=10, offset=0)

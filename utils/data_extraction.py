@@ -28,11 +28,13 @@ def extract_overview_content(data):
 
 def get_embed_links(video_ids):
     """Return youtube embed links using the video id's."""
-    embed_links = []
-    for video_id in video_ids:
-        embed_links.append(f"https://www.youtube.com/embed/{video_id}")
+    if video_ids:
+        embed_links = []
+        for video_id in video_ids:
+            embed_links.append(f"https://www.youtube.com/embed/{video_id}")
 
-    return ", ".join(embed_links)
+        return ", ".join(embed_links)
+    return None
 
 
 def extract_data(game_data, field_name):
@@ -192,3 +194,15 @@ def get_franchise_games_count(games):
 def extract_game_data(game, data_name):
     """Extract game data based on the data_name ."""
     return game[data_name] if isinstance(game, dict) else None
+
+
+def get_game_concepts(game_data, concept_ids):
+    """Extract concept names for games based on concept ids."""
+    concept_ids = [id_.split('-')[1] for id_ in concept_ids]
+
+    if isinstance(game_data, dict):
+        concepts = game_data.get("concepts", [])
+        concept_names = [concept["name"] for concept in concepts if str(concept["id"]) in concept_ids]
+        return ', '.join(concept_names)
+    else:
+        return None

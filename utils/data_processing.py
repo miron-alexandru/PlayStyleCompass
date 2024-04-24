@@ -4,7 +4,7 @@ import uuid
 import sys
 import sqlite3
 
-from constants import API_KEY
+from constants import API_KEY, concept_ids
 
 from API_functions import (
     fetch_game_data,
@@ -31,6 +31,7 @@ from data_extraction import (
     get_franchise_games,
     get_franchise_games_count,
     extract_game_data,
+    get_game_concepts,
 )
 
 from sql_queries import (
@@ -53,7 +54,7 @@ from sql_queries import (
 )
 
 
-def parse_game_data(game_id, youtube_api_client):
+def parse_game_data(game_id, youtube_api_client=None):
     """Parse the game data."""
     try:
         game_data = fetch_game_data(game_id)["results"]
@@ -79,6 +80,7 @@ def parse_game_data(game_id, youtube_api_client):
     dlcs = get_dlcs(game_data)
     franchises = get_franchises(game_data)
     videos = get_embed_links(gameplay_video_ids)
+    concepts = get_game_concepts(game_data, concept_ids)
 
     return (
         guid,
@@ -97,6 +99,7 @@ def parse_game_data(game_id, youtube_api_client):
         dlcs,
         franchises,
         videos,
+        concepts,
     )
 
 
@@ -125,7 +128,7 @@ def process_user_reviews(game_id):
         return None
 
 
-def create_games_data_db(game_ids, youtube_api_client):
+def create_games_data_db(game_ids, youtube_api_client=None):
     """Inserts game data and reviews data into the database using the provided game IDs."""
     with sqlite3.connect("games_data.db") as db_connection:
         cursor = db_connection.cursor()
@@ -151,6 +154,7 @@ def create_games_data_db(game_ids, youtube_api_client):
                 dlcs,
                 franchises,
                 videos,
+                concepts,
             ) = parse_game_data(game_id, youtube_api_client)
 
             game_values = (
@@ -169,6 +173,7 @@ def create_games_data_db(game_ids, youtube_api_client):
                 dlcs,
                 franchises,
                 videos,
+                concepts,
             )
             cursor.execute(inserting_sql, game_values)
 
@@ -394,6 +399,24 @@ def create_game_modes_data(
             game_modes_data = fetch_data_by_guid(
                 guid, API_KEY, "concept", field_list=["games"]
             )
+
+            for game in game_modes_data['games']:
+                (
+                    game_id,
+                    game_name,
+                    game_mode,
+                ) = parse_game_modes_data(game, mode_string)
+
+                game_mode_values = (
+                    game_id,
+                    game_name,
+                    game_mode,
+                )
+
+                cursor.execute(insert_game_modes_sql, game_mode_values)
+
+                db_connection.commit()
+
             game_ids = []
 
             for game in game_modes_data["games"]:
@@ -421,6 +444,7 @@ def create_game_modes_data(
                     dlcs,
                     franchises,
                     videos,
+                    concepts,
                 ) = parse_game_data(game_id, youtube_api_client)
 
                 game_values = (
@@ -439,6 +463,7 @@ def create_game_modes_data(
                     dlcs,
                     franchises,
                     videos,
+                    concepts,
                 )
                 cursor.execute(inserting_sql, game_values)
 
@@ -471,5 +496,96 @@ def create_game_modes_data(
             db_connection.commit()
 
         cursor.execute(remove_duplicate_game_modes)
+
+        db_connection.commit()
+
+
+def create_quiz_data(
+    guids, youtube_api_client=None, num_games=1, offset=0
+):
+    """Insert games into the database based on the concepts."""
+    with sqlite3.connect("games_data.db") as db_connection:
+        cursor = db_connection.cursor()
+
+        for guid in guids:
+            quiz_data = fetch_data_by_guid(
+                guid, API_KEY, "concept", field_list=["games"]
+            )
+            game_ids = []
+
+            for game in quiz_data["games"]:
+                game_id = extract_game_data(game, "id")
+                game_ids.append("3030-" + str(game_id))
+
+            offset = min(offset, len(game_ids))
+            num_games = min(num_games, len(game_ids) - offset)
+
+            for game_id in game_ids[offset : offset + num_games]:
+                (
+                    guid,
+                    title,
+                    description,
+                    overview,
+                    genres,
+                    platforms,
+                    themes,
+                    image,
+                    release_date,
+                    developers,
+                    game_images,
+                    similar_games,
+                    reviews_data,
+                    dlcs,
+                    franchises,
+                    videos,
+                    concepts,
+                ) = parse_game_data(game_id, youtube_api_client)
+
+                game_values = (
+                    guid,
+                    title,
+                    description,
+                    overview,
+                    genres,
+                    platforms,
+                    themes,
+                    image,
+                    release_date,
+                    developers,
+                    game_images,
+                    similar_games,
+                    dlcs,
+                    franchises,
+                    videos,
+                    concepts,
+                )
+                cursor.execute(inserting_sql, game_values)
+
+                game_id = guid
+
+                if reviews_data:
+                    for review in reviews_data:
+                        reviewers = review["reviewer"]
+                        review_deck = review["deck"]
+                        review_description = review["description"]
+                        score = str(review["score"])
+
+                        user_id = str(uuid.uuid4())
+
+                        review_values = (
+                            reviewers,
+                            review_deck,
+                            review_description,
+                            score,
+                            user_id,
+                            game_id,
+                        )
+                        cursor.execute(insert_reviews_sql, review_values)
+
+                db_connection.commit()
+
+            cursor.execute(remove_duplicates_sql)
+            cursor.execute(remove_duplicates_reviews)
+            db_connection.commit()
 
         db_connection.commit()

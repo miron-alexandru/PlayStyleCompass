@@ -131,15 +131,17 @@ def fetch_data_by_guid(guid, api_key, resource_type, format="json", field_list=N
 
 def search_gameplay_videos(game_name, youtube_api_client):
     """Function used to search gameplay videos and return their specific id's."""
-    search_response = (
-        youtube_api_client.search()
-        .list(q=game_name + " gameplay", part="id", type="video", maxResults=2)
-        .execute()
-    )
+    if youtube_api_client:
+        search_response = (
+            youtube_api_client.search()
+            .list(q=game_name + " gameplay", part="id", type="video", maxResults=2)
+            .execute()
+        )
 
-    video_ids = [item["id"]["videoId"] for item in search_response["items"]]
+        video_ids = [item["id"]["videoId"] for item in search_response["items"]]
 
-    return video_ids
+        return video_ids
+    return None
 
 
 class FetchDataException(Exception):
