@@ -102,4 +102,5 @@ urlpatterns = [
         "check_authentication/", views.check_authentication, name="check_authentication"
     ),
     path("take_gaming_quiz/", views.quiz_view, name="gaming_quiz"),
+    path("quiz_recommendations/", views.quiz_recommendations, name="quiz_recommendations"),
 ]

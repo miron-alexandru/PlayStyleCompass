@@ -1,0 +1,13 @@
+{% extends "games/games_collection.html" %}
+{% load i18n %}
+
+{% block header_desc %}
+{% trans "PREFERENCE QUIZ RECOMMENDATIONS" %}
+{% endblock header_desc %}
+
+{% block description %}{% blocktrans %}Discover games based on your response to the quiz.{% endblocktrans %}
+{% endblock description %}
+
+{% block empty_message %}
+    {% trans "Empty for now." %}
+{% endblock empty_message %}

@@ -47,7 +47,10 @@ def extract_names(data, field_name):
     if not isinstance(data, dict):
         return None
 
-    names = [item["name"] for item in data.get(field_name, [])]
+    field_data = data.get(field_name)
+    if field_data is None:
+        return None
+    names = [item["name"] for item in field_data]
 
     return ", ".join(names) if names else None
 

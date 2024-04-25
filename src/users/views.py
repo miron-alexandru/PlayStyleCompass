@@ -41,7 +41,7 @@ from django.views.generic.edit import UpdateView
 from django.urls import reverse, reverse_lazy
 from django.contrib.auth.tokens import default_token_generator
 
-from playstyle_compass.models import UserPreferences, Review
+from playstyle_compass.models import UserPreferences, Review, Game
 
 from .forms import (
     CustomRegistrationForm,
@@ -57,6 +57,7 @@ from .forms import (
 )
 
 from .misc.helper_functions import are_friends, check_quiz_time
+from playstyle_compass.helper_functions.views_helpers import paginate_matching_games, calculate_game_score, get_friend_list
 from .models import (
     UserProfile,
     FriendList,
@@ -1151,3 +1152,26 @@ def quiz_view(request):
     }
 
     return render(request, "general/quiz_template.html", context)
+
+
+@login_required
+def quiz_recommendations(request):
+    """View used to display games based on the preference quiz taken by the user."""
+    # TODO: Algorithm to filter games based on user responses to the preference quiz.
+    user = request.user
+    user_preferences = UserPreferences.objects.get(user=user) if user else None
+    user_friends = get_friend_list(user) if user else []
+
+    games = Game.objects.all()
+    games = calculate_game_score(games)
+    games = paginate_matching_games(request, games)
+
+    context = {
+    "page_title": _("Quiz Recommendations :: PlayStyle Compass"),
+    "games": games,
+    "user_preferences": user_preferences,
+    "user_friends": user_friends,
+    "pagination": True,
+    }
+
+    return render(request, "general/quiz_recommendations.html", context)
