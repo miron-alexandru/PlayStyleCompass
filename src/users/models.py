@@ -179,10 +179,10 @@ class QuizQuestion(models.Model):
 
     name = models.CharField(max_length=100)
     question_text = models.CharField(max_length=200)
-    option1 = models.CharField(max_length=100, default="")
-    option2 = models.CharField(max_length=100, default="")
-    option3 = models.CharField(max_length=100, default="")
-    option4 = models.CharField(max_length=100, default="")
+    option1 = models.CharField(max_length=150, default="")
+    option2 = models.CharField(max_length=150, default="")
+    option3 = models.CharField(max_length=150, default="")
+    option4 = models.CharField(max_length=150, default="")
 
     def __str__(self):
         return f"{self.name}"

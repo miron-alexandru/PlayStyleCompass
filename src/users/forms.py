@@ -16,7 +16,7 @@ from django.core.files.base import ContentFile
 from django.contrib.auth.models import User
 from django_recaptcha.fields import ReCaptchaField
 
-from .models import UserProfile, ContactMessage, Message, QuizUserResponse, QuizQuestion
+from .models import UserProfile, ContactMessage, Message
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 

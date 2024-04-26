@@ -57,7 +57,12 @@ from .forms import (
 )
 
 from .misc.helper_functions import are_friends, check_quiz_time
-from playstyle_compass.helper_functions.views_helpers import paginate_matching_games, calculate_game_score, get_friend_list
+from playstyle_compass.helper_functions.views_helpers import (
+    paginate_matching_games,
+    calculate_game_score,
+    get_friend_list,
+    QuizRecommendations,
+)
 from .models import (
     UserProfile,
     FriendList,
@@ -1139,10 +1144,7 @@ def quiz_view(request):
             messages.error(request, error_message)
             return redirect("playstyle_compass:index")
 
-        max_id = QuizQuestion.objects.all().aggregate(max_id=Max("id"))['max_id']
-        random_pks = random.sample(range(1, max_id + 1), 10)
-        questions = QuizQuestion.objects.filter(pk__in=random_pks)
-
+        questions = QuizQuestion.objects.order_by('?')[:10]
         form = QuizForm(questions=questions)
 
     context = {
@@ -1157,21 +1159,25 @@ def quiz_view(request):
 @login_required
 def quiz_recommendations(request):
     """View used to display games based on the preference quiz taken by the user."""
-    # TODO: Algorithm to filter games based on user responses to the preference quiz.
     user = request.user
     user_preferences = UserPreferences.objects.get(user=user) if user else None
     user_friends = get_friend_list(user) if user else []
 
-    games = Game.objects.all()
-    games = calculate_game_score(games)
-    games = paginate_matching_games(request, games)
+    user_responses = QuizUserResponse.objects.filter(user=user) if user else None
+
+    game_recommendations = QuizRecommendations(user_responses)
+    recommended_games = game_recommendations.get_recommendations()
+
+    recommended_games = calculate_game_score(recommended_games)
+    recommended_games = paginate_matching_games(request, recommended_games)
 
     context = {
-    "page_title": _("Quiz Recommendations :: PlayStyle Compass"),
-    "games": games,
-    "user_preferences": user_preferences,
-    "user_friends": user_friends,
-    "pagination": True,
+        "page_title": _("Quiz Recommendations :: PlayStyle Compass"),
+        "games": recommended_games,
+        "user_preferences": user_preferences,
+        "user_friends": user_friends,
+        "pagination": True,
     }
 
     return render(request, "general/quiz_recommendations.html", context)
+

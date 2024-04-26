@@ -171,6 +171,37 @@ class RecommendationEngine:
         self.sort_matching_games()
 
 
+class QuizRecommendations:
+    """Class used to get game recommendations based on the Quiz responses."""
+    def __init__(self, user_responses):
+        self.user_responses = user_responses
+
+    def get_recommendations(self):
+        concept_recommendations = defaultdict(int)
+
+        for response in self.user_responses:
+            concept = response.question.name
+            response_text = response.response_text.lower()
+            
+            # Determine the number of games to recommend based on the response option
+            if response_text == response.question.option1.lower():
+                concept_recommendations[concept] += 4
+            elif response_text == response.question.option2.lower():
+                concept_recommendations[concept] += 2
+            elif response_text == response.question.option3.lower():
+                concept_recommendations[concept] += 1
+            elif response_text == response.question.option4.lower():
+                concept_recommendations[concept] = 0
+
+        recommended_games = []
+        for concept, num_games in concept_recommendations.items():
+            # Query games for the concept that are not already recommended
+            games = Game.objects.filter(concepts__icontains=concept).exclude(pk__in=[game.pk for game in recommended_games])[:num_games]
+            recommended_games.extend(games)
+
+        return recommended_games
+
+
 def calculate_game_score(games, multiple_games=True):
     """Calculate average scores and total reviews for games."""
     if multiple_games:
