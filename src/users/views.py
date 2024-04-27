@@ -28,6 +28,7 @@ from django.utils.http import (
     urlsafe_base64_encode,
     urlsafe_base64_decode,
 )
+from django.utils.html import format_html
 from django.utils.encoding import (
     force_bytes,
     force_str,
@@ -1130,9 +1131,11 @@ def quiz_view(request):
 
             messages.success(
                 request,
-                _(
-                    "Thank you for completing the Preference Quiz! Your responses will help us provide personalized game recommendations tailored just for you."
-                ),
+                format_html(
+                    _("Thank you for completing the Preference Quiz! Your responses will help us provide personalized game recommendations tailored just for you. Click <a href='{0}'>here</a> to view your Quiz Recommendations.").format(
+                        reverse("users:quiz_recommendations")
+                    )
+                )
             )
             return redirect("playstyle_compass:index")
     else:
@@ -1144,7 +1147,7 @@ def quiz_view(request):
             messages.error(request, error_message)
             return redirect("playstyle_compass:index")
 
-        questions = QuizQuestion.objects.order_by('?')[:10]
+        questions = QuizQuestion.objects.order_by('?')[:1]
         form = QuizForm(questions=questions)
 
     context = {

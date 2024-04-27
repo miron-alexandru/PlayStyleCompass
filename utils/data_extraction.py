@@ -205,7 +205,10 @@ def get_game_concepts(game_data, concept_ids):
 
     if isinstance(game_data, dict):
         concepts = game_data.get("concepts", [])
-        concept_names = [concept["name"] for concept in concepts if str(concept["id"]) in concept_ids]
-        return ', '.join(concept_names)
+        if concepts is None:
+            return None
+        else:
+            concept_names = [concept["name"] for concept in concepts if str(concept["id"]) in concept_ids]
+            return ', '.join(concept_names)
     else:
         return None

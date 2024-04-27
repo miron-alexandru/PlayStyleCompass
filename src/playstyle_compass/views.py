@@ -1045,6 +1045,17 @@ def get_games_and_context(request, game_mode):
     games_query = GameModes.objects.filter(game_mode=game_mode)
     game_ids = [game.game_id for game in games_query]
     games = Game.objects.filter(guid__in=game_ids)
+
+    additional_games = None
+    if game_mode == "Singleplayer":
+        additional_games = Game.objects.filter(concepts__icontains="Single-Player Only")
+    elif game_mode == "Multiplayer":
+        additional_games = Game.objects.filter(concepts__icontains="Split-Screen Multiplayer")
+
+    if additional_games is not None:
+        games = list(games) + list(additional_games)
+        games = Game.objects.filter(pk__in=[game.pk for game in games])
+
     games = calculate_game_score(games)
     games = paginate_matching_games(request, games)
 

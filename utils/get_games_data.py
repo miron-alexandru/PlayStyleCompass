@@ -37,8 +37,8 @@ from data_processing import (
 
 # Obtain games data
 youtube = googleapiclient.discovery.build("youtube", "v3", developerKey=GOOGLE_API_KEY)
-#game_ids = fetch_game_ids_by_platforms(platform_ids, API_KEY, offset=0, limit=1)
-#create_games_data_db(game_ids)
+game_ids = fetch_game_ids_by_platforms(platform_ids, API_KEY, offset=0, limit=3, game_ids_to_add=game_ids_to_add)
+create_games_data_db(game_ids, youtube)
 
 # Obtain game modes data
 #guids = ["3015-6130", "3015-322"]
@@ -46,4 +46,4 @@ youtube = googleapiclient.discovery.build("youtube", "v3", developerKey=GOOGLE_A
 #create_game_modes_data(guids, mode_strings, num_games=10, offset=0)
 
 # Obtain games based on concepts (used for preference quiz)
-create_quiz_data(concept_ids, youtube, num_games=5, offset=5)
+create_quiz_data(concept_ids, youtube, num_games=5, offset=0)

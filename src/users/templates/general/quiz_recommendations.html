@@ -11,5 +11,5 @@
 {% block empty_message %}
     {% url 'users:gaming_quiz' as quiz_url %}
     {% trans "You haven't taken the Preference Quiz yet." %}
-    {% trans "Click" %} <a href="{{ quiz_url }}">{{ "here" }}</a> {% trans "to take it and get personalized game recommendations." %}
+    {% trans "Click" %} <a href="{{ quiz_url }}">{% trans "here" %}</a> {% trans "to take it and get personalized game recommendations." %}
 {% endblock empty_message %}
