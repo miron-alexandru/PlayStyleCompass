@@ -3,8 +3,6 @@ The get_games_data module calls the necessary functions to create
 and populate the games database with the necessary data.
 """
 
-import googleapiclient.discovery
-
 from API_functions import fetch_game_ids_by_platforms, fetch_data
 from data_extraction import extract_guids, extract_character_guids
 
@@ -13,7 +11,6 @@ from constants import (
     API_KEY,
     franchises_ids_to_add,
     game_ids_to_add,
-    GOOGLE_API_KEY,
     concept_ids,
 )
 
@@ -36,14 +33,13 @@ from data_processing import (
 # create_characters_data(characters_ids)
 
 # Obtain games data
-youtube = googleapiclient.discovery.build("youtube", "v3", developerKey=GOOGLE_API_KEY)
-game_ids = fetch_game_ids_by_platforms(platform_ids, API_KEY, offset=0, limit=3, game_ids_to_add=game_ids_to_add)
-create_games_data_db(game_ids, youtube)
+#game_ids = fetch_game_ids_by_platforms(platform_ids, API_KEY, offset=0, limit=1, game_ids_to_add=game_ids_to_add)
+#create_games_data_db(game_ids)
 
 # Obtain game modes data
-#guids = ["3015-6130", "3015-322"]
-#mode_strings = ["Singleplayer", "Multiplayer"]
-#create_game_modes_data(guids, mode_strings, num_games=10, offset=0)
+guids = ["3015-6130", "3015-322"]
+mode_strings = ["Singleplayer", "Multiplayer"]
+create_game_modes_data(guids, mode_strings, num_games=10, offset=10)
 
 # Obtain games based on concepts (used for preference quiz)
-create_quiz_data(concept_ids, youtube, num_games=5, offset=0)
+create_quiz_data(concept_ids, num_games=5, offset=0)

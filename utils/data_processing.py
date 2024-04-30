@@ -54,7 +54,7 @@ from sql_queries import (
 )
 
 
-def parse_game_data(game_id, youtube_api_client=None):
+def parse_game_data(game_id):
     """Parse the game data."""
     try:
         game_data = fetch_game_data(game_id)["results"]
@@ -67,7 +67,7 @@ def parse_game_data(game_id, youtube_api_client=None):
 
     guid = extract_data(game_data, "id")
     title = extract_data(game_data, "name")
-    gameplay_video_ids = search_gameplay_videos(title, youtube_api_client)
+    gameplay_video_ids = search_gameplay_videos(title)
     description = extract_data(game_data, "deck")
     overview = extract_overview_content(game_data)
     genres = extract_names(game_data, "genres")
@@ -128,7 +128,7 @@ def process_user_reviews(game_id):
         return None
 
 
-def create_games_data_db(game_ids, youtube_api_client=None):
+def create_games_data_db(game_ids):
     """Inserts game data and reviews data into the database using the provided game IDs."""
     with sqlite3.connect("games_data.db") as db_connection:
         cursor = db_connection.cursor()
@@ -155,7 +155,7 @@ def create_games_data_db(game_ids, youtube_api_client=None):
                 franchises,
                 videos,
                 concepts,
-            ) = parse_game_data(game_id, youtube_api_client)
+            ) = parse_game_data(game_id)
 
             game_values = (
                 guid,
@@ -387,7 +387,7 @@ def parse_game_modes_data(game, game_mode):
 
 
 def create_game_modes_data(
-    guids, mode_strings, youtube_api_client=None, num_games=10, offset=0
+    guids, mode_strings, num_games=10, offset=0
 ):
     """Insert game modes data into the database."""
     with sqlite3.connect("games_data.db") as db_connection:
@@ -445,7 +445,7 @@ def create_game_modes_data(
                     franchises,
                     videos,
                     concepts,
-                ) = parse_game_data(game_id, youtube_api_client)
+                ) = parse_game_data(game_id)
 
                 game_values = (
                     guid,
@@ -501,7 +501,7 @@ def create_game_modes_data(
 
 
 def create_quiz_data(
-    guids, youtube_api_client=None, num_games=1, offset=0
+    guids, num_games=1, offset=0
 ):
     """Insert games into the database based on the concepts."""
     with sqlite3.connect("games_data.db") as db_connection:
@@ -539,7 +539,7 @@ def create_quiz_data(
                     franchises,
                     videos,
                     concepts,
-                ) = parse_game_data(game_id, youtube_api_client)
+                ) = parse_game_data(game_id)
 
                 game_values = (
                     guid,
