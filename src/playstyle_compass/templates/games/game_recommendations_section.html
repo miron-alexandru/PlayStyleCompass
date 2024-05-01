@@ -75,13 +75,20 @@
       </p>
       <div class="reviews-section">
         <p><strong>{% trans "Reviews:" %}</strong></p>
-        <button class="show-hide-button" data-game-id="{{ game.guid }}">{% trans "Show Reviews" %}</button>
-        <a href="{% url 'playstyle_compass:add_review' game.guid %}?next={{ request.get_full_path|urlencode }}"
-          class="add-review-btn">{% trans "Write a Review" %}</a>
-        <a href="{% url 'playstyle_compass:delete_reviews' game.guid %}?next={{ request.get_full_path|urlencode }}"
-          class="delete-review-btn">{% trans "Delete your Review" %}</a>
-        <a href="{% url 'playstyle_compass:edit_review' game.guid %}?next={{ request.get_full_path|urlencode }}"
-          class="edit-review-btn">{% trans "Edit your Review" %}</a>
+        <div class="buttons-container">
+          <button class="show-hide-button" data-game-id="{{ game.guid }}">
+              {% trans "Show Reviews" %}
+          </button>
+          <a href="{% url 'playstyle_compass:add_review' game.guid %}?next={{ request.get_full_path|urlencode }}"
+             class="add-review-btn">{% trans "Write a Review" %}</a>
+          <form id="deleteReviewForm" method="post" action="{% url 'playstyle_compass:delete_reviews' game.guid %}">
+              {% csrf_token %}
+              <input type="hidden" name="next" value="{{ request.get_full_path|urlencode }}">
+              <a href="#" onclick="document.getElementById('deleteReviewForm').submit(); return false;" class="delete-review-btn">{% trans "Delete your Review" %}</a>
+          </form>
+          <a href="{% url 'playstyle_compass:edit_review' game.guid %}?next={{ request.get_full_path|urlencode }}"
+             class="edit-review-btn">{% trans "Edit your Review" %}</a>
+      </div>
         <div class="reviews-list" style="display: none;">
         </div>
       </div>

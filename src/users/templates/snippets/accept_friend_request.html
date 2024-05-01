@@ -3,9 +3,10 @@
 	function acceptFriendRequest(friend_request_id, uiUpdateFunction){
 		var url = "{% url 'users:friend_request_accept' friend_request_id=3582435 %}".replace("3582435", friend_request_id);
 		$.ajax({
-			type: 'GET',
+			type: 'POST',
 			dataType: "json",
 			url: url,
+			data: {'csrfmiddlewaretoken': '{{ csrf_token }}'},
 			timeout: 5000,
 			success: function(data) {
 				console.log("SUCCESS", data)

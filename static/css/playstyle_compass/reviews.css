@@ -5,6 +5,16 @@
   border-radius: 5px;
 }
 
+.buttons-container {
+    display: flex;
+    align-items: center;
+}
+
+.buttons-container button,
+.buttons-container a {
+    margin-right: 10px;
+}
+
 .review-header {
   background-color: #f2f2f2;
   padding: 5px;

@@ -134,7 +134,7 @@ def search_gameplay_videos(game_name):
     """Function used to search gameplay videos and return their specific ids."""
     videosSearch = VideosSearch(game_name + " gameplay", limit=2)
     results = videosSearch.result()
-    video_ids = [video['id'] for video in results['result']]
+    video_ids = [video["id"] for video in results["result"]]
 
     return video_ids
 

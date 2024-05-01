@@ -4,14 +4,13 @@ import pytz
 from django.utils import timezone
 from django.conf import settings
 from django.db import models
-from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 
 
 class UserProfile(models.Model):
     """User profile model."""
 
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     profile_picture = models.ImageField(
         upload_to="profile_pictures/", null=True, blank=True
     )
@@ -54,10 +53,10 @@ class FriendList(models.Model):
     """Friends list model."""
 
     user = models.OneToOneField(
-        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="user"
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="user_of"
     )
     friends = models.ManyToManyField(
-        settings.AUTH_USER_MODEL, blank=True, related_name="friends"
+        settings.AUTH_USER_MODEL, blank=True, related_name="user_friends"
     )
 
     def __str__(self):
@@ -90,10 +89,10 @@ class FriendRequest(models.Model):
     """Friend requests model."""
 
     sender = models.ForeignKey(
-        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="sender"
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="sender_of"
     )
     receiver = models.ForeignKey(
-        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="receiver"
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="receiver_of"
     )
     is_active = models.BooleanField(blank=False, null=False, default=True)
 
@@ -136,10 +135,12 @@ class Message(models.Model):
     """Represents a message sent by a user to another user."""
 
     sender = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="sent_messages"
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="sent_messages"
     )
     receiver = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="received_messages"
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="received_messages",
     )
     title = models.TextField(max_length=30)
     message = models.TextField(max_length=3500)
@@ -156,7 +157,7 @@ class Message(models.Model):
 
 class Notification(models.Model):
     id = models.AutoField(primary_key=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     message = models.CharField(max_length=100)
     is_read = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
@@ -191,7 +192,7 @@ class QuizQuestion(models.Model):
 class QuizUserResponse(models.Model):
     """Model used to store responses from users to a quiz question."""
 
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     question = models.ForeignKey(QuizQuestion, on_delete=models.CASCADE)
     response_text = models.CharField(max_length=200, default="")
 

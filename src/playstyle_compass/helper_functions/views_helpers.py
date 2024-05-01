@@ -173,6 +173,7 @@ class RecommendationEngine:
 
 class QuizRecommendations:
     """Class used to get game recommendations based on the Quiz responses."""
+
     def __init__(self, user_responses):
         self.user_responses = user_responses
 
@@ -182,7 +183,7 @@ class QuizRecommendations:
         for response in self.user_responses:
             concept = response.question.name
             response_text = response.response_text.lower()
-            
+
             # Determine the number of games to recommend based on the response option
             if response_text == response.question.option1.lower():
                 concept_recommendations[concept] += 4
@@ -196,7 +197,9 @@ class QuizRecommendations:
         recommended_games = []
         for concept, num_games in concept_recommendations.items():
             # Query games for the concept that are not already recommended
-            games = Game.objects.filter(concepts__icontains=concept).exclude(pk__in=[game.pk for game in recommended_games])[:num_games]
+            games = Game.objects.filter(concepts__icontains=concept).exclude(
+                pk__in=[game.pk for game in recommended_games]
+            )[:num_games]
             recommended_games.extend(games)
 
         return recommended_games

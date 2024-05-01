@@ -386,9 +386,7 @@ def parse_game_modes_data(game, game_mode):
     return (game_id, game_name, game_mode)
 
 
-def create_game_modes_data(
-    guids, mode_strings, num_games=10, offset=0
-):
+def create_game_modes_data(guids, mode_strings, num_games=10, offset=0):
     """Insert game modes data into the database."""
     with sqlite3.connect("games_data.db") as db_connection:
         cursor = db_connection.cursor()
@@ -400,7 +398,7 @@ def create_game_modes_data(
                 guid, API_KEY, "concept", field_list=["games"]
             )
 
-            for game in game_modes_data['games']:
+            for game in game_modes_data["games"]:
                 (
                     game_id,
                     game_name,
@@ -500,9 +498,7 @@ def create_game_modes_data(
         db_connection.commit()
 
 
-def create_quiz_data(
-    guids, num_games=1, offset=0
-):
+def create_quiz_data(guids, num_games=1, offset=0):
     """Insert games into the database based on the concepts."""
     with sqlite3.connect("games_data.db") as db_connection:
         cursor = db_connection.cursor()

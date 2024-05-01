@@ -123,16 +123,20 @@ class ProfileUpdateView(LoginRequiredMixin, UpdateView):
 
     def form_valid(self, form):
         """Save the form data and update the user profile and associated reviews."""
-        new_profile_name = self.object.profile_name
+        new_profile_name = form.cleaned_data["profile_name"]
 
-        self.object = form.save(commit=False)
+        self.object = form.save()
+
+        # Update the user profile's last update time
         self.object.name_last_update_time = timezone.now()
         self.object.save()
 
         self.update_user_reviews(new_profile_name)
+
         messages.success(
             self.request, _("Your profile name has been successfully changed!")
         )
+
         return super().form_valid(form)
 
 
@@ -219,7 +223,7 @@ def resend_activation_link(request):
         )
 
     email = request.user.email
-    user = User.objects.get(email=email)
+    user = get_object_or_404(User, email=email)
     activate_email(request, user, email)
 
     return JsonResponse({})
@@ -535,7 +539,7 @@ def friends_list_view(request, *args, **kwargs):
         return HttpResponse(_("You cannot view the friends list of another user."))
 
     friend_list, created = FriendList.objects.get_or_create(user=this_user)
-    auth_user_friend_list = FriendList.objects.get(user=request.user)
+    auth_user_friend_list = get_object_or_404(FriendList, user=request.user)
 
     friends = [(friend, auth_user_friend_list) for friend in friend_list.friends.all()]
 
@@ -557,7 +561,7 @@ def friend_requests_view(request, *args, **kwargs):
         return redirect("playstyle_compass:index")
 
     user_id = kwargs.get("user_id")
-    account = User.objects.get(pk=user_id)
+    account = get_object_or_404(User, pk=user_id)
 
     if account != user:
         return HttpResponse(_("You can't view the friend requests of another user."))
@@ -663,13 +667,14 @@ def send_friend_request(request, *args, **kwargs):
     return HttpResponse(json.dumps(result), content_type="application/json")
 
 
+@require_POST
 @login_required
 def accept_friend_request(request, *args, **kwargs):
     """View to accept a friend request."""
     user = request.user
     result = {}
 
-    if request.method == "GET" and user.is_authenticated:
+    if request.method == "POST" and user.is_authenticated:
         if friend_request_id := kwargs.get("friend_request_id"):
             friend_request = get_object_or_404(FriendRequest, pk=friend_request_id)
 
@@ -897,7 +902,7 @@ def toggle_show_stat(request):
     stat_name = request.POST.get("statName")
     user_id = request.POST.get("userId")
 
-    user_preferences = UserPreferences.objects.get(user_id=user_id)
+    user_preferences = get_object_or_404(UserPreferences, user_id=user_id)
 
     attribute_name = f"show_{stat_name}"
     show_value = getattr(user_preferences, attribute_name, False)
@@ -924,7 +929,7 @@ def get_friend_status(request_user, profile_to_view):
 
 def get_user_stats(user):
     """Get user stats."""
-    user_preferences = UserPreferences.objects.get(user=user)
+    user_preferences = get_object_or_404(UserPreferences, user=user)
 
     reviews = Review.objects.filter(user=user)
     user_reviews_count = reviews.count()
@@ -944,13 +949,13 @@ def get_user_stats(user):
 def send_message(request, user_id):
     """View used to send messages between users."""
     message_sender = request.user
-    message_receiver = User.objects.get(pk=user_id)
+    message_receiver = get_object_or_404(User, pk=user_id)
 
     if are_friends(message_sender, message_receiver):
         if request.method == "POST":
             form = MessageForm(request.POST)
             if form.is_valid():
-                message = form.save(commit=False)
+                message = form.instance
                 message.sender = message_sender
                 message.receiver = message_receiver
                 message.save()
@@ -1132,10 +1137,10 @@ def quiz_view(request):
             messages.success(
                 request,
                 format_html(
-                    _("Thank you for completing the Preference Quiz! Your responses will help us provide personalized game recommendations tailored just for you. Click <a href='{0}'>here</a> to view your Quiz Recommendations.").format(
-                        reverse("users:quiz_recommendations")
-                    )
-                )
+                    _(
+                        "Thank you for completing the Preference Quiz! Your responses will help us provide personalized game recommendations tailored just for you. Click <a href='{0}'>here</a> to view your Quiz Recommendations."
+                    ).format(reverse("users:quiz_recommendations"))
+                ),
             )
             return redirect("playstyle_compass:index")
     else:
@@ -1147,7 +1152,7 @@ def quiz_view(request):
             messages.error(request, error_message)
             return redirect("playstyle_compass:index")
 
-        questions = QuizQuestion.objects.order_by('?')[:1]
+        questions = QuizQuestion.objects.order_by("?")[:1]
         form = QuizForm(questions=questions)
 
     context = {
@@ -1163,7 +1168,7 @@ def quiz_view(request):
 def quiz_recommendations(request):
     """View used to display games based on the preference quiz taken by the user."""
     user = request.user
-    user_preferences = UserPreferences.objects.get(user=user) if user else None
+    user_preferences = get_object_or_404(UserPreferences, user=user)
     user_friends = get_friend_list(user) if user else []
 
     user_responses = QuizUserResponse.objects.filter(user=user) if user else None
@@ -1183,4 +1188,3 @@ def quiz_recommendations(request):
     }
 
     return render(request, "general/quiz_recommendations.html", context)
-

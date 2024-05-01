@@ -1,7 +1,7 @@
 """Defines models."""
 
+from django.conf import settings
 from django.db import models
-from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
@@ -9,7 +9,9 @@ from django.dispatch import receiver
 class UserPreferences(models.Model):
     """Represents user-specific gaming preferences."""
 
-    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, primary_key=True
+    )
     gaming_history = models.TextField(blank=True)
     favorite_genres = models.CharField(max_length=255, blank=True)
     platforms = models.CharField(max_length=255, blank=True)
@@ -122,10 +124,12 @@ class SharedGame(models.Model):
     """Represents a game shared between users."""
 
     sender = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="sent_games"
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="sent_games"
     )
     receiver = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="received_games"
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="received_games",
     )
     content = models.TextField()
     timestamp = models.DateTimeField(auto_now_add=True)
@@ -144,7 +148,9 @@ class Review(models.Model):
     """Represents a review for a game."""
 
     game = models.ForeignKey(Game, on_delete=models.CASCADE, to_field="guid")
-    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True
+    )
     reviewers = models.CharField(max_length=25)
     review_deck = models.CharField(max_length=50)
     review_description = models.TextField()

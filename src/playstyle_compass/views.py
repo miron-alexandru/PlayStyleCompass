@@ -9,10 +9,12 @@ from django.http import (
     JsonResponse,
     HttpResponseRedirect,
     HttpResponseBadRequest,
+    Http404,
 )
 from django.urls import reverse
 from django.db.models import Avg, Q
 from django.utils.translation import gettext as _
+from django.views.decorators.http import require_POST
 
 from utils.constants import genres, all_platforms, all_themes
 from users.models import Notification
@@ -172,7 +174,7 @@ def _save_user_preference(request, field_name, redirect_view):
     """Common function to save user preferences."""
     if request.method == "POST":
         new_values = request.POST.getlist(field_name)
-        user_preferences = UserPreferences.objects.get(user=request.user)
+        user_preferences = get_object_or_404(UserPreferences, user=request.user)
         setattr(user_preferences, field_name, ", ".join(new_values))
         user_preferences.save()
 
@@ -183,7 +185,7 @@ def _save_user_preference(request, field_name, redirect_view):
 def save_all_preferences(request):
     """Save all preferences for the user."""
     if request.method == "POST":
-        user_preferences = UserPreferences.objects.get(user=request.user)
+        user_preferences = get_object_or_404(UserPreferences, user=request.user)
 
         user_preferences.gaming_history = ", ".join(
             request.POST.getlist("gaming_history")
@@ -219,7 +221,7 @@ def clear_preferences(request):
 def get_recommendations(request):
     """View to get game recommendations based on user preferences."""
     user = request.user
-    user_preferences = UserPreferences.objects.get(user=user)
+    user_preferences = get_object_or_404(UserPreferences, user=user)
 
     if user_preferences.gaming_history == "" or user_preferences.favorite_genres == "":
         return redirect("playstyle_compass:update_preferences")
@@ -333,8 +335,7 @@ def toggle_favorite(request):
     """View for toggling a game's favorite status for the current user."""
     if request.method == "POST":
         game_id = request.POST.get("game_id")
-        user = request.user
-        user_preferences = UserPreferences.objects.get(user=user)
+        user_preferences = get_object_or_404(UserPreferences, user=request.user)
 
         favorite_games_list = user_preferences.get_favorite_games()
 
@@ -354,8 +355,7 @@ def toggle_game_queue(request):
     """View for toggling a game's queued status for the current user."""
     if request.method == "POST":
         game_id = request.POST.get("game_id")
-        user = request.user
-        user_preferences = UserPreferences.objects.get(user=user)
+        user_preferences = get_object_or_404(UserPreferences, user=request.user)
 
         game_queue = user_preferences.get_game_queue()
 
@@ -495,7 +495,7 @@ def _get_games_view(request, page_title, list_name, template_name, user_id=None)
 def top_rated_games(request):
     """View to display top rated games."""
     user = request.user if request.user.is_authenticated else None
-    user_preferences = UserPreferences.objects.get(user=user) if user else None
+    user_preferences = get_object_or_404(UserPreferences, user=user) if user else None
 
     top_games = (
         Game.objects.annotate(average_score=Avg("review__score"))
@@ -519,7 +519,7 @@ def top_rated_games(request):
 def upcoming_games(request):
     """View the upcoming games."""
     user = request.user if request.user.is_authenticated else None
-    user_preferences = UserPreferences.objects.get(user=user) if user else None
+    user_preferences = get_object_or_404(UserPreferences, user=user) if user else None
     current_date = date.today()
 
     upcoming_filter = Q(release_date__gte=current_date) | Q(
@@ -596,8 +596,8 @@ def edit_review(request, game_id):
 
     try:
         # Attempt to retrieve the user's existing review for the specified game
-        review = Review.objects.get(game=game, user=user)
-    except Review.DoesNotExist:
+        review = get_object_or_404(Review, game=game, user=user)
+    except (Review.DoesNotExist, Http404):
         # Handle the case where the user hasn't written any reviews for this game
         messages.error(request, _("You haven't written any reviews for this game!"))
         return HttpResponseRedirect(next_url)
@@ -717,17 +717,18 @@ def dislike_review(request):
     )
 
 
+@require_POST
 @login_required
 def delete_reviews(request, game_id):
     """View for deleting user reviews."""
     game = get_object_or_404(Game, guid=game_id)
-    next_url = request.GET.get("next", reverse("playstyle_compass:index"))
+    next_url = request.POST.get("next", reverse("playstyle_compass:index"))
 
     try:
-        review = Review.objects.get(game=game, user=request.user)
+        review = get_object_or_404(Review, game=game, user=request.user)
         review.delete()
         messages.success(request, _("Your review has been successfully deleted!"))
-    except Review.DoesNotExist:
+    except (Review.DoesNotExist, Http404):
         messages.error(request, _("You haven't written any reviews for this game!"))
 
     return HttpResponseRedirect(next_url)
@@ -736,7 +737,7 @@ def delete_reviews(request, game_id):
 def view_game(request, game_id):
     """View used to display a single game."""
     user = request.user if request.user.is_authenticated else None
-    user_preferences = UserPreferences.objects.get(user=user) if user else None
+    user_preferences = get_object_or_404(UserPreferences, user=user) if user else None
 
     game = get_object_or_404(Game, guid=game_id)
     game = calculate_game_score(game, multiple_games=False)
@@ -865,34 +866,34 @@ def view_games_shared(request):
     return render(request, "games/games_shared.html", context)
 
 
+@require_POST
 @login_required
 def delete_shared_games(request):
     """View used to delete selected shared games."""
 
-    if request.method == "POST":
-        # Get the list of received games and shared games
-        received_games_to_delete = request.POST.getlist("received_games[]")
-        shared_games_to_delete = request.POST.getlist("shared_games[]")
+    # Get the list of received games and shared games
+    received_games_to_delete = request.POST.getlist("received_games[]")
+    shared_games_to_delete = request.POST.getlist("shared_games[]")
 
-        # Update the 'is_deleted_by_receiver' and 'is_deketed_by_sender'
-        # fields for received games and shared games
-        SharedGame.objects.filter(
-            id__in=received_games_to_delete, receiver=request.user
-        ).update(is_deleted_by_receiver=True)
+    # Update the 'is_deleted_by_receiver' and 'is_deketed_by_sender'
+    # fields for received games and shared games
+    SharedGame.objects.filter(
+        id__in=received_games_to_delete, receiver=request.user
+    ).update(is_deleted_by_receiver=True)
 
-        SharedGame.objects.filter(
-            id__in=shared_games_to_delete, sender=request.user
-        ).update(is_deleted_by_sender=True)
+    SharedGame.objects.filter(
+        id__in=shared_games_to_delete, sender=request.user
+    ).update(is_deleted_by_sender=True)
 
-        # Delete messages that meet certain conditions:
-        # 1. Both sender and receiver marked as deleted
-        # 2. Marked as deleted by receiver and sender is null
-        # 3. Marked as deleted by sender and receiver is null
-        SharedGame.objects.filter(
-            Q(is_deleted_by_receiver=True, is_deleted_by_sender=True)
-            | Q(is_deleted_by_receiver=True, sender__isnull=True)
-            | Q(is_deleted_by_sender=True, receiver__isnull=True)
-        ).delete()
+    # Delete messages that meet certain conditions:
+    # 1. Both sender and receiver marked as deleted
+    # 2. Marked as deleted by receiver and sender is null
+    # 3. Marked as deleted by sender and receiver is null
+    SharedGame.objects.filter(
+        Q(is_deleted_by_receiver=True, is_deleted_by_sender=True)
+        | Q(is_deleted_by_receiver=True, sender__isnull=True)
+        | Q(is_deleted_by_sender=True, receiver__isnull=True)
+    ).delete()
 
     return redirect("playstyle_compass:games_shared")
 
@@ -1039,7 +1040,7 @@ def autocomplete_characters(request):
 def get_games_and_context(request, game_mode):
     """Prepare context data for displaying games based on the specified game mode."""
     user = request.user if request.user.is_authenticated else None
-    user_preferences = UserPreferences.objects.get(user=user) if user else None
+    user_preferences = get_object_or_404(UserPreferences, user=user) if user else None
     user_friends = get_friend_list(user) if user else []
 
     games_query = GameModes.objects.filter(game_mode=game_mode)
@@ -1050,7 +1051,9 @@ def get_games_and_context(request, game_mode):
     if game_mode == "Singleplayer":
         additional_games = Game.objects.filter(concepts__icontains="Single-Player Only")
     elif game_mode == "Multiplayer":
-        additional_games = Game.objects.filter(concepts__icontains="Split-Screen Multiplayer")
+        additional_games = Game.objects.filter(
+            concepts__icontains="Split-Screen Multiplayer"
+        )
 
     if additional_games is not None:
         games = list(games) + list(additional_games)

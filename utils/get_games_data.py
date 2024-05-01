@@ -33,13 +33,13 @@ from data_processing import (
 # create_characters_data(characters_ids)
 
 # Obtain games data
-#game_ids = fetch_game_ids_by_platforms(platform_ids, API_KEY, offset=0, limit=1, game_ids_to_add=game_ids_to_add)
-#create_games_data_db(game_ids)
+# game_ids = fetch_game_ids_by_platforms(platform_ids, API_KEY, offset=0, limit=1, game_ids_to_add=game_ids_to_add)
+# create_games_data_db(game_ids)
 
 # Obtain game modes data
-#guids = ["3015-6130", "3015-322"]
-#mode_strings = ["Singleplayer", "Multiplayer"]
-#create_game_modes_data(guids, mode_strings, num_games=10, offset=10)
+# guids = ["3015-6130", "3015-322"]
+# mode_strings = ["Singleplayer", "Multiplayer"]
+# create_game_modes_data(guids, mode_strings, num_games=10, offset=10)
 
 # Obtain games based on concepts (used for preference quiz)
-create_quiz_data(concept_ids, num_games=2, offset=10)
+create_quiz_data(concept_ids, num_games=2, offset=12)

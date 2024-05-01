@@ -179,7 +179,7 @@ concept_names = [
     "Blocking",
     "Ranking System",
     "Never-Ending",
-    "Game Based on Literature"
+    "Game Based on Literature",
 ]
 
 

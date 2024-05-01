@@ -201,14 +201,18 @@ def extract_game_data(game, data_name):
 
 def get_game_concepts(game_data, concept_ids):
     """Extract concept names for games based on concept ids."""
-    concept_ids = [id_.split('-')[1] for id_ in concept_ids]
+    concept_ids = [id_.split("-")[1] for id_ in concept_ids]
 
     if isinstance(game_data, dict):
         concepts = game_data.get("concepts", [])
         if concepts is None:
             return None
         else:
-            concept_names = [concept["name"] for concept in concepts if str(concept["id"]) in concept_ids]
-            return ', '.join(concept_names)
+            concept_names = [
+                concept["name"]
+                for concept in concepts
+                if str(concept["id"]) in concept_ids
+            ]
+            return ", ".join(concept_names)
     else:
         return None
