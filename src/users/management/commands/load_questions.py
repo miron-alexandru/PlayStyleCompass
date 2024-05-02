@@ -34,11 +34,16 @@ class Command(BaseCommand):
 
                 question = QuizQuestion.objects.create(
                     name=name,
-                    question_text=row["question_text"],
-                    option1=row["option1"],
-                    option2=row["option2"],
-                    option3=row["option3"],
-                    option4=row["option4"],
+                    question_text_en=row["question_text_en"],
+                    question_text_ro=row["question_text_ro"],
+                    option1_en=row["option1_en"],
+                    option1_ro=row["option1_ro"],
+                    option2_en=row["option2_en"],
+                    option2_ro=row["option2_ro"],
+                    option3_en=row["option3_en"],
+                    option3_ro=row["option3_ro"],
+                    option4_en=row["option4_en"],
+                    option4_ro=row["option4_ro"],
                 )
                 self.stdout.write(
                     self.style.SUCCESS(

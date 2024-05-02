@@ -1152,7 +1152,7 @@ def quiz_view(request):
             messages.error(request, error_message)
             return redirect("playstyle_compass:index")
 
-        questions = QuizQuestion.objects.order_by("?")[:1]
+        questions = QuizQuestion.objects.order_by("?")[:10]
         form = QuizForm(questions=questions)
 
     context = {

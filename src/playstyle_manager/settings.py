@@ -23,6 +23,7 @@ INSTALLED_APPS = [
     "users",
     "bootstrap4",
     "django_recaptcha",
+    "modeltranslation",
     "daphne",
     "rosetta",
     "tz_detect",
@@ -150,6 +151,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Internationalization
 LANGUAGES = [("en", _("English")), ("ro", _("Romanian"))]
+MODELTRANSLATION_DEFAULT_LANGUAGE = 'en'
 USE_I18N = True
 LANGUAGE_CODE = "en"
 TIME_ZONE = "Europe/Bucharest"
