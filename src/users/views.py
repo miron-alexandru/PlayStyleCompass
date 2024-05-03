@@ -1122,12 +1122,25 @@ def quiz_view(request):
                 option_selected = form.cleaned_data.get(f"question_{question.id}")
 
                 if option_selected in ["option1", "option2", "option3", "option4"]:
-                    # If the selected option is valid update or create user response for the question
-                    QuizUserResponse.objects.update_or_create(
-                        user=user,
-                        question=question,
-                        defaults={"response_text": getattr(question, option_selected)},
-                    )
+                    attribute_en = f"{option_selected}_en"
+                    attribute_ro = f"{option_selected}_ro"
+                    
+                    # Check if both translations exist and get the translated options
+                    if all(hasattr(question, attr) for attr in (attribute_en, attribute_ro)):
+                        option_en = getattr(question, attribute_en)
+                        option_ro = getattr(question, attribute_ro)
+
+                        # Create or update the user response
+                        QuizUserResponse.objects.update_or_create(
+                            user=user,
+                            question=question,
+                            defaults={
+                                'response_text_en': option_en,
+                                'response_text_ro': option_ro
+                            },
+                        )
+                    else:
+                        raise ValidationError("Invalid option selected")
                 else:
                     raise ValidationError("Invalid option selected")
 
@@ -1153,6 +1166,7 @@ def quiz_view(request):
             return redirect("playstyle_compass:index")
 
         questions = QuizQuestion.objects.order_by("?")[:10]
+
         form = QuizForm(questions=questions)
 
     context = {
