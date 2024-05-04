@@ -1,7 +1,12 @@
 """This module contains helper functions used in the users app."""
 
-from ..models import FriendList
+import random
+from collections import defaultdict
+from ..models import FriendList, QuizUserResponse, QuizQuestion
+from playstyle_compass.models import Game
 from django.utils import timezone
+from django.core.cache import cache
+from django.core.exceptions import ValidationError
 from datetime import timedelta
 
 
@@ -21,3 +26,76 @@ def check_quiz_time(user):
             time_remaining = (last_update_time - one_day_ago).total_seconds()
             return int(time_remaining) // 3600, int((time_remaining % 3600) // 60)
     return None, None
+
+
+class QuizRecommendations:
+    """Class used to get game recommendations based on the Quiz responses."""
+
+    def __init__(self, user_responses):
+        self.user_responses = user_responses
+
+    def get_recommendations(self):
+        concept_recommendations = defaultdict(int)
+
+        for response in self.user_responses:
+            concept = response.question.name
+            response_text = response.response_text.lower()
+
+            # Determine the number of games to recommend based on the response option
+            if response_text == response.question.option1.lower():
+                concept_recommendations[concept] += 4
+            elif response_text == response.question.option2.lower():
+                concept_recommendations[concept] += 2
+            elif response_text == response.question.option3.lower():
+                concept_recommendations[concept] += 1
+            elif response_text == response.question.option4.lower():
+                concept_recommendations[concept] = 0
+
+        recommended_games = []
+        for concept, num_games in concept_recommendations.items():
+            # Query games for the concept that are not already recommended
+            games = Game.objects.filter(concepts__icontains=concept).exclude(
+                pk__in=[game.pk for game in recommended_games]
+            )[:num_games]
+            recommended_games.extend(games)
+
+        return recommended_games
+
+
+def get_quiz_questions(user, cache_key):
+    """Retrieve quiz questions either from cache or database."""
+    if user.userprofile.quiz_taken:
+        user.userprofile.quiz_taken = False
+        user.userprofile.save()
+
+    questions = list(QuizQuestion.objects.order_by("?")[:3])
+    cache.set(cache_key, questions, timeout=None)
+    return questions
+
+
+def save_quiz_responses(user, questions, form):
+    """Save user responses to the quiz."""
+    for question in questions:
+        option_selected = form.cleaned_data.get(f"question_{question.id}")
+
+        if option_selected in ["option1", "option2", "option3", "option4"]:
+            attribute_en = f"{option_selected}_en"
+            attribute_ro = f"{option_selected}_ro"
+
+            # Check if both translations exist and get the translated options
+            if all(hasattr(question, attr) for attr in (attribute_en, attribute_ro)):
+                option_en = getattr(question, attribute_en)
+                option_ro = getattr(question, attribute_ro)
+
+                QuizUserResponse.objects.update_or_create(
+                    user=user,
+                    question=question,
+                    defaults={
+                        'response_text_en': option_en,
+                        'response_text_ro': option_ro
+                    },
+                )
+            else:
+                raise ValidationError("Invalid option selected")
+        else:
+            raise ValidationError("Invalid option selected")
