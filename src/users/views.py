@@ -15,7 +15,8 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
 from django.contrib import messages
-from django.core.mail import send_mail
+from django.core.mail import send_mail, EmailMessage
+from django.core.cache import cache
 from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from django.conf import settings
 from django.contrib.auth.views import LoginView
@@ -33,7 +34,6 @@ from django.utils.encoding import (
     force_bytes,
     force_str,
 )
-from django.core.mail import EmailMessage
 from django.utils.safestring import mark_safe
 from django.http import JsonResponse, HttpResponse, Http404
 
@@ -1106,15 +1106,27 @@ def quiz_view(request):
     """View used to display quiz questions and processes submitted answers."""
     user = request.user
 
+    hours_remaining, minutes_remaining = check_quiz_time(user)
+    if hours_remaining is not None:
+        error_message = _(
+            "You can only take the quiz once per day. Please try again in {} hours and {} minutes."
+        ).format(hours_remaining, minutes_remaining)
+        messages.error(request, error_message)
+        return redirect("playstyle_compass:index")
+
+    cache_key = f"quiz_questions_{user.id}"
+
+    if not user.userprofile.quiz_taken and cache_key in cache:
+        questions = cache.get(cache_key)
+    else:
+        if user.userprofile.quiz_taken:
+            user.userprofile.quiz_taken = False
+            user.userprofile.save()
+
+        questions = list(QuizQuestion.objects.order_by("?")[:3])
+        cache.set(cache_key, questions, timeout=None)
+
     if request.method == "POST":
-        # Extract question IDs from form keys and retrieve corresponding questions
-        questions = QuizQuestion.objects.filter(
-            pk__in=[
-                int(key.replace("question_", ""))
-                for key in request.POST
-                if key.startswith("question_")
-            ]
-        )
         form = QuizForm(request.POST, questions=questions)
 
         if form.is_valid():
@@ -1124,13 +1136,12 @@ def quiz_view(request):
                 if option_selected in ["option1", "option2", "option3", "option4"]:
                     attribute_en = f"{option_selected}_en"
                     attribute_ro = f"{option_selected}_ro"
-                    
+
                     # Check if both translations exist and get the translated options
                     if all(hasattr(question, attr) for attr in (attribute_en, attribute_ro)):
                         option_en = getattr(question, attribute_en)
                         option_ro = getattr(question, attribute_ro)
 
-                        # Create or update the user response
                         QuizUserResponse.objects.update_or_create(
                             user=user,
                             question=question,
@@ -1145,6 +1156,7 @@ def quiz_view(request):
                     raise ValidationError("Invalid option selected")
 
             user.userprofile.quiz_taken_date = timezone.now()
+            user.userprofile.quiz_taken = True
             user.userprofile.save()
 
             messages.success(
@@ -1157,16 +1169,6 @@ def quiz_view(request):
             )
             return redirect("playstyle_compass:index")
     else:
-        hours_remaining, minutes_remaining = check_quiz_time(user)
-        if hours_remaining is not None:
-            error_message = _(
-                "You can only take the quiz once per day. Please try again in {} hours and {} minutes."
-            ).format(hours_remaining, minutes_remaining)
-            messages.error(request, error_message)
-            return redirect("playstyle_compass:index")
-
-        questions = QuizQuestion.objects.order_by("?")[:10]
-
         form = QuizForm(questions=questions)
 
     context = {

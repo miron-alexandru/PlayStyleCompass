@@ -19,6 +19,7 @@ class UserProfile(models.Model):
     quiz_taken_date = models.DateTimeField(null=True, blank=True)
     email_confirmed = models.BooleanField(default=False)
     timezone = models.CharField(max_length=50, null=True, blank=True)
+    quiz_taken = models.BooleanField(default=False)
 
     def clean(self):
         profile_name = self.profile_name
