@@ -68,7 +68,7 @@ def get_quiz_questions(user, cache_key):
         user.userprofile.quiz_taken = False
         user.userprofile.save()
 
-    questions = list(QuizQuestion.objects.order_by("?")[:3])
+    questions = list(QuizQuestion.objects.order_by("?")[:10])
     cache.set(cache_key, questions, timeout=None)
     return questions
 

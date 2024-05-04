@@ -837,28 +837,28 @@ def share_game(request, game_id):
 @login_required
 def view_games_shared(request):
     """View used to display games shared between users."""
-    sort_order = request.GET.get("sort_order", None)
+    sort_order = request.GET.get("sort_order", "asc")
     active_category = request.GET.get("category", "received")
 
-    games_received = SharedGame.objects.filter(
+    if active_category == "received":
+        games = SharedGame.objects.filter(
         receiver=request.user, is_deleted_by_receiver=False
     )
-    games_shared = SharedGame.objects.filter(
+    elif active_category == "sent":
+        games = SharedGame.objects.filter(
         sender=request.user, is_deleted_by_sender=False
     )
-
-    # Sort the shared games based on the selected sort order
-    if sort_order == "asc":
-        games_received = games_received.order_by("timestamp")
-        games_shared = games_shared.order_by("timestamp")
     else:
-        games_received = games_received.order_by("-timestamp")
-        games_shared = games_shared.order_by("-timestamp")
+        games = []
+
+    if sort_order == 'asc':
+        games = games.order_by('timestamp')
+    else:
+        games = games.order_by('-timestamp')
 
     context = {
         "page_title": _("Shared Games :: PlayStyle Compass"),
-        "games_received": games_received,
-        "games_shared": games_shared,
+        'games': games,
         "selected_sort_order": sort_order,
         "category": active_category,
     }
@@ -895,7 +895,11 @@ def delete_shared_games(request):
         | Q(is_deleted_by_sender=True, receiver__isnull=True)
     ).delete()
 
-    return redirect("playstyle_compass:games_shared")
+    category = request.GET.get('category', '')
+    sort_order = request.GET.get('sort_order', '')
+    games_shared_url = reverse('playstyle_compass:games_shared') + f'?category={category}&sort_order={sort_order}'
+
+    return redirect(games_shared_url)
 
 
 @login_required

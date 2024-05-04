@@ -20,6 +20,7 @@
   border-radius: 5px;
   flex-grow: 1;
   margin-right: 10px;
+  text-align: center;
 }
 
 .category-button:last-child {
@@ -27,7 +28,7 @@
 }
 
 .category-button:hover {
-  background-color: #2980b9;
+  background-color: #2980b9!important;
 }
 
 .messages-grid {

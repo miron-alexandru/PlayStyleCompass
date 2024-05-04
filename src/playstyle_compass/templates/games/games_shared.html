@@ -18,76 +18,58 @@
 
 <div class="messages-container">
   <div class="category-buttons">
-    <button id="messages-received-btn" class="category-button active">{% trans "Games other users shared with you" %}</button>
-    <button id="messages-sent-btn" class="category-button">{% trans "Games you shared with other users" %}</button>
+    <a href="{% url 'playstyle_compass:games_shared' %}?category=received&sort_order={{ selected_sort_order }}" class="category-button{% if category == 'received' %} active{% endif %}">{% trans "Games Received" %}</a>
+    <a href="{% url 'playstyle_compass:games_shared' %}?category=sent&sort_order={{ selected_sort_order }}" class="category-button{% if category == 'sent' %} active{% endif %}">{% trans "Games Shared" %}</a>
   </div>
 
   <div class="sort-container">
     <label for="sort-order">{% trans "Sort by:" %}</label>
     <input type="hidden" id="active-category" name="category" value="{{ category }}">
     <form method="get" action="{% url 'playstyle_compass:games_shared' %}">
+      <input type="hidden" name="category" value="{{ category }}">
       <select id="sort-order" name="sort_order">
         <option value="" {% if not selected_sort_order %}selected{% endif %}>{% trans "-- Select --" %}</option>
         <option value="asc" {% if selected_sort_order == "asc" %}selected{% endif %}>{% trans "Date (Asc)" %}</option>
         <option value="desc" {% if selected_sort_order == "desc" %}selected{% endif %}>{% trans "Date (Desc)" %}</option>
       </select>
-      <button class="apply-button" type="submit">{% trans "Apply" %}</button>
+      <button type="submit" class="apply-button">{% trans "Apply" %}</button>
     </form>
   </div>
 
-  <form method="post" action="{% url 'playstyle_compass:delete_shared_games' %}" id="delete-messages-from">
+  <form method="post" action="{% url 'playstyle_compass:delete_shared_games' %}?category={{ category }}&sort_order={{ selected_sort_order }}" id="delete-messages-form">
     {% csrf_token %}
     <div class="action-buttons">
       <button type="button" class="select-all-button">{% trans "Select All" %}</button>
       <button type="submit" class="delete-button">{% trans "Delete Selected" %}</button>
     </div>
-    <div id="received-messages" class="messages-grid received-messages">
-      {% if games_received %}
-      {% for received_game in games_received %}
+    <div id="messages" class="messages-grid-inbox">
+      {% if games %}
+      {% for game in games %}
       <div class="message-card">
         <div class="message-header">
           <span class="user-info">
-            <input type="checkbox" name="received_games[]" value="{{ received_game.id }}" class="message-checkbox">
-            <strong>From: </strong><a href="{% url 'users:view_profile' profile_name=received_game.sender.userprofile.profile_name %}"
-              class="user-name">{{ received_game.sender.userprofile.profile_name }}</a></span>
-          <p class="timestamp"><strong>{% trans "Date:" %}</strong> {{ received_game.timestamp|convert_to_user_timezone:received_game.receiver.userprofile.timezone }}</p>
+            <input type="checkbox" name="{% if category == 'received' %}received_games[]{% else %}shared_games[]{% endif %}" value="{{ game.id }}" class="message-checkbox">
+            {% if category == 'received' %}
+            <strong>{% trans "From:" %}</strong><a href="{% url 'users:view_profile' profile_name=game.sender.userprofile.profile_name %}"
+              class="user-name">{{ game.sender.userprofile.profile_name }}</a>
+            {% elif category == 'sent' %}
+            <strong>{% trans "Sent to:" %}</strong><a href="{% url 'users:view_profile' profile_name=game.receiver.userprofile.profile_name %}"
+              class="user-name">{{ game.receiver.userprofile.profile_name }}</a>
+            {% endif %}
+          </span>
+          <p class="timestamp"><strong>{% trans "Date:" %}</strong> {{ game.timestamp|convert_to_user_timezone:request.user.userprofile.timezone }}</p>
         </div>
         <div class="message-content">
-          <p>{{ received_game.content|safe }}</p>
+          <p>{{ game.content|safe }}</p>
         </div>
       </div>
       {% endfor %}
       {% else %}
-      <p class="empty-category">{% trans "No games have been shared with you so far." %}</p>
-      {% endif %}
-    </div>
-
-    <div id="sent-messages" class="messages-grid sent-messages" style="display:none">
-      {% if games_shared %}
-      {% for shared_game in games_shared %}
-      <div class="message-card">
-        <div class="message-header">
-          <span class="user-info">
-          <input type="checkbox" name="shared_games[]" value="{{ shared_game.id }}" class="message-checkbox">
-            <strong>Sent to:</strong><a href="{% url 'users:view_profile' profile_name=shared_game.receiver.userprofile.profile_name %}"
-              class="user-name">{{ shared_game.receiver.userprofile.profile_name }}</a></span>
-          <p class="timestamp"><strong>{% trans "Date:" %}</strong> {{ shared_game.timestamp|convert_to_user_timezone:shared_game.sender.userprofile.timezone }}</p>
-        </div>
-        <div class="message-content">
-          <p>{{ shared_game.content|safe }}</p>
-        </div>
-      </div>
-      {% endfor %}
-      {% else %}
-      <p class="empty-category">{% trans "You haven't yet shared games with anyone." %}</p>
+      <p class="empty-category">{% trans "You have no games in this category." %}</p>
       {% endif %}
     </div>
   </form>
 </div>
-
-<script>
-  $("#received-messages, #sent-messages").hide();
-</script>
 
 <script src="{% static 'js/playstyle_compass/messages_common.js' %}" defer></script>
 

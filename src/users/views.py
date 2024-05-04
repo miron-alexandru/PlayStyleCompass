@@ -1002,28 +1002,25 @@ def send_message(request, user_id):
 @login_required
 def inbox(request):
     """View used to display messages received and sent by the user."""
-    sort_order = request.GET.get("sort_order", None)
+    sort_order = request.GET.get("sort_order", "asc")
     active_category = request.GET.get("category", "received")
 
-    messages_received = Message.objects.filter(
-        receiver=request.user, is_deleted_by_receiver=False
-    )
-    messages_sent = Message.objects.filter(
-        sender=request.user, is_deleted_by_sender=False
-    )
+    if active_category == "received":
+        user_messages = Message.objects.filter(receiver=request.user, is_deleted_by_receiver=False)
+    elif active_category == "sent":
+        user_messages = Message.objects.filter(sender=request.user, is_deleted_by_sender=False)
+    else:
+        user_messages = []
 
     # Sort the messages based on the selected order
     if sort_order == "asc":
-        messages_received = messages_received.order_by("timestamp")
-        messages_sent = messages_sent.order_by("timestamp")
+        user_messages = user_messages.order_by("timestamp")
     else:
-        messages_received = messages_received.order_by("-timestamp")
-        messages_sent = messages_sent.order_by("-timestamp")
+        user_messages = user_messages.order_by("-timestamp")
 
     context = {
         "page_title": _("Inbox :: PlayStyle Compass"),
-        "messages_received": messages_received,
-        "messages_sent": messages_sent,
+        "user_messages": user_messages,
         "selected_sort_order": sort_order,
         "category": active_category,
     }
@@ -1060,7 +1057,11 @@ def delete_messages(request):
             | Q(is_deleted_by_sender=True, receiver__isnull=True)
         ).delete()
 
-    return redirect("users:inbox")
+        category = request.GET.get('category', '')
+        sort_order = request.GET.get('sort_order', '')
+        inbox_url = reverse('users:inbox') + f'?category={category}&sort_order={sort_order}'
+
+    return redirect(inbox_url)
 
 
 @require_POST
@@ -1111,13 +1112,13 @@ def quiz_view(request):
     """View used to display quiz questions and processes submitted answers."""
     user = request.user
 
-    #hours_remaining, minutes_remaining = check_quiz_time(user)
-    #if hours_remaining is not None:
-     #   error_message = _(
-      #      "You can only take the quiz once per day. Please try again in {} hours and {} minutes."
-       # ).format(hours_remaining, minutes_remaining)
-        #messages.error(request, error_message)
-        #return redirect("playstyle_compass:index")
+    hours_remaining, minutes_remaining = check_quiz_time(user)
+    if hours_remaining is not None:
+        error_message = _(
+            "You can only take the quiz once per day. Please try again in {} hours and {} minutes."
+        ).format(hours_remaining, minutes_remaining)
+        messages.error(request, error_message)
+        return redirect("playstyle_compass:index")
 
     cache_key = f"quiz_questions_{user.id}"
 
