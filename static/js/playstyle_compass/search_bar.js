@@ -20,7 +20,7 @@ searchInput.addEventListener("input", function () {
     .then((response) => response.json())
     .then((data) => {
       let resultsHTML = "";
-      data.forEach((result) => {
+      data.results.forEach((result) => {
         let titleOrName = '';
         if (searchType === 'characters') {
           titleOrName = result.name;
@@ -31,7 +31,7 @@ searchInput.addEventListener("input", function () {
       });
 
       searchResults.innerHTML = resultsHTML;
-      searchResults.style.display = data.length > 0 ? "block" : "none";
+      searchResults.style.display = data.results.length > 0 ? "block" : "none";
     });
 });
 
