@@ -49,10 +49,11 @@ class QuizRecommendations:
             elif response_text == response.question.option3.lower():
                 concept_recommendations[concept] += 1
             elif response_text == response.question.option4.lower():
-                concept_recommendations[concept] = 0
+                concept_recommendations[concept] -= 1
 
         recommended_games = []
         for concept, num_games in concept_recommendations.items():
+            num_games = max(num_games, 1)
             # Query games for the concept that are not already recommended
             games = Game.objects.filter(concepts__icontains=concept).exclude(
                 pk__in=[game.pk for game in recommended_games]
