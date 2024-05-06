@@ -18,6 +18,7 @@ class UserPreferences(models.Model):
     themes = models.CharField(max_length=255, blank=True)
     favorite_games = models.CharField(max_length=255, blank=True)
     game_queue = models.CharField(max_length=255, blank=True)
+    quiz_recommendations = models.CharField(max_length=255, blank=True)
 
     show_in_queue = models.BooleanField(default=True)
     show_reviews = models.BooleanField(default=True)

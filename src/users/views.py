@@ -1164,7 +1164,10 @@ def quiz_recommendations(request):
     user_preferences = get_object_or_404(UserPreferences, user=user)
     user_friends = get_friend_list(user) if user else []
 
-    user_responses = QuizUserResponse.objects.filter(user=user) if user else None
+    user_responses = (
+        QuizUserResponse.objects.filter(user=user)
+        .order_by('-updated_at')[:10]
+    )
 
     game_recommendations = QuizRecommendations(user_responses)
     recommended_games = game_recommendations.get_recommendations()
@@ -1181,3 +1184,4 @@ def quiz_recommendations(request):
     }
 
     return render(request, "general/quiz_recommendations.html", context)
+

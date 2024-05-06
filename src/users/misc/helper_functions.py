@@ -62,7 +62,6 @@ class QuizRecommendations:
 
         return recommended_games
 
-
 def get_quiz_questions(user, cache_key):
     """Retrieve quiz questions either from cache or database."""
     if user.userprofile.quiz_taken:

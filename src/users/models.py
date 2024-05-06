@@ -196,6 +196,11 @@ class QuizUserResponse(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     question = models.ForeignKey(QuizQuestion, on_delete=models.CASCADE)
     response_text = models.CharField(max_length=200, default="")
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return f"Response from {self.user} for the question {self.question.name}"
+
+    def save(self, *args, **kwargs):
+        self.updated_at = timezone.now()
+        super().save(*args, **kwargs)
