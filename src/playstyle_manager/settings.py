@@ -151,7 +151,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Internationalization
 LANGUAGES = [("en", _("English")), ("ro", _("Romanian"))]
-MODELTRANSLATION_DEFAULT_LANGUAGE = 'en'
+MODELTRANSLATION_DEFAULT_LANGUAGE = "en"
 USE_I18N = True
 LANGUAGE_CODE = "en"
 TIME_ZONE = "Europe/Bucharest"

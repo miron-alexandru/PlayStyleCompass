@@ -315,7 +315,7 @@ def autocomplete_games(request):
         games = Game.objects.filter(title__icontains=query)
         results = list(games.values("title"))
 
-    return JsonResponse({'results': results}, safe=True)
+    return JsonResponse({"results": results}, safe=True)
 
 
 def autocomplete_franchises(request):
@@ -327,7 +327,8 @@ def autocomplete_franchises(request):
         franchises = Franchise.objects.filter(title__icontains=query)
         results = list(franchises.values("title"))
 
-    return JsonResponse({'results': results}, safe=True)
+    return JsonResponse({"results": results}, safe=True)
+
 
 @login_required
 def toggle_favorite(request):
@@ -841,23 +842,23 @@ def view_games_shared(request):
 
     if active_category == "received":
         games = SharedGame.objects.filter(
-        receiver=request.user, is_deleted_by_receiver=False
-    )
+            receiver=request.user, is_deleted_by_receiver=False
+        )
     elif active_category == "sent":
         games = SharedGame.objects.filter(
-        sender=request.user, is_deleted_by_sender=False
-    )
+            sender=request.user, is_deleted_by_sender=False
+        )
     else:
         games = []
 
-    if sort_order == 'asc':
-        games = games.order_by('timestamp')
+    if sort_order == "asc":
+        games = games.order_by("timestamp")
     else:
-        games = games.order_by('-timestamp')
+        games = games.order_by("-timestamp")
 
     context = {
         "page_title": _("Shared Games :: PlayStyle Compass"),
-        'games': games,
+        "games": games,
         "selected_sort_order": sort_order,
         "category": active_category,
     }
@@ -894,9 +895,12 @@ def delete_shared_games(request):
         | Q(is_deleted_by_sender=True, receiver__isnull=True)
     ).delete()
 
-    category = request.GET.get('category', '')
-    sort_order = request.GET.get('sort_order', '')
-    games_shared_url = reverse('playstyle_compass:games_shared') + f'?category={category}&sort_order={sort_order}'
+    category = request.GET.get("category", "")
+    sort_order = request.GET.get("sort_order", "")
+    games_shared_url = (
+        reverse("playstyle_compass:games_shared")
+        + f"?category={category}&sort_order={sort_order}"
+    )
 
     return redirect(games_shared_url)
 
@@ -1037,7 +1041,7 @@ def autocomplete_characters(request):
         characters = Character.objects.filter(name__icontains=query)
         results = list(characters.values("name"))
 
-    return JsonResponse({'results': results}, safe=True)
+    return JsonResponse({"results": results}, safe=True)
 
 
 def get_games_and_context(request, game_mode):

@@ -12,8 +12,10 @@ from .models import (
     QuizUserResponse,
 )
 
+
 class QuizAdmin(TranslationAdmin):
     pass
+
 
 admin.site.register(QuizQuestion, QuizAdmin)
 admin.site.register(QuizUserResponse, QuizAdmin)

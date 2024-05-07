@@ -3,6 +3,7 @@
 from datetime import timedelta
 import random
 import json
+import ast
 
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import (
@@ -63,7 +64,7 @@ from .misc.helper_functions import (
     QuizRecommendations,
     get_quiz_questions,
     save_quiz_responses,
-    )
+)
 from playstyle_compass.helper_functions.views_helpers import (
     paginate_matching_games,
     calculate_game_score,
@@ -1006,9 +1007,13 @@ def inbox(request):
     active_category = request.GET.get("category", "received")
 
     if active_category == "received":
-        user_messages = Message.objects.filter(receiver=request.user, is_deleted_by_receiver=False)
+        user_messages = Message.objects.filter(
+            receiver=request.user, is_deleted_by_receiver=False
+        )
     elif active_category == "sent":
-        user_messages = Message.objects.filter(sender=request.user, is_deleted_by_sender=False)
+        user_messages = Message.objects.filter(
+            sender=request.user, is_deleted_by_sender=False
+        )
     else:
         user_messages = []
 
@@ -1057,9 +1062,11 @@ def delete_messages(request):
             | Q(is_deleted_by_sender=True, receiver__isnull=True)
         ).delete()
 
-        category = request.GET.get('category', '')
-        sort_order = request.GET.get('sort_order', '')
-        inbox_url = reverse('users:inbox') + f'?category={category}&sort_order={sort_order}'
+        category = request.GET.get("category", "")
+        sort_order = request.GET.get("sort_order", "")
+        inbox_url = (
+            reverse("users:inbox") + f"?category={category}&sort_order={sort_order}"
+        )
 
     return redirect(inbox_url)
 
@@ -1136,6 +1143,13 @@ def quiz_view(request):
             user.userprofile.quiz_taken = True
             user.userprofile.save()
 
+            user_responses = QuizUserResponse.objects.filter(user=user).order_by(
+                "-updated_at"
+            )[:10]
+
+            game_recommendations = QuizRecommendations(user_responses, user)
+            recommended_games = game_recommendations.get_recommendations()
+
             messages.success(
                 request,
                 format_html(
@@ -1164,13 +1178,9 @@ def quiz_recommendations(request):
     user_preferences = get_object_or_404(UserPreferences, user=user)
     user_friends = get_friend_list(user) if user else []
 
-    user_responses = (
-        QuizUserResponse.objects.filter(user=user)
-        .order_by('-updated_at')[:10]
-    )
-
-    game_recommendations = QuizRecommendations(user_responses)
-    recommended_games = game_recommendations.get_recommendations()
+    recommended_game_guids_str = user_preferences.quiz_recommendations
+    recommended_game_guids = ast.literal_eval(recommended_game_guids_str)
+    recommended_games = Game.objects.filter(guid__in=recommended_game_guids)
 
     recommended_games = calculate_game_score(recommended_games)
     recommended_games = paginate_matching_games(request, recommended_games)
@@ -1184,4 +1194,3 @@ def quiz_recommendations(request):
     }
 
     return render(request, "general/quiz_recommendations.html", context)
-

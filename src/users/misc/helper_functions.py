@@ -31,10 +31,12 @@ def check_quiz_time(user):
 class QuizRecommendations:
     """Class used to get game recommendations based on the Quiz responses."""
 
-    def __init__(self, user_responses):
+    def __init__(self, user_responses, user):
+        self.user = user
         self.user_responses = user_responses
 
-    def get_recommendations(self):
+    def _calculate_concept_recommendations(self):
+        """Calculate concept recommendations based on user responses."""
         concept_recommendations = defaultdict(int)
 
         for response in self.user_responses:
@@ -51,16 +53,44 @@ class QuizRecommendations:
             elif response_text == response.question.option4.lower():
                 concept_recommendations[concept] -= 1
 
+        return concept_recommendations
+
+    def _get_games_for_concepts(self, concept_recommendations):
+        """Retrieve games for recommended concepts."""
+        recommended_game_guids = []
         recommended_games = []
+
         for concept, num_games in concept_recommendations.items():
             num_games = max(num_games, 1)
             # Query games for the concept that are not already recommended
             games = Game.objects.filter(concepts__icontains=concept).exclude(
-                pk__in=[game.pk for game in recommended_games]
-            )[:num_games]
-            recommended_games.extend(games)
+                pk__in=recommended_game_guids
+            )
+            # Convert queryset to list for random selection
+            games_list = list(games)
+            # Randomly select recommended games
+            selected_games = random.sample(games_list, min(num_games, len(games_list)))
+            recommended_games.extend(selected_games)
+            recommended_game_guids.extend([game.guid for game in selected_games])
+
+        return recommended_games, recommended_game_guids
+
+    def _save_recommendations_to_preferences(self, recommended_game_guids):
+        """Save recommended game guids in user preferences."""
+        self.user.userpreferences.quiz_recommendations = recommended_game_guids
+        self.user.userpreferences.save()
+
+    def get_recommendations(self):
+        """Get game recommendations based on user responses."""
+        concept_recommendations = self._calculate_concept_recommendations()
+        recommended_games, recommended_game_guids = self._get_games_for_concepts(
+            concept_recommendations
+        )
+
+        self._save_recommendations_to_preferences(recommended_game_guids)
 
         return recommended_games
+
 
 def get_quiz_questions(user, cache_key):
     """Retrieve quiz questions either from cache or database."""
@@ -91,8 +121,8 @@ def save_quiz_responses(user, questions, form):
                     user=user,
                     question=question,
                     defaults={
-                        'response_text_en': option_en,
-                        'response_text_ro': option_ro
+                        "response_text_en": option_en,
+                        "response_text_ro": option_ro,
                     },
                 )
             else:
