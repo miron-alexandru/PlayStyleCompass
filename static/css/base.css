@@ -602,6 +602,16 @@ input[type="email"]:focus,
     margin-left: -5px;
 }
 
+.quiz-message {
+  text-align: center;
+  margin: 0 auto;
+}
+
+.alert-info {
+  font-size: 15px;
+  padding: 9px;
+}
+
 
 
 @media screen and (max-width: 1000px) {

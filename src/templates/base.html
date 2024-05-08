@@ -241,6 +241,11 @@
     <div class="header-description">
       <p class="header-desc" id="description-content">{% block description %}{% endblock description %}</p>
     </div>
+    {% if page_info %}
+    <div>
+      <p>{% block page_info %}{% endblock page_info %}</p>
+    </div>
+    {% endif %}
     <div class="content">
       {% block content %}{% endblock content %}
     </div>

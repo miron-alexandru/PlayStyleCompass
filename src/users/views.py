@@ -61,6 +61,7 @@ from .forms import (
 from .misc.helper_functions import (
     are_friends,
     check_quiz_time,
+    check_quiz_time_recommendations,
     QuizRecommendations,
     get_quiz_questions,
     save_quiz_responses,
@@ -1125,7 +1126,7 @@ def quiz_view(request):
             "You can only take the quiz once per day. Please try again in {} hours and {} minutes."
         ).format(hours_remaining, minutes_remaining)
         messages.error(request, error_message)
-        return redirect("playstyle_compass:index")
+        return redirect(request.META.get('HTTP_REFERER', 'playstyle_compass:index'))
 
     cache_key = f"quiz_questions_{user.id}"
 
@@ -1178,6 +1179,8 @@ def quiz_recommendations(request):
     user_preferences = get_object_or_404(UserPreferences, user=user)
     user_friends = get_friend_list(user) if user else []
 
+    time_remaining = check_quiz_time_recommendations(user)
+
     recommended_game_guids_str = user_preferences.quiz_recommendations
     recommended_game_guids = ast.literal_eval(recommended_game_guids_str)
     recommended_games = Game.objects.filter(guid__in=recommended_game_guids)
@@ -1191,6 +1194,8 @@ def quiz_recommendations(request):
         "user_preferences": user_preferences,
         "user_friends": user_friends,
         "pagination": True,
+        "page_info": True,
+        "time_remaining": time_remaining,
     }
 
     return render(request, "general/quiz_recommendations.html", context)

@@ -27,6 +27,26 @@ def check_quiz_time(user):
             return int(time_remaining) // 3600, int((time_remaining % 3600) // 60)
     return None, None
 
+def check_quiz_time_recommendations(user):
+    """Check if the user can take the quiz.
+    Used to return the time str for quiz recommendations page info.
+    """
+    if last_update_time := user.userprofile.quiz_taken_date:
+        one_day_ago = timezone.now() - timedelta(days=1)
+        if last_update_time > one_day_ago:
+            time_remaining = (last_update_time - one_day_ago).total_seconds()
+            hours, remainder = divmod(time_remaining, 3600)
+            minutes, _ = divmod(remainder, 60)
+
+            if hours == 0 and minutes == 0:
+                return None
+            elif hours == 0:
+                return f"{int(minutes)}m"
+            elif minutes == 0:
+                return f"{int(hours)}h"
+            else:
+                return f"{int(hours)}h:{int(minutes)}m"
+    return None
 
 class QuizRecommendations:
     """Class used to get game recommendations based on the Quiz responses."""

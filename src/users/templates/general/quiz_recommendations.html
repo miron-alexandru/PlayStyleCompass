@@ -8,6 +8,23 @@
 {% block description %}{% blocktrans %}Explore personalized game recommendations tailored to your preferences from the quiz.{% endblocktrans %}
 {% endblock description %}
 
+{% block page_info %}
+<div class="quiz-message">
+    <div class="alert alert-info">
+        {% trans "Here are your personalized game recommendations based on your last Preference Quiz!" %}
+        <br>
+        {% if time_remaining %}
+            {% trans "Time until the next Preference Quiz is available:" %} {{ time_remaining }}
+        {% else %}
+        {% trans "Your next Preference Quiz is available now!" %}
+        {% endif %}
+        <br>
+        <a href="{% url 'users:gaming_quiz'%}">
+        {% trans "Click here to retake the Preference Quiz" %}</a>
+    </div>
+</div>
+{% endblock page_info %}
+
 {% block empty_message %}
     {% url 'users:gaming_quiz' as quiz_url %}
     {% trans "You haven't taken the Preference Quiz yet." %}
