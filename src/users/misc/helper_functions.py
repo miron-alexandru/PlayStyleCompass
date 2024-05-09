@@ -19,15 +19,6 @@ def are_friends(user1, user2):
 
 
 def check_quiz_time(user):
-    """Check if the user can take the quiz."""
-    if last_update_time := user.userprofile.quiz_taken_date:
-        one_day_ago = timezone.now() - timedelta(days=1)
-        if last_update_time > one_day_ago:
-            time_remaining = (last_update_time - one_day_ago).total_seconds()
-            return int(time_remaining) // 3600, int((time_remaining % 3600) // 60)
-    return None, None
-
-def check_quiz_time_recommendations(user):
     """Check if the user can take the quiz.
     Used to return the time str for quiz recommendations page info.
     """

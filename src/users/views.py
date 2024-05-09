@@ -61,7 +61,6 @@ from .forms import (
 from .misc.helper_functions import (
     are_friends,
     check_quiz_time,
-    check_quiz_time_recommendations,
     QuizRecommendations,
     get_quiz_questions,
     save_quiz_responses,
@@ -1120,11 +1119,11 @@ def quiz_view(request):
     """View used to display quiz questions and processes submitted answers."""
     user = request.user
 
-    hours_remaining, minutes_remaining = check_quiz_time(user)
-    if hours_remaining is not None:
+    time_remaining = check_quiz_time(user)
+    if time_remaining is not None:
         error_message = _(
-            "You can only take the quiz once per day. Please try again in {} hours and {} minutes."
-        ).format(hours_remaining, minutes_remaining)
+            "You can only take the quiz once per day. Please try again in {}"
+        ).format(time_remaining)
         messages.error(request, error_message)
         return redirect(request.META.get('HTTP_REFERER', 'playstyle_compass:index'))
 
@@ -1179,7 +1178,7 @@ def quiz_recommendations(request):
     user_preferences = get_object_or_404(UserPreferences, user=user)
     user_friends = get_friend_list(user) if user else []
 
-    time_remaining = check_quiz_time_recommendations(user)
+    time_remaining = check_quiz_time(user)
 
     recommended_game_guids_str = user_preferences.quiz_recommendations
     recommended_game_guids = ast.literal_eval(recommended_game_guids_str)
