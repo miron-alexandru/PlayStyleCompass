@@ -1,3 +1,5 @@
+"""Command used to load and create Quiz questions from a CSV file."""
+
 import csv
 from django.core.management.base import BaseCommand
 from users.models import QuizQuestion

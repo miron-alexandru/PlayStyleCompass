@@ -222,10 +222,10 @@
       {% endif %}
       {% if user.is_authenticated %}
       {% if not user.userprofile.email_confirmed %}
-      <div class="email-message">
+      <div class="email-message" id="resend-email" data-email-url="{% url 'users:resend_activation_link' %}">
         <div class="alert alert-warning">
           {% trans "Please confirm your email address to unlock all features." %}
-          <a href="#" class="resend-link" id="resend-link" data-url="{% url 'users:resend_activation_link' %}">
+          <a href="#" class="resend-link" id="resend-link">
             {% trans "Resend verification link" %}</a>
           <div id="success-message"></div>
         </div>

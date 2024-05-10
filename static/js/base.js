@@ -178,3 +178,26 @@ $(window).on("scroll", function() {
     }
     lastScrollTop = scrollTop;
 });
+
+
+document.addEventListener("DOMContentLoaded", function() {
+  const resendLink = document.getElementById("resend-link");
+  if (resendLink) {
+    resendLink.addEventListener("click", function(event) {
+      event.preventDefault();
+      const emailUrl = document.getElementById("resend-email").getAttribute("data-email-url");
+
+      fetch(emailUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': csrfToken,
+        },
+        body: JSON.stringify({}),
+      })
+      .catch(error => {
+        console.error('There was a problem with the fetch operation:', error);
+      });
+    });
+  }
+});

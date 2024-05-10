@@ -1,7 +1,6 @@
 """Defines views."""
 
 from datetime import timedelta
-import random
 import json
 import ast
 
@@ -11,14 +10,14 @@ from django.contrib.auth import (
     logout,
     update_session_auth_hash,
 )
-from django.db.models import Q, Max
+from django.db.models import Q
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
 from django.contrib import messages
 from django.core.mail import send_mail, EmailMessage
 from django.core.cache import cache
-from django.core.exceptions import ObjectDoesNotExist, ValidationError
+from django.core.exceptions import ObjectDoesNotExist
 from django.conf import settings
 from django.contrib.auth.views import LoginView
 
@@ -76,7 +75,6 @@ from .models import (
     FriendRequest,
     Message,
     Notification,
-    QuizQuestion,
     QuizUserResponse,
 )
 from .tokens import account_activation_token
@@ -188,46 +186,48 @@ def activate(request, uidb64, token):
     return redirect("playstyle_compass:index")
 
 
+@require_POST
 @login_required
 def activate_email(request, user, to_email):
     """Send activation email to users."""
-    mail_subject = _("Activate your user account.")
-    message = render_to_string(
-        "registration/activate_account.html",
-        {
-            "user": user.username,
-            "domain": get_current_site(request).domain,
-            "uid": urlsafe_base64_encode(force_bytes(user.pk)),
-            "token": account_activation_token.make_token(user),
-            "protocol": "https" if request.is_secure() else "http",
-        },
-    )
-    email = EmailMessage(mail_subject, message, to=[to_email])
-    if email.send():
-        message = _(
-            "Hello <b>%(user)s</b>, please go to your email <b>%(to_email)s</b> inbox and click on the received activation link to confirm your registration. <b>Note:</b> If you cannot find the email in your inbox, we recommend checking your spam folder."
-        ) % {
-            "user": user,
-            "to_email": to_email,
-        }
+    if not user.userprofile.email_confirmed:
+        mail_subject = _("Activate your user account.")
+        message = render_to_string(
+            "registration/activate_account.html",
+            {
+                "user": user.username,
+                "domain": get_current_site(request).domain,
+                "uid": urlsafe_base64_encode(force_bytes(user.pk)),
+                "token": account_activation_token.make_token(user),
+                "protocol": "https" if request.is_secure() else "http",
+            },
+        )
+        email = EmailMessage(mail_subject, message, to=[to_email])
+        if email.send():
+            message = _(
+                "Hello <b>%(user)s</b>, please go to your email <b>%(to_email)s</b> inbox and click on the received activation link to confirm your registration. <b>Note:</b> If you cannot find the email in your inbox, we recommend checking your spam folder."
+            ) % {
+                "user": user,
+                "to_email": to_email,
+            }
 
-        messages.success(request, mark_safe(message))
+            messages.success(request, mark_safe(message))
+        else:
+            messages.error(
+                request,
+                _("Problem sending email to %(to_email)s, check if you typed it correctly.")
+                % {"to_email": to_email},
+            )
     else:
         messages.error(
-            request,
-            _("Problem sending email to %(to_email)s, check if you typed it correctly.")
-            % {"to_email": to_email},
-        )
+                request,
+                _("Email address already confirmed!"))
 
 
+@require_POST
 @login_required
 def resend_activation_link(request):
     """Resend email activation link to the user."""
-    if request.method != "GET":
-        return JsonResponse(
-            {"success": False, "error_message": _("Invalid request method")}
-        )
-
     email = request.user.email
     user = get_object_or_404(User, email=email)
     activate_email(request, user, email)
@@ -1148,7 +1148,7 @@ def quiz_view(request):
             )[:10]
 
             game_recommendations = QuizRecommendations(user_responses, user)
-            recommended_games = game_recommendations.get_recommendations()
+            game_recommendations.get_recommendations()
 
             messages.success(
                 request,
