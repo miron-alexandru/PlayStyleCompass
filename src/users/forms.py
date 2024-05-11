@@ -5,6 +5,7 @@ import re
 from io import BytesIO
 import uuid
 from PIL import Image
+from django.contrib.auth.password_validation import validate_password
 from django import forms
 from django.contrib.auth.forms import (
     UserCreationForm,
@@ -240,20 +241,18 @@ class CustomPasswordChangeForm(PasswordChangeForm):
     )
 
     def clean_new_password1(self):
-        """Clean new password."""
-        return self.clean_passwords("new_password1")
+        """Validate the new password1."""
+        new_password1 = self.cleaned_data.get('new_password1')
+        validate_password(new_password1)
+
+        return new_password1
 
     def clean_new_password2(self):
-        """Clean new password confirmation."""
-        return self.clean_passwords("new_password2")
+        """Validate new password2."""
+        new_password2 = self.cleaned_data.get('new_password2')
+        validate_password(new_password2)
 
-    def clean_passwords(self, arg0):
-        password1 = self.cleaned_data.get(arg0)
-        if len(password1) < 8:
-            raise forms.ValidationError(
-                _("Password must be at least 8 characters long.")
-            )
-        return password1
+        return new_password2
 
 
 class CustomClearableFileInput(forms.ClearableFileInput):
