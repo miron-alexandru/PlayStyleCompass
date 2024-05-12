@@ -7,7 +7,7 @@
 
 {% block page_header %}
 <div class="header">
-  <h3>{% trans "LOG IN" %}</h3>
+  <h3>{% trans "LOGIN" %}</h3>
 </div>
 {% endblock page_header %}
 
@@ -19,7 +19,7 @@
 <link rel="stylesheet" type="text/css" href="{% static 'css/users/common.css' %}">
 
 <div class="my-container">
-    <h2>{% trans "Log in to your account" %}</h2>
+    <h2>{% trans "Log Into Your Account" %}</h2>
     <form method="post" action="{% url 'users:login' %}" class="form">
         {% csrf_token %}
         <div class="form-group">

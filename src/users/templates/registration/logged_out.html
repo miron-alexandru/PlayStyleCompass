@@ -3,6 +3,12 @@
 {% load static %}
 {% block title %}{% trans "Log Out :: PlayStyle Compass" %}{% endblock title %}
 
+{% block page_header %}
+<div class="header">
+  <h3>{% trans "LOGOUT" %}</h3>
+</div>
+{% endblock page_header %}
+
 {% block content %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/users/logout.css' %}">
 <div class="logout-container">

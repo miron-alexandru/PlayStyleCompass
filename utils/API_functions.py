@@ -6,6 +6,7 @@ import requests
 from youtubesearchpython import VideosSearch
 
 from constants import BASE_URL, headers, API_KEY
+from data_extraction import get_requirements
 
 
 def fetch_game_ids_by_platforms(
@@ -137,6 +138,41 @@ def search_gameplay_videos(game_name):
     video_ids = [video["id"] for video in results["result"]]
 
     return video_ids
+
+
+def get_steam_app_id(game_name):
+    """Get the app id from the steam api based on the game name."""
+    search_url = "https://api.steampowered.com/ISteamApps/GetAppList/v0002/"
+    response = requests.get(search_url)
+    if response.status_code == 200:
+        app_list = response.json()['applist']['apps']
+        for app in app_list:
+            if app['name'].lower() == game_name.lower():
+                return app['appid']
+        return None
+    else:
+        return None
+
+
+def get_steam_game_requirements(app_id):
+    """Get the sys requirements for a game from the steam api using the app id."""
+    url = f"https://store.steampowered.com/api/appdetails/?appids={app_id}"
+    response = requests.get(url)
+
+    if response.status_code == 200:
+        data = response.json()
+        if str(app_id) in data:
+            app_data = data[str(app_id)]['data']
+
+            pc_requirements = get_requirements(app_data.get('pc_requirements'))
+            mac_requirements = get_requirements(app_data.get('mac_requirements'))
+            linux_requirements = get_requirements(app_data.get('linux_requirements'))
+
+            return pc_requirements, mac_requirements, linux_requirements
+        else:
+            return None, None, None
+    else:
+        return None, None, None
 
 
 class FetchDataException(Exception):

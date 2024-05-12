@@ -216,3 +216,20 @@ def get_game_concepts(game_data, concept_ids):
             return ", ".join(concept_names)
     else:
         return None
+
+
+def strip_html_tags(text):
+    """Remove HTML tags from a string and replace certain characters with newline."""
+    replacements = ["Processor:", "OS:", "Memory:", "Graphics:", "DirectX:", "Storage:"]
+    soup = BeautifulSoup(text, "html.parser")
+    result = soup.get_text()
+    for r in replacements:
+        result = result.replace(r, f"\n{r}")
+    return result
+
+def get_requirements(requirements_data):
+    """Get system requirements."""
+    if requirements_data:
+        return strip_html_tags(requirements_data.get('minimum', None)), strip_html_tags(requirements_data.get('recommended', ''))
+    else:
+        return None, None
