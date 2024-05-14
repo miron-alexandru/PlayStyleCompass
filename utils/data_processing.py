@@ -13,6 +13,8 @@ from API_functions import (
     fetch_data_by_guid,
     search_gameplay_videos,
     FetchDataException,
+    get_steam_app_id,
+    get_steam_game_requirements,
 )
 
 from data_extraction import (
@@ -37,7 +39,7 @@ from data_extraction import (
 from sql_queries import (
     create_table_sql,
     remove_duplicates_sql,
-    inserting_sql,
+    insert_games_sql,
     remove_empty,
     create_reviews_table,
     insert_reviews_sql,
@@ -82,6 +84,20 @@ def parse_game_data(game_id):
     videos = get_embed_links(gameplay_video_ids)
     concepts = get_game_concepts(game_data, concept_ids)
 
+    steam_app_id = get_steam_app_id(title)
+
+    pc_req_min = pc_req_rec = mac_req_min = mac_req_rec = linux_req_min = linux_req_rec = None
+
+    if steam_app_id:
+        pc_req, mac_req, linux_req = get_steam_game_requirements(steam_app_id)
+        if pc_req:
+            pc_req_min, pc_req_rec = pc_req
+        if mac_req:
+            mac_req_min, mac_req_rec = mac_req
+        if linux_req:
+            linux_req_min, linux_req_rec = linux_req
+
+
     return (
         guid,
         title,
@@ -100,6 +116,12 @@ def parse_game_data(game_id):
         franchises,
         videos,
         concepts,
+        pc_req_min,
+        pc_req_rec,
+        mac_req_min,
+        mac_req_rec,
+        linux_req_min,
+        linux_req_rec,
     )
 
 
@@ -155,6 +177,12 @@ def create_games_data_db(game_ids):
                 franchises,
                 videos,
                 concepts,
+                pc_req_min,
+                pc_req_rec,
+                mac_req_min,
+                mac_req_rec,
+                linux_req_min,
+                linux_req_rec,
             ) = parse_game_data(game_id)
 
             game_values = (
@@ -174,8 +202,14 @@ def create_games_data_db(game_ids):
                 franchises,
                 videos,
                 concepts,
+                pc_req_min,
+                pc_req_rec,
+                mac_req_min,
+                mac_req_rec,
+                linux_req_min,
+                linux_req_rec,
             )
-            cursor.execute(inserting_sql, game_values)
+            cursor.execute(insert_games_sql, game_values)
 
             game_id = guid
 
@@ -443,6 +477,12 @@ def create_game_modes_data(guids, mode_strings, num_games=10, offset=0):
                     franchises,
                     videos,
                     concepts,
+                    pc_req_min,
+                    pc_req_rec,
+                    mac_req_min,
+                    mac_req_rec,
+                    linux_req_min,
+                    linux_req_rec,
                 ) = parse_game_data(game_id)
 
                 game_values = (
@@ -462,8 +502,14 @@ def create_game_modes_data(guids, mode_strings, num_games=10, offset=0):
                     franchises,
                     videos,
                     concepts,
+                    pc_req_min,
+                    pc_req_rec,
+                    mac_req_min,
+                    mac_req_rec,
+                    linux_req_min,
+                    linux_req_rec,
                 )
-                cursor.execute(inserting_sql, game_values)
+                cursor.execute(insert_games_sql, game_values)
 
                 game_id = guid
 
@@ -535,6 +581,12 @@ def create_quiz_data(guids, num_games=1, offset=0):
                     franchises,
                     videos,
                     concepts,
+                    pc_req_min,
+                    pc_req_rec,
+                    mac_req_min,
+                    mac_req_rec,
+                    linux_req_min,
+                    linux_req_rec,
                 ) = parse_game_data(game_id)
 
                 game_values = (
@@ -554,8 +606,14 @@ def create_quiz_data(guids, num_games=1, offset=0):
                     franchises,
                     videos,
                     concepts,
+                    pc_req_min,
+                    pc_req_rec,
+                    mac_req_min,
+                    mac_req_rec,
+                    linux_req_min,
+                    linux_req_rec,
                 )
-                cursor.execute(inserting_sql, game_values)
+                cursor.execute(insert_games_sql, game_values)
 
                 game_id = guid
 

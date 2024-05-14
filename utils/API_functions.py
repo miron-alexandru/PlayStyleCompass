@@ -161,7 +161,7 @@ def get_steam_game_requirements(app_id):
 
     if response.status_code == 200:
         data = response.json()
-        if str(app_id) in data:
+        if str(app_id) in data and 'data' in data[str(app_id)]:
             app_data = data[str(app_id)]['data']
 
             pc_requirements = get_requirements(app_data.get('pc_requirements'))

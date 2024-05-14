@@ -18,7 +18,13 @@ CREATE TABLE IF NOT EXISTS Games (
     dlcs TEXT,
     franchises TEXT,
     videos TEXT,
-    concepts TEXT
+    concepts TEXT,
+    pc_req_min TEXT default '',
+    pc_req_rec TEXT default '',
+    mac_req_min TEXT default '',
+    mac_req_rec TEXT default '',
+    linux_req_min TEXT default '',
+    linux_req_rec TEXT default ''
 );
 """
 
@@ -78,10 +84,10 @@ CREATE TABLE IF NOT EXISTS GameModes (
 );
 """
 
-inserting_sql = """
+insert_games_sql = """
 INSERT INTO Games 
-(guid, title, description, overview, genres, platforms, themes, image, release_date, developers, game_images, similar_games, dlcs, franchises, videos, concepts) 
-VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+(guid, title, description, overview, genres, platforms, themes, image, release_date, developers, game_images, similar_games, dlcs, franchises, videos, concepts, pc_req_min, pc_req_rec, mac_req_min, mac_req_rec, linux_req_min, linux_req_rec) 
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
 """
 
 insert_reviews_sql = """

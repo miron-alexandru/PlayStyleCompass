@@ -112,6 +112,12 @@ class Game(models.Model):
     franchises = models.CharField(max_length=200)
     videos = models.TextField()
     concepts = models.CharField(max_length=200)
+    pc_req_min = models.TextField()
+    pc_req_rec = models.TextField()
+    mac_req_min = models.TextField()
+    mac_req_rec = models.TextField()
+    linux_req_min = models.TextField()
+    linux_req_rec = models.TextField()
 
     def __str__(self):
         return str(self.title)
