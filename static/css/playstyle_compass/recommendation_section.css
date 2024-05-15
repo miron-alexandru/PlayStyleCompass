@@ -150,3 +150,23 @@ span.stars span {
   background-position: 0 0;
   background-image: url(https://www.svgrepo.com/show/157842/star.svg);
 }
+
+.requirements {
+  white-space: pre-line;
+}
+
+.req-divider {
+  border-top: 1px solid black;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.show-hide-req {
+  background: none;
+  border: none;
+  color: #007BFF;
+  cursor: pointer;
+  text-decoration: none;
+  font-weight: bold;
+  display: inline-block;
+}

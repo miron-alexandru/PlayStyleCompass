@@ -220,7 +220,7 @@ def get_game_concepts(game_data, concept_ids):
 
 def strip_html_tags(text):
     """Remove HTML tags from a string and replace certain characters with newline."""
-    replacements = ["Processor:", "OS:", "Memory:", "Graphics:", "DirectX:", "Storage:"]
+    replacements = ["Processor:", "OS:", "Memory:", "Graphics:", "DirectX:", "Storage:", "Sound Card:", "Additional Notes:"]
     remove_strings = ["Minimum:", "Recommended:"]
     soup = BeautifulSoup(text, "html.parser")
     result = soup.get_text()

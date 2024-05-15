@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-11 16:58+0300\n"
-"PO-Revision-Date: 2024-05-11 16:59+0230\n"
+"POT-Creation-Date: 2024-05-15 18:07+0300\n"
+"PO-Revision-Date: 2024-05-15 18:10+0230\n"
 "Last-Translator:   <tokisaki.kurumir99@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -257,19 +257,19 @@ msgstr "Francize:"
 
 #: .\src\playstyle_compass\templates\characters\game_character_template.html:52
 #: .\src\playstyle_compass\templates\franchises\franchise_template.html:36
-#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:47
+#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:78
 msgid "Images:"
 msgstr "Imagini:"
 
 #: .\src\playstyle_compass\templates\characters\game_character_template.html:53
 #: .\src\playstyle_compass\templates\franchises\franchise_template.html:37
-#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:48
+#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:79
 msgid "(Click on the image to open gallery)"
 msgstr "(Click pe imagine pentru a deschide galeria)"
 
 #: .\src\playstyle_compass\templates\characters\game_character_template.html:72
 #: .\src\playstyle_compass\templates\franchises\franchise_template.html:56
-#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:67
+#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:98
 msgid "Images not available"
 msgstr "Imagini indisponibile"
 
@@ -416,31 +416,74 @@ msgstr "Conținut descărcabil (DLC):"
 msgid "Similar games:"
 msgstr "Jocuri similare:"
 
-#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:69
+#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:46
+msgid "Requirements:"
+msgstr "Cerințe:"
+
+#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:47
+#: .\src\users\templates\account_actions\password_change_form.html:40
+#: .\src\users\templates\account_actions\password_change_form.html:58
+#: .\src\users\templates\account_actions\password_reset_confirm.html:23
+#: .\src\users\templates\account_actions\password_reset_confirm.html:40
+#: .\src\users\templates\account_actions\update_profile_picture.html:27
+#: .\src\users\templates\registration\login.html:45
+#: .\src\users\templates\registration\register.html:63
+#: .\src\users\templates\registration\register.html:80
+msgid "Show"
+msgstr "Afișează"
+
+#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:51
+msgid "PC (Minimum)"
+msgstr "PC (Minime)"
+
+#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:54
+#| msgid "Recommended"
+msgid "PC (Recommended)"
+msgstr "PC (Recomandate)"
+
+#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:59
+msgid "MAC (Minimum)"
+msgstr "MAC (Minime)"
+
+#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:62
+#| msgid "Recommended"
+msgid "MAC (Recommended)"
+msgstr "MAC (Recomandate)"
+
+#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:68
+msgid "Linux (Minimum)"
+msgstr "Linux (Minime)"
+
+#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:71
+#| msgid "Recommended"
+msgid "Linux (Recommended)"
+msgstr "Linux (Recomandate)"
+
+#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:100
 msgid "Gameplay videos:"
 msgstr "Videoclipuri cu gameplay:"
 
-#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:77
+#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:108
 msgid "Reviews:"
 msgstr "Recenzii:"
 
-#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:80
+#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:111
 msgid "Show Reviews"
 msgstr "Afișează Recenzii"
 
-#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:83
+#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:114
 msgid "Write a Review"
 msgstr "Scrie o Recenzie"
 
-#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:87
+#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:118
 msgid "Delete your Review"
 msgstr "Ștergeți Recenzia"
 
-#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:90
+#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:121
 msgid "Edit your Review"
 msgstr "Editați Recenzia"
 
-#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:134
+#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:165
 msgid "Share"
 msgstr "Distribuie"
 
@@ -1258,7 +1301,7 @@ msgid "If you did not request this change, please ignore this email."
 msgstr "Dacă nu ai cerut această schimbare, te rugăm să ignori acest email."
 
 #: .\src\users\templates\account_actions\confirm_email_change.txt:13
-#: .\src\users\templates\registration\logged_out.html:11
+#: .\src\users\templates\registration\logged_out.html:17
 msgid "Thank you for using PlayStyle Compass."
 msgstr "Mulțumim că folosești PlayStyle Compass."
 
@@ -1323,17 +1366,6 @@ msgstr "Schimbă-ți parola"
 #: .\src\users\templates\account_actions\password_reset_confirm.html:18
 msgid "New Password"
 msgstr "Parolă Nouă"
-
-#: .\src\users\templates\account_actions\password_change_form.html:40
-#: .\src\users\templates\account_actions\password_change_form.html:58
-#: .\src\users\templates\account_actions\password_reset_confirm.html:23
-#: .\src\users\templates\account_actions\password_reset_confirm.html:40
-#: .\src\users\templates\account_actions\update_profile_picture.html:27
-#: .\src\users\templates\registration\login.html:45
-#: .\src\users\templates\registration\register.html:63
-#: .\src\users\templates\registration\register.html:80
-msgid "Show"
-msgstr "Afișează"
 
 #: .\src\users\templates\account_actions\password_change_form.html:53
 #: .\src\users\templates\account_actions\password_reset_confirm.html:35
@@ -1498,8 +1530,9 @@ msgid "Currently:"
 msgstr "Acum:"
 
 #: .\src\users\templates\general\contact.html:7
-msgid "CONTACT US"
-msgstr "CONTACTEAZĂ-NE"
+#| msgid "CONTACT US"
+msgid "CONTACT"
+msgstr "CONTACT"
 
 #: .\src\users\templates\general\contact.html:12
 msgid ""
@@ -1642,15 +1675,19 @@ msgstr ""
 msgid "Log Out :: PlayStyle Compass"
 msgstr "Deconectare :: PlayStyle Compass"
 
-#: .\src\users\templates\registration\logged_out.html:10
+#: .\src\users\templates\registration\logged_out.html:8
+msgid "LOGOUT"
+msgstr "LOGOUT"
+
+#: .\src\users\templates\registration\logged_out.html:16
 msgid "You have been logged out"
 msgstr "Ai fost deconectat"
 
-#: .\src\users\templates\registration\logged_out.html:12
+#: .\src\users\templates\registration\logged_out.html:18
 msgid "You will be redirected to the home page in:"
 msgstr "Vei fi redirecționat la pagina principală în:"
 
-#: .\src\users\templates\registration\logged_out.html:13
+#: .\src\users\templates\registration\logged_out.html:19
 msgid "5 seconds"
 msgstr "5 secunde"
 
@@ -1659,8 +1696,8 @@ msgid "Log In :: PlayStyle Compass"
 msgstr "Autentificare :: PlayStyle Compass"
 
 #: .\src\users\templates\registration\login.html:10
-msgid "LOG IN"
-msgstr "LOG IN"
+msgid "LOGIN"
+msgstr "LOGIN"
 
 #: .\src\users\templates\registration\login.html:15
 msgid ""
@@ -1672,7 +1709,8 @@ msgstr ""
 "lumea jocurilor cu ușurință."
 
 #: .\src\users\templates\registration\login.html:22
-msgid "Log in to your account"
+#| msgid "Log in to your account"
+msgid "Log Into Your Account"
 msgstr "Conectează-te la contul tău"
 
 #: .\src\users\templates\registration\login.html:35
@@ -1693,7 +1731,8 @@ msgid "Sign up now!"
 msgstr "Înregistrează-te acum!"
 
 #: .\src\users\templates\registration\register.html:7
-msgid "REGISTER"
+#| msgid "REGISTER"
+msgid "REGISTRATION"
 msgstr "ÎNREGISTRARE"
 
 #: .\src\users\templates\registration\register.html:12
@@ -1917,7 +1956,6 @@ msgstr ""
 "introdus corect."
 
 #: .\src\users\views.py:224
-#| msgid "This email address is already in use."
 msgid "Email address already confirmed!"
 msgstr "Adresa de email a fost deja confirmata!"
 
@@ -2186,9 +2224,6 @@ msgid "Inbox :: PlayStyle Compass"
 msgstr "Inbox :: PlayStyle Compass"
 
 #: .\src\users\views.py:1125
-#| msgid ""
-#| "You can only take the quiz once per day. Please try again in {} hours and {}"
-#| " minutes."
 msgid "You can only take the quiz once per day. Please try again in {}"
 msgstr ""
 "Poți să faci chestionarul doar o dată pe zi. Te rog să încerci din nou în {}"

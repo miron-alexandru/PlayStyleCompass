@@ -1,7 +1,7 @@
 document.querySelectorAll(".overview").forEach(function (truncatedText) {
   let fullText = truncatedText.parentNode.querySelector(".full-text");
   let readButton = truncatedText.parentNode.querySelector(".read-button");
-  if (truncatedText.innerHTML === fullText.innerHTML) {
+  if (truncatedText.textContent === fullText.textContent) {
     readButton.style.display = "none";
   } else {
     readButton.style.display = "inline";
@@ -16,12 +16,27 @@ function readMore(button) {
   if (truncatedText.style.display === "none") {
     truncatedText.style.display = "inline";
     fullText.style.display = "none";
-    button.innerHTML = translate("[Read more...]");
+    button.textContent = translate("[Read more...]");
   } else {
     truncatedText.style.display = "none";
     fullText.style.display = "inline";
-    button.innerHTML = translate("[Read less...]");
+    button.textContent = translate("[Read less...]");
   }
+}
+
+function toggleRequirements(button) {
+  let parent = button.parentNode;
+  let requirementsDiv = parent.nextElementSibling;
+
+  if (requirementsDiv && requirementsDiv.classList.contains("game-requirements")) {
+    if (button.textContent.trim() === translate("Show")) {
+      requirementsDiv.style.display = "block";
+      button.textContent = translate("Hide");
+    } else {
+      requirementsDiv.style.display = "none";
+      button.textContent = translate("Show");
+    }
+  };
 }
 
 function lazyLoadVideos() {
