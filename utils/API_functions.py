@@ -145,10 +145,10 @@ def get_steam_app_id(game_name):
     search_url = "https://api.steampowered.com/ISteamApps/GetAppList/v0002/"
     response = requests.get(search_url)
     if response.status_code == 200:
-        app_list = response.json()['applist']['apps']
+        app_list = response.json()["applist"]["apps"]
         for app in app_list:
-            if app['name'].lower() == game_name.lower():
-                return app['appid']
+            if app["name"].lower() == game_name.lower():
+                return app["appid"]
         return None
     else:
         return None
@@ -161,12 +161,12 @@ def get_steam_game_requirements(app_id):
 
     if response.status_code == 200:
         data = response.json()
-        if str(app_id) in data and 'data' in data[str(app_id)]:
-            app_data = data[str(app_id)]['data']
+        if str(app_id) in data and "data" in data[str(app_id)]:
+            app_data = data[str(app_id)]["data"]
 
-            pc_requirements = get_requirements(app_data.get('pc_requirements'))
-            mac_requirements = get_requirements(app_data.get('mac_requirements'))
-            linux_requirements = get_requirements(app_data.get('linux_requirements'))
+            pc_requirements = get_requirements(app_data.get("pc_requirements"))
+            mac_requirements = get_requirements(app_data.get("mac_requirements"))
+            linux_requirements = get_requirements(app_data.get("linux_requirements"))
 
             return pc_requirements, mac_requirements, linux_requirements
         else:

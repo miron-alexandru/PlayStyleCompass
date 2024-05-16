@@ -43,38 +43,48 @@
       <p><strong>{% trans "Similar games:" %}</strong>
         {% include 'base/display_items.html' with items=game.similar_games model_name='Game' view_name='playstyle_compass:view_game' %}
       </p>
-    <p><strong>{% trans "Requirements:" %}</strong>
-      <button class="show-hide-req" id="toggleButton" onclick="toggleRequirements(this)">{% trans "Show" %}</button>
-  </p>
+      <p><strong>{% trans "Requirements:"%}</strong>
+        <button class="show-hide-req" id="toggleButton" onclick="toggleRequirements(this)">{% trans "Show" %}</button>
+      </p>
       <div class="game-requirements" id="game-requirements" style="display: none;">
-          <div class="req-divider"></div>
-          <p><strong>{% trans "PC (Minimum)" %}</strong></p>
-          <span class="requirements">{{ game.pc_req_min|default:"N/A" }}</span>
-          <div class="req-divider"></div>
-          <p><strong>{% trans "PC (Recommended)" %}</strong></p>
-          <span class="requirements">{{ game.pc_req_rec|default:"N/A" }}</span>
-          <div class="req-divider"></div>
+        <div class="platform-requirements">
+          <div class="requirement-section">
+            <p class="req-title"><strong>{% trans "PC Minimum" %}</strong></p>
+            <span class="requirements">{{ game.pc_req_min|default:"N/A" }}</span>
+          </div>
+          <div class="requirement-section">
+            <p class="req-title"><strong>{% trans "PC Recommended" %}</strong></p>
+            <span class="requirements">{{ game.pc_req_rec|default:"N/A" }}</span>
+          </div>
+        </div>
 
-          {% if game.mac_req_min or game.mac_req_rec %}
-            <p><strong>{% trans "MAC (Minimum)" %}</strong></p>
+        {% if game.mac_req_min or game.mac_req_rec %}
+        <div class="platform-requirements">
+          <div class="requirement-section">
+            <p class="req-title"><strong>{% trans "MAC Minimum" %}</strong></p>
             <span class="requirements">{{ game.mac_req_min|default:"N/A" }}</span>
-            <div class="req-divider"></div>
-            <p><strong>{% trans "MAC (Recommended)" %}</strong></p>
+          </div>
+          <div class="requirement-section">
+            <p class="req-title"><strong>{% trans "MAC Recommended" %}</strong></p>
             <span class="requirements">{{ game.mac_req_rec|default:"N/A" }}</span>
-            <div class="req-divider"></div>
-          {% endif %}
+          </div>
+        </div>
+        {% endif %} 
 
-          {% if game.linux_req_min or game.linux_req_rec %}
-            <p><strong>{% trans "Linux (Minimum)" %}</strong></p>
+        {% if game.linux_req_min or game.linux_req_rec %}
+        <div class="platform-requirements">
+          <div class="requirement-section">
+            <p class="req-title"><strong>{% trans "Linux Minimum" %}</strong></p>
             <span class="requirements">{{ game.linux_req_min|default:"N/A" }}</span>
-            <div class="req-divider"></div>
-            <p><strong>{% trans "Linux (Recommended)" %}</strong></p>
+          </div>
+          <div class="requirement-section">
+            <p class="req-title"><strong>{% trans "Linux Recommended" %}</strong></p>
             <span class="requirements">{{ game.linux_req_rec|default:"N/A" }}</span>
-            <div class="req-divider"></div>
-          {% endif %}
+          </div>
+        </div>
+        {% endif %}
       </div>
-
-        <p>
+      <p>
         <strong>{% trans "Images:" %}</strong>
         <span><small>{% trans "(Click on the image to open gallery)" %}</small></span>
       </p>
@@ -98,28 +108,29 @@
       <p><strong>{% trans "Images not available" %}</strong></p>
       {% endif %}
       <p><strong>{% trans "Gameplay videos:" %}</strong>
-        <div class="gameplay-videos" style="display: none;">
-            {% for video_url in game.videos|split_by_comma %}
-                <div class="lazy-video" data-src="{{ video_url }}"></div>
-            {% endfor %}
-        </div>
+      <div class="gameplay-videos">
+        {% for video_url in game.videos|split_by_comma %}
+        <div class="lazy-video" data-src="{{ video_url }}"></div>
+        {% endfor %}
+      </div>
       </p>
       <div class="reviews-section">
         <p><strong>{% trans "Reviews:" %}</strong></p>
         <div class="buttons-container">
           <button class="show-hide-button" data-game-id="{{ game.guid }}">
-              {% trans "Show Reviews" %}
+            {% trans "Show Reviews" %}
           </button>
           <a href="{% url 'playstyle_compass:add_review' game.guid %}?next={{ request.get_full_path|urlencode }}"
-             class="add-review-btn">{% trans "Write a Review" %}</a>
+            class="add-review-btn">{% trans "Write a Review" %}</a>
           <form id="deleteReviewForm" method="post" action="{% url 'playstyle_compass:delete_reviews' game.guid %}">
-              {% csrf_token %}
-              <input type="hidden" name="next" value="{{ request.get_full_path|urlencode }}">
-              <a href="#" onclick="document.getElementById('deleteReviewForm').submit(); return false;" class="delete-review-btn">{% trans "Delete your Review" %}</a>
+            {% csrf_token %}
+            <input type="hidden" name="next" value="{{ request.get_full_path|urlencode }}">
+            <a href="#" onclick="document.getElementById('deleteReviewForm').submit(); return false;"
+              class="delete-review-btn">{% trans "Delete your Review" %}</a>
           </form>
           <a href="{% url 'playstyle_compass:edit_review' game.guid %}?next={{ request.get_full_path|urlencode }}"
-             class="edit-review-btn">{% trans "Edit your Review" %}</a>
-      </div>
+            class="edit-review-btn">{% trans "Edit your Review" %}</a>
+        </div>
         <div class="reviews-list" style="display: none;">
         </div>
       </div>

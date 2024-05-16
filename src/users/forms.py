@@ -242,14 +242,14 @@ class CustomPasswordChangeForm(PasswordChangeForm):
 
     def clean_new_password1(self):
         """Validate the new password1."""
-        new_password1 = self.cleaned_data.get('new_password1')
+        new_password1 = self.cleaned_data.get("new_password1")
         validate_password(new_password1)
 
         return new_password1
 
     def clean_new_password2(self):
         """Validate new password2."""
-        new_password2 = self.cleaned_data.get('new_password2')
+        new_password2 = self.cleaned_data.get("new_password2")
         validate_password(new_password2)
 
         return new_password2

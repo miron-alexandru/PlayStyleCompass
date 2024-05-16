@@ -86,7 +86,9 @@ def parse_game_data(game_id):
 
     steam_app_id = get_steam_app_id(title)
 
-    pc_req_min = pc_req_rec = mac_req_min = mac_req_rec = linux_req_min = linux_req_rec = None
+    pc_req_min = pc_req_rec = mac_req_min = mac_req_rec = linux_req_min = (
+        linux_req_rec
+    ) = None
 
     if steam_app_id:
         pc_req, mac_req, linux_req = get_steam_game_requirements(steam_app_id)
@@ -96,7 +98,6 @@ def parse_game_data(game_id):
             mac_req_min, mac_req_rec = mac_req
         if linux_req:
             linux_req_min, linux_req_rec = linux_req
-
 
     return (
         guid,

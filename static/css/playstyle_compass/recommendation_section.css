@@ -153,12 +153,32 @@ span.stars span {
 
 .requirements {
   white-space: pre-line;
+  display: block;
 }
 
-.req-divider {
-  border-top: 1px solid black;
-  margin-top: 10px;
+.platform-requirements {
+    display: flex;
+}
+
+.requirement-section {
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 10px;
   margin-bottom: 10px;
+  margin-top: 7px;
+}
+
+.platform-requirements > * {
+  flex: 1;
+  margin-right: 15px;
+}
+
+.req-title {
+  color: black;
+  text-align: center;
+  margin-bottom: 6px;
+  background-color: #E0E0E0;
+  border-radius: 6px;
 }
 
 .show-hide-req {
@@ -169,4 +189,5 @@ span.stars span {
   text-decoration: none;
   font-weight: bold;
   display: inline-block;
+  margin-left: -4px;
 }

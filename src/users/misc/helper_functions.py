@@ -39,6 +39,7 @@ def check_quiz_time(user):
                 return f"{int(hours)}h:{int(minutes)}m"
     return None
 
+
 class QuizRecommendations:
     """Class used to get game recommendations based on the Quiz responses."""
 

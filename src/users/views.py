@@ -215,13 +215,13 @@ def activate_email(request, user, to_email):
         else:
             messages.error(
                 request,
-                _("Problem sending email to %(to_email)s, check if you typed it correctly.")
+                _(
+                    "Problem sending email to %(to_email)s, check if you typed it correctly."
+                )
                 % {"to_email": to_email},
             )
     else:
-        messages.error(
-                request,
-                _("Email address already confirmed!"))
+        messages.error(request, _("Email address already confirmed!"))
 
 
 @require_POST
@@ -1125,7 +1125,7 @@ def quiz_view(request):
             "You can only take the quiz once per day. Please try again in {}"
         ).format(time_remaining)
         messages.error(request, error_message)
-        return redirect(request.META.get('HTTP_REFERER', 'playstyle_compass:index'))
+        return redirect(request.META.get("HTTP_REFERER", "playstyle_compass:index"))
 
     cache_key = f"quiz_questions_{user.id}"
 
