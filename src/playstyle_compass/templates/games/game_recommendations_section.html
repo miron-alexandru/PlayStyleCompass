@@ -24,7 +24,57 @@
       {% endif %}
     </div>
     <div class="game-info">
-      <h4>{{ game.title|default:"N/A" }}</h4>
+      <div class="game-header">
+        <h4>{{ game.title|default:"N/A" }}</h4>
+        {% if user.is_authenticated %}
+        <div class="user-actions">
+          <span class="favorite-toggle" data-game-id="{{ game.guid }}" title="Add to Favorites">
+            {% if other_user %}
+            {% if game.guid|is_favorite:current_viewer_preferences.favorite_games %}
+            <i class="fas fa-star" id="star-{{ game.guid }}"></i>
+            {% else %}
+            <i class="far fa-star" id="star-{{ game.guid }}"></i>
+            {% endif %}
+            {% else %}
+            {% if game.guid|is_favorite:user_preferences.favorite_games %}
+            <i class="fas fa-star" id="star-{{ game.guid }}"></i>
+            {% else %}
+            <i class="far fa-star" id="star-{{ game.guid }}"></i>
+            {% endif %}
+            {% endif %}
+          </span>
+
+          <span class="icon-divider">|</span>
+
+          <span class="queue-toggle" data-game-id="{{ game.guid }}" title="Add to Game Queue">
+            {% if other_user %}
+            {% if game.guid|in_queue:current_viewer_preferences.game_queue %}
+            <i class="fa-solid fa-clock" id="queue-{{ game.guid }}"></i>
+            {% else %}
+            <i class="fa-regular fa-clock" id="queue-{{ game.guid }}"></i>
+            {% endif %}
+            {% else %}
+            {% if game.guid|in_queue:user_preferences.game_queue %}
+            <i class="fa-solid fa-clock" id="queue-{{ game.guid }}"></i>
+            {% else %}
+            <i class="fa-regular fa-clock" id="queue-{{ game.guid }}"></i>
+            {% endif %}
+            {% endif %}
+          </span>
+
+          <span class="icon-divider">|</span>
+
+          <div class="friend-dropdown">
+            <button class="shareButton" title="Share with friends">{% trans "Share" %}</button>
+            <div class="friend-dropdown-content">
+              {% for friend in user_friends %}
+              <a class="friend-link" href="#" data-friend-id="{{ friend.id }}">{{ friend.userprofile.profile_name }}</a>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+        {% endif %}
+      </div>
       <p>{{ game.description|default:"N/A" }}</p>
       <p><strong>{% trans "Description:" %}</strong>
         <span class="overview">{{ game.overview|default:"N/A"|truncatewords_html:"50" }}</span>
@@ -108,12 +158,13 @@
       <p><strong>{% trans "Images not available" %}</strong></p>
       {% endif %}
       <p><strong>{% trans "Gameplay videos:" %}</strong>
-      <div class="gameplay-videos">
-        {% for video_url in game.videos|split_by_comma %}
-        <div class="lazy-video" data-src="{{ video_url }}"></div>
-        {% endfor %}
-      </div>
+        <button class="show-hide-videos" id="toggleVideosButton" onclick="toggleVideos(this)">{% trans "Show" %}</button>
       </p>
+      <div class="gameplay-videos" id="gameplay-videos" style="display: none;">
+          {% for video_url in game.videos|split_by_comma %}
+          <div class="lazy-video" data-src="{{ video_url }}"></div>
+          {% endfor %}
+      </div>
       <div class="reviews-section">
         <p><strong>{% trans "Reviews:" %}</strong></p>
         <div class="buttons-container">
@@ -135,53 +186,6 @@
         </div>
       </div>
     </div>
-    {% if user.is_authenticated %}
-    <span class="favorite-toggle" data-game-id="{{ game.guid }}" title="Add to Favorites">
-      {% if other_user %}
-      {% if game.guid|is_favorite:current_viewer_preferences.favorite_games %}
-      <i class="fas fa-star" id="star-{{ game.guid }}"></i>
-      {% else %}
-      <i class="far fa-star" id="star-{{ game.guid }}"></i>
-      {% endif %}
-      {% else %}
-      {% if game.guid|is_favorite:user_preferences.favorite_games %}
-      <i class="fas fa-star" id="star-{{ game.guid }}"></i>
-      {% else %}
-      <i class="far fa-star" id="star-{{ game.guid }}"></i>
-      {% endif %}
-      {% endif %}
-    </span>
-
-    <span class="icon-divider">|</span>
-
-    <span class="queue-toggle" data-game-id="{{ game.guid }}" title="Add to Game Queue">
-      {% if other_user %}
-      {% if game.guid|in_queue:current_viewer_preferences.game_queue %}
-      <i class="fa-solid fa-clock" id="queue-{{ game.guid }}"></i>
-      {% else %}
-      <i class="fa-regular fa-clock" id="queue-{{ game.guid }}"></i>
-      {% endif %}
-      {% else %}
-      {% if game.guid|in_queue:user_preferences.game_queue %}
-      <i class="fa-solid fa-clock" id="queue-{{ game.guid }}"></i>
-      {% else %}
-      <i class="fa-regular fa-clock" id="queue-{{ game.guid }}"></i>
-      {% endif %}
-      {% endif %}
-    </span>
-
-    <span class="icon-divider">|</span>
-
-    <div class="friend-dropdown">
-      <button class="shareButton" title="Share with friends">{% trans "Share" %}</button>
-      <div class="friend-dropdown-content">
-        {% for friend in user_friends %}
-        <a class="friend-link" href="#" data-friend-id="{{ friend.id }}">{{ friend.userprofile.profile_name }}</a>
-        {% endfor %}
-      </div>
-    </div>
-    {% endif %}
-
   </li>
 </div>
 

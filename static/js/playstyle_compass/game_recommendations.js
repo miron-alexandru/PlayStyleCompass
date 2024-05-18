@@ -39,6 +39,21 @@ function toggleRequirements(button) {
   };
 }
 
+function toggleVideos(button) {
+    let parent = button.parentNode;
+    let videosDiv = parent.nextElementSibling;
+
+    if (videosDiv && videosDiv.classList.contains("gameplay-videos")) {
+        if (button.textContent.trim() === translate("Show")) {
+            videosDiv.style.display = "flex";
+            button.textContent = translate("Hide");
+        } else {
+            videosDiv.style.display = "none";
+            button.textContent = translate("Show");
+        }
+    }
+}
+
 function lazyLoadVideos() {
     const lazyVideos = document.querySelectorAll('.lazy-video');
     lazyVideos.forEach(video => {

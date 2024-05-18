@@ -121,11 +121,10 @@ small {
   color: #2d652b;
 }
 
-
 .gameplay-videos {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
 }
 
 .lazy-video {
@@ -181,7 +180,7 @@ span.stars span {
   border-radius: 6px;
 }
 
-.show-hide-req {
+.show-hide-req, .show-hide-videos {
   background: none;
   border: none;
   color: #007BFF;
@@ -190,4 +189,13 @@ span.stars span {
   font-weight: bold;
   display: inline-block;
   margin-left: -4px;
+}
+
+.game-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.icon-divider {
+  margin: 0 auto;
 }
