@@ -100,11 +100,11 @@
         <div class="platform-requirements">
           <div class="requirement-section">
             <p class="req-title"><strong>{% trans "PC Minimum" %}</strong></p>
-            <span class="requirements">{{ game.pc_req_min|default:"N/A" }}</span>
+            <span class="requirements">{{ game.pc_req_min|bold_requirements|default:"N/A" }}</span>
           </div>
           <div class="requirement-section">
             <p class="req-title"><strong>{% trans "PC Recommended" %}</strong></p>
-            <span class="requirements">{{ game.pc_req_rec|default:"N/A" }}</span>
+            <span class="requirements">{{ game.pc_req_rec|bold_requirements|default:"N/A" }}</span>
           </div>
         </div>
 
@@ -112,11 +112,11 @@
         <div class="platform-requirements">
           <div class="requirement-section">
             <p class="req-title"><strong>{% trans "MAC Minimum" %}</strong></p>
-            <span class="requirements">{{ game.mac_req_min|default:"N/A" }}</span>
+            <span class="requirements">{{ game.mac_req_min|bold_requirements|default:"N/A" }}</span>
           </div>
           <div class="requirement-section">
             <p class="req-title"><strong>{% trans "MAC Recommended" %}</strong></p>
-            <span class="requirements">{{ game.mac_req_rec|default:"N/A" }}</span>
+            <span class="requirements">{{ game.mac_req_rec|bold_requirements|default:"N/A" }}</span>
           </div>
         </div>
         {% endif %} 
@@ -125,11 +125,11 @@
         <div class="platform-requirements">
           <div class="requirement-section">
             <p class="req-title"><strong>{% trans "Linux Minimum" %}</strong></p>
-            <span class="requirements">{{ game.linux_req_min|default:"N/A" }}</span>
+            <span class="requirements">{{ game.linux_req_min|bold_requirements|default:"N/A" }}</span>
           </div>
           <div class="requirement-section">
             <p class="req-title"><strong>{% trans "Linux Recommended" %}</strong></p>
-            <span class="requirements">{{ game.linux_req_rec|default:"N/A" }}</span>
+            <span class="requirements">{{ game.linux_req_rec|bold_requirements|default:"N/A" }}</span>
           </div>
         </div>
         {% endif %}
@@ -166,8 +166,8 @@
           {% endfor %}
       </div>
       <div class="reviews-section">
+        <div class="reviews-container">
         <p><strong>{% trans "Reviews:" %}</strong></p>
-        <div class="buttons-container">
           <button class="show-hide-button" data-game-id="{{ game.guid }}">
             {% trans "Show Reviews" %}
           </button>

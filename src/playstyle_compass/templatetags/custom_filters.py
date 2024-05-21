@@ -1,5 +1,6 @@
 """Custom filters."""
 
+import re
 from datetime import datetime
 from django import template
 from itertools import zip_longest
@@ -7,6 +8,7 @@ from django.utils.translation import gettext
 from django.apps import apps
 from pytz import timezone
 from django.utils import timezone as django_timezone
+from django.utils.safestring import mark_safe
 
 
 register = template.Library()
@@ -123,3 +125,27 @@ def convert_to_user_timezone(timestamp, user_timezone):
     formatted_timestamp = timestamp_in_user_tz.strftime("%B %d, %Y, %I:%M %p")
 
     return formatted_timestamp
+
+
+@register.filter
+def bold_requirements(value):
+    """Filter used to make requirements in bold."""
+    if value:
+        requirements = [
+            "Processor:",
+            "OS:",
+            "OS \\*:",
+            "Memory:",
+            "Graphics:",
+            "DirectX:",
+            "Storage:",
+            "Sound Card:",
+            "Additional Notes:"
+        ]
+        for req in requirements:
+            value = re.sub(f"({req})", r"<strong>\1</strong>", value)
+
+        return mark_safe(value)
+    return None
+
+

@@ -5,14 +5,14 @@
   border-radius: 5px;
 }
 
-.buttons-container {
+.reviews-container {
     display: flex;
     align-items: center;
 }
 
-.buttons-container button,
-.buttons-container a {
-    margin-right: 10px;
+.reviews-container button,
+.reviews-container a {
+    margin-right: 6px;
 }
 
 .review-header {
@@ -119,4 +119,9 @@
 
 .like-dislike {
   user-select: none;
+}
+
+.all-reviews {
+    display: flex;
+    align-items: center;
 }
