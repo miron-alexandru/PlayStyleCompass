@@ -39,8 +39,7 @@ Websites for .env configuration: [GiantBomb](https://www.giantbomb.com/) / [Send
 ![Home](project-preview/home.PNG)
 ![Account Actions](project-preview/acc-actions.PNG)
 ![Game Details](project-preview/view-game.PNG)
-## All images can be found [here]()
-
+## All images can be found [here](https://github.com/miron-alexandru/PlayStyleCompass/tree/main/project-preview)
 
 
 <details>
