@@ -34,6 +34,15 @@
 
 Websites for .env configuration: [GiantBomb](https://www.giantbomb.com/) / [SendGrid](https://sendgrid.com/) / [RECAPTCHA](https://www.google.com/recaptcha/about/)
 
+
+## Project Preview
+![Home](project-preview/home.PNG)
+![Account Actions](project-preview/acc-actions.PNG)
+![Game Details](project-preview/view-game.PNG)
+## All images can be found [here]()
+
+
+
 <details>
 <summary><h2>PlayStyle Compass Changelog</h2></summary>
 
