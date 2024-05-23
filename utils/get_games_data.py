@@ -34,8 +34,7 @@ from data_processing import (
 
 # Obtain games data
 game_ids = fetch_game_ids_by_platforms(
-    platform_ids, API_KEY, offset=0, limit=1, game_ids_to_add=game_ids_to_add
-)
+    platform_ids, API_KEY, offset=5, limit=5)
 create_games_data_db(game_ids)
 
 # Obtain game modes data
