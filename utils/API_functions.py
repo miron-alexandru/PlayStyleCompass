@@ -141,28 +141,28 @@ def search_gameplay_videos(game_name):
 
 
 steam_app_list = None
+steam_app_dict = None
 
 def fetch_steam_app_list():
     """Fetch the app list from the Steam API and store it globally."""
-    global steam_app_list
+    global steam_app_dict
     search_url = "https://api.steampowered.com/ISteamApps/GetAppList/v0002/"
     response = requests.get(search_url)
 
     if response.status_code == 200:
         steam_app_list = response.json()["applist"]["apps"]
-
+        steam_app_dict = {app["name"].lower(): app["appid"] for app in steam_app_list}
 
 def get_steam_app_id(game_name):
     """Get the app id from the Steam API based on the game name."""
-    global steam_app_list
+    global steam_app_dict
 
-    if steam_app_list is None:
+    if steam_app_dict is None:
         fetch_steam_app_list()
-    
-    if steam_app_list:
-        for app in steam_app_list:
-            if app["name"].lower() == game_name.lower():
-                return app["appid"]
+
+    if steam_app_dict:
+        return steam_app_dict.get(game_name.lower())
+
     return None
 
 
