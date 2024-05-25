@@ -130,6 +130,15 @@ input[type="email"]:focus,
   transition: color 0.3s ease-in-out;
 }
 
+.contact-us {
+  display: flex;
+  align-items: top;
+}
+
+.contact-icon {
+  margin-left: 5px;
+}
+
 .navbar-nav .nav-item .contact-us {
   margin-left: auto;
 }
@@ -352,6 +361,7 @@ input[type="email"]:focus,
   font-weight: bolder;
   margin-left: -5px;
   text-decoration: none;
+  margin-right: -15px;
 }
 
 .user-profile-name a:hover {
