@@ -1,12 +1,16 @@
 """The "API_functions" module provides functions for making API calls and fetching data."""
 
 import datetime
+import difflib
 from datetime import datetime
 import requests
 from youtubesearchpython import VideosSearch
 
 from constants import BASE_URL, headers, API_KEY
 from data_extraction import get_requirements
+
+steam_app_list = None
+steam_app_dict = None
 
 
 def fetch_game_ids_by_platforms(
@@ -140,9 +144,6 @@ def search_gameplay_videos(game_name):
     return video_ids
 
 
-steam_app_list = None
-steam_app_dict = None
-
 def fetch_steam_app_list():
     """Fetch the app list from the Steam API and store it globally."""
     global steam_app_dict
@@ -153,16 +154,21 @@ def fetch_steam_app_list():
         steam_app_list = response.json()["applist"]["apps"]
         steam_app_dict = {app["name"].lower(): app["appid"] for app in steam_app_list}
 
+
 def get_steam_app_id(game_name):
-    """Get the app id from the Steam API based on the game name."""
+    """Get the app id from the Steam API based on the game name using string similarity matching."""
     global steam_app_dict
 
     if steam_app_dict is None:
         fetch_steam_app_list()
 
     if steam_app_dict:
-        return steam_app_dict.get(game_name.lower())
-
+        game_names = list(steam_app_dict.keys())
+        closest_matches = difflib.get_close_matches(game_name.lower(), game_names, n=1, cutoff=0.95)
+        if closest_matches:
+            closest_match = closest_matches[0]
+            return steam_app_dict.get(closest_match)
+    
     return None
 
 
