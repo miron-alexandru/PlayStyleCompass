@@ -15,9 +15,18 @@
 </form>
 
 <div class="radio">
-  <input type="radio" name="search_type" value="games" {% if bar_type == 'search_games' %}checked{% endif %}> {% trans 'Search games' %}
-  <input type="radio" name="search_type" value="franchises" {% if bar_type == 'search_franchises' %}checked{% endif %}> {% trans 'Search franchises' %}
-  <input type="radio" name="search_type" value="characters" {% if bar_type == 'search_characters' %}checked{% endif %}> {% trans 'Search characters' %}
+  <label for="search_games">
+    <input type="radio" id="search_games" name="search_type" value="games" {% if bar_type == 'search_games' %}checked{% endif %}>
+    {% trans 'Games' %}
+  </label>
+  <label for="search_franchises">
+    <input type="radio" id="search_franchises" name="search_type" value="franchises" {% if bar_type == 'search_franchises' %}checked{% endif %}>
+    {% trans 'Franchises' %}
+  </label>
+  <label for="search_characters">
+    <input type="radio" id="search_characters" name="search_type" value="characters" {% if bar_type == 'search_characters' %}checked{% endif %}>
+    {% trans 'Characters' %}
+  </label>
 </div>
 
 <div id="search-results" class="search-results"></div>

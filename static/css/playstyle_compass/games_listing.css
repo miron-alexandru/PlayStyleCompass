@@ -16,7 +16,7 @@
 }
 
 .games h3, .franchises h3 {
-  padding-top: 40px;
+  padding-top: 25px;
   color: #2f6187;
   position: relative;
   width: 100%;
@@ -24,7 +24,7 @@
   clear: both;
   font-size: 18px;
   line-height: 1;
-  margin: 0 0 20px;
+  margin: 0 0 12px;
   color: #3e6a91;
 }
 
