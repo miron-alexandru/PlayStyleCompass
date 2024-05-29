@@ -151,3 +151,45 @@
   text-decoration: none;
   color: #1f78bb;
 }
+
+.profile-info {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 15px;
+}
+
+.profile-info-item {
+  width: calc(50% - 10px);
+  margin-bottom: 20px;
+  box-sizing: border-box;
+  background-color: #f0f0f0;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.profile-info-item:nth-child(odd) {
+  margin-right: 20px;
+}
+
+.profile-info-item .info-label {
+  font-weight: bold;
+}
+
+.profile-info-item .info-value {
+  display: block;
+  margin-top: 5px;
+  overflow-wrap: break-word;
+}
+
+.edit-profile-link {
+  color: #007bff;
+  text-decoration: none;
+  font-weight: bold;
+  transition: color 0.3s;
+  margin-left: 10px;
+}
+
+.edit-profile-link:hover {
+  color: #0056b3;
+}

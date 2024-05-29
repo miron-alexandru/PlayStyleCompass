@@ -17,10 +17,10 @@ from django.core.files.base import ContentFile
 from django.contrib.auth.models import User
 from django_recaptcha.fields import ReCaptchaField
 
-from .models import UserProfile, ContactMessage, Message
+from .models import UserProfile, ContactMessage, Message, UserProfile
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
-
+from utils.constants import GAMING_COMMITMENT_CHOICES, PLATFORM_CHOICES
 
 class CustomAuthenticationForm(AuthenticationForm):
     """Custom authentication form."""
@@ -414,3 +414,23 @@ class QuizForm(forms.Form):
                 choices=choices,
                 widget=forms.RadioSelect(attrs={"class": "form-check-input"}),
             )
+
+
+class UserProfileForm(forms.ModelForm):
+    """User Profile Form used to create user profile data."""
+    class Meta:
+        model = UserProfile
+        fields = ['bio', 'favorite_game', 'favorite_character', 'gaming_commitment', 'main_gaming_platform', 'social_media']
+        widgets = {
+            'gaming_commitment': forms.Select(choices=GAMING_COMMITMENT_CHOICES),
+            'main_gaming_platform': forms.Select(choices=PLATFORM_CHOICES),
+        }
+
+    def clean_social_media(self):
+        social_media = self.cleaned_data.get('social_media')
+        if social_media:
+            # Combined regex pattern to validate social media links
+            regex_pattern = r'^(https?:\/\/)?(www\.)?(facebook|twitter|instagram|linkedin|x|reddit|youtube)\.com\/.+?$'
+            if not re.match(regex_pattern, social_media):
+                raise forms.ValidationError("Please enter a valid social media link.")
+        return social_media

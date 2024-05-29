@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load static %}
+
+{% block page_header %}
+<div class="header">
+  <h3>{% trans "EDIT PROFILE" %}</h3>
+</div>
+{% endblock page_header %}
+
+{% block description %}
+{% blocktrans %}Customize your gaming persona here. Update bio, select favorite game, and more. Make your mark in the gaming community.{% endblocktrans %}
+{% endblock description %}
+
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/users/edit_profile.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/users/common.css' %}">
+
+<div class="form-container">
+  <form method="post">
+      {% csrf_token %}
+      <div class="form-group">
+          <label for="id_bio">{% trans "Bio" %}</label>
+          {{ form.bio }}
+      </div>
+      <div class="form-group">
+          <label for="id_favorite_game">{% trans "Favorite Game" %}</label>
+          {{ form.favorite_game }}
+      </div>
+      <div class="form-group">
+          <label for="id_favorite_character">{% trans "Favorite Character" %}</label>
+          {{ form.favorite_character }}
+      </div>
+      <div class="form-group">
+          <label for="id_type_of_gamer">{% trans "Gaming Commitment" %}</label>
+          {{ form.gaming_commitment }}
+      </div>
+      <div class="form-group">
+          <label for="id_main_gaming_platform">{% trans "Main Platform" %}</label>
+          {{ form.main_gaming_platform }}
+      </div>
+      <div class="form-group">
+        <label for="id_social_media">{% trans "Social Media" %}</label>
+        {{ form.social_media }}
+        {% for error in form.social_media.errors %}
+            <div class="custom-error-list">{{ error }}</div>
+        {% endfor %}
+    </div>
+      <button type="submit">{% trans "Save changes" %}</button>
+  </form>
+</div>
+
+{% endblock %}

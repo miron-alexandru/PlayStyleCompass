@@ -281,6 +281,20 @@ franchises_ids_to_add = [
     "3025-51",
 ]
 
+GAMING_COMMITMENT_CHOICES = [
+    ('Casual', 'Casual'),
+    ('Hardcore', 'Hardcore'),
+    ('Professional', 'Professional'),
+]
+
+PLATFORM_CHOICES = [
+    ('PC', 'PC'),
+    ('PlayStation', 'PlayStation'),
+    ('Xbox', 'Xbox'),
+    ('Nintendo', 'Nintendo'),
+    ('Mobile', 'Mobile'),
+]
+
 API_KEY = str(os.getenv("GBAPI_KEY"))
 GOOGLE_API_KEY = str(os.getenv("GOOGLE_API_KEY"))
 

@@ -59,6 +59,9 @@
           {% if is_friend == 'Friend' or is_friend == 'You' %}friend{% else %}not-friend{%endif%}">
         <span class="friend-status">{{ is_friend }}</span>
       </div>
+      {% if is_friend == 'You' %}
+      <a href="{% url 'users:edit_profile' %}" class="edit-profile-link">{% trans 'Edit Profile' %}</a>
+        {% endif %}
       {% trans 'Not Friend' as not_friend %}
       {% if is_friend == not_friend %}
       <div class="friend-request">
@@ -143,6 +146,33 @@
       </div>
     </div>
   </div>
+  <div class="profile-info">
+    <div class="profile-info-item">
+        <span class="info-label">{% trans "Bio" %}</span>
+        <span class="info-value">{{ user_profile.bio|default:"-" }}</span>
+    </div>
+    <div class="profile-info-item">
+        <span class="info-label">{% trans "Favorite Game" %}</span>
+        <span class="info-value">{{ user_profile.favorite_game|default:"-" }}</span>
+    </div>
+    <div class="profile-info-item">
+        <span class="info-label">{% trans "Favorite Character" %}</span>
+        <span class="info-value">{{ user_profile.favorite_character|default:"-" }}</span>
+    </div>
+    <div class="profile-info-item">
+        <span class="info-label">{% trans "Gaming Commitment" %}</span>
+        <span class="info-value">{{ user_profile.gaming_commitment|default:"-" }}</span>
+    </div>
+    <div class="profile-info-item">
+        <span class="info-label">{% trans "Main Platform" %}</span>
+        <span class="info-value">{{ user_profile.main_gaming_platform|default:"-" }}</span>
+    </div>
+    <div class="profile-info-item">
+    <span class="info-label">{% trans "Social Media" %}</span>
+    <span class="info-value">
+        <a href="{{ user_profile.social_media }}" target="_blank">{{ user_profile.social_media|default:"-" }}</a>
+    </span>
+</div>
 </div>
 
 <script src="{% static 'js/users/remove_friend.js' %}"></script>
