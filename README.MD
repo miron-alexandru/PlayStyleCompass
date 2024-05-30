@@ -46,6 +46,7 @@ Websites for .env configuration: [GiantBomb](https://www.giantbomb.com/) / [Send
 <summary><h2>PlayStyle Compass Changelog</h2></summary>
 
 ### Version v1.8:
+* Users are able to provide and display on their profile new information about themselves (e.g. favorite game, genres, gaming setup).
 * Improvements for System Requirements (CSS/HTML)
 * System Requirements for the Games are now displayed.
 * Preferences Quiz tweaks.

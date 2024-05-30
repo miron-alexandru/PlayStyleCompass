@@ -20,7 +20,8 @@ from django_recaptcha.fields import ReCaptchaField
 from .models import UserProfile, ContactMessage, Message, UserProfile
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
-from utils.constants import GAMING_COMMITMENT_CHOICES, PLATFORM_CHOICES
+from utils.constants import GAMING_COMMITMENT_CHOICES, PLATFORM_CHOICES, GENRE_CHOICES
+
 
 class CustomAuthenticationForm(AuthenticationForm):
     """Custom authentication form."""
@@ -416,21 +417,73 @@ class QuizForm(forms.Form):
             )
 
 
+class GenreField(forms.MultipleChoiceField):
+    def clean(self, value):
+        if not value:
+            return ""
+        return ",".join(value)
+
+
 class UserProfileForm(forms.ModelForm):
     """User Profile Form used to create user profile data."""
+
     class Meta:
         model = UserProfile
-        fields = ['bio', 'favorite_game', 'favorite_character', 'gaming_commitment', 'main_gaming_platform', 'social_media']
+        fields = [
+            "bio",
+            "favorite_game",
+            "favorite_character",
+            "gaming_commitment",
+            "main_gaming_platform",
+            "social_media",
+            "gaming_genres",
+            "gaming_setup",
+        ]
         widgets = {
-            'gaming_commitment': forms.Select(choices=GAMING_COMMITMENT_CHOICES),
-            'main_gaming_platform': forms.Select(choices=PLATFORM_CHOICES),
+            "bio": forms.Textarea(
+                attrs={
+                    "rows": 4,
+                    "cols": 50,
+                    "autofocus": "autofocus",
+                    "placeholder": _("Tell us a little about yourself..."),
+                }
+            ),
+            "favorite_game": forms.TextInput(
+                attrs={"placeholder": _("Enter your favorite game...")}
+            ),
+            "favorite_character": forms.TextInput(
+                attrs={"placeholder": _("Enter your favorite character...")}
+            ),
+            "gaming_commitment": forms.Select(choices=GAMING_COMMITMENT_CHOICES),
+            "main_gaming_platform": forms.Select(choices=PLATFORM_CHOICES),
+            "social_media": forms.TextInput(
+                attrs={"placeholder": _("Enter your social media handle...")}
+            ),
+            "gaming_setup": forms.Textarea(
+                attrs={
+                    "rows": 6,
+                    "cols": 50,
+                    "placeholder": _("Describe your gaming setup..."),
+                }
+            ),
         }
 
+    gaming_genres = forms.MultipleChoiceField(
+        choices=GENRE_CHOICES, widget=forms.CheckboxSelectMultiple, required=False
+    )
+
+    def clean_gaming_genres(self):
+        genres = self.cleaned_data.get("gaming_genres")
+        if len(genres) > 3:
+            raise forms.ValidationError(_("You can only select up to 3 genres."))
+        return ", ".join(genres) if genres else ""
+
     def clean_social_media(self):
-        social_media = self.cleaned_data.get('social_media')
+        social_media = self.cleaned_data.get("social_media")
         if social_media:
-            # Combined regex pattern to validate social media links
-            regex_pattern = r'^(https?:\/\/)?(www\.)?(facebook|twitter|instagram|linkedin|x|reddit|youtube)\.com\/.+?$'
+            regex_pattern = r"^(https?:\/\/)?(www\.)?(facebook|twitter|instagram|linkedin|x|reddit|youtube)\.com\/.+?$"
             if not re.match(regex_pattern, social_media):
-                raise forms.ValidationError("Please enter a valid social media link.")
+                raise forms.ValidationError(
+                    _("Please enter a valid social media link.")
+                )
         return social_media

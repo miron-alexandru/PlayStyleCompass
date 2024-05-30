@@ -140,12 +140,10 @@ def bold_requirements(value):
             "DirectX:",
             "Storage:",
             "Sound Card:",
-            "Additional Notes:"
+            "Additional Notes:",
         ]
         for req in requirements:
             value = re.sub(f"({req})", r"<strong>\1</strong>", value)
 
         return mark_safe(value)
     return None
-
-

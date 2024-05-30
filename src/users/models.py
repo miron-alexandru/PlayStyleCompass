@@ -20,22 +20,14 @@ class UserProfile(models.Model):
     email_confirmed = models.BooleanField(default=False)
     timezone = models.CharField(max_length=50, null=True, blank=True)
     quiz_taken = models.BooleanField(default=False)
-    bio = models.CharField(max_length=50, null=True, default="", help_text="Write a short bio, up to 50 characters.")
-    favorite_game = models.CharField(max_length=50, null=True, default="", help_text="Enter your favorite game, up to 50 characters.")
-    favorite_character = models.CharField(max_length=50, null=True, default="", help_text="Enter your favorite game character, up to 50 characters.")
-    gaming_commitment = models.CharField(
-        max_length=50,
-        default='Casual',
-        help_text="Choose your level of commitment in gaming."
-    )
-    main_gaming_platform = models.CharField(
-        max_length=50,
-        default='PC',
-        help_text="Choose your main gaming platform."
-    )
-    social_media = models.CharField(max_length=100, null=True, default="", help_text="Enter your social media link")
-
-
+    bio = models.TextField(max_length=50, null=True, default="")
+    favorite_game = models.CharField(max_length=50, null=True, default="")
+    favorite_character = models.CharField(max_length=50, null=True, default="")
+    gaming_commitment = models.CharField(max_length=50, default="Casual")
+    main_gaming_platform = models.CharField(max_length=50, default="PC")
+    social_media = models.CharField(max_length=100, null=True, default="")
+    gaming_setup = models.TextField(blank=True, max_length=150, default="")
+    gaming_genres = models.CharField(max_length=255, blank=True)
 
     def clean(self):
         profile_name = self.profile_name

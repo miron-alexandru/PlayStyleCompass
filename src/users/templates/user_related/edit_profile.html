@@ -32,12 +32,23 @@
           {{ form.favorite_character }}
       </div>
       <div class="form-group">
+          <label for="id_gaming_genres">{% trans "Favorite Genres" %}</label>
+          {{ form.gaming_genres }}
+          {% for error in form.gaming_genres.errors %}
+            <div class="custom-error-list">{{ error }}</div>
+        {% endfor %}
+      </div>
+      <div class="form-group">
           <label for="id_type_of_gamer">{% trans "Gaming Commitment" %}</label>
           {{ form.gaming_commitment }}
       </div>
       <div class="form-group">
           <label for="id_main_gaming_platform">{% trans "Main Platform" %}</label>
           {{ form.main_gaming_platform }}
+      </div>
+      <div class="form-group">
+          <label for="id_gaming_setup">{% trans "Gaming Setup" %}</label>
+          {{ form.gaming_setup }}
       </div>
       <div class="form-group">
         <label for="id_social_media">{% trans "Social Media" %}</label>
@@ -49,5 +60,7 @@
       <button type="submit">{% trans "Save changes" %}</button>
   </form>
 </div>
+
+<script src="{% static 'js/users/edit_profile.js' %}"></script>
 
 {% endblock %}

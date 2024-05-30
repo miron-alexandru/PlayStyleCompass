@@ -71,7 +71,9 @@ input[type="email"] {
 input[type="text"]:focus,
 input[type="password"]:focus,
 input[type="email"]:focus,
-#id_message:focus {
+#id_message:focus,
+#id_bio:focus,
+#id_gaming_setup:focus {
   color: #495057;
   background-color: #fff;
   border-color: #a5c9ff;
@@ -79,7 +81,7 @@ input[type="email"]:focus,
   box-shadow: 0 0 0 0.1rem rgba(0, 123, 255, .25);
 }
 
-#id_message {
+#id_message, #id_bio, #id_gaming_setup {
   width: 100%;
   display: block;
   color: #495057;

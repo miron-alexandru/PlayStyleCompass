@@ -282,18 +282,40 @@ franchises_ids_to_add = [
 ]
 
 GAMING_COMMITMENT_CHOICES = [
-    ('Casual', 'Casual'),
-    ('Hardcore', 'Hardcore'),
-    ('Professional', 'Professional'),
+    ("Newbie", "Newbie"),
+    ("Casual", "Casual"),
+    ("Enthusiast", "Enthusiast"),
+    ("Hardcore", "Hardcore"),
+    ("Professional", "Professional"),
 ]
 
 PLATFORM_CHOICES = [
-    ('PC', 'PC'),
-    ('PlayStation', 'PlayStation'),
-    ('Xbox', 'Xbox'),
-    ('Nintendo', 'Nintendo'),
-    ('Mobile', 'Mobile'),
+    ("PC", "PC"),
+    ("PlayStation", "PlayStation"),
+    ("Xbox", "Xbox"),
+    ("Nintendo", "Nintendo"),
+    ("Mobile", "Mobile"),
+    ("VR", "VR"),
+    ("Browser", "Browser"),
+    ("Arcade", "Arcade"),
 ]
+
+GENRE_CHOICES = [
+    ("FPS", "First-Person Shooter"),
+    ("RPG", "Role-Playing Game"),
+    ("MMO", "Massively Multiplayer Online"),
+    ("MOBA", "Multiplayer Online Battle Arena"),
+    ("Strategy", "Strategy"),
+    ("Sports", "Sports"),
+    ("Adventure", "Adventure"),
+    ("Simulation", "Simulation"),
+    ("Platformer", "Platformer"),
+    ("Puzzle", "Puzzle"),
+    ("Horror", "Horror"),
+    ("Fighting", "Fighting"),
+    ("Driving/Racing", "Driving/Racing"),
+]
+
 
 API_KEY = str(os.getenv("GBAPI_KEY"))
 GOOGLE_API_KEY = str(os.getenv("GOOGLE_API_KEY"))

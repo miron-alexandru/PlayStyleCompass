@@ -1207,11 +1207,11 @@ def edit_profile(request):
     user_profile = request.user.userprofile
     profile_name = request.user.userprofile.profile_name
 
-    if request.method == 'POST':
+    if request.method == "POST":
         form = UserProfileForm(request.POST, instance=user_profile)
         if form.is_valid():
             form.save()
-            return redirect('users:view_profile', profile_name=profile_name)
+            return redirect("users:view_profile", profile_name=profile_name)
     else:
         form = UserProfileForm(instance=user_profile)
 
@@ -1219,5 +1219,5 @@ def edit_profile(request):
         "page_title": _("Edit Profile :: PlayStyle Compass"),
         "form": form,
     }
-    
-    return render(request, 'user_related/edit_profile.html', context)
+
+    return render(request, "user_related/edit_profile.html", context)

@@ -164,11 +164,13 @@ def get_steam_app_id(game_name):
 
     if steam_app_dict:
         game_names = list(steam_app_dict.keys())
-        closest_matches = difflib.get_close_matches(game_name.lower(), game_names, n=1, cutoff=0.95)
+        closest_matches = difflib.get_close_matches(
+            game_name.lower(), game_names, n=1, cutoff=0.95
+        )
         if closest_matches:
             closest_match = closest_matches[0]
             return steam_app_dict.get(closest_match)
-    
+
     return None
 
 

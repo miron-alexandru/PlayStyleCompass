@@ -160,12 +160,20 @@
         <span class="info-value">{{ user_profile.favorite_character|default:"-" }}</span>
     </div>
     <div class="profile-info-item">
+        <span class="info-label">{% trans "Favorite Genres" %}</span>
+        <span class="info-value">{{ user_profile.gaming_genres|default:"-" }}</span>
+    </div>
+    <div class="profile-info-item">
         <span class="info-label">{% trans "Gaming Commitment" %}</span>
         <span class="info-value">{{ user_profile.gaming_commitment|default:"-" }}</span>
     </div>
     <div class="profile-info-item">
         <span class="info-label">{% trans "Main Platform" %}</span>
         <span class="info-value">{{ user_profile.main_gaming_platform|default:"-" }}</span>
+    </div>
+    <div class="profile-info-item">
+        <span class="info-label">{% trans "Gaming Setup" %}</span>
+        <span class="info-value">{{ user_profile.gaming_setup|default:"-" }}</span>
     </div>
     <div class="profile-info-item">
     <span class="info-label">{% trans "Social Media" %}</span>
