@@ -57,17 +57,21 @@
   </div>
   <div class="user-actions">
     {% if user.is_authenticated %}
-    <div class="d-flex justify-content-center align-items-center">
-      <div class="friends-text-container
-          {% trans 'Friend' as friend %}
-          {% trans 'You' as you %} 
-          {% if is_friend == friend or is_friend == you %}friend{% else %}not-friend{%endif%}">
-        <span class="friend-status">{{ is_friend }}</span>
-      </div>
+    <div class="friends-text-container
+        {% trans 'Friend' as friend %}
+        {% trans 'You' as you %} 
+        {% if is_friend == friend or is_friend == you %}friend{% else %}not-friend{%endif%}">
+      <span class="friend-status">{{ is_friend }}</span>
+    </div>
+    <div class="d-flex justify-content-center align-items-center action-items">
       {% trans 'You' as you %}
       {% if is_friend == you %}
-      <a href="{% url 'users:edit_profile' %}" class="edit-profile-link">{% trans 'Edit Profile' %}</a>
-        {% endif %}
+      <div class="edit-profile">
+        <a href="{% url 'users:profile_details' %}" class="edit-profile-link">{% trans 'Profile Details' %}</a>
+        <a href="{% url 'users:change_profile_name' %}" class="edit-profile-link">{% trans 'Profile Name' %}</a>
+        <a href="{% url 'users:profile_picture' %}" class="edit-profile-link">{% trans 'Profile Picture' %}</a>
+      </div>
+      {% endif %}
       {% trans 'Not Friend' as not_friend %}
       {% if is_friend == not_friend %}
       <div class="friend-request">
@@ -87,8 +91,7 @@
       {% endif %}
       {% endif %}
     </div>
-    <div class="d-flex justify-content-center align-items-center user-stats">
-
+    <div class="d-flex justify-content-center align-items-center">
       <div class="stat-item">
         <p class="stat-label">
           {% trans "You" as you %}

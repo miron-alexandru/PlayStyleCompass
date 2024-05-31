@@ -4,7 +4,7 @@
 
 {% block page_header %}
 <div class="header">
-  <h3>{% trans "EDIT PROFILE" %}</h3>
+  <h3>{% trans "PROFILE DETAILS" %}</h3>
 </div>
 {% endblock page_header %}
 
@@ -13,7 +13,7 @@
 {% endblock description %}
 
 {% block content %}
-<link rel="stylesheet" type="text/css" href="{% static 'css/users/edit_profile.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/users/profile_details.css' %}">
 <link rel="stylesheet" type="text/css" href="{% static 'css/users/common.css' %}">
 
 <div class="form-container">
@@ -61,6 +61,6 @@
   </form>
 </div>
 
-<script src="{% static 'js/users/edit_profile.js' %}"></script>
+<script src="{% static 'js/users/profile_details.js' %}"></script>
 
 {% endblock %}

@@ -105,5 +105,5 @@ urlpatterns = [
     path(
         "quiz_recommendations/", views.quiz_recommendations, name="quiz_recommendations"
     ),
-    path("edit-profile/", views.edit_profile, name="edit_profile"),
+    path("profile-details/", views.profile_details, name="profile_details"),
 ]

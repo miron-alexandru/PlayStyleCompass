@@ -1202,7 +1202,7 @@ def quiz_recommendations(request):
 
 
 @login_required
-def edit_profile(request):
+def profile_details(request):
     """View used to edit user profile information."""
     user_profile = request.user.userprofile
     profile_name = request.user.userprofile.profile_name
@@ -1216,8 +1216,8 @@ def edit_profile(request):
         form = UserProfileForm(instance=user_profile)
 
     context = {
-        "page_title": _("Edit Profile :: PlayStyle Compass"),
+        "page_title": _("Profile Details :: PlayStyle Compass"),
         "form": form,
     }
 
-    return render(request, "user_related/edit_profile.html", context)
+    return render(request, "user_related/profile_details.html", context)
