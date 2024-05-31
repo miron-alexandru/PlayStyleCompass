@@ -19,7 +19,8 @@
 <link rel="stylesheet" type="text/css" href="{% static 'css/users/user_profile.css' %}">
 
 <div class="user-profile-card">
-  {% if is_friend == 'You' %}
+  {% trans 'You' as you %}
+  {% if is_friend == you %}
   <span class="user-name"><a href="{% url 'users:change_profile_name' %}">
       {{user_profile.profile_name }}</a></span>
   {% else %}
@@ -27,7 +28,8 @@
   {% endif %}
   <div class="user-profile-picture">
     {% if user_profile.profile_picture %}
-    {% if is_friend == 'You' %}
+    {% trans 'You' as you %}
+    {% if is_friend == you %}
     <label for="profile-picture-upload" class="profile-picture-label">
       <img src="{{ user_profile.profile_picture.url }}" alt="{{ user_profile.profile_name }}'s Profile Picture"
         class="profile-image" id="profile-picture-user-profile">
@@ -39,7 +41,8 @@
     </label>
     {% endif %}
     {% else %}
-    {% if is_friend == 'You' %}
+    {% trans 'You' as you %}
+    {% if is_friend == you %}
     <label for="profile-picture-upload" class="profile-picture-label" style="padding:5px">
       <img src="{{ default_profile_picture }}" alt="{{ user_profile.profile_name }}'s Default Profile Picture"
         class="profile-image" id="profile-picture-user-profile">
@@ -55,11 +58,14 @@
   <div class="user-actions">
     {% if user.is_authenticated %}
     <div class="d-flex justify-content-center align-items-center">
-      <div class="friends-text-container 
-          {% if is_friend == 'Friend' or is_friend == 'You' %}friend{% else %}not-friend{%endif%}">
+      <div class="friends-text-container
+          {% trans 'Friend' as friend %}
+          {% trans 'You' as you %} 
+          {% if is_friend == friend or is_friend == you %}friend{% else %}not-friend{%endif%}">
         <span class="friend-status">{{ is_friend }}</span>
       </div>
-      {% if is_friend == 'You' %}
+      {% trans 'You' as you %}
+      {% if is_friend == you %}
       <a href="{% url 'users:edit_profile' %}" class="edit-profile-link">{% trans 'Edit Profile' %}</a>
         {% endif %}
       {% trans 'Not Friend' as not_friend %}
