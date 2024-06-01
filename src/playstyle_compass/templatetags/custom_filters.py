@@ -4,7 +4,7 @@ import re
 from datetime import datetime
 from django import template
 from itertools import zip_longest
-from django.utils.translation import gettext
+from django.utils.translation import gettext as _
 from django.apps import apps
 from pytz import timezone
 from django.utils import timezone as django_timezone
@@ -18,14 +18,14 @@ register = template.Library()
 def format_category_label(category):
     """Format a category label for better display."""
     category_labels = {
-        "gaming_history": "gaming history",
-        "favorite_genres": "favorite genres",
-        "themes": "favorite themes",
-        "preferred_platforms": "preferred platforms",
-        "common_genres_platforms": "common preferences",
+        "gaming_history": _("gaming history"),
+        "favorite_genres": _("favorite genres"),
+        "themes": _("favorite themes"),
+        "preferred_platforms": _("preferred platforms"),
+        "common_genres_platforms": _("common preferences"),
     }
 
-    return category_labels.get(category, category.replace("_", " "))
+    return category_labels.get(category, _(category.replace("_", " ")))
 
 
 @register.filter(name="getattr")
@@ -68,7 +68,7 @@ def pluralize_reviews(count):
 @register.filter(name="template_trans")
 def template_trans(text):
     try:
-        return gettext(text)
+        return _(text)
     except Exception:
         return text
 

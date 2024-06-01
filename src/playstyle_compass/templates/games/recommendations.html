@@ -81,7 +81,7 @@
     </span>
   </div>
   {% else %}
-  <h4>{% trans "No recommendations based on your" %} {% blocktrans with category|format_category_label|template_trans as category_name %} {{ category_name }}: {% endblocktrans %} {{ user_preferences|getattr:category }}</h4>
+    <h4>{% trans "No recommendations based on" %} {% blocktrans with category|format_category_label|template_trans as category_name %} {{ category_name }}: {% endblocktrans %} {{ user_preferences|getattr:category }}</h4>
   {% endif %}
 </div>
 {% endfor %}
