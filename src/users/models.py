@@ -28,6 +28,9 @@ class UserProfile(models.Model):
     social_media = models.CharField(max_length=100, null=True, default="")
     gaming_setup = models.TextField(blank=True, max_length=150, default="")
     gaming_genres = models.CharField(max_length=255, blank=True)
+    favorite_franchise = models.CharField(max_length=50, null=True, default="")
+    last_finished_game = models.CharField(max_length=50, null=True, default="")
+    streaming_preferences = models.CharField(max_length=50, null=True, default="")
 
     def clean(self):
         profile_name = self.profile_name

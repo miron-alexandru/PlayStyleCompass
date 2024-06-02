@@ -81,7 +81,6 @@ def get_object_id(object_name, model_name):
     model = apps.get_model(app_label="playstyle_compass", model_name=model_name)
     try:
         if model_name == "Character":
-            # Use filter instead of get for potentially multiple objects
             objs = model.objects.filter(name=object_name)
         else:
             objs = model.objects.filter(title=object_name)

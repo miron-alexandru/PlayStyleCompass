@@ -438,6 +438,9 @@ class UserProfileForm(forms.ModelForm):
             "social_media",
             "gaming_genres",
             "gaming_setup",
+            "favorite_franchise",
+            "last_finished_game",
+            "streaming_preferences",
         ]
         widgets = {
             "bio": forms.Textarea(
@@ -466,6 +469,15 @@ class UserProfileForm(forms.ModelForm):
                     "placeholder": _("Describe your gaming setup..."),
                 }
             ),
+            "favorite_franchise": forms.TextInput(
+                attrs={"placeholder": _("Enter your favorite franchise...")}
+            ),
+            "last_finished_game": forms.TextInput(
+                attrs={"placeholder": _("What's the most recent game you finished?")}
+            ),
+            "streaming_preferences": forms.TextInput(
+                attrs={"placeholder": _("What is your preferred streaming platform?")}
+            ),
         }
 
     gaming_genres = forms.MultipleChoiceField(
@@ -481,7 +493,7 @@ class UserProfileForm(forms.ModelForm):
     def clean_social_media(self):
         social_media = self.cleaned_data.get("social_media")
         if social_media:
-            regex_pattern = r"^(https?:\/\/)?(www\.)?(facebook|twitter|instagram|linkedin|x|reddit|youtube)\.com\/.+?$"
+            regex_pattern = r"^(https?:\/\/)?(www\.)?(facebook|twitter|instagram|linkedin|x|reddit|youtube|tiktok|discord|twitch)\.com\/.+?$"
             if not re.match(regex_pattern, social_media):
                 raise forms.ValidationError(
                     _("Please enter a valid social media link.")

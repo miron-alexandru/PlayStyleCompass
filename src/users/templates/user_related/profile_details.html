@@ -24,8 +24,16 @@
           {{ form.bio }}
       </div>
       <div class="form-group">
+          <label for="id_favorite_game">{% trans "Last Finished Game" %}</label>
+          {{ form.last_finished_game }}
+      </div>
+      <div class="form-group">
           <label for="id_favorite_game">{% trans "Favorite Game" %}</label>
           {{ form.favorite_game }}
+      </div>
+      <div class="form-group">
+          <label for="id_favorite_game">{% trans "Favorite Franchise" %}</label>
+          {{ form.favorite_franchise }}
       </div>
       <div class="form-group">
           <label for="id_favorite_character">{% trans "Favorite Character" %}</label>
@@ -49,6 +57,10 @@
       <div class="form-group">
           <label for="id_gaming_setup">{% trans "Gaming Setup" %}</label>
           {{ form.gaming_setup }}
+      </div>
+      <div class="form-group">
+          <label for="id_main_gaming_platform">{% trans "Preferred Streaming Platform" %}</label>
+          {{ form.streaming_preferences }}
       </div>
       <div class="form-group">
         <label for="id_social_media">{% trans "Social Media" %}</label>

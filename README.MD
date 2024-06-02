@@ -46,8 +46,10 @@ Websites for .env configuration: [GiantBomb](https://www.giantbomb.com/) / [Send
 <summary><h2>PlayStyle Compass Changelog</h2></summary>
 
 ### Version v1.8:
+* New profile details: favorite franchise, last game finished, preferred streaming platform.
+* Updated CSS/HTML on the user profile / profile details.
 * Users are able to provide and display on their profile new information about themselves (e.g. favorite game, genres, gaming setup).
-* Improvements for System Requirements (CSS/HTML)
+* Improvements for System Requirements (CSS/HTML).
 * System Requirements for the Games are now displayed.
 * Preferences Quiz tweaks.
 * Improved QuizRecommendation algorithm: Refactored for better maintainability / Now each time the user is taking the quiz, the recommended games are not the same to add diversity for recommendations.
