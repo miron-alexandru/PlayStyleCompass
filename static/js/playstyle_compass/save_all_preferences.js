@@ -19,7 +19,7 @@ $(document).ready(function () {
         setTimeout(function () {
           $("#saving-spinner").hide();
           location.reload();
-        }, 1500);
+        }, 1000);
       },
     });
   });

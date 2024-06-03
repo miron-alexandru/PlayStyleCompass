@@ -29,8 +29,12 @@
   <label for="sort-select">{% trans "Sort by:" %}</label>
   <select id="sort-select" name="sort">
     <option value="recommended">{% trans "Recommended" %}</option>
+    <option value="title_asc">{% trans "Title (Asc)" %}</option>
+    <option value="title_desc">{% trans "Title (Desc)" %}</option>
     <option value="release_date_asc">{% trans "Release Date (Asc)" %}</option>
     <option value="release_date_desc">{% trans "Release Date (Desc)" %}</option>
+    <option value="score_desc">{% trans "Rating (High)" %}</option>
+    <option value="score_asc">{% trans "Rating (Low)" %}</option>
   </select>
 </div>
 

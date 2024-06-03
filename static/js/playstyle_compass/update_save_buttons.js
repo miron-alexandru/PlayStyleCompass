@@ -38,7 +38,7 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   const isValidGamingHistory = (inputElement) => {
-    const regex = /^[A-Za-z0-9\s]+$/;
+    const regex = /^[A-Za-z0-9\s,']+$/;
     return regex.test(inputElement.value);
   };
 

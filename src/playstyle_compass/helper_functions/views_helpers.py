@@ -31,7 +31,7 @@ class RecommendationEngine:
             similarity = fuzz.ratio(history_game.lower(), game.title.lower())
             if similarity > 65:
                 matches.append(game)
-
+        print(matches)
         return matches
 
     def find_matching_genre_games(self, matching_game):
@@ -89,7 +89,7 @@ class RecommendationEngine:
 
         for theme in themes:
             theme_filters |= Q(themes__icontains=theme)
-
+        print(theme_filters)
         for platform in platforms:
             platform_filters |= Q(platforms__icontains=platform)
 
@@ -152,17 +152,26 @@ class RecommendationEngine:
         sorting_functions = {
             "release_date_asc": lambda game: game.release_date,
             "release_date_desc": lambda game: game.release_date,
+            "title_asc": lambda game: game.title.lower(),
+            "title_desc": lambda game: game.title.lower(),
+            "score_asc": lambda game: calculate_game_score([game])[0].average_score,
+            "score_desc": lambda game: calculate_game_score([game])[0].average_score,
             "recommended": None,
         }
 
         sort_key_function = sorting_functions.get(sort_option)
         if sort_key_function:
             for category, game_list in self.matching_games.items():
-                self.matching_games[category] = sorted(game_list, key=sort_key_function)
-                if sort_option == "release_date_desc":
-                    self.matching_games[category] = list(
-                        reversed(self.matching_games[category])
-                    )
+                if sort_option in ["score_asc", "score_desc"]:
+                    game_list_with_scores = calculate_game_score(game_list)
+                else:
+                    game_list_with_scores = game_list
+                    
+                sorted_game_list = sorted(game_list_with_scores, key=sort_key_function)
+                if sort_option in ["release_date_desc", "title_desc", "score_desc"]:
+                    sorted_game_list = list(reversed(sorted_game_list))
+
+                self.matching_games[category] = sorted_game_list
 
     def process(self):
         """Execute the recommendation."""
