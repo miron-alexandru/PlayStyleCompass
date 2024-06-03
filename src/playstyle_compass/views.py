@@ -31,7 +31,6 @@ from .forms import ReviewForm
 
 from .helper_functions.views_helpers import (
     RecommendationEngine,
-    calculate_game_score,
     paginate_matching_games,
     paginate_objects,
     get_friend_list,
@@ -263,7 +262,6 @@ def search_results(request):
 
     games = Game.objects.filter(title__icontains=query)
 
-    games = calculate_game_score(games)
     games = paginate_matching_games(request, games)
 
     user_friends = (
@@ -388,7 +386,7 @@ def user_reviews(request, user_id=None):
             return redirect("playstyle_compass:index")
 
     user_reviews = Review.objects.filter(user=user)
-    user_games = calculate_game_score([review.game for review in user_reviews])
+    user_games = [review.game for review in user_reviews]
     current_viewer_preferences, created = UserPreferences.objects.get_or_create(
         user=request.user
     )
@@ -470,7 +468,7 @@ def _get_games_view(request, page_title, list_name, template_name, user_id=None)
     # Get the list of game IDs based on the specified list_name and user_preferences
     game_list = getattr(user_preferences, f"get_{list_name}")() if not created else []
 
-    games = calculate_game_score(Game.objects.filter(guid__in=game_list))
+    games = Game.objects.filter(guid__in=game_list)
 
     current_viewer_preferences, created = UserPreferences.objects.get_or_create(
         user=request.user
@@ -497,13 +495,8 @@ def top_rated_games(request):
     user = request.user if request.user.is_authenticated else None
     user_preferences = get_object_or_404(UserPreferences, user=user) if user else None
 
-    top_games = (
-        Game.objects.annotate(average_score=Avg("review__score"))
-        .filter(average_score__gt=4)
-        .order_by("average_score")
-    )
+    top_games = Game.objects.filter(average_score__gt=4).order_by('average_score')
 
-    top_games = calculate_game_score(top_games)
     user_friends = get_friend_list(user) if user else []
 
     context = {
@@ -526,7 +519,7 @@ def upcoming_games(request):
         release_date__regex=r"^\d{4}$", release_date__gte=str(current_date.year)
     )
 
-    upcoming_games = calculate_game_score(Game.objects.filter(upcoming_filter))
+    upcoming_games = Game.objects.filter(upcoming_filter)
     paginated_games = paginate_matching_games(request, upcoming_games)
     user_friends = get_friend_list(user) if user else []
 
@@ -740,8 +733,6 @@ def view_game(request, game_id):
     user_preferences = get_object_or_404(UserPreferences, user=user) if user else None
 
     game = get_object_or_404(Game, guid=game_id)
-    game = calculate_game_score(game, multiple_games=False)
-
     user_friends = get_friend_list(user) if user else []
 
     context = {
@@ -1066,7 +1057,6 @@ def get_games_and_context(request, game_mode):
         games = list(games) + list(additional_games)
         games = Game.objects.filter(pk__in=[game.pk for game in games])
 
-    games = calculate_game_score(games)
     games = paginate_matching_games(request, games)
 
     context = {

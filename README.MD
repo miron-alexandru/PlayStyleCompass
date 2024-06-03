@@ -45,6 +45,10 @@ Websites for .env configuration: [GiantBomb](https://www.giantbomb.com/) / [Send
 <details>
 <summary><h2>PlayStyle Compass Changelog</h2></summary>
 
+### Version v1.9:
+* Changed how game rating is calculated.
+* New sorting options for game recommendations: By title and by rating.
+
 ### Version v1.8:
 * New profile details: favorite franchise, last game finished, preferred streaming platform.
 * Updated CSS/HTML on the user profile / profile details.

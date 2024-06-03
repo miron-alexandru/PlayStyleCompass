@@ -67,7 +67,6 @@ from .misc.helper_functions import (
 )
 from playstyle_compass.helper_functions.views_helpers import (
     paginate_matching_games,
-    calculate_game_score,
     get_friend_list,
 )
 from .models import (
@@ -1185,7 +1184,6 @@ def quiz_recommendations(request):
     recommended_game_guids = ast.literal_eval(recommended_game_guids_str)
     recommended_games = Game.objects.filter(guid__in=recommended_game_guids)
 
-    recommended_games = calculate_game_score(recommended_games)
     recommended_games = paginate_matching_games(request, recommended_games)
 
     context = {

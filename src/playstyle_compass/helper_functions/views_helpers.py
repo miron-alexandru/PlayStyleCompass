@@ -31,7 +31,7 @@ class RecommendationEngine:
             similarity = fuzz.ratio(history_game.lower(), game.title.lower())
             if similarity > 65:
                 matches.append(game)
-        print(matches)
+
         return matches
 
     def find_matching_genre_games(self, matching_game):
@@ -154,20 +154,16 @@ class RecommendationEngine:
             "release_date_desc": lambda game: game.release_date,
             "title_asc": lambda game: game.title.lower(),
             "title_desc": lambda game: game.title.lower(),
-            "score_asc": lambda game: calculate_game_score([game])[0].average_score,
-            "score_desc": lambda game: calculate_game_score([game])[0].average_score,
+            "score_asc": lambda game: game.average_score,
+            "score_desc": lambda game: game.average_score,
             "recommended": None,
         }
 
         sort_key_function = sorting_functions.get(sort_option)
         if sort_key_function:
             for category, game_list in self.matching_games.items():
-                if sort_option in ["score_asc", "score_desc"]:
-                    game_list_with_scores = calculate_game_score(game_list)
-                else:
-                    game_list_with_scores = game_list
-                    
-                sorted_game_list = sorted(game_list_with_scores, key=sort_key_function)
+ 
+                sorted_game_list = sorted(game_list, key=sort_key_function)
                 if sort_option in ["release_date_desc", "title_desc", "score_desc"]:
                     sorted_game_list = list(reversed(sorted_game_list))
 
@@ -178,34 +174,6 @@ class RecommendationEngine:
         self.process_user_data()
         self.filter_preferences()
         self.sort_matching_games()
-
-
-def calculate_game_score(games, multiple_games=True):
-    """Calculate average scores and total reviews for games."""
-    if multiple_games:
-        game_reviews_dict = {game.guid: list(game.review_set.all()) for game in games}
-
-        for game in games:
-            game_reviews = game_reviews_dict.get(game.guid, [])
-            total_score = sum(int(review.score) for review in game_reviews)
-            total_reviews = len(game_reviews)
-            average_score = (
-                round(total_score / total_reviews, 2) if total_reviews > 0 else 0
-            )
-
-            game.average_score = average_score
-            game.total_reviews = total_reviews
-    else:
-        game_reviews = Review.objects.filter(game_id=games.guid)
-        total_score = sum(int(review.score) for review in game_reviews)
-
-        average_score = round(total_score / len(game_reviews), 2) if game_reviews else 0
-        total_reviews = len(game_reviews)
-
-        games.average_score = average_score
-        games.total_reviews = total_reviews
-
-    return games
 
 
 def paginate_matching_games(request, matching_games):
@@ -224,8 +192,6 @@ def paginate_matching_games(request, matching_games):
                 page = paginator.page(1)
 
             paginated_games[category] = page
-
-            page = calculate_game_score(page)
     else:
         paginator = Paginator(matching_games, games_per_page)
         page_number = request.GET.get("page", 1)
@@ -234,8 +200,6 @@ def paginate_matching_games(request, matching_games):
             paginated_games = paginator.page(page_number)
         except (PageNotAnInteger, EmptyPage):
             paginated_games = paginator.page(1)
-
-        paginated_games = calculate_game_score(paginated_games)
 
     return paginated_games
 

@@ -4,6 +4,7 @@ from django.conf import settings
 from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.db.models import Avg, Count
 
 
 class UserPreferences(models.Model):
@@ -118,6 +119,14 @@ class Game(models.Model):
     mac_req_rec = models.TextField(default="")
     linux_req_min = models.TextField(default="")
     linux_req_rec = models.TextField(default="")
+    average_score = models.FloatField(default=0)
+    total_reviews = models.IntegerField(default=0)
+
+    def update_score(self):
+        reviews = self.review_set.all()
+        self.total_reviews = reviews.count()
+        self.average_score = reviews.aggregate(Avg('score'))['score__avg'] or 0
+        self.save()
 
     def __str__(self):
         return str(self.title)
@@ -167,6 +176,16 @@ class Review(models.Model):
     dislikes = models.IntegerField(default=0)
     liked_by = models.TextField(blank=True, default="")
     disliked_by = models.TextField(blank=True, default="")
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        self.game.update_score()
+
+    def delete(self, *args, **kwargs):
+        game = self.game
+        super().delete(*args, **kwargs)
+
+        game.update_score()
 
     def add_like(self, user_id):
         """Add a like to the review."""
