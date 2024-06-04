@@ -162,7 +162,7 @@ class RecommendationEngine:
         sort_key_function = sorting_functions.get(sort_option)
         if sort_key_function:
             for category, game_list in self.matching_games.items():
- 
+
                 sorted_game_list = sorted(game_list, key=sort_key_function)
                 if sort_option in ["release_date_desc", "title_desc", "score_desc"]:
                     sorted_game_list = list(reversed(sorted_game_list))

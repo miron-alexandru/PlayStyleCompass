@@ -495,7 +495,7 @@ def top_rated_games(request):
     user = request.user if request.user.is_authenticated else None
     user_preferences = get_object_or_404(UserPreferences, user=user) if user else None
 
-    top_games = Game.objects.filter(average_score__gt=4).order_by('average_score')
+    top_games = Game.objects.filter(average_score__gt=4).order_by("average_score")
 
     user_friends = get_friend_list(user) if user else []
 

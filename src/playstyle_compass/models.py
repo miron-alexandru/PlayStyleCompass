@@ -125,7 +125,7 @@ class Game(models.Model):
     def update_score(self):
         reviews = self.review_set.all()
         self.total_reviews = reviews.count()
-        self.average_score = reviews.aggregate(Avg('score'))['score__avg'] or 0
+        self.average_score = reviews.aggregate(Avg("score"))["score__avg"] or 0
         self.save()
 
     def __str__(self):
@@ -163,6 +163,8 @@ class SharedGame(models.Model):
 class Review(models.Model):
     """Represents a review for a game."""
 
+    SCORE_CHOICES = [(1, "1"), (2, "2"), (3, "3"), (4, "4"), (5, "5")]
+
     game = models.ForeignKey(Game, on_delete=models.CASCADE, to_field="guid")
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True
@@ -170,7 +172,6 @@ class Review(models.Model):
     reviewers = models.CharField(max_length=25)
     review_deck = models.CharField(max_length=50)
     review_description = models.TextField()
-    SCORE_CHOICES = [(1, "1"), (2, "2"), (3, "3"), (4, "4"), (5, "5")]
     score = models.PositiveSmallIntegerField(choices=SCORE_CHOICES)
     likes = models.IntegerField(default=0)
     dislikes = models.IntegerField(default=0)
