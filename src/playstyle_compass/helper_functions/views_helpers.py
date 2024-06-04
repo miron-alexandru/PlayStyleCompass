@@ -89,7 +89,7 @@ class RecommendationEngine:
 
         for theme in themes:
             theme_filters |= Q(themes__icontains=theme)
-        print(theme_filters)
+
         for platform in platforms:
             platform_filters |= Q(platforms__icontains=platform)
 

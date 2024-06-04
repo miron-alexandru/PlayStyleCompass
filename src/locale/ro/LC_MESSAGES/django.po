@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-06-04 10:42+0300\n"
-"PO-Revision-Date: 2024-06-04 10:44+0230\n"
+"POT-Creation-Date: 2024-06-04 13:41+0300\n"
+"PO-Revision-Date: 2024-06-04 13:45+0230\n"
 "Last-Translator:   <tokisaki.kurumir99@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -61,7 +61,7 @@ msgstr ""
 "Bine ai venit la PlayStyle Compass - portalul personalizat care îți deschide drumul către descoperirea jocurilor video perfect adaptate preferințelor tale unice, istoricului tău în gaming și inclinațiilor de gen. Indiferent dacă ești un entuziast casual sau un pasionat dedicat al jocurilor, aplicația noastră analizează cu meticulozitate profilul tău individual în gaming, oferind recomandări care se potrivesc gusturilor tale distincte. Începe o călătorie palpitantă prin lumea posibilităților de gaming, creând un cont cu noi!"
 
 #: .\src\playstyle_compass\templates\base\index.html:23
-#: .\src\templates\base.html:195
+#: .\src\templates\base.html:196
 #: .\src\users\templates\registration\register.html:104
 msgid "Register"
 msgstr "Înregistrare"
@@ -808,14 +808,19 @@ msgid "Update Preferences"
 msgstr "Actualizați Preferințele"
 
 #: .\src\playstyle_compass\templates\preferences\update_gaming_preferences.html:8
-msgid "MY PLAYSTYLE"
-msgstr "STILUL MEU"
+#| msgid "MY PLAYSTYLE"
+msgid "MANAGE PLAYSTYLE"
+msgstr "EDITEAZĂ PLAYSTYLE"
 
 #: .\src\playstyle_compass\templates\preferences\update_gaming_preferences.html:13
+#| msgid ""
+#| "Your gaming preferences are the key to unlocking a world of tailored gaming "
+#| "experiences. Bysharing your preferences, you'll receive game recommendations"
+#| " perfectly suited to your unique tastes and interests.\n"
 msgid ""
 "Your gaming preferences are the key to unlocking a world of tailored gaming "
-"experiences. Bysharing your preferences, you'll receive game recommendations"
-" perfectly suited to your unique tastes and interests.\n"
+"experiences. By sharing your preferences, you'll receive game "
+"recommendations perfectly suited to your unique tastes and interests.\n"
 msgstr ""
 "Preferințele tale de jocuri sunt cheia pentru a debloca o lume de experiențe"
 " adaptate. Prin distribuirea preferințelor tale, vei primi recomandări de "
@@ -1041,25 +1046,27 @@ msgstr "Francize :: PlayStyle Compass"
 msgid "Characters :: PlayStyle Compass"
 msgstr "Caractere :: PlayStyle Compass"
 
-#: .\src\playstyle_manager\settings.py:153 .\src\templates\base.html:265
+#: .\src\playstyle_manager\settings.py:153 .\src\templates\base.html:266
 msgid "English"
 msgstr "Engleză"
 
-#: .\src\playstyle_manager\settings.py:153 .\src\templates\base.html:273
+#: .\src\playstyle_manager\settings.py:153 .\src\templates\base.html:274
 msgid "Romanian"
 msgstr "Română"
 
 #: .\src\templates\base.html:40
 msgid "Create Playstyle"
-msgstr "Creează Stil"
+msgstr "Creează Playstyle"
 
 #: .\src\templates\base.html:46
-msgid "Your Playstyle"
-msgstr "Stilul Tău"
+#| msgid "Create Playstyle"
+msgid "Manage Playstyle"
+msgstr "Editează Playstyle"
 
 #: .\src\templates\base.html:51
-msgid "Similar Playstyles"
-msgstr "Stiluri Similare"
+#| msgid "Similar Playstyles"
+msgid "Kindred Playstyles"
+msgstr "Playstyle Similar"
 
 #: .\src\templates\base.html:56
 msgid "Game Recommendations"
@@ -1114,70 +1121,75 @@ msgid "My Profile"
 msgstr "Profilul meu"
 
 #: .\src\templates\base.html:175
+#: .\src\users\templates\user_related\user_profile.html:70
+msgid "Profile Details"
+msgstr "Detalii Profil"
+
+#: .\src\templates\base.html:176
 msgid "Inbox"
 msgstr "Inbox"
 
-#: .\src\templates\base.html:177
+#: .\src\templates\base.html:178
 msgid "Shared Games"
 msgstr "Jocuri Distribuite"
 
-#: .\src\templates\base.html:179
+#: .\src\templates\base.html:180
 msgid "Friends List"
 msgstr "Listă de Prieteni"
 
-#: .\src\templates\base.html:180
+#: .\src\templates\base.html:181
 msgid "Friend Requests"
 msgstr "Cereri de Prietenie"
 
-#: .\src\templates\base.html:182
+#: .\src\templates\base.html:183
 msgid "Change Profile Picture"
 msgstr "Schimbă Poza de Profil"
 
-#: .\src\templates\base.html:183
+#: .\src\templates\base.html:184
 msgid "Change Profile Name"
 msgstr "Schimbă Numele de Profil"
 
-#: .\src\templates\base.html:185
+#: .\src\templates\base.html:186
 #: .\src\users\templates\account_actions\password_change_form.html:69
 msgid "Change Password"
 msgstr "Schimbă Parola"
 
-#: .\src\templates\base.html:186
+#: .\src\templates\base.html:187
 #: .\src\users\templates\account_actions\change_email.html:57
 msgid "Change Email"
 msgstr "Schimbă Adresa de Email"
 
-#: .\src\templates\base.html:188
+#: .\src\templates\base.html:189
 msgid "Delete Account"
 msgstr "Șterge Contul"
 
-#: .\src\templates\base.html:190
+#: .\src\templates\base.html:191
 msgid "Log Out"
 msgstr "Deconectare"
 
-#: .\src\templates\base.html:198
+#: .\src\templates\base.html:199
 #: .\src\users\templates\registration\login.html:52
 msgid "Log in"
 msgstr "Autentificare"
 
-#: .\src\templates\base.html:202 .\src\users\templates\general\contact.html:19
+#: .\src\templates\base.html:203 .\src\users\templates\general\contact.html:19
 msgid "Contact"
 msgstr "Contact"
 
-#: .\src\templates\base.html:227
+#: .\src\templates\base.html:228
 msgid "Please confirm your email address to unlock all features."
 msgstr ""
 "Te rugăm să confirmi adresa de email pentru a debloca toate funcțiile."
 
-#: .\src\templates\base.html:229
+#: .\src\templates\base.html:230
 msgid "Resend verification link"
 msgstr "Retrimite link-ul de verificare"
 
-#: .\src\templates\base.html:283
+#: .\src\templates\base.html:284
 msgid "PlayStyle Compass. All rights reserved."
 msgstr "PlayStyle Compass. Toate drepturile rezervate."
 
-#: .\src\templates\base.html:288
+#: .\src\templates\base.html:289
 msgid "Go top"
 msgstr "Mergi sus"
 
@@ -1983,10 +1995,6 @@ msgid ""
 msgstr ""
 "\n"
 "%(uppercase_profile_name)s - PROFIL"
-
-#: .\src\users\templates\user_related\user_profile.html:70
-msgid "Profile Details"
-msgstr "Detalii Profil"
 
 #: .\src\users\templates\user_related\user_profile.html:72
 msgid "Profile Picture"

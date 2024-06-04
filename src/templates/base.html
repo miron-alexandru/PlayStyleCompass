@@ -43,12 +43,12 @@
         {% if user.is_authenticated %}
         <li class="nav-item">
           <a class="nav-link" href="{% url 'playstyle_compass:update_preferences'%}">
-            {% trans "Your Playstyle" %}
+            {% trans "Manage Playstyle" %}
           </a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="{% url 'playstyle_compass:similar_playstyles'%}">
-            {% trans "Similar Playstyles" %}
+            {% trans "Kindred Playstyles" %}
           </a>
         </li>
         <li class="nav-item">
@@ -142,7 +142,7 @@
           </li>
         <li class="nav-item">
             <span class="navbar-text mr-3 user-profile-name">
-                <a href="{% url 'users:change_profile_name' %}" style="color: inherit;">
+                <a href="{% url 'users:view_profile' user.userprofile.profile_name %}" style="color: inherit;">
                     <span class="d-inline-block text-truncate profile-name" style="max-width: 90px;">
                         {{ user.userprofile.profile_name|default:user.username }}
                     </span>
@@ -172,6 +172,7 @@
             </a>
             <div class="dropdown-container dropdown-menu" aria-labelledby="profileDropdown">
               <a class="dropdown-item" href="{% url 'users:view_profile' user.userprofile.profile_name %}">{% trans "My Profile" %}</a>
+              <a class="dropdown-item" href="{% url 'users:profile_details'%}">{% trans "Profile Details" %}</a>
               <a class="dropdown-item" href="{% url 'users:inbox'%}">{% trans "Inbox" %}</a>
               <div class="dropdown-divider"></div>
               <a class="dropdown-item" href="{% url 'playstyle_compass:games_shared'%}">{% trans "Shared Games" %}</a>
