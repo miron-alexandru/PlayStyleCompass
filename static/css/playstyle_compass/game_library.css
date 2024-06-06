@@ -1,0 +1,43 @@
+.filter-container {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+}
+
+.filter-title {
+	font-size: 15px;
+	font-weight: bold;
+	color: #333;
+}
+
+select {
+  padding: 5px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  color: #333;
+  width: 170px;
+  outline: none;
+}
+
+select option {
+  font-size: 14px;
+  background-color: #f9f9f9;
+  color: #333;
+}
+
+select:hover,
+select:focus {
+  border: 1px solid #333;
+}
+
+button[type="submit"] {
+  background-color: #007bff;
+  color: #fff;
+  padding: 4px 8px;
+  border: none;
+  border-radius: 5px;
+  font-size: 12px;
+  display: block;
+}

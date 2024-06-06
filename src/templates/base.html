@@ -57,6 +57,11 @@
           </a>
         </li>
         <li class="nav-item">
+          <a class="nav-link" href="{% url 'playstyle_compass:game_library'%}">
+            {% trans "Game Library" %}
+          </a>
+        </li>
+        <li class="nav-item">
           <a class="nav-link" href="{% url 'playstyle_compass:favorite_games'%}">
             {% trans "Favorite Games" %}
           </a>
@@ -168,7 +173,7 @@
           <li class="nav-item dropdown" id="hoverDropdown">
             <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button" data-toggle="dropdown"
               aria-haspopup="true" aria-expanded="false">
-              {% trans "Account Actions" %}
+              {% trans "Account" %}
             </a>
             <div class="dropdown-container dropdown-menu" aria-labelledby="profileDropdown">
               <a class="dropdown-item" href="{% url 'users:view_profile' user.userprofile.profile_name %}">{% trans "My Profile" %}</a>

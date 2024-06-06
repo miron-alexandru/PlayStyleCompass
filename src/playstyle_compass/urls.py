@@ -78,4 +78,5 @@ urlpatterns = [
         "singleplayer-games/", views.view_singleplayer_games, name="singleplayer_games"
     ),
     path("multiplayer-games/", views.view_multiplayer_games, name="multiplayer_games"),
+    path('game-library/', views.game_library, name='game_library'),
 ]

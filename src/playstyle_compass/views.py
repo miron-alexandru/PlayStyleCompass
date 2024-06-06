@@ -1085,3 +1085,80 @@ def view_singleplayer_games(request):
     context = get_games_and_context(request, "Singleplayer")
 
     return render(request, "games/singleplayer_games.html", context)
+
+
+def game_library(request):
+    """View used  to display the games library."""
+    user = request.user if request.user.is_authenticated else None
+    user_preferences = get_object_or_404(UserPreferences, user=user) if user else None
+    user_friends = get_friend_list(user) if user else []
+
+    games = Game.objects.all()
+
+    genres = set()
+    concepts = set()
+    themes = set()
+    platforms = set()
+
+    for game in games:
+        if game.genres:
+            genres.update(game.genres.split(','))
+        if game.concepts:
+            concepts.update(game.concepts.split(','))
+        if game.themes:
+            themes.update(game.themes.split(','))
+        if game.platforms:
+            platforms.update(game.platforms.split(','))
+
+    selected_genres = request.GET.getlist('genres')
+    selected_concepts = request.GET.getlist('concepts')
+    selected_themes = request.GET.getlist('themes')
+    selected_platforms = request.GET.getlist('platforms')
+
+    query = Q()
+
+    if selected_genres and any(selected_genres):
+        genre_query = Q()
+        for genre in selected_genres:
+            genre_query |= Q(genres__icontains=genre)
+        query |= genre_query
+
+    if selected_concepts and any(selected_concepts):
+        concept_query = Q()
+        for concept in selected_concepts:
+            concept_query |= Q(concepts__icontains=concept)
+        query |= concept_query
+
+    if selected_themes and any(selected_themes):
+        theme_query = Q()
+        for theme in selected_themes:
+            theme_query |= Q(themes__icontains=theme)
+        query |= theme_query
+
+    if selected_platforms and any(selected_platforms):
+        platform_query = Q()
+        for platform in selected_platforms:
+            platform_query |= Q(platforms__icontains=platform)
+        query |= platform_query
+
+    if selected_genres or selected_concepts or selected_themes or selected_platforms:
+        games = games.filter(query)
+
+    games = paginate_matching_games(request, games)
+
+    context = {
+        "games": games,
+        "genres": sorted(genres),
+        "concepts": sorted(concepts),
+        "themes": sorted(themes),
+        "platforms": sorted(platforms),
+        "selected_genres": selected_genres,
+        "selected_concepts": selected_concepts,
+        "selected_themes": selected_themes,
+        "selected_platforms": selected_platforms,
+        "user_preferences": user_preferences,
+        "user_friends": user_friends,
+        "pagination": True,
+    }
+
+    return render(request, 'games/game_library.html', context)
