@@ -1099,6 +1099,7 @@ def game_library(request):
     concepts = set()
     themes = set()
     platforms = set()
+    franchises = set()
 
     for game in games:
         if game.genres:
@@ -1109,11 +1110,14 @@ def game_library(request):
             themes.update(game.themes.split(','))
         if game.platforms:
             platforms.update(game.platforms.split(','))
+        if game.franchises:
+            franchises.update(game.franchises.split(','))
 
     selected_genres = request.GET.getlist('genres')
     selected_concepts = request.GET.getlist('concepts')
     selected_themes = request.GET.getlist('themes')
     selected_platforms = request.GET.getlist('platforms')
+    selected_franchises = request.GET.getlist('franchises')
 
     query = Q()
 
@@ -1141,7 +1145,30 @@ def game_library(request):
             platform_query |= Q(platforms__icontains=platform)
         query |= platform_query
 
-    if selected_genres or selected_concepts or selected_themes or selected_platforms:
+    if selected_franchises and any(selected_franchises):
+        franchise_query = Q()
+        for franchise in selected_franchises:
+            franchise_query |= Q(franchises__icontains=franchise)
+        query |= franchise_query
+
+    if any([selected_genres, selected_concepts, selected_themes, selected_platforms, selected_franchises]):
+        games = games.filter(query)
+
+    sort_by = request.GET.get('sort_by')
+    if sort_by:
+        if sort_by == 'release_date_asc':
+            games = games.filter(query).order_by('release_date')
+        elif sort_by == 'release_date_desc':
+            games = games.filter(query).order_by('-release_date')
+        elif sort_by == 'title_asc':
+            games = games.filter(query).order_by('title')
+        elif sort_by == 'title_desc':
+            games = games.filter(query).order_by('-title')
+        elif sort_by == 'average_score_asc':
+            games = games.filter(query).order_by('average_score')
+        elif sort_by == 'average_score_desc':
+            games = games.filter(query).order_by('-average_score')
+    else:
         games = games.filter(query)
 
     games = paginate_matching_games(request, games)
@@ -1152,13 +1179,16 @@ def game_library(request):
         "concepts": sorted(concepts),
         "themes": sorted(themes),
         "platforms": sorted(platforms),
+        "franchises": sorted(franchises),
         "selected_genres": selected_genres,
         "selected_concepts": selected_concepts,
         "selected_themes": selected_themes,
         "selected_platforms": selected_platforms,
+        "selected_franchises": selected_franchises,
         "user_preferences": user_preferences,
         "user_friends": user_friends,
         "pagination": True,
+        "query_string": request.GET.urlencode(),
     }
 
     return render(request, 'games/game_library.html', context)

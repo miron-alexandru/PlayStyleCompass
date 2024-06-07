@@ -4,10 +4,10 @@
 	gap: 10px;
 }
 
-.filter-title {
-	font-size: 15px;
-	font-weight: bold;
-	color: #333;
+label[for="sort_by"], 
+label[for="filter_by"] {
+  font-size: 15px;
+  color: #333;
 }
 
 select {
@@ -32,12 +32,33 @@ select:focus {
   border: 1px solid #333;
 }
 
-button[type="submit"] {
+.apply-button {
   background-color: #007bff;
   color: #fff;
-  padding: 4px 8px;
+  padding: 5px 10px;
   border: none;
   border-radius: 5px;
   font-size: 12px;
-  display: block;
+}
+
+.reset-button {
+  background-color: gray;
+  font-size: 12px;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+  color: #fff;
+}
+
+.reset-button:hover {
+  background-color: #505050;
+}
+
+.filter-buttons, .sorting {
+  margin-top: 8px;
+  margin-bottom: 8px;
+}
+
+select[name="sort_by"] {
+  margin-left: 5px;
 }

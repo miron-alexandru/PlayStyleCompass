@@ -15,9 +15,9 @@
 {% block content %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/playstyle_compass/common_styles.css' %}">
 <link rel="stylesheet" type="text/css" href="{% static 'css/playstyle_compass/game_library.css' %}">
-<form method="GET">
+<form id="filterForm" method="GET">
     <div class="filter-container">
-        <p class="filter-title">{% trans "Filter Games" %}</p>
+        <label for="filter_by">{% trans "Filter by:" %}</label>
         <div>
             <select name="genres">
                 <option value="">{% trans "Select Genre" %}</option>
@@ -56,7 +56,33 @@
             </select>
         </div>
 
-        <button type="submit">Apply Filters</button>
+        <div>
+            <select name="franchises">
+                <option value="">{% trans "Select Franchise" %}</option>
+                {% for franchise in franchises %}
+                <option value="{{ franchise }}" {% if franchise in selected_franchises %}selected{% endif %}>{{ franchise }}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+
+    <div class="sorting">
+        <label for="sort_by">{% trans "Sort by:" %}</label>
+        <select name="sort_by" id="sort_by">
+            <option value="">{% trans "Default" %}</option>
+            <option value="release_date_asc" {% if request.GET.sort_by == "release_date_asc" %}selected{% endif %}>{% trans "Release Date (Asc)" %}</option>
+            <option value="release_date_desc" {% if request.GET.sort_by == "release_date_desc" %}selected{% endif %}>{% trans "Release Date (Desc)" %}</option>
+            <option value="title_asc" {% if request.GET.sort_by == "title_asc" %}selected{% endif %}>{% trans "Title (Asc)" %}</option>
+            <option value="title_desc" {% if request.GET.sort_by == "title_desc" %}selected{% endif %}>{% trans "Title (Desc)" %}</option>
+            <option value="average_score_desc" {% if request.GET.sort_by == "average_score_desc" %}selected{% endif %}>{% trans "Rating (High)" %}</option>
+            <option value="average_score_asc" {% if request.GET.sort_by == "average_score_asc" %}selected{% endif %}>{% trans "Rating (Low)" %}</option>
+        </select>
+    </div>
+
+    <div class="filter-buttons">
+        <button type="submit" class="apply-button">Apply Filters</button>
+        <button type="button" class="reset-button" id="resetButton">Reset Filters</button>
     </div>
 </form>
 
@@ -72,11 +98,12 @@
 
 {% if pagination %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/playstyle_compass/pagination.css' %}">
+{% with request.GET.urlencode as query_string %}
 <div class="pagination">
     <span class="step-links">
         {% if games.has_previous %}
-        <a href="?page=1">&laquo; {% trans "First" %}</a>
-        <a href="?page={{ games.previous_page_number }}">{% trans "Previous" %}</a>
+            <a href="?page=1&sort_by={{ request.GET.sort_by }}&{{ query_string }}">&laquo; {% trans "First" %}</a>
+            <a href="?page={{ games.previous_page_number }}&sort_by={{ request.GET.sort_by }}&{{ query_string }}">{% trans "Previous" %}</a>
         {% endif %}
 
         <span class="current-page">
@@ -84,16 +111,18 @@
         </span>
 
         {% if games.has_next %}
-        <a href="?page={{ games.next_page_number }}">{% trans "Next" %}</a>
-        <a href="?page={{ games.paginator.num_pages }}">{% trans "Last" %} &raquo;</a>
+            <a href="?page={{ games.next_page_number }}&sort_by={{ request.GET.sort_by }}&{{ query_string }}">{% trans "Next" %}</a>
+            <a href="?page={{ games.paginator.num_pages }}&sort_by={{ request.GET.sort_by }}&{{ query_string }}">{% trans "Last" %} &raquo;</a>
         {% endif %}
     </span>
 </div>
+{% endwith %}
 {% endif %}
 
 <script src="{% static 'js/playstyle_compass/share_game.js' %}" defer></script>
 <script src="{% static 'js/playstyle_compass/favorite_games_and_queue.js' %}" defer></script>
 <script src="{% static 'js/playstyle_compass/reviews_section.js' %}" defer></script>
 <script src="{% static 'js/playstyle_compass/star_rating.js' %}" defer></script>
+<script src="{% static 'js/playstyle_compass/game_library.js' %}" defer></script>
 
 {% endblock content %}
