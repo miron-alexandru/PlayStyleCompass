@@ -1174,6 +1174,7 @@ def game_library(request):
     games = paginate_matching_games(request, games)
 
     context = {
+        "page_title": _("Game Library :: PlayStyle Compass"),
         "games": games,
         "genres": sorted(genres),
         "concepts": sorted(concepts),

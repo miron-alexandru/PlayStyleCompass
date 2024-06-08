@@ -14,7 +14,7 @@
 }
 
 .category-buttons {
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   text-align: start;
 }
 
@@ -23,7 +23,7 @@
   background-color: #3498db;
   color: white;
   border: none;
-  padding: 9px 18px;
+  padding: 8px 16px;
   cursor: pointer;
   transition: background-color 0.3s ease-in-out;
   border-radius: 5px;
@@ -47,9 +47,6 @@ ul {
 
 label[for="sort-select"] {
   font-size: 15px;
-  font-weight: bold;
-  margin-right: 5px;
-  margin-left: 5px;
   color: #333;
 }
 
@@ -73,6 +70,13 @@ label[for="sort-select"] {
 #sort-select:hover,
 #sort-select:focus {
   border: 1px solid #333;
+}
+
+.sorting {
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 @media screen and (max-width: 1000px) {

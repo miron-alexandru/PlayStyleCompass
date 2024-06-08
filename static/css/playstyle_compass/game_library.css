@@ -1,18 +1,18 @@
 .filter-container {
 	display: flex;
-	flex-wrap: wrap;
-	gap: 10px;
+  align-items: center;
+	gap: 8px;
 }
 
 label[for="sort_by"], 
 label[for="filter_by"] {
-  font-size: 15px;
+  font-size: 14px;
   color: #333;
 }
 
 select {
   padding: 5px;
-  font-size: 14px;
+  font-size: 13px;
   border: 1px solid #ccc;
   border-radius: 5px;
   background-color: #f9f9f9;
@@ -22,7 +22,7 @@ select {
 }
 
 select option {
-  font-size: 14px;
+  font-size: 13px;
   background-color: #f9f9f9;
   color: #333;
 }
@@ -32,33 +32,30 @@ select:focus {
   border: 1px solid #333;
 }
 
-.apply-button {
-  background-color: #007bff;
+.apply-button, .reset-button {
   color: #fff;
   padding: 5px 10px;
   border: none;
   border-radius: 5px;
-  font-size: 12px;
+  font-size: 11px;
+}
+
+.apply-button {
+  background-color: #007bff;
 }
 
 .reset-button {
   background-color: gray;
-  font-size: 12px;
-  border: none;
-  border-radius: 5px;
-  padding: 5px 10px;
-  color: #fff;
 }
 
 .reset-button:hover {
   background-color: #505050;
 }
 
-.filter-buttons, .sorting {
+.sorting, .filter-buttons {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   margin-top: 8px;
   margin-bottom: 8px;
-}
-
-select[name="sort_by"] {
-  margin-left: 5px;
 }
