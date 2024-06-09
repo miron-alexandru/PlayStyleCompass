@@ -114,6 +114,10 @@ input[type="email"]:focus,
   transition: all 0.6s ease;
 }
 
+.navbar-nav .nav-item .contact-us {
+  margin-left: auto;
+}
+
 .navbar.fixed {
   background: #4aa9ff;
   position: fixed;
@@ -139,10 +143,6 @@ input[type="email"]:focus,
 
 .contact-icon {
   margin-left: 5px;
-}
-
-.navbar-nav .nav-item .contact-us {
-  margin-left: auto;
 }
 
 .container {

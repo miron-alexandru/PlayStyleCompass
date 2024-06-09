@@ -35,6 +35,10 @@ from .helper_functions.views_helpers import (
     paginate_objects,
     get_friend_list,
     calculate_average_similarity,
+    gather_game_attributes,
+    build_query,
+    get_selected_filters,
+    sort_game_library,
 )
 
 
@@ -1088,89 +1092,32 @@ def view_singleplayer_games(request):
 
 
 def game_library(request):
-    """View used  to display the games library."""
+    """View used to display the games library."""
     user = request.user if request.user.is_authenticated else None
     user_preferences = get_object_or_404(UserPreferences, user=user) if user else None
     user_friends = get_friend_list(user) if user else []
 
     games = Game.objects.all()
 
-    genres = set()
-    concepts = set()
-    themes = set()
-    platforms = set()
-    franchises = set()
+    # Gather various game attributes for filtering purposes
+    genres, concepts, themes, platforms, franchises = gather_game_attributes(games)
 
-    for game in games:
-        if game.genres:
-            genres.update(game.genres.split(','))
-        if game.concepts:
-            concepts.update(game.concepts.split(','))
-        if game.themes:
-            themes.update(game.themes.split(','))
-        if game.platforms:
-            platforms.update(game.platforms.split(','))
-        if game.franchises:
-            franchises.update(game.franchises.split(','))
+    # Get the selected filters from the request
+    selected_filters = get_selected_filters(request)
 
-    selected_genres = request.GET.getlist('genres')
-    selected_concepts = request.GET.getlist('concepts')
-    selected_themes = request.GET.getlist('themes')
-    selected_platforms = request.GET.getlist('platforms')
-    selected_franchises = request.GET.getlist('franchises')
+    # Build a query based on the selected filters
+    query = build_query(selected_filters)
 
-    query = Q()
-
-    if selected_genres and any(selected_genres):
-        genre_query = Q()
-        for genre in selected_genres:
-            genre_query |= Q(genres__icontains=genre)
-        query |= genre_query
-
-    if selected_concepts and any(selected_concepts):
-        concept_query = Q()
-        for concept in selected_concepts:
-            concept_query |= Q(concepts__icontains=concept)
-        query |= concept_query
-
-    if selected_themes and any(selected_themes):
-        theme_query = Q()
-        for theme in selected_themes:
-            theme_query |= Q(themes__icontains=theme)
-        query |= theme_query
-
-    if selected_platforms and any(selected_platforms):
-        platform_query = Q()
-        for platform in selected_platforms:
-            platform_query |= Q(platforms__icontains=platform)
-        query |= platform_query
-
-    if selected_franchises and any(selected_franchises):
-        franchise_query = Q()
-        for franchise in selected_franchises:
-            franchise_query |= Q(franchises__icontains=franchise)
-        query |= franchise_query
-
-    if any([selected_genres, selected_concepts, selected_themes, selected_platforms, selected_franchises]):
+    # Apply the filters to the games queryset if any filters are selected
+    if any(selected_filters.values()):
         games = games.filter(query)
 
     sort_by = request.GET.get('sort_by')
+    # Sort the games queryset based on the sorting option, if any
     if sort_by:
-        if sort_by == 'release_date_asc':
-            games = games.filter(query).order_by('release_date')
-        elif sort_by == 'release_date_desc':
-            games = games.filter(query).order_by('-release_date')
-        elif sort_by == 'title_asc':
-            games = games.filter(query).order_by('title')
-        elif sort_by == 'title_desc':
-            games = games.filter(query).order_by('-title')
-        elif sort_by == 'average_score_asc':
-            games = games.filter(query).order_by('average_score')
-        elif sort_by == 'average_score_desc':
-            games = games.filter(query).order_by('-average_score')
-    else:
-        games = games.filter(query)
+        games = sort_game_library(games, sort_by)
 
+    # Paginate the filtered and sorted games queryset
     games = paginate_matching_games(request, games)
 
     context = {
@@ -1181,11 +1128,11 @@ def game_library(request):
         "themes": sorted(themes),
         "platforms": sorted(platforms),
         "franchises": sorted(franchises),
-        "selected_genres": selected_genres,
-        "selected_concepts": selected_concepts,
-        "selected_themes": selected_themes,
-        "selected_platforms": selected_platforms,
-        "selected_franchises": selected_franchises,
+        "selected_genres": selected_filters['genres'],
+        "selected_concepts": selected_filters['concepts'],
+        "selected_themes": selected_filters['themes'],
+        "selected_platforms": selected_filters['platforms'],
+        "selected_franchises": selected_filters['franchises'],
         "user_preferences": user_preferences,
         "user_friends": user_friends,
         "pagination": True,
