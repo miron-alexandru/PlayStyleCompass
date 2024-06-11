@@ -115,7 +115,7 @@ if (profilePictureUpload) {
 $(document).ready(function () {
   $(".nav-item.dropdown").each(function () {
     let $dropdownToggle = $(this).find(".dropdown-toggle");
-    let $dropdownContainer = $(this).find(".dropdown-container");
+    let $dropdownContainer = $(this).find(".dropdown-menu");
 
     $dropdownToggle.on("click", function (e) {
       e.preventDefault();
@@ -127,7 +127,7 @@ $(document).ready(function () {
 
 $(document).on("click", function (event) {
     if (!$(event.target).closest(".nav-item.dropdown").length) {
-      $(".dropdown-container").hide();
+      $(".dropdown-menu").hide();
     }
   });
 });
@@ -167,6 +167,9 @@ $(document).ready(function () {
 let lastScrollTop = 0;
 
 $(window).on("scroll", function() {
+    const windowWidth = $(window).width();
+    if (windowWidth <= 1100) return;
+
     const scrollTop = $(this).scrollTop();
 
     if (scrollTop === 0) {

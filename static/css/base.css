@@ -128,11 +128,11 @@ input[type="email"]:focus,
 }
 
 .navbar-text {
-  font-size: 15px;
+  font-size: 14px;
 }
 
 .nav-link {
-  font-size: 15px;
+  font-size: 14px;
   transition: color 0.3s ease-in-out;
 }
 
@@ -271,6 +271,11 @@ input[type="email"]:focus,
   border-radius: 4px;
   transition: transform 0.2s ease-in-out, opacity 0.2s ease-in-out;
   position: relative;
+  top: 85%;
+}
+
+.navbar-dropdown {
+  top: 105%;
 }
 
 .dropdown-menu:before {
@@ -297,12 +302,22 @@ input[type="email"]:focus,
 }
 
 .dropdown-item {
-  font-size: 15px;
+  font-size: 14px;
   color: #333;
-  padding: 7px 15px;
+  padding: 7px 14px;
   transition: background-color 0.3s;
   border-radius: 0px;
   overflow: hidden;
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+}
+
+.nav-link .text-wrap {
+  white-space: pre-line;
+  margin-right: 2px;
 }
 
 .dropdown-item.active,
@@ -626,7 +641,7 @@ input[type="email"]:focus,
 
 
 
-@media screen and (max-width: 1000px) {
+@media screen and (max-width: 1100px) {
   .navbar {
     max-height: none;
     padding: 20px;
@@ -695,7 +710,7 @@ input[type="email"]:focus,
   }
 
   .dropdown-item {
-    font-size: 15px;
+    font-size: 14px;
     color: #333;
     padding: 10px 15px;
     transition: background-color 0.3s;

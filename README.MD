@@ -46,6 +46,7 @@ Websites for .env configuration: [GiantBomb](https://www.giantbomb.com/) / [Send
 <summary><h2>PlayStyle Compass Changelog</h2></summary>
 
 ### Version v1.9:
+* Reorganized navbar items.
 * Improved Game Library: Users are able to sort the games and also a new filter: by Franchise
 * Implemented Game Library: Users are able to browse games based on different filters like genres, themes and others.
 * Changed how game rating is calculated.

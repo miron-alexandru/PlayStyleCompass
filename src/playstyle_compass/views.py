@@ -1112,7 +1112,7 @@ def game_library(request):
     if any(selected_filters.values()):
         games = games.filter(query)
 
-    sort_by = request.GET.get('sort_by')
+    sort_by = request.GET.get("sort_by")
     # Sort the games queryset based on the sorting option, if any
     if sort_by:
         games = sort_game_library(games, sort_by)
@@ -1128,15 +1128,15 @@ def game_library(request):
         "themes": sorted(themes),
         "platforms": sorted(platforms),
         "franchises": sorted(franchises),
-        "selected_genres": selected_filters['genres'],
-        "selected_concepts": selected_filters['concepts'],
-        "selected_themes": selected_filters['themes'],
-        "selected_platforms": selected_filters['platforms'],
-        "selected_franchises": selected_filters['franchises'],
+        "selected_genres": selected_filters["genres"],
+        "selected_concepts": selected_filters["concepts"],
+        "selected_themes": selected_filters["themes"],
+        "selected_platforms": selected_filters["platforms"],
+        "selected_franchises": selected_filters["franchises"],
         "user_preferences": user_preferences,
         "user_friends": user_friends,
         "pagination": True,
         "query_string": request.GET.urlencode(),
     }
 
-    return render(request, 'games/game_library.html', context)
+    return render(request, "games/game_library.html", context)

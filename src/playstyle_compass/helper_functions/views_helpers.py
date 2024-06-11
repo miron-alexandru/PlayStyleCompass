@@ -256,17 +256,18 @@ def gather_game_attributes(games):
 
     for game in games:
         if game.genres:
-            genres.update(game.genres.split(','))
+            genres.update(game.genres.split(","))
         if game.concepts:
-            concepts.update(game.concepts.split(','))
+            concepts.update(game.concepts.split(","))
         if game.themes:
-            themes.update(game.themes.split(','))
+            themes.update(game.themes.split(","))
         if game.platforms:
-            platforms.update(game.platforms.split(','))
+            platforms.update(game.platforms.split(","))
         if game.franchises:
-            franchises.update(game.franchises.split(','))
+            franchises.update(game.franchises.split(","))
 
     return genres, concepts, themes, platforms, franchises
+
 
 def build_query(selected_filters):
     """Build query based on the selected filters."""
@@ -281,29 +282,31 @@ def build_query(selected_filters):
 
     return query
 
+
 def get_selected_filters(request):
     """Get the selected filters from the request."""
     return {
-        'genres': request.GET.getlist('genres'),
-        'concepts': request.GET.getlist('concepts'),
-        'themes': request.GET.getlist('themes'),
-        'platforms': request.GET.getlist('platforms'),
-        'franchises': request.GET.getlist('franchises')
+        "genres": request.GET.getlist("genres"),
+        "concepts": request.GET.getlist("concepts"),
+        "themes": request.GET.getlist("themes"),
+        "platforms": request.GET.getlist("platforms"),
+        "franchises": request.GET.getlist("franchises"),
     }
+
 
 def sort_game_library(games, sort_by):
     """Sort game library based on the sorting option."""
-    if sort_by == 'release_date_asc':
-        return games.order_by('release_date')
-    elif sort_by == 'release_date_desc':
-        return games.order_by('-release_date')
-    elif sort_by == 'title_asc':
-        return games.order_by('title')
-    elif sort_by == 'title_desc':
-        return games.order_by('-title')
-    elif sort_by == 'average_score_asc':
-        return games.order_by('average_score')
-    elif sort_by == 'average_score_desc':
-        return games.order_by('-average_score')
+    if sort_by == "release_date_asc":
+        return games.order_by("release_date")
+    elif sort_by == "release_date_desc":
+        return games.order_by("-release_date")
+    elif sort_by == "title_asc":
+        return games.order_by("title")
+    elif sort_by == "title_desc":
+        return games.order_by("-title")
+    elif sort_by == "average_score_asc":
+        return games.order_by("average_score")
+    elif sort_by == "average_score_desc":
+        return games.order_by("-average_score")
     else:
         return games
