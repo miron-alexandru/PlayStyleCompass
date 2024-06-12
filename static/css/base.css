@@ -134,6 +134,8 @@ input[type="email"]:focus,
 .nav-link {
   font-size: 14px;
   transition: color 0.3s ease-in-out;
+  display: flex;
+  align-items: center;
 }
 
 .contact-us {
@@ -264,24 +266,24 @@ input[type="email"]:focus,
   padding: 25px;
 }
 
+
 .dropdown-menu {
   background-color: #fff;
   border: none;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   border-radius: 4px;
   transition: transform 0.2s ease-in-out, opacity 0.2s ease-in-out;
-  position: relative;
+  position: absolute;
   top: 85%;
-}
-
-.navbar-dropdown {
-  top: 105%;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .dropdown-menu:before {
   position: absolute;
   top: -9px;
-  left: 20%;
+  left: 50%;
+  transform: translateX(-50%);
   display: inline-block;
   border-right: 9px solid transparent;
   border-bottom: 9px solid #ccc;
@@ -293,12 +295,17 @@ input[type="email"]:focus,
 .dropdown-menu:after {
   position: absolute;
   top: -8px;
-  left: 20%;
+  left: 50%;
+  transform: translateX(-50%);
   display: inline-block;
   border-right: 8px solid transparent;
   border-bottom: 8px solid #ffffff;
   border-left: 8px solid transparent;
   content: '';
+}
+
+.navbar-dropdown {
+  top: 105%;
 }
 
 .dropdown-item {
@@ -308,11 +315,6 @@ input[type="email"]:focus,
   transition: background-color 0.3s;
   border-radius: 0px;
   overflow: hidden;
-}
-
-.nav-link {
-  display: flex;
-  align-items: center;
 }
 
 .nav-link .text-wrap {
