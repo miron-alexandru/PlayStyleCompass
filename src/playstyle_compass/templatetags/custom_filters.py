@@ -1,14 +1,17 @@
 """Custom filters."""
 
+import difflib
 import re
 from datetime import datetime
 from django import template
 from itertools import zip_longest
 from django.utils.translation import gettext as _
 from django.apps import apps
+from django.urls import reverse
 from pytz import timezone
 from django.utils import timezone as django_timezone
 from django.utils.safestring import mark_safe
+from ..models import Game, Franchise, Character
 
 
 register = template.Library()
@@ -146,3 +149,66 @@ def bold_requirements(value):
 
         return mark_safe(value)
     return None
+
+
+@register.filter
+def game_link(game_name):
+    """This filter generates hyperlinks for games based on a provided game name. 
+    It retrieves the closest match to the provided name from the database.
+    """
+    game_titles = Game.objects.values_list('title', flat=True)
+    game_name_lower = game_name.lower()
+
+    # Find the closest match
+    closest_matches = difflib.get_close_matches(game_name_lower, [title.lower() for title in game_titles], n=1, cutoff=0.70)
+
+    if closest_matches:
+        closest_match = closest_matches[0]
+        try:
+            game = Game.objects.get(title__iexact=closest_match)
+            url = reverse('playstyle_compass:view_game', args=[game.guid])
+            return f'<a href="{url}">{game_name}</a>'
+        except Game.DoesNotExist:
+            return game_name
+    else:
+        return game_name
+
+@register.filter
+def object_link(name, object_type):
+    """This filter generates hyperlinks for objects
+    based on a provided name and object type. 
+    It retrieves the closest match to the provided name from the database
+    """
+    name_lower = name.lower()
+
+    if object_type == 'franchise':
+        titles = Franchise.objects.values_list('title', flat=True)
+        titles_lower = [title.lower() for title in titles]
+        url_name = 'playstyle_compass:franchise'
+        model = Franchise
+    elif object_type == 'character':
+        names = Character.objects.values_list('name', flat=True)
+        names_lower = [char_name.lower() for char_name in names]
+        url_name = 'playstyle_compass:character'
+        model = Character
+    else:
+        return name
+
+    closest_matches = difflib.get_close_matches(name_lower, titles_lower if object_type == 'franchise' else names_lower, n=1, cutoff=0.70)
+    
+    if closest_matches:
+        closest_match_lower = closest_matches[0]
+        try:
+            if object_type == 'franchise':
+                closest_match = next(title for title in titles if title.lower() == closest_match_lower)
+                obj = model.objects.get(title__iexact=closest_match)
+            else:
+                closest_match = next(char_name for char_name in names if char_name.lower() == closest_match_lower)
+                obj = model.objects.get(name__iexact=closest_match)
+                
+            url = reverse(url_name, args=[obj.id])
+            return f'<a href="{url}">{name}</a>'
+        except model.DoesNotExist:
+            return name
+    else:
+        return name
