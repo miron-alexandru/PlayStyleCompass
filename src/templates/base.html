@@ -35,25 +35,32 @@
         <img src="{% static 'images/playstyle.png' %}" alt="PlayStyle Compass Logo">
       </a>
       <ul class="navbar-nav ml-auto">
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'playstyle_compass:gaming_preferences'%}">
-            {% trans "Create Playstyle" %}
-          </a>
-        </li>
         {% if user.is_authenticated %}
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'playstyle_compass:update_preferences'%}">
-            {% trans "Manage Playstyle" %}
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navItemDropdown" role="button" data-toggle="dropdown">
+              {% trans "Playstyle & Recommendations" %}
           </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'playstyle_compass:get_recommendations'%}">
-            {% trans "Game Recommendations" %}
-          </a>
+          <div class="dropdown-menu navbar-dropdown">
+            <a class="dropdown-item" href="{% url 'playstyle_compass:gaming_preferences'%}">
+              {% trans "Create Playstyle" %}
+            </a>
+            <a class="dropdown-item" href="{% url 'playstyle_compass:update_preferences'%}">
+              {% trans "Manage Playstyle" %}
+            </a>
+            <a class="dropdown-item" href="{% url 'playstyle_compass:similar_playstyles'%}">
+              {% trans "Kindred Playstyles" %}
+            </a>
+            <a class="dropdown-item" href="{% url 'playstyle_compass:get_recommendations'%}">
+              {% trans "Game Recommendations" %}
+            </a>
+            <a class="dropdown-item" href="{% url 'users:quiz_recommendations'%}">
+              {% trans "Quiz Recommendations" %}
+            </a>
+          </div>
         </li>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navItemDropdown" role="button" data-toggle="dropdown">
-            <span class="text-wrap">{% trans "Personal Collection" %}</span>
+              {% trans "Personal Collection" %}
           </a>
           <div class="dropdown-menu navbar-dropdown">
             <a class="dropdown-item" href="{% url 'playstyle_compass:favorite_games'%}">
@@ -69,7 +76,7 @@
         </li>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navItemDropdown" role="button" data-toggle="dropdown">
-            <span class="text-wrap">{% trans "Game Categories" %}</span>
+              {% trans "Game Categories" %}
           </a>
           <div class="dropdown-menu navbar-dropdown">
             <a class="dropdown-item" href="{% url 'playstyle_compass:singleplayer_games'%}">
@@ -88,7 +95,7 @@
         </li>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navItemDropdown" role="button" data-toggle="dropdown">
-            <span class="text-wrap">{% trans "Explore" %}</span>
+              {% trans "Explore" %}
           </a>
           <div class="dropdown-menu navbar-dropdown">
             <a class="dropdown-item" href="{% url 'playstyle_compass:game_library'%}">
@@ -104,21 +111,20 @@
         </li>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navItemDropdown" role="button" data-toggle="dropdown">
-            <span class="text-wrap">{% trans "Other" %}</span>
+              {% trans "Other" %}
           </a>
           <div class="dropdown-menu navbar-dropdown">
             <a class="dropdown-item" href="{% url 'users:gaming_quiz'%}">
               {% trans "Preference Quiz" %}
             </a>
-            <a class="dropdown-item" href="{% url 'users:quiz_recommendations'%}">
-              {% trans "Quiz Recommendations" %}
-            </a>
-            <a class="dropdown-item" href="{% url 'playstyle_compass:similar_playstyles'%}">
-              {% trans "Kindred Playstyles" %}
-            </a>
           </div>
         </li>
         {% else %}
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'playstyle_compass:gaming_preferences'%}">
+            {% trans "Create Playstyle" %}
+          </a>
+        </li>
         <li class="nav-item">
           <a class="nav-link" href="{% url 'playstyle_compass:game_library'%}">
             {% trans "Game Library" %}
