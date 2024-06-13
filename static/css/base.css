@@ -136,6 +136,7 @@ input[type="email"]:focus,
   transition: color 0.3s ease-in-out;
   display: flex;
   align-items: center;
+  margin: 3px;
 }
 
 .contact-us {
@@ -273,7 +274,7 @@ input[type="email"]:focus,
   border-radius: 4px;
   transition: transform 0.2s ease-in-out, opacity 0.2s ease-in-out;
   position: absolute;
-  top: 98%;
+  top: 102%;
   left: 50%;
   transform: translateX(-50%);
 }
@@ -394,9 +395,11 @@ input[type="email"]:focus,
 .user-profile-name a {
   font-size: 16px;
   font-weight: bolder;
-  margin-left: -5px;
+  margin-left: -4px;
   text-decoration: none;
-  margin-right: -15px;
+  margin-right: -10px;
+  display: flex;
+  text-align: center;
 }
 
 .user-profile-name a:hover {

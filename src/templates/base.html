@@ -142,10 +142,6 @@
         </li>
         {% endif %}
       </ul>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"
-        aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
       <div class="collapse navbar-collapse" id="navbarCollapse">
         <ul class="navbar-nav ml-auto-custom">
           {% if user.is_authenticated %}
@@ -159,6 +155,7 @@
             <input type="file" id="profile-picture-upload" class="sr-only" accept="image/*"
               data-profile-url="{% url 'users:profile_picture' %}" data-csrf-token="{{ csrf_token }}">
           </li>
+
         <li class="nav-item">
             <span class="navbar-text mr-3 user-profile-name">
                 <a href="{% url 'users:view_profile' user.userprofile.profile_name %}" style="color: inherit;">
@@ -171,18 +168,6 @@
                 </a>
             </span>
         </li>
-
-          <div class="d-flex dropstart" id="notifications" data-mark-read="{% url 'users:mark_notification_as_read' 0 %}"
-          data-mark-inactive="{% url 'users:delete_notification' 0 %}">
-            <div class="collapse navbar-collapse dropstart" id="navbarNavDarkDropdown">
-                <li class="nav-item dropdown">
-                  <a class="nav-link " href="#"  data-bs-toggle="dropdown" aria-expanded="false">
-                    <i id="bellCount" class="fa-solid fa-bell notification-bell" data-count="0" ></i>
-                  </a>
-                  <ul class="dropdown-menu notifications-dropdown text-wrap" id="notify"></ul>
-                </li>
-            </div>
-          </div>
 
           <li class="nav-item dropdown" id="hoverDropdown">
             <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button" data-toggle="dropdown"
@@ -217,6 +202,19 @@
           <li class="nav-item">
               <a class="nav-link" href="{% url 'users:login' %}">{% trans "Log in" %}</a>
           </li>
+          {% endif %}
+          {% if user.is_authenticated %}
+          <div class="d-flex dropstart" id="notifications" data-mark-read="{% url 'users:mark_notification_as_read' 0 %}"
+          data-mark-inactive="{% url 'users:delete_notification' 0 %}">
+            <div class="collapse navbar-collapse dropstart" id="navbarNavDarkDropdown">
+                <li class="nav-item dropdown">
+                  <a class="nav-link " href="#"  data-bs-toggle="dropdown" aria-expanded="false">
+                    <i id="bellCount" class="fa-solid fa-bell notification-bell" data-count="0" ></i>
+                  </a>
+                  <ul class="dropdown-menu notifications-dropdown text-wrap" id="notify"></ul>
+                </li>
+            </div>
+          </div>
           {% endif %}
           <li class="nav-item">
               <a class="nav-link contact-us" href="{% url 'users:contact' %}">{% trans "Contact" %} <i class="fa-regular fa-comments contact-icon"></i></a>
