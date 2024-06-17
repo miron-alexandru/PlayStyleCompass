@@ -8,7 +8,8 @@ from fuzzywuzzy import fuzz
 
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db.models import Q
-from ..models import Game, Review, Franchise
+from django.shortcuts import get_object_or_404
+from playstyle_compass.models import UserPreferences, Game, Review, Franchise
 from users.models import FriendList
 
 
@@ -310,3 +311,12 @@ def sort_game_library(games, sort_by):
         return games.order_by("-average_score")
     else:
         return games
+
+
+def get_user_context(request):
+    """Return user context used in a similar way for similar views."""
+    user = request.user if request.user.is_authenticated else None
+    user_preferences = get_object_or_404(UserPreferences, user=user) if user else None
+    user_friends = get_friend_list(user) if user else []
+
+    return user, user_preferences, user_friends

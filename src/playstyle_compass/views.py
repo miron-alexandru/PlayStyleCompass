@@ -39,6 +39,7 @@ from .helper_functions.views_helpers import (
     build_query,
     get_selected_filters,
     sort_game_library,
+    get_user_context,
 )
 
 
@@ -496,12 +497,9 @@ def _get_games_view(request, page_title, list_name, template_name, user_id=None)
 
 def top_rated_games(request):
     """View to display top rated games."""
-    user = request.user if request.user.is_authenticated else None
-    user_preferences = get_object_or_404(UserPreferences, user=user) if user else None
+    user, user_preferences, user_friends = get_user_context(request)
 
     top_games = Game.objects.filter(average_score__gt=4).order_by("average_score")
-
-    user_friends = get_friend_list(user) if user else []
 
     context = {
         "page_title": _("Top Rated Games :: PlayStyle Compass"),
@@ -515,8 +513,8 @@ def top_rated_games(request):
 
 def upcoming_games(request):
     """View the upcoming games."""
-    user = request.user if request.user.is_authenticated else None
-    user_preferences = get_object_or_404(UserPreferences, user=user) if user else None
+    user, user_preferences, user_friends = get_user_context(request)
+
     current_date = date.today()
 
     upcoming_filter = Q(release_date__gte=current_date) | Q(
@@ -525,7 +523,6 @@ def upcoming_games(request):
 
     upcoming_games = Game.objects.filter(upcoming_filter)
     paginated_games = paginate_matching_games(request, upcoming_games)
-    user_friends = get_friend_list(user) if user else []
 
     context = {
         "page_title": _("Upcoming Games :: PlayStyle Compass"),
@@ -645,10 +642,10 @@ def get_game_reviews(request, game_id):
 
     return JsonResponse({"reviews": reviews_data})
 
-
+@login_required
 def like_review(request):
     """View used to like / unlike reviews."""
-    if request.method == "POST" and request.user.is_authenticated:
+    if request.method == "POST":
         review_id = request.POST.get("review_id")
 
         if review_id:
@@ -678,10 +675,10 @@ def like_review(request):
         {"message": _("You must be logged in to like or dislike a review.")}
     )
 
-
+@login_required
 def dislike_review(request):
     """View used to dislike / undislike a review."""
-    if request.method == "POST" and request.user.is_authenticated:
+    if request.method == "POST":
         review_id = request.POST.get("review_id")
 
         if review_id:
@@ -733,11 +730,8 @@ def delete_reviews(request, game_id):
 
 def view_game(request, game_id):
     """View used to display a single game."""
-    user = request.user if request.user.is_authenticated else None
-    user_preferences = get_object_or_404(UserPreferences, user=user) if user else None
-
+    user, user_preferences, user_friends = get_user_context(request)
     game = get_object_or_404(Game, guid=game_id)
-    user_friends = get_friend_list(user) if user else []
 
     context = {
         "page_title": f"{game.title} :: PlayStyle Compass",
@@ -1041,9 +1035,7 @@ def autocomplete_characters(request):
 
 def get_games_and_context(request, game_mode):
     """Prepare context data for displaying games based on the specified game mode."""
-    user = request.user if request.user.is_authenticated else None
-    user_preferences = get_object_or_404(UserPreferences, user=user) if user else None
-    user_friends = get_friend_list(user) if user else []
+    user, user_preferences, user_friends = get_user_context(request)
 
     games_query = GameModes.objects.filter(game_mode=game_mode)
     game_ids = [game.game_id for game in games_query]
@@ -1093,9 +1085,7 @@ def view_singleplayer_games(request):
 
 def game_library(request):
     """View used to display the games library."""
-    user = request.user if request.user.is_authenticated else None
-    user_preferences = get_object_or_404(UserPreferences, user=user) if user else None
-    user_friends = get_friend_list(user) if user else []
+    user, user_preferences, user_friends = get_user_context(request)
 
     games = Game.objects.all()
 
