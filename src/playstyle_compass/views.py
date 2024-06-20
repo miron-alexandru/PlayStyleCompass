@@ -252,11 +252,7 @@ def search_results(request):
     """Retrieves games from the database that match a given
     search query and renders a search results page.
     """
-    user_preferences = (
-        UserPreferences.objects.get_or_create(user=request.user)[0]
-        if request.user.is_authenticated
-        else None
-    )
+    user, user_preferences, user_friends = get_user_context(request)
 
     query = request.GET.get("query")
 
@@ -266,12 +262,7 @@ def search_results(request):
         )
 
     games = Game.objects.filter(title__icontains=query)
-
     games = paginate_matching_games(request, games)
-
-    user_friends = (
-        get_friend_list(request.user) if request.user.is_authenticated else None
-    )
 
     context = {
         "page_title": _("Search Results :: PlayStyle Compass"),
