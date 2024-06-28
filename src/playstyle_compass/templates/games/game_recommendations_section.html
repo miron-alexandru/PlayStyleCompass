@@ -97,43 +97,49 @@
         <button class="show-hide-req" id="toggleButton" onclick="toggleRequirements(this)">{% trans "Show" %}</button>
       </p>
       <div class="game-requirements" id="game-requirements" style="display: none;">
-        <div class="platform-requirements">
-          <div class="requirement-section">
-            <p class="req-title"><strong>{% trans "PC Minimum" %}</strong></p>
-            <span class="requirements">{{ game.pc_req_min|bold_requirements|default:"N/A" }}</span>
-          </div>
-          <div class="requirement-section">
-            <p class="req-title"><strong>{% trans "PC Recommended" %}</strong></p>
-            <span class="requirements">{{ game.pc_req_rec|bold_requirements|default:"N/A" }}</span>
-          </div>
-        </div>
-
-        {% if game.mac_req_min or game.mac_req_rec %}
-        <div class="platform-requirements">
-          <div class="requirement-section">
-            <p class="req-title"><strong>{% trans "MAC Minimum" %}</strong></p>
-            <span class="requirements">{{ game.mac_req_min|bold_requirements|default:"N/A" }}</span>
-          </div>
-          <div class="requirement-section">
-            <p class="req-title"><strong>{% trans "MAC Recommended" %}</strong></p>
-            <span class="requirements">{{ game.mac_req_rec|bold_requirements|default:"N/A" }}</span>
-          </div>
-        </div>
-        {% endif %} 
-
-        {% if game.linux_req_min or game.linux_req_rec %}
-        <div class="platform-requirements">
-          <div class="requirement-section">
-            <p class="req-title"><strong>{% trans "Linux Minimum" %}</strong></p>
-            <span class="requirements">{{ game.linux_req_min|bold_requirements|default:"N/A" }}</span>
-          </div>
-          <div class="requirement-section">
-            <p class="req-title"><strong>{% trans "Linux Recommended" %}</strong></p>
-            <span class="requirements">{{ game.linux_req_rec|bold_requirements|default:"N/A" }}</span>
-          </div>
+      {% if game.pc_req_min or game.pc_req_rec or game.mac_req_min or game.mac_req_rec or game.linux_req_min or game.linux_req_rec %}
+     <div class="platform-requirements">
+        {% if game.pc_req_min %}
+        <div class="requirement-section">
+           <p class="req-title"><strong>{% trans "PC Minimum" %}</strong></p>
+           <span class="requirements">{{ game.pc_req_min|bold_requirements }}</span>
         </div>
         {% endif %}
-      </div>
+        {% if game.pc_req_rec %}
+        <div class="requirement-section">
+           <p class="req-title"><strong>{% trans "PC Recommended" %}</strong></p>
+           <span class="requirements">{{ game.pc_req_rec|bold_requirements }}</span>
+        </div>
+        {% endif %}
+        {% if game.mac_req_min %}
+        <div class="requirement-section">
+           <p class="req-title"><strong>{% trans "MAC Minimum" %}</strong></p>
+           <span class="requirements">{{ game.mac_req_min|bold_requirements|default:"N/A" }}</span>
+        </div>
+        {% endif %}
+        {% if game.mac_req_rec %}
+        <div class="requirement-section">
+           <p class="req-title"><strong>{% trans "MAC Recommended" %}</strong></p>
+           <span class="requirements">{{ game.mac_req_rec|bold_requirements|default:"N/A" }}</span>
+        </div>
+        {% endif %}
+        {% if game.linux_req_min %}
+        <div class="requirement-section">
+           <p class="req-title"><strong>{% trans "Linux Minimum" %}</strong></p>
+           <span class="requirements">{{ game.linux_req_min|bold_requirements|default:"N/A" }}</span>
+        </div>
+        {% endif %}
+        {% if game.linux_req_rec %}
+        <div class="requirement-section">
+           <p class="req-title"><strong>{% trans "Linux Recommended" %}</strong></p>
+           <span class="requirements">{{ game.linux_req_rec|bold_requirements|default:"N/A" }}</span>
+        </div>
+        {% endif %}
+     </div>
+     {% else %}
+      <p>Requirements are not yet available.</p>
+    {% endif %}
+  </div>
       <p>
         <strong>{% trans "Images:" %}</strong>
         <span><small>{% trans "(Click on the image to open gallery)" %}</small></span>

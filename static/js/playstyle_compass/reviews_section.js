@@ -55,9 +55,9 @@ $(document).ready(function () {
     reviewsList.empty();
     if (reviews.length === 0) {
         reviewsList.html(
-            "<p><strong>" +
-            translate("No reviews for this game yet.") +
-            "</strong></p>"
+            "<p>" +
+            translate("There are currently no reviews for this game.") +
+            "</p>"
         );
     } else {
         $.each(reviews, function (index, review) {

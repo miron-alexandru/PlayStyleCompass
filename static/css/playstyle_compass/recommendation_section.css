@@ -156,7 +156,8 @@ span.stars span {
 }
 
 .platform-requirements {
-    display: flex;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
 }
 
 .requirement-section {
