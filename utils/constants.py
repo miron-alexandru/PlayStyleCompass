@@ -319,6 +319,7 @@ GENRE_CHOICES = [
 
 API_KEY = str(os.getenv("GBAPI_KEY"))
 GOOGLE_API_KEY = str(os.getenv("GOOGLE_API_KEY"))
+GAMESPOT_API_KEY = str(os.getenv("GAMESPOT_API_KEY"))
 
 BASE_URL = "https://www.giantbomb.com/api/"
 

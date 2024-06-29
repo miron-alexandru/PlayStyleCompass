@@ -6,7 +6,7 @@ from datetime import datetime
 import requests
 from youtubesearchpython import VideosSearch
 
-from constants import BASE_URL, headers, API_KEY
+from constants import BASE_URL, headers, API_KEY, GAMESPOT_API_KEY
 from data_extraction import get_requirements
 
 steam_app_list = None
@@ -193,6 +193,30 @@ def get_steam_game_requirements(app_id):
             return None, None, None
     else:
         return None, None, None
+
+
+def get_latest_gaming_news(api_key, num_articles):
+    """Use the GameSpot API to retrieve articles related to gaming."""
+    url = "http://www.gamespot.com/api/articles/"
+    headers = {
+        'User-Agent': 'Khada-Ake',
+        'Accept': 'application/json'
+    }
+    params = {
+        'api_key': api_key,
+        'format': 'json',
+        'limit': num_articles,
+        'sort': 'publish_date:desc',
+        'filter': 'categories:18'
+    }
+    
+    response = requests.get(url, headers=headers, params=params)
+    
+    if response.status_code == 200:
+        articles = response.json()
+        return articles['results']
+    else:
+        return None
 
 
 class FetchDataException(Exception):

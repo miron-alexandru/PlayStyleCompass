@@ -4,7 +4,7 @@
 
 {% block page_header %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/playstyle_compass/index.css' %}">
-
+<link rel="stylesheet" type="text/css" href="{% static 'css/playstyle_compass/news.css' %}">
 <div class="jumbotron">
   <div class="my-header">
     <h1 class="display-5">{% trans "Find Your Ideal Games" %}</h1>
@@ -28,6 +28,22 @@
 {% endblock page_header %}
 
 {% block content %}
+
+<h3 class="articles-description">{% trans "LATEST NEWS ARTICLES" %}</h3>
+<p class="articles-source-text">Source: <a class="articles-source-text" href="https://www.gamespot.com/" target="_blank">GameSpot</a></p>
+<div class="articles">
+    {% for article in articles %}
+        <div class="article {% if forloop.first %}first-article{% endif %}">
+            <a href="{{ article.url }}" target="_blank">
+                <img src="{{ article.image }}" alt="{{ article.title }}">
+                <div class="article-content">
+                    <h2 class="article-title">{{ article.title }}</h2>
+                    <p class="article-summary">{{ article.summary }}</p>
+                </div>
+            </a>
+        </div>
+    {% endfor %}
+</div>
 
 <div class="search-description">
   <h3>{% trans "EXPLORE YOUR FAVORITES" %}</h3>

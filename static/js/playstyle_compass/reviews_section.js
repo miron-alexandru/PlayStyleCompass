@@ -1,6 +1,5 @@
 $(document).ready(function () {
   $.getScript("/static/js/playstyle_compass/reviews_template.js", function() {
-    console.log("Script loaded but not necessarily executed.");
   });
 
   $(".game-container").each(function () {

@@ -26,6 +26,7 @@ from .models import (
     Franchise,
     Character,
     GameModes,
+    News,
 )
 from .forms import ReviewForm
 
@@ -87,12 +88,14 @@ def index(request):
     upcoming_games = Game.objects.filter(title__in=upcoming_titles)
     popular_games = Game.objects.filter(title__in=popular_titles)
     popular_franchises = Franchise.objects.filter(title__in=popular_franchise_titles)
+    articles = News.objects.all()[:5]
 
     context = {
         "page_title": _("Home :: PlayStyle Compass"),
         "upcoming_games": upcoming_games,
         "popular_games": popular_games,
         "popular_franchises": popular_franchises,
+        "articles": articles,
         "search_bar_type": "search_games",
     }
 

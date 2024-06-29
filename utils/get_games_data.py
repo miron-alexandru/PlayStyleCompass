@@ -20,6 +20,7 @@ from data_processing import (
     create_characters_data,
     create_game_modes_data,
     create_quiz_data,
+    create_news_data,
 )
 
 # Obtain franchises data
@@ -37,9 +38,12 @@ from data_processing import (
 # create_games_data_db(game_ids)
 
 # Obtain game modes data
-guids = ["3015-6130", "3015-322"]
-mode_strings = ["Singleplayer", "Multiplayer"]
-create_game_modes_data(guids, mode_strings, num_games=10, offset=0)
+#guids = ["3015-6130", "3015-322"]
+#mode_strings = ["Singleplayer", "Multiplayer"]
+#create_game_modes_data(guids, mode_strings, num_games=10, offset=0)
 
 # Obtain games based on concepts (used for preference quiz)
 # create_quiz_data(concept_ids, num_games=2, offset=12)
+
+# Obtain News data
+create_news_data(num_articles=20)

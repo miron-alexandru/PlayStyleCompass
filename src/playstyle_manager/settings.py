@@ -120,6 +120,7 @@ DATABASE_ROUTERS = [
     "playstyle_compass.database_router.ReviewRouter",
     "playstyle_compass.database_router.FranchiseRouter",
     "playstyle_compass.database_router.CharacterRouter",
+    "playstyle_compass.database_router.NewsRouter",
 ]
 
 # Default Auto Field

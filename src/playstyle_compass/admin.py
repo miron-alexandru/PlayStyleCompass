@@ -8,6 +8,7 @@ from .models import (
     Franchise,
     Character,
     GameModes,
+    News,
 )
 
 admin.site.register(UserPreferences)
@@ -17,3 +18,4 @@ admin.site.register(SharedGame)
 admin.site.register(Franchise)
 admin.site.register(Character)
 admin.site.register(GameModes)
+admin.site.register(News)

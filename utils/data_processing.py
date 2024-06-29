@@ -4,7 +4,7 @@ import uuid
 import sys
 import sqlite3
 
-from constants import API_KEY, concept_ids
+from constants import API_KEY, concept_ids, GAMESPOT_API_KEY
 
 from API_functions import (
     fetch_game_data,
@@ -15,6 +15,7 @@ from API_functions import (
     FetchDataException,
     get_steam_app_id,
     get_steam_game_requirements,
+    get_latest_gaming_news,
 )
 
 from data_extraction import (
@@ -53,6 +54,10 @@ from sql_queries import (
     create_game_modes_table,
     insert_game_modes_sql,
     remove_duplicate_game_modes,
+    create_news_table,
+    insert_news_sql,
+    remove_duplicate_news,
+
 )
 
 
@@ -644,3 +649,53 @@ def create_quiz_data(guids, num_games=1, offset=0):
             db_connection.commit()
 
         db_connection.commit()
+
+def parse_news_data(news_data):
+    """Parse news data."""
+    article_id = news_data['id']
+    title = news_data['title']
+    summary = news_data['deck']
+    url = news_data['site_detail_url']
+    image = news_data['image']['original']
+
+    return (
+        article_id,
+        title,
+        summary,
+        url,
+        image
+    )
+
+
+def create_news_data(num_articles=10):
+    """Populate the database with gaming related news."""
+    with sqlite3.connect("games_data.db") as db_connection:
+        cursor = db_connection.cursor()
+        cursor.execute(create_news_table)
+        db_connection.commit()
+
+        articles = get_latest_gaming_news(GAMESPOT_API_KEY, num_articles=num_articles)
+
+        for article in articles:
+            (
+            article_id,
+            title,
+            summary,
+            url,
+            image
+            ) = parse_news_data(article)
+
+            news_values = (
+                article_id,
+                title,
+                summary,
+                url,
+                image
+            )
+            cursor.execute(insert_news_sql, news_values)
+            db_connection.commit()
+
+        cursor.execute(remove_duplicate_news)
+        db_connection.commit()
+
+

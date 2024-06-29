@@ -46,6 +46,10 @@ Websites for .env configuration: [GiantBomb](https://www.giantbomb.com/) / [Send
 <summary><h2>PlayStyle Compass Changelog</h2></summary>
 
 ### Version v1.9:
+* Implemented Latest News Articles (related to gaming) on the Index page: Articles from [GameSpot](https://www.gamespot.com/) are retrieved using the GameSpot API and displayed on the Index page.
+* Improved how system requirements are displayed.
+* Refactored views and helper functions.
+* Updated Logo.
 * Improved Used Profile: In the profile details a hyperlink to the Favorite Game/Franchise/Character and Last Game Played is created.
 * Reorganized navbar items.
 * Improved Game Library: Users are able to sort the games and also a new filter: by Franchise

@@ -304,3 +304,20 @@ class GameModes(models.Model):
 
     def __str__(self):
         return f"{self.game_name} - {self.game_mode}"
+
+
+class News(models.Model):
+    """Represents a News object."""
+
+    id = models.BigAutoField(primary_key=True)
+    article_id = models.CharField(max_length=50)
+    title = models.TextField()
+    summary = models.TextField()
+    url = models.TextField()
+    image = models.TextField()
+
+    class Meta:
+        db_table = "News"
+
+    def __str__(self):
+        return f"Article: {self.title}"

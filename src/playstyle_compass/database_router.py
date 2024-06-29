@@ -132,3 +132,34 @@ class CharacterRouter:
         if app_label == "playstyle_compass" and model_name == "Character":
             return db == "games_db"
         return None
+
+
+class NewsRouter:
+    def db_for_read(self, model, **hints):
+        if (
+            model._meta.app_label == "playstyle_compass"
+            and model.__name__ == "News"
+        ):
+            return "games_db"
+        return None
+
+    def db_for_write(self, model, **hints):
+        if (
+            model._meta.app_label == "playstyle_compass"
+            and model.__name__ == "News"
+        ):
+            return "games_db"
+        return None
+
+    def allow_relation(self, obj1, obj2, **hints):
+        if (
+            obj1._meta.app_label == "playstyle_compass"
+            and obj2._meta.app_label == "playstyle_compass"
+        ):
+            return True
+        return None
+
+    def allow_migrate(self, db, app_label, model_name=None, **hints):
+        if app_label == "playstyle_compass" and model_name == "News":
+            return db == "games_db"
+        return None

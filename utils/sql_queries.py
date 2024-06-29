@@ -86,6 +86,17 @@ CREATE TABLE IF NOT EXISTS GameModes (
 );
 """
 
+create_news_table = """
+CREATE TABLE IF NOT EXISTS News (
+    id INTEGER PRIMARY KEY,
+    article_id TEXT,
+    title TEXT,
+    summary TEXT,
+    url TEXT,
+    image TEXT
+);
+"""
+
 insert_games_sql = """
 INSERT INTO Games 
 (guid, title, description, overview, genres, platforms, themes, image, release_date, developers, game_images, similar_games, dlcs, franchises, videos, concepts, pc_req_min, pc_req_rec, mac_req_min, mac_req_rec, linux_req_min, linux_req_rec) 
@@ -113,6 +124,12 @@ insert_game_modes_sql = """
 INSERT INTO GameModes
 (game_id, game_name, game_mode)
 VALUES (?, ?, ?);
+"""
+
+insert_news_sql = """
+INSERT INTO News
+(article_id, title, summary, url, image)
+VALUES (?, ?, ?, ?, ?);
 """
 
 remove_duplicates_sql = """
@@ -160,6 +177,14 @@ DELETE FROM GameModes
 );
 """
 
+remove_duplicate_news = """
+DELETE FROM News
+    WHERE rowid NOT IN (
+    SELECT MIN(rowid)
+    FROM News
+    GROUP BY article_id
+);
+"""
 
 remove_empty = """
 DELETE FROM Games

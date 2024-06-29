@@ -22,7 +22,7 @@
 <div class="section" id="history-section">
   <div class="playstyle-title">{% trans "Gaming History" %}</div>
   <p class="playstyle-text">{{ user_preferences.gaming_history|safe }}</p>
-  <button class="change-button" data-section="gaming_history">{% trans "Change" %}</button>
+  <button class="change-button" data-section="gaming_history">{% trans "Edit" %}</button>
   <div class="editing-form" id="gaming_history-form" style="display: none;">
     <form method="post" action="{% url 'playstyle_compass:save_gaming_history' %}">
       {% csrf_token %}
@@ -40,7 +40,7 @@
 <div class="section" id="genres-section">
   <div class="playstyle-title">{% trans "Favorite Genres" %}</div>
   <p class="playstyle-text">{{ user_preferences.favorite_genres|safe }}</p>
-  <button class="change-button" data-section="favorite_genres">{% trans "Change" %}</button>
+  <button class="change-button" data-section="favorite_genres">{% trans "Edit" %}</button>
   <div class="editing-form" id="favorite_genres-form" style="display: none;">
     <form method="post" action="{% url 'playstyle_compass:save_favorite_genres' %}">
       {% csrf_token %}
@@ -64,7 +64,7 @@
 <div class="section" id="themes-section">
   <div class="playstyle-title">{% trans "Favorite Themes" %}</div>
   <p class="playstyle-text">{{ user_preferences.themes|safe }}</p>
-  <button class="change-button" data-section="themes">{% trans "Change" %}</button>
+  <button class="change-button" data-section="themes">{% trans "Edit" %}</button>
   <div class="editing-form" id="themes-form" style="display: none;">
     <form method="post" action="{% url 'playstyle_compass:save_themes' %}">
       {% csrf_token %}
@@ -88,7 +88,7 @@
 <div class="section" id="platforms-section">
   <div class="playstyle-title">{% trans "Preferred Platforms" %}</div>
   <p class="playstyle-text">{{ user_preferences.platforms|safe }}</p>
-  <button class="change-button" data-section="platforms">{% trans "Change" %}</button>
+  <button class="change-button" data-section="platforms">{% trans "Edit" %}</button>
   <div class="editing-form" id="platforms-form" style="display: none;">
     <form method="post" action="{% url 'playstyle_compass:save_platforms' %}">
       {% csrf_token %}
@@ -115,7 +115,7 @@
   </form>
 
   <div class="save-all-container">
-    <button id="save-all-button" data-save-all-url="{% url 'playstyle_compass:save_all_preferences' %}" class="save-all-button" disabled>{% trans "Save All" %}</button>
+    <button id="save-all-button" data-save-all-url="{% url 'playstyle_compass:save_all_preferences' %}" class="save-all-button" disabled>{% trans "Save Preferences" %}</button>
 
     <div id="saving-spinner" style="display: none;">
       {% trans "Saving..." %}
