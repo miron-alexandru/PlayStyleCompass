@@ -315,6 +315,7 @@ class News(models.Model):
     summary = models.TextField()
     url = models.TextField()
     image = models.TextField()
+    publish_date = models.TextField()
 
     class Meta:
         db_table = "News"

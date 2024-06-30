@@ -79,4 +79,5 @@ urlpatterns = [
     ),
     path("multiplayer-games/", views.view_multiplayer_games, name="multiplayer_games"),
     path("game-library/", views.game_library, name="game_library"),
+    path("news/", views.latest_news, name="latest_news"),
 ]

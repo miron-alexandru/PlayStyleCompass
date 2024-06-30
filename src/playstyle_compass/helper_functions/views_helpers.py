@@ -236,9 +236,8 @@ def calculate_average_similarity(user1, user2, preferences):
     return total_similarity_score / len(preferences)
 
 
-def paginate_objects(request, objects):
+def paginate_objects(request, objects, objects_per_page=10):
     """Function to paginate objects."""
-    objects_per_page = 10
 
     paginator = Paginator(objects, objects_per_page)
     page_number = request.GET.get("page", 1)

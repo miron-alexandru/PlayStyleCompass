@@ -88,7 +88,7 @@ def index(request):
     upcoming_games = Game.objects.filter(title__in=upcoming_titles)
     popular_games = Game.objects.filter(title__in=popular_titles)
     popular_franchises = Franchise.objects.filter(title__in=popular_franchise_titles)
-    articles = News.objects.all()[:5]
+    articles = News.objects.order_by('-publish_date')[:6]
 
     context = {
         "page_title": _("Home :: PlayStyle Compass"),
@@ -1124,3 +1124,16 @@ def game_library(request):
     }
 
     return render(request, "games/game_library.html", context)
+
+
+def latest_news(request):
+    """View used to display all the gaming news."""
+    articles = News.objects.all().order_by('-publish_date')
+    articles = paginate_objects(request, articles, objects_per_page=21)
+
+    context = {
+    "page_title": "News :: PlayStyle Compass",
+    "articles": articles,
+    }
+
+    return render(request, "base/latest_news.html", context)

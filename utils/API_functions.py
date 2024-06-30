@@ -195,19 +195,24 @@ def get_steam_game_requirements(app_id):
         return None, None, None
 
 
-def get_latest_gaming_news(api_key, num_articles):
-    """Use the GameSpot API to retrieve articles related to gaming."""
+def get_latest_gaming_news(api_key, num_articles, offset, year):
+    """Use the GameSpot API to retrieve articles related to gaming from a specific year."""
     url = "http://www.gamespot.com/api/articles/"
     headers = {
         'User-Agent': 'Khada-Ake',
         'Accept': 'application/json'
     }
+    
+    start_date = f"{year}-01-01"
+    end_date = f"{year}-12-31"
+    
     params = {
         'api_key': api_key,
         'format': 'json',
         'limit': num_articles,
         'sort': 'publish_date:desc',
-        'filter': 'categories:18'
+        'filter': f'categories:18,publish_date:{start_date}|{end_date}',
+        'offset': offset,
     }
     
     response = requests.get(url, headers=headers, params=params)
@@ -217,6 +222,21 @@ def get_latest_gaming_news(api_key, num_articles):
         return articles['results']
     else:
         return None
+
+
+def get_all_articles_from_year(api_key, year, num_articles=100):
+    """Retrieve all articles related to gaming from a specific year using the GameSpot API."""
+    all_articles = []
+    offset = 0
+    
+    while True:
+        articles = get_latest_gaming_news(api_key, num_articles, offset, year)
+        if not articles:
+            break
+        all_articles.extend(articles)
+        offset += num_articles
+    
+    return all_articles
 
 
 class FetchDataException(Exception):

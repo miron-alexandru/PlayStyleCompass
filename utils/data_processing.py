@@ -16,6 +16,7 @@ from API_functions import (
     get_steam_app_id,
     get_steam_game_requirements,
     get_latest_gaming_news,
+    get_all_articles_from_year,
 )
 
 from data_extraction import (
@@ -657,24 +658,25 @@ def parse_news_data(news_data):
     summary = news_data['deck']
     url = news_data['site_detail_url']
     image = news_data['image']['original']
+    publish_date = news_data['publish_date']
 
     return (
         article_id,
         title,
         summary,
         url,
-        image
+        image,
+        publish_date
     )
 
-
-def create_news_data(num_articles=10):
+def create_news_data(num_articles, year):
     """Populate the database with gaming related news."""
     with sqlite3.connect("games_data.db") as db_connection:
         cursor = db_connection.cursor()
         cursor.execute(create_news_table)
         db_connection.commit()
 
-        articles = get_latest_gaming_news(GAMESPOT_API_KEY, num_articles=num_articles)
+        articles = get_all_articles_from_year(GAMESPOT_API_KEY, year=year, num_articles=num_articles)
 
         for article in articles:
             (
@@ -682,7 +684,8 @@ def create_news_data(num_articles=10):
             title,
             summary,
             url,
-            image
+            image,
+            publish_date
             ) = parse_news_data(article)
 
             news_values = (
@@ -690,7 +693,8 @@ def create_news_data(num_articles=10):
                 title,
                 summary,
                 url,
-                image
+                image,
+                publish_date,
             )
             cursor.execute(insert_news_sql, news_values)
             db_connection.commit()
