@@ -7,6 +7,7 @@
     <div class="franchise-image">
       {% if franchise.image %}
       <img src="{{ franchise.image }}" alt="Franchise Image">
+      <div class="franchise-title">{{ franchise.title }}</div>
       {% else %}
       <p>{% trans "Franchise image not available." %}</p>
       {% endif %}

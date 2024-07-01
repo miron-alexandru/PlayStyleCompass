@@ -7,6 +7,7 @@
     <div class="game-image">
       {% if game.image %}
       <img src="{{ game.image }}" alt="Game Image">
+      <div class="game-title">{{ game.title }}</div>
       {% else %}
       <p>{% trans "Game image not available." %}</p>
       {% endif %}

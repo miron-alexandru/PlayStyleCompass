@@ -46,6 +46,9 @@ Websites for .env configuration: [GiantBomb](https://www.giantbomb.com/) / [Send
 <summary><h2>PlayStyle Compass Changelog</h2></summary>
 
 ### Version v1.9:
+* All articles button added.
+* Added hover effects and title display for games/franchises displayed on the Index page.
+* Latest news page with all the news.
 * Implemented Latest News Articles (related to gaming) on the Index page: Articles from [GameSpot](https://www.gamespot.com/) are retrieved using the GameSpot API and displayed on the Index page.
 * Improved how system requirements are displayed.
 * Refactored views and helper functions.

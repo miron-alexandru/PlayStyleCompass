@@ -116,3 +116,47 @@
 .article:nth-child(2) .article-summary {
     font-size: 1em;
 }
+
+
+.all-articles-link {
+    text-align: center!important;
+    margin-left: 17px;
+}
+
+.all-articles-btn {
+    color: #007bff;
+    text-decoration: none;
+    position: relative;
+    font-weight: bold;
+    display: inline-block; 
+    font-size: 16px;
+}
+
+.all-articles-btn::before,
+.all-articles-btn::after {
+    content: '»'; 
+    position: absolute;
+    top: 0;
+    color: #007bff;
+}
+
+.all-articles-btn::after {
+    content: '«';
+    position: absolute;
+    top: 0;
+    color: #007bff;
+}
+
+.all-articles-btn::before {
+    left: -15px;
+}
+
+.all-articles-btn::after {
+    right: -15px;
+}
+
+.all-articles-btn:hover::before,
+.all-articles-btn:hover::after {
+    color: inherit;
+}
+

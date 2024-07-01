@@ -81,7 +81,6 @@ def index(request):
         "God of War",
         "The Witcher",
         "The Sims",
-        "Final Fantasy",
         "FIFA",
     ]
 

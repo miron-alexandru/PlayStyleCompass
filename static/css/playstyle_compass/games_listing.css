@@ -2,13 +2,27 @@
   display: inline-block;
   vertical-align: top;
   padding: 5px;
+  position: relative;
+  overflow: hidden;
+}
+
+.game-image, .franchise-image {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid #ddd;
+  border-radius: 5px;
 }
 
 .game-image img, .franchise-image img {
+  display: block;
   max-width: 100%;
-  max-height: 190px;
-  border: 1px solid #ddd;
+  max-height: 200px;
   border-radius: 5px;
+  transition: transform 0.3s ease;
+}
+
+.game-image:hover img, .franchise-image:hover img {
+  transform: scale(1.05);
 }
 
 .games, .franchises {
@@ -32,4 +46,29 @@
   color: #555;
   font-size: 16px;
   padding-bottom: 15px;
+}
+
+.game-title, .franchise-title {
+  display: none;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  color: white;
+  text-align: center;
+  padding: 5px 0;
+  font-size: 12px;
+  word-wrap: break-word;
+  white-space: normal;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.games-li .game-image:hover .game-title {
+  display: block;
+}
+
+.franchises-li .franchise-image:hover .franchise-title {
+  display: block;
 }
