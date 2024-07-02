@@ -281,6 +281,8 @@ franchises_ids_to_add = [
     "3025-51",
 ]
 
+article_platform_ids = [19, 120, 121, 128, 129, 124, 85, 106, 112, 84]
+
 GAMING_COMMITMENT_CHOICES = [
     ("Newbie", "Newbie"),
     ("Casual", "Casual"),

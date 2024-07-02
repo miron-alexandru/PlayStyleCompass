@@ -18,6 +18,39 @@
 {% endblock description %}
 
 {% block content %}
+<form id="filterForm" method="GET">
+
+<div class="filter-sort-container">
+    <div class="filter-container">
+        <label for="filter_by">{% trans "Filter by:" %}</label>
+        <div>
+            <select name="platforms" id="filter_by">
+                <option value="">{% trans "Select Platform" %}</option>
+                {% for platform in platforms %}
+                <option value="{{ platform }}" {% if platform in selected_platform %}selected{% endif %}>{{ platform }}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+
+    <div class="sorting">
+        <label for="sort_by">{% trans "Sort by:" %}</label>
+        <select name="sort_by" id="sort_by">
+            <option value="">{% trans "Default" %}</option>
+            <option value="publish_date_asc" {% if request.GET.sort_by == "publish_date_asc" %}selected{% endif %}>{% trans "Publish Date (Asc)" %}</option>
+            <option value="publish_date_desc" {% if request.GET.sort_by == "publish_date_desc" %}selected{% endif %}>{% trans "Publish Date (Desc)" %}</option>
+            <option value="title_asc" {% if request.GET.sort_by == "title_asc" %}selected{% endif %}>{% trans "Title (Asc)" %}</option>
+            <option value="title_desc" {% if request.GET.sort_by == "title_desc" %}selected{% endif %}>{% trans "Title (Desc)" %}</option>
+        </select>
+    </div>
+</div>
+
+<div class="filter-buttons">
+        <button type="submit" class="apply-button">{% trans "Apply Filters" %}</button>
+        <button type="button" class="reset-button" id="resetButton">{% trans "Reset Filters" %}</button>
+    </div>
+</form>
 
 <div class="articles">
     {% for article in articles %}
@@ -36,8 +69,8 @@
 <div class="pagination">
   <span class="step-links">
     {% if articles.has_previous %}
-    <a href="?page=1">&laquo; {% trans "First" %}</a>
-    <a href="?page={{ articles.previous_page_number }}">{% trans "Previous" %}</a>
+      <a href="?page=1{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}">&laquo; {% trans "First" %}</a>
+      <a href="?page={{ articles.previous_page_number }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}">{% trans "Previous" %}</a>
     {% endif %}
 
     <span class="current-page">
@@ -45,11 +78,13 @@
     </span>
 
     {% if articles.has_next %}
-    <a href="?page={{ articles.next_page_number }}">{% trans "Next" %}</a>
-    <a href="?page={{ articles.paginator.num_pages }}">{% trans "Last" %} &raquo;</a>
+      <a href="?page={{ articles.next_page_number }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}">{% trans "Next" %}</a>
+      <a href="?page={{ articles.paginator.num_pages }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}">{% trans "Last" %} &raquo;</a>
     {% endif %}
   </span>
 </div>
+
+<script src="{% static 'js/playstyle_compass/latest_news.js' %}" defer></script>
 
 {% endblock content %}
 

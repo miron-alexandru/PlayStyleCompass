@@ -319,3 +319,30 @@ def get_user_context(request):
     user_friends = get_friend_list(user) if user else []
 
     return user, user_preferences, user_friends
+
+
+def get_associated_platforms(articles):
+    """Get unique platforms from articles for filtering."""
+    platforms = set()
+
+    for article in articles:
+        if article.platforms:
+            cleaned_platforms = [platform.strip() for platform in article.platforms.split(",")]
+            platforms.update(cleaned_platforms)
+
+    return platforms
+
+
+def sort_articles(articles, sort_by):
+    """Sort articles based on the sorting option."""
+    if sort_by == "publish_date_asc":
+        return articles.order_by("publish_date")
+    elif sort_by == "publish_date_desc":
+        return articles.order_by("-publish_date")
+    elif sort_by == "title_asc":
+        return articles.order_by("title")
+    elif sort_by == "title_desc":
+        return articles.order_by("-title")
+    else:
+        return articles
+

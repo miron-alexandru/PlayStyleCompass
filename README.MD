@@ -46,6 +46,7 @@ Websites for .env configuration: [GiantBomb](https://www.giantbomb.com/) / [Send
 <summary><h2>PlayStyle Compass Changelog</h2></summary>
 
 ### Version v1.9:
+* Implemented sorting and filtering on the News page.
 * All articles button added.
 * Added hover effects and title display for games/franchises displayed on the Index page.
 * Latest news page with all the news.

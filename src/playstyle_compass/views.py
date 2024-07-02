@@ -41,6 +41,8 @@ from .helper_functions.views_helpers import (
     get_selected_filters,
     sort_game_library,
     get_user_context,
+    get_associated_platforms,
+    sort_articles,
 )
 
 
@@ -1127,12 +1129,27 @@ def game_library(request):
 
 def latest_news(request):
     """View used to display all the gaming news."""
-    articles = News.objects.all().order_by('-publish_date')
+    articles = News.objects.all()
+
+    platforms = get_associated_platforms(articles)
+    selected_platform = request.GET.get("platforms")
+
+    if selected_platform:
+        articles = articles.filter(platforms__icontains=selected_platform)
+
+    sort_by = request.GET.get("sort_by", "publish_date_desc")
+
+    if sort_by:
+        articles = sort_articles(articles, sort_by)
+
     articles = paginate_objects(request, articles, objects_per_page=21)
 
     context = {
-    "page_title": "News :: PlayStyle Compass",
+    "page_title": _("News :: PlayStyle Compass"),
     "articles": articles,
+    "platforms": sorted(platforms),
+    "selected_platform": selected_platform,
+    "query_string": request.GET.urlencode(),
     }
 
     return render(request, "base/latest_news.html", context)

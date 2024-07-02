@@ -4,7 +4,7 @@ import uuid
 import sys
 import sqlite3
 
-from constants import API_KEY, concept_ids, GAMESPOT_API_KEY
+from constants import API_KEY, concept_ids, GAMESPOT_API_KEY, article_platform_ids
 
 from API_functions import (
     fetch_game_data,
@@ -36,6 +36,7 @@ from data_extraction import (
     get_franchise_games_count,
     extract_game_data,
     get_game_concepts,
+    extract_platforms_from_associations,
 )
 
 from sql_queries import (
@@ -659,6 +660,7 @@ def parse_news_data(news_data):
     url = news_data['site_detail_url']
     image = news_data['image']['original']
     publish_date = news_data['publish_date']
+    platforms = extract_platforms_from_associations(news_data['associations'], article_platform_ids)
 
     return (
         article_id,
@@ -666,7 +668,8 @@ def parse_news_data(news_data):
         summary,
         url,
         image,
-        publish_date
+        publish_date,
+        platforms,
     )
 
 def create_news_data(num_articles, year):
@@ -685,7 +688,8 @@ def create_news_data(num_articles, year):
             summary,
             url,
             image,
-            publish_date
+            publish_date,
+            platforms,
             ) = parse_news_data(article)
 
             news_values = (
@@ -695,6 +699,7 @@ def create_news_data(num_articles, year):
                 url,
                 image,
                 publish_date,
+                platforms,
             )
             cursor.execute(insert_news_sql, news_values)
             db_connection.commit()

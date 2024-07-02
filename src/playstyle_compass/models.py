@@ -310,12 +310,13 @@ class News(models.Model):
     """Represents a News object."""
 
     id = models.BigAutoField(primary_key=True)
-    article_id = models.CharField(max_length=50)
-    title = models.TextField()
+    article_id = models.CharField(max_length=50, unique=True)
+    title = models.CharField(max_length=255) 
     summary = models.TextField()
-    url = models.TextField()
-    image = models.TextField()
-    publish_date = models.TextField()
+    url = models.URLField()
+    image = models.URLField()
+    publish_date = models.CharField(max_length=50)
+    platforms = models.CharField(max_length=255)
 
     class Meta:
         db_table = "News"

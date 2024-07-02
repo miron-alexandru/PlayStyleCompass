@@ -94,7 +94,8 @@ CREATE TABLE IF NOT EXISTS News (
     summary TEXT,
     url TEXT,
     image TEXT,
-    publish_date TEXT
+    publish_date TEXT,
+    platforms TEXT
 );
 """
 
@@ -129,8 +130,8 @@ VALUES (?, ?, ?);
 
 insert_news_sql = """
 INSERT INTO News
-(article_id, title, summary, url, image, publish_date)
-VALUES (?, ?, ?, ?, ?, ?);
+(article_id, title, summary, url, image, publish_date, platforms)
+VALUES (?, ?, ?, ?, ?, ?, ?);
 """
 
 remove_duplicates_sql = """
