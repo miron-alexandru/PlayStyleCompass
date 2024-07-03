@@ -281,7 +281,18 @@ franchises_ids_to_add = [
     "3025-51",
 ]
 
-article_platform_ids = [19, 120, 121, 128, 129, 124, 85, 106, 112, 84]
+article_platform_names = [
+    'PC',
+    'PlayStation 4',
+    'PlayStation 5',
+    'Xbox One',
+    'Xbox Series X',
+    'Nintendo Switch',
+    'Mobile',
+    'Android',
+    'iOS (iPhone/iPad)',
+    'Nintendo 64',
+]
 
 GAMING_COMMITMENT_CHOICES = [
     ("Newbie", "Newbie"),

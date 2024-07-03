@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% load i18n %}
 {% load static %}
+{% load custom_filters %}
 
 {% block page_header %}
 <div class="header">
@@ -102,8 +103,8 @@
 <div class="pagination">
     <span class="step-links">
         {% if games.has_previous %}
-            <a href="?page=1&sort_by={{ request.GET.sort_by }}&{{ query_string }}">&laquo; {% trans "First" %}</a>
-            <a href="?page={{ games.previous_page_number }}&sort_by={{ request.GET.sort_by }}&{{ query_string }}">{% trans "Previous" %}</a>
+            <a href="?{% querystring_replace request page=1 %}">&laquo; {% trans "First" %}</a>
+            <a href="?{% querystring_replace request page=games.previous_page_number %}">{% trans "Previous" %}</a>
         {% endif %}
 
         <span class="current-page">
@@ -111,11 +112,12 @@
         </span>
 
         {% if games.has_next %}
-            <a href="?page={{ games.next_page_number }}&sort_by={{ request.GET.sort_by }}&{{ query_string }}">{% trans "Next" %}</a>
-            <a href="?page={{ games.paginator.num_pages }}&sort_by={{ request.GET.sort_by }}&{{ query_string }}">{% trans "Last" %} &raquo;</a>
+            <a href="?{% querystring_replace request page=games.next_page_number %}">{% trans "Next" %}</a>
+            <a href="?{% querystring_replace request page=games.paginator.num_pages %}">{% trans "Last" %} &raquo;</a>
         {% endif %}
     </span>
 </div>
+
 {% endwith %}
 {% endif %}
 
@@ -124,5 +126,6 @@
 <script src="{% static 'js/playstyle_compass/reviews_section.js' %}" defer></script>
 <script src="{% static 'js/playstyle_compass/star_rating.js' %}" defer></script>
 <script src="{% static 'js/playstyle_compass/game_library.js' %}" defer></script>
+
 
 {% endblock content %}

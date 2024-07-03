@@ -1,4 +1,20 @@
 document.addEventListener('DOMContentLoaded', function () {
+    const filterForm = document.getElementById("filterForm");
+
+    function removeEmptyFields() {
+        const elements = filterForm.elements;
+
+        for (let i = elements.length - 1; i >= 0; i--) {
+            if (elements[i].name && elements[i].value === "") {
+                elements[i].parentNode.removeChild(elements[i]);
+            }
+        }
+    }
+
+    filterForm.addEventListener("submit", function(event) {
+        removeEmptyFields();
+    });
+
     document.getElementById('resetButton').addEventListener('click', function () {
         const selects = document.querySelectorAll('.filter-container select');
 
@@ -6,11 +22,13 @@ document.addEventListener('DOMContentLoaded', function () {
             select.value = '';
         });
 
-        document.querySelector('form').submit();
+        removeEmptyFields();
+        filterForm.submit();
     });
 
     function handleSubmitForm() {
-    document.getElementById('filterForm').submit();
+        removeEmptyFields();
+        filterForm.submit();
     };
 
     document.getElementById('filter_by').addEventListener('change', handleSubmitForm);

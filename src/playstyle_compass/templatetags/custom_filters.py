@@ -12,6 +12,7 @@ from pytz import timezone
 from django.utils import timezone as django_timezone
 from django.utils.safestring import mark_safe
 from ..models import Game, Franchise, Character
+from django.http import QueryDict
 
 
 register = template.Library()
@@ -226,3 +227,14 @@ def object_link(name, object_type):
             return name
     else:
         return name
+
+@register.simple_tag
+def querystring_replace(request, **kwargs):
+    query_string = request.GET.urlencode()
+    query_dict = QueryDict(query_string, mutable=True)
+    for key, value in kwargs.items():
+        if value is None:
+            query_dict.pop(key, None)
+        else:
+            query_dict[key] = value
+    return query_dict.urlencode()

@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% load i18n %}
 {% load static %}
+{% load custom_filters %}
 
 {% block page_header %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/playstyle_compass/news_page.css' %}">
@@ -69,8 +70,8 @@
 <div class="pagination">
   <span class="step-links">
     {% if articles.has_previous %}
-      <a href="?page=1{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}">&laquo; {% trans "First" %}</a>
-      <a href="?page={{ articles.previous_page_number }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}">{% trans "Previous" %}</a>
+      <a href="?{% querystring_replace request page=1 %}">&laquo; {% trans "First" %}</a>
+      <a href="?{% querystring_replace request page=articles.previous_page_number %}">{% trans "Previous" %}</a>
     {% endif %}
 
     <span class="current-page">
@@ -78,8 +79,8 @@
     </span>
 
     {% if articles.has_next %}
-      <a href="?page={{ articles.next_page_number }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}">{% trans "Next" %}</a>
-      <a href="?page={{ articles.paginator.num_pages }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}">{% trans "Last" %} &raquo;</a>
+      <a href="?{% querystring_replace request page=articles.next_page_number %}">{% trans "Next" %}</a>
+      <a href="?{% querystring_replace request page=articles.paginator.num_pages %}">{% trans "Last" %} &raquo;</a>
     {% endif %}
   </span>
 </div>
