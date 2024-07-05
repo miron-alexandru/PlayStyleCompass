@@ -67,10 +67,10 @@
     <span class="step-links">
       {% if paginated_page.has_previous %}
       <a
-        href="?category={{ category }}&{{ category|slugify }}_page=1{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}">&laquo;
+        href="?category={{ category }}{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}&page=1">&laquo;
         {% trans "First" %}</a>
       <a
-        href="?category={{ category }}&{{ category|slugify }}_page={{ paginated_page.previous_page_number }}{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}">{% trans "Previous" %}</a>
+        href="?category={{ category }}{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}&page={{ paginated_page.previous_page_number }}">{% trans "Previous" %}</a>
       {% endif %}
 
       <span class="current-page">
@@ -79,13 +79,14 @@
 
       {% if paginated_page.has_next %}
       <a
-        href="?category={{ category }}&{{ category|slugify }}_page={{ paginated_page.next_page_number }}{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}">{% trans "Next" %}</a>
+        href="?category={{ category }}{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}&page={{ paginated_page.next_page_number }}">{% trans "Next" %}</a>
       <a
-        href="?category={{ category }}&{{ category|slugify }}_page={{ paginated_page.paginator.num_pages }}{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}">{% trans "Last" %}
+        href="?category={{ category }}{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}&page={{ paginated_page.paginator.num_pages }}">{% trans "Last" %}
         &raquo;</a>
       {% endif %}
     </span>
   </div>
+
   {% else %}
     <h4>{% trans "No recommendations based on" %} {% blocktrans with category|format_category_label|template_trans as category_name %} {{ category_name }}: {% endblocktrans %} {{ user_preferences|getattr:category }}</h4>
   {% endif %}

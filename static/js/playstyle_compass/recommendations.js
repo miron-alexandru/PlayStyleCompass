@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const getCategoryAndPageFromURL = () => {
     const searchParams = new URLSearchParams(window.location.search);
     const category = searchParams.get("category") || "gaming_history";
-    const page = searchParams.get(`${category}_page`) || 1;
+    const page = searchParams.get("page") || 1;
     const sort = searchParams.get("sort") || "recommended";
     return {
       category,
@@ -38,7 +38,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const selectedCategory = getCategoryAndPageFromURL().category;
     const selectedSortOption = sortSelect.value;
 
-    const newUrl = `?category=${selectedCategory}&${selectedCategory}_page=${page}&sort=${selectedSortOption}`;
+    const newUrl = `?category=${selectedCategory}&sort=${selectedSortOption}&page=${page}`;
     window.location.href = newUrl;
   });
 
@@ -46,7 +46,7 @@ document.addEventListener("DOMContentLoaded", () => {
   buttons.forEach((button) => {
     button.addEventListener("click", () => {
       const selectedCategory = button.dataset.category;
-      const newUrl = `?category=${selectedCategory}&${selectedCategory}_page=1&sort=${sort}`;
+      const newUrl = `?category=${selectedCategory}&sort=${sort}&page=1`;
 
       window.location.href = newUrl;
 

@@ -17,6 +17,7 @@ from API_functions import (
     get_steam_game_requirements,
     get_latest_gaming_news,
     get_all_articles_from_year,
+    get_all_articles_from_last_7_days,
 )
 
 from data_extraction import (
@@ -672,14 +673,17 @@ def parse_news_data(news_data):
         platforms,
     )
 
-def create_news_data(num_articles, year):
+def create_news_data(num_articles, year, latest_week=True):
     """Populate the database with gaming related news."""
     with sqlite3.connect("games_data.db") as db_connection:
         cursor = db_connection.cursor()
         cursor.execute(create_news_table)
         db_connection.commit()
 
-        articles = get_all_articles_from_year(GAMESPOT_API_KEY, year=year, num_articles=num_articles)
+        if latest_week:
+            articles = get_all_articles_from_last_7_days(GAMESPOT_API_KEY, num_articles=num_articles)
+        else:
+            articles = get_all_articles_from_year(GAMESPOT_API_KEY, year=year, num_articles=num_articles)
 
         for article in articles:
             (

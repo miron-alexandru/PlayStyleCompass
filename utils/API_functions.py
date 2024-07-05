@@ -2,7 +2,7 @@
 
 import datetime
 import difflib
-from datetime import datetime
+from datetime import datetime, timedelta
 import requests
 from youtubesearchpython import VideosSearch
 
@@ -195,17 +195,14 @@ def get_steam_game_requirements(app_id):
         return None, None, None
 
 
-def get_latest_gaming_news(api_key, num_articles, offset, year):
-    """Use the GameSpot API to retrieve articles related to gaming from a specific year."""
+def get_latest_gaming_news(api_key, num_articles, offset, start_date, end_date):
+    """Use the GameSpot API to retrieve articles related to gaming between specific dates."""
     url = "http://www.gamespot.com/api/articles/"
     headers = {
         'User-Agent': 'Khada-Ake',
         'Accept': 'application/json'
     }
-    
-    start_date = f"{year}-01-01"
-    end_date = f"{year}-12-31"
-    
+
     params = {
         'api_key': api_key,
         'format': 'json',
@@ -214,9 +211,9 @@ def get_latest_gaming_news(api_key, num_articles, offset, year):
         'filter': f'categories:18,publish_date:{start_date}|{end_date}',
         'offset': offset,
     }
-    
+
     response = requests.get(url, headers=headers, params=params)
-    
+
     if response.status_code == 200:
         articles = response.json()
         return articles['results']
@@ -228,14 +225,33 @@ def get_all_articles_from_year(api_key, year, num_articles=100):
     """Retrieve all articles related to gaming from a specific year using the GameSpot API."""
     all_articles = []
     offset = 0
-    
+    start_date = f"{year}-01-01"
+    end_date = f"{year}-12-31"
+
     while True:
-        articles = get_latest_gaming_news(api_key, num_articles, offset, year)
+        articles = get_latest_gaming_news(api_key, num_articles, offset, start_date, end_date)
         if not articles:
             break
         all_articles.extend(articles)
         offset += num_articles
-    
+
+    return all_articles
+
+
+def get_all_articles_from_last_7_days(api_key, num_articles=100):
+    """Retrieve all articles related to gaming from the last 7 days using the GameSpot API."""
+    all_articles = []
+    offset = 0
+    end_date = datetime.now().strftime("%Y-%m-%d")
+    start_date = (datetime.now() - timedelta(days=7)).strftime("%Y-%m-%d")
+
+    while True:
+        articles = get_latest_gaming_news(api_key, num_articles, offset, start_date, end_date)
+        if not articles:
+            break
+        all_articles.extend(articles)
+        offset += num_articles
+
     return all_articles
 
 
