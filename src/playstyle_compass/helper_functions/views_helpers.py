@@ -327,7 +327,9 @@ def get_associated_platforms(articles):
 
     for article in articles:
         if article.platforms:
-            cleaned_platforms = [platform.strip() for platform in article.platforms.split(",")]
+            cleaned_platforms = [
+                platform.strip() for platform in article.platforms.split(",")
+            ]
             platforms.update(cleaned_platforms)
 
     return platforms
@@ -345,4 +347,3 @@ def sort_articles(articles, sort_by):
         return articles.order_by("-title")
     else:
         return articles
-

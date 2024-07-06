@@ -1,0 +1,131 @@
+.chat-container {
+    width: 80%;
+    max-width: 800px;
+    margin: auto;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Chat messages area */
+.chat-messages {
+    background: #ffffff;
+    border-radius: 12px 12px 0 0;
+    padding: 20px;
+    margin-bottom: 0;
+    box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.05);
+    font-size: 16px;
+    height: 60vh;
+    overflow-y: scroll;
+    scrollbar-width: thin;
+    scrollbar-color: #ced6e0 #f4f7f9;
+    transition: background-color 0.3s;
+}
+
+.chat-messages::-webkit-scrollbar {
+    width: 8px;
+}
+
+.chat-messages::-webkit-scrollbar-track {
+    background: #f4f7f9;
+}
+
+.chat-messages::-webkit-scrollbar-thumb {
+    background-color: #ced6e0;
+    border-radius: 20px;
+}
+
+form {
+    background: #f9fbfd;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    border-top: 1px solid #e8ebef;
+}
+
+textarea, input, button {
+    margin-bottom: 15px;
+    padding: 15px;
+    border: 1px solid #ced6e0;
+    border-radius: 6px;
+    font-size: 16px;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+textarea {
+    background: #f8f9fa;
+    border: 1px solid #ced4da;
+    box-sizing: border-box;
+    width: 100%;
+    padding: 12px 20px;
+    border-radius: 6px;
+    min-height: 100px;
+    font-size: 16px;
+    line-height: 1.5;
+    resize: none;
+    outline: none;
+}
+
+.button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+    font-weight: bold;
+    padding: 15px;
+    border-radius: 8px;
+}
+
+.button:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+}
+
+.button:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+}
+
+.message-box {
+    background: rgba(0, 123, 255, 0.1);
+    border-left: 4px solid #007bff;
+    margin-bottom: 15px;
+    padding: 10px 15px;
+    border-radius: 6px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.message-box:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.message-author {
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #007bff;
+}
+
+.message-content {
+    font-size: 16px;
+    line-height: 1.4;
+}
+
+[x-cloak] {
+    display: none !important;
+}
+
+.error-message {
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 10px;
+    border: 1px solid #f5c6cb;
+    border-radius: 4px;
+    margin-top: 15px;
+    text-align: center;
+}

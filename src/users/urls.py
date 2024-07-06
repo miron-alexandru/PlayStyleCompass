@@ -106,4 +106,11 @@ urlpatterns = [
         "quiz_recommendations/", views.quiz_recommendations, name="quiz_recommendations"
     ),
     path("profile-details/", views.profile_details, name="profile_details"),
+    path("chat/<int:recipient_id>/", views.chat, name="chat"),
+    path("create-message/", views.create_message, name="create_message"),
+    path(
+        "stream-chat-messages/<int:recipient_id>/",
+        views.stream_chat_messages,
+        name="stream_chat_messages",
+    ),
 ]

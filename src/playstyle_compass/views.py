@@ -89,7 +89,7 @@ def index(request):
     upcoming_games = Game.objects.filter(title__in=upcoming_titles)
     popular_games = Game.objects.filter(title__in=popular_titles)
     popular_franchises = Franchise.objects.filter(title__in=popular_franchise_titles)
-    articles = News.objects.order_by('-publish_date')[:6]
+    articles = News.objects.order_by("-publish_date")[:6]
 
     context = {
         "page_title": _("Home :: PlayStyle Compass"),
@@ -637,6 +637,7 @@ def get_game_reviews(request, game_id):
 
     return JsonResponse({"reviews": reviews_data})
 
+
 @login_required
 def like_review(request):
     """View used to like / unlike reviews."""
@@ -669,6 +670,7 @@ def like_review(request):
     return JsonResponse(
         {"message": _("You must be logged in to like or dislike a review.")}
     )
+
 
 @login_required
 def dislike_review(request):
@@ -1145,11 +1147,11 @@ def latest_news(request):
     articles = paginate_objects(request, articles, objects_per_page=21)
 
     context = {
-    "page_title": _("News :: PlayStyle Compass"),
-    "articles": articles,
-    "platforms": sorted(platforms),
-    "selected_platform": selected_platform,
-    "query_string": request.GET.urlencode(),
+        "page_title": _("News :: PlayStyle Compass"),
+        "articles": articles,
+        "platforms": sorted(platforms),
+        "selected_platform": selected_platform,
+        "query_string": request.GET.urlencode(),
     }
 
     return render(request, "base/latest_news.html", context)

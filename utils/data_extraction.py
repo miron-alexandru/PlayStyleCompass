@@ -252,9 +252,12 @@ def get_requirements(requirements_data):
     else:
         return None, None
 
+
 def extract_platforms_from_associations(associations, platform_names):
     """Extract platform names from associations, checking exact matches."""
     if associations:
-        platforms = [assoc['name'] for assoc in associations if assoc['name'] in platform_names]
-        return ', '.join(platforms)
+        platforms = [
+            assoc["name"] for assoc in associations if assoc["name"] in platform_names
+        ]
+        return ", ".join(platforms)
     return None

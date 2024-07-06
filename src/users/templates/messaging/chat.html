@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/users/chat.css' %}">
+
+<div class="chat-container">
+    <div class="chat-messages">
+        <div id="sse-data" data-stream-url="{% url 'users:stream_chat_messages' recipient_id=recipient.id %}"></div>
+    </div>
+
+    <form id="myForm"x-cloak @submit.prevent="submit" x-data="{ state: 'composing', errors: {} }"
+        data-url="{% url 'users:create_message' %}">
+        <div>
+            <textarea name="content" @input="state = 'composing'"
+                autofocus placeholder="Enter your message..."></textarea>
+            <button type="submit" class="button">
+                Send
+            </button>
+        </div>
+
+        <div x-show="state === 'error'" class="error-message">
+            <p>
+                Message not sent!
+            </p>
+        </div>
+    </form>
+</div>
+
+<script defer="" src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.1/dist/cdn.min.js"></script>
+<script src="{% static 'js/users/chat.js' %}" defer></script>
+
+{% endblock content %}

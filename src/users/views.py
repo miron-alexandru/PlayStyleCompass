@@ -1,9 +1,13 @@
 """Defines views."""
 
-from datetime import timedelta
+from datetime import datetime, timedelta
+import asyncio
+from asgiref.sync import sync_to_async
 import json
+import random
 import ast
 
+from typing import AsyncGenerator
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import (
     login,
@@ -35,7 +39,13 @@ from django.utils.encoding import (
     force_str,
 )
 from django.utils.safestring import mark_safe
-from django.http import JsonResponse, HttpResponse, Http404
+from django.http import (
+    JsonResponse,
+    HttpResponse,
+    Http404,
+    HttpRequest,
+    StreamingHttpResponse,
+)
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.edit import UpdateView
@@ -76,6 +86,7 @@ from .models import (
     Message,
     Notification,
     QuizUserResponse,
+    ChatMessage,
 )
 from .tokens import account_activation_token
 
@@ -1219,3 +1230,78 @@ def profile_details(request):
     }
 
     return render(request, "user_related/profile_details.html", context)
+
+
+@login_required
+def chat(request, recipient_id: int):
+    """View used to open the chat with a certain user."""
+    recipient = get_object_or_404(User, id=recipient_id)
+    request.session["username"] = request.user.username
+    request.session["recipient_username"] = recipient.username
+    return render(request, "messaging/chat.html", {"recipient": recipient})
+
+
+@login_required
+def create_message(request):
+    """View used to create / send a chat message to an user."""
+    content = request.POST.get("content")
+    username = request.session.get("username")
+    recipient_username = request.session.get("recipient_username")
+
+    if not username or not recipient_username:
+        return JsonResponse({"error": "Forbidden"}, status=403)
+
+    sender = get_object_or_404(User, username=username)
+    recipient = get_object_or_404(User, username=recipient_username)
+
+    if content:
+        ChatMessage.objects.create(sender=sender, recipient=recipient, content=content)
+        return JsonResponse({"status": "Message created"}, status=201)
+    else:
+        return JsonResponse({"status": "No content"}, status=200)
+
+
+async def stream_chat_messages(request, recipient_id: int) -> StreamingHttpResponse:
+    """View used to stream chat messages between the authenticated user and a specified recipient."""
+    recipient = await sync_to_async(get_object_or_404)(User, id=recipient_id)
+
+    async def event_stream():
+        async for message in get_existing_messages(request.user, recipient):
+            yield message
+
+        last_id = await get_last_message_id(request.user, recipient)
+        while True:
+            new_messages = (
+                ChatMessage.objects.filter(
+                    sender__in=[request.user, recipient],
+                    recipient__in=[request.user, recipient],
+                    id__gt=last_id,
+                )
+                .order_by("created_at")
+                .values("id", "sender__userprofile__profile_name", "content")
+            )
+
+            async for message in new_messages:
+                yield f"data: {json.dumps(message)}\n\n"
+                last_id = message["id"]
+            await asyncio.sleep(0.1)
+
+    async def get_existing_messages(user, recipient) -> AsyncGenerator:
+        messages = (
+            ChatMessage.objects.filter(
+                sender__in=[user, recipient], recipient__in=[user, recipient]
+            )
+            .order_by("created_at")
+            .values("id", "sender__userprofile__profile_name", "content")
+        )
+
+        async for message in messages:
+            yield f"data: {json.dumps(message)}\n\n"
+
+    async def get_last_message_id(user, recipient) -> int:
+        last_message = await ChatMessage.objects.filter(
+            sender__in=[user, recipient], recipient__in=[user, recipient]
+        ).alast()
+        return last_message.id if last_message else 0
+
+    return StreamingHttpResponse(event_stream(), content_type="text/event-stream")

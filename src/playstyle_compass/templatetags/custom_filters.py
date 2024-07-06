@@ -228,6 +228,7 @@ def object_link(name, object_type):
     else:
         return name
 
+
 @register.simple_tag
 def querystring_replace(request, **kwargs):
     query_string = request.GET.urlencode()

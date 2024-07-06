@@ -10,6 +10,7 @@ from .models import (
     Message,
     QuizQuestion,
     QuizUserResponse,
+    ChatMessage,
 )
 
 
@@ -25,3 +26,4 @@ admin.site.register(FriendList)
 admin.site.register(FriendRequest)
 admin.site.register(Message)
 admin.site.register(Notification)
+admin.site.register(ChatMessage)

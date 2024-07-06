@@ -60,7 +60,6 @@ from sql_queries import (
     create_news_table,
     insert_news_sql,
     remove_duplicate_news,
-
 )
 
 
@@ -653,15 +652,18 @@ def create_quiz_data(guids, num_games=1, offset=0):
 
         db_connection.commit()
 
+
 def parse_news_data(news_data):
     """Parse news data."""
-    article_id = news_data['id']
-    title = news_data['title']
-    summary = news_data['deck']
-    url = news_data['site_detail_url']
-    image = news_data['image']['original']
-    publish_date = news_data['publish_date']
-    platforms = extract_platforms_from_associations(news_data['associations'], article_platform_names)
+    article_id = news_data["id"]
+    title = news_data["title"]
+    summary = news_data["deck"]
+    url = news_data["site_detail_url"]
+    image = news_data["image"]["original"]
+    publish_date = news_data["publish_date"]
+    platforms = extract_platforms_from_associations(
+        news_data["associations"], article_platform_names
+    )
 
     return (
         article_id,
@@ -673,6 +675,7 @@ def parse_news_data(news_data):
         platforms,
     )
 
+
 def create_news_data(num_articles, year, latest_week=True):
     """Populate the database with gaming related news."""
     with sqlite3.connect("games_data.db") as db_connection:
@@ -681,19 +684,23 @@ def create_news_data(num_articles, year, latest_week=True):
         db_connection.commit()
 
         if latest_week:
-            articles = get_all_articles_from_last_7_days(GAMESPOT_API_KEY, num_articles=num_articles)
+            articles = get_all_articles_from_last_7_days(
+                GAMESPOT_API_KEY, num_articles=num_articles
+            )
         else:
-            articles = get_all_articles_from_year(GAMESPOT_API_KEY, year=year, num_articles=num_articles)
+            articles = get_all_articles_from_year(
+                GAMESPOT_API_KEY, year=year, num_articles=num_articles
+            )
 
         for article in articles:
             (
-            article_id,
-            title,
-            summary,
-            url,
-            image,
-            publish_date,
-            platforms,
+                article_id,
+                title,
+                summary,
+                url,
+                image,
+                publish_date,
+                platforms,
             ) = parse_news_data(article)
 
             news_values = (
@@ -710,5 +717,3 @@ def create_news_data(num_articles, year, latest_week=True):
 
         cursor.execute(remove_duplicate_news)
         db_connection.commit()
-
-

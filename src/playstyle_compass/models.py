@@ -311,7 +311,7 @@ class News(models.Model):
 
     id = models.BigAutoField(primary_key=True)
     article_id = models.CharField(max_length=50, unique=True)
-    title = models.CharField(max_length=255) 
+    title = models.CharField(max_length=255)
     summary = models.TextField()
     url = models.URLField()
     image = models.URLField()

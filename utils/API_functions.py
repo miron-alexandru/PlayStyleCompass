@@ -198,25 +198,22 @@ def get_steam_game_requirements(app_id):
 def get_latest_gaming_news(api_key, num_articles, offset, start_date, end_date):
     """Use the GameSpot API to retrieve articles related to gaming between specific dates."""
     url = "http://www.gamespot.com/api/articles/"
-    headers = {
-        'User-Agent': 'Khada-Ake',
-        'Accept': 'application/json'
-    }
+    headers = {"User-Agent": "Khada-Ake", "Accept": "application/json"}
 
     params = {
-        'api_key': api_key,
-        'format': 'json',
-        'limit': num_articles,
-        'sort': 'publish_date:desc',
-        'filter': f'categories:18,publish_date:{start_date}|{end_date}',
-        'offset': offset,
+        "api_key": api_key,
+        "format": "json",
+        "limit": num_articles,
+        "sort": "publish_date:desc",
+        "filter": f"categories:18,publish_date:{start_date}|{end_date}",
+        "offset": offset,
     }
 
     response = requests.get(url, headers=headers, params=params)
 
     if response.status_code == 200:
         articles = response.json()
-        return articles['results']
+        return articles["results"]
     else:
         return None
 
@@ -229,7 +226,9 @@ def get_all_articles_from_year(api_key, year, num_articles=100):
     end_date = f"{year}-12-31"
 
     while True:
-        articles = get_latest_gaming_news(api_key, num_articles, offset, start_date, end_date)
+        articles = get_latest_gaming_news(
+            api_key, num_articles, offset, start_date, end_date
+        )
         if not articles:
             break
         all_articles.extend(articles)
@@ -246,7 +245,9 @@ def get_all_articles_from_last_7_days(api_key, num_articles=100):
     start_date = (datetime.now() - timedelta(days=7)).strftime("%Y-%m-%d")
 
     while True:
-        articles = get_latest_gaming_news(api_key, num_articles, offset, start_date, end_date)
+        articles = get_latest_gaming_news(
+            api_key, num_articles, offset, start_date, end_date
+        )
         if not articles:
             break
         all_articles.extend(articles)

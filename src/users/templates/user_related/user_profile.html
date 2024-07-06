@@ -88,6 +88,7 @@
       </div>
       <div class="send-message">
         <a href="{% url 'users:send_message' user_id=user_id %}">{% trans "Send message" %}</a>
+        <a href="{% url 'users:chat' recipient_id=user_id %}">{% trans "Chat" %}</a>
     </div>
       {% endif %}
       {% endif %}

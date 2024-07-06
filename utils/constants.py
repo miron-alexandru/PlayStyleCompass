@@ -282,16 +282,16 @@ franchises_ids_to_add = [
 ]
 
 article_platform_names = [
-    'PC',
-    'PlayStation 4',
-    'PlayStation 5',
-    'Xbox One',
-    'Xbox Series X',
-    'Nintendo Switch',
-    'Mobile',
-    'Android',
-    'iOS (iPhone/iPad)',
-    'Nintendo 64',
+    "PC",
+    "PlayStation 4",
+    "PlayStation 5",
+    "Xbox One",
+    "Xbox Series X",
+    "Nintendo Switch",
+    "Mobile",
+    "Android",
+    "iOS (iPhone/iPad)",
+    "Nintendo 64",
 ]
 
 GAMING_COMMITMENT_CHOICES = [
