@@ -1236,14 +1236,22 @@ def profile_details(request):
 def chat(request, recipient_id: int):
     """View used to open the chat with a certain user."""
     recipient = get_object_or_404(User, id=recipient_id)
+
+    if not are_friends(request.user, recipient):
+        return JsonResponse({"error": "You can only chat with your friends."}, status=403)
+
     request.session["username"] = request.user.username
     request.session["recipient_username"] = recipient.username
+
     return render(request, "messaging/chat.html", {"recipient": recipient})
 
 
 @login_required
 def create_message(request):
-    """View used to create / send a chat message to an user."""
+    """View to create/send a chat message to a user."""
+    if request.method != "POST":
+        return JsonResponse({"error": "Invalid request method"}, status=405)
+
     content = request.POST.get("content")
     username = request.session.get("username")
     recipient_username = request.session.get("recipient_username")
@@ -1254,11 +1262,12 @@ def create_message(request):
     sender = get_object_or_404(User, username=username)
     recipient = get_object_or_404(User, username=recipient_username)
 
-    if content:
-        ChatMessage.objects.create(sender=sender, recipient=recipient, content=content)
-        return JsonResponse({"status": "Message created"}, status=201)
-    else:
-        return JsonResponse({"status": "No content"}, status=200)
+    if not content:
+        return JsonResponse({"status": "No content provided"}, status=400)
+
+    ChatMessage.objects.create(sender=sender, recipient=recipient, content=content)
+
+    return JsonResponse({"status": "Message created"}, status=201)
 
 
 async def stream_chat_messages(request, recipient_id: int) -> StreamingHttpResponse:
