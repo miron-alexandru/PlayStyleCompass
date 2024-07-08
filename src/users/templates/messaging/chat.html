@@ -2,6 +2,16 @@
 {% load static %}
 {% load i18n %}
 
+{% block page_header %}
+<div class="header">
+<h3>{% trans "CONVERSATION WITH" %} <a class="profile-link" href="{% url 'users:view_profile' recipient.userprofile.profile_name %}">{{ recipient.userprofile.profile_name|upper }}</a></h3>
+</div>
+{% endblock page_header %}
+
+{% block description %}
+{% blocktrans %}Engage in meaningful conversations, share thoughts, and enjoy the interaction.{% endblocktrans %}
+{% endblock description %}
+
 {% block content %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/users/chat.css' %}">
 
@@ -10,22 +20,24 @@
         <div id="sse-data" data-stream-url="{% url 'users:stream_chat_messages' recipient_id=recipient.id %}"></div>
     </div>
 
-    <form id="myForm"x-cloak @submit.prevent="submit" x-data="{ state: 'composing', errors: {} }"
+    <form id="myForm" x-cloak @submit.prevent="submit" x-data="{ state: 'composing', errors: {}, content: '' }"
         data-url="{% url 'users:create_message' %}">
         <div>
-            <textarea name="content" @input="state = 'composing'"
+            <textarea name="content" @input="state = 'composing'; content = $event.target.value"
                 autofocus placeholder="Enter your message..."></textarea>
-            <button type="submit" class="button">
-                Send
+            <button type="submit" class="send-button" :disabled="!content.trim()">
+                {% trans "Send Message" %}
             </button>
         </div>
 
         <div x-show="state === 'error'" class="error-message">
-            <p>
-                Message not sent!
-            </p>
+            <p x-text="errors.message"></p>
         </div>
+
     </form>
+    <div style="text-align: center;">
+        <button id="clear-chat-button" class="delete-messages-btn" data-url="{% url 'users:delete_chat_messages' recipient_id=recipient.id %}">{% trans "Delete Messages" %}</button>
+    </div>
 </div>
 
 <script defer="" src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.1/dist/cdn.min.js"></script>

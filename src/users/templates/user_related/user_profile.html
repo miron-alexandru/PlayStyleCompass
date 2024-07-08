@@ -87,8 +87,8 @@
         <button class="remove-friend-button" onclick='triggerRemoveFriend("{{ user_id }}")'>{% trans "Unfriend" %}</button>
       </div>
       <div class="send-message">
-        <a href="{% url 'users:send_message' user_id=user_id %}">{% trans "Send message" %}</a>
-        <a href="{% url 'users:chat' recipient_id=user_id %}">{% trans "Chat" %}</a>
+        <a href="{% url 'users:send_message' user_id=user_id %}">{% trans "Send Message" %}</a>
+        <a class="chat-button" href="{% url 'users:chat' recipient_id=user_id %}">{% trans "Start Chat" %}</a>
     </div>
       {% endif %}
       {% endif %}

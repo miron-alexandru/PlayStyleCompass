@@ -35,17 +35,10 @@
             class="card-title">{{friend.0.userprofile.profile_name }}</a>
         </div>
 
-        <div class="d-flex flex-column friends-text-container p-2">
-          {% if this_user == friend.0 %}
-          <p class="friends-text mb-0">{% trans "You" %}</p>
-          {% else %}
-          <p class="friends-text mb-0">{% trans "Friend" %}</p>
-          {% endif %}
-        </div>
         <div class="send-message">
-        <a href="{% url 'users:send_message' user_id=friend.0.id %}">{% trans "Send message" %}</a>
+        <a href="{% url 'users:send_message' user_id=friend.0.id %}">{% trans "Send Message" %}</a>
+        <a class="chat-button" href="{% url 'users:chat' recipient_id=friend.0.id %}">{% trans "Start Chat" %}</a>
     </div>
-
         <div class="d-flex flex-row card-right flex-grow-1 justify-content-end mx-2">
           <button class="remove-friend-btn" onclick='triggerRemoveFriend("{{ friend.0.id }}")'>{% trans "Unfriend" %}</button>
         </div>

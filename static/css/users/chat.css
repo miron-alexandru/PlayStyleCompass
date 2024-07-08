@@ -10,7 +10,6 @@
     flex-direction: column;
 }
 
-/* Chat messages area */
 .chat-messages {
     background: #ffffff;
     border-radius: 12px 12px 0 0;
@@ -46,7 +45,7 @@ form {
     border-top: 1px solid #e8ebef;
 }
 
-textarea, input, button {
+textarea, input, {
     margin-bottom: 15px;
     padding: 15px;
     border: 1px solid #ced6e0;
@@ -69,26 +68,32 @@ textarea {
     outline: none;
 }
 
-.button {
+.send-button {
     background-color: #007bff;
-    color: white;
+    color: #fff;
+    padding: 6px 12px;
     border: none;
-    cursor: pointer;
-    transition: background-color 0.3s, transform 0.3s;
-    font-weight: bold;
-    padding: 15px;
-    border-radius: 8px;
+    border-radius: 5px;
+    font-size: 12px;
+    display: block;
+    margin: 0 auto;
+    margin-top: 10px;
 }
 
-.button:hover {
+.send-button:not([disabled]):hover {
     background-color: #0056b3;
-    transform: scale(1.05);
 }
 
-.button:focus {
+.send-button:focus {
     outline: none;
     box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
 }
+
+.send-button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
 
 .message-box {
     background: rgba(0, 123, 255, 0.1);
@@ -98,6 +103,7 @@ textarea {
     border-radius: 6px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s, box-shadow 0.3s;
+    border-bottom: 1px solid #ced6e0;
 }
 
 .message-box:hover {
@@ -108,7 +114,7 @@ textarea {
 .message-author {
     font-weight: bold;
     margin-bottom: 5px;
-    color: #007bff;
+    color: #6f42c1;
 }
 
 .message-content {
@@ -129,3 +135,26 @@ textarea {
     margin-top: 15px;
     text-align: center;
 }
+
+.message-box:last-child {
+    border-bottom: none;
+    margin-bottom: 10px;
+}
+
+
+.delete-messages-btn {
+  background-color: #dc3545;
+  color: #fff;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-size: 12px;
+  margin-bottom: 20px;
+}
+
+.delete-messages-btn:hover {
+  background-color: #c82333;
+}
+

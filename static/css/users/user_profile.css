@@ -201,3 +201,7 @@
 .action-items {
   padding: 7px;
 }
+
+.chat-button {
+  margin-left: -11px;
+}

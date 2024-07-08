@@ -76,6 +76,10 @@
   color: #1f78bb;
 }
 
+.chat-button {
+  margin-left: -11px;
+}
+
 @media screen and (max-width: 767px) {
   .card {
     padding: 10px;

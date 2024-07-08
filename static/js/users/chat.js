@@ -10,11 +10,15 @@ document.addEventListener('DOMContentLoaded', function() {
             const messageHTML = `
                     <div class="message-box">
                         <div class="message-author">${data.sender__userprofile__profile_name}</div>
-                        <div class="message-content">${data.content}</div>
+                        <div class="message-content">${wrapUrlsWithAnchorTags(data.content)}</div>
                     </div>`;
             sseData.innerHTML += messageHTML;
             scrollToBottom();
         };
+    }
+
+    function wrapUrlsWithAnchorTags(content) {
+        return content.replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank">$1</a>');
     }
 
     if (typeof(EventSource) !== 'undefined') {
@@ -25,6 +29,7 @@ document.addEventListener('DOMContentLoaded', function() {
         sseData.innerHTML = 'Your browser doesn\'t receive server-sent events.';
     }
 });
+
 
 function scrollToBottom() {
     const chatMessages = document.querySelector('.chat-messages');
@@ -45,19 +50,58 @@ function submit(event) {
             "X-CSRFToken": csrfToken,
         }
     })
-        .then(response => {
-            this.state = response.ok ? 'success' : 'error';
-            return response.json();
+    .then(response => response.json().then(data => ({ status: response.status, body: data })))
+    .then(({ status, body }) => {
+        if (status === 201) {
+            this.state = 'success';
+            textarea.focus();
+            textarea.value = ''; 
+            this.errors = {};
+            this.content = '';
+        } else {
+            this.state = 'error';
+            this.errors = { message: body.error || 'Unknown error' };
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        this.state = 'error';
+        this.errors = { message: 'An error occurred while sending the message.' };
+    });
+};
+
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('myForm');
+    const textarea = form.querySelector('textarea');
+
+    textarea.addEventListener('keydown', function(event) {
+        if (event.keyCode === 13 && !event.shiftKey && textarea.value.trim() !== '') {
+            event.preventDefault();
+            form.dispatchEvent(new Event('submit'));
+        }
+    });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('clear-chat-button').addEventListener('click', function() {
+        const url = this.getAttribute('data-url');
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': csrfToken,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({})
         })
+        .then(response => response.json())
         .then(data => {
-            if (this.state === 'success') {
-                textarea.value = ''; 
-            } else {
-                this.errors = data.errors || {};
+            if (data.status === 'success') {
+                document.querySelector('.chat-messages').innerHTML = '';
+                location.reload();
             }
         })
         .catch(error => {
             console.error('Error:', error);
-            this.state = 'error';
         });
-};
+    });
+});

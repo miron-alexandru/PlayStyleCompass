@@ -1003,7 +1003,7 @@ def send_message(request, user_id):
         return redirect("playstyle_compass:index")
 
     context = {
-        "page_title": _("Send message :: PlayStyle Compass"),
+        "page_title": _(f"Send message to { message_receiver.userprofile.profile_name } :: PlayStyle Compass"),
         "form": form,
         "receiver": message_receiver.userprofile.profile_name,
     }
@@ -1243,7 +1243,12 @@ def chat(request, recipient_id: int):
     request.session["username"] = request.user.username
     request.session["recipient_username"] = recipient.username
 
-    return render(request, "messaging/chat.html", {"recipient": recipient})
+    context = {
+        "page_title": _(f"Chat with { recipient.userprofile.profile_name } :: PlayStyle Compass"),
+        "recipient": recipient
+    }
+
+    return render(request, "messaging/chat.html", context)
 
 
 @login_required
@@ -1263,11 +1268,23 @@ def create_message(request):
     recipient = get_object_or_404(User, username=recipient_username)
 
     if not content:
-        return JsonResponse({"status": "No content provided"}, status=400)
+        return JsonResponse({"error": "You must write something"}, status=400)
 
     ChatMessage.objects.create(sender=sender, recipient=recipient, content=content)
 
     return JsonResponse({"status": "Message created"}, status=201)
+
+
+@login_required
+def delete_chat_messages(request, recipient_id):
+    """View to delete (hide) chat messages for the authenticated user."""
+    recipient = get_object_or_404(User, id=recipient_id)
+    user = request.user
+
+    ChatMessage.objects.filter(sender=user, recipient=recipient).update(sender_hidden=True)
+    ChatMessage.objects.filter(sender=recipient, recipient=user).update(recipient_hidden=True)
+
+    return JsonResponse({"status": "success"})
 
 
 async def stream_chat_messages(request, recipient_id: int) -> StreamingHttpResponse:
@@ -1296,13 +1313,11 @@ async def stream_chat_messages(request, recipient_id: int) -> StreamingHttpRespo
             await asyncio.sleep(0.1)
 
     async def get_existing_messages(user, recipient) -> AsyncGenerator:
-        messages = (
-            ChatMessage.objects.filter(
-                sender__in=[user, recipient], recipient__in=[user, recipient]
-            )
-            .order_by("created_at")
-            .values("id", "sender__userprofile__profile_name", "content")
-        )
+        messages = ChatMessage.objects.filter(
+            sender__in=[user, recipient], recipient__in=[user, recipient]
+        ).filter(
+            (Q(sender=user) & Q(sender_hidden=False)) | (Q(recipient=user) & Q(recipient_hidden=False))
+        ).order_by("created_at").values("id", "sender__userprofile__profile_name", "content")
 
         async for message in messages:
             yield f"data: {json.dumps(message)}\n\n"
