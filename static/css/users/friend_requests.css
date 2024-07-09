@@ -12,7 +12,6 @@
 .card-title {
   color: #333;
   font-size: 19px;
-  margin-top: 10px;
 }
 
 .card-title:hover {
@@ -23,8 +22,7 @@
   background-color: #dc3545;
   color: #fff;
   border: none;
-  padding: 8px 12px;
-  margin: 4px;
+  padding: 6px 12px;
   cursor: pointer;
   border-radius: 4px;
   transition: background-color 0.3s ease;
@@ -70,11 +68,13 @@
 }
 
 .friend-profile-picture img {
-  max-width: 110px;
-  max-height: 110px;
-  object-fit: cover;
-  border-radius: 50px;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
   box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
+  margin-top: 5px;
+  overflow: hidden;
+  object-fit: cover;
 }
 
 @media screen and (max-width: 767px) {

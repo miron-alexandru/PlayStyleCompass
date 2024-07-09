@@ -18,7 +18,7 @@
 
 <div class="container">
   <div class="card p-2">
-    <p class="incoming-requests">{% trans "Requests received" %}</p>
+    <p class="incoming-requests">{% trans "RECEIVED REQUESTS" %}</p>
     {% if friend_requests %}
     <div class="d-flex flex-row flex-wrap">
       {% for request in friend_requests %}
@@ -38,7 +38,7 @@
 
   <div class="sent-friend-requests">
     <div class="card p-2">
-      <p class="sent-requests">{% trans "Sent by you" %}</p>
+      <p class="sent-requests">{% trans "SENT REQUESTS" %}</p>
       {% if user_sent_friend_requests %}
       <div class="d-flex flex-row flex-wrap">
         {% for request in user_sent_friend_requests %}
