@@ -1286,7 +1286,6 @@ def delete_chat_messages(request, recipient_id):
 
     return JsonResponse({"status": "success"})
 
-from django.db.models import F
 
 async def stream_chat_messages(request, recipient_id: int) -> StreamingHttpResponse:
     """View used to stream chat messages between the authenticated user and a specified recipient."""
