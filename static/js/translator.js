@@ -22,6 +22,7 @@ const translate = (key) => {
             'Show': 'Afișează',
             'Hide': 'Ascunde',
             ' seconds': ' secunde',
+            "No messages. Say something!": 'Niciun mesaj. Spune ceva!'
         },
     };
 

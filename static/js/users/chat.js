@@ -2,6 +2,7 @@ let eventSource;
 
 document.addEventListener('DOMContentLoaded', function() {
     const sseData = document.getElementById('sse-data');
+    const noMessagesText = translate("No messages. Say something!");
 
     function startSSE(url) {
         eventSource = new EventSource(url);
@@ -14,6 +15,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     </div>`;
             sseData.innerHTML += messageHTML;
             scrollToBottom();
+            checkForMessages();
         };
     }
 
@@ -21,10 +23,22 @@ document.addEventListener('DOMContentLoaded', function() {
         return content.replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank">$1</a>');
     }
 
+    function checkForMessages() {
+        if (sseData.children.length === 0) {
+            sseData.innerHTML = `<div class="no-messages">${noMessagesText}</div>`;
+        } else {
+            const noMessagesDiv = document.querySelector('.no-messages');
+            if (noMessagesDiv) {
+                noMessagesDiv.remove();
+            }
+        }
+    }
+
     if (typeof(EventSource) !== 'undefined') {
         const streamUrl = sseData.dataset.streamUrl;
         startSSE(streamUrl);
         scrollToBottom();
+        checkForMessages();
     } else {
         sseData.innerHTML = 'Your browser doesn\'t receive server-sent events.';
     }
@@ -73,11 +87,12 @@ function submit(event) {
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('myForm');
     const textarea = form.querySelector('textarea');
+    const submitButton = form.querySelector('.send-button');
 
     textarea.addEventListener('keydown', function(event) {
         if (event.keyCode === 13 && !event.shiftKey && textarea.value.trim() !== '') {
             event.preventDefault();
-            form.dispatchEvent(new Event('submit'));
+            submitButton.click();
         }
     });
 });

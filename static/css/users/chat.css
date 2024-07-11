@@ -45,21 +45,13 @@ form {
     border-top: 1px solid #e8ebef;
 }
 
-textarea, input, {
-    margin-bottom: 15px;
-    padding: 15px;
-    border: 1px solid #ced6e0;
-    border-radius: 6px;
-    font-size: 16px;
-    transition: border-color 0.3s, box-shadow 0.3s;
-}
 
 textarea {
     background: #f8f9fa;
     border: 1px solid #ced4da;
     box-sizing: border-box;
-    width: 100%;
-    padding: 12px 20px;
+    width: calc(100% - 30px);
+    padding: 12px 20px 12px 12px;
     border-radius: 6px;
     min-height: 100px;
     font-size: 16px;
@@ -69,31 +61,36 @@ textarea {
 }
 
 .send-button {
-    background-color: #007bff;
-    color: #fff;
-    padding: 6px 12px;
+    position: absolute;
+    right: -10px;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 0;
     border: none;
-    border-radius: 5px;
-    font-size: 12px;
-    display: block;
-    margin: 0 auto;
-    margin-top: 10px;
+    background: none;
+    font-size: 34px;
+    cursor: pointer;
+    color: #007bff;
+    transition: color 0.3s ease;
 }
 
 .send-button:not([disabled]):hover {
-    background-color: #0056b3;
+    color: #0056b3;
 }
 
 .send-button:focus {
     outline: none;
-    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+    box-shadow: none;
 }
 
 .send-button:disabled {
-    background-color: #ccc;
+    color: #ccc;
     cursor: not-allowed;
 }
 
+.send-button:active {
+    transform: translateY(-50%) scale(0.95);
+}
 
 .message-box {
     background: rgba(0, 123, 255, 0.1);
@@ -141,7 +138,6 @@ textarea {
     margin-bottom: 10px;
 }
 
-
 .delete-messages-btn {
   background-color: #dc3545;
   color: #fff;
@@ -158,3 +154,15 @@ textarea {
   background-color: #c82333;
 }
 
+.no-messages {
+    text-align: center;
+    color: #999;
+    font-style: italic;
+    margin-top: 10px;
+}
+
+.input-container {
+    display: flex;
+    align-items: center;
+    position: relative;
+}

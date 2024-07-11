@@ -22,18 +22,17 @@
 
     <form id="myForm" x-cloak @submit.prevent="submit" x-data="{ state: 'composing', errors: {}, content: '' }"
         data-url="{% url 'users:create_message' %}">
-        <div>
+        <div class="input-container">
             <textarea name="content" @input="state = 'composing'; content = $event.target.value"
-                autofocus placeholder="Enter your message..."></textarea>
+                autofocus placeholder="Enter your message..." x-model="content"></textarea>
             <button type="submit" class="send-button" :disabled="!content.trim()">
-                {% trans "Send Message" %}
+                ➤
             </button>
         </div>
 
         <div x-show="state === 'error'" class="error-message">
             <p x-text="errors.message"></p>
         </div>
-
     </form>
     <div style="text-align: center;">
         <button id="clear-chat-button" class="delete-messages-btn" data-url="{% url 'users:delete_chat_messages' recipient_id=recipient.id %}">{% trans "Delete Messages" %}</button>
