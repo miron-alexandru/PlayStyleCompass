@@ -15,7 +15,7 @@
 {% block content %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/users/chat.css' %}">
 
-<div class="chat-container">
+<div class="chat-container" id="chat-container" data-user-id="{{ request.user.id }}">
     <div class="chat-messages">
         <div id="sse-data" data-stream-url="{% url 'users:stream_chat_messages' recipient_id=recipient.id %}"></div>
     </div>

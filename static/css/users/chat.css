@@ -1,17 +1,16 @@
 .chat-container {
-    width: 80%;
-    max-width: 800px;
+    max-width: 550px;
     margin: auto;
-    background: #fff;
     border-radius: 12px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     overflow: hidden;
     display: flex;
     flex-direction: column;
+    background: #e6f7ff;
 }
 
 .chat-messages {
-    background: #ffffff;
+    background: #e6f7ff;
     border-radius: 12px 12px 0 0;
     padding: 20px;
     margin-bottom: 0;
@@ -38,17 +37,16 @@
 }
 
 form {
-    background: #f9fbfd;
-    padding: 20px;
+    background: #e6f7ff;
+    padding: 0px 20px 20px 20px;
     display: flex;
     flex-direction: column;
-    border-top: 1px solid #e8ebef;
 }
 
 
 textarea {
     background: #f8f9fa;
-    border: 1px solid #ced4da;
+    border: 1px solid lightgray;
     box-sizing: border-box;
     width: calc(100% - 30px);
     padding: 12px 20px 12px 12px;
@@ -92,25 +90,8 @@ textarea {
     transform: translateY(-50%) scale(0.95);
 }
 
-.message-box {
-    background: rgba(0, 123, 255, 0.1);
-    border-left: 4px solid #007bff;
-    margin-bottom: 15px;
-    padding: 10px 15px;
-    border-radius: 6px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s, box-shadow 0.3s;
-    border-bottom: 1px solid #ced6e0;
-}
-
-.message-box:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
 .message-author {
     font-weight: bold;
-    margin-bottom: 5px;
     color: #6f42c1;
 }
 
@@ -165,4 +146,93 @@ textarea {
     display: flex;
     align-items: center;
     position: relative;
+}
+
+.message-wrapper {
+    display: flex;
+    width: 100%;
+    justify-content: flex-end;
+}
+
+.message-wrapper .sent {
+    border-right: 4px solid #007bff;
+}
+
+.message-wrapper .received {
+    border-left: 4px solid #007bff;
+}
+
+.message-wrapper.sent .message-box {
+    justify-content: flex-end;
+    background: #cce7ff;
+}
+
+.message-wrapper.received .message-box {
+    justify-content: flex-start;
+    background: #b3daff;
+}
+
+.message-box {
+    display: flex;
+    align-items: flex-start;
+    background: rgba(0, 123, 255, 0.1);
+    margin-bottom: 15px;
+    padding: 10px 15px;
+    border-radius: 6px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+    border-bottom: 1px solid #ced6e0;
+    word-wrap: break-word;
+    overflow: hidden;
+    width: fit-content; 
+    max-width: 100%;
+}
+
+.message-box:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.message-content-wrapper {
+    word-wrap: break-word;
+    overflow: hidden;
+    width: 100%;
+}
+
+.chat-profile-picture {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
+    margin-right: 10px;
+    object-fit: cover;
+    transition: transform 0.2s ease-in-out;
+}
+
+.chat-profile-picture:hover {
+    transform: scale(1.1);
+}
+
+.sent {
+    justify-content: flex-end;
+}
+
+.received {
+    justify-content: flex-start;
+}
+
+.sent .chat-profile-picture {
+    order: 2;
+    margin-left: 10px;
+    margin-right: 0;
+}
+
+.sent .message-content-wrapper {
+    align-items: flex-end;
+    text-align: right;
+}
+
+.received .message-content-wrapper {
+    align-items: flex-start;
+    text-align: left;
 }

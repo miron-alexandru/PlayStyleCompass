@@ -3,16 +3,25 @@ let eventSource;
 document.addEventListener('DOMContentLoaded', function() {
     const sseData = document.getElementById('sse-data');
     const noMessagesText = translate("No messages. Say something!");
+    const chatContainer = document.getElementById('chat-container');
+    const currentUserId = parseInt(chatContainer.getAttribute('data-user-id'));
 
     function startSSE(url) {
         eventSource = new EventSource(url);
         eventSource.onmessage = event => {
             const data = JSON.parse(event.data);
+            const isCurrentUser = data.sender__id === currentUserId;
+
             const messageHTML = `
-                    <div class="message-box">
-                        <div class="message-author">${data.sender__userprofile__profile_name}</div>
-                        <div class="message-content">${wrapUrlsWithAnchorTags(data.content)}</div>
-                    </div>`;
+            <div class="message-wrapper ${isCurrentUser ? 'sent' : 'received'}">
+            <img src="${data.profile_picture_url}" alt="Profile Picture" class="chat-profile-picture">
+            <div class="message-box ${isCurrentUser ? 'sent' : 'received'}">
+                <div class="message-content-wrapper">
+                    <div class="message-author">${data.sender__userprofile__profile_name}</div>
+                    <div class="message-content">${wrapUrlsWithAnchorTags(data.content)}</div>
+                </div>
+            </div>
+            </div>`;
             sseData.innerHTML += messageHTML;
             scrollToBottom();
             checkForMessages();

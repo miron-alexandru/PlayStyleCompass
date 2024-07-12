@@ -14,7 +14,8 @@ from django.contrib.auth import (
     logout,
     update_session_auth_hash,
 )
-from django.db.models import Q
+from django.db.models import Q, F, Value, CharField
+from django.db.models.functions import Concat
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
@@ -1003,7 +1004,9 @@ def send_message(request, user_id):
         return redirect("playstyle_compass:index")
 
     context = {
-        "page_title": _(f"Send message to { message_receiver.userprofile.profile_name } :: PlayStyle Compass"),
+        "page_title": _(
+            f"Send message to { message_receiver.userprofile.profile_name } :: PlayStyle Compass"
+        ),
         "form": form,
         "receiver": message_receiver.userprofile.profile_name,
     }
@@ -1238,14 +1241,18 @@ def chat(request, recipient_id: int):
     recipient = get_object_or_404(User, id=recipient_id)
 
     if not are_friends(request.user, recipient):
-        return JsonResponse({"error": "You can only chat with your friends."}, status=403)
+        return JsonResponse(
+            {"error": "You can only chat with your friends."}, status=403
+        )
 
     request.session["username"] = request.user.username
     request.session["recipient_username"] = recipient.username
 
     context = {
-        "page_title": _(f"Chat with { recipient.userprofile.profile_name } :: PlayStyle Compass"),
-        "recipient": recipient
+        "page_title": _(
+            f"Chat with { recipient.userprofile.profile_name } :: PlayStyle Compass"
+        ),
+        "recipient": recipient,
     }
 
     return render(request, "messaging/chat.html", context)
@@ -1281,8 +1288,12 @@ def delete_chat_messages(request, recipient_id):
     recipient = get_object_or_404(User, id=recipient_id)
     user = request.user
 
-    ChatMessage.objects.filter(sender=user, recipient=recipient).update(sender_hidden=True)
-    ChatMessage.objects.filter(sender=recipient, recipient=user).update(recipient_hidden=True)
+    ChatMessage.objects.filter(sender=user, recipient=recipient).update(
+        sender_hidden=True
+    )
+    ChatMessage.objects.filter(sender=recipient, recipient=user).update(
+        recipient_hidden=True
+    )
 
     return JsonResponse({"status": "success"})
 
@@ -1303,8 +1314,21 @@ async def stream_chat_messages(request, recipient_id: int) -> StreamingHttpRespo
                     recipient__in=[request.user, recipient],
                     id__gt=last_id,
                 )
+                .annotate(
+                    profile_picture_url=Concat(
+                        Value(settings.MEDIA_URL),
+                        F("sender__userprofile__profile_picture"),
+                        output_field=CharField(),
+                    )
+                )
                 .order_by("created_at")
-                .values("id", "sender__userprofile__profile_name", "content")
+                .values(
+                    "id",
+                    "sender__userprofile__profile_name",
+                    "content",
+                    "profile_picture_url",
+                    "sender__id",
+                )
             )
 
             async for message in new_messages:
@@ -1313,11 +1337,30 @@ async def stream_chat_messages(request, recipient_id: int) -> StreamingHttpRespo
             await asyncio.sleep(0.1)
 
     async def get_existing_messages(user, recipient) -> AsyncGenerator:
-        messages = ChatMessage.objects.filter(
-            sender__in=[user, recipient], recipient__in=[user, recipient]
-        ).filter(
-            (Q(sender=user) & Q(sender_hidden=False)) | (Q(recipient=user) & Q(recipient_hidden=False))
-        ).order_by("created_at").values("id", "sender__userprofile__profile_name", "content")
+        messages = (
+            ChatMessage.objects.filter(
+                sender__in=[user, recipient], recipient__in=[user, recipient]
+            )
+            .filter(
+                (Q(sender=user) & Q(sender_hidden=False))
+                | (Q(recipient=user) & Q(recipient_hidden=False))
+            )
+            .annotate(
+                profile_picture_url=Concat(
+                    Value(settings.MEDIA_URL),
+                    F("sender__userprofile__profile_picture"),
+                    output_field=CharField(),
+                )
+            )
+            .order_by("created_at")
+            .values(
+                "id",
+                "sender__userprofile__profile_name",
+                "content",
+                "profile_picture_url",
+                "sender__id",
+            )
+        )
 
         async for message in messages:
             yield f"data: {json.dumps(message)}\n\n"
