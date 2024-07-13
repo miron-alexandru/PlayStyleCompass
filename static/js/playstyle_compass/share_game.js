@@ -16,7 +16,7 @@ $(document).ready(function () {
 
   $(".game-container").each(function () {
     const container = $(this);
-    const shareButton = container.find(".shareButton");
+    const shareButton = container.find(".share-button");
     const friendLinks = container.find(".friend-link");
     const friendDropdown = shareButton.next();
     const shareLink = container.data("share-game");
@@ -58,7 +58,7 @@ $(document).ready(function () {
   });
 
   $(document).on("click", function (event) {
-    if (!$(event.target).is(".shareButton")) {
+    if (!$(event.target).is(".share-button")) {
       $(".friend-dropdown-content").removeClass("show");
     }
   });

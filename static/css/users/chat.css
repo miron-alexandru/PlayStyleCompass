@@ -11,10 +11,9 @@
 
 .chat-messages {
     background: #e6f7ff;
-    border-radius: 12px 12px 0 0;
-    padding: 20px;
+    border-top: 1px solid lightgray;
+    padding: 15px;
     margin-bottom: 0;
-    box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.05);
     font-size: 16px;
     height: 60vh;
     overflow-y: scroll;
@@ -56,6 +55,7 @@ textarea {
     line-height: 1.5;
     resize: none;
     outline: none;
+    margin-top: 15px;
 }
 
 .send-button {
@@ -91,13 +91,14 @@ textarea {
 }
 
 .message-author {
+    font-size: 12px;
     font-weight: bold;
     color: #6f42c1;
 }
 
 .message-content {
-    font-size: 16px;
-    line-height: 1.4;
+    font-size: 14px;
+    line-height: 1.30;
 }
 
 [x-cloak] {
@@ -119,22 +120,6 @@ textarea {
     margin-bottom: 10px;
 }
 
-.delete-messages-btn {
-  background-color: #dc3545;
-  color: #fff;
-  border: none;
-  padding: 6px 12px;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  font-size: 12px;
-  margin-bottom: 20px;
-}
-
-.delete-messages-btn:hover {
-  background-color: #c82333;
-}
-
 .no-messages {
     text-align: center;
     color: #999;
@@ -152,6 +137,7 @@ textarea {
     display: flex;
     width: 100%;
     justify-content: flex-end;
+    margin-bottom: 5px;
 }
 
 .message-wrapper .sent {
@@ -177,7 +163,7 @@ textarea {
     align-items: flex-start;
     background: rgba(0, 123, 255, 0.1);
     margin-bottom: 15px;
-    padding: 10px 15px;
+    padding: 6px 12px;
     border-radius: 6px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s, box-shadow 0.3s;
@@ -235,4 +221,58 @@ textarea {
 .received .message-content-wrapper {
     align-items: flex-start;
     text-align: left;
+}
+
+
+.chat-header {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 5px;
+    background: #e6f7ff;
+    border: none;
+}
+
+.chat-options {
+    position: relative;
+}
+
+.options-button {
+    cursor: pointer;
+    font-size: 16px;
+    color: #333;
+    padding: 5px;
+}
+
+.options-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: #4a5a70;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    overflow: hidden;
+    z-index: 1000;
+    padding: 5px;
+    margin-top: 8px;
+}
+
+.options-menu button {
+    display: block;
+    text-align: left;
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-size: 11px;
+    color: white;
+    white-space: nowrap;
+    padding: 5px 15px;
+    margin: 0;
+    margin-right: -15px;
+    margin-left: -15px;
+}
+
+.options-menu button:hover {
+    background-color: #2f4255;
 }

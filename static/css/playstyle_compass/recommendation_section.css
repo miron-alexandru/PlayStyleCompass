@@ -62,18 +62,8 @@ small {
   display: inline-block;
 }
 
-.shareButton {
-  font-size: 11px;
-  background-color: #4CAF50;
-  color: white;
-  padding: 3px 6px;
-  border: none;
-  border-radius: 5px;
+.share-button, .favorite-star, .queue-clock {
   cursor: pointer;
-}
-
-.shareButton:hover {
-  background-color: #388E3C;
 }
 
 .friend-dropdown-content {

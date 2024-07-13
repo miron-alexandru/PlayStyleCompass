@@ -45,9 +45,12 @@ Websites for .env configuration: [GiantBomb](https://www.giantbomb.com/) / [Send
 <details>
 <summary><h2>PlayStyle Compass Changelog</h2></summary>
 
-### Version v1.9:
+### Version v2.0:
+* Chat Improvements: Chat header with options and warnings before deleting messages and visiting links.
 * Improved overall visuals & functionality of chat.
 * Implemented Chat: Users are able to write messages to each other in real time.
+
+### Version v1.9:
 * Improved how to pagination with filtering is done on Game Library and News.
 * Solved a bug which caused the pagination to break after navigating to more than one page on the Game Library.
 * Implemented sorting and filtering on the News page.

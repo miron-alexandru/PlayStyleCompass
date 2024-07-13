@@ -1,5 +1,9 @@
 let eventSource;
 
+function confirmVisit(url) {
+        return confirm(`Are you sure you want to visit this website?\n\n${url}`);
+    }
+
 document.addEventListener('DOMContentLoaded', function() {
     const sseData = document.getElementById('sse-data');
     const noMessagesText = translate("No messages. Say something!");
@@ -29,7 +33,11 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function wrapUrlsWithAnchorTags(content) {
-        return content.replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank">$1</a>');
+        const urlRegex = /(https?:\/\/[^\s]+)/g;
+        
+        return content.replace(urlRegex, (url) => {
+            return `<a href="${url}" onclick="return confirmVisit('${url}')" target="_blank">${url}</a>`;
+        });
     }
 
     function checkForMessages() {
@@ -107,25 +115,46 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 document.addEventListener('DOMContentLoaded', function() {
-    document.getElementById('clear-chat-button').addEventListener('click', function() {
-        const url = this.getAttribute('data-url');
-        fetch(url, {
-            method: 'POST',
-            headers: {
-                'X-CSRFToken': csrfToken,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({})
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.status === 'success') {
-                document.querySelector('.chat-messages').innerHTML = '';
-                location.reload();
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
+    document.getElementById('clear-chat-button').addEventListener('click', function(event) {
+
+        if (confirm("Are you sure you want to delete all messages?")) {
+            const url = this.getAttribute('data-url');
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': csrfToken,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({})
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    document.querySelector('.chat-messages').innerHTML = '';
+                    location.reload();
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        } else {
+            return false;
+        }
     });
+});
+
+function toggleOptionsMenu() {
+    const menu = document.getElementById('options-menu');
+    if (menu.style.display === 'block') {
+        menu.style.display = 'none';
+    } else {
+        menu.style.display = 'block';
+    }
+}
+
+document.addEventListener('click', function (event) {
+    const menu = document.getElementById('options-menu');
+    if (!menu.contains(event.target) && !event.target.classList.contains('options-button')) {
+        menu.style.display = 'none';
+    }
 });

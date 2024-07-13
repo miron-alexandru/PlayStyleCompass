@@ -16,6 +16,14 @@
 <link rel="stylesheet" type="text/css" href="{% static 'css/users/chat.css' %}">
 
 <div class="chat-container" id="chat-container" data-user-id="{{ request.user.id }}">
+    <div class="chat-header">
+        <div class="chat-options">
+            <i class="fa-solid fa-ellipsis-vertical options-button" onclick="toggleOptionsMenu()"></i>
+            <div class="options-menu" id="options-menu">
+                <button id="clear-chat-button" data-url="{% url 'users:delete_chat_messages' recipient_id=recipient.id %}">{% trans "Delete Messages" %}</button>
+            </div>
+        </div>
+    </div>
     <div class="chat-messages">
         <div id="sse-data" data-stream-url="{% url 'users:stream_chat_messages' recipient_id=recipient.id %}"></div>
     </div>
@@ -34,9 +42,6 @@
             <p x-text="errors.message"></p>
         </div>
     </form>
-    <div style="text-align: center;">
-        <button id="clear-chat-button" class="delete-messages-btn" data-url="{% url 'users:delete_chat_messages' recipient_id=recipient.id %}">{% trans "Delete Messages" %}</button>
-    </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.1/dist/cdn.min.js" defer></script>
