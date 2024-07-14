@@ -276,3 +276,24 @@ textarea {
 .options-menu button:hover {
     background-color: #2f4255;
 }
+
+#typing-indicator {
+    display: none;
+    position: absolute;
+    top: 71%;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 5px 10px;
+    background-color: #90EE90;
+    color: black;
+    font-size: 12px;
+    border-radius: 25px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    animation: fadeinout 2s infinite;
+}
+
+@keyframes fadeinout {
+    0%, 100% { opacity: 0; }
+    50% { opacity: 1; }
+}
+

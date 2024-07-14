@@ -12,6 +12,11 @@ from asgiref.sync import async_to_sync
 
 
 class NotificationConsumer(AsyncWebsocketConsumer):
+    """
+    Handles WebSocket connections for user notifications, managing connections,
+    sending past notifications on connection, and broadcasting new notifications in real-time.
+    """
+
     async def connect(self):
         await self.accept()
         user = await self.get_user_from_session()
@@ -50,21 +55,121 @@ class NotificationConsumer(AsyncWebsocketConsumer):
 
     @database_sync_to_async
     def get_user_from_session(self):
+        # Retrieve the cookie header from the scope
         cookie_header = dict(self.scope.get("headers")).get(b"cookie", b"").decode()
+
+        # Parse the cookies
         cookies = SimpleCookie()
         cookies.load(cookie_header)
 
+        # Get the session ID from the cookies
         sessionid = cookies.get("sessionid")
+
         if sessionid:
+            # If session ID is found, get the session key
             session_key = sessionid.value
             try:
+                # Try to retrieve the session using the session key
                 session = Session.objects.get(session_key=session_key)
+
+                # Get the user ID from the session and return the user object
                 return User.objects.get(pk=session.get_decoded().get("_auth_user_id"))
             except (Session.DoesNotExist, User.DoesNotExist):
+                # If the session or user does not exist, return an anonymous user
                 return AnonymousUser()
         else:
+            # If no session ID is found, return an anonymous user
             return AnonymousUser()
 
     @database_sync_to_async
     def get_all_notifications(self, user):
         return list(Notification.objects.filter(user=user, is_active=True))
+
+
+class ChatConsumer(AsyncWebsocketConsumer):
+    """
+    Handles WebSocket connections for chat functionality, managing user connections,
+    message reception, and broadcasting typing indicators to all participants in a chat room.
+    """
+
+    async def connect(self):
+        # Retrieve the user from the session
+        self.user = await self.get_user_from_session()
+
+        # Get the recipient ID from the URL route parameters
+        self.recipient_id = self.scope["url_route"]["kwargs"]["recipient_id"]
+
+        # Generate a unique room name using the user and recipient IDs
+        self.room_name = f"chat_{self.user.id}_{self.recipient_id}"
+
+        # Generate a unique group name to ensure both users join the same group
+        self.room_group_name = f"chat_{min(self.user.id, self.recipient_id)}_{max(self.user.id, self.recipient_id)}"
+
+        # Add the user to the channel layer group
+        await self.channel_layer.group_add(self.room_group_name, self.channel_name)
+
+        await self.accept()
+
+    async def disconnect(self, close_code):
+        # Remove the user from the channel layer group on disconnect
+        await self.channel_layer.group_discard(self.room_group_name, self.channel_name)
+
+    async def receive(self, text_data):
+        # Parse the incoming WebSocket message as JSON
+        text_data_json = json.loads(text_data)
+
+        # Get the typing status from the JSON data
+        typing = text_data_json.get("typing", False)
+
+        # Send a message to the channel layer group with the typing status and sender ID
+        await self.channel_layer.group_send(
+            self.room_group_name,
+            {
+                "type": "chat_message",
+                "typing": typing,
+                "sender_id": self.user.id,
+            },
+        )
+
+    async def chat_message(self, event):
+        # Retrieve typing status and sender ID from the event and
+        # send the typing status and sender ID back to the WebSocket client.
+        typing = event["typing"]
+        sender_id = event["sender_id"]
+
+        await self.send(
+            text_data=json.dumps(
+                {
+                    "typing": typing,
+                    "sender_id": sender_id,
+                }
+            )
+        )
+
+    @database_sync_to_async
+    def get_user_from_session(self):
+        # Retrieve the cookie header from the scope
+        cookie_header = dict(self.scope.get("headers")).get(b"cookie", b"").decode()
+
+        # Parse the cookies
+        cookies = SimpleCookie()
+        cookies.load(cookie_header)
+
+        # Get the session ID from the cookies
+        sessionid = cookies.get("sessionid")
+
+        if sessionid:
+            # If session ID is found, get the session key
+            session_key = sessionid.value
+            try:
+                # Try to retrieve the session using the session key
+                session = Session.objects.get(session_key=session_key)
+
+                # Get the user ID from the session and return the user object
+                return User.objects.get(pk=session.get_decoded().get("_auth_user_id"))
+            except (Session.DoesNotExist, User.DoesNotExist):
+                # If the session or user does not exist, return an anonymous user
+                return AnonymousUser()
+        else:
+            # If no session ID is found, return an anonymous user
+            return AnonymousUser()

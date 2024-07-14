@@ -46,6 +46,7 @@ Websites for .env configuration: [GiantBomb](https://www.giantbomb.com/) / [Send
 <summary><h2>PlayStyle Compass Changelog</h2></summary>
 
 ### Version v2.0:
+* Implemented Typing Feature: When an user is typing in chat there is a "User is typing..." message displayed to the other user.
 * Chat Improvements: Chat header with options and warnings before deleting messages and visiting links.
 * Improved overall visuals & functionality of chat.
 * Implemented Chat: Users are able to write messages to each other in real time.
