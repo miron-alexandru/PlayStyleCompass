@@ -1,7 +1,8 @@
 let eventSource;
 
 function confirmVisit(url) {
-        return confirm(`Are you sure you want to visit this website?\n\n${url}`);
+        const translatedText = translate("Are you sure you want to visit this website?\n\n");
+        return confirm(`${translatedText}${url}`);
     }
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -117,7 +118,7 @@ document.addEventListener('DOMContentLoaded', function() {
 document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('clear-chat-button').addEventListener('click', function(event) {
 
-        if (confirm("Are you sure you want to delete all messages?")) {
+        if (confirm(translate("Are you sure you want to delete all messages?"))) {
             const url = this.getAttribute('data-url');
             fetch(url, {
                 method: 'POST',

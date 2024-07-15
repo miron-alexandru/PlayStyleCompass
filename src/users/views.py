@@ -75,6 +75,7 @@ from .misc.helper_functions import (
     QuizRecommendations,
     get_quiz_questions,
     save_quiz_responses,
+    process_chat_notification,
 )
 from playstyle_compass.helper_functions.views_helpers import (
     paginate_matching_games,
@@ -1004,9 +1005,7 @@ def send_message(request, user_id):
         return redirect("playstyle_compass:index")
 
     context = {
-        "page_title": _(
-            f"Send message to { message_receiver.userprofile.profile_name } :: PlayStyle Compass"
-        ),
+        "page_title": _("Send message :: PlayStyle Compass"),
         "form": form,
         "receiver": message_receiver.userprofile.profile_name,
     }
@@ -1249,9 +1248,7 @@ def chat(request, recipient_id: int):
     request.session["recipient_username"] = recipient.username
 
     context = {
-        "page_title": _(
-            f"Chat with { recipient.userprofile.profile_name } :: PlayStyle Compass"
-        ),
+        "page_title": _("Chat :: PlayStyle Compass"),
         "recipient": recipient,
     }
 
@@ -1278,6 +1275,7 @@ def create_message(request):
         return JsonResponse({"error": "You must write something"}, status=400)
 
     ChatMessage.objects.create(sender=sender, recipient=recipient, content=content)
+    process_chat_notification(sender, recipient)
 
     return JsonResponse({"status": "Message created"}, status=201)
 

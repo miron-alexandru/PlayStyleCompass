@@ -46,4 +46,4 @@ from data_processing import (
 # create_quiz_data(concept_ids, num_games=2, offset=12)
 
 # Obtain News data
-create_news_data(num_articles=100, year=2024, latest_week=True)
+create_news_data(num_articles=100, year=2024, latest_week=False)

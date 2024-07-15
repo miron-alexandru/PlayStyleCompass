@@ -31,6 +31,7 @@ class UserProfile(models.Model):
     favorite_franchise = models.CharField(max_length=50, null=True, default="")
     last_finished_game = models.CharField(max_length=50, null=True, default="")
     streaming_preferences = models.CharField(max_length=50, null=True, default="")
+    last_chat_notification = models.DateTimeField(null=True, blank=True)
 
     def clean(self):
         profile_name = self.profile_name
