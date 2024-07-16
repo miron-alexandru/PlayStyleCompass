@@ -24,7 +24,7 @@
             </div>
         </div>
     </div>
-    <div class="chat-messages">
+    <div id="chat-messages" class="chat-messages" data-edit-message-url="{% url 'users:edit_message' 0 %}">
         <div id="sse-data" data-stream-url="{% url 'users:stream_chat_messages' recipient_id=recipient.id %}"></div>
         <div id="typing-indicator">{{ recipient.userprofile.profile_name }} {% trans "is typing..." %}</div>
     </div>

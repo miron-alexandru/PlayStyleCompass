@@ -5,6 +5,73 @@ function confirmVisit(url) {
         return confirm(`${translatedText}${url}`);
     }
 
+function wrapEditedContentWithAnchorTags(content) {
+    const urlRegex = /(https?:\/\/[^\s]+)/g;
+
+    return content.replace(urlRegex, (url) => {
+        return `<a href="${url}" onclick="return confirmVisit('${url}')" target="_blank">${url}</a>`;
+    });
+}
+
+function editMessage(messageId) {
+    const messageElement = document.querySelector(`div[data-message-id='${messageId}']`);
+    const contentElement = messageElement.querySelector('.message-content');
+    const originalContent = contentElement.innerText;
+    const messagesContainer = document.getElementById('chat-messages');
+    const editUrlTemplate = messagesContainer.getAttribute('data-edit-message-url');
+    const editUrl = editUrlTemplate.replace('/0/', `/${messageId}/`);
+
+    const input = messageElement.querySelector('textarea');
+    if (input) {
+        return;
+    }
+
+    const inputField = document.createElement('textarea');
+    inputField.value = originalContent;
+    inputField.classList.add('edit-textarea');
+    inputField.placeholder = 'Edit your message...';
+    contentElement.replaceWith(inputField);
+
+    const saveButton = document.createElement('button');
+    saveButton.innerText = 'Save';
+    saveButton.classList.add('save-message-button');
+    messageElement.querySelector('.message-content-wrapper').appendChild(saveButton);
+
+    const editButton = messageElement.querySelector('.edit-message-button');
+    if (editButton) {
+        editButton.style.display = 'none';
+    }
+
+    saveButton.addEventListener('click', () => {
+        const newContent = inputField.value;
+
+        fetch(editUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'X-CSRFToken': csrfToken,
+            },
+            body: new URLSearchParams({ content: newContent }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'Message updated') {
+                inputField.replaceWith(contentElement);
+                contentElement.innerHTML = wrapEditedContentWithAnchorTags(newContent);
+                saveButton.remove();
+
+                if (editButton) {
+                    editButton.style.display = 'inline-block';
+                }
+            } else {
+                alert(data.error);
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    });
+}
+
+
 document.addEventListener('DOMContentLoaded', function() {
     const sseData = document.getElementById('sse-data');
     const noMessagesText = translate("No messages. Say something!");
@@ -18,20 +85,55 @@ document.addEventListener('DOMContentLoaded', function() {
             const isCurrentUser = data.sender__id === currentUserId;
 
             const messageHTML = `
-            <div class="message-wrapper ${isCurrentUser ? 'sent' : 'received'}">
-            <img src="${data.profile_picture_url}" alt="Profile Picture" class="chat-profile-picture">
-            <div class="message-box ${isCurrentUser ? 'sent' : 'received'}">
-                <div class="message-content-wrapper">
-                    <div class="message-author">${data.sender__userprofile__profile_name}</div>
-                    <div class="message-content">${wrapUrlsWithAnchorTags(data.content)}</div>
+            <div class="message-wrapper ${isCurrentUser ? 'sent' : 'received'}" data-message-id="${data.id}">
+                <img src="${data.profile_picture_url}" alt="Profile Picture" class="chat-profile-picture">
+                <div class="message-box ${isCurrentUser ? 'sent' : 'received'}">
+                    <div class="message-content-wrapper" data-creation-time="${data.created_at}">
+                        <div class="message-author">${data.sender__userprofile__profile_name}</div>
+                        <div class="message-content">${wrapUrlsWithAnchorTags(data.content)}</div>
+                        ${isCurrentUser ? (isNewMessage(data.created_at) ? '<button class="edit-message-button">Edit</button>' : '') : ''}
+                    </div>
                 </div>
-            </div>
             </div>`;
+
             sseData.innerHTML += messageHTML;
             scrollToBottom();
             checkForMessages();
+
+            const editButtons = document.querySelectorAll('.edit-message-button');
+            editButtons.forEach(editButton => {
+                editButton.removeEventListener('click', handleEditButtonClick);
+                editButton.addEventListener('click', handleEditButtonClick);
+            });
         };
     }
+
+    function isNewMessage(created_at) {
+        const messageTime = new Date(created_at).getTime();
+        const currentTime = new Date().getTime();
+        const elapsedTimeInSeconds = (currentTime - messageTime) / 1000;
+        return elapsedTimeInSeconds <= 120;
+    }
+
+    function handleEditButtonClick(event) {
+        const messageId = event.target.closest('.message-wrapper').getAttribute('data-message-id');
+        editMessage(messageId);
+    }
+
+    setInterval(() => {
+        const messageWrappers = document.querySelectorAll('.message-wrapper');
+        messageWrappers.forEach(wrapper => {
+            const messageId = wrapper.getAttribute('data-message-id');
+            const editButton = wrapper.querySelector('.edit-message-button');
+            if (editButton) {
+                const creationTime = wrapper.querySelector('.message-content-wrapper').getAttribute('data-creation-time');
+                if (!isNewMessage(creationTime)) {
+                    editButton.style.display = 'none';
+                }
+            }
+        });
+    }, 3000);
+
 
     function wrapUrlsWithAnchorTags(content) {
         const urlRegex = /(https?:\/\/[^\s]+)/g;

@@ -297,3 +297,37 @@ textarea {
     50% { opacity: 1; }
 }
 
+.edit-message-button, .save-message-button {
+    background-color: transparent;
+    color: #333;
+    border: none;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 12px;
+    cursor: pointer;
+    vertical-align: middle;
+}
+
+.edit-message-button:hover, .save-message-button:hover {
+    color: black;
+}
+
+.edit-message-button:focus, .save-message-button:focus {
+    outline: none;
+}
+
+.edit-message-button {
+    display: inline-block;
+}
+
+.edit-textarea {
+    width: 100%;
+    min-height: 50px;
+    max-height: 100px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: vertical;
+    box-sizing: border-box;
+}

@@ -118,4 +118,5 @@ urlpatterns = [
         views.delete_chat_messages,
         name="delete_chat_messages",
     ),
+    path('edit_message/<int:message_id>/', views.edit_message, name='edit_message'),
 ]

@@ -23,6 +23,7 @@ from django.contrib import messages
 from django.core.mail import send_mail, EmailMessage
 from django.core.cache import cache
 from django.core.exceptions import ObjectDoesNotExist
+from django.core.serializers.json import DjangoJSONEncoder
 from django.conf import settings
 from django.contrib.auth.views import LoginView
 
@@ -1281,6 +1282,34 @@ def create_message(request):
 
 
 @login_required
+def edit_message(request, message_id):
+    """View to edit a chat message."""
+    if request.method != "POST":
+        return JsonResponse({"error": "Invalid request method"}, status=405)
+
+    new_content = request.POST.get("content")
+    username = request.session.get("username")
+
+    if not username:
+        return JsonResponse({"error": "Forbidden"}, status=403)
+
+    sender = get_object_or_404(User, username=username)
+    message = get_object_or_404(ChatMessage, id=message_id, sender=sender)
+
+    edit_time_limit = timedelta(minutes=2)
+    if timezone.now() > message.created_at + edit_time_limit:
+        return JsonResponse({"error": "Message editing time limit exceeded"}, status=403)
+
+    if not new_content:
+        return JsonResponse({"error": "You must write something"}, status=400)
+
+    message.content = new_content
+    message.save()
+
+    return JsonResponse({"status": "Message updated"}, status=200)
+
+
+@login_required
 def delete_chat_messages(request, recipient_id):
     """View to delete (hide) chat messages for the authenticated user."""
     recipient = get_object_or_404(User, id=recipient_id)
@@ -1322,6 +1351,7 @@ async def stream_chat_messages(request, recipient_id: int) -> StreamingHttpRespo
                 .order_by("created_at")
                 .values(
                     "id",
+                    "created_at",
                     "sender__userprofile__profile_name",
                     "content",
                     "profile_picture_url",
@@ -1330,7 +1360,10 @@ async def stream_chat_messages(request, recipient_id: int) -> StreamingHttpRespo
             )
 
             async for message in new_messages:
-                yield f"data: {json.dumps(message)}\n\n"
+                message['created_at'] = message['created_at'].isoformat()
+                json_message = json.dumps(message, cls=DjangoJSONEncoder)
+
+                yield f"data: {json_message}\n\n"
                 last_id = message["id"]
             await asyncio.sleep(0.1)
 
@@ -1353,6 +1386,7 @@ async def stream_chat_messages(request, recipient_id: int) -> StreamingHttpRespo
             .order_by("created_at")
             .values(
                 "id",
+                "created_at",
                 "sender__userprofile__profile_name",
                 "content",
                 "profile_picture_url",
@@ -1361,7 +1395,10 @@ async def stream_chat_messages(request, recipient_id: int) -> StreamingHttpRespo
         )
 
         async for message in messages:
-            yield f"data: {json.dumps(message)}\n\n"
+            message['created_at'] = message['created_at'].isoformat()
+            json_message = json.dumps(message, cls=DjangoJSONEncoder)
+
+            yield f"data: {json_message}\n\n"
 
     async def get_last_message_id(user, recipient) -> int:
         last_message = await ChatMessage.objects.filter(
