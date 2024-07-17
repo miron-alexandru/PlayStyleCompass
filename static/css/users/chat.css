@@ -297,7 +297,7 @@ textarea {
     50% { opacity: 1; }
 }
 
-.edit-message-button, .save-message-button {
+.edit-message-button, .save-message-button, .cancel-message-button {
     background-color: transparent;
     color: #333;
     border: none;
@@ -309,11 +309,11 @@ textarea {
     vertical-align: middle;
 }
 
-.edit-message-button:hover, .save-message-button:hover {
+.edit-message-button:hover, .save-message-button:hover, .cancel-message-button:hover {
     color: black;
 }
 
-.edit-message-button:focus, .save-message-button:focus {
+.edit-message-button:focus, .save-message-button:focus, .cancel-message-button:focus {
     outline: none;
 }
 
@@ -323,11 +323,21 @@ textarea {
 
 .edit-textarea {
     width: 100%;
-    min-height: 50px;
-    max-height: 100px;
+    min-height: 20px;
+    max-height: 50px;
     font-size: 14px;
     border: 1px solid #ccc;
     border-radius: 4px;
     resize: vertical;
     box-sizing: border-box;
+    margin-top: 5px;
+    margin-bottom: -5px;
+}
+
+.edit-message-button {
+    display: none;
+}
+
+.message-box:hover .edit-message-button {
+    display: inline-block;
 }

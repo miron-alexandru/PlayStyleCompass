@@ -25,6 +25,10 @@ const translate = (key) => {
             'No messages. Say something!': 'Niciun mesaj. Spune ceva!',
             'Are you sure you want to delete all messages?': 'Ești sigur că dorești să ștergi toate mesajele?',
             'Are you sure you want to visit this website?\n\n': 'Ești sigur că dorești să vizitezi acest website?\n\n',
+            'Edit your message...': 'Editează mesajul...',
+            'Save': 'Salvează',
+            'Cancel': 'Anulare',
+            'Edit': 'Editează',
         },
     };
 
