@@ -4,7 +4,7 @@
 
 {% block page_header %}
 <div class="header">
-<h3>{% trans "CONVERSATION WITH" %} <a class="profile-link" href="{% url 'users:view_profile' recipient.userprofile.profile_name %}">{{ recipient.userprofile.profile_name|upper }}</a></h3>
+<h3>{% trans "CHATTING WITH" %} {{ recipient.userprofile.profile_name|upper }}</a></h3>
 </div>
 {% endblock page_header %}
 
@@ -17,6 +17,7 @@
 
 <div class="chat-container" id="chat-container" data-user-id="{{ request.user.id }}" data-recipient-id="{{ recipient.id }}">
     <div class="chat-header">
+        <a class="profile-link" href="{% url 'users:view_profile' recipient.userprofile.profile_name %}">{{ recipient.userprofile.profile_name }}</a>
         <div class="chat-options">
             <i class="fa-solid fa-ellipsis-vertical options-button" onclick="toggleOptionsMenu()"></i>
             <div class="options-menu" id="options-menu">

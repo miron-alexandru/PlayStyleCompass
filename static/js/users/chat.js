@@ -164,8 +164,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 <img src="${data.profile_picture_url}" alt="Profile Picture" class="chat-profile-picture">
                 <div class="message-box ${isCurrentUser ? 'sent' : 'received'}">
                     <div class="message-content-wrapper" data-creation-time="${data.created_at}">
-                        <div class="message-author">${data.sender__userprofile__profile_name}</div>
-                        <div class="message-content">${wrapUrlsWithAnchorTags(data.content)}</div>
+                    <div class="message-content">${wrapUrlsWithAnchorTags(data.content)}</div>
                         ${isCurrentUser ? (isNewMessage(data.created_at) ? `<button class="edit-message-button">${translate('Edit')}</button>` : '') : ''}
                     </div>
                 </div>
