@@ -302,16 +302,15 @@ class ProfilePictureForm(forms.ModelForm):
 
     def resize_image(self, image_field):
         """Resize the image."""
-        image = Image.open(image_field)
-        max_size = (300, 300)
-        image.thumbnail(max_size, Image.LANCZOS)
+        with Image.open(image_field) as image:
+            max_size = (250, 250)
+            image.thumbnail(max_size, Image.LANCZOS)
 
-        original_name = os.path.basename(image_field.name)
-        self.processed_image_to_file(image, image_field, original_name)
+            original_name = os.path.basename(image_field.name)
+            self.processed_image_to_file(image, image_field, original_name)
 
     def processed_image_to_file(self, image, image_field, original_name=None):
         """Convert a processed image to a file."""
-
         image_buffer = BytesIO()
         image.save(image_buffer, format="PNG")
 
