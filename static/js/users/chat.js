@@ -287,3 +287,32 @@ document.addEventListener('click', function (event) {
         menu.style.display = 'none';
     }
 });
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    const textarea = document.getElementById('chat-message-input');
+    const sendButton = document.querySelector('.send-button');
+    const minLinesBeforeResize = 1;
+
+    textarea.addEventListener('input', function() {
+        textarea.style.height = 'auto';
+
+        const lines = textarea.value.split('\n').length;
+        const newHeight = Math.min(textarea.scrollHeight, 100);
+        
+        if (lines > minLinesBeforeResize) {
+            textarea.style.height = newHeight + 'px';
+        } else {
+            textarea.style.height = '45px';
+        }
+        
+        textarea.style.overflowY = textarea.scrollHeight > 100 ? 'auto' : 'hidden';
+    });
+
+    sendButton.addEventListener('click', function() {
+        textarea.style.height = '45px';
+        textarea.style.overflowY = 'hidden';
+    });
+});
+
+

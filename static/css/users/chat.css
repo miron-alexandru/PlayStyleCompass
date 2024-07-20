@@ -1,7 +1,7 @@
 .chat-container {
     max-width: 550px;
     margin: auto;
-    border-radius: 12px;
+    border-radius: 6px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     overflow: hidden;
     display: flex;
@@ -11,7 +11,6 @@
 
 .chat-messages {
     background: #e6f7ff;
-    border-top: 1px solid lightgray;
     padding: 15px;
     margin-bottom: 0;
     font-size: 16px;
@@ -22,18 +21,6 @@
     transition: background-color 0.3s;
 }
 
-.chat-messages::-webkit-scrollbar {
-    width: 8px;
-}
-
-.chat-messages::-webkit-scrollbar-track {
-    background: #f4f7f9;
-}
-
-.chat-messages::-webkit-scrollbar-thumb {
-    background-color: #ced6e0;
-    border-radius: 20px;
-}
 
 form {
     background: #e6f7ff;
@@ -42,31 +29,15 @@ form {
     flex-direction: column;
 }
 
-
-textarea {
-    background: #f8f9fa;
-    border: 1px solid lightgray;
-    box-sizing: border-box;
-    width: calc(100% - 30px);
-    padding: 12px 20px 12px 12px;
-    border-radius: 6px;
-    min-height: 100px;
-    font-size: 16px;
-    line-height: 1.5;
-    resize: none;
-    outline: none;
-    margin-top: 15px;
-}
-
 .send-button {
     position: absolute;
     right: -10px;
-    top: 50%;
+    top: 60%;
     transform: translateY(-50%);
     padding: 0;
     border: none;
     background: none;
-    font-size: 34px;
+    font-size: 32px;
     cursor: pointer;
     color: #007bff;
     transition: color 0.3s ease;
@@ -93,6 +64,8 @@ textarea {
 .message-content {
     font-size: 14px;
     line-height: 1.30;
+    white-space: pre-wrap;
+    word-wrap: break-word;
 }
 
 [x-cloak] {
@@ -104,7 +77,7 @@ textarea {
     color: #721c24;
     padding: 10px;
     border: 1px solid #f5c6cb;
-    border-radius: 4px;
+    border-radius: 6px;
     margin-top: 15px;
     text-align: center;
 }
@@ -121,10 +94,17 @@ textarea {
     margin-top: 10px;
 }
 
-.input-container {
+.input-containere {
     display: flex;
     align-items: center;
     position: relative;
+}
+
+.input-container {
+    position: relative; /* Ensures absolute positioning within this container */
+    width: 100%;
+    display: flex; /* Align items horizontally */
+    align-items: flex-start; /* Align items at the start */
 }
 
 .message-wrapper {
@@ -339,8 +319,16 @@ textarea {
     min-height: 20px;
     max-height: 50px;
     font-size: 14px;
+    line-height: 1.30;
     resize: vertical;
     box-sizing: border-box;
+    background: #f8f9fa;
+    border: 1px solid lightgray;
+    padding: 12px 20px 12px 12px;
+    border-radius: 6px;
+    resize: none;
+    outline: none;
+    margin-top: 15px;
 }
 
 .edit-message-button {
@@ -364,4 +352,30 @@ textarea {
 .profile-link:hover {
     text-decoration: none;
     color: #b3daff;
+}
+
+.message-textarea {
+    background: #f8f9fa;
+    border: 1px solid lightgray;
+    box-sizing: border-box;
+    width: calc(100% - 30px);
+    padding: 12px 20px 12px 12px;
+    border-radius: 6px;
+    height: 45px;
+    min-height: 45px;
+    max-height: 100px;
+    font-size: 14px;
+    line-height: 1.30;
+    resize: none;
+    outline: none;
+    margin-top: 15px;
+    overflow-y: hidden;
+}
+
+.message-textarea::-webkit-scrollbar {
+  width: 5px;
+}
+
+.message-textarea::-webkit-scrollbar-thumb {
+  border-radius: 6px !important;
 }
