@@ -14,6 +14,7 @@ from django.http import (
 from django.urls import reverse
 from django.db.models import Avg, Q
 from django.utils.translation import gettext as _
+from django.utils.html import format_html, escape
 from django.views.decorators.http import require_POST
 
 from utils.constants import genres, all_platforms, all_themes
@@ -552,8 +553,8 @@ def add_review(request, game_id):
                 "game": game,
                 "user": user,
                 "reviewers": profile_name,
-                "review_deck": form.cleaned_data["review_deck"],
-                "review_description": form.cleaned_data["review_description"],
+                "review_deck": escape(form.cleaned_data["review_deck"]),
+                "review_description": escape(form.cleaned_data["review_description"]),
                 "score": form.cleaned_data["score"],
             }
 
@@ -594,7 +595,14 @@ def edit_review(request, game_id):
     if request.method == "POST":
         form = ReviewForm(request.POST, instance=review)
         if form.is_valid():
-            form.save()
+            # Escape data before saving
+            cleaned_data = form.cleaned_data
+            review.review_deck = escape(cleaned_data.get("review_deck", ""))
+            review.review_description = escape(cleaned_data.get("review_description", ""))
+            review.score = cleaned_data.get("score")
+
+            review.save()
+
             messages.success(request, _("Your review has been successfully updated."))
             return HttpResponseRedirect(next_url)
     else:

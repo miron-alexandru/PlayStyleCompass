@@ -89,7 +89,7 @@ class NotificationConsumer(AsyncWebsocketConsumer):
 class ChatConsumer(AsyncWebsocketConsumer):
     """
     Handles WebSocket connections for chat functionality, managing user connections,
-    message reception, and broadcasting typing indicators to all participants in a chat room.
+    message reception, and broadcasting typing indicators and message edits to all participants in a chat room.
     """
 
     async def connect(self):
@@ -118,18 +118,35 @@ class ChatConsumer(AsyncWebsocketConsumer):
         # Parse the incoming WebSocket message as JSON
         text_data_json = json.loads(text_data)
 
-        # Get the typing status from the JSON data
+        # Get the typing status and edit message data from the JSON data
         typing = text_data_json.get("typing", False)
+        edit_message = text_data_json.get("edit_message", None)
 
-        # Send a message to the channel layer group with the typing status and sender ID
-        await self.channel_layer.group_send(
-            self.room_group_name,
-            {
-                "type": "chat_message",
-                "typing": typing,
-                "sender_id": self.user.id,
-            },
-        )
+        if edit_message:
+            # Extract message details from the edit_message
+            message_id = edit_message.get("message_id")
+            new_content = edit_message.get("new_content")
+
+            # Broadcast the edited message to the group
+            await self.channel_layer.group_send(
+                self.room_group_name,
+                {
+                    "type": "chat_message_edit",
+                    "message_id": message_id,
+                    "new_content": new_content,
+                    "sender_id": self.user.id,
+                }
+            )
+        else:
+            # Send a message to the channel layer group with the typing status and sender ID
+            await self.channel_layer.group_send(
+                self.room_group_name,
+                {
+                    "type": "chat_message",
+                    "typing": typing,
+                    "sender_id": self.user.id,
+                }
+            )
 
     async def chat_message(self, event):
         # Retrieve typing status and sender ID from the event and
@@ -141,6 +158,23 @@ class ChatConsumer(AsyncWebsocketConsumer):
             text_data=json.dumps(
                 {
                     "typing": typing,
+                    "sender_id": sender_id,
+                }
+            )
+        )
+
+    async def chat_message_edit(self, event):
+        # Retrieve edited message details from the event
+        message_id = event["message_id"]
+        new_content = event["new_content"]
+        sender_id = event["sender_id"]
+
+        # Send the edited message details back to the WebSocket client
+        await self.send(
+            text_data=json.dumps(
+                {
+                    "message_id": message_id,
+                    "new_content": new_content,
                     "sender_id": sender_id,
                 }
             )

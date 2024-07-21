@@ -31,5 +31,13 @@ chatSocket.onmessage = (e) => {
 
     if (data.sender_id !== userId) {
         typingIndicator.style.display = data.typing ? 'block' : 'none';
+
+        if (data.message_id && data.new_content) {
+            const messageElement = document.querySelector(`div[data-message-id='${data.message_id}']`);
+            if (messageElement) {
+                const contentElement = messageElement.querySelector('.message-content');
+                contentElement.innerHTML = wrapEditedContentWithAnchorTags(data.new_content);
+            }
+        }
     }
 };

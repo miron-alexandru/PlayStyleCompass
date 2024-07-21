@@ -13,6 +13,7 @@ from django.utils import timezone as django_timezone
 from django.utils.safestring import mark_safe
 from ..models import Game, Franchise, Character
 from django.http import QueryDict
+from django.utils.html import escape
 
 
 register = template.Library()
@@ -160,6 +161,9 @@ def game_link(game_name):
     game_titles = Game.objects.values_list("title", flat=True)
     game_name_lower = game_name.lower()
 
+    # Escape the game_name to prevent XSS
+    escaped_game_name = escape(game_name)
+
     # Find the closest match
     closest_matches = difflib.get_close_matches(
         game_name_lower, [title.lower() for title in game_titles], n=1, cutoff=0.70
@@ -170,11 +174,12 @@ def game_link(game_name):
         try:
             game = Game.objects.get(title__iexact=closest_match)
             url = reverse("playstyle_compass:view_game", args=[game.guid])
-            return f'<a href="{url}">{game_name}</a>'
+            # Return an escaped HTML anchor tag
+            return f'<a href="{escape(url)}">{escaped_game_name}</a>'
         except Game.DoesNotExist:
-            return game_name
+            return escaped_game_name
     else:
-        return game_name
+        return escaped_game_name
 
 
 @register.filter
@@ -184,6 +189,7 @@ def object_link(name, object_type):
     It retrieves the closest match to the provided name from the database
     """
     name_lower = name.lower()
+    escaped_name = escape(name)  # Escape the input name
 
     if object_type == "franchise":
         titles = Franchise.objects.values_list("title", flat=True)
@@ -196,7 +202,7 @@ def object_link(name, object_type):
         url_name = "playstyle_compass:character"
         model = Character
     else:
-        return name
+        return escaped_name
 
     closest_matches = difflib.get_close_matches(
         name_lower,
@@ -222,11 +228,12 @@ def object_link(name, object_type):
                 obj = model.objects.get(name__iexact=closest_match)
 
             url = reverse(url_name, args=[obj.id])
-            return f'<a href="{url}">{name}</a>'
+            escaped_url = escape(url)  # Escape the URL
+            return f'<a href="{escaped_url}">{escaped_name}</a>'
         except model.DoesNotExist:
-            return name
+            return escaped_name
     else:
-        return name
+        return escaped_name
 
 
 @register.simple_tag

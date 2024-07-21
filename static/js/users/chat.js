@@ -110,35 +110,18 @@ function editMessage(messageId) {
 
     saveButton.addEventListener('click', () => {
         const newContent = inputField.value;
-
-        fetch(editUrl, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-                'X-CSRFToken': csrfToken,
-            },
-            body: new URLSearchParams({ content: newContent }),
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.status === 'Message updated') {
-                inputField.replaceWith(contentElement);
-                contentElement.innerHTML = wrapEditedContentWithAnchorTags(newContent);
-                saveButton.remove();
-                cancelButton.remove();
-                editButton.style.display = '';
-            } else {
-                alert(data.error);
-                if (data.error === 'Message editing time limit exceeded') {
-                    cancelEdit();
-                    editButton.style.display = 'none';
-                }
+        chatSocket.send(JSON.stringify({
+            edit_message: {
+                message_id: messageId,
+                new_content: newContent
             }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            cancelEdit();
-        });
+        }));
+
+        inputField.replaceWith(contentElement);
+        contentElement.innerHTML = wrapEditedContentWithAnchorTags(newContent);
+        saveButton.remove();
+        cancelButton.remove();
+        editButton.style.display = '';
     });
 
     cancelButton.addEventListener('click', cancelEdit);
@@ -314,5 +297,3 @@ document.addEventListener('DOMContentLoaded', function() {
         textarea.style.overflowY = 'hidden';
     });
 });
-
-

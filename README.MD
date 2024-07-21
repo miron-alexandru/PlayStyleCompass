@@ -46,6 +46,9 @@ Websites for .env configuration: [GiantBomb](https://www.giantbomb.com/) / [Send
 <summary><h2>PlayStyle Compass Changelog</h2></summary>
 
 ### Version v2.0:
+* Security measures for XSS attacks.
+* Message content is changing in real time for both users after message editing.
+* Chat CSS improvements.
 * Users are able to edit their messages (available 2 minutes for each message).
 * Implemented Typing Feature: When an user is typing in chat there is a "User is typing..." message displayed to the other user.
 * Chat Improvements: Chat header with options and warnings before deleting messages and visiting links.

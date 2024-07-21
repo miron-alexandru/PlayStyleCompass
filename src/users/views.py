@@ -1,5 +1,6 @@
 """Defines views."""
 
+import time
 from datetime import datetime, timedelta
 import asyncio
 from asgiref.sync import sync_to_async
@@ -35,7 +36,7 @@ from django.utils.http import (
     urlsafe_base64_encode,
     urlsafe_base64_decode,
 )
-from django.utils.html import format_html
+from django.utils.html import format_html, escape
 from django.utils.encoding import (
     force_bytes,
     force_str,
@@ -1275,6 +1276,23 @@ def create_message(request):
     if not content:
         return JsonResponse({"error": "You must write something"}, status=400)
 
+    content = escape(content)
+
+    # Rate limiting check -> max 20 messages in 20 seconds
+    cache_key = f"message_count_{username}"
+    current_time = time.time()
+
+    message_info = cache.get(cache_key, {'count': 0, 'timestamps': []})
+    message_info['timestamps'] = [ts for ts in message_info['timestamps'] if current_time - ts < 20]
+
+    if len(message_info['timestamps']) >= 20:
+        return JsonResponse({"error": "You are sending messages too quickly. Please slow down."}, status=429)
+
+    message_info['timestamps'].append(current_time)
+    message_info['count'] = len(message_info['timestamps'])
+
+    cache.set(cache_key, message_info, timeout=20)
+
     ChatMessage.objects.create(sender=sender, recipient=recipient, content=content)
     process_chat_notification(sender, recipient)
 
@@ -1303,7 +1321,9 @@ def edit_message(request, message_id):
     if not new_content:
         return JsonResponse({"error": "You must write something"}, status=400)
 
-    message.content = new_content
+    escaped_content = escape(new_content)
+
+    message.content = escaped_content
     message.save()
 
     return JsonResponse({"status": "Message updated"}, status=200)
@@ -1361,6 +1381,7 @@ async def stream_chat_messages(request, recipient_id: int) -> StreamingHttpRespo
 
             async for message in new_messages:
                 message['created_at'] = message['created_at'].isoformat()
+                message['content'] = escape(message['content'])
                 json_message = json.dumps(message, cls=DjangoJSONEncoder)
 
                 yield f"data: {json_message}\n\n"
@@ -1396,6 +1417,7 @@ async def stream_chat_messages(request, recipient_id: int) -> StreamingHttpRespo
 
         async for message in messages:
             message['created_at'] = message['created_at'].isoformat()
+            message['content'] = escape(message['content'])
             json_message = json.dumps(message, cls=DjangoJSONEncoder)
 
             yield f"data: {json_message}\n\n"
