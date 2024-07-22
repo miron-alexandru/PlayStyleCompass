@@ -1282,14 +1282,19 @@ def create_message(request):
     cache_key = f"message_count_{username}"
     current_time = time.time()
 
-    message_info = cache.get(cache_key, {'count': 0, 'timestamps': []})
-    message_info['timestamps'] = [ts for ts in message_info['timestamps'] if current_time - ts < 20]
+    message_info = cache.get(cache_key, {"count": 0, "timestamps": []})
+    message_info["timestamps"] = [
+        ts for ts in message_info["timestamps"] if current_time - ts < 20
+    ]
 
-    if len(message_info['timestamps']) >= 20:
-        return JsonResponse({"error": "You are sending messages too quickly. Please slow down."}, status=429)
+    if len(message_info["timestamps"]) >= 20:
+        return JsonResponse(
+            {"error": "You are sending messages too quickly. Please slow down."},
+            status=429,
+        )
 
-    message_info['timestamps'].append(current_time)
-    message_info['count'] = len(message_info['timestamps'])
+    message_info["timestamps"].append(current_time)
+    message_info["count"] = len(message_info["timestamps"])
 
     cache.set(cache_key, message_info, timeout=20)
 
@@ -1316,7 +1321,9 @@ def edit_message(request, message_id):
 
     edit_time_limit = timedelta(minutes=2)
     if timezone.now() > message.created_at + edit_time_limit:
-        return JsonResponse({"error": "Message editing time limit exceeded"}, status=403)
+        return JsonResponse(
+            {"error": "Message editing time limit exceeded"}, status=403
+        )
 
     if not new_content:
         return JsonResponse({"error": "You must write something"}, status=400)
@@ -1380,8 +1387,8 @@ async def stream_chat_messages(request, recipient_id: int) -> StreamingHttpRespo
             )
 
             async for message in new_messages:
-                message['created_at'] = message['created_at'].isoformat()
-                message['content'] = escape(message['content'])
+                message["created_at"] = message["created_at"].isoformat()
+                message["content"] = escape(message["content"])
                 json_message = json.dumps(message, cls=DjangoJSONEncoder)
 
                 yield f"data: {json_message}\n\n"
@@ -1416,8 +1423,8 @@ async def stream_chat_messages(request, recipient_id: int) -> StreamingHttpRespo
         )
 
         async for message in messages:
-            message['created_at'] = message['created_at'].isoformat()
-            message['content'] = escape(message['content'])
+            message["created_at"] = message["created_at"].isoformat()
+            message["content"] = escape(message["content"])
             json_message = json.dumps(message, cls=DjangoJSONEncoder)
 
             yield f"data: {json_message}\n\n"

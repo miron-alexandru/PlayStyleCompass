@@ -46,6 +46,7 @@ Websites for .env configuration: [GiantBomb](https://www.giantbomb.com/) / [Send
 <summary><h2>PlayStyle Compass Changelog</h2></summary>
 
 ### Version v2.0:
+* Users are able to send a certain number of messages in a timeframe (spamming prevented).
 * Security measures for XSS attacks.
 * Message content is changing in real time for both users after message editing.
 * Chat CSS improvements.

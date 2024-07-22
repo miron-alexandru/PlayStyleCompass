@@ -143,22 +143,26 @@ def save_quiz_responses(user, questions, form):
         else:
             raise ValidationError("Invalid option selected")
 
+
 def process_chat_notification(sender, recipient):
     """Helper function used to send a notification when a message in chat is sent
     if the right amount of time has passed since the last notification was sent."""
     now = timezone.now()
     throttle_time = timedelta(minutes=10)
 
-    if not recipient.userprofile.last_chat_notification or now - recipient.userprofile.last_chat_notification > throttle_time:
+    if (
+        not recipient.userprofile.last_chat_notification
+        or now - recipient.userprofile.last_chat_notification > throttle_time
+    ):
         user_in_notification = sender.userprofile.profile_name
         profile_url = reverse("users:view_profile", args=[user_in_notification])
         navigation_url = reverse("users:chat", args=[sender.id])
 
         message = (
             f'<a class="notification-profile" title="View User Profile" href="{profile_url}">{user_in_notification}</a> '
-                "has sent you a new message in the Chat!<br>"
-                    f'<a class="notification-link" title="Open Chat" href="{navigation_url}">Open Chat</a>'
-                )
+            "has sent you a new message in the Chat!<br>"
+            f'<a class="notification-link" title="Open Chat" href="{navigation_url}">Open Chat</a>'
+        )
 
         notification = Notification(user=recipient, message=message)
         notification.save()

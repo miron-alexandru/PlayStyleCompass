@@ -135,7 +135,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
                     "message_id": message_id,
                     "new_content": new_content,
                     "sender_id": self.user.id,
-                }
+                },
             )
         else:
             # Send a message to the channel layer group with the typing status and sender ID
@@ -145,7 +145,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
                     "type": "chat_message",
                     "typing": typing,
                     "sender_id": self.user.id,
-                }
+                },
             )
 
     async def chat_message(self, event):

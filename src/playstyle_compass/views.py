@@ -598,7 +598,9 @@ def edit_review(request, game_id):
             # Escape data before saving
             cleaned_data = form.cleaned_data
             review.review_deck = escape(cleaned_data.get("review_deck", ""))
-            review.review_description = escape(cleaned_data.get("review_description", ""))
+            review.review_description = escape(
+                cleaned_data.get("review_description", "")
+            )
             review.score = cleaned_data.get("score")
 
             review.save()
