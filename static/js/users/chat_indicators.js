@@ -37,6 +37,16 @@ chatSocket.onmessage = (e) => {
             if (messageElement) {
                 const contentElement = messageElement.querySelector('.message-content');
                 contentElement.innerHTML = wrapEditedContentWithAnchorTags(data.new_content);
+
+                let editedIndicator = messageElement.querySelector('.message-edited');
+                if (!editedIndicator) {
+                    editedIndicator = document.createElement('div');
+                    editedIndicator.classList.add('message-edited');
+                    editedIndicator.innerText = 'Edited';
+                    contentElement.insertAdjacentElement('afterend', editedIndicator);
+                } else {
+                    editedIndicator.style.display = 'block';
+                }
             }
         }
     }

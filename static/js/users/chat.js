@@ -110,18 +110,51 @@ function editMessage(messageId) {
 
     saveButton.addEventListener('click', () => {
         const newContent = inputField.value;
-        chatSocket.send(JSON.stringify({
-            edit_message: {
-                message_id: messageId,
-                new_content: newContent
-            }
-        }));
 
-        inputField.replaceWith(contentElement);
-        contentElement.innerHTML = wrapEditedContentWithAnchorTags(newContent);
-        saveButton.remove();
-        cancelButton.remove();
-        editButton.style.display = '';
+        fetch(editUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'X-CSRFToken': csrfToken,
+            },
+            body: new URLSearchParams({ content: newContent }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'Message updated') {
+                chatSocket.send(JSON.stringify({
+                    edit_message: {
+                        message_id: messageId,
+                        new_content: newContent
+                    }
+                }));
+
+                inputField.replaceWith(contentElement);
+                contentElement.innerHTML = wrapEditedContentWithAnchorTags(newContent);
+
+                let editedIndicator = messageElement.querySelector('.message-edited');
+                if (!editedIndicator) {
+                    editedIndicator = document.createElement('div');
+                    editedIndicator.classList.add('message-edited');
+                    editedIndicator.innerText = 'Edited';
+                    contentElement.insertAdjacentElement('afterend', editedIndicator);
+                }
+
+                saveButton.remove();
+                cancelButton.remove();
+                editButton.style.display = '';
+            } else {
+                alert(data.error);
+                if (data.error === 'Message editing time limit exceeded') {
+                    cancelEdit();
+                    editButton.style.display = 'none';
+                }
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            cancelEdit();
+        });
     });
 
     cancelButton.addEventListener('click', cancelEdit);
@@ -141,17 +174,21 @@ document.addEventListener('DOMContentLoaded', function() {
         eventSource.onmessage = event => {
             const data = JSON.parse(event.data);
             const isCurrentUser = data.sender__id === currentUserId;
+            const formattedTimestamp = formatTimestamp(data.created_at);
 
             const messageHTML = `
             <div class="message-wrapper ${isCurrentUser ? 'sent' : 'received'}" data-message-id="${data.id}">
                 <img src="${data.profile_picture_url}" alt="Profile Picture" class="chat-profile-picture">
                 <div class="message-box ${isCurrentUser ? 'sent' : 'received'}">
                     <div class="message-content-wrapper" data-creation-time="${data.created_at}">
-                    <div class="message-content">${wrapUrlsWithAnchorTags(data.content)}</div>
+                        <div class="message-content">${wrapUrlsWithAnchorTags(data.content)}</div>
+                        ${data.edited ? '<div class="message-edited">Edited</div>' : ''}
+                        <div class="message-timestamp">${formattedTimestamp}</div>
                         ${isCurrentUser ? (isNewMessage(data.created_at) ? `<button class="edit-message-button">${translate('Edit')}</button>` : '') : ''}
                     </div>
                 </div>
             </div>`;
+
 
             sseData.innerHTML += messageHTML;
             scrollToBottom();
@@ -164,6 +201,18 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         };
     }
+
+    function formatTimestamp(timestamp) {
+        const date = new Date(timestamp);
+        let hours = date.getHours();
+        const minutes = date.getMinutes();
+        const ampm = hours >= 12 ? 'PM' : 'AM';
+        hours = hours % 12;
+        hours = hours ? hours : 12;
+        const minutesStr = minutes < 10 ? '0' + minutes : minutes;
+        return `${hours}:${minutesStr} ${ampm}`;
+    }
+
 
     function handleEditButtonClick(event) {
         const messageId = event.target.closest('.message-wrapper').getAttribute('data-message-id');

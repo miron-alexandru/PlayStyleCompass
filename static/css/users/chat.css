@@ -379,3 +379,10 @@ form {
 .message-textarea::-webkit-scrollbar-thumb {
   border-radius: 6px !important;
 }
+
+.message-timestamp, .message-edited {
+    font-size: 11px;
+    color: #888;
+    right: 0;
+    text-align: right;
+}

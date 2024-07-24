@@ -1331,6 +1331,7 @@ def edit_message(request, message_id):
     escaped_content = escape(new_content)
 
     message.content = escaped_content
+    message.edited = True
     message.save()
 
     return JsonResponse({"status": "Message updated"}, status=200)
@@ -1383,6 +1384,7 @@ async def stream_chat_messages(request, recipient_id: int) -> StreamingHttpRespo
                     "content",
                     "profile_picture_url",
                     "sender__id",
+                    "edited"
                 )
             )
 
@@ -1419,6 +1421,7 @@ async def stream_chat_messages(request, recipient_id: int) -> StreamingHttpRespo
                 "content",
                 "profile_picture_url",
                 "sender__id",
+                "edited"
             )
         )
 
