@@ -14,6 +14,7 @@
 
 {% block content %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/users/chat.css' %}">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/emoji-mart/css/emoji-mart.css">
 
 <div class="chat-container" id="chat-container" data-user-id="{{ request.user.id }}" data-recipient-id="{{ recipient.id }}">
     <div class="chat-header">
@@ -33,21 +34,23 @@
     <form id="myForm" x-cloak @submit.prevent="submit" x-data="{ state: 'composing', errors: {}, content: '' }"
         data-url="{% url 'users:create_message' %}">
         <div class="input-container">
-            <textarea class="message-textarea" id="chat-message-input" name="content" @input="state = 'composing'; content = $event.target.value"
-                autofocus placeholder="{% trans 'Enter your message...' %}" x-model="content"></textarea>
+            <button type="button" id="emoji-button" class="emoji-button">😊</button>
+            <textarea class="message-textarea" id="chat-message-input" name="content" @input="state = 'composing'; content = $event.target.value" autofocus placeholder="{% trans 'Enter your message...' %}" x-model="content"></textarea>
             <button type="submit" class="send-button" :disabled="!content.trim()">
                 ➤
             </button>
         </div>
-
+        <div id="emoji-picker" class="emoji-picker"></div>
         <div x-show="state === 'error'" class="error-message">
             <p x-text="errors.message"></p>
         </div>
     </form>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/emoji-mart@latest/dist/browser.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.1/dist/cdn.min.js" defer></script>
 <script src="{% static 'js/users/chat_indicators.js' %}" defer></script>
 <script src="{% static 'js/users/chat.js' %}" defer></script>
+<script src="{% static 'js/users/chat_features.js' %}" defer></script>
 
 {% endblock content %}

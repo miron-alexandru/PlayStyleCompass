@@ -249,23 +249,36 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function checkForMessages() {
+        const loadingDiv = document.querySelector('.loading-messages');
+        const noMessagesDiv = document.querySelector('.no-messages');
+            if (loadingDiv) {
+            loadingDiv.remove();
+        }
+
         if (sseData.children.length === 0) {
+            if (noMessagesDiv) {
+                noMessagesDiv.remove();
+            }
             sseData.innerHTML = `<div class="no-messages">${noMessagesText}</div>`;
         } else {
-            const noMessagesDiv = document.querySelector('.no-messages');
             if (noMessagesDiv) {
                 noMessagesDiv.remove();
             }
         }
     }
 
+    function showLoading() {
+        sseData.innerHTML = `<div class="loading-messages">Loading Messages...</div>`;
+    }
+
     if (typeof(EventSource) !== 'undefined') {
         const streamUrl = sseData.dataset.streamUrl;
+        showLoading();
         startSSE(streamUrl);
         scrollToBottom();
-        checkForMessages();
+        setTimeout(checkForMessages, 1000);
     } else {
-        sseData.innerHTML = 'Your browser doesn\'t receive server-sent events.';
+        sseData.innerHTML = 'Your browser doesn\'t support server-sent events.';
     }
 });
 

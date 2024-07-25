@@ -1,5 +1,5 @@
 .chat-container {
-    max-width: 550px;
+    max-width: 600px;
     margin: auto;
     border-radius: 6px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
@@ -31,7 +31,7 @@ form {
 
 .send-button {
     position: absolute;
-    right: -10px;
+    right: -15px;
     top: 60%;
     transform: translateY(-50%);
     padding: 0;
@@ -87,11 +87,11 @@ form {
     margin-bottom: 10px;
 }
 
-.no-messages {
+.no-messages, .loading-messages {
     text-align: center;
     color: #999;
     font-style: italic;
-    margin-top: 10px;
+    margin-top: 5px;
 }
 
 .input-containere {
@@ -358,7 +358,7 @@ form {
     background: #f8f9fa;
     border: 1px solid lightgray;
     box-sizing: border-box;
-    width: calc(100% - 30px);
+    width: calc(100% - 45px);
     padding: 12px 20px 12px 12px;
     border-radius: 6px;
     height: 45px;
@@ -385,4 +385,27 @@ form {
     color: #888;
     right: 0;
     text-align: right;
+}
+
+.emoji-picker {
+    display: none;
+    position: absolute;
+    bottom: 20px;
+    left: -60px;
+    z-index: 1000;
+}
+
+.emoji-picker.visible {
+    display: block;
+}
+
+.emoji-button {
+    font-size: 23px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    margin-left: -21px;
+    margin-right: -2px;
+    align-self: center;
+    margin-bottom: -10px;
 }
