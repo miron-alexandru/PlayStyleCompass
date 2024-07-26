@@ -213,7 +213,6 @@ form {
     justify-content: space-between;
     align-items: center;
     padding: 6px 12px;
-    backgrounde: #e6f7ff;
     background: #4a5a70;
     border: none;
 }
@@ -408,4 +407,44 @@ form {
     margin-right: -2px;
     align-self: center;
     margin-bottom: -10px;
+}
+
+.search-container {
+    display: none;
+    margin-left: 280px; 
+}
+
+#search-input {
+    width: 170px;
+    height: 35px;
+    padding: 5px;
+    font-size: 14px;
+}
+
+#color-picker-container {
+    position: absolute;
+    top: 11%;
+    right: 167px;
+    margin-top: 10px;
+    background: #4a5a70;
+    padding: 7px;
+    padding-left: 20px;
+    border-radius: 0 5px 5px 0;
+    display: none;
+}
+
+#default-color-button {
+    padding: 3px 6px;
+    font-size: 11px;
+    border: none;
+    border-radius: 5px;
+    background: transparent;
+    color: #fff;
+    cursor: pointer;
+    margin-left: 5px;
+}
+
+
+#default-color-button:hover {
+    background-color: #2f4255;
 }

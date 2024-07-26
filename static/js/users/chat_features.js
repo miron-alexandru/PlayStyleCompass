@@ -25,3 +25,112 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+
+
+document.addEventListener('DOMContentLoaded', function() {
+
+    const searchButton = document.getElementById('search-messages-button');
+    const searchContainer = document.getElementById('search-container');
+
+    function toggleSearchBox() {
+        if (searchContainer.style.display === 'none' || searchContainer.style.display === '') {
+            searchContainer.style.display = 'block';
+            searchInput.focus();
+        } else {
+            searchContainer.style.display = 'none';
+        }
+    }
+
+    searchButton.addEventListener('click', toggleSearchBox);
+
+    const searchInput = document.getElementById('search-input');
+    searchInput.addEventListener('input', function() {
+        const query = searchInput.value.toLowerCase();
+        filterMessages(query);
+    });
+
+    function filterMessages(query) {
+        const messages = document.querySelectorAll('.message-wrapper');
+        messages.forEach(message => {
+            const messageContent = message.querySelector('.message-content').innerText.toLowerCase();
+            if (messageContent.includes(query)) {
+                message.style.display = '';
+            } else {
+                message.style.display = 'none';
+            }
+        });
+    }
+});
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    const defaultColor = '#e6f7ff';
+    const chatMessages = document.querySelector('.chat-messages');
+    const form = document.querySelector('form');
+    const chatContainer = document.querySelector('.chat-container');
+    const changeBgColorButton = document.getElementById('change-bg-color-button');
+    const colorPickerContainer = document.getElementById('color-picker-container');
+    const defaultColorButton = document.getElementById('default-color-button');
+
+    const pickr = Pickr.create({
+        el: '#color-picker',
+        theme: 'classic',
+        swatches: [
+            defaultColor,
+            '#ff0000', '#00ff00', '#0000ff',
+        ],
+        components: {
+            preview: true,
+            opacity: true,
+            hue: true,
+            interaction: {
+                hex: true,
+                rgba: true,
+                input: true,
+                clear: true,
+                save: true
+            }
+        },
+    default: '#e6f7ff', 
+    });
+
+    changeBgColorButton.addEventListener('click', function() {
+        const isDisplayed = colorPickerContainer.style.display === 'flex';
+        colorPickerContainer.style.display = isDisplayed ? 'none' : 'flex';
+    });
+
+    pickr.on('change', (color) => {
+        const selectedColor = color.toHEXA().toString();
+        chatMessages.style.backgroundColor = selectedColor;
+        form.style.backgroundColor = selectedColor;
+        chatContainer.style.backgroundColor = selectedColor;
+
+        localStorage.setItem('chatBackgroundColor', selectedColor);
+    });
+
+    defaultColorButton.addEventListener('click', function() {
+        pickr.setColor(defaultColor);
+        chatMessages.style.backgroundColor = defaultColor;
+        form.style.backgroundColor = defaultColor;
+        chatContainer.style.backgroundColor = defaultColor;
+
+        localStorage.setItem('chatBackgroundColor', defaultColor);
+    });
+
+    const savedColor = localStorage.getItem('chatBackgroundColor');
+    if (savedColor) {
+        pickr.setColor(savedColor);
+        chatMessages.style.backgroundColor = savedColor;
+        form.style.backgroundColor = savedColor;
+        chatContainer.style.backgroundColor = savedColor;
+    }
+
+    document.addEventListener('click', function(event) {
+        if (colorPickerContainer.style.display === 'flex' &&
+            !colorPickerContainer.contains(event.target) &&
+            !changeBgColorButton.contains(event.target)) {
+            colorPickerContainer.style.display = 'none';
+        }
+    });
+});
+
