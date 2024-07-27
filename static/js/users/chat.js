@@ -158,6 +158,36 @@ function editMessage(messageId) {
     });
 
     cancelButton.addEventListener('click', cancelEdit);
+
+    const sendButton = document.querySelector('.send-button');
+    if (sendButton) {
+        sendButton.addEventListener('click', () => {
+            cancelEdit();
+        });
+    }
+}
+
+function getFormattedDateHeader(dateString) {
+    const date = new Date(dateString);
+    const options = { day: 'numeric', month: 'long', year: 'numeric' };
+    return date.toLocaleDateString(undefined, options);
+}
+
+function isNewDate(dateString, lastDisplayedDate) {
+    const currentDate = new Date(dateString).toDateString();
+    return lastDisplayedDate !== currentDate;
+}
+
+function addDateHeaderIfNeeded(dateString, lastDisplayedDate, chatMessagesContainer) {
+    if (isNewDate(dateString, lastDisplayedDate)) {
+        const formattedDate = getFormattedDateHeader(dateString);
+        const dateHeaderHTML = `
+            <div class="date-header">${formattedDate}</div>
+        `;
+        chatMessagesContainer.insertAdjacentHTML('beforeend', dateHeaderHTML);
+        return new Date(dateString).toDateString();
+    }
+    return lastDisplayedDate;
 }
 
 
@@ -167,7 +197,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const sseData = document.getElementById('sse-data');
     const noMessagesText = translate("No messages. Say something!");
     const chatContainer = document.getElementById('chat-container');
+    const chatMessagesContainer = document.getElementById('chat-messages');
     const currentUserId = parseInt(chatContainer.getAttribute('data-user-id'));
+    let lastDisplayedDate = null;
 
     function startSSE(url) {
         eventSource = new EventSource(url);
@@ -175,6 +207,8 @@ document.addEventListener('DOMContentLoaded', function() {
             const data = JSON.parse(event.data);
             const isCurrentUser = data.sender__id === currentUserId;
             const formattedTimestamp = formatTimestamp(data.created_at);
+            const messageTimestamp = data.created_at;
+            lastDisplayedDate = addDateHeaderIfNeeded(messageTimestamp, lastDisplayedDate, chatMessagesContainer);
 
             const messageHTML = `
             <div class="message-wrapper ${isCurrentUser ? 'sent' : 'received'}" data-message-id="${data.id}">
@@ -190,6 +224,7 @@ document.addEventListener('DOMContentLoaded', function() {
             </div>`;
 
 
+            chatMessagesContainer.insertAdjacentHTML('beforeend', messageHTML);
             sseData.innerHTML += messageHTML;
             scrollToBottom();
             checkForMessages();

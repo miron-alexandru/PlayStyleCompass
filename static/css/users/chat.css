@@ -448,3 +448,18 @@ form {
 #default-color-button:hover {
     background-color: #2f4255;
 }
+
+.date-header {
+    display: inline-block;
+    text-align: center;
+    color: #D9D9D9;
+    font-size: 11px;
+    margin: 0;
+    padding: 5px 10px;
+    background-color: #4a5a70;
+    border-radius: 20px;
+    font-weight: bold;
+    position: relative;
+    left: 51%;
+    transform: translateX(-50%);
+}
