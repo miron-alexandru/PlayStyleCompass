@@ -134,3 +134,53 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    const fileButton = document.getElementById('file-button');
+    const fileInput = document.getElementById('file-input');
+    const form = document.getElementById('myForm');
+    const sendButton = document.querySelector('.send-button');
+    const messageTextarea = document.getElementById('chat-message-input');
+
+    if (!fileButton || !fileInput || !form || !sendButton || !messageTextarea) {
+        return;
+    }
+
+    fileButton.addEventListener('click', () => {
+        fileInput.click();
+    });
+
+    fileInput.addEventListener('change', () => {
+        sendButton.disabled = !messageTextarea.value.trim() && !fileInput.files.length;
+
+        if (fileInput.files.length > 0) {
+            sendButton.click();
+        }
+    });
+});
+
+
+function getFileNameFromUrl(url) {
+        const decodedUrl = decodeURIComponent(url);
+        return decodedUrl.substring(decodedUrl.lastIndexOf('/') + 1);
+    }
+
+document.addEventListener('DOMContentLoaded', () => {
+    document.body.addEventListener('click', (event) => {
+        if (event.target.classList.contains('file-link')) {
+            event.preventDefault();
+            const fileUrl = event.target.href;
+            const fileName = getFileNameFromUrl(fileUrl);
+
+            if (confirm(`This file was shared by another user. Do you trust this source and want to download: "${fileName}" ?`)) {
+                const downloadLink = document.createElement('a');
+                downloadLink.href = fileUrl;
+                downloadLink.download = fileName;
+                document.body.appendChild(downloadLink);
+                downloadLink.click();
+                document.body.removeChild(downloadLink);
+            }
+        }
+    });
+});

@@ -35,9 +35,16 @@ function isNewMessage(created_at) {
 function submit(event) {
     event.preventDefault();
 
-    const formData = new FormData(event.target);
-    const endpointUrl = event.target.dataset.url;
-    const textarea = event.target.querySelector('textarea');
+    const form = event.target;
+    const formData = new FormData(form);
+    const endpointUrl = form.dataset.url;
+    const textarea = form.querySelector('textarea');
+    const fileInput = form.querySelector('input[type="file"]');
+    const sendButton = document.querySelector('.send-button');
+
+    if (fileInput.files.length > 0) {
+        formData.append('file', fileInput.files[0]);
+    }
 
     fetch(endpointUrl, {
         method: "POST",
@@ -52,8 +59,10 @@ function submit(event) {
             this.state = 'success';
             textarea.focus();
             textarea.value = ''; 
+            fileInput.value = '';
             this.errors = {};
             this.content = '';
+            sendButton.disabled = !textarea.value.trim();
         } else {
             this.state = 'error';
             this.errors = { message: body.error || 'Unknown error' };
@@ -184,7 +193,7 @@ function addDateHeaderIfNeeded(dateString, lastDisplayedDate, chatMessagesContai
         const dateHeaderHTML = `
             <div class="date-header">${formattedDate}</div>
         `;
-        chatMessagesContainer.insertAdjacentHTML('beforeend', dateHeaderHTML);
+        chatMessagesContainer.insertAdjacentHTML('afterbegin', dateHeaderHTML);
         return new Date(dateString).toDateString();
     }
     return lastDisplayedDate;
@@ -216,6 +225,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 <div class="message-box ${isCurrentUser ? 'sent' : 'received'}">
                     <div class="message-content-wrapper" data-creation-time="${data.created_at}">
                         <div class="message-content">${wrapUrlsWithAnchorTags(data.content)}</div>
+                        ${
+                          data.file 
+                          ? `<div class="message-file">
+                                File Attachment: <a href="${data.file}" download="${getFileNameFromUrl(data.file)}" class="file-link">
+                                    ${getFileNameFromUrl(data.file)}
+                                </a>
+                            </div>`
+                          : ''
+                        }
                         ${data.edited ? '<div class="message-edited">Edited</div>' : ''}
                         <div class="message-timestamp">${formattedTimestamp}</div>
                         ${isCurrentUser ? (isNewMessage(data.created_at) ? `<button class="edit-message-button">${translate('Edit')}</button>` : '') : ''}
@@ -223,8 +241,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 </div>
             </div>`;
 
-
-            chatMessagesContainer.insertAdjacentHTML('beforeend', messageHTML);
             sseData.innerHTML += messageHTML;
             scrollToBottom();
             checkForMessages();
@@ -235,6 +251,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 editButton.addEventListener('click', handleEditButtonClick);
             });
         };
+    }
+
+    function getFileNameFromUrl(url) {
+        const decodedUrl = decodeURIComponent(url);
+        return decodedUrl.substring(decodedUrl.lastIndexOf('/') + 1);
     }
 
     function formatTimestamp(timestamp) {

@@ -1257,6 +1257,9 @@ def chat(request, recipient_id: int):
     return render(request, "messaging/chat.html", context)
 
 
+from django.core.files.storage import default_storage
+from django.core.files.base import ContentFile
+
 @login_required
 def create_message(request):
     """View to create/send a chat message to a user."""
@@ -1264,6 +1267,7 @@ def create_message(request):
         return JsonResponse({"error": "Invalid request method"}, status=405)
 
     content = request.POST.get("content")
+    file_url = None
     username = request.session.get("username")
     recipient_username = request.session.get("recipient_username")
 
@@ -1273,10 +1277,16 @@ def create_message(request):
     sender = get_object_or_404(User, username=username)
     recipient = get_object_or_404(User, username=recipient_username)
 
-    if not content:
+    if not content and not 'file' in request.FILES:
         return JsonResponse({"error": "You must write something"}, status=400)
 
-    content = escape(content)
+    if 'file' in request.FILES:
+        file = request.FILES['file']
+        if file.size > 10 * 1024 * 1024:
+            return JsonResponse({"error": "File size exceeds the limit."}, status=400)
+
+        file_name = default_storage.save(f'chat_files/{file.name}', ContentFile(file.read()))
+        file_url = default_storage.url(file_name)
 
     # Rate limiting check -> max 20 messages in 20 seconds
     cache_key = f"message_count_{username}"
@@ -1298,7 +1308,8 @@ def create_message(request):
 
     cache.set(cache_key, message_info, timeout=20)
 
-    ChatMessage.objects.create(sender=sender, recipient=recipient, content=content)
+    ChatMessage.objects.create(sender=sender,recipient=recipient,content=content, file=file_url if file_url else None)
+    
     process_chat_notification(sender, recipient)
 
     return JsonResponse({"status": "Message created"}, status=201)
@@ -1384,7 +1395,8 @@ async def stream_chat_messages(request, recipient_id: int) -> StreamingHttpRespo
                     "content",
                     "profile_picture_url",
                     "sender__id",
-                    "edited"
+                    "edited",
+                    'file'
                 )
             )
 
@@ -1421,7 +1433,8 @@ async def stream_chat_messages(request, recipient_id: int) -> StreamingHttpRespo
                 "content",
                 "profile_picture_url",
                 "sender__id",
-                "edited"
+                "edited",
+                'file'
             )
         )
 
