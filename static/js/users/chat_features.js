@@ -142,8 +142,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('myForm');
     const sendButton = document.querySelector('.send-button');
     const messageTextarea = document.getElementById('chat-message-input');
+    const fileIndicator = document.getElementById('file-indicator');
 
-    if (!fileButton || !fileInput || !form || !sendButton || !messageTextarea) {
+    if (!fileButton || !fileInput || !form || !sendButton || !messageTextarea || !fileIndicator) {
         return;
     }
 
@@ -152,13 +153,25 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     fileInput.addEventListener('change', () => {
-        sendButton.disabled = !messageTextarea.value.trim() && !fileInput.files.length;
+        const hasFile = fileInput.files.length > 0;
+        const hasMessage = messageTextarea.value.trim();
+        const fileName = hasFile ? fileInput.files[0].name : '';
 
-        if (fileInput.files.length > 0) {
+        sendButton.disabled = !hasMessage && !hasFile;
+
+        if (hasFile && !hasMessage) {
             sendButton.click();
+        }
+
+        if (hasFile) {
+            fileIndicator.textContent = `File attached: ${fileName}`;
+            fileIndicator.style.display = 'inline';
+        } else {
+            fileIndicator.style.display = 'none';
         }
     });
 });
+
 
 
 function getFileNameFromUrl(url) {

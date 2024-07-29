@@ -31,7 +31,7 @@ form {
 
 .send-button {
     position: absolute;
-    right: -15px;
+    right: -14px;
     top: 60%;
     transform: translateY(-50%);
     padding: 0;
@@ -94,17 +94,12 @@ form {
     margin-top: 5px;
 }
 
-.input-containere {
-    display: flex;
-    align-items: center;
-    position: relative;
-}
 
 .input-container {
-    position: relative; /* Ensures absolute positioning within this container */
+    position: relative;
     width: 100%;
-    display: flex; /* Align items horizontally */
-    align-items: flex-start; /* Align items at the start */
+    display: flex;
+    align-items: flex-start;
 }
 
 .message-wrapper {
@@ -357,7 +352,7 @@ form {
     background: #f8f9fa;
     border: 1px solid lightgray;
     box-sizing: border-box;
-    width: calc(100% - 45px);
+    width: calc(100% - 73px);
     padding: 12px 20px 12px 12px;
     border-radius: 6px;
     height: 45px;
@@ -369,6 +364,7 @@ form {
     outline: none;
     margin-top: 15px;
     overflow-y: hidden;
+    margin-left: 21px;
 }
 
 .message-textarea::-webkit-scrollbar {
@@ -403,10 +399,22 @@ form {
     background: none;
     border: none;
     cursor: pointer;
-    margin-left: -21px;
-    margin-right: -2px;
+    margin-left: 0px;
+    margin-right: -22px;
     align-self: center;
     margin-bottom: -10px;
+}
+
+.emoji-button:hover {
+    transform: scale(1.1);
+}
+
+.emoji-button:active {
+    transform: scale(0.95);
+}
+
+.emoji-button:focus {
+    outline: none;
 }
 
 .search-container {
@@ -453,15 +461,17 @@ form {
     display: inline-block;
     text-align: center;
     color: #D9D9D9;
-    font-size: 11px;
+    font-size: 9px;
     margin: 0;
-    padding: 5px 10px;
+    padding: 4px 8px;
     background-color: #4a5a70;
     border-radius: 20px;
     font-weight: bold;
     position: relative;
     left: 51%;
     transform: translateX(-50%);
+    position: absolute;
+    margin-top: -10px;
 }
 
 .file-link {
@@ -476,4 +486,39 @@ form {
 .message-file {
     margin-top: 3px;
     font-size: 14px;
+}
+
+.file-button {
+    color: #293d48;
+    font-size: 22px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    margin-left: -12px;
+    margin-right: -2px;
+    align-self: center;
+    margin-bottom: -10px;
+}
+
+.file-button:hover {
+    transform: scale(1.1);
+}
+
+.file-button:active {
+    transform: scale(1.05);
+}
+
+.file-button:focus {
+    outline: none;
+}
+
+.file-indicator {
+    position: absolute;
+    top: 5px;
+    right: 35px;
+    transform: translateY(-50%);
+    font-size: 12px;
+    color: green;
+    display: none;
+    white-space: nowrap;
 }

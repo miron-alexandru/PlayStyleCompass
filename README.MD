@@ -46,7 +46,10 @@ Websites for .env configuration: [GiantBomb](https://www.giantbomb.com/) / [Send
 <summary><h2>PlayStyle Compass Changelog</h2></summary>
 
 ### Version v2.0:
-* Chat Improvements: Date (day/month/year) displayed for each day in the chat / Solved a bug which caused the Edit message textarea to remain on screen and unresponsive.
+* CSS Improvements in different locations of the Chat.
+* Users are able to attach files to the messages and an indicator is displayed when a file is attached.
+* Changed how the date of the messages currently being viewed is displayed: At the top of the chat, changing while scrolling based on the day of the messages.
+* Chat Improvements: Date of the messages currently being viewed is displayed / Solved a bug which caused the Edit message textarea to remain on screen and unresponsive.
 * Chat Improvements: Changing the background color of the chat / Searching through messages.
 * Users are able to send a certain number of messages in a timeframe (spamming prevented).
 * Security measures for XSS attacks.

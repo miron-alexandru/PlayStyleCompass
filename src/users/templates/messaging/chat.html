@@ -27,9 +27,9 @@
             <i class="fa-solid fa-ellipsis-vertical options-button" onclick="toggleOptionsMenu()"></i>
             <div class="options-menu" id="options-menu">
                 <button id="search-messages-button">{% trans 'Search Messages' %}</button>
+                <button id="change-bg-color-button">{% trans 'Change Background' %}</button>
                 <button id="clear-chat-button" data-url="{% url 'users:delete_chat_messages' recipient_id=recipient.id %}">
                 {% trans "Delete Messages" %}</button>
-                <button id="change-bg-color-button">{% trans 'Change Background' %}</button>
             </div>
         </div>
     </div>
@@ -38,6 +38,7 @@
         <button id="default-color-button">Default</button>
     </div>
     <div id="chat-messages" class="chat-messages" data-edit-message-url="{% url 'users:edit_message' 0 %}">
+        <div id="date-header" class="date-header" style="display:none"></div>
         <div id="sse-data" data-stream-url="{% url 'users:stream_chat_messages' recipient_id=recipient.id %}"></div>
         <div id="typing-indicator">{{ recipient.userprofile.profile_name }} {% trans "is typing..." %}</div>
     </div>
@@ -45,10 +46,11 @@
     <form id="myForm" x-cloak @submit.prevent="submit" x-data="{ state: 'composing', errors: {}, content: '' }"
         data-url="{% url 'users:create_message' %}">
         <div class="input-container">
-            <button type="button" id="file-button" class="file-button">📎</button>
+            <i id="file-button" class="fa-solid fa-paperclip file-button" title="Attach File"></i>
             <input type="file" id="file-input" name="file" style="display: none;">
-            <button type="button" id="emoji-button" class="emoji-button">😊</button>
-            <textarea class="message-textarea" id="chat-message-input" name="content" @input="state = 'composing'; content = $event.target.value" autofocus placeholder="{% trans 'Enter your message...' %}" x-model="content"></textarea>
+            <button type="button" id="emoji-button" class="emoji-button" title="Emoji">😊</button>
+            <textarea class="message-textarea" id="chat-message-input" name="content" @input="state = 'composing'; content = $event.target.value" autofocus placeholder="{% trans 'Message...' %}" x-model="content"></textarea>
+            <span id="file-indicator" class="file-indicator"></span>
             <button type="submit" class="send-button" :disabled="!content.trim()">
                 ➤
             </button>

@@ -41,8 +41,10 @@ function submit(event) {
     const textarea = form.querySelector('textarea');
     const fileInput = form.querySelector('input[type="file"]');
     const sendButton = document.querySelector('.send-button');
+    const fileIndicator = document.getElementById('file-indicator');
+    const hasFile = fileInput.files.length > 0;
 
-    if (fileInput.files.length > 0) {
+    if (hasFile) {
         formData.append('file', fileInput.files[0]);
     }
 
@@ -63,6 +65,10 @@ function submit(event) {
             this.errors = {};
             this.content = '';
             sendButton.disabled = !textarea.value.trim();
+
+            if (hasFile) {
+                fileIndicator.style.display = 'none';
+            }
         } else {
             this.state = 'error';
             this.errors = { message: body.error || 'Unknown error' };
@@ -182,23 +188,6 @@ function getFormattedDateHeader(dateString) {
     return date.toLocaleDateString(undefined, options);
 }
 
-function isNewDate(dateString, lastDisplayedDate) {
-    const currentDate = new Date(dateString).toDateString();
-    return lastDisplayedDate !== currentDate;
-}
-
-function addDateHeaderIfNeeded(dateString, lastDisplayedDate, chatMessagesContainer) {
-    if (isNewDate(dateString, lastDisplayedDate)) {
-        const formattedDate = getFormattedDateHeader(dateString);
-        const dateHeaderHTML = `
-            <div class="date-header">${formattedDate}</div>
-        `;
-        chatMessagesContainer.insertAdjacentHTML('afterbegin', dateHeaderHTML);
-        return new Date(dateString).toDateString();
-    }
-    return lastDisplayedDate;
-}
-
 
 let eventSource;
 
@@ -208,7 +197,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const chatContainer = document.getElementById('chat-container');
     const chatMessagesContainer = document.getElementById('chat-messages');
     const currentUserId = parseInt(chatContainer.getAttribute('data-user-id'));
-    let lastDisplayedDate = null;
 
     function startSSE(url) {
         eventSource = new EventSource(url);
@@ -217,7 +205,6 @@ document.addEventListener('DOMContentLoaded', function() {
             const isCurrentUser = data.sender__id === currentUserId;
             const formattedTimestamp = formatTimestamp(data.created_at);
             const messageTimestamp = data.created_at;
-            lastDisplayedDate = addDateHeaderIfNeeded(messageTimestamp, lastDisplayedDate, chatMessagesContainer);
 
             const messageHTML = `
             <div class="message-wrapper ${isCurrentUser ? 'sent' : 'received'}" data-message-id="${data.id}">
@@ -250,6 +237,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 editButton.removeEventListener('click', handleEditButtonClick);
                 editButton.addEventListener('click', handleEditButtonClick);
             });
+
+            handleScroll();
         };
     }
 
@@ -336,7 +325,50 @@ document.addEventListener('DOMContentLoaded', function() {
     } else {
         sseData.innerHTML = 'Your browser doesn\'t support server-sent events.';
     }
+
+    initializeDateHeader();
+    chatMessagesContainer.addEventListener('scroll', handleScroll);
 });
+
+function handleScroll() {
+    const chatMessagesContainer = document.getElementById('chat-messages');
+    const messages = chatMessagesContainer.querySelectorAll('.message-wrapper');
+    const dateHeader = document.getElementById('date-header');
+    const containerTop = chatMessagesContainer.scrollTop;
+    let newDateHeader = '';
+
+    if (messages.length > 0) {
+        for (let i = 0; i < messages.length; i++) {
+            const messageTop = messages[i].offsetTop;
+            if (messageTop >= containerTop) {
+                const messageDate = new Date(messages[i].querySelector('.message-content-wrapper').dataset.creationTime);
+                newDateHeader = getFormattedDateHeader(messageDate.toISOString());
+                break;
+            }
+        }
+
+        if (newDateHeader !== dateHeader.textContent) {
+            dateHeader.textContent = newDateHeader;
+        }
+        dateHeader.style.display = 'block';
+    } else {
+        dateHeader.style.display = 'none';
+    }
+}
+
+function initializeDateHeader() {
+    const chatMessagesContainer = document.getElementById('chat-messages');
+    const messages = chatMessagesContainer.querySelectorAll('.message-wrapper');
+    const dateHeader = document.getElementById('date-header');
+    if (messages.length > 0) {
+        const firstMessageDate = new Date(messages[0].querySelector('.message-content-wrapper').dataset.creationTime);
+        dateHeader.textContent = getFormattedDateHeader(firstMessageDate.toISOString());
+        dateHeader.style.display = 'block';
+    } else {
+        dateHeader.style.display = 'none';
+    }
+}
+
 
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('myForm');
