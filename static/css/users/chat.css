@@ -1,9 +1,8 @@
 .chat-container {
+    position: relative;
     max-width: 600px;
     margin: auto;
-    border-radius: 6px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
     display: flex;
     flex-direction: column;
     background: #e6f7ff;
@@ -210,6 +209,7 @@ form {
     padding: 6px 12px;
     background: #4a5a70;
     border: none;
+    border-radius: 6px 6px 0 0;
 }
 
 .chat-options {
@@ -429,10 +429,11 @@ form {
     font-size: 14px;
 }
 
+
 #color-picker-container {
     position: absolute;
-    top: 11%;
-    right: 167px;
+    top: -5px;
+    right: -100px;
     margin-top: 10px;
     background: #4a5a70;
     padding: 7px;

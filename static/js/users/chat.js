@@ -213,13 +213,13 @@ document.addEventListener('DOMContentLoaded', function() {
                     <div class="message-content-wrapper" data-creation-time="${data.created_at}">
                         <div class="message-content">${wrapUrlsWithAnchorTags(data.content)}</div>
                         ${
-                          data.file 
-                          ? `<div class="message-file">
-                                File Attachment: <a href="${data.file}" download="${getFileNameFromUrl(data.file)}" class="file-link">
+                        data.file 
+                        ? `<div class="message-file">
+                                ${translate('File Attachment: ')}<a href="${data.file}" download="${getFileNameFromUrl(data.file)}" class="file-link">
                                     ${getFileNameFromUrl(data.file)}
                                 </a>
                             </div>`
-                          : ''
+                        : ''
                         }
                         ${data.edited ? '<div class="message-edited">Edited</div>' : ''}
                         <div class="message-timestamp">${formattedTimestamp}</div>
@@ -313,7 +313,8 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function showLoading() {
-        sseData.innerHTML = `<div class="loading-messages">Loading Messages...</div>`;
+      const loadingText = translate('Loading Messages...');
+      sseData.innerHTML = `<div class="loading-messages">${loadingText}</div>`;
     }
 
     if (typeof(EventSource) !== 'undefined') {

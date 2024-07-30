@@ -91,7 +91,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 save: true
             }
         },
-    default: '#e6f7ff', 
+        default: defaultColor,
     });
 
     changeBgColorButton.addEventListener('click', function() {
@@ -126,9 +126,16 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     document.addEventListener('click', function(event) {
-        if (colorPickerContainer.style.display === 'flex' &&
-            !colorPickerContainer.contains(event.target) &&
-            !changeBgColorButton.contains(event.target)) {
+        const pickrApp = document.querySelector('.pcr-app');
+        const isColorPickerContainerDisplayed = window.getComputedStyle(colorPickerContainer).display === 'flex';
+        const isColorPickerContainerClicked = colorPickerContainer.contains(event.target);
+        const isPickrAppClicked = pickrApp && pickrApp.contains(event.target);
+        const isChangeBgColorButtonClicked = changeBgColorButton.contains(event.target);
+
+        if (isColorPickerContainerDisplayed &&
+            !isColorPickerContainerClicked &&
+            !isPickrAppClicked &&
+            !isChangeBgColorButtonClicked) {
             colorPickerContainer.style.display = 'none';
         }
     });
@@ -164,7 +171,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         if (hasFile) {
-            fileIndicator.textContent = `File attached: ${fileName}`;
+            const translatedText = translate('File attached: ');
+            fileIndicator.textContent = `${translatedText}${fileName}`;
             fileIndicator.style.display = 'inline';
         } else {
             fileIndicator.style.display = 'none';
@@ -185,8 +193,9 @@ document.addEventListener('DOMContentLoaded', () => {
             event.preventDefault();
             const fileUrl = event.target.href;
             const fileName = getFileNameFromUrl(fileUrl);
+            const translatedText = translate('This file was shared by another user. Do you trust this source and want to download: ');
 
-            if (confirm(`This file was shared by another user. Do you trust this source and want to download: "${fileName}" ?`)) {
+            if (confirm(`${translatedText}"${fileName}" ?`)) {
                 const downloadLink = document.createElement('a');
                 downloadLink.href = fileUrl;
                 downloadLink.download = fileName;

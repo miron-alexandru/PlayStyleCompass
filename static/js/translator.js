@@ -29,6 +29,10 @@ const translate = (key) => {
             'Save': 'Salvează',
             'Cancel': 'Anulare',
             'Edit': 'Editează',
+            'This file was shared by another user. Do you trust this source and want to download: ': 'Acest fișier a fost partajat de alt utilizator. Ai încredere în această sursă și dorești să descarci: ',
+            'File attached: ': 'Fișier atașat: ',
+            'File Attachment: ': 'Atașament: ',
+            'Loading Messages...': 'Se încarcă mesajele...',
         },
     };
 
