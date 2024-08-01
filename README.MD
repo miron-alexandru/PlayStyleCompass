@@ -45,6 +45,9 @@ Websites for .env configuration: [GiantBomb](https://www.giantbomb.com/) / [Send
 <details>
 <summary><h2>PlayStyle Compass Changelog</h2></summary>
 
+### Version v2.1:
+* Implemented Live Online/Offline status for users.
+
 ### Version v2.0:
 * CSS Improvements in different locations of the Chat.
 * Users are able to attach files to the messages and an indicator is displayed when a file is attached.

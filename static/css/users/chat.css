@@ -523,3 +523,21 @@ form {
     display: none;
     white-space: nowrap;
 }
+
+#status {
+    font-size: 11px;
+    text-align: left;
+    transition: color 0.3s;
+    align-self: center;
+    flex-grow: 1;
+    margin-left: 4px;
+}
+
+#status.online {
+    color: lightgreen;
+}
+
+
+#status.offline {
+    color: gray;
+}

@@ -56,7 +56,7 @@
     {% endif %}
     {% endif %}
   </div>
-  <div class="user-actions">
+  <div id="user-actions" class="user-actions" data-user_id="{{ user_id}}">
     {% if user.is_authenticated %}
     <div class="friends-text-container
         {% trans 'Friend' as friend %}
@@ -64,6 +64,9 @@
         {% if is_friend == friend or is_friend == you %}friend{% else %}not-friend{%endif%}">
       <span class="friend-status">{{ is_friend }}</span>
     </div>
+    {% if is_friend != you %}
+    <p id="status"></p>
+    {% endif %}
     <div class="d-flex justify-content-center align-items-center action-items">
       {% trans 'You' as you %}
       {% if is_friend == you %}
@@ -208,7 +211,7 @@
 
 
 <script src="{% static 'js/users/remove_friend.js' %}"></script>
-<script src="{% static 'js/users/toggle_user_stats.js' %}"></script>
+<script src="{% static 'js/users/user_profile.js' %}"></script>
 
 {% include 'snippets/friend_request.html' %}
 {% include 'snippets/send_friend_request.html' %}

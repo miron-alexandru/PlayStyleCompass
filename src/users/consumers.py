@@ -7,7 +7,7 @@ from django.contrib.auth.models import AnonymousUser
 from http.cookies import SimpleCookie
 from django.contrib.sessions.models import Session
 from django.contrib.auth.models import User
-from .models import Notification
+from .models import Notification, UserProfile
 from asgiref.sync import async_to_sync
 
 
@@ -53,33 +53,9 @@ class NotificationConsumer(AsyncWebsocketConsumer):
 
         await self.send(text_data=json.dumps(notification_data))
 
-    @database_sync_to_async
-    def get_user_from_session(self):
-        # Retrieve the cookie header from the scope
-        cookie_header = dict(self.scope.get("headers")).get(b"cookie", b"").decode()
-
-        # Parse the cookies
-        cookies = SimpleCookie()
-        cookies.load(cookie_header)
-
-        # Get the session ID from the cookies
-        sessionid = cookies.get("sessionid")
-
-        if sessionid:
-            # If session ID is found, get the session key
-            session_key = sessionid.value
-            try:
-                # Try to retrieve the session using the session key
-                session = Session.objects.get(session_key=session_key)
-
-                # Get the user ID from the session and return the user object
-                return User.objects.get(pk=session.get_decoded().get("_auth_user_id"))
-            except (Session.DoesNotExist, User.DoesNotExist):
-                # If the session or user does not exist, return an anonymous user
-                return AnonymousUser()
-        else:
-            # If no session ID is found, return an anonymous user
-            return AnonymousUser()
+    async def get_user_from_session(self):
+        # Use the utility function to get the user from session
+        return await database_sync_to_async(get_user_from_session)(self.scope)
 
     @database_sync_to_async
     def get_all_notifications(self, user):
@@ -180,30 +156,90 @@ class ChatConsumer(AsyncWebsocketConsumer):
             )
         )
 
+    async def get_user_from_session(self):
+        # Use the utility function to get the user from session
+        return await database_sync_to_async(get_user_from_session)(self.scope)
+
+
+class OnlineStatusConsumer(AsyncWebsocketConsumer):
+    async def connect(self):
+        # Retrieve the recipient_id from the URL route
+        self.recipient_id = self.scope["url_route"]["kwargs"]["recipient_id"]
+
+        # Generate a unique group name for the recipient's status
+        self.room_group_name = f"user_status_{self.recipient_id}"
+
+        # Retrieve the user based on session information
+        self.user = await self.get_user_from_session()
+
+        # Ensure the user is authenticated
+        if self.user.is_authenticated:
+            # Join the room group for the recipient
+            await self.channel_layer.group_add(
+                self.room_group_name,
+                self.channel_name
+            )
+            await self.accept()
+
+            # Fetch the recipient's user profile and status
+            user_profile = await self.get_user_profile(self.recipient_id)
+            status = user_profile.is_online if user_profile else False
+
+            # Send the current status to the WebSocket client
+            await self.send(text_data=json.dumps({
+                'status': status
+            }))
+
+    async def disconnect(self, close_code):
+        # Leave the room group when the WebSocket disconnects
+        await self.channel_layer.group_discard(
+            self.room_group_name,
+            self.channel_name
+        )
+
+    async def status_update(self, event):
+        # Send status update to WebSocket client
+        await self.send(text_data=json.dumps({
+            'status': event['status']
+        }))
+
+
+    async def get_user_from_session(self):
+        # Use the utility function to get the user from session
+        return await database_sync_to_async(get_user_from_session)(self.scope)
+
     @database_sync_to_async
-    def get_user_from_session(self):
-        # Retrieve the cookie header from the scope
-        cookie_header = dict(self.scope.get("headers")).get(b"cookie", b"").decode()
+    def get_user_profile(self, user_id):
+        # Fetch the user profile for the given user_id
+        try:
+            return UserProfile.objects.get(user_id=user_id)
+        except UserProfile.DoesNotExist:
+            return None
 
-        # Parse the cookies
-        cookies = SimpleCookie()
-        cookies.load(cookie_header)
 
-        # Get the session ID from the cookies
-        sessionid = cookies.get("sessionid")
+def get_user_from_session(scope):
+    # Retrieve the cookie header from the scope
+    cookie_header = dict(scope.get("headers")).get(b"cookie", b"").decode()
 
-        if sessionid:
-            # If session ID is found, get the session key
-            session_key = sessionid.value
-            try:
-                # Try to retrieve the session using the session key
-                session = Session.objects.get(session_key=session_key)
+    # Parse the cookies
+    cookies = SimpleCookie()
+    cookies.load(cookie_header)
 
-                # Get the user ID from the session and return the user object
-                return User.objects.get(pk=session.get_decoded().get("_auth_user_id"))
-            except (Session.DoesNotExist, User.DoesNotExist):
-                # If the session or user does not exist, return an anonymous user
-                return AnonymousUser()
-        else:
-            # If no session ID is found, return an anonymous user
-            return AnonymousUser()
+    # Get the session ID from the cookies
+    sessionid = cookies.get("sessionid")
+
+    if sessionid:
+        # If session ID is found, get the session key
+        session_key = sessionid.value
+        try:
+            # Try to retrieve the session using the session key
+            session = Session.objects.get(session_key=session_key)
+
+            # Get the user ID from the session and return the user object
+            return User.objects.get(pk=session.get_decoded().get("_auth_user_id"))
+        except (Session.DoesNotExist, User.DoesNotExist):
+            # If the session or user does not exist, return an anonymous user
+            return None
+    else:
+        # If no session ID is found, return an anonymous user
+        return None

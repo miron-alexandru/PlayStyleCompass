@@ -33,6 +33,8 @@ const translate = (key) => {
             'File attached: ': 'Fișier atașat: ',
             'File Attachment: ': 'Atașament: ',
             'Loading Messages...': 'Se încarcă mesajele...',
+            'Online': 'Conectat',
+            'Offline': 'Deconectat',
         },
     };
 
