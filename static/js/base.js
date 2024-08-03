@@ -204,3 +204,41 @@ document.addEventListener("DOMContentLoaded", function() {
     });
   }
 });
+
+
+document.addEventListener("DOMContentLoaded", function() {
+  let recipientId = '';
+
+  const chatContainer = document.getElementById('chat-container');
+
+  if (chatContainer) {
+      recipientId = Number(chatContainer.dataset.recipientId);
+  }
+
+  const wsUrl = recipientId ? 
+      `ws://${window.location.host}/ws/online-status/${recipientId}/` : 
+      `ws://${window.location.host}/ws/online-status/`;
+
+  const ws = new WebSocket(wsUrl);
+
+  ws.onmessage = function(event) {
+      const data = JSON.parse(event.data);
+      const statusElement = document.getElementById('status');
+
+      if (statusElement) {
+          statusElement.innerText = data.status ? translate('Online') : translate('Offline');
+
+          if (data.status) {
+              statusElement.classList.remove('offline');
+              statusElement.classList.add('online');
+          } else {
+              statusElement.classList.remove('online');
+              statusElement.classList.add('offline');
+          }
+      }
+  };
+
+  ws.onerror = function(error) {
+      console.error('WebSocket error:', error);
+  };
+});

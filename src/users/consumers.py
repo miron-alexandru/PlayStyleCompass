@@ -8,7 +8,38 @@ from http.cookies import SimpleCookie
 from django.contrib.sessions.models import Session
 from django.contrib.auth.models import User
 from .models import Notification, UserProfile
-from asgiref.sync import async_to_sync
+from asgiref.sync import async_to_sync, sync_to_async
+from django.utils import timezone
+from datetime import timedelta
+from channels.layers import get_channel_layer
+
+
+def get_user_from_session(scope):
+    # Retrieve the cookie header from the scope
+    cookie_header = dict(scope.get("headers")).get(b"cookie", b"").decode()
+
+    # Parse the cookies
+    cookies = SimpleCookie()
+    cookies.load(cookie_header)
+
+    # Get the session ID from the cookies
+    sessionid = cookies.get("sessionid")
+
+    if sessionid:
+        # If session ID is found, get the session key
+        session_key = sessionid.value
+        try:
+            # Try to retrieve the session using the session key
+            session = Session.objects.get(session_key=session_key)
+
+            # Get the user ID from the session and return the user object
+            return User.objects.get(pk=session.get_decoded().get("_auth_user_id"))
+        except (Session.DoesNotExist, User.DoesNotExist):
+            # If the session or user does not exist, return an anonymous user
+            return None
+    else:
+        # If no session ID is found, return an anonymous user
+        return None
 
 
 class NotificationConsumer(AsyncWebsocketConsumer):
@@ -164,82 +195,78 @@ class ChatConsumer(AsyncWebsocketConsumer):
 class OnlineStatusConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         # Retrieve the recipient_id from the URL route
-        self.recipient_id = self.scope["url_route"]["kwargs"]["recipient_id"]
+        self.recipient_id = self.scope["url_route"]["kwargs"].get("recipient_id")
 
         # Generate a unique group name for the recipient's status
-        self.room_group_name = f"user_status_{self.recipient_id}"
+        self.room_group_name = f"user_status_{self.recipient_id}" if self.recipient_id else None
 
         # Retrieve the user based on session information
         self.user = await self.get_user_from_session()
 
         # Ensure the user is authenticated
-        if self.user.is_authenticated:
-            # Join the room group for the recipient
-            await self.channel_layer.group_add(
+        if self.user and self.user.is_authenticated:
+            await self.update_user_status(self.user.id, is_online=True)
+            
+            if self.room_group_name:
+                await self.channel_layer.group_add(
+                    self.room_group_name,
+                    self.channel_name
+                )
+
+            await self.accept()
+
+            if self.recipient_id:
+                user_profile = await self.get_user_profile(self.recipient_id)
+                status = user_profile.is_online if user_profile else None 
+
+                await self.send(text_data=json.dumps({
+                    'status': status
+                }))
+
+    async def disconnect(self, close_code):
+        """Update the user's status to offline"""
+        if self.user and self.user.is_authenticated:
+            await self.update_user_status(self.user.id, is_online=False)
+        # Leave the room group when the WebSocket disconnects
+        if self.room_group_name:
+            await self.channel_layer.group_send(
+                self.room_group_name,
+                {
+                    'type': 'status_update',
+                    'status': False 
+                }
+            )
+
+            await self.channel_layer.group_discard(
                 self.room_group_name,
                 self.channel_name
             )
-            await self.accept()
 
-            # Fetch the recipient's user profile and status
-            user_profile = await self.get_user_profile(self.recipient_id)
-            status = user_profile.is_online if user_profile else False
-
-            # Send the current status to the WebSocket client
-            await self.send(text_data=json.dumps({
-                'status': status
-            }))
-
-    async def disconnect(self, close_code):
-        # Leave the room group when the WebSocket disconnects
-        await self.channel_layer.group_discard(
-            self.room_group_name,
-            self.channel_name
-        )
 
     async def status_update(self, event):
-        # Send status update to WebSocket client
+        """Send status update to WebSocket client"""
         await self.send(text_data=json.dumps({
             'status': event['status']
         }))
 
-
     async def get_user_from_session(self):
-        # Use the utility function to get the user from session
+        """Use the utility function to get the user from session"""
         return await database_sync_to_async(get_user_from_session)(self.scope)
 
     @database_sync_to_async
     def get_user_profile(self, user_id):
-        # Fetch the user profile for the given user_id
+        """Fetch the user profile for the given user_id"""
         try:
             return UserProfile.objects.get(user_id=user_id)
         except UserProfile.DoesNotExist:
             return None
 
-
-def get_user_from_session(scope):
-    # Retrieve the cookie header from the scope
-    cookie_header = dict(scope.get("headers")).get(b"cookie", b"").decode()
-
-    # Parse the cookies
-    cookies = SimpleCookie()
-    cookies.load(cookie_header)
-
-    # Get the session ID from the cookies
-    sessionid = cookies.get("sessionid")
-
-    if sessionid:
-        # If session ID is found, get the session key
-        session_key = sessionid.value
+    @database_sync_to_async
+    def update_user_status(self, user_id, is_online):
+        """Update the user profile's status"""
         try:
-            # Try to retrieve the session using the session key
-            session = Session.objects.get(session_key=session_key)
-
-            # Get the user ID from the session and return the user object
-            return User.objects.get(pk=session.get_decoded().get("_auth_user_id"))
-        except (Session.DoesNotExist, User.DoesNotExist):
-            # If the session or user does not exist, return an anonymous user
-            return None
-    else:
-        # If no session ID is found, return an anonymous user
-        return None
+            user_profile = UserProfile.objects.get(user_id=user_id)
+            user_profile.is_online = is_online
+            user_profile.save()
+        except UserProfile.DoesNotExist:
+            pass
