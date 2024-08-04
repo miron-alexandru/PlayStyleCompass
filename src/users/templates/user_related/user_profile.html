@@ -4,6 +4,7 @@
 {% load custom_filters %}
 
 {% block page_header %}
+<meta id="recipient-id" content="{{ user_id }}">
 <div class="profile-header">
   {% if is_friend == 'You' %}
   <h3>{% trans "YOUR PROFILE" %}</h3>
@@ -16,7 +17,6 @@
 {% endblock page_header %}
 
 {% block content %}
-
 <link rel="stylesheet" type="text/css" href="{% static 'css/users/user_profile.css' %}">
 
 <div class="user-profile-card">
@@ -56,7 +56,7 @@
     {% endif %}
     {% endif %}
   </div>
-  <div id="user-actions" class="user-actions" data-user_id="{{ user_id}}">
+  <div id="user-actions" class="user-actions">
     {% if user.is_authenticated %}
     <div class="friends-text-container
         {% trans 'Friend' as friend %}

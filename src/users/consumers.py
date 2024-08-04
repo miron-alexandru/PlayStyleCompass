@@ -1,17 +1,17 @@
-import json
+"""This module contains WebSocket consumers for handling real-time communication
+in the users application. Each consumer defines the behavior for specific WebSocket
+events such as connection, disconnection, and message handling.
+"""
 
-from django.core.serializers import serialize
+import json
+import asyncio
+
+from http.cookies import SimpleCookie
 from channels.generic.websocket import AsyncWebsocketConsumer
 from channels.db import database_sync_to_async
-from django.contrib.auth.models import AnonymousUser
-from http.cookies import SimpleCookie
 from django.contrib.sessions.models import Session
 from django.contrib.auth.models import User
 from .models import Notification, UserProfile
-from asgiref.sync import async_to_sync, sync_to_async
-from django.utils import timezone
-from datetime import timedelta
-from channels.layers import get_channel_layer
 
 
 def get_user_from_session(scope):
@@ -198,7 +198,9 @@ class OnlineStatusConsumer(AsyncWebsocketConsumer):
         self.recipient_id = self.scope["url_route"]["kwargs"].get("recipient_id")
 
         # Generate a unique group name for the recipient's status
-        self.room_group_name = f"user_status_{self.recipient_id}" if self.recipient_id else None
+        self.room_group_name = (
+            f"user_status_{self.recipient_id}" if self.recipient_id else None
+        )
 
         # Retrieve the user based on session information
         self.user = await self.get_user_from_session()
@@ -206,48 +208,53 @@ class OnlineStatusConsumer(AsyncWebsocketConsumer):
         # Ensure the user is authenticated
         if self.user and self.user.is_authenticated:
             await self.update_user_status(self.user.id, is_online=True)
-            
+
             if self.room_group_name:
                 await self.channel_layer.group_add(
-                    self.room_group_name,
-                    self.channel_name
+                    self.room_group_name, self.channel_name
                 )
 
             await self.accept()
 
             if self.recipient_id:
                 user_profile = await self.get_user_profile(self.recipient_id)
-                status = user_profile.is_online if user_profile else None 
+                status = user_profile.is_online if user_profile else None
 
-                await self.send(text_data=json.dumps({
-                    'status': status
-                }))
+                await self.send(text_data=json.dumps({"status": status}))
+
+            # Start periodic task to check user status
+            self.periodic_task = asyncio.create_task(self.check_status_periodically())
 
     async def disconnect(self, close_code):
         """Update the user's status to offline"""
         if self.user and self.user.is_authenticated:
             await self.update_user_status(self.user.id, is_online=False)
+        # Stop the periodic task
+        if hasattr(self, "periodic_task"):
+            self.periodic_task.cancel()
+
         # Leave the room group when the WebSocket disconnects
         if self.room_group_name:
             await self.channel_layer.group_send(
-                self.room_group_name,
-                {
-                    'type': 'status_update',
-                    'status': False 
-                }
+                self.room_group_name, {"type": "status_update", "status": False}
             )
 
             await self.channel_layer.group_discard(
-                self.room_group_name,
-                self.channel_name
+                self.room_group_name, self.channel_name
             )
-
 
     async def status_update(self, event):
         """Send status update to WebSocket client"""
-        await self.send(text_data=json.dumps({
-            'status': event['status']
-        }))
+        await self.send(text_data=json.dumps({"status": event["status"]}))
+
+    async def check_status_periodically(self):
+        """Periodically check and send user status every 15 seconds"""
+        while True:
+            if self.recipient_id:
+                user_profile = await self.get_user_profile(self.recipient_id)
+                status = user_profile.is_online if user_profile else None
+                await self.send(text_data=json.dumps({"status": status}))
+            await asyncio.sleep(15)
 
     async def get_user_from_session(self):
         """Use the utility function to get the user from session"""

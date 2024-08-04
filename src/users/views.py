@@ -1,20 +1,20 @@
 """Defines views."""
 
 import time
-from datetime import datetime, timedelta
-import asyncio
-from asgiref.sync import sync_to_async
 import json
-import random
 import ast
-
+from datetime import timedelta
+import asyncio
 from typing import AsyncGenerator
+from asgiref.sync import sync_to_async
+
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import (
     login,
     logout,
     update_session_auth_hash,
 )
+
 from django.db.models import Q, F, Value, CharField
 from django.db.models.functions import Concat
 from django.contrib.auth.models import User
@@ -25,6 +25,8 @@ from django.core.mail import send_mail, EmailMessage
 from django.core.cache import cache
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.serializers.json import DjangoJSONEncoder
+from django.core.files.storage import default_storage
+from django.core.files.base import ContentFile
 from django.conf import settings
 from django.contrib.auth.views import LoginView
 
@@ -46,7 +48,6 @@ from django.http import (
     JsonResponse,
     HttpResponse,
     Http404,
-    HttpRequest,
     StreamingHttpResponse,
 )
 
@@ -56,6 +57,11 @@ from django.urls import reverse, reverse_lazy
 from django.contrib.auth.tokens import default_token_generator
 
 from playstyle_compass.models import UserPreferences, Review, Game
+
+from playstyle_compass.helper_functions.views_helpers import (
+    paginate_matching_games,
+    get_friend_list,
+)
 
 from .forms import (
     CustomRegistrationForm,
@@ -79,10 +85,7 @@ from .misc.helper_functions import (
     save_quiz_responses,
     process_chat_notification,
 )
-from playstyle_compass.helper_functions.views_helpers import (
-    paginate_matching_games,
-    get_friend_list,
-)
+
 from .models import (
     UserProfile,
     FriendList,
@@ -1255,10 +1258,6 @@ def chat(request, recipient_id: int):
     }
 
     return render(request, "messaging/chat.html", context)
-
-
-from django.core.files.storage import default_storage
-from django.core.files.base import ContentFile
 
 
 @login_required

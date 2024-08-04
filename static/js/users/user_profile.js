@@ -40,27 +40,3 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 });
-
-
-document.addEventListener("DOMContentLoaded", function() {
-  const actionsContainer = document.getElementById('user-actions');
-  const recipientId = Number(actionsContainer.dataset.user_id);
-  const ws = new WebSocket(`ws://${window.location.host}/ws/online-status/${recipientId}/`);
-
-  ws.onmessage = function(event) {
-      const data = JSON.parse(event.data);
-      const statusElement = document.getElementById('status');
-      
-      if (statusElement) {
-          statusElement.innerText = data.status ? translate('Online') : translate('Offline');
-
-          if (data.status) {
-              statusElement.classList.remove('offline');
-              statusElement.classList.add('online');
-          } else {
-              statusElement.classList.remove('online');
-              statusElement.classList.add('offline');
-          }
-      }
-  };
-});

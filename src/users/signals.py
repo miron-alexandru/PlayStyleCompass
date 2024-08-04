@@ -12,6 +12,7 @@ from django.contrib.auth.signals import user_logged_in, user_logged_out
 from .models import UserProfile
 from django.utils import timezone
 
+
 @receiver(post_save, sender=User)
 def create_user_models(sender, instance, created, **kwargs):
     """Create user models."""
@@ -46,28 +47,26 @@ def notification_created(sender, instance, created, **kwargs):
             },
         )
 
+
 @receiver(user_logged_in)
 def update_user_online_status(sender, request, user, **kwargs):
-    UserProfile.objects.update_or_create(user=user, defaults={'is_online': True, 'last_online': None})
+    UserProfile.objects.update_or_create(
+        user=user, defaults={"is_online": True, "last_online": None}
+    )
 
     channel_layer = get_channel_layer()
     async_to_sync(channel_layer.group_send)(
-        f"user_status_{user.id}",
-        {
-            'type': 'status_update',
-            'status': True
-        }
+        f"user_status_{user.id}", {"type": "status_update", "status": True}
     )
+
 
 @receiver(user_logged_out)
 def update_user_offline_status(sender, request, user, **kwargs):
-    UserProfile.objects.update_or_create(user=user, defaults={'is_online': False, 'last_online': timezone.now()})
+    UserProfile.objects.update_or_create(
+        user=user, defaults={"is_online": False, "last_online": timezone.now()}
+    )
 
     channel_layer = get_channel_layer()
     async_to_sync(channel_layer.group_send)(
-        f"user_status_{user.id}",
-        {
-            'type': 'status_update',
-            'status': False
-        }
+        f"user_status_{user.id}", {"type": "status_update", "status": False}
     )

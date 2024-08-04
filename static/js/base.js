@@ -207,12 +207,11 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 document.addEventListener("DOMContentLoaded", function() {
+  const recipientMeta = document.getElementById('recipient-id');
   let recipientId = '';
 
-  const chatContainer = document.getElementById('chat-container');
-
-  if (chatContainer) {
-      recipientId = Number(chatContainer.dataset.recipientId);
+  if (recipientMeta) {
+    recipientId = Number(recipientMeta.getAttribute('content'));
   }
 
   const wsUrl = recipientId ? 
