@@ -11,6 +11,7 @@ from channels.db import database_sync_to_async
 from django.contrib.auth.signals import user_logged_in, user_logged_out
 from .models import UserProfile
 from django.utils import timezone
+import pytz
 
 
 @receiver(post_save, sender=User)
@@ -50,23 +51,43 @@ def notification_created(sender, instance, created, **kwargs):
 
 @receiver(user_logged_in)
 def update_user_online_status(sender, request, user, **kwargs):
-    UserProfile.objects.update_or_create(
-        user=user, defaults={"is_online": True, "last_online": None}
+    user_profile, created = UserProfile.objects.update_or_create(
+        user=user, defaults={"is_online": False, "last_online": timezone.now()}
     )
 
+    last_online = get_last_online(user_profile)
     channel_layer = get_channel_layer()
     async_to_sync(channel_layer.group_send)(
-        f"user_status_{user.id}", {"type": "status_update", "status": True}
+        f"user_status_{user.id}", {"type": "status_update", "status": True, "last_online": last_online}
     )
 
 
 @receiver(user_logged_out)
 def update_user_offline_status(sender, request, user, **kwargs):
-    UserProfile.objects.update_or_create(
+    # Extract the UserProfile object from the tuple
+    user_profile, created = UserProfile.objects.update_or_create(
         user=user, defaults={"is_online": False, "last_online": timezone.now()}
     )
-
+    
+    last_online = get_last_online(user_profile)
     channel_layer = get_channel_layer()
     async_to_sync(channel_layer.group_send)(
-        f"user_status_{user.id}", {"type": "status_update", "status": False}
+        f"user_status_{user.id}", {"type": "status_update", "status": False, "last_online": last_online}
     )
+
+
+def get_last_online(user_profile):
+    """Return formatted last_online time based on user_profile's timezone."""
+    last_online = user_profile.last_online
+    user_timezone = user_profile.timezone
+
+    if last_online and user_timezone:
+        user_tz = pytz.timezone(user_timezone)
+
+        if last_online.tzinfo is None:
+            last_online = timezone.make_aware(last_online, timezone.get_default_timezone())
+
+        last_online = last_online.astimezone(user_tz)
+        return last_online.strftime("%B %d, %Y, %I:%M %p")
+        
+    return None

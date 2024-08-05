@@ -23,6 +23,7 @@
     <div class="chat-header">
         <a class="profile-link" title="{% trans 'View Profile' %}" href="{% url 'users:view_profile' recipient.userprofile.profile_name %}"><img src="{{ recipient.userprofile.profile_picture.url}} " alt="Profile Picture" class="header-profile-picture"> {{ recipient.userprofile.profile_name }}</a>
         <div id="status"></div>
+        <span class="last-seen"></span>
         <div class="search-container" id="search-container">
             <input type="text" id="search-input" placeholder="{% trans 'Search messages...' %}">
         </div>

@@ -541,3 +541,13 @@ form {
 #status.offline {
     color: gray;
 }
+
+.last-seen {
+    font-size: 9px;
+    color: lightgray;
+    text-align: left;
+    align-self: center;
+    flex-grow: 20;
+    margin-left: -10px;
+    display: none;
+}
