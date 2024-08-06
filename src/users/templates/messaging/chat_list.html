@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load static %}
+
+{% block page_header %}
+<div class="header">
+  <h3>{% trans "CHATS" %}</h3>
+</div>
+{% endblock page_header %}
+
+{% block description %}
+{% blocktrans %}Here you can view all your ongoing chat conversations with other users. Click on any conversation to continue chatting or review your recent interactions.{% endblocktrans %}
+{% endblock description %}
+
+
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/users/chats.css' %}">
+
+<div class="chat-list">
+    {% for chat in chat_info %}
+      <div class="chat-item">
+        <img class="chat-avatar" src="{{ chat.user.userprofile.profile_picture.url }}" alt="{{ chat.user.userprofile.profile_name }}'s avatar">
+        <div class="chat-details">
+          <a class="chat-user-link" href="{% url 'users:view_profile' chat.user.userprofile.profile_name %}">{{ chat.user.userprofile.profile_name }}</a>
+          <p class="chat-last-message">Latest Message: {{ chat.latest_message|default:"No messages yet" }}</p>
+          <a class="open-chat-button" href="{% url 'users:chat' chat.user.id %}">Open Chat</a>
+        </div>
+        <p class="chat-timestamp">{{ chat.timestamp|date:"Y-m-d H:i" }}</p>
+      </div>
+    {% endfor %}
+</div>
+{% endblock %}

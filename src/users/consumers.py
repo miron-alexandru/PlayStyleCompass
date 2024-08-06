@@ -248,7 +248,7 @@ class OnlineStatusConsumer(AsyncWebsocketConsumer):
                 self.room_group_name, self.channel_name
             )
 
-     async def status_update(self, event):
+    async def status_update(self, event):
         """Send status update to WebSocket client"""
         await self.send(text_data=json.dumps({"status": event["status"], "last_online": event["last_online"]}))
 

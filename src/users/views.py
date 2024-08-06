@@ -1459,3 +1459,55 @@ async def stream_chat_messages(request, recipient_id: int) -> StreamingHttpRespo
         return last_message.id if last_message else 0
 
     return StreamingHttpResponse(event_stream(), content_type="text/event-stream")
+
+
+@login_required
+def chat_list(request):
+    """View function used to display a list of chat conversations involving the logged-in user."""
+    user = request.user
+    
+    # Get all chat conversations involving the logged-in user
+    conversations = ChatMessage.objects.filter(
+        Q(sender=user) | Q(recipient=user)
+    ).values('sender', 'recipient').distinct()
+    
+    # Store the latest message for each conversation
+    latest_messages = {}
+    for conv in conversations:
+        sender_id = conv['sender']
+        recipient_id = conv['recipient']
+        
+        if sender_id == user.id:
+            other_user_id = recipient_id
+        else:
+            other_user_id = sender_id
+        
+        # Get the latest message for this conversation
+        latest_message = ChatMessage.objects.filter(
+            Q(sender=user, recipient=other_user_id) | Q(sender=other_user_id, recipient=user)
+        ).order_by('-created_at').first()
+        
+        latest_messages[other_user_id] = {
+            'other_user': other_user_id,
+            'latest_message': latest_message.content if latest_message else 'No messages yet',
+            'timestamp': latest_message.created_at if latest_message else None,
+        }
+    
+    # Fetch details of other users
+    users = User.objects.filter(id__in=latest_messages.keys())
+    
+    # Combine the latest messages with user details
+    chat_info = []
+    for user in users:
+        chat_info.append({
+            'user': user,
+            'latest_message': latest_messages[user.id]['latest_message'],
+            'timestamp': latest_messages[user.id]['timestamp'],
+        })
+    
+    context = {
+        'page_title': _("Chat List :: PlayStyle Compass"),
+        'chat_info': chat_info,
+    }
+    
+    return render(request, "messaging/chat_list.html", context)
