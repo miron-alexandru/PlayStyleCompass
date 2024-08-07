@@ -15,7 +15,7 @@ from django.contrib.auth import (
     update_session_auth_hash,
 )
 
-from django.db.models import Q, F, Value, CharField
+from django.db.models import Q, F, Value, CharField, OuterRef, Subquery
 from django.db.models.functions import Concat
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
@@ -1244,11 +1244,6 @@ def chat(request, recipient_id: int):
     """View used to open the chat with a certain user."""
     recipient = get_object_or_404(User, id=recipient_id)
 
-    if not are_friends(request.user, recipient):
-        return JsonResponse(
-            {"error": "You can only chat with your friends."}, status=403
-        )
-
     request.session["username"] = request.user.username
     request.session["recipient_username"] = recipient.username
 
@@ -1466,44 +1461,41 @@ def chat_list(request):
     """View function used to display a list of chat conversations involving the logged-in user."""
     user = request.user
     
-    # Get all chat conversations involving the logged-in user
+    # Subquery to get the latest message for each conversation
+    latest_message_subquery = ChatMessage.objects.filter(
+        Q(sender=user, recipient=OuterRef('other_user')) | Q(sender=OuterRef('other_user'), recipient=user)
+    ).order_by('-created_at').values('content')[:1]
+    
+    # Get all conversations involving the logged-in user
     conversations = ChatMessage.objects.filter(
         Q(sender=user) | Q(recipient=user)
     ).values('sender', 'recipient').distinct()
     
-    # Store the latest message for each conversation
-    latest_messages = {}
+    # Get the other users in these conversations
+    other_user_ids = set()
     for conv in conversations:
-        sender_id = conv['sender']
-        recipient_id = conv['recipient']
-        
-        if sender_id == user.id:
-            other_user_id = recipient_id
-        else:
-            other_user_id = sender_id
-        
-        # Get the latest message for this conversation
-        latest_message = ChatMessage.objects.filter(
-            Q(sender=user, recipient=other_user_id) | Q(sender=other_user_id, recipient=user)
-        ).order_by('-created_at').first()
-        
-        latest_messages[other_user_id] = {
-            'other_user': other_user_id,
-            'latest_message': latest_message.content if latest_message else 'No messages yet',
-            'timestamp': latest_message.created_at if latest_message else None,
-        }
+        if conv['sender'] != user.id:
+            other_user_ids.add(conv['sender'])
+        if conv['recipient'] != user.id:
+            other_user_ids.add(conv['recipient'])
     
     # Fetch details of other users
-    users = User.objects.filter(id__in=latest_messages.keys())
+    users = User.objects.filter(id__in=other_user_ids)
     
-    # Combine the latest messages with user details
+    # Annotate each user with the latest message
     chat_info = []
     for user in users:
+        latest_message = ChatMessage.objects.filter(
+            Q(sender=user, recipient=request.user) | Q(sender=request.user, recipient=user)
+        ).order_by('-created_at').first()
+        
         chat_info.append({
             'user': user,
-            'latest_message': latest_messages[user.id]['latest_message'],
-            'timestamp': latest_messages[user.id]['timestamp'],
+            'latest_message': latest_message.content if latest_message else 'No messages yet',
+            'timestamp': latest_message.created_at if latest_message else None,
         })
+
+    chat_info.sort(key=lambda x: x['timestamp'], reverse=True)
     
     context = {
         'page_title': _("Chat List :: PlayStyle Compass"),

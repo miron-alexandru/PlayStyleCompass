@@ -12,7 +12,6 @@
 .card-title {
   color: #333;
   font-size: 19px;
-  margin-right: 5px;
   margin-left: -7px;
 }
 
@@ -81,6 +80,23 @@
 .chat-button {
   margin-left: -5px;
 }
+
+.status {
+  font-size: inherit;
+  transition: color 0.3s;
+  margin-right: 10px;
+  margin-left: -5px;
+}
+
+.status.online {
+    color: green;
+}
+
+
+.status.offline {
+    color: #555;
+}
+
 
 @media screen and (max-width: 767px) {
   .card {

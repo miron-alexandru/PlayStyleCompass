@@ -38,6 +38,7 @@
   font-weight: 600;
   font-size: 1.1rem;
   margin-bottom: 5px;
+  width: 0;
 }
 
 .chat-last-message {
