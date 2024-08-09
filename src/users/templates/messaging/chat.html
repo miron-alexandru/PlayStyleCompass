@@ -32,6 +32,11 @@
             <div class="options-menu" id="options-menu">
                 <button id="search-messages-button">{% trans 'Search Messages' %}</button>
                 <button id="change-bg-color-button">{% trans 'Change Background' %}</button>
+                <button id="block-toggle-button" class="block-toggle-button"
+                    data-block-url="{% url 'users:block_user' user_id=recipient.id %}"
+                    data-unblock-url="{% url 'users:unblock_user' user_id=recipient.id %}"
+                    data-check-url="{% url 'users:check_block_status' user_id=recipient.id %}">
+                </button>
                 <button id="clear-chat-button" data-url="{% url 'users:delete_chat_messages' recipient_id=recipient.id %}">
                 {% trans "Delete Messages" %}</button>
             </div>

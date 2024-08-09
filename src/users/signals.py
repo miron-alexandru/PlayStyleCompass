@@ -58,7 +58,8 @@ def update_user_online_status(sender, request, user, **kwargs):
     last_online = get_last_online(user_profile)
     channel_layer = get_channel_layer()
     async_to_sync(channel_layer.group_send)(
-        f"user_status_{user.id}", {"type": "status_update", "status": True, "last_online": last_online}
+        f"user_status_{user.id}",
+        {"type": "status_update", "status": True, "last_online": last_online},
     )
 
 
@@ -68,11 +69,12 @@ def update_user_offline_status(sender, request, user, **kwargs):
     user_profile, created = UserProfile.objects.update_or_create(
         user=user, defaults={"is_online": False, "last_online": timezone.now()}
     )
-    
+
     last_online = get_last_online(user_profile)
     channel_layer = get_channel_layer()
     async_to_sync(channel_layer.group_send)(
-        f"user_status_{user.id}", {"type": "status_update", "status": False, "last_online": last_online}
+        f"user_status_{user.id}",
+        {"type": "status_update", "status": False, "last_online": last_online},
     )
 
 
@@ -85,9 +87,11 @@ def get_last_online(user_profile):
         user_tz = pytz.timezone(user_timezone)
 
         if last_online.tzinfo is None:
-            last_online = timezone.make_aware(last_online, timezone.get_default_timezone())
+            last_online = timezone.make_aware(
+                last_online, timezone.get_default_timezone()
+            )
 
         last_online = last_online.astimezone(user_tz)
         return last_online.strftime("%B %d, %Y, %I:%M %p")
-        
+
     return None

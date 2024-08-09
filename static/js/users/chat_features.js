@@ -206,3 +206,82 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    const blockToggleButton = document.getElementById('block-toggle-button');
+    const blockUrl = blockToggleButton.getAttribute('data-block-url');
+    const unblockUrl = blockToggleButton.getAttribute('data-unblock-url');
+    const checkUrl = blockToggleButton.getAttribute('data-check-url');
+
+    const chatContainer = document.getElementById('chat-container');
+    const recipientId = Number(chatContainer.dataset.recipientId);
+    const userId = Number(chatContainer.dataset.userId);
+    const chatMessagesContainer = document.getElementById('chat-messages');
+
+    function updateBlockButton() {
+        fetch(checkUrl)
+            .then(response => response.json())
+            .then(data => {
+                if (data.is_blocked) {
+                    blockToggleButton.textContent = translate("Unblock");
+                    blockToggleButton.onclick = () => unblockUser();
+                    addBlockedMessage();
+                } else {
+                    blockToggleButton.textContent = translate("Block");
+                    blockToggleButton.onclick = () => blockUser();
+                    removeBlockedMessage();
+                }
+            });
+    }
+
+    updateBlockButton();
+
+    function blockUser() {
+        fetch(blockUrl, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': csrfToken,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({})
+        })
+        .then(response => response.json())
+        .then(data => {
+            alert(data.message || data.error);
+            updateBlockButton();
+        });
+    }
+
+    function unblockUser() {
+        fetch(unblockUrl, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': csrfToken,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({})
+        })
+        .then(response => response.json())
+        .then(data => {
+            alert(data.message || data.error);
+            updateBlockButton();
+        });
+    }
+
+    function addBlockedMessage() {
+        const blockedMessage = document.createElement('div');
+        blockedMessage.className = 'blocked-message';
+        blockedMessage.textContent = translate('User blocked');
+        if (!chatMessagesContainer.querySelector('.blocked-message')) {
+            chatMessagesContainer.appendChild(blockedMessage);
+        }
+    }
+
+    function removeBlockedMessage() {
+        const blockedMessage = chatMessagesContainer.querySelector('.blocked-message');
+        if (blockedMessage) {
+            chatMessagesContainer.removeChild(blockedMessage);
+        }
+    }
+});

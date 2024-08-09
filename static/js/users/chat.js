@@ -72,12 +72,22 @@ function submit(event) {
         } else {
             this.state = 'error';
             this.errors = { message: body.error || 'Unknown error' };
+
+            setTimeout(() => {
+                this.state = '';
+                this.errors = {};
+            }, 4000);
         }
     })
     .catch(error => {
         console.error('Error:', error);
         this.state = 'error';
         this.errors = { message: 'An error occurred while sending the message.' };
+
+        setTimeout(() => {
+            this.state = '';
+            this.errors = {};
+        }, 4000);
     });
 };
 

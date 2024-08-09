@@ -280,7 +280,7 @@ form {
     50% { opacity: 1; }
 }
 
-.edit-message-button, .save-message-button, .cancel-message-button {
+.edit-message-button, .save-message-button, .cancel-message-button, .block-toggle-button {
     background-color: transparent;
     color: #333;
     border: none;
@@ -550,4 +550,21 @@ form {
     flex-grow: 20;
     margin-left: -10px;
     display: none;
+}
+
+.blocked-message {
+    display: inline-block;
+    text-align: center;
+    color: #d9534f;
+    font-size: 12px;
+    margin: 0;
+    margin-bottom: -10px;
+    padding: 6px 12px;
+    background-color: #ffe5e5;
+    border-radius: 20px;
+    font-weight: bold;
+    position: relative;
+    left: 51%;
+    transform: translateX(-50%);
+    position: relative;
 }

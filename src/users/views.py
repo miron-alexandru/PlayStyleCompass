@@ -1272,6 +1272,18 @@ def create_message(request):
     sender = get_object_or_404(User, username=username)
     recipient = get_object_or_404(User, username=recipient_username)
 
+    if sender in recipient.userprofile.blocked_users.all():
+        profile_name = recipient.userprofile.profile_name or recipient.username
+        return JsonResponse(
+            {"error": f"{profile_name} is no longer available."}, status=403
+        )
+
+    if recipient in sender.userprofile.blocked_users.all():
+        profile_name = sender.userprofile.profile_name or sender.username
+        return JsonResponse(
+            {"error": f"{profile_name} is in your block list."}, status=403
+        )
+
     if not content and not "file" in request.FILES:
         return JsonResponse({"error": "You must write something"}, status=400)
 
@@ -1460,46 +1472,110 @@ async def stream_chat_messages(request, recipient_id: int) -> StreamingHttpRespo
 def chat_list(request):
     """View function used to display a list of chat conversations involving the logged-in user."""
     user = request.user
-    
+
     # Subquery to get the latest message for each conversation
-    latest_message_subquery = ChatMessage.objects.filter(
-        Q(sender=user, recipient=OuterRef('other_user')) | Q(sender=OuterRef('other_user'), recipient=user)
-    ).order_by('-created_at').values('content')[:1]
-    
+    latest_message_subquery = (
+        ChatMessage.objects.filter(
+            Q(sender=user, recipient=OuterRef("other_user"))
+            | Q(sender=OuterRef("other_user"), recipient=user)
+        )
+        .order_by("-created_at")
+        .values("content")[:1]
+    )
+
     # Get all conversations involving the logged-in user
-    conversations = ChatMessage.objects.filter(
-        Q(sender=user) | Q(recipient=user)
-    ).values('sender', 'recipient').distinct()
-    
+    conversations = (
+        ChatMessage.objects.filter(Q(sender=user) | Q(recipient=user))
+        .values("sender", "recipient")
+        .distinct()
+    )
+
     # Get the other users in these conversations
     other_user_ids = set()
     for conv in conversations:
-        if conv['sender'] != user.id:
-            other_user_ids.add(conv['sender'])
-        if conv['recipient'] != user.id:
-            other_user_ids.add(conv['recipient'])
-    
+        if conv["sender"] != user.id:
+            other_user_ids.add(conv["sender"])
+        if conv["recipient"] != user.id:
+            other_user_ids.add(conv["recipient"])
+
     # Fetch details of other users
     users = User.objects.filter(id__in=other_user_ids)
-    
+
     # Annotate each user with the latest message
     chat_info = []
     for user in users:
-        latest_message = ChatMessage.objects.filter(
-            Q(sender=user, recipient=request.user) | Q(sender=request.user, recipient=user)
-        ).order_by('-created_at').first()
-        
-        chat_info.append({
-            'user': user,
-            'latest_message': latest_message.content if latest_message else 'No messages yet',
-            'timestamp': latest_message.created_at if latest_message else None,
-        })
+        latest_message = (
+            ChatMessage.objects.filter(
+                Q(sender=user, recipient=request.user)
+                | Q(sender=request.user, recipient=user)
+            )
+            .order_by("-created_at")
+            .first()
+        )
 
-    chat_info.sort(key=lambda x: x['timestamp'], reverse=True)
-    
+        chat_info.append(
+            {
+                "user": user,
+                "latest_message": (
+                    latest_message.content if latest_message else "No messages yet"
+                ),
+                "timestamp": latest_message.created_at if latest_message else None,
+            }
+        )
+
+    chat_info.sort(key=lambda x: x["timestamp"], reverse=True)
+
     context = {
-        'page_title': _("Chat List :: PlayStyle Compass"),
-        'chat_info': chat_info,
+        "page_title": _("Chat List :: PlayStyle Compass"),
+        "chat_info": chat_info,
     }
-    
+
     return render(request, "messaging/chat_list.html", context)
+
+
+@login_required
+def block_user(request, user_id):
+    """View to add a user to the block list."""
+    if request.method == "POST":
+        user_profile = request.user.userprofile
+        user_to_block = get_object_or_404(UserProfile, user__id=user_id)
+
+        if request.user.id == user_to_block.user.id:
+            return JsonResponse({"error": "You cannot block yourself."}, status=400)
+
+        if user_to_block.user in user_profile.blocked_users.all():
+            return JsonResponse({"message": "User is already blocked."})
+        else:
+            user_profile.blocked_users.add(user_to_block.user)
+            return JsonResponse({"message": "User has been blocked."})
+
+    return JsonResponse({"error": "Invalid request method."}, status=405)
+
+
+@login_required
+def unblock_user(request, user_id):
+    """View to remove a user from the block list."""
+    if request.method == "POST":
+        user_profile = request.user.userprofile
+        user_to_unblock = get_object_or_404(UserProfile, user__id=user_id)
+
+        if request.user.id == user_to_unblock.user.id:
+            return JsonResponse({"error": "You cannot unblock yourself."}, status=400)
+
+        if user_to_unblock.user in user_profile.blocked_users.all():
+            user_profile.blocked_users.remove(user_to_unblock.user)
+            return JsonResponse({"message": "User has been unblocked."})
+        else:
+            return JsonResponse({"message": "User was not blocked."})
+
+    return JsonResponse({"error": "Invalid request method."}, status=405)
+
+
+@login_required
+def check_block_status(request, user_id):
+    """View to check if a user is blocked."""
+    user_profile = request.user.userprofile
+    user_to_check = get_object_or_404(UserProfile, user__id=user_id)
+
+    is_blocked = user_to_check.user in user_profile.blocked_users.all()
+    return JsonResponse({"is_blocked": is_blocked})

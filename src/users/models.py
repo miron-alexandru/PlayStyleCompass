@@ -33,6 +33,9 @@ class UserProfile(models.Model):
     last_chat_notification = models.DateTimeField(null=True, blank=True)
     is_online = models.BooleanField(default=False)
     last_online = models.DateTimeField(null=True, blank=True, auto_now_add=True)
+    blocked_users = models.ManyToManyField(
+        settings.AUTH_USER_MODEL, related_name="blocked_by", blank=True
+    )
 
     def clean(self):
         profile_name = self.profile_name

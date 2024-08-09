@@ -223,7 +223,9 @@ class OnlineStatusConsumer(AsyncWebsocketConsumer):
                 status = user_profile.is_online if user_profile else None
                 last_online = await self.get_last_online(user_profile)
 
-                await self.send(text_data=json.dumps({"status": status, "last_online": last_online}))
+                await self.send(
+                    text_data=json.dumps({"status": status, "last_online": last_online})
+                )
 
             # Start periodic task to check user status
             self.periodic_task = asyncio.create_task(self.check_status_periodically())
@@ -241,7 +243,8 @@ class OnlineStatusConsumer(AsyncWebsocketConsumer):
             user_profile = await self.get_user_profile(self.user.id)
             last_online = await self.get_last_online(user_profile)
             await self.channel_layer.group_send(
-                self.room_group_name, {"type": "status_update", "status": False, "last_online": last_online}
+                self.room_group_name,
+                {"type": "status_update", "status": False, "last_online": last_online},
             )
 
             await self.channel_layer.group_discard(
@@ -250,7 +253,11 @@ class OnlineStatusConsumer(AsyncWebsocketConsumer):
 
     async def status_update(self, event):
         """Send status update to WebSocket client"""
-        await self.send(text_data=json.dumps({"status": event["status"], "last_online": event["last_online"]}))
+        await self.send(
+            text_data=json.dumps(
+                {"status": event["status"], "last_online": event["last_online"]}
+            )
+        )
 
     async def check_status_periodically(self):
         """Periodically check and send user status every 15 seconds"""
@@ -260,7 +267,9 @@ class OnlineStatusConsumer(AsyncWebsocketConsumer):
                 status = user_profile.is_online if user_profile else None
                 last_online = await self.get_last_online(user_profile)
 
-                await self.send(text_data=json.dumps({"status": status, "last_online": last_online}))
+                await self.send(
+                    text_data=json.dumps({"status": status, "last_online": last_online})
+                )
             await asyncio.sleep(15)
 
     async def get_last_online(self, user_profile):
@@ -272,11 +281,13 @@ class OnlineStatusConsumer(AsyncWebsocketConsumer):
             user_tz = pytz.timezone(user_timezone)
 
             if last_online.tzinfo is None:
-                last_online = timezone.make_aware(last_online, timezone.get_default_timezone())
+                last_online = timezone.make_aware(
+                    last_online, timezone.get_default_timezone()
+                )
 
             last_online = last_online.astimezone(user_tz)
             return last_online.strftime("%B %d, %Y, %I:%M %p")
-        
+
         return None
 
     async def get_user_from_session(self):

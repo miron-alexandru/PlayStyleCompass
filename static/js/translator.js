@@ -35,6 +35,9 @@ const translate = (key) => {
             'Loading Messages...': 'Se încarcă mesajele...',
             'Online': 'Conectat',
             'Offline': 'Deconectat',
+            'Block': 'Blochează',
+            'Unblock': 'Deblochează',
+            'User blocked': 'User blocat',
         },
     };
 

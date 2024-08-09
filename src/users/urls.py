@@ -119,5 +119,12 @@ urlpatterns = [
         name="delete_chat_messages",
     ),
     path("edit_message/<int:message_id>/", views.edit_message, name="edit_message"),
-    path('chats/', views.chat_list, name='chat_list'),
+    path("chats/", views.chat_list, name="chat_list"),
+    path("block/<int:user_id>/", views.block_user, name="block_user"),
+    path("unblock/<int:user_id>/", views.unblock_user, name="unblock_user"),
+    path(
+        "check_block_status/<int:user_id>/",
+        views.check_block_status,
+        name="check_block_status",
+    ),
 ]
