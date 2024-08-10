@@ -46,6 +46,7 @@ Websites for .env configuration: [GiantBomb](https://www.giantbomb.com/) / [Send
 <summary><h2>PlayStyle Compass Changelog</h2></summary>
 
 ### Version v2.1:
+* Block / Unblock funcionality added to user profile.
 * Users are able to block/unblock other users.
 * Implemented Chats page where users are able to view their ongoing chat conversations with other users.
 * Chat updates: Last Seen displayed when the users are offline in chat.

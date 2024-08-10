@@ -228,18 +228,21 @@ document.addEventListener("DOMContentLoaded", function() {
         if (statusElement) {
             statusElement.innerText = data.status ? translate('Online') : translate('Offline');
 
-            if (lastSeenElement) {
-                if (data.status) {
-                    statusElement.classList.remove('offline');
-                    statusElement.classList.add('online');
-                    lastSeenElement.style.display = 'none';
-                } else {
-                    statusElement.classList.remove('online');
-                    statusElement.classList.add('offline');
-                    lastSeenElement.style.display = 'block';
+            if (data.status) {
+                statusElement.classList.remove('offline');
+                statusElement.classList.add('online');
+            } else {
+                statusElement.classList.remove('online');
+                statusElement.classList.add('offline');
+            }
+        }
 
-                    lastSeenElement.innerHTML = `<strong>(Last Seen: </strong>${data.last_online})`;
-                }
+        if (lastSeenElement) {
+            if (data.status) {
+                lastSeenElement.style.display = 'none';
+            } else {
+                lastSeenElement.style.display = 'block';
+                lastSeenElement.innerHTML = `<strong>(Last Seen: </strong>${data.last_online})`;
             }
         }
     };

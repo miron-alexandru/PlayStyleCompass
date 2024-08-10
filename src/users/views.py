@@ -897,6 +897,7 @@ def view_profile(request, profile_name):
         request_user = request.user
         profile_to_view = user_profile.user
 
+        is_blocked = profile_to_view in request_user.userprofile.blocked_users.all()
         is_friend = get_friend_status(request_user, profile_to_view)
 
         context.update(
@@ -910,6 +911,7 @@ def view_profile(request, profile_name):
                 "show_in_queue": user_stats["user_preferences"].show_in_queue,
                 "show_reviews": user_stats["user_preferences"].show_reviews,
                 "show_favorites": user_stats["user_preferences"].show_favorites,
+                "is_blocked": is_blocked,
             }
         )
 
@@ -946,7 +948,7 @@ def get_friend_status(request_user, profile_to_view):
         elif are_friends(request_user, profile_to_view):
             return _("Friend")
         else:
-            return _("Not Friend")
+            return _("Stranger")
     else:
         return None
 
@@ -975,39 +977,43 @@ def send_message(request, user_id):
     message_sender = request.user
     message_receiver = get_object_or_404(User, pk=user_id)
 
-    if are_friends(message_sender, message_receiver):
-        if request.method == "POST":
-            form = MessageForm(request.POST)
-            if form.is_valid():
-                message = form.instance
-                message.sender = message_sender
-                message.receiver = message_receiver
-                message.save()
-                messages.success(request, _("Message sent successfully!"))
+    if request.method == "POST":
+        if message_sender in message_receiver.userprofile.blocked_users.all():
+            profile_name = message_receiver.userprofile.profile_name
+            messages.error(request, f"{profile_name} is no longer available.")
+            return redirect(request.META.get("HTTP_REFERER", "users:inbox"))
 
-                profile_url = reverse(
-                    "users:view_profile", args=[message_sender.userprofile.profile_name]
-                )
-                navigation_url = reverse("users:inbox")
-                user_in_notification = message_sender.userprofile.profile_name
+        if message_receiver in message_sender.userprofile.blocked_users.all():
+            profile_name = message_receiver.userprofile.profile_name
+            messages.error(request, f"{profile_name} is in your block list.")
+            return redirect(request.META.get("HTTP_REFERER", "users:inbox"))
 
-                message = (
-                    f'<a class="notification-profile" title="View User Profile" href="{profile_url}">{user_in_notification}</a> '
-                    "just sent you a message!<br>"
-                    f'<a class="notification-link" title="Navigate" href="{navigation_url}">View inbox</a>'
-                )
+        form = MessageForm(request.POST)
+        if form.is_valid():
+            message = form.instance
+            message.sender = message_sender
+            message.receiver = message_receiver
+            message.save()
+            messages.success(request, _("Message sent successfully!"))
 
-                notification = Notification(user=message_receiver, message=message)
-                notification.save()
+            profile_url = reverse(
+                "users:view_profile", args=[message_sender.userprofile.profile_name]
+            )
+            navigation_url = reverse("users:inbox")
+            user_in_notification = message_sender.userprofile.profile_name
 
-                return redirect(request.META.get("HTTP_REFERER", "users:inbox"))
-        else:
-            form = MessageForm()
+            notification_message = (
+                f'<a class="notification-profile" title="View User Profile" href="{profile_url}">{user_in_notification}</a> '
+                "just sent you a message!<br>"
+                f'<a class="notification-link" title="Navigate" href="{navigation_url}">View inbox</a>'
+            )
+
+            notification = Notification(user=message_receiver, message=notification_message)
+            notification.save()
+
+            return redirect(request.META.get("HTTP_REFERER", "users:inbox"))
     else:
-        messages.error(
-            request, _("You have to be friends with someone to send them a message.")
-        )
-        return redirect("playstyle_compass:index")
+        form = MessageForm()
 
     context = {
         "page_title": _("Send message :: PlayStyle Compass"),
@@ -1273,13 +1279,13 @@ def create_message(request):
     recipient = get_object_or_404(User, username=recipient_username)
 
     if sender in recipient.userprofile.blocked_users.all():
-        profile_name = recipient.userprofile.profile_name or recipient.username
+        profile_name = recipient.userprofile.profile_name
         return JsonResponse(
             {"error": f"{profile_name} is no longer available."}, status=403
         )
 
     if recipient in sender.userprofile.blocked_users.all():
-        profile_name = sender.userprofile.profile_name or sender.username
+        profile_name = recipient.userprofile.profile_name
         return JsonResponse(
             {"error": f"{profile_name} is in your block list."}, status=403
         )

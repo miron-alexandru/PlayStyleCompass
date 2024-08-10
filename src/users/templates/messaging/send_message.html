@@ -11,6 +11,7 @@
 {% block content %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/users/send_message.css' %}">
 <link rel="stylesheet" type="text/css" href="{% static 'css/users/common.css' %}">
+
 <form method="post" class="send-message-form">
     {% csrf_token %}
     <div class="form-group">

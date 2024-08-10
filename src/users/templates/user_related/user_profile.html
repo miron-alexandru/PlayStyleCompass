@@ -65,7 +65,13 @@
       <span class="friend-status">{{ is_friend }}</span>
     </div>
     {% if is_friend != you %}
-    <p id="status"></p>
+      <p id="status" class="{% if user_profile.is_online %}online{% else %}offline{%endif%}">
+      {% if user_profile.is_online %}
+        {% trans "Online" %}
+      {% else %}
+        {% trans "Offline" %}
+      {% endif %}
+      </p>
     {% endif %}
     <div class="d-flex justify-content-center align-items-center action-items">
       {% trans 'You' as you %}
@@ -76,8 +82,21 @@
         <a href="{% url 'users:profile_picture' %}" class="edit-profile-link">{% trans 'Profile Picture' %}</a>
       </div>
       {% endif %}
-      {% trans 'Not Friend' as not_friend %}
-      {% if is_friend == not_friend %}
+      {% if is_friend != you %}
+        <button id="block-toggle-button"
+          class="block-toggle-button {% if is_blocked %}unblock{% else %}block{% endif %}"
+          data-block-url="{% url 'users:block_user' user_id=user_id %}"
+          data-unblock-url="{% url 'users:unblock_user' user_id=user_id %}"
+          data-check-url="{% url 'users:check_block_status' user_id=user_id %}">
+      {% if is_blocked %}
+          {% trans 'Unblock' %}
+      {% else %}
+          {% trans 'Block' %}
+      {% endif %}
+    </button>
+      {% endif %}
+      {% trans 'Stranger' as stranger %}
+      {% if is_friend == stranger %}
       <div class="friend-request">
         <button class="friend-request-button" id="friend_req_btn">
           {% trans "Friend Request" %}
@@ -89,12 +108,14 @@
       <div class="remove-friend">
         <button class="remove-friend-button" onclick='triggerRemoveFriend("{{ user_id }}")'>{% trans "Unfriend" %}</button>
       </div>
+      {% endif %}
+      {% endif %}
+      {% if is_friend != you %}
       <div class="send-message">
         <a href="{% url 'users:send_message' user_id=user_id %}">{% trans "Send Message" %}</a>
         <a class="chat-button" href="{% url 'users:chat' recipient_id=user_id %}">{% trans "Start Chat" %}</a>
     </div>
-      {% endif %}
-      {% endif %}
+    {% endif %}
     </div>
     <div class="d-flex justify-content-center align-items-center">
       <div class="stat-item">
@@ -210,7 +231,6 @@
   </div>
 
 
-<script src="{% static 'js/users/remove_friend.js' %}"></script>
 <script src="{% static 'js/users/user_profile.js' %}"></script>
 
 {% include 'snippets/friend_request.html' %}

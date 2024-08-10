@@ -54,7 +54,7 @@
             <strong>{% trans "From:" %}</strong><a href="{% url 'users:view_profile' profile_name=message.sender.userprofile.profile_name %}"
               class="user-name">{{ message.sender.userprofile.profile_name }}</a>
               <div class="arrow"></div>
-              <a href="{% url 'users:send_message' message.sender.userprofile.id %}" class="reply-button">{% trans "Reply" %}</a>
+              <a href="{% url 'users:send_message' message.sender.id %}" class="reply-button">{% trans "Reply" %}</a>
             {% elif category == 'sent' %}
             <strong>{% trans "Sent to:" %}</strong><a href="{% url 'users:view_profile' profile_name=message.receiver.userprofile.profile_name %}"
               class="user-name">{{ message.receiver.userprofile.profile_name }}</a>
