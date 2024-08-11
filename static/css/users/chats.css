@@ -1,4 +1,7 @@
 .chat-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
   padding: 20px;
 }
 
@@ -11,6 +14,9 @@
   background-color: #ffffff;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
   transition: box-shadow 0.3s ease;
+  flex: 1 1 calc(33.333% - 15px);
+  margin-bottom: 15px;
+  max-width: 540px;
 }
 
 .chat-item:hover {
@@ -71,4 +77,17 @@
 .open-chat-button:hover {
   background-color: #e0e0e0;
   color: #000;
+}
+
+.empty-chat-list {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #444;
+  padding: 25px;
+  margin: 20px auto;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background-color: #f9f9f9;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
 }

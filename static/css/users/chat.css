@@ -237,7 +237,7 @@ form {
     border-bottom-right-radius: 5px;
     overflow: hidden;
     z-index: 1000;
-    padding: 5px;
+    padding: 5px 0px 5px;
     margin-top: 15px;
 }
 
@@ -250,10 +250,10 @@ form {
     font-size: 11px;
     color: white;
     white-space: nowrap;
-    padding: 5px 15px;
+    padding: 6px 12px;
     margin: 0;
-    margin-right: -10px;
-    margin-left: -10px;
+    width: 110%;
+    box-sizing: border-box; 
 }
 
 .options-menu button:hover {

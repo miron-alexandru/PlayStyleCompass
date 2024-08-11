@@ -1585,3 +1585,16 @@ def check_block_status(request, user_id):
 
     is_blocked = user_to_check.user in user_profile.blocked_users.all()
     return JsonResponse({"is_blocked": is_blocked})
+
+
+@login_required
+def block_list(request):
+    """View used to display the block list of the user."""
+    blocked_users = request.user.userprofile.blocked_users.all()
+
+    context = {
+        'page_title': _('Block List :: PlayStyle Compass'),
+        'blocked_users': blocked_users
+    }
+
+    return render(request, 'messaging/block_list.html', context)

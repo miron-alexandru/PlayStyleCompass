@@ -1,3 +1,8 @@
+function scrollToBottom() {
+    const chatMessages = document.querySelector('.chat-messages');
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     const emojiButton = document.getElementById('emoji-button');
     const emojiPickerContainer = document.getElementById('emoji-picker');
@@ -10,6 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
             textarea.focus();
         },
         emojiSize: 24,
+        perLine: 8,
     });
 
     emojiPickerContainer.innerHTML = '';
@@ -275,6 +281,7 @@ document.addEventListener('DOMContentLoaded', function() {
         blockedMessage.textContent = translate('User blocked');
         if (!chatMessagesContainer.querySelector('.blocked-message')) {
             chatMessagesContainer.appendChild(blockedMessage);
+            scrollToBottom();
         }
     }
 

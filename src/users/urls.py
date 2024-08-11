@@ -127,4 +127,5 @@ urlpatterns = [
         views.check_block_status,
         name="check_block_status",
     ),
+    path("block_list/", views.block_list, name="block_list"),
 ]
