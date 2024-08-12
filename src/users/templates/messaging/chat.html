@@ -44,7 +44,7 @@
     </div>
     <div id="color-picker-container">
         <div id="color-picker"></div>
-        <button id="default-color-button">Default</button>
+        <button id="default-color-button">{% trans "Default" %}</button>
     </div>
     <div id="chat-messages" class="chat-messages" data-edit-message-url="{% url 'users:edit_message' 0 %}">
         <div id="date-header" class="date-header" style="display:none"></div>
@@ -55,7 +55,7 @@
     <form id="myForm" x-cloak @submit.prevent="submit" x-data="{ state: 'composing', errors: {}, content: '' }"
         data-url="{% url 'users:create_message' %}">
         <div class="input-container">
-            <i id="file-button" class="fa-solid fa-paperclip file-button" title="Attach File"></i>
+            <i id="file-button" class="fa-solid fa-paperclip file-button" title="Attach File (Max: 25MB)"></i>
             <input type="file" id="file-input" name="file" style="display: none;">
             <button type="button" id="emoji-button" class="emoji-button" title="Emoji">😊</button>
             <textarea class="message-textarea" id="chat-message-input" name="content" @input="state = 'composing'; content = $event.target.value" autofocus placeholder="{% trans 'Message...' %}" x-model="content"></textarea>

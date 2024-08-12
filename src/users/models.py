@@ -247,6 +247,7 @@ class ChatMessage(models.Model):
     recipient_hidden = models.BooleanField(default=False)
     edited = models.BooleanField(default=False)
     file = models.URLField(blank=True, null=True)
+    file_size = models.PositiveIntegerField(blank=True, null=True)
 
     def __str__(self):
         return (

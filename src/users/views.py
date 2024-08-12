@@ -1269,6 +1269,7 @@ def create_message(request):
 
     content = request.POST.get("content")
     file_url = None
+    file_size = None
     username = request.session.get("username")
     recipient_username = request.session.get("recipient_username")
 
@@ -1295,8 +1296,10 @@ def create_message(request):
 
     if "file" in request.FILES:
         file = request.FILES["file"]
-        if file.size > 10 * 1024 * 1024:
-            return JsonResponse({"error": "File size exceeds the limit."}, status=400)
+        file_size = file.size
+
+        if file.size > 25 * 1024 * 1024:
+            return JsonResponse({"error": "File size exceeds the limit (Max: 25 MB)."}, status=400)
 
         file_name = default_storage.save(
             f"chat_files/{file.name}", ContentFile(file.read())
@@ -1328,6 +1331,7 @@ def create_message(request):
         recipient=recipient,
         content=content,
         file=file_url if file_url else None,
+        file_size=file_size if file_size else None,
     )
 
     process_chat_notification(sender, recipient)
@@ -1417,6 +1421,7 @@ async def stream_chat_messages(request, recipient_id: int) -> StreamingHttpRespo
                     "sender__id",
                     "edited",
                     "file",
+                    "file_size",
                 )
             )
 
@@ -1455,6 +1460,7 @@ async def stream_chat_messages(request, recipient_id: int) -> StreamingHttpRespo
                 "sender__id",
                 "edited",
                 "file",
+                "file_size",
             )
         )
 
@@ -1523,7 +1529,7 @@ def chat_list(request):
             {
                 "user": user,
                 "latest_message": (
-                    latest_message.content if latest_message else "No messages yet"
+                    latest_message.content if latest_message else _("No messages yet")
                 ),
                 "timestamp": latest_message.created_at if latest_message else None,
             }
@@ -1547,13 +1553,13 @@ def block_user(request, user_id):
         user_to_block = get_object_or_404(UserProfile, user__id=user_id)
 
         if request.user.id == user_to_block.user.id:
-            return JsonResponse({"error": "You cannot block yourself."}, status=400)
+            return JsonResponse({"error": _("You cannot block yourself.")}, status=400)
 
         if user_to_block.user in user_profile.blocked_users.all():
-            return JsonResponse({"message": "User is already blocked."})
+            return JsonResponse({"message": _("User is already blocked.")})
         else:
             user_profile.blocked_users.add(user_to_block.user)
-            return JsonResponse({"message": "User has been blocked."})
+            return JsonResponse({"message": _("User has been blocked.")})
 
     return JsonResponse({"error": "Invalid request method."}, status=405)
 
@@ -1566,13 +1572,13 @@ def unblock_user(request, user_id):
         user_to_unblock = get_object_or_404(UserProfile, user__id=user_id)
 
         if request.user.id == user_to_unblock.user.id:
-            return JsonResponse({"error": "You cannot unblock yourself."}, status=400)
+            return JsonResponse({"error": _("You cannot unblock yourself.")}, status=400)
 
         if user_to_unblock.user in user_profile.blocked_users.all():
             user_profile.blocked_users.remove(user_to_unblock.user)
-            return JsonResponse({"message": "User has been unblocked."})
+            return JsonResponse({"message": _("User has been unblocked.")})
         else:
-            return JsonResponse({"message": "User was not blocked."})
+            return JsonResponse({"message": _("User was not blocked.")})
 
     return JsonResponse({"error": "Invalid request method."}, status=405)
 

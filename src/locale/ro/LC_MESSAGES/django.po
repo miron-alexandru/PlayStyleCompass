@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-08-11 15:07+0300\n"
-"PO-Revision-Date: 2024-08-11 15:07+0230\n"
+"POT-Creation-Date: 2024-08-12 11:38+0300\n"
+"PO-Revision-Date: 2024-08-12 11:40+0230\n"
 "Last-Translator:   <tokisaki.kurumir99@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -162,6 +162,7 @@ msgstr "Sortează după:"
 
 #: .\src\playstyle_compass\templates\base\latest_news.html:41
 #: .\src\playstyle_compass\templates\games\game_library.html:74
+#: .\src\users\templates\messaging\chat.html:47
 msgid "Default"
 msgstr "Implicit"
 
@@ -2635,11 +2636,43 @@ msgstr "Detalii Profil :: PlayStyle Compass"
 msgid "Chat :: PlayStyle Compass"
 msgstr "Conversație :: PlayStyle Compass"
 
-#: .\src\users\views.py:1535
+#: .\src\users\views.py:1532
+msgid "No messages yet"
+msgstr "Niciun mesaj încă"
+
+#: .\src\users\views.py:1541
 msgid "Chat List :: PlayStyle Compass"
 msgstr "Listă Conversații :: PlayStyle Compass"
 
-#: .\src\users\views.py:1596
+#: .\src\users\views.py:1556
+#| msgid "You cannot like your own review."
+msgid "You cannot block yourself."
+msgstr "Nu te poți bloca singur."
+
+#: .\src\users\views.py:1559
+#| msgid "User has been blocked."
+msgid "User is already blocked."
+msgstr "Utilizatorul este deja blocat."
+
+#: .\src\users\views.py:1562
+msgid "User has been blocked."
+msgstr "Utilizatorul a fost blocat."
+
+#: .\src\users\views.py:1575
+#| msgid "You cannot like your own review."
+msgid "You cannot unblock yourself."
+msgstr "Nu te poți debloca singur."
+
+#: .\src\users\views.py:1579
+#| msgid "User has been blocked."
+msgid "User has been unblocked."
+msgstr "Utilizatorul a fost deblocat."
+
+#: .\src\users\views.py:1581
+#| msgid "User has been blocked."
+msgid "User was not blocked."
+msgstr "Utilizatorul nu a fost blocat."
+
+#: .\src\users\views.py:1602
 msgid "Block List :: PlayStyle Compass"
 msgstr "Listă Blocări :: PlayStyle Compass"
-

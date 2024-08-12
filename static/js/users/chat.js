@@ -32,6 +32,18 @@ function isNewMessage(created_at) {
     return elapsedTimeInSeconds <= 120;
 }
 
+function formatFileSize(sizeInBytes) {
+    if (sizeInBytes < 1024) {
+        return `${sizeInBytes} B`;
+    } else if (sizeInBytes < 1048576) {
+        return `${(sizeInBytes / 1024).toFixed(2)} KB`;
+    } else if (sizeInBytes < 1073741824) {
+        return `${(sizeInBytes / 1048576).toFixed(2)} MB`;
+    } else {
+        return `${(sizeInBytes / 1073741824).toFixed(2)} GB`;
+    }
+}
+
 function submit(event) {
     event.preventDefault();
 
@@ -108,6 +120,7 @@ function editMessage(messageId) {
     const inputField = document.createElement('textarea');
     inputField.value = originalContent;
     inputField.classList.add('edit-textarea');
+    inputField.id = 'edit-textarea';
     inputField.placeholder = translate('Edit your message...');
     contentElement.replaceWith(inputField);
 
@@ -228,6 +241,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                 ${translate('File Attachment: ')}<a href="${data.file}" download="${getFileNameFromUrl(data.file)}" class="file-link">
                                     ${getFileNameFromUrl(data.file)}
                                 </a>
+                                ${data.file_size ? ` (${formatFileSize(data.file_size)})` : ''}
                             </div>`
                         : ''
                         }

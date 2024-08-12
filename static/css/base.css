@@ -663,7 +663,7 @@ input[type="email"]:focus,
 
 
 
-@media screen and (max-width: 1100px) {
+@media screen and (max-width: 1300px) {
   .navbar {
     max-height: none;
     padding: 20px;

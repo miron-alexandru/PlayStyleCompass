@@ -10,9 +10,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const picker = new EmojiMart.Picker({
         onEmojiSelect: (emoji) => {
-            textarea.value += emoji.native;
-            textarea.dispatchEvent(new Event('input'));
-            textarea.focus();
+            const editTextarea = document.getElementById('edit-textarea');
+            const targetTextarea = editTextarea || textarea;
+
+            targetTextarea.value += emoji.native;
+            targetTextarea.dispatchEvent(new Event('input'));
+            targetTextarea.focus();
         },
         emojiSize: 24,
         perLine: 8,
@@ -31,6 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+
 
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -168,7 +172,9 @@ document.addEventListener('DOMContentLoaded', () => {
     fileInput.addEventListener('change', () => {
         const hasFile = fileInput.files.length > 0;
         const hasMessage = messageTextarea.value.trim();
-        const fileName = hasFile ? fileInput.files[0].name : '';
+        const file = hasFile ? fileInput.files[0] : null;
+        const fileName = file ? file.name : '';
+        const fileSize = file ? formatFileSize(file.size) : '';
 
         sendButton.disabled = !hasMessage && !hasFile;
 
@@ -178,12 +184,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (hasFile) {
             const translatedText = translate('File attached: ');
-            fileIndicator.textContent = `${translatedText}${fileName}`;
+            fileIndicator.textContent = `${translatedText}${fileName} (${fileSize})`;
             fileIndicator.style.display = 'inline';
         } else {
             fileIndicator.style.display = 'none';
         }
     });
+
+    function formatFileSize(sizeInBytes) {
+        if (sizeInBytes < 1024) {
+            return `${sizeInBytes} B`;
+        } else if (sizeInBytes < 1048576) {
+            return `${(sizeInBytes / 1024).toFixed(2)} KB`;
+        } else if (sizeInBytes < 1073741824) {
+            return `${(sizeInBytes / 1048576).toFixed(2)} MB`;
+        } else {
+            return `${(sizeInBytes / 1073741824).toFixed(2)} GB`;
+        }
+    }
 });
 
 
