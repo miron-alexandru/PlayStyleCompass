@@ -1400,9 +1400,9 @@ async def stream_chat_messages(request, recipient_id: int) -> StreamingHttpRespo
         while True:
             new_messages = (
                 ChatMessage.objects.filter(
-                    sender__in=[request.user, recipient],
-                    recipient__in=[request.user, recipient],
-                    id__gt=last_id,
+                    Q(sender=request.user, recipient=recipient) |
+                    Q(sender=recipient, recipient=request.user),
+                    id__gt=last_id
                 )
                 .annotate(
                     profile_picture_url=Concat(
@@ -1437,7 +1437,8 @@ async def stream_chat_messages(request, recipient_id: int) -> StreamingHttpRespo
     async def get_existing_messages(user, recipient) -> AsyncGenerator:
         messages = (
             ChatMessage.objects.filter(
-                sender__in=[user, recipient], recipient__in=[user, recipient]
+                Q(sender=user, recipient=recipient) |
+                Q(sender=recipient, recipient=user)
             )
             .filter(
                 (Q(sender=user) & Q(sender_hidden=False))
@@ -1473,7 +1474,8 @@ async def stream_chat_messages(request, recipient_id: int) -> StreamingHttpRespo
 
     async def get_last_message_id(user, recipient) -> int:
         last_message = await ChatMessage.objects.filter(
-            sender__in=[user, recipient], recipient__in=[user, recipient]
+            Q(sender=user, recipient=recipient) |
+            Q(sender=recipient, recipient=user)
         ).alast()
         return last_message.id if last_message else 0
 
@@ -1525,12 +1527,20 @@ def chat_list(request):
             .first()
         )
 
+        if latest_message:
+            sender_label = _("Sender:")
+            if latest_message.sender == request.user:
+                sender_name = _("You")
+            else:
+                sender_name = latest_message.sender.userprofile.profile_name
+            message_content = f"{latest_message.content[:20]} ({sender_label} {sender_name})"
+        else:
+            message_content = _("No messages yet")
+
         chat_info.append(
             {
                 "user": user,
-                "latest_message": (
-                    latest_message.content if latest_message else _("No messages yet")
-                ),
+                "latest_message": message_content,
                 "timestamp": latest_message.created_at if latest_message else None,
             }
         )

@@ -51,6 +51,7 @@
   color: #777;
   font-size: 0.9rem;
   margin-bottom: 10px;
+  word-break: break-word;
 }
 
 .chat-timestamp {
