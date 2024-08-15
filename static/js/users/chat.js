@@ -146,6 +146,8 @@ function editMessage(messageId) {
         editButton.style.display = '';
     }
 
+    let isTextareaOpened = true;
+
     saveButton.addEventListener('click', () => {
         const newContent = inputField.value;
 
@@ -178,6 +180,7 @@ function editMessage(messageId) {
                     contentElement.insertAdjacentElement('afterend', editedIndicator);
                 }
 
+                isTextareaOpened = false;
                 saveButton.remove();
                 cancelButton.remove();
                 editButton.style.display = '';
@@ -198,9 +201,12 @@ function editMessage(messageId) {
     cancelButton.addEventListener('click', cancelEdit);
 
     const sendButton = document.querySelector('.send-button');
-    if (sendButton) {
+    if (sendButton && inputField) {
         sendButton.addEventListener('click', () => {
+
+        if (isTextareaOpened) {
             cancelEdit();
+        }
         });
     }
 }
