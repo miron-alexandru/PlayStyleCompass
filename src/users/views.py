@@ -1487,16 +1487,6 @@ def chat_list(request):
     """View function used to display a list of chat conversations involving the logged-in user."""
     user = request.user
 
-    # Subquery to get the latest message for each conversation
-    latest_message_subquery = (
-        ChatMessage.objects.filter(
-            Q(sender=user, recipient=OuterRef("other_user"))
-            | Q(sender=OuterRef("other_user"), recipient=user)
-        )
-        .order_by("-created_at")
-        .values("content")[:1]
-    )
-
     # Get all conversations involving the logged-in user
     conversations = (
         ChatMessage.objects.filter(Q(sender=user) | Q(recipient=user))
@@ -1515,13 +1505,12 @@ def chat_list(request):
     # Fetch details of other users
     users = User.objects.filter(id__in=other_user_ids)
 
-    # Annotate each user with the latest message
     chat_info = []
-    for user in users:
+    for other_user in users:
         latest_message = (
             ChatMessage.objects.filter(
-                Q(sender=user, recipient=request.user)
-                | Q(sender=request.user, recipient=user)
+                Q(sender=other_user, recipient=request.user, recipient_hidden=False) | 
+                Q(sender=request.user, recipient=other_user, sender_hidden=False)
             )
             .order_by("-created_at")
             .first()
@@ -1534,18 +1523,21 @@ def chat_list(request):
             else:
                 sender_name = latest_message.sender.userprofile.profile_name
             message_content = f"{latest_message.content[:20]} ({sender_label} {sender_name})"
-        else:
-            message_content = _("No messages yet")
 
-        chat_info.append(
-            {
-                "user": user,
+            chat_entry = {
+                "user": other_user,
                 "latest_message": message_content,
-                "timestamp": latest_message.created_at if latest_message else None,
+                "timestamp": latest_message.created_at,
             }
-        )
+        else:
+            chat_entry = {
+                "user": other_user,
+                "latest_message": _("No messages yet"),
+            }
 
-    chat_info.sort(key=lambda x: x["timestamp"], reverse=True)
+        chat_info.append(chat_entry)
+
+    chat_info.sort(key=lambda x: (x.get("timestamp") is None, x.get("timestamp")), reverse=True)
 
     context = {
         "page_title": _("Chat List :: PlayStyle Compass"),
