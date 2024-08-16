@@ -27,10 +27,14 @@
         <div class="search-container" id="search-container">
             <input type="text" id="search-input" placeholder="{% trans 'Search messages...' %}">
         </div>
+        <div id="pinned-messages-dropdown" class="pinned-messages-dropdown" style="display: none;">
+            <ul id="pinned-messages-list"></ul>
+        </div>
         <div class="chat-options">
             <i class="fa-solid fa-ellipsis-vertical options-button" onclick="toggleOptionsMenu()"></i>
             <div class="options-menu" id="options-menu">
                 <button id="search-messages-button">{% trans 'Search Messages' %}</button>
+                <button id="pinned-messages-button" data-load-pinned-messages="{% url 'users:load_pinned_messages' recipient_id=recipient.id %}">{% trans 'Pinned Messages' %}</button>
                 <button id="change-bg-color-button">{% trans 'Change Background' %}</button>
                 <button id="block-toggle-button" class="block-toggle-button"
                     data-block-url="{% url 'users:block_user' user_id=recipient.id %}"
@@ -46,7 +50,8 @@
         <div id="color-picker"></div>
         <button id="default-color-button">{% trans "Default" %}</button>
     </div>
-    <div id="chat-messages" class="chat-messages" data-edit-message-url="{% url 'users:edit_message' 0 %}">
+    <div id="chat-messages" class="chat-messages" data-edit-message-url="{% url 'users:edit_message' 0 %}"
+        data-pin-message-url="{% url 'users:toggle_pin_message' 0 %}">
         <div id="date-header" class="date-header" style="display:none"></div>
         <div id="sse-data" data-stream-url="{% url 'users:stream_chat_messages' recipient_id=recipient.id %}"></div>
         <div id="typing-indicator">{{ recipient.userprofile.profile_name }} {% trans "is typing..." %}</div>

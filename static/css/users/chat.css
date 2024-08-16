@@ -280,7 +280,7 @@ form {
     50% { opacity: 1; }
 }
 
-.edit-message-button, .save-message-button, .cancel-message-button, .block-toggle-button {
+.edit-message-button, .save-message-button, .cancel-message-button, .block-toggle-button, .pin-message-button {
     background-color: transparent;
     color: #333;
     border: none;
@@ -291,7 +291,7 @@ form {
     cursor: pointer;
 }
 
-.edit-message-button {
+.edit-message-button, .pin-message-button {
     padding: 0;
     margin: 0;
 }
@@ -325,11 +325,15 @@ form {
     margin-top: 15px;
 }
 
-.edit-message-button {
+.edit-message-button, .pin-message-button {
     display: none;
 }
 
 .message-box:hover .edit-message-button {
+    display: inline-block;
+}
+
+.message-box:hover .pin-message-button {
     display: inline-block;
 }
 
@@ -567,4 +571,38 @@ form {
     left: 51%;
     transform: translateX(-50%);
     position: relative;
+}
+
+.pinned-messages-dropdown {
+    position: absolute;
+    top: 60px;
+    right: 139px;
+    background-color: white;
+    border: 1px solid #ccc;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    max-height: 300px;
+    overflow-y: auto;
+    width: 250px;
+    display: none;
+}
+
+.pinned-messages-dropdown ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.pinned-messages-dropdown ul li {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    cursor: pointer;
+}
+
+.pinned-messages-dropdown ul li:last-child {
+    border-bottom: none;
+}
+
+.pinned-messages-dropdown ul li:hover {
+    background-color: #f5f5f5;
 }

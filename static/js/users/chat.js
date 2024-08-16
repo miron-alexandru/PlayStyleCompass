@@ -44,6 +44,32 @@ function formatFileSize(sizeInBytes) {
     }
 }
 
+function loadPinnedMessages() {
+    const pinnedMessagesList = document.getElementById('pinned-messages-list');
+    const pinnedMessagesButton = document.getElementById('pinned-messages-button');
+    const loadPinnedMessagesUrl = pinnedMessagesButton.getAttribute('data-load-pinned-messages');
+
+    fetch(loadPinnedMessagesUrl)
+        .then(response => response.json())
+        .then(pinnedMessages => {
+            pinnedMessagesList.innerHTML = '';
+
+            if (pinnedMessages.length === 0) {
+                const li = document.createElement('li');
+                li.textContent = "No pinned messages";
+                pinnedMessagesList.appendChild(li);
+            } else {
+                pinnedMessages.forEach(message => {
+                    const li = document.createElement('li');
+                    li.textContent = message.content;
+                    pinnedMessagesList.appendChild(li);
+                });
+            }
+        })
+        .catch(error => console.error('Error loading pinned messages:', error));
+}
+
+
 function submit(event) {
     event.preventDefault();
 
@@ -217,6 +243,29 @@ function getFormattedDateHeader(dateString) {
     return date.toLocaleDateString(undefined, options);
 }
 
+function togglePinMessage(messageId, button) {
+    const messagesContainer = document.getElementById('chat-messages');
+    const pinMessageTemplate = messagesContainer.getAttribute('data-pin-message-url');
+    const togglePinUrl = pinMessageTemplate.replace('/0/', `/${messageId}/`);
+
+    fetch(togglePinUrl, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': csrfToken,
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({}),
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'success') {
+            button.textContent = data.action === 'pinned' ? translate('Unpin') : translate('Pin');
+            loadPinnedMessages();
+        }
+    })
+    .catch(error => console.error('Error:', error));
+}
+
 
 let eventSource;
 
@@ -254,6 +303,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         ${data.edited ? '<div class="message-edited">Edited</div>' : ''}
                         <div class="message-timestamp">${formattedTimestamp}</div>
                         ${isCurrentUser ? (isNewMessage(data.created_at) ? `<button class="edit-message-button">${translate('Edit')}</button>` : '') : ''}
+                        <button class="pin-message-button" data-message-id="${data.id}">${translate('Pin')}</button>
                     </div>
                 </div>
             </div>`;
@@ -314,6 +364,12 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }, 5000);
 
+    document.addEventListener('click', function(event) {
+        if (event.target.classList.contains('pin-message-button')) {
+            const messageId = event.target.getAttribute('data-message-id');
+            togglePinMessage(messageId, event.target);
+        }
+    });
 
     function wrapUrlsWithAnchorTags(content) {
         const urlRegex = /(https?:\/\/[^\s]+)/g;
@@ -477,4 +533,23 @@ document.addEventListener('DOMContentLoaded', function() {
         textarea.style.height = '45px';
         textarea.style.overflowY = 'hidden';
     });
+});
+
+
+document.getElementById('pinned-messages-button').addEventListener('click', function() {
+    const dropdown = document.getElementById('pinned-messages-dropdown');
+    dropdown.style.display = dropdown.style.display === 'none' || dropdown.style.display === '' ? 'block' : 'none';
+
+    if (dropdown.style.display === 'block') {
+        loadPinnedMessages();
+    }
+});
+
+document.addEventListener('click', function(event) {
+    const isClickInside = document.getElementById('pinned-messages-button').contains(event.target) || 
+                          document.getElementById('pinned-messages-dropdown').contains(event.target);
+
+    if (!isClickInside) {
+        document.getElementById('pinned-messages-dropdown').style.display = 'none';
+    }
 });

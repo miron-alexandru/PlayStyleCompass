@@ -128,4 +128,6 @@ urlpatterns = [
         name="check_block_status",
     ),
     path("block_list/", views.block_list, name="block_list"),
+    path("toggle_pin_message/<int:message_id>/", views.toggle_pin_message, name="toggle_pin_message"),
+    path("load-pinned-messages/<int:recipient_id>/", views.load_pinned_messages, name="load_pinned_messages"),
 ]

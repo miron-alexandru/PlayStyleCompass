@@ -1606,3 +1606,27 @@ def block_list(request):
     }
 
     return render(request, 'messaging/block_list.html', context)
+
+
+@login_required
+def toggle_pin_message(request, message_id):
+    """View used to toggle pin/unpin for a chat message."""
+    message = get_object_or_404(ChatMessage, id=message_id)
+    
+    if request.user in message.pinned_by.all():
+        message.pinned_by.remove(request.user)
+        action = "unpinned"
+    else:
+        message.pinned_by.add(request.user)
+        action = "pinned"
+
+    return JsonResponse({"status": "success", "action": action})
+
+
+@login_required
+def load_pinned_messages(request, recipient_id):
+    """View used to load pinned messages in chat."""
+    recipient = get_object_or_404(User, id=recipient_id)
+    pinned_messages = list(ChatMessage.objects.filter(pinned_by=request.user, recipient=recipient).values('id', 'content'))
+
+    return JsonResponse(pinned_messages, safe=False)
