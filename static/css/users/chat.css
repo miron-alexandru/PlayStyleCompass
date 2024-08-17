@@ -577,26 +577,29 @@ form {
     position: absolute;
     top: 60px;
     right: 139px;
-    background-color: white;
-    border: 1px solid #ccc;
+    background-color: #4a5a70;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     z-index: 1000;
     max-height: 300px;
     overflow-y: auto;
     width: 250px;
     display: none;
+    border-radius: 0 0 5px 5px;
 }
 
 .pinned-messages-dropdown ul {
     list-style: none;
     padding: 0;
     margin: 0;
+    background-color: #4a5a70;
+    border-radius: 5px;
 }
 
 .pinned-messages-dropdown ul li {
-    padding: 10px;
-    border-bottom: 1px solid #ddd;
+    padding: 8px;
     cursor: pointer;
+    color: #fff;
+    transition: background-color 0.2s ease-in-out;
 }
 
 .pinned-messages-dropdown ul li:last-child {
@@ -604,5 +607,72 @@ form {
 }
 
 .pinned-messages-dropdown ul li:hover {
-    background-color: #f5f5f5;
+    background-color: #2f4255;
+}
+
+#pinned-messages-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0 auto;
+    max-width: 600px;
+}
+
+.pinned-message-item {
+    position: relative;
+    background-color: #4a5a70;
+    border: 1px solid #444;
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: box-shadow 0.3s ease, background-color 0.3s ease;
+}
+
+.pinned-message-item:last-child {
+    margin-bottom: 10px;
+}
+
+.pinned-message-item:first-child {
+    margin-top: 10px;
+}
+
+.pinned-message-item:hover {
+    background-color: #2f4255;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+}
+
+.pinned-message-content {
+    font-size: 14px;
+    color: #e0e0e0;
+    margin-bottom: 5px;
+}
+
+.pinned-message-sender {
+    font-size: 12px;
+    color: #b0b0b0;
+    margin-bottom: 5px;
+}
+
+.pinned-message-timestamp {
+    font-size: 11px;
+    color: #888;
+    text-align: right;
+}
+
+.unpin-message {
+    position: absolute;
+    top: 5px;
+    right: 5px; 
+    background: none;
+    border: none;
+    padding: 5px;
+    color: #ff4d4d;
+    font-size: 11px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+    font-weight: 600;
+}
+
+.unpin-message:hover {
+    color: #b33a3a;
 }

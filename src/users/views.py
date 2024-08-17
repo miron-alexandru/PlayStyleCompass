@@ -1409,19 +1409,20 @@ async def stream_chat_messages(request, recipient_id: int) -> StreamingHttpRespo
                         Value(settings.MEDIA_URL),
                         F("sender__userprofile__profile_picture"),
                         output_field=CharField(),
-                    )
+                    ),
+                    is_pinned=Q(pinned_by__in=[request.user])
                 )
                 .order_by("created_at")
                 .values(
                     "id",
                     "created_at",
-                    "sender__userprofile__profile_name",
                     "content",
                     "profile_picture_url",
                     "sender__id",
                     "edited",
                     "file",
                     "file_size",
+                    "is_pinned",
                 )
             )
 
@@ -1449,19 +1450,20 @@ async def stream_chat_messages(request, recipient_id: int) -> StreamingHttpRespo
                     Value(settings.MEDIA_URL),
                     F("sender__userprofile__profile_picture"),
                     output_field=CharField(),
-                )
+                ),
+                is_pinned=Q(pinned_by__in=[user])
             )
             .order_by("created_at")
             .values(
                 "id",
                 "created_at",
-                "sender__userprofile__profile_name",
                 "content",
                 "profile_picture_url",
                 "sender__id",
                 "edited",
                 "file",
                 "file_size",
+                "is_pinned",
             )
         )
 
@@ -1627,6 +1629,17 @@ def toggle_pin_message(request, message_id):
 def load_pinned_messages(request, recipient_id):
     """View used to load pinned messages in chat."""
     recipient = get_object_or_404(User, id=recipient_id)
-    pinned_messages = list(ChatMessage.objects.filter(pinned_by=request.user, recipient=recipient).values('id', 'content'))
+
+    # Query to get pinned messages sent by the user or the recipient
+    pinned_messages_queryset = ChatMessage.objects.filter(
+        pinned_by=request.user,
+        recipient=recipient
+    ).values('id', 'content', 'sender__userprofile__profile_name', 'created_at') | ChatMessage.objects.filter(
+        pinned_by=request.user,
+        sender=recipient
+    ).values('id', 'content', 'sender__userprofile__profile_name', 'created_at')
+
+    pinned_messages = list(pinned_messages_queryset.order_by('-created_at'))
 
     return JsonResponse(pinned_messages, safe=False)
+

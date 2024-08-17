@@ -56,12 +56,41 @@ function loadPinnedMessages() {
 
             if (pinnedMessages.length === 0) {
                 const li = document.createElement('li');
-                li.textContent = "No pinned messages";
+                li.classList.add('pinned-message-item');
+                li.textContent = translate("No pinned messages");
                 pinnedMessagesList.appendChild(li);
             } else {
                 pinnedMessages.forEach(message => {
                     const li = document.createElement('li');
-                    li.textContent = message.content;
+                    li.classList.add('pinned-message-item');
+                    li.setAttribute('data-message-id', message.id);
+
+                    const contentDiv = document.createElement('div');
+                    contentDiv.classList.add('pinned-message-content');
+                    contentDiv.textContent = message.content;
+
+                    const senderName = message.sender__userprofile__profile_name;
+
+                    const senderDiv = document.createElement('div');
+                    senderDiv.classList.add('pinned-message-sender');
+                    senderDiv.textContent = `${translate('Sent by')}: ${senderName}`;
+
+                    const timestamp = message.created_at ? new Date(message.created_at).toLocaleString() : translate('Unknown time');
+
+                    const timestampDiv = document.createElement('div');
+                    timestampDiv.classList.add('pinned-message-timestamp');
+                    timestampDiv.textContent = `${timestamp}`;
+
+                    const unpinButton = document.createElement('button');
+                    unpinButton.classList.add('unpin-message');
+                    unpinButton.innerHTML = translate('Unpin');
+                    unpinButton.addEventListener('click', () => togglePinMessage(message.id, unpinButton));
+
+                    li.appendChild(contentDiv);
+                    li.appendChild(senderDiv);
+                    li.appendChild(timestampDiv);
+                    li.appendChild(unpinButton);
+
                     pinnedMessagesList.appendChild(li);
                 });
             }
@@ -162,7 +191,9 @@ function editMessage(messageId) {
     buttonWrapper.appendChild(cancelButton);
 
     const editButton = messageElement.querySelector('.edit-message-button');
+    const pinButton = messageElement.querySelector('.pin-message-button');
     editButton.style.display = 'none';
+    pinButton.style.display = 'none';
 
     function cancelEdit() {
         inputField.replaceWith(contentElement);
@@ -170,6 +201,7 @@ function editMessage(messageId) {
         saveButton.remove();
         cancelButton.remove();
         editButton.style.display = '';
+        pinButton.style.display = '';
     }
 
     let isTextareaOpened = true;
@@ -202,7 +234,7 @@ function editMessage(messageId) {
                 if (!editedIndicator) {
                     editedIndicator = document.createElement('div');
                     editedIndicator.classList.add('message-edited');
-                    editedIndicator.innerText = 'Edited';
+                    editedIndicator.innerText = translate('Edited');
                     contentElement.insertAdjacentElement('afterend', editedIndicator);
                 }
 
@@ -210,6 +242,7 @@ function editMessage(messageId) {
                 saveButton.remove();
                 cancelButton.remove();
                 editButton.style.display = '';
+                pinButton.style.display = '';
             } else {
                 alert(data.error);
                 if (data.error === 'Message editing time limit exceeded') {
@@ -258,10 +291,10 @@ function togglePinMessage(messageId, button) {
     })
     .then(response => response.json())
     .then(data => {
-        if (data.status === 'success') {
+        if (!button.classList.contains('unpin-message')) {
             button.textContent = data.action === 'pinned' ? translate('Unpin') : translate('Pin');
-            loadPinnedMessages();
         }
+        loadPinnedMessages();
     })
     .catch(error => console.error('Error:', error));
 }
@@ -283,6 +316,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const isCurrentUser = data.sender__id === currentUserId;
             const formattedTimestamp = formatTimestamp(data.created_at);
             const messageTimestamp = data.created_at;
+            const isPinned = data.is_pinned;
 
             const messageHTML = `
             <div class="message-wrapper ${isCurrentUser ? 'sent' : 'received'}" data-message-id="${data.id}">
@@ -300,10 +334,12 @@ document.addEventListener('DOMContentLoaded', function() {
                             </div>`
                         : ''
                         }
-                        ${data.edited ? '<div class="message-edited">Edited</div>' : ''}
+                        ${data.edited ? `<div class="message-edited">${translate('Edited')}</div>` : ''}
                         <div class="message-timestamp">${formattedTimestamp}</div>
                         ${isCurrentUser ? (isNewMessage(data.created_at) ? `<button class="edit-message-button">${translate('Edit')}</button>` : '') : ''}
-                        <button class="pin-message-button" data-message-id="${data.id}">${translate('Pin')}</button>
+                        <button class="pin-message-button" data-message-id="${data.id}" data-is-pinned="${isPinned}">
+                            ${isPinned ? translate('Unpin') : translate('Pin')}
+                        </button>
                     </div>
                 </div>
             </div>`;
