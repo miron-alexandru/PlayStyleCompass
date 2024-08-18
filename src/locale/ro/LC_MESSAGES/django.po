@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-08-17 12:46+0300\n"
-"PO-Revision-Date: 2024-08-17 12:47+0230\n"
+"POT-Creation-Date: 2024-08-18 13:28+0300\n"
+"PO-Revision-Date: 2024-08-18 13:29+0230\n"
 "Last-Translator:   <tokisaki.kurumir99@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -1876,15 +1876,16 @@ msgid "View Profile"
 msgstr "Vezi Profil"
 
 #: .\src\users\templates\messaging\chat.html:28
-msgid "Search messages..."
-msgstr "Caută mesaje..."
+#: .\src\users\templates\messaging\chat.html:66
+msgid "Message..."
+msgstr "Mesaj..."
 
 #: .\src\users\templates\messaging\chat.html:36
-msgid "Search Messages"
-msgstr "Caută Mesaje"
+#| msgid "Search Messages"
+msgid "Search Message"
+msgstr "Caută Mesaj"
 
 #: .\src\users\templates\messaging\chat.html:37
-#| msgid "Send Message"
 msgid "Pinned Messages"
 msgstr "Mesaje Fixate"
 
@@ -1899,10 +1900,6 @@ msgstr "Șterge Mesajele"
 #: .\src\users\templates\messaging\chat.html:57
 msgid "is typing..."
 msgstr "scrie..."
-
-#: .\src\users\templates\messaging\chat.html:66
-msgid "Message..."
-msgstr "Mesaj..."
 
 #: .\src\users\templates\messaging\chat_list.html:7
 msgid "CHATS"

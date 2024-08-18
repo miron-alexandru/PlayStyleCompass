@@ -25,7 +25,7 @@
         <div id="status"></div>
         <span class="last-seen"></span>
         <div class="search-container" id="search-container">
-            <input type="text" id="search-input" placeholder="{% trans 'Search messages...' %}">
+            <input type="text" id="search-input" placeholder="{% trans 'Message...' %}">
         </div>
         <div id="pinned-messages-dropdown" class="pinned-messages-dropdown" style="display: none;">
             <ul id="pinned-messages-list"></ul>
@@ -33,7 +33,7 @@
         <div class="chat-options">
             <i class="fa-solid fa-ellipsis-vertical options-button" onclick="toggleOptionsMenu()"></i>
             <div class="options-menu" id="options-menu">
-                <button id="search-messages-button">{% trans 'Search Messages' %}</button>
+                <button id="search-messages-button">{% trans 'Search Message' %}</button>
                 <button id="pinned-messages-button" data-load-pinned-messages="{% url 'users:load_pinned_messages' recipient_id=recipient.id %}">{% trans 'Pinned Messages' %}</button>
                 <button id="change-bg-color-button">{% trans 'Change Background' %}</button>
                 <button id="block-toggle-button" class="block-toggle-button"

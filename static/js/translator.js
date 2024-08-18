@@ -40,10 +40,9 @@ const translate = (key) => {
             'User blocked': 'User blocat',
             'No pinned messages': 'Niciun mesaj fixat',
             'Sent by': 'Trimis de',
-            'Pin': 'Fixează',
-            'Unpin': 'Desprinde',
             'Unknown time': 'Timp necunoscut',
             'Edited': 'Editat',
+            'Message not found': 'Mesajul nu a fost găsit',
         },
     };
 

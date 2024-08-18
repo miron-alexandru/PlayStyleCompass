@@ -1008,7 +1008,9 @@ def send_message(request, user_id):
                 f'<a class="notification-link" title="Navigate" href="{navigation_url}">View inbox</a>'
             )
 
-            notification = Notification(user=message_receiver, message=notification_message)
+            notification = Notification(
+                user=message_receiver, message=notification_message
+            )
             notification.save()
 
             return redirect(request.META.get("HTTP_REFERER", "users:inbox"))
@@ -1299,7 +1301,9 @@ def create_message(request):
         file_size = file.size
 
         if file.size > 25 * 1024 * 1024:
-            return JsonResponse({"error": "File size exceeds the limit (Max: 25 MB)."}, status=400)
+            return JsonResponse(
+                {"error": "File size exceeds the limit (Max: 25 MB)."}, status=400
+            )
 
         file_name = default_storage.save(
             f"chat_files/{file.name}", ContentFile(file.read())
@@ -1400,9 +1404,9 @@ async def stream_chat_messages(request, recipient_id: int) -> StreamingHttpRespo
         while True:
             new_messages = (
                 ChatMessage.objects.filter(
-                    Q(sender=request.user, recipient=recipient) |
-                    Q(sender=recipient, recipient=request.user),
-                    id__gt=last_id
+                    Q(sender=request.user, recipient=recipient)
+                    | Q(sender=recipient, recipient=request.user),
+                    id__gt=last_id,
                 )
                 .annotate(
                     profile_picture_url=Concat(
@@ -1410,7 +1414,7 @@ async def stream_chat_messages(request, recipient_id: int) -> StreamingHttpRespo
                         F("sender__userprofile__profile_picture"),
                         output_field=CharField(),
                     ),
-                    is_pinned=Q(pinned_by__in=[request.user])
+                    is_pinned=Q(pinned_by__in=[request.user]),
                 )
                 .order_by("created_at")
                 .values(
@@ -1438,8 +1442,8 @@ async def stream_chat_messages(request, recipient_id: int) -> StreamingHttpRespo
     async def get_existing_messages(user, recipient) -> AsyncGenerator:
         messages = (
             ChatMessage.objects.filter(
-                Q(sender=user, recipient=recipient) |
-                Q(sender=recipient, recipient=user)
+                Q(sender=user, recipient=recipient)
+                | Q(sender=recipient, recipient=user)
             )
             .filter(
                 (Q(sender=user) & Q(sender_hidden=False))
@@ -1451,7 +1455,7 @@ async def stream_chat_messages(request, recipient_id: int) -> StreamingHttpRespo
                     F("sender__userprofile__profile_picture"),
                     output_field=CharField(),
                 ),
-                is_pinned=Q(pinned_by__in=[user])
+                is_pinned=Q(pinned_by__in=[user]),
             )
             .order_by("created_at")
             .values(
@@ -1476,8 +1480,7 @@ async def stream_chat_messages(request, recipient_id: int) -> StreamingHttpRespo
 
     async def get_last_message_id(user, recipient) -> int:
         last_message = await ChatMessage.objects.filter(
-            Q(sender=user, recipient=recipient) |
-            Q(sender=recipient, recipient=user)
+            Q(sender=user, recipient=recipient) | Q(sender=recipient, recipient=user)
         ).alast()
         return last_message.id if last_message else 0
 
@@ -1511,8 +1514,8 @@ def chat_list(request):
     for other_user in users:
         latest_message = (
             ChatMessage.objects.filter(
-                Q(sender=other_user, recipient=request.user, recipient_hidden=False) | 
-                Q(sender=request.user, recipient=other_user, sender_hidden=False)
+                Q(sender=other_user, recipient=request.user, recipient_hidden=False)
+                | Q(sender=request.user, recipient=other_user, sender_hidden=False)
             )
             .order_by("-created_at")
             .first()
@@ -1524,7 +1527,9 @@ def chat_list(request):
                 sender_name = _("You")
             else:
                 sender_name = latest_message.sender.userprofile.profile_name
-            message_content = f"{latest_message.content[:20]} ({sender_label} {sender_name})"
+            message_content = (
+                f"{latest_message.content[:20]} ({sender_label} {sender_name})"
+            )
 
             chat_entry = {
                 "user": other_user,
@@ -1539,7 +1544,9 @@ def chat_list(request):
 
         chat_info.append(chat_entry)
 
-    chat_info.sort(key=lambda x: (x.get("timestamp") is None, x.get("timestamp")), reverse=True)
+    chat_info.sort(
+        key=lambda x: (x.get("timestamp") is None, x.get("timestamp")), reverse=True
+    )
 
     context = {
         "page_title": _("Chat List :: PlayStyle Compass"),
@@ -1576,7 +1583,9 @@ def unblock_user(request, user_id):
         user_to_unblock = get_object_or_404(UserProfile, user__id=user_id)
 
         if request.user.id == user_to_unblock.user.id:
-            return JsonResponse({"error": _("You cannot unblock yourself.")}, status=400)
+            return JsonResponse(
+                {"error": _("You cannot unblock yourself.")}, status=400
+            )
 
         if user_to_unblock.user in user_profile.blocked_users.all():
             user_profile.blocked_users.remove(user_to_unblock.user)
@@ -1603,18 +1612,18 @@ def block_list(request):
     blocked_users = request.user.userprofile.blocked_users.all()
 
     context = {
-        'page_title': _('Block List :: PlayStyle Compass'),
-        'blocked_users': blocked_users
+        "page_title": _("Block List :: PlayStyle Compass"),
+        "blocked_users": blocked_users,
     }
 
-    return render(request, 'messaging/block_list.html', context)
+    return render(request, "messaging/block_list.html", context)
 
 
 @login_required
 def toggle_pin_message(request, message_id):
     """View used to toggle pin/unpin for a chat message."""
     message = get_object_or_404(ChatMessage, id=message_id)
-    
+
     if request.user in message.pinned_by.all():
         message.pinned_by.remove(request.user)
         action = "unpinned"
@@ -1632,14 +1641,15 @@ def load_pinned_messages(request, recipient_id):
 
     # Query to get pinned messages sent by the user or the recipient
     pinned_messages_queryset = ChatMessage.objects.filter(
-        pinned_by=request.user,
-        recipient=recipient
-    ).values('id', 'content', 'sender__userprofile__profile_name', 'created_at') | ChatMessage.objects.filter(
-        pinned_by=request.user,
-        sender=recipient
-    ).values('id', 'content', 'sender__userprofile__profile_name', 'created_at')
+        pinned_by=request.user, recipient=recipient
+    ).values(
+        "id", "content", "sender__userprofile__profile_name", "created_at"
+    ) | ChatMessage.objects.filter(
+        pinned_by=request.user, sender=recipient
+    ).values(
+        "id", "content", "sender__userprofile__profile_name", "created_at"
+    )
 
-    pinned_messages = list(pinned_messages_queryset.order_by('-created_at'))
+    pinned_messages = list(pinned_messages_queryset.order_by("-created_at"))
 
     return JsonResponse(pinned_messages, safe=False)
-

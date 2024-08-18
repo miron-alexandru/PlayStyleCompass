@@ -423,14 +423,16 @@ form {
 
 .search-container {
     display: none;
-    margin-left: 280px; 
+    margin: 0 auto;
+    margin-left: -130px;
+    margin-right: 10px; 
 }
 
 #search-input {
-    width: 170px;
-    height: 35px;
+    width: 120px;
+    height: 30px;
     padding: 5px;
-    font-size: 14px;
+    font-size: 13px;
 }
 
 
@@ -645,6 +647,7 @@ form {
     font-size: 14px;
     color: #e0e0e0;
     margin-bottom: 5px;
+    word-wrap: break-word;
 }
 
 .pinned-message-sender {
@@ -659,20 +662,44 @@ form {
     text-align: right;
 }
 
-.unpin-message {
+.unpin-message, .jump-to-message {
     position: absolute;
-    top: 5px;
-    right: 5px; 
+    bottom: 3px;
     background: none;
     border: none;
     padding: 5px;
-    color: #ff4d4d;
     font-size: 11px;
     cursor: pointer;
     transition: background-color 0.3s, color 0.3s;
     font-weight: 600;
 }
 
+.unpin-message {
+    color: #ff4d4d;
+    left: 55px;
+}
+
+.jump-to-message {
+    color: lightgreen;
+    left: 5px;
+}
+
 .unpin-message:hover {
     color: #b33a3a;
+}
+
+.jump-to-message:hover {
+    color: #228B22;
+}
+
+.highlighted-message {
+    padding: 5px;
+    border-radius: 5px;
+    background-color: lightgreen;
+    transition: background-color 1s ease;
+}
+
+.message-not-found {
+    font-size: 13px;
+    color: #ff4d4d;
 }

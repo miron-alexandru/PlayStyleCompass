@@ -249,9 +249,7 @@ class ChatMessage(models.Model):
     file = models.URLField(blank=True, null=True)
     file_size = models.PositiveIntegerField(blank=True, null=True)
     pinned_by = models.ManyToManyField(
-        settings.AUTH_USER_MODEL,
-        related_name="pinned_messages",
-        blank=True
+        settings.AUTH_USER_MODEL, related_name="pinned_messages", blank=True
     )
 
     def __str__(self):
