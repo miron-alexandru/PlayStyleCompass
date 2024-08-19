@@ -1643,13 +1643,18 @@ def load_pinned_messages(request, recipient_id):
     pinned_messages_queryset = ChatMessage.objects.filter(
         pinned_by=request.user, recipient=recipient
     ).values(
-        "id", "content", "sender__userprofile__profile_name", "created_at"
+        "id", "content", "sender__id", "sender__userprofile__profile_name", "created_at", "file", "file_size"
     ) | ChatMessage.objects.filter(
         pinned_by=request.user, sender=recipient
     ).values(
-        "id", "content", "sender__userprofile__profile_name", "created_at"
+        "id", "content", "sender__id", "sender__userprofile__profile_name", "created_at", "file", "file_size"
     )
 
     pinned_messages = list(pinned_messages_queryset.order_by("-created_at"))
+
+    # Update the profile name to "You" where the sender is the current user
+    for message in pinned_messages:
+        if message["sender__id"] == request.user.id:
+            message["sender__userprofile__profile_name"] = _("You")
 
     return JsonResponse(pinned_messages, safe=False)

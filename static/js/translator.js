@@ -43,6 +43,9 @@ const translate = (key) => {
             'Unknown time': 'Timp necunoscut',
             'Edited': 'Editat',
             'Message not found': 'Mesajul nu a fost găsit',
+            'Pin': 'Fixează',
+            'Unpin': 'Desprinde',
+            'Sender': 'Expeditor',
         },
     };
 

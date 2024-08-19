@@ -584,7 +584,7 @@ form {
     z-index: 1000;
     max-height: 300px;
     overflow-y: auto;
-    width: 250px;
+    width: 260px;
     display: none;
     border-radius: 0 0 5px 5px;
 }
@@ -599,7 +599,6 @@ form {
 
 .pinned-messages-dropdown ul li {
     padding: 8px;
-    cursor: pointer;
     color: #fff;
     transition: background-color 0.2s ease-in-out;
 }
@@ -646,7 +645,7 @@ form {
 .pinned-message-content {
     font-size: 14px;
     color: #e0e0e0;
-    margin-bottom: 5px;
+    margin-bottom: 3px;
     word-wrap: break-word;
 }
 
@@ -700,6 +699,12 @@ form {
 }
 
 .message-not-found {
-    font-size: 13px;
+    font-size: 12px;
     color: #ff4d4d;
+    margin-left: 5px;
+}
+
+.pinned-message-file {
+    font-size: 12px;
+    margin-bottom: 3px;
 }

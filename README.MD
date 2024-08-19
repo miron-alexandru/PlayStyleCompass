@@ -46,6 +46,7 @@ Websites for .env configuration: [GiantBomb](https://www.giantbomb.com/) / [Send
 <summary><h2>PlayStyle Compass Changelog</h2></summary>
 
 ### Version v2.1:
+* Chat updates: File attachment displayed in pinned messages / Message displayed when the pinned message is not found in chat / Minor CSS updated.
 * Users are able to Pin / Unpin chat messages.
 * Different CSS changes.
 * Implemented Block List: Users are able to see users that they have blocked and are able to unblock them.

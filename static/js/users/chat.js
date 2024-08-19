@@ -69,13 +69,47 @@ function loadPinnedMessages() {
                     contentDiv.classList.add('pinned-message-content');
                     contentDiv.textContent = message.content;
 
+                    li.appendChild(contentDiv);
+
+                    if (message.file) {
+                        const fileDiv = document.createElement('div');
+                        fileDiv.classList.add('pinned-message-file');
+                        
+                        const fileLink = document.createElement('a');
+                        fileLink.href = message.file;
+                        fileLink.download = getFileNameFromUrl(message.file);
+                        fileLink.classList.add('file-link');
+                        fileLink.textContent = getFileNameFromUrl(message.file);
+                        
+                        fileDiv.textContent = `${translate('File Attachment: ')} `;
+                        fileDiv.appendChild(fileLink);
+                        
+                        if (message.file_size) {
+                            const fileSizeSpan = document.createElement('span');
+                            fileSizeSpan.textContent = `  (${formatFileSize(message.file_size)})`;
+                            fileDiv.appendChild(fileSizeSpan);
+                        }
+                        
+                        li.appendChild(fileDiv);
+                    }
+
                     const senderName = message.sender__userprofile__profile_name;
 
                     const senderDiv = document.createElement('div');
                     senderDiv.classList.add('pinned-message-sender');
-                    senderDiv.textContent = `${translate('Sent by')}: ${senderName}`;
+                    senderDiv.textContent = `${translate('Sender')}: ${senderName}`;
 
-                    const timestamp = message.created_at ? new Date(message.created_at).toLocaleString() : translate('Unknown time');
+                    const timestamp = message.created_at 
+                    ? new Date(message.created_at).toLocaleString('default', { 
+                        day: '2-digit', 
+                        month: '2-digit', 
+                        year: 'numeric', 
+                        hour: '2-digit', 
+                        minute: '2-digit', 
+                        second: undefined,
+                        hour12: true
+                    })
+                    : translate('Unknown time');
 
                     const timestampDiv = document.createElement('div');
                     timestampDiv.classList.add('pinned-message-timestamp');
@@ -92,8 +126,8 @@ function loadPinnedMessages() {
                     jumpButton.addEventListener('click', () => {
                         const chatMessage = document.querySelector(`.message-wrapper[data-message-id="${message.id}"]`);
 
-                        let existingNotice = jumpButton.previousElementSibling;
-                        if (existingNotice && existingNotice.classList.contains('message-not-found')) {
+                        let existingNotice = document.querySelector('.message-not-found');
+                        if (existingNotice) {
                             existingNotice.remove();
                         }
 
@@ -107,7 +141,8 @@ function loadPinnedMessages() {
                             const notice = document.createElement('span');
                             notice.classList.add('message-not-found');
                             notice.textContent = translate('Message not found');
-                            jumpButton.parentNode.insertBefore(notice, jumpButton);
+
+                            contentDiv.insertAdjacentElement('beforeend', notice);
                             
                             setTimeout(() => {
                                 notice.remove();
@@ -115,8 +150,6 @@ function loadPinnedMessages() {
                         }
                     });
 
-
-                    li.appendChild(contentDiv);
                     li.appendChild(senderDiv);
                     li.appendChild(timestampDiv);
                     li.appendChild(jumpButton);
@@ -323,7 +356,7 @@ function togglePinMessage(messageId, button) {
     .then(response => response.json())
     .then(data => {
         if (!button.classList.contains('unpin-message')) {
-            button.textContent = data.action === 'pinned' ? 'Unpin' : 'Pin';
+            button.textContent = data.action === 'pinned' ? translate('Unpin') : translate('Pin');
         }
         loadPinnedMessages();
     })
@@ -369,7 +402,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         <div class="message-timestamp">${formattedTimestamp}</div>
                         ${isCurrentUser ? (isNewMessage(data.created_at) ? `<button class="edit-message-button">${translate('Edit')}</button>` : '') : ''}
                         <button class="pin-message-button" data-message-id="${data.id}" data-is-pinned="${isPinned}">
-                            ${isPinned ? 'Unpin' : 'Pin'}
+                            ${isPinned ? translate('Unpin') : translate('Pin')}
                         </button>
                     </div>
                 </div>
