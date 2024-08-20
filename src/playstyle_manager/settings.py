@@ -23,7 +23,6 @@ INSTALLED_APPS = [
     "users",
     "bootstrap4",
     "django_recaptcha",
-    "modeltranslation",
     "daphne",
     "rosetta",
     "tz_detect",
@@ -150,7 +149,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-TRANSLATABLE_MODEL_MODULES = ["users.models", "playstyle_compass.models"]
 
 # Internationalization
 LANGUAGES = [("en", _("English")), ("ro", _("Romanian"))]

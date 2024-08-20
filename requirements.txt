@@ -16,7 +16,6 @@ six
 beautifulsoup4
 google-api-python-client
 django-tz-detect
-modeltranslation
 whitenoise
 gunicorn
 psycopg2
