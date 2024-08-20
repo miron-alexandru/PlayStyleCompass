@@ -150,6 +150,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+TRANSLATABLE_MODEL_MODULES = ["users.models", "playstyle_compass.models"]
 
 # Internationalization
 LANGUAGES = [("en", _("English")), ("ro", _("Romanian"))]
