@@ -1,5 +1,5 @@
 from django.contrib import admin
-from modeltranslation.admin import TranslationAdmin
+#from modeltranslation.admin import TranslationAdmin
 
 from .models import (
     UserProfile,
@@ -14,12 +14,12 @@ from .models import (
 )
 
 
-class QuizAdmin(TranslationAdmin):
-    pass
+#class QuizAdmin(TranslationAdmin):
+ #   pass
 
 
-admin.site.register(QuizQuestion, QuizAdmin)
-admin.site.register(QuizUserResponse, QuizAdmin)
+admin.site.register(QuizQuestion)
+admin.site.register(QuizUserResponse)
 admin.site.register(UserProfile)
 admin.site.register(ContactMessage)
 admin.site.register(FriendList)
