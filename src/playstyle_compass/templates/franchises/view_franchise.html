@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load static %}
+
+{% block page_header %}
+<div class="header">
+  <h3>{% if franchise %}
+  {{franchise.title|upper }}
+  {% endif %}</h3>
+</div>
+{% endblock page_header %}
+
+{% block content %}
+
+<div class="search-bar-only">
+  {% with search_bar_type as bar_type %}
+  {% include "base/search_bar_only.html" %}
+  {% endwith %}
+</div>
+
+<div>
+  <ul>
+    {% if franchise %}
+    {% include "franchises/franchise_template.html" %}
+    {% else %}
+    <p><strong>{% trans "Sorry, no data for this franchise." %}</strong></p>
+    {% endif %}
+  </ul>
+</div>
+
+{% endblock content %}

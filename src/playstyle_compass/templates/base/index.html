@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load static %}
+
+{% block page_header %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/playstyle_compass/index.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/playstyle_compass/index_news.css' %}">
+<div class="jumbotron">
+  <div class="my-header">
+    <h1 class="display-5">{% trans "Find Your Ideal Games" %}</h1>
+
+    <p class="lead">
+      {% blocktrans %}
+      Welcome to PlayStyle Compass – your personalized gateway to uncovering video games perfectly
+      tailored to your unique preferences, gaming background, and genre inclinations. Whether you're a casual enthusiast or
+      a dedicated gaming passionate, our application meticulously analyzes your individual gaming profile, curating
+      recommendations that align with your distinct tastes. Embark on an exhilarating journey through the realm of
+      gaming possibilities by creating an account with us!
+      {% endblocktrans %}
+    </p>
+
+    {% if not user.is_authenticated %}
+    <a class="btn btn-lg btn-primary register-button" href="{% url 'users:register' %}" role="button">{% trans "Register" %}
+      &raquo;</a>
+    {% endif %}
+  </div>
+</div>
+{% endblock page_header %}
+
+{% block content %}
+
+<h3 class="articles-description">{% trans "LATEST NEWS ARTICLES" %}</h3>
+<p class="articles-source-text">{% trans "Source:" %} <a class="articles-source-text" href="https://www.gamespot.com/" target="_blank">GameSpot</a></p>
+<div class="articles">
+    {% for article in articles %}
+        <div class="article {% if forloop.first %}first-article{% endif %}">
+            <a href="{{ article.url }}" target="_blank">
+                <img src="{{ article.image }}" alt="{{ article.title }}">
+                <div class="article-content">
+                    <h2 class="article-title">{{ article.title }}</h2>
+                    <p class="article-summary">{{ article.summary }}</p>
+                </div>
+            </a>
+        </div>
+    {% endfor %}
+        <div class="all-articles-link">
+            <a href="{% url 'playstyle_compass:latest_news'%}" class="all-articles-btn">{% trans "View All Articles" %}</a>
+      </div>
+</div>
+
+<div class="search-description">
+  <h3>{% trans "EXPLORE YOUR FAVORITES" %}</h3>
+  <p class="search-description-text">{% blocktrans %}Looking for something specific? Use our search bar to find everything you love from different genres, platforms, and eras. Dive into an extensive collection of games, uncover legendary franchises, and meet iconic characters.{% endblocktrans %}</p>
+</div>
+
+
+<div class="search-bar-only">
+  {% with search_bar_type as bar_type %}
+  {% include "base/search_bar_only.html" %}
+  {% endwith %}
+</div>
+
+<div class="games">
+  <h3>{% trans "POPULAR GAMES" %}</h3>
+  <p class="games-description">{% trans "Discover some of the most popular games here!" %}</p>
+  <div class="game-container">
+    <ul>
+      {% for game in popular_games %}
+      {% include "games/games_list.html" %}
+      {% endfor %}
+    </ul>
+  </div>
+</div>
+
+<div class="games">
+  <h3>{% trans "UPCOMING GAMES" %}</h3>
+<p class="games-description">{% trans "Explore the latest and most anticipated games coming soon. Don't miss out on the gaming excitement!" %}</p>
+  <div class="game-container">
+    <ul>
+      {% for game in upcoming_games %}
+      {% include "games/games_list.html" %}
+      {% endfor %}
+    </ul>
+  </div>
+</div>
+
+<div class="franchises">
+  <h3>{% trans "POPULAR FRANCHISES" %}</h3>
+<p class="franchises-description">{% trans "Discover some of the most iconic and beloved franchises across gaming history!" %}</p>
+  <div class="franchise-container">
+    <ul>
+      {% for franchise in popular_franchises %}
+      {% include "franchises/popular_franchises_listing.html" %}
+      {% endfor %}
+    </ul>
+  </div>
+</div>
+
+{% endblock content %}

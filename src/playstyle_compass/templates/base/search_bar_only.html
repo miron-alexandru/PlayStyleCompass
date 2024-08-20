@@ -1,0 +1,49 @@
+{% load static %}
+{% load i18n %}
+
+{% block styles %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/playstyle_compass/search_bar.css' %}">
+{% endblock styles %}
+
+<form id="search-form" method="GET" class="search-form" onsubmit="return validateSearch()">
+  <div class="search-bar">
+    <div class="search-input-container">
+      <input type="text" name="query" id="search-input" placeholder="{% trans 'Search...' %}" maxlength="255">
+      <button type="submit"><i class="fas fa-search"></i></button>
+    </div>
+  </div>
+</form>
+
+<div class="radio">
+  <label for="search_games">
+    <input type="radio" id="search_games" name="search_type" value="games" {% if bar_type == 'search_games' %}checked{% endif %}>
+    {% trans 'Games' %}
+  </label>
+  <label for="search_franchises">
+    <input type="radio" id="search_franchises" name="search_type" value="franchises" {% if bar_type == 'search_franchises' %}checked{% endif %}>
+    {% trans 'Franchises' %}
+  </label>
+  <label for="search_characters">
+    <input type="radio" id="search_characters" name="search_type" value="characters" {% if bar_type == 'search_characters' %}checked{% endif %}>
+    {% trans 'Characters' %}
+  </label>
+</div>
+
+<div id="search-results" class="search-results"></div>
+
+{% url 'playstyle_compass:search_results' as searchGUrl %}
+{{ searchGUrl|json_script:"searchGamesUrl" }}
+
+{% url 'playstyle_compass:search_franchises' as searchFUrl %}
+{{ searchFUrl|json_script:"searchFranchisesUrl" }}
+
+{% url 'playstyle_compass:search_characters' as searchCUrl %}
+{{ searchCUrl|json_script:"searchCharactersUrl" }}
+
+<script>
+    const searchGames = JSON.parse(document.getElementById('searchGamesUrl').textContent);
+    const searchFranchises = JSON.parse(document.getElementById('searchFranchisesUrl').textContent);
+    const searchCharacters = JSON.parse(document.getElementById('searchCharactersUrl').textContent);
+</script>
+
+<script src="{% static 'js/playstyle_compass/search_bar.js' %}"></script>

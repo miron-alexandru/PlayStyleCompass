@@ -1,0 +1,16 @@
+{% load i18n %}
+{% load static %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'css/playstyle_compass/games_listing.css' %}">
+<li class="games-li">
+  <a href="{% url 'playstyle_compass:view_game' game.guid %}">
+    <div class="game-image">
+      {% if game.image %}
+      <img src="{{ game.image }}" alt="Game Image">
+      <div class="game-title">{{ game.title }}</div>
+      {% else %}
+      <p>{% trans "Game image not available." %}</p>
+      {% endif %}
+    </div>
+  </a>
+</li>

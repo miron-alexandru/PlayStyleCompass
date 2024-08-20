@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load static %}
+{% load custom_filters %}
+
+{% block page_header %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/playstyle_compass/news_page.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/playstyle_compass/pagination.css' %}">
+
+<div class="header">
+  <h3>{% trans "LATEST NEWS" %}</h3>
+</div>
+{% endblock page_header %}
+
+{% block description %}
+{% blocktrans %}Stay updated with the latest in gaming and get the insights and stories that matter in the gaming world.
+{% endblocktrans %}
+<p class="articles-source-text">{% trans "Source:" %} <a class="articles-source-text" href="https://www.gamespot.com/" target="_blank">GameSpot</a></p>
+{% endblock description %}
+
+{% block content %}
+<form id="filterForm" method="GET">
+
+<div class="filter-sort-container">
+    <div class="filter-container">
+        <label for="filter_by">{% trans "Filter by:" %}</label>
+        <div>
+            <select name="platforms" id="filter_by">
+                <option value="">{% trans "Select Platform" %}</option>
+                {% for platform in platforms %}
+                <option value="{{ platform }}" {% if platform in selected_platform %}selected{% endif %}>{{ platform }}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+
+    <div class="sorting">
+        <label for="sort_by">{% trans "Sort by:" %}</label>
+        <select name="sort_by" id="sort_by">
+            <option value="">{% trans "Default" %}</option>
+            <option value="publish_date_asc" {% if request.GET.sort_by == "publish_date_asc" %}selected{% endif %}>{% trans "Publish Date (Asc)" %}</option>
+            <option value="publish_date_desc" {% if request.GET.sort_by == "publish_date_desc" %}selected{% endif %}>{% trans "Publish Date (Desc)" %}</option>
+            <option value="title_asc" {% if request.GET.sort_by == "title_asc" %}selected{% endif %}>{% trans "Title (Asc)" %}</option>
+            <option value="title_desc" {% if request.GET.sort_by == "title_desc" %}selected{% endif %}>{% trans "Title (Desc)" %}</option>
+        </select>
+    </div>
+</div>
+
+<div class="filter-buttons">
+        <button type="submit" class="apply-button">{% trans "Apply Filters" %}</button>
+        <button type="button" class="reset-button" id="resetButton">{% trans "Reset Filters" %}</button>
+    </div>
+</form>
+
+<div class="articles">
+    {% for article in articles %}
+        <div class="article">
+            <a href="{{ article.url }}" target="_blank">
+                <img src="{{ article.image }}" alt="{{ article.title }}">
+                <div class="article-content">
+                    <h2 class="article-title">{{ article.title }}</h2>
+                    <p class="article-summary">{{ article.summary }}</p>
+                </div>
+            </a>
+        </div>
+    {% endfor %}
+</div>
+
+<div class="pagination">
+  <span class="step-links">
+    {% if articles.has_previous %}
+      <a href="?{% querystring_replace request page=1 %}">&laquo; {% trans "First" %}</a>
+      <a href="?{% querystring_replace request page=articles.previous_page_number %}">{% trans "Previous" %}</a>
+    {% endif %}
+
+    <span class="current-page">
+      {% trans "Page" %} {{ articles.number }} {% trans "of" %} {{ articles.paginator.num_pages }}
+    </span>
+
+    {% if articles.has_next %}
+      <a href="?{% querystring_replace request page=articles.next_page_number %}">{% trans "Next" %}</a>
+      <a href="?{% querystring_replace request page=articles.paginator.num_pages %}">{% trans "Last" %} &raquo;</a>
+    {% endif %}
+  </span>
+</div>
+
+<script src="{% static 'js/playstyle_compass/latest_news.js' %}" defer></script>
+
+{% endblock content %}
+
+
+

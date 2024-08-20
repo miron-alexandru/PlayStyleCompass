@@ -35,13 +35,14 @@ a:hover {
   background-color: #dc3545;
   color: white;
   border: none;
-  padding: 10px 20px;
+  padding: 8px 16px;
   border-radius: 4px;
   cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
 }
-  
+
 .btn-danger:hover {
-  background-color: #c82333;
+  background-color: #c82333!important;
 }
 
 .btn-danger:focus {
@@ -60,9 +61,11 @@ a:hover {
   margin-bottom: 20px;
 }
 
-.change-button, .save-button, .save-all-button {
+.change-button,
+.save-button,
+.save-all-button {
   border: none;
-  padding: 6px 10px;
+  padding: 5px 10px;
   font-size: 10px;
   border-radius: 5px;
   color: #fff;
@@ -73,13 +76,13 @@ a:hover {
   outline: none;
 }
 
-
 .change-button {
   background-color: var(--primary-color);
   border-color: var(--primary-color);
 }
 
-.save-button, .save-all-button{
+.save-button,
+.save-all-button {
   background-color: #27ae60;
   border-color: #27ae60;
 }
@@ -89,19 +92,39 @@ a:hover {
   border-color: #007bff;
 }
 
-.save-button:hover, .save-all-button:hover {
+.save-button:hover,
+.save-all-button:hover {
   background-color: #1e8449;
   border-color: #1e8449;
 }
 
 .save-all-button {
-  font-size: 1.05rem;
+  font-size: 13px;
+  padding: 8px 16px;
 }
 
-.save-button:disabled, .save-all-button:disabled {
+.save-button:disabled,
+.save-all-button:disabled {
   opacity: .65;
 }
 
 .form-label {
   font-size: 18px;
+}
+
+
+#saving-spinner {
+  display: inline-block;
+  margin-left: 5px;
+}
+
+.spinner-border {
+  width: 1.5rem;
+  height: 1.5rem;
+  border-width: 0.2em;
+}
+
+.save-all-container {
+  display: flex;
+  align-items: baseline;
 }

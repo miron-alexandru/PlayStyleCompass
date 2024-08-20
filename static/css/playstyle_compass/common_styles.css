@@ -3,32 +3,10 @@
   --background-color: #f5f5f5;
 }
 
-.header {
-  background-color: #2f4255;
-  padding: 15px;
-  width: 100vw;
-  margin-left: calc(-50vw + 50%);
-}
-
-.header h3 {
-  font-size: 19px;
-  font-weight: bold;
-  color: #fff;
-  margin-left: 100px;
-  letter-spacing: 2px;
-}
-
-.header-desc {
-  color: #555;
-  font-size: 17px;
-  margin-top: 25px;
-  margin-bottom: 10px;
-}
-
 .btn-primary {
   background-color: var(--primary-color);
   border-color: var(--primary-color);
-  padding: 10px 20px;
+  padding: 8px 16px;
   font-size: 13px;
   border-radius: 5px;
   color: #fff;
@@ -49,7 +27,8 @@
   box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
 }
 
-.favorite-games li, .top-games li, .results li {
+.games-collection li,
+.results li {
   display: flex;
   align-items: start;
   border: 1px solid #ddd;
@@ -60,6 +39,37 @@
   background-color: #f5f5f5;
 }
 
+.create-review {
+  max-width: 550px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+.create-review label {
+  font-weight: bold;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.create-review button[type="submit"] {
+  background-color: #007bff;
+  color: #fff;
+  padding: 9px 14px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 13px;
+  display: block;
+  margin: 0 auto;
+}
+
+button[type="submit"]:hover {
+  background-color: #0056b3;
+}
+
 .search-bar-only {
   padding-bottom: 10px;
 }
@@ -67,4 +77,18 @@
 .review-message {
   padding: 5px;
   font-size: 17px;
+}
+
+.icon-divider {
+  margin: 0px 6px 0px 5px;
+  color: #ccc;
+}
+
+@media screen and (max-width: 1000px) {
+
+  .games-collection li,
+  .results li {
+    flex-direction: column;
+    align-items: stretch;
+  }
 }

@@ -1,0 +1,241 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load static %}
+{% load custom_filters %}
+
+{% block page_header %}
+<meta id="recipient-id" content="{{ user_id }}">
+<div class="profile-header">
+  {% if is_friend == 'You' %}
+  <h3>{% trans "YOUR PROFILE" %}</h3>
+  {% else %}
+  <h3>{% blocktrans with user_profile.profile_name|upper as uppercase_profile_name %}
+  {{ uppercase_profile_name }}'S PROFILE
+    {% endblocktrans %}</h3>
+  {% endif %}
+</div>
+{% endblock page_header %}
+
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/users/user_profile.css' %}">
+
+<div class="user-profile-card">
+  {% trans 'You' as you %}
+  {% if is_friend == you %}
+  <span class="user-name"><a href="{% url 'users:change_profile_name' %}">
+      {{user_profile.profile_name }}</a></span>
+  {% else %}
+  <p class="user-name">{{ user_profile.profile_name }}</p>
+  {% endif %}
+  <div class="user-profile-picture">
+    {% if user_profile.profile_picture %}
+    {% trans 'You' as you %}
+    {% if is_friend == you %}
+    <label for="profile-picture-upload" class="profile-picture-label">
+      <img src="{{ user_profile.profile_picture.url }}" alt="{{ user_profile.profile_name }}'s Profile Picture"
+        class="profile-image" id="profile-picture-user-profile">
+    </label>
+    {% else %}
+    <label style="padding:5px">
+      <img src="{{ user_profile.profile_picture.url }}" alt="{{ user_profile.profile_name }}'s Profile Picture"
+        class="profile-image">
+    </label>
+    {% endif %}
+    {% else %}
+    {% trans 'You' as you %}
+    {% if is_friend == you %}
+    <label for="profile-picture-upload" class="profile-picture-label" style="padding:5px">
+      <img src="{{ default_profile_picture }}" alt="{{ user_profile.profile_name }}'s Default Profile Picture"
+        class="profile-image" id="profile-picture-user-profile">
+    </label>
+    {% else %}
+    <label style="padding:5px">
+      <img src="{{ default_profile_picture }}" alt="{{ user_profile.profile_name }}'s Default Profile Picture"
+        class="profile-image">
+    </label>
+    {% endif %}
+    {% endif %}
+  </div>
+  <div id="user-actions" class="user-actions">
+    {% if user.is_authenticated %}
+    <div class="friends-text-container
+        {% trans 'Friend' as friend %}
+        {% trans 'You' as you %} 
+        {% if is_friend == friend or is_friend == you %}friend{% else %}not-friend{%endif%}">
+      <span class="friend-status">{{ is_friend }}</span>
+    </div>
+    {% if is_friend != you %}
+      <p id="status" class="{% if user_profile.is_online %}online{% else %}offline{%endif%}">
+      {% if user_profile.is_online %}
+        {% trans "Online" %}
+      {% else %}
+        {% trans "Offline" %}
+      {% endif %}
+      </p>
+    {% endif %}
+    <div class="d-flex justify-content-center align-items-center action-items">
+      {% trans 'You' as you %}
+      {% if is_friend == you %}
+      <div class="edit-profile">
+        <a href="{% url 'users:profile_details' %}" class="edit-profile-link">{% trans 'Profile Details' %}</a>
+        <a href="{% url 'users:change_profile_name' %}" class="edit-profile-link">{% trans 'Profile Name' %}</a>
+        <a href="{% url 'users:profile_picture' %}" class="edit-profile-link">{% trans 'Profile Picture' %}</a>
+      </div>
+      {% endif %}
+      {% if is_friend != you %}
+        <button id="block-toggle-button"
+          class="block-toggle-button {% if is_blocked %}unblock{% else %}block{% endif %}"
+          data-block-url="{% url 'users:block_user' user_id=user_id %}"
+          data-unblock-url="{% url 'users:unblock_user' user_id=user_id %}"
+          data-check-url="{% url 'users:check_block_status' user_id=user_id %}">
+      {% if is_blocked %}
+          {% trans 'Unblock' %}
+      {% else %}
+          {% trans 'Block' %}
+      {% endif %}
+    </button>
+      {% endif %}
+      {% trans 'Stranger' as stranger %}
+      {% if is_friend == stranger %}
+      <div class="friend-request">
+        <button class="friend-request-button" id="friend_req_btn">
+          {% trans "Friend Request" %}
+        </button>
+      </div>
+      {% endif %}
+      {% trans 'Friend' as friend %}
+      {% if is_friend == friend %}
+      <div class="remove-friend">
+        <button class="remove-friend-button" onclick='triggerRemoveFriend("{{ user_id }}")'>{% trans "Unfriend" %}</button>
+      </div>
+      {% endif %}
+      {% endif %}
+      {% if is_friend != you %}
+      <div class="send-message">
+        <a href="{% url 'users:send_message' user_id=user_id %}">{% trans "Send Message" %}</a>
+        <a class="chat-button" href="{% url 'users:chat' recipient_id=user_id %}">{% trans "Start Chat" %}</a>
+    </div>
+    {% endif %}
+    </div>
+    <div class="d-flex justify-content-center align-items-center">
+      <div class="stat-item">
+        <p class="stat-label">
+          {% trans "You" as you %}
+          {% if is_friend == you %}
+          <span class="toggle-stat" data-stat="favorites" data-user-id="{{ user_id }}">
+            <i class="fas {% if show_favorites %}fa-eye{% else %}fa-eye-slash{% endif %}"></i>
+          </span>
+          {% endif %}
+          <span class="stat-content">
+            {% if show_favorites %}
+            <a href="{% url 'playstyle_compass:favorite_games_with_id' user_id=user_id %}">{% trans "Favorites" %}</a>
+            {% else %}
+            <span>{% trans "Favorites" %}</span>
+            {% endif %}
+          </span>
+        </p>
+        <p class="stat-value">{{ user_preferences.get_favorite_games_number }}</p>
+      </div>
+
+      <div class="stat-item">
+        <p class="stat-label">
+          {% trans "You" as you %}
+          {% if is_friend == you %}
+          <span class="toggle-stat" data-stat="in_queue" data-user-id="{{ user_id }}">
+            <i class="fas {% if show_in_queue %}fa-eye{% else %}fa-eye-slash{% endif %}"></i>
+          </span>
+          {% endif %}
+          <span class="stat-content">
+            {% if show_in_queue %}
+            <a href="{% url 'playstyle_compass:game_queue_with_id' user_id=user_id %}">{% trans "In Queue" %}</a>
+            {% else %}
+            <span>{% trans "In Queue" %}</span>
+            {% endif %}
+          </span>
+        </p>
+        <p class="stat-value">{{ user_preferences.get_game_queue_number }}</p>
+      </div>
+
+      <div class="stat-item">
+        <p class="stat-label">
+          {% trans "You" as you %}
+          {% if is_friend == you %}
+          <span class="toggle-stat" data-stat="reviews" data-user-id="{{ user_id }}">
+            <i class="fas {% if show_reviews %}fa-eye{% else %}fa-eye-slash{% endif %}"></i>
+          </span>
+          {% endif %}
+          <span class="stat-content">
+            {% if show_reviews %}
+            <a href="{% url 'playstyle_compass:user_reviews_with_id' user_id=user_id %}">{% trans "Reviews" %}</a>
+            {% else %}
+            <span>{% trans "Reviews" %}</span>
+            {% endif %}
+          </span>
+        </p>
+        <p class="stat-value">{{ user_reviews_count }}</p>
+      </div>
+
+      <div class="stat-item">
+        <p class="stat-label">{% trans "Review Likes" %}</p>
+        <p class="stat-value">{{ review_likes_count }}</p>
+      </div>
+    </div>
+  </div>
+  <div class="profile-info">
+    <div class="profile-info-item">
+        <span class="info-label">{% trans "Bio" %}</span>
+        <span class="info-value">{{ user_profile.bio|default:"-" }}</span>
+    </div>
+    <div class="profile-info-item">
+        <span class="info-label">{% trans "Last Finished Game" %}</span>
+        <span class="info-value">{{ user_profile.last_finished_game|default:"-"|game_link|safe }}</span>
+    </div>
+    <div class="profile-info-item">
+      <span class="info-label">{% trans "Favorite Game" %}</span>
+      <span class="info-value">{{ user_profile.favorite_game|default:"-"|game_link|safe }}</span>
+    </div>
+    <div class="profile-info-item">
+      <span class="info-label">{% trans "Favorite Franchise" %}</span>
+      <span class="info-value">{{ user_profile.favorite_franchise|default:"-"|object_link:"franchise"|safe }}</span>
+    </div>
+    <div class="profile-info-item">
+      <span class="info-label">{% trans "Favorite Character" %}</span>
+      <span class="info-value">{{ user_profile.favorite_character|default:"-"|object_link:"character"|safe }}</span>
+    </div>
+    <div class="profile-info-item">
+        <span class="info-label">{% trans "Favorite Genres" %}</span>
+        <span class="info-value">{{ user_profile.gaming_genres|default:"-" }}</span>
+    </div>
+    <div class="profile-info-item">
+        <span class="info-label">{% trans "Gaming Commitment" %}</span>
+        <span class="info-value">{{ user_profile.gaming_commitment|default:"-" }}</span>
+    </div>
+    <div class="profile-info-item">
+        <span class="info-label">{% trans "Main Platform" %}</span>
+        <span class="info-value">{{ user_profile.main_gaming_platform|default:"-" }}</span>
+    </div>
+    <div class="profile-info-item">
+        <span class="info-label">{% trans "Gaming Setup" %}</span>
+        <span class="info-value">{{ user_profile.gaming_setup|default:"-" }}</span>
+    </div>
+    <div class="profile-info-item">
+        <span class="info-label">{% trans "Preferred Streaming Platform" %}</span>
+        <span class="info-value">{{ user_profile.streaming_preferences|default:"-" }}</span>
+    </div>
+    <div class="profile-info-item">
+    <span class="info-label">{% trans "Social Media" %}</span>
+    <span class="info-value">
+        <a href="{{ user_profile.social_media }}" target="_blank">{{ user_profile.social_media|default:"-" }}</a>
+    </span>
+    </div>
+  </div>
+
+
+<script src="{% static 'js/users/user_profile.js' %}"></script>
+
+{% include 'snippets/friend_request.html' %}
+{% include 'snippets/send_friend_request.html' %}
+{% include 'snippets/remove_friend.html' %}
+{% include 'snippets/user_stats_urls.html' %}
+
+{% endblock content %}

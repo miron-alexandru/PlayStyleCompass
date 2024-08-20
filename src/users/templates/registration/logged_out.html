@@ -1,15 +1,22 @@
 {% extends "base.html" %}
+{% load i18n %}
 {% load static %}
-{% block title %}Log Out :: PlayStyle Compass{% endblock title %}
+{% block title %}{% trans "Log Out :: PlayStyle Compass" %}{% endblock title %}
+
+{% block page_header %}
+<div class="header">
+  <h3>{% trans "LOGOUT" %}</h3>
+</div>
+{% endblock page_header %}
 
 {% block content %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/users/logout.css' %}">
 <div class="logout-container">
   <div class="logout-content">
-    <h2>You have been logged out</h2>
-    <p>Thank you for using PlayStyle Compass.</p>
-    <p id="redirect-message">You will be redirected to the home page in:</p>
-    <p id="countdown">5 seconds</p>
+    <h2>{% trans "You have been logged out" %}</h2>
+    <p>{% trans "Thank you for using PlayStyle Compass." %}</p>
+    <p id="redirect-message">{% trans "You will be redirected to the home page in:" %}</p>
+    <p id="countdown">{% trans "5 seconds" %}</p>
   </div>
 </div>
 

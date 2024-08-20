@@ -1,20 +1,19 @@
-$(document).ready(function() {
-    $("#resend-link").click(function(e) {
-        e.preventDefault();
+$(document).ready(function () {
+  $("#resend-link").click(function (e) {
+    e.preventDefault();
 
-        // Retrieve the URL from the data-url attribute
-        var url = $(this).data("url");
+    let url = $(this).data("url");
 
-        $.get(url, function(data) {
-            if (data.success) {
-                $("#success-message").html(data.message);
-            } else {
-                $("#success-message").html(data.error_message);
-            }
-        });
-
-        setTimeout(function() {
-            location.reload();
-        }, 1500);
+    $.get(url, function (data) {
+      if (data.success) {
+        $("#success-message").html(data.message);
+      } else {
+        $("#success-message").html(data.error_message);
+      }
     });
+
+    setTimeout(function () {
+      location.reload();
+    }, 1500);
+  });
 });

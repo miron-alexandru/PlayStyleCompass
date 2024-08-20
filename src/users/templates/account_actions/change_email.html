@@ -1,16 +1,28 @@
 {% extends "base.html" %}
+{% load i18n %}
 {% load static %}
+
+{% block page_header %}
+<div class="header">
+  <h3>{% trans "CHANGE EMAIL ADDRESS" %}</h3>
+</div>
+{% endblock page_header %}
+
+{% block description %}
+{% blocktrans %}Update your email address associated with your PlayStyle Compass account. Ensure you receive important notifications and updates by providing an active email address.{% endblocktrans %}
+{% endblock description %}
+
 
 {% block content %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/users/common.css' %}">
 
 <div class="my-container">
-  <h2>Change Email Address</h2>
+  <h2>{% trans "Change your email address" %}</h2>
   <form method="post">
     {% csrf_token %}
 
     <div class="form-group">
-      <label for="{{ form.current_password.id_for_label }}"><i class="fas fa-lock"></i> Current Password</label>
+      <label for="{{ form.current_password.id_for_label }}"><i class="fas fa-lock"></i> {% trans "Current Password" %}</label>
       {{ form.current_password }}
       {% if form.current_password.errors %}
       <ul class="custom-error-list">{{ form.current_password.errors }}</ul>
@@ -18,7 +30,8 @@
     </div>
 
     <div class="form-group">
-      <label for="{{ form.current_email.id_for_label }}"><i class="fa-solid fa-envelope-circle-check"></i> Current Email Address</label>
+      <label for="{{ form.current_email.id_for_label }}"><i class="fa-solid fa-envelope-circle-check"></i> 
+      {% trans "Current Email Address" %}</label>
       {{ form.current_email }}
       {% if form.current_email.errors %}
       <ul class="custom-error-list">{{ form.current_email.errors }}</ul>
@@ -26,7 +39,7 @@
     </div>
 
     <div class="form-group">
-      <label for="{{ form.new_email.id_for_label }}"><i class="fas fa-envelope"></i> New Email Address</label>
+      <label for="{{ form.new_email.id_for_label }}"><i class="fas fa-envelope"></i> {% trans "New Email Address" %}</label>
       {{ form.new_email }}
       {% if form.new_email.errors %}
       <ul class="custom-error-list">{{ form.new_email.errors }}</ul>
@@ -34,14 +47,14 @@
     </div>
 
     <div class="form-group">
-      <label for="{{ form.confirm.id_for_label }}"><i class="fas fa-envelope"></i> Confirm New Email Address</label>
+      <label for="{{ form.confirm.id_for_label }}"><i class="fas fa-envelope"></i> {% trans "Confirm New Email Address" %}</label>
       {{ form.confirm_email }}
       {% if form.confirm_email.errors %}
       <ul class="custom-error-list">{{ form.confirm_email.errors }}</ul>
       {% endif %}
     </div>
 
-    <button type="submit" class="btn btn-primary">Change Email</button>
+    <button type="submit" class="btn btn-primary">{% trans "Change Email" %}</button>
   </form>
 </div>
 {% endblock %}

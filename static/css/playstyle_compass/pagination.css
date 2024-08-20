@@ -10,7 +10,7 @@
 }
 
 .step-links a {
-  font-size: 14px;
+  font-size: 12px;
   display: inline-block;
   padding: 8px 12px;
   margin: 0 2px;
@@ -27,7 +27,7 @@
 
 .current-page {
   display: inline-block;
-  padding: 8px 12px;
+  padding: 4px;
   margin: 0 2px;
   color: black;
   border-radius: 4px;

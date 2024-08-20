@@ -1,21 +1,26 @@
-$(document).ready(function() {
-  $("#save-all-button").click(function(event) {
-    event.preventDefault();
-    var successfulSubmissions = 0;
+$(document).ready(function () {
+  const saveAllButton = $("#save-all-button");
 
-    $("#history-section form, #genres-section form, #platforms-section form").each(function() {
-      $.ajax({
-        type: $(this).attr('method'),
-        url: $(this).attr('action'),
-        data: $(this).serialize(),
-        success: function(response) {
-          successfulSubmissions++;
-          
-        if (successfulSubmissions === $("#history-section form, #genres-section form, #platforms-section form").length) {
-            location.reload();
-          }
-        },
-      });
+  saveAllButton.click(function (event) {
+    event.preventDefault();
+    
+    const formData = $("#history-section form, #genres-section form, #themes-section form, #platforms-section form").serialize();
+
+    $("#saving-spinner").show();
+
+    $.ajax({
+      type: "POST",
+      url: saveAllButton.data("save-all-url"),
+      data: formData,
+      headers: {
+        "X-CSRFToken": csrfToken,
+      },
+      success: function (response) {
+        setTimeout(function () {
+          $("#saving-spinner").hide();
+          location.reload();
+        }, 1000);
+      },
     });
   });
 });

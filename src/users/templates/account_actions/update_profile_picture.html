@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load static %}
+{% load bootstrap4 %}
+
+{% block page_header %}
+<div class="header">
+  <h3>{% trans "CHANGE PROFILE PICTURE" %}</h3>
+</div>
+{% endblock page_header %}
+
+{% block description %}
+{% blocktrans %}Update your profile picture to personalize your PlayStyle Compass experience. Choose an image that reflects your gaming style and personality.{% endblocktrans %}
+{% endblock description %}
+
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/users/profile_picture.css' %}">
+
+<div class="container text-center mt-0 profile-picture-container">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <form method="post" enctype="multipart/form-data" class="profile-picture-form">
+        <h2 class="title">{% trans "Change your profile picture" %}</h2>
+        {% csrf_token %}
+        <div class="current-image">
+          {% if form.instance.profile_picture %}
+          <p>{% trans "Currently:" %} <span id="image-container" style="display: none;"><img src="{{ form.instance.profile_picture.url }}" alt="Profile Picture"></span> <a href="#" id="toggle-image">{% trans "Show" %}</a></p>
+          {% endif %}
+        </div>
+        {% bootstrap_form form %}
+        <button id="uploadButton" type="submit" class="btn btn-primary change-btn" disabled>{% trans "Change" %}</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script src="{% static 'js/users/profile_picture.js' %}"></script>
+
+{% endblock %}

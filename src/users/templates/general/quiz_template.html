@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+
+{% block page_header %}
+<div class="header">
+  <h3>{% trans "GAMING PREFERENCE QUIZ" %}</h3>
+</div>
+{% endblock page_header %}
+
+{% block description %}
+{% blocktrans %}Discover your gaming tastes while unlocking personalized game recommendations. Answer a few questions and unlock a world of gaming delights tailored just for you.{% endblocktrans %}
+{% endblock description %}
+
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/users/quiz.css' %}">
+
+<form method="post">
+    {% csrf_token %}
+    {% for field in form %}
+    <div>
+        <label class="question">{{ field.label }}</label>
+        <div>
+            {% for choice in field %}
+            <label class="form-check-inline">
+                {{ choice }}
+            </label>
+            {% endfor %}
+        </div>
+    </div>
+    {% endfor %}
+    <button type="submit" class="btn btn-primary submit-quiz">{% trans "Submit" %}</button>
+</form>
+
+
+{% endblock content %}

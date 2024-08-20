@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load static %}
+
+{% block page_header %}
+<div class="header">
+  <h3>{% trans "SEARCH GAME:" %} "{{ query }}"</h3>
+</div>
+{% endblock page_header %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/playstyle_compass/common_styles.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/playstyle_compass/pagination.css' %}">
+
+<div class="search-bar-only">
+  {% with search_bar_type as bar_type %}
+  {% include "base/search_bar_only.html" %}
+  {% endwith %}
+</div>
+
+
+<div class="results">
+  <ul>
+    {% if games %}
+    {% for game in games %}
+    {% include "games/game_recommendations_section.html" %}
+    {% endfor %}
+    {% else %}
+    <p><strong>{% trans "Sorry, there are no results for your search." %}</strong></p>
+    {% endif %}
+  </ul>
+</div>
+
+<div class="pagination">
+  <span class="step-links">
+    {% if games.has_previous %}
+    <a href="?query={{ query }}&page=1">&laquo; First</a>
+    <a href="?query={{ query }}&page={{ games.previous_page_number }}">{% trans "Previous" %}</a>
+    {% endif %}
+
+    <span class="current-page">
+      {% trans "Page" %} {{ games.number }} {% trans "of" %} {{ games.paginator.num_pages }}
+    </span>
+
+    {% if games.has_next %}
+    <a href="?query={{ query }}&page={{ games.next_page_number }}">{% trans "Next" %}</a>
+    <a href="?query={{ query }}&page={{ games.paginator.num_pages }}">{% trans "Last" %} &raquo;</a>
+    {% endif %}
+  </span>
+</div>
+
+<script src="{% static 'js/playstyle_compass/share_game.js' %}" defer></script>
+<script src="{% static 'js/playstyle_compass/favorite_games_and_queue.js' %}"></script>
+<script src="{% static 'js/playstyle_compass/reviews_section.js' %}"></script>
+<script src="{% static 'js/playstyle_compass/star_rating.js' %}" defer></script>
+
+{% endblock content %}

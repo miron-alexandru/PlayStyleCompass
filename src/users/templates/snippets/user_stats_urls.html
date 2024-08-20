@@ -1,0 +1,17 @@
+<script type="text/javascript">
+
+    const toggleStatUrl = '{% url 'users:toggle_show_stat' %}';
+
+    const statUrls = {
+        'favorites': '{% url 'playstyle_compass:favorite_games_with_id' user_id=user_id %}',
+        'in_queue': '{% url 'playstyle_compass:game_queue_with_id' user_id=user_id %}',
+        'reviews': '{% url 'playstyle_compass:user_reviews_with_id' user_id=user_id %}',
+    };
+
+    const statDisplayText = {
+        'favorites': 'Favorites',
+        'in_queue': 'In Queue',
+        'reviews': 'Reviews',
+    };
+
+</script>

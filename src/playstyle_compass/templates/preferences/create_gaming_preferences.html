@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load static %}
+
+{% block page_header %}
+<div class="header">
+  <h3>{% trans "PERSONALIZE YOUR PLAYSTYLE" %}</h3>
+</div>
+{% endblock page_header %}
+
+{% block description %}
+{% blocktrans %}
+Explore and manage your gaming preferences. You can provide your gaming history, favorite genres,and preferred platforms. Once you've defined your PlayStyle, you can get personalized game recommendations.
+{% endblocktrans %}
+{% endblock description %}
+
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/playstyle_compass/gaming_prefs.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/playstyle_compass/common_styles.css' %}">
+
+<form method="post" action="{% url 'playstyle_compass:update_preferences' %}" id="preferences-form">
+  {% csrf_token %}
+  <div class="section">
+    <label for="gaming_history" class="form-label">{% trans "Enter Gaming History" %}</label>
+    <input type="text" id="gaming_history" name="gaming_history" class="form-control"
+      value="{{ user_preferences.gaming_history }}" pattern="[A-Za-z0-9\s,']+" maxlength="150"
+      placeholder="List game titles separated by commas.." 
+      title="Only letters, numbers, commas, and single quotes are allowed">
+  </div>
+
+  <div class="section">
+    <fieldset>
+      <legend class="form-label">{% trans "Select Favorite Genres (Up to 3)" %}</legend>
+      <div>
+        {% for genre in genres %}
+        <label>
+          <input type="checkbox" name="favorite_genres" value="{{ genre }}"
+          {% if genre in user_preferences.favorite_genres %}checked{% endif %}>
+          {{ genre }}
+        </label>
+        {% endfor %}
+      </div>
+    </fieldset>
+  </div>
+
+   <div class="section">
+    <fieldset>
+      <legend class="form-label">{% trans "Select Favorite Themes (Up to 3)" %}</legend>
+      <div>
+        {% for theme in themes %}
+        <label>
+          <input type="checkbox" name="themes" value="{{ theme }}"
+          {% if theme in user_preferences.themes %}checked{% endif %}>
+          {{ theme }}
+        </label>
+        {% endfor %}
+      </div>
+    </fieldset>
+  </div>
+
+  <div class="section">
+    <fieldset>
+      <legend class="form-label">{% trans "Select Preferred Platforms (Up to 3)" %}</legend>
+      <div>
+        {% for platform in platforms %}
+        <label>
+          <input type="checkbox" name="platforms" value="{{ platform }}"
+          {% if platform in user_preferences.platforms %}checked{% endif %}>
+          {{ platform }}
+        </label>
+        {% endfor %}
+      </div>
+    </fieldset>
+  </div>
+
+  <div class="warnings">
+    <p class="warning" id="history-warning">{% trans "Please enter at least one game that you have played." %}</p>
+    <p class="warning" id="genre-warning">{% trans "Please select at least one genre." %}</p>
+    <p class="warning" id="theme-warning">{% trans "Please select at least one theme." %}</p>
+    <p class="warning" id="platform-warning">{% trans "Please select at least one platform." %}</p>
+  </div>
+
+  <input class="btn btn-primary" type="submit" value="{% trans 'Update Preferences' %}" id="update-button">
+</form>
+
+<script src="{% static 'js/playstyle_compass/gaming_preferences.js' %}" defer></script>
+
+{% endblock content %}

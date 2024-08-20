@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load static %}
+
+{% block page_header %}
+<div class="header">
+  <h3>{% trans "CHARACTERS" %}</h3>
+</div>
+{% endblock page_header %}
+
+{% block description %}
+{% blocktrans %}Explore a diverse cast of characters from your favorite games{% endblocktrans %}
+{% endblock description %}
+
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/playstyle_compass/pagination.css' %}">
+
+<form method="get" action="{% url 'playstyle_compass:characters' %}">
+  <label for="sort-order">{% trans "Sort by:" %}</label>
+  <select name="sort_order" id="sort-order" onchange="this.form.submit()">
+    <option value="asc" {% if sort_order == 'asc' %}selected{% endif %}>{% trans "Name (Asc)" %}</option>
+    <option value="desc" {% if sort_order == 'desc' %}selected{% endif %}>{% trans "Name (Desc)" %}</option>
+  </select>
+</form>
+
+<div>
+<ul>
+    {% for character in characters %}
+    {% include "characters/game_character_template.html" %}
+    {% endfor %}
+</ul>
+</div>
+
+<div class="pagination">
+  <span class="step-links">
+    {% if characters.has_previous %}
+    <a href="?page=1">&laquo; {% trans "First" %}</a>
+    <a href="?page={{ characters.previous_page_number }}">{% trans "Previous" %}</a>
+    {% endif %}
+
+    <span class="current-page">
+      {% trans "Page" %} {{ characters.number }} {% trans "of" %} {{ characters.paginator.num_pages }}
+    </span>
+
+    {% if characters.has_next %}
+    <a href="?page={{ characters.next_page_number }}">{% trans "Next" %}</a>
+    <a href="?page={{ characters.paginator.num_pages }}">{% trans "Last" %} &raquo;</a>
+    {% endif %}
+  </span>
+</div>
+
+{% endblock content %}

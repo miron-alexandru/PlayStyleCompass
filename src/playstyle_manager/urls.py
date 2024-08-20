@@ -1,13 +1,15 @@
 from django.contrib import admin
 from django.urls import path, include
 from django.contrib.auth import views as auth_views
+from django.views.i18n import set_language
 from users import views
+from django.conf.urls.i18n import i18n_patterns
 
 from django.conf import settings
 from django.conf.urls.static import static
 
 
-urlpatterns = [
+urlpatterns = i18n_patterns(
     path("admin/", admin.site.urls),
     path("", include("playstyle_compass.urls")),
     path("users/", include("users.urls")),
@@ -33,6 +35,12 @@ urlpatterns = [
         ),
         name="password_reset_complete",
     ),
+)
+
+urlpatterns += [
+    path("i18n/", include("django.conf.urls.i18n")),
+    path("rosetta/", include("rosetta.urls")),
+    path("tz_detect/", include("tz_detect.urls")),
 ]
 
 if settings.DEBUG:

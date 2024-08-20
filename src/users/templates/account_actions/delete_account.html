@@ -1,19 +1,31 @@
 {% extends "base.html" %}
+{% load i18n %}
 {% load static %}
+
+{% block page_header %}
+<div class="header">
+  <h3>{% trans "DELETE ACCOUNT" %}</h3>
+</div>
+{% endblock page_header %}
+
+{% block description %}
+{% blocktrans %}We're sorry to see you go. If you wish to delete your PlayStyle Compass account, please proceed carefully. Once deleted, your account and all associated data will be permanently removed.{% endblocktrans %}
+{% endblock description %}
+
 
 {% block content %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/users/delete_account.css' %}">
 
 <div class="delete-container">
   <div class="delete-account">
-    <h2>Delete Account</h2>
+    <h2>{% trans "Delete your account" %}</h2>
     <div class="warning-message">
-      <p>Are you sure you want to delete your account? This action cannot be undone!!!</p>
+      <p>{% trans "Are you sure you want to delete your account? This action cannot be undone!!!" %}</p>
     </div>
     <form method="post" id="delete-form">
       {% csrf_token %}
       <div class="form-group">
-        <label for="{{ form.password.id_for_label }}"><i class="fas fa-lock"></i> Password</label>
+        <label for="{{ form.password.id_for_label }}"><i class="fas fa-lock"></i> {% trans "Password" %}</label>
         {{ form.password }}
         {% if form.password.errors %}
         <ul class="error-message">
@@ -22,9 +34,11 @@
         {% endif %}
       </div>
       {% if not user.userprofile.email_confirmed %}
-      <button type="button" class="btn btn-danger disabled" title="Confirm your email address to unlock this!">Delete Account</button>
+      <button type="button" class="btn btn-danger disabled" id="delete-button-disabled" 
+      title="{% trans 'Confirm your email address to unlock this!' %}">
+      {% trans "Delete" %}</button>
       {% else %}
-      <button type="button" class="btn btn-danger" id="delete-button">Delete Account</button>
+      <button type="button" class="btn btn-danger" id="delete-button">{% trans "Delete" %}</button>
       {% endif %}
     </form>
   </div>

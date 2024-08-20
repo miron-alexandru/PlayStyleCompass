@@ -1,0 +1,24 @@
+<script type="text/javascript">
+	
+	function acceptFriendRequest(friend_request_id, uiUpdateFunction){
+		var url = "{% url 'users:friend_request_accept' friend_request_id=3582435 %}".replace("3582435", friend_request_id);
+		$.ajax({
+			type: 'POST',
+			dataType: "json",
+			url: url,
+			data: {'csrfmiddlewaretoken': '{{ csrf_token }}'},
+			timeout: 5000,
+			success: function(data) {
+				console.log("SUCCESS", data)
+			},
+			error: function(data) {
+				console.error("ERROR...", data)
+				alert("Something went wrong.")
+			},
+			complete: function(data){
+				uiUpdateFunction()
+			}
+		});
+	}
+
+</script>

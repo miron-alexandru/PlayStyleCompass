@@ -1,9 +1,0 @@
-{% extends "base.html" %}
-
-{% block content %}
-{% if success %}
-<p class="review-message"><strong>Your review has been successfully deleted!</strong> <a href="{{ request.META.HTTP_REFERER }}">Go Back</a></p>
-{% else %}
-<p class="review-message"><strong>You haven't written any review for this game!</strong> <a href="{{ request.META.HTTP_REFERER }}">Go Back</a></p>
-{% endif %}
-{% endblock content %}

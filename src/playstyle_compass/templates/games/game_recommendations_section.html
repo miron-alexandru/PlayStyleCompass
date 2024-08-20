@@ -1,0 +1,198 @@
+{% load i18n %}
+{% load static %}
+{% load custom_filters %}
+
+{% block styles %}
+<link rel="stylesheet" href="{% static 'css/playstyle_compass/recommendation_section.css' %}">
+<link rel="stylesheet" href="{% static 'css/playstyle_compass/reviews.css' %}">
+<link rel="stylesheet" href="{% static 'css/lightbox.min.css' %}">
+{% endblock %}
+
+<div class="game-container" data-game-id="{{ game.guid }}"
+  data-reviews-url="{% url 'playstyle_compass:get_game_reviews' game.guid %}"
+  data-friend-req="{% url 'users:friend_request' 0 %}" data-like-url="{% url 'playstyle_compass:like' %}"
+  data-dislike-url="{% url 'playstyle_compass:dislike' %}"
+  data-share-game="{% url 'playstyle_compass:share_game' game.guid %}">
+
+  <li>
+    <div class="game-image">
+      {% if game.image %}
+      <p class="rating" style="display: none;">Rating: <span class="star-rating" title="{{ game.average_score|floatformat:1 }}"><span class="stars">{{ game.average_score }}</span></span> <small>({{ game.total_reviews }} {{ game.total_reviews|pluralize_reviews }})</small></p>
+      <img src="{{ game.image }}" alt="Game Image" loading="lazy">
+      {% else %}
+      <p><strong>{% trans "Image not available" %}</strong></p>
+      {% endif %}
+    </div>
+    <div class="game-info">
+      <div class="game-header">
+        <h4>{{ game.title|default:"N/A" }}</h4>
+        {% if user.is_authenticated %}
+        <div class="user-actions">
+          <span class="favorite-toggle" data-game-id="{{ game.guid }}" title="Add to Favorites">
+            {% if other_user %}
+            {% if game.guid|is_favorite:current_viewer_preferences.favorite_games %}
+            <i class="fas fa-star favorite-star" id="star-{{ game.guid }}"></i>
+            {% else %}
+            <i class="far fa-star favorite-star" id="star-{{ game.guid }}"></i>
+            {% endif %}
+            {% else %}
+            {% if game.guid|is_favorite:user_preferences.favorite_games %}
+            <i class="fas fa-star favorite-star" id="star-{{ game.guid }}"></i>
+            {% else %}
+            <i class="far fa-star favorite-star" id="star-{{ game.guid }}"></i>
+            {% endif %}
+            {% endif %}
+          </span>
+
+          <span class="icon-divider">|</span>
+
+          <span class="queue-toggle" data-game-id="{{ game.guid }}" title="Add to Game Queue">
+            {% if other_user %}
+            {% if game.guid|in_queue:current_viewer_preferences.game_queue %}
+            <i class="fa-solid fa-clock queue-clock" id="queue-{{ game.guid }}"></i>
+            {% else %}
+            <i class="fa-regular fa-clock queue-clock" id="queue-{{ game.guid }}"></i>
+            {% endif %}
+            {% else %}
+            {% if game.guid|in_queue:user_preferences.game_queue %}
+            <i class="fa-solid fa-clock queue-clock" id="queue-{{ game.guid }}"></i>
+            {% else %}
+            <i class="fa-regular fa-clock queue-clock" id="queue-{{ game.guid }}"></i>
+            {% endif %}
+            {% endif %}
+          </span>
+
+          <span class="icon-divider">|</span>
+
+          <div class="friend-dropdown">
+            <i class="fa-solid fa-share share-button" title="Share with friends"></i>
+            <div class="friend-dropdown-content">
+              {% for friend in user_friends %}
+              <a class="friend-link" href="#" data-friend-id="{{ friend.id }}">{{ friend.userprofile.profile_name }}</a>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+        {% endif %}
+      </div>
+      <p>{{ game.description|default:"N/A" }}</p>
+      <p><strong>{% trans "Description:" %}</strong>
+        <span class="overview">{{ game.overview|default:"N/A"|truncatewords_html:"50" }}</span>
+        <span class="full-text" style="display: none;">{{ game.overview|default:"N/A" }}</span>
+        <button class="read-button" style="display: none;" onclick="readMore(this);">{% trans "[Read more...]" %}</button>
+      </p>
+      <p><strong>{% trans "Release date:" %}</strong> {{ game.release_date|default:"N/A"}}</p>
+      <p><strong>{% trans "Developer:" %}</strong> {{ game.developers|default:"N/A"}}</p>
+      <p><strong>{% trans "Genre:" %}</strong> {{ game.genres|default:"N/A" }}</p>
+      <p><strong>{% trans "Platform:" %}</strong> {{ game.platforms|default:"N/A" }}</p>
+      <p><strong>{% trans "Theme:" %}</strong> {{ game.themes|default:"N/A" }}</p>
+      <p><strong>{% trans "Franchises:" %}</strong>
+        {% include 'base/display_items.html' with items=game.franchises model_name='Franchise' view_name='playstyle_compass:franchise' %}
+      </p>
+      <p><strong>{% trans "DLC:" %}</strong> {{ game.dlcs|default:"N/A" }}</p>
+      <p><strong>{% trans "Similar games:" %}</strong>
+        {% include 'base/display_items.html' with items=game.similar_games model_name='Game' view_name='playstyle_compass:view_game' %}
+      </p>
+      <p><strong>{% trans "Requirements:"%}</strong>
+        <button class="show-hide-req" id="toggleButton" onclick="toggleRequirements(this)">{% trans "Show" %}</button>
+      </p>
+      <div class="game-requirements" id="game-requirements" style="display: none;">
+      {% if game.pc_req_min or game.pc_req_rec or game.mac_req_min or game.mac_req_rec or game.linux_req_min or game.linux_req_rec %}
+     <div class="platform-requirements">
+        {% if game.pc_req_min %}
+        <div class="requirement-section">
+           <p class="req-title"><strong>{% trans "PC Minimum" %}</strong></p>
+           <span class="requirements">{{ game.pc_req_min|bold_requirements }}</span>
+        </div>
+        {% endif %}
+        {% if game.pc_req_rec %}
+        <div class="requirement-section">
+           <p class="req-title"><strong>{% trans "PC Recommended" %}</strong></p>
+           <span class="requirements">{{ game.pc_req_rec|bold_requirements }}</span>
+        </div>
+        {% endif %}
+        {% if game.mac_req_min %}
+        <div class="requirement-section">
+           <p class="req-title"><strong>{% trans "MAC Minimum" %}</strong></p>
+           <span class="requirements">{{ game.mac_req_min|bold_requirements|default:"N/A" }}</span>
+        </div>
+        {% endif %}
+        {% if game.mac_req_rec %}
+        <div class="requirement-section">
+           <p class="req-title"><strong>{% trans "MAC Recommended" %}</strong></p>
+           <span class="requirements">{{ game.mac_req_rec|bold_requirements|default:"N/A" }}</span>
+        </div>
+        {% endif %}
+        {% if game.linux_req_min %}
+        <div class="requirement-section">
+           <p class="req-title"><strong>{% trans "Linux Minimum" %}</strong></p>
+           <span class="requirements">{{ game.linux_req_min|bold_requirements|default:"N/A" }}</span>
+        </div>
+        {% endif %}
+        {% if game.linux_req_rec %}
+        <div class="requirement-section">
+           <p class="req-title"><strong>{% trans "Linux Recommended" %}</strong></p>
+           <span class="requirements">{{ game.linux_req_rec|bold_requirements|default:"N/A" }}</span>
+        </div>
+        {% endif %}
+     </div>
+     {% else %}
+      <p>Requirements are not yet available.</p>
+    {% endif %}
+  </div>
+      <p>
+        <strong>{% trans "Images:" %}</strong>
+        <span><small>{% trans "(Click on the image to open gallery)" %}</small></span>
+      </p>
+      {% if game.game_images %}
+      <div class="image-gallery">
+        {% with game_images=game.game_images|split_by_comma %}
+        {% for game_image in game_images %}
+        {% if forloop.counter == 1 %}
+        <a href="{{ game_image }}" data-lightbox="game-images-{{ game.guid }}" class="gallery-image">
+          <img src="{{ game_image }}" alt="Game Image" loading="lazy">
+        </a>
+        {% else %}
+        <a href="{{ game_image }}" data-lightbox="game-images-{{ game.guid }}" style="display: none;">
+          <img src="{{ game_image }}" alt="Game Image" loading="lazy">
+        </a>
+        {% endif %}
+        {% endfor %}
+        {% endwith %}
+      </div>
+      {% else %}
+      <p><strong>{% trans "Images not available" %}</strong></p>
+      {% endif %}
+      <p><strong>{% trans "Gameplay videos:" %}</strong>
+        <button class="show-hide-videos" id="toggleVideosButton" onclick="toggleVideos(this)">{% trans "Show" %}</button>
+      </p>
+      <div class="gameplay-videos" id="gameplay-videos" style="display: none;">
+          {% for video_url in game.videos|split_by_comma %}
+          <div class="lazy-video" data-src="{{ video_url }}"></div>
+          {% endfor %}
+      </div>
+      <div class="reviews-section">
+        <div class="reviews-container">
+        <p><strong>{% trans "Reviews:" %}</strong></p>
+          <button class="show-hide-button" data-game-id="{{ game.guid }}">
+            {% trans "Show Reviews" %}
+          </button>
+          <a href="{% url 'playstyle_compass:add_review' game.guid %}?next={{ request.get_full_path|urlencode }}"
+            class="add-review-btn">{% trans "Write a Review" %}</a>
+          <form id="deleteReviewForm" method="post" action="{% url 'playstyle_compass:delete_reviews' game.guid %}">
+            {% csrf_token %}
+            <input type="hidden" name="next" value="{{ request.get_full_path|urlencode }}">
+            <a href="#" onclick="document.getElementById('deleteReviewForm').submit(); return false;"
+              class="delete-review-btn">{% trans "Delete your Review" %}</a>
+          </form>
+          <a href="{% url 'playstyle_compass:edit_review' game.guid %}?next={{ request.get_full_path|urlencode }}"
+            class="edit-review-btn">{% trans "Edit your Review" %}</a>
+        </div>
+        <div class="reviews-list" style="display: none;">
+        </div>
+      </div>
+    </div>
+  </li>
+</div>
+
+<script src="{% static 'js/playstyle_compass/game_recommendations.js' %}" defer></script>

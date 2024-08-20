@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load static %}
+
+{% block page_header %}
+<div class="header">
+  <h3>{% trans "BLOCK LIST" %}</h3>
+</div>
+{% endblock page_header %}
+
+{% block description %}
+{% blocktrans %}Manage your blocked users here. This list shows all the users you have chosen to block, allowing you to easily review and manage your block settings.{% endblocktrans %}
+{% endblock description %}
+
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/users/block_list.css' %}">
+
+<div class="block-list">
+  {% if blocked_users %}
+    {% for user in blocked_users %}
+      <div class="block-item" id="block-item-{{ user.id }}">
+        <img class="user-avatar" src="{{ user.userprofile.profile_picture.url }}" alt="{{ user.userprofile.profile_name }}'s avatar">
+        <div class="block-details">
+          <a class="blocked-user-link" href="{% url 'users:view_profile' user.userprofile.profile_name %}">{{ user.userprofile.profile_name }}</a>
+          <a href="#" class="unblock-button" data-unblock-url="{% url 'users:unblock_user' user_id=user.id %}" data-user-id="{{ user.id }}"> {% trans "Unblock" %}</a>
+        </div>
+      </div>
+    {% endfor %}
+  {% else %}
+    <p class="empty-block-list">{% trans "Your block list is empty." %}</p>
+  {% endif %}
+</div>
+
+<script src="{% static 'js/users/block_list.js' %}" defer></script>
+{% endblock content %}

@@ -1,145 +1,325 @@
 {% load bootstrap4 %}
 {% load static %}
+{% load i18n %}
 
 <!DOCTYPE html>
-<html lang="en-GB">
+<html lang="en">
 
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="{% static 'images/pscicon.ico' %}" type="image/x-icon">
-    <title>{% block title %}{{ page_title }}{% endblock title %}</title>
-    {% bootstrap_css %}
-    {% bootstrap_javascript jquery='full' %}
-    <link rel="stylesheet" type="text/css" href="{% static 'css/base.css' %}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-  </head>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+  <link rel="icon" href="{% static 'images/pscicon.ico' %}" type="image/x-icon">
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin="">
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin="">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Concert+One&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <title>{% block title %}{{ page_title }}{% endblock title %}</title>
+  {% bootstrap_css %}
+  {% bootstrap_javascript jquery='full' %}
+  <script src="{% static 'js/lightbox-plus-jquery.min.js' %}" defer></script>
+  <script src="{% static 'js/get_notifications.js' %}" defer></script>
+  <script src="{% static 'js/translator.js' %}" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.8/umd/popper.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="{% static 'css/base.css' %}">
+</head>
 
-  <body>
-    <nav class="navbar navbar-expand-md navbar-light">
-      <div class="container">
-        <a class="navbar-brand" href="{% url 'playstyle_compass:index'%}">
-          <img src="{% static 'images/playstyle.png' %}" alt="PlayStyle Compass Logo">
-        </a>
-        <ul class="navbar-nav ml-auto">
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'playstyle_compass:gaming_preferences'%}">
-              Define Playstyle
+{% load tz_detect %}
+{% tz_detect %}
+
+<body>
+  <nav class="navbar navbar-expand-md navbar-light">
+    <div class="container">
+      <a class="navbar-brand" href="{% url 'playstyle_compass:index'%}">
+        <img src="{% static 'images/playstyle.png' %}" alt="PlayStyle Compass Logo">
+      </a>
+      <ul class="navbar-nav ml-auto">
+        {% if user.is_authenticated %}
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navItemDropdown" role="button" data-toggle="dropdown">
+              {% trans "Playstyle & Recommendations" %}
+          </a>
+          <div class="dropdown-menu navbar-dropdown">
+            <a class="dropdown-item" href="{% url 'playstyle_compass:gaming_preferences'%}">
+              {% trans "Create Playstyle" %}
             </a>
-          </li>
+            <a class="dropdown-item" href="{% url 'playstyle_compass:update_preferences'%}">
+              {% trans "Manage Playstyle" %}
+            </a>
+            <a class="dropdown-item" href="{% url 'playstyle_compass:similar_playstyles'%}">
+              {% trans "Kindred Playstyles" %}
+            </a>
+            <a class="dropdown-item" href="{% url 'playstyle_compass:get_recommendations'%}">
+              {% trans "Game Recommendations" %}
+            </a>
+            <a class="dropdown-item" href="{% url 'users:quiz_recommendations'%}">
+              {% trans "Quiz Recommendations" %}
+            </a>
+          </div>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navItemDropdown" role="button" data-toggle="dropdown">
+              {% trans "Personal Collection" %}
+          </a>
+          <div class="dropdown-menu navbar-dropdown">
+            <a class="dropdown-item" href="{% url 'playstyle_compass:favorite_games'%}">
+              {% trans "Favorite Games" %}
+            </a>
+            <a class="dropdown-item" href="{% url 'playstyle_compass:game_queue'%}">
+              {% trans "Game Queue" %}
+            </a>
+            <a class="dropdown-item" href="{% url 'playstyle_compass:user_reviews'%}">
+              {% trans "My Reviews" %}
+            </a>
+          </div>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navItemDropdown" role="button" data-toggle="dropdown">
+              {% trans "Game Categories" %}
+          </a>
+          <div class="dropdown-menu navbar-dropdown">
+            <a class="dropdown-item" href="{% url 'playstyle_compass:singleplayer_games'%}">
+              {% trans "Single-player Games" %}
+            </a>
+            <a class="dropdown-item" href="{% url 'playstyle_compass:multiplayer_games'%}">
+              {% trans "Multiplayer Games" %}
+            </a>
+            <a class="dropdown-item" href="{% url 'playstyle_compass:top_rated_games'%}">
+              {% trans "Top Rated Games" %}
+            </a>
+            <a class="dropdown-item" href="{% url 'playstyle_compass:upcoming_games'%}">
+              {% trans "Upcoming Games" %}
+            </a>
+          </div>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navItemDropdown" role="button" data-toggle="dropdown">
+              {% trans "Explore" %}
+          </a>
+          <div class="dropdown-menu navbar-dropdown">
+            <a class="dropdown-item" href="{% url 'playstyle_compass:latest_news'%}">
+              {% trans "News" %}
+            </a>
+            <a class="dropdown-item" href="{% url 'playstyle_compass:game_library'%}">
+              {% trans "Game Library" %}
+            </a>
+            <a class="dropdown-item" href="{% url 'playstyle_compass:view_franchises'%}">
+              {% trans "Franchises" %}
+            </a>
+            <a class="dropdown-item" href="{% url 'playstyle_compass:characters'%}">
+              {% trans "Characters" %}
+            </a>
+          </div>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navItemDropdown" role="button" data-toggle="dropdown">
+              {% trans "Other" %}
+          </a>
+          <div class="dropdown-menu navbar-dropdown">
+            <a class="dropdown-item" href="{% url 'users:gaming_quiz'%}">
+              {% trans "Preference Quiz" %}
+            </a>
+          </div>
+        </li>
+        {% else %}
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'playstyle_compass:gaming_preferences'%}">
+            {% trans "Create Playstyle" %}
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'playstyle_compass:game_library'%}">
+            {% trans "Game Library" %}
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'playstyle_compass:view_franchises'%}">
+            {% trans "Franchises" %}
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'playstyle_compass:characters'%}">
+            {% trans "Characters" %}
+          </a>
+        </li>
+        {% endif %}
+      </ul>
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav ml-auto-custom">
           {% if user.is_authenticated %}
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'playstyle_compass:update_preferences'%}">
-              Your Playstyle
+          <li class="nav-item profile-picture">
+            {% if user.userprofile.profile_picture %}
+            <label for="profile-picture-upload" class="profile-picture-label">
+              <img src="{{ user.userprofile.profile_picture.url }}" alt="{{ user.username }}'s Profile Picture"
+                class="profile-picture mr-2" id="profile-picture">
+            </label>
+            {% endif %}
+            <input type="file" id="profile-picture-upload" class="sr-only" accept="image/*"
+              data-profile-url="{% url 'users:profile_picture' %}" data-csrf-token="{{ csrf_token }}">
+          </li>
+
+        <li class="nav-item">
+            <span class="navbar-text mr-3 user-profile-name">
+                <a href="{% url 'users:view_profile' user.userprofile.profile_name %}" style="color: inherit;">
+                    <span class="d-inline-block text-truncate profile-name" style="max-width: 90px;">
+                        {{ user.userprofile.profile_name|default:user.username }}
+                    </span>
+                    <div class="custom-tooltip" style="display: none;">
+                        {{ user.userprofile.profile_name|default:user.username }}
+                    </div>
+                </a>
+            </span>
+        </li>
+
+          <li class="nav-item dropdown" id="hoverDropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button" data-toggle="dropdown"
+              aria-haspopup="true" aria-expanded="false">
+              {% trans "Account" %}
             </a>
+            <div class="dropdown-menu" aria-labelledby="profileDropdown">
+              <a class="dropdown-item" href="{% url 'users:view_profile' user.userprofile.profile_name %}">{% trans "My Profile" %}</a>
+              <a class="dropdown-item" href="{% url 'users:profile_details'%}">{% trans "Profile Details" %}</a>
+              <a class="dropdown-item" href="{% url 'users:inbox'%}">{% trans "Inbox" %}</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="{% url 'playstyle_compass:games_shared'%}">{% trans "Shared Games" %}</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="{% url 'users:chat_list' %}">{% trans "Chats" %}</a>
+              <a class="dropdown-item" href="{% url 'users:friends_list' user.id %}">{% trans "Friends List" %}</a>
+              <a class="dropdown-item" href="{% url 'users:friend_requests' user.id %}">{% trans "Friend Requests" %}</a>
+              <a class="dropdown-item" href="{% url 'users:block_list' %}">{% trans "Block List" %}</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="{% url 'users:profile_picture' %}">{% trans "Change Profile Picture" %}</a>
+              <a class="dropdown-item" href="{% url 'users:change_profile_name' %}">{% trans "Change Profile Name" %}</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="{% url 'users:change_password' %}">{% trans "Change Password" %}</a>
+              <a class="dropdown-item" href="{% url 'users:change_email' %}">{% trans "Change Email" %}</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="{% url 'users:delete_account' %}">{% trans "Delete Account" %}</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="{% url 'users:logout' %}">{% trans "Log Out" %}</a>
+          </div>
+          </li>
+          {% else %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'users:register' %}">{% trans "Register" %}</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{% url 'playstyle_compass:favorite_games'%}">
-              Favorite Games
-            </a>
+              <a class="nav-link" href="{% url 'users:login' %}">{% trans "Log in" %}</a>
           </li>
           {% endif %}
+          {% if user.is_authenticated %}
+          <div class="d-flex dropstart" id="notifications" data-mark-read="{% url 'users:mark_notification_as_read' 0 %}"
+          data-mark-inactive="{% url 'users:delete_notification' 0 %}">
+            <div class="collapse navbar-collapse dropstart" id="navbarNavDarkDropdown">
+                <li class="nav-item dropdown">
+                  <a class="nav-link " href="#"  data-bs-toggle="dropdown" aria-expanded="false">
+                    <i id="bellCount" class="fa-solid fa-bell notification-bell" data-count="0" ></i>
+                  </a>
+                  <ul class="dropdown-menu notifications-dropdown text-wrap" id="notify"></ul>
+                </li>
+            </div>
+          </div>
+          {% endif %}
           <li class="nav-item">
-            <a class="nav-link" href="{% url 'playstyle_compass:top_rated_games'%}">
-              Top Rated Games
-            </a>
+              <a class="nav-link contact-us" href="{% url 'users:contact' %}">{% trans "Contact" %} <i class="fa-regular fa-comments contact-icon"></i></a>
           </li>
         </ul>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarCollapse">
-          <ul class="navbar-nav ml-auto-custom">
-            {% if user.is_authenticated %}
-            <li class="nav-item">
-              {% if user.userprofile.profile_picture %}
-              <label for="profile-picture-upload" class="profile-picture-label">
-                <img src="{{ user.userprofile.profile_picture.url }}" alt="{{ user.username }}'s Profile Picture" class="profile-picture mr-2" id="profile-picture">
-              </label>
-              {% else %}
-              <label for="profile-picture-upload" class="profile-picture-label">
-                <img src="{% static 'images/default_profile_picture.png' %}" alt="{{ user.username }}'s Default Profile Picture" class="profile-picture mr-2" id="profile-picture">
-              </label>
-              {% endif %}
-              <input type="file" id="profile-picture-upload" class="sr-only" accept="image/*" data-profile-url="{% url 'users:profile' %}" data-csrf-token="{{ csrf_token }}">
-            </li>
-            <li class="nav-item">
-              <span class="navbar-text mr-3">Hello, <a href="{% url 'users:change_profile_name' %}" style="color: inherit;">{{ user.userprofile.profile_name|default:user.username }}</a>.</span>
-            </li>
+      </div>
+    </div>
+  </nav>
 
-            <li class="nav-item dropdown" id="hoverDropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Account Actions
-              </a>
-              <div class="dropdown-menu" aria-labelledby="profileDropdown">
-                <a class="dropdown-item" href="{% url 'users:profile' %}">Change Profile Picture</a>
-                <a class="dropdown-item" href="{% url 'users:change_profile_name' %}">Change Profile Name</a>
-                <a class="dropdown-item" href="{% url 'users:change_password' %}">Change Password</a>
-                <a class="dropdown-item" href="{% url 'users:change_email' %}">Change Email</a>
-                <a class="dropdown-item" href="{% url 'users:delete_account' %}">Delete Account</a>
-                <a class="dropdown-item" href="{% url 'users:logout' %}">Log Out</a>
-              </div>
-            </li>
-            {% else %}
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'users:register' %}">Register</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'users:login' %}">Log in</a>
-            </li>
-            {% endif %}
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'users:contact' %}">Contact Us</a>
-            </li>
-          </ul>
+  <div class="page-header">
+    <div id="header-content">
+      {% if messages %}
+      <div class="message">
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+          {{ message }}
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+      {% if user.is_authenticated %}
+      {% if not user.userprofile.email_confirmed %}
+      <div class="email-message" id="resend-email" data-email-url="{% url 'users:resend_activation_link' %}">
+        <div class="alert alert-warning">
+          {% trans "Please confirm your email address to unlock all features." %}
+          <a href="#" class="resend-link" id="resend-link">
+            {% trans "Resend verification link" %}</a>
+          <div id="success-message"></div>
         </div>
       </div>
-    </nav>
-    <script src="{% static 'js/base.js' %}"></script>
-    <script src="{% static 'js/dropdown.js' %}"></script>
-    <script src="{% static 'js/email_confirmation.js' %}"></script>
+    </div>
+    {% endif %}
+    {% endif %}
+    {% block page_header %}{% endblock page_header %}
+  </div>
+  </div>
 
-    <main role="main" class="container">
-      <div class="page-header">
-        <div id="header-content">
-          {% if messages %}
-          <div class="message">
-            {% for message in messages %}
-            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-              {{ message }}
-              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            {% endfor %}
-          </div>
-          {% endif %}
-          {% if user.is_authenticated %}
-          {% if not user.userprofile.email_confirmed %}
-          <div class="message">
-            <div class="alert alert-warning">
-              Please confirm your email address to unlock all features.
-              <a href="#" class="resend-link" id="resend-link" data-url="{% url 'users:resend_activation_link' %}">Resend verification link</a>
-              <div id="success-message"></div>
-            </div>
-          </div>
-        </div>
-        {% endif %}
-        {% endif %}
-        {% block page_header %}{% endblock page_header %}
-      </div>
-      </div>
+  <main role="main" class="container">
+    <div class="header-description">
+      <p class="header-desc" id="description-content">{% block description %}{% endblock description %}</p>
+    </div>
+    {% if page_info %}
+    <div>
+      <p>{% block page_info %}{% endblock page_info %}</p>
+    </div>
+    {% endif %}
+    <div class="content">
+      {% block content %}{% endblock content %}
+    </div>
+    </div>
+  </main>
 
-      <div class="content">
-        {% block content %}{% endblock content %}
-      </div>
-      </div>
-    </main>
-    <footer class="footer">
-      <div class="my-footer">
-        <p>&copy; {{ current_year }} PlayStyle Compass. All rights reserved.</p>
-      </div>
-    </footer>
-  </body>
+<div class="language-switcher">
+    <div class="globe-container">
+        <i class="fa-solid fa-globe globe-icon"></i>
+    </div>
+    <div class="language-options">
+        <ol>
+            <li>
+                <a class="nav-link nav-user waves-eff" href="/en{{ request.get_full_path|slice:'3:' }}" role="button">
+                  <span class="flag-icon en"></span>
+                    <span class="language-name en">
+                        {% trans "English" %}
+                    </span>
+                </a>
+            </li>
+            <li>
+                <a class="nav-link nav-user waves-eff" href="/ro{{ request.get_full_path|slice:'3:' }}" role="button">
+                  <span class="flag-icon ro"></span>
+                    <span class="language-name ro">
+                        {% trans "Romanian" %}
+                    </span>
+                </a>
+            </li>
+        </ol>
+    </div>
+</div>
 
+  <footer class="footer">
+    <div class="my-footer">
+      <p>&copy; 2023-{{ current_year }} {% trans "PlayStyle Compass. All rights reserved." %}</p>
+    </div>
+  </footer>
+
+  <div class="scroll-top-container">
+    <button class="scroll-top-btn" id="scroll-top" title="{% trans 'Go top' %}">
+      <span>&#9650;</span>
+    </button>
+  </div>
+
+  {% include 'csfr_token.html' %}
+  {% include 'used_variables.html' %}
+
+  <script src="{% static 'js/base.js' %}" defer></script>
+  <script src="{% static 'js/dropdown.js' %}" defer></script>
+  <script src="{% static 'js/email_confirmation.js' %}" defer></script>
+  <script src="{% static 'js/users/show_hide_password.js' %}" defer></script>
+
+</body>
 </html>

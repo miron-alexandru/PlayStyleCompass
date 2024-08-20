@@ -1,0 +1,26 @@
+{% url 'users:check_authentication' as checkAuthentication %}
+{{ checkAuthentication|json_script:"checkAuth" }}
+
+{% url 'playstyle_compass:toggle_favorite' as toggleFavorite %}
+{{ toggleFavorite|json_script:"toggleFav" }}
+
+{% url 'playstyle_compass:toggle_game_queue' as toggleGameQueue %}
+{{ toggleGameQueue|json_script:"toggleGQ" }}
+
+{{ form.password.id_for_label |json_script:"passwordIdLogIn" }}
+{{ form.password1.id_for_label |json_script:"passwordIdReg1" }}
+{{ form.password2.id_for_label |json_script:"passwordIdReg2" }}
+{{ form.new_password1.id_for_label |json_script:"passwordIdNew1" }}
+{{ form.new_password2.id_for_label |json_script:"passwordIdNew2" }}
+
+
+<script>
+    const authCheckUrl = JSON.parse(document.getElementById('checkAuth').textContent);
+    const toggleFavoriteUrl = JSON.parse(document.getElementById('toggleFav').textContent);
+    const toggleGameQueueUrl = JSON.parse(document.getElementById('toggleGQ').textContent);
+    window.passwordInputIdLogIn = JSON.parse(document.getElementById('passwordIdLogIn').textContent);
+    window.passwordInputId1Register = JSON.parse(document.getElementById('passwordIdReg1').textContent);
+    window.passwordInputId2Register = JSON.parse(document.getElementById('passwordIdReg2').textContent);
+    window.passwordInputId1NewChange = JSON.parse(document.getElementById('passwordIdNew1').textContent);
+    window.passwordInputId2NewChange = JSON.parse(document.getElementById('passwordIdNew2').textContent);
+</script>
