@@ -15,7 +15,7 @@ sys.path.insert(0, os.path.join(BASE_DIR, "src"))
 # General Settings
 SECRET_KEY = str(os.getenv("SECRET_KEY"))
 DEBUG = True
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["127.0.0.1", "localhost", "playstylecompass.onrender.com"]
 
 # Installed Apps
 INSTALLED_APPS = [
