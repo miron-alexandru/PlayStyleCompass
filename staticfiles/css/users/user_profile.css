@@ -1,0 +1,251 @@
+.user-profile-card {
+  background-color: #f7f7f7;
+  width: 550px;
+  margin: 0 auto;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  margin-bottom: 100px;
+  align-self: center;
+}
+
+.user-profile-picture {
+  padding-top: 2px;
+  padding-bottom: 7px;
+  border-bottom: 0.1px solid #333;
+}
+
+.user-actions {
+  padding-top: 10px;
+}
+
+.profile-image {
+  width: 170px;
+  height: 170px;
+  border-radius: 50%;
+  border: 3px solid #333;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  object-fit: cover;
+}
+
+.user-name {
+  font-size: 24px;
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+.user-name a {
+  color: #333;
+  text-decoration: none;
+}
+
+.user-name a:hover {
+  color: #555 !important;
+}
+
+
+.friends-text-container {
+  border: none;
+  border-radius: 50%;
+  padding: 2px;
+  padding-bottom: 5px;
+  display: inline-block;
+}
+
+.friend-status {
+  color: #1a1a1a;
+  font-weight: bold;
+  font-size: 12px;
+  padding: 5px;
+}
+
+.friends-text-container.friend {
+  background-color: lightgreen;
+}
+
+.friends-text-container.not-friend {
+  background-color: silver;
+}
+
+.friend-request,
+.remove-friend {
+  margin-left: 10px;
+}
+
+.friend-request-button,
+.remove-friend-button,
+.block-toggle-button {
+  padding: 6px 12px;
+  border-radius: 50px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-size: 12px;
+  color: #ffffff;
+  white-space: nowrap; 
+  font-weight: 600;
+}
+
+.friend-request-button:focus,
+.remove-friend-button:focus,
+.block-toggle-button:focus {
+  outline: none;
+}
+
+.friend-request-button {
+  background-color: #228B22;
+}
+
+.remove-friend-button {
+  background-color: red;
+}
+
+.friend-request-button:hover {
+  background-color: green;
+}
+
+.remove-friend-button:hover {
+  background-color: darkred;
+}
+
+.block-toggle-button.block {
+    background-color: red;
+}
+
+.block-toggle-button.block:hover {
+    background-color: darkred;
+}
+
+.block-toggle-button.unblock {
+    background-color: #228B22;
+}
+
+.block-toggle-button.unblock:hover {
+    background-color: green;
+}
+
+
+.friend-request-message {
+  padding-top: 2px;
+  font-size: 15px;
+}
+
+.stat-item {
+  text-align: center;
+  margin: 0 10px;
+}
+
+.stat-label {
+  font-size: 14px;
+  color: #0e76c3;
+  white-space: nowrap;
+}
+
+.stat-label a:link,
+.stat-label a:visited {
+  text-decoration: none;
+  font-weight: 600;
+  color: #1598f4;
+}
+
+.stat-label a:hover {
+  color: #1ca7ff !important;
+  text-decoration: none;
+}
+
+.stat-value {
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+}
+
+.send-message a {
+  text-decoration: none;
+  color: #3498db;
+  padding: 7px;
+  font-weight: 600;
+}
+
+.send-message a:hover {
+  text-decoration: none;
+  color: #1f78bb;
+}
+
+.profile-info {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 15px;
+}
+
+.profile-info-item {
+  width: calc(50% - 10px);
+  margin-bottom: 20px;
+  box-sizing: border-box;
+  background-color: #f0f0f0;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.profile-info-item:nth-child(odd) {
+  margin-right: 20px;
+}
+
+.profile-info-item .info-label {
+  font-weight: bold;
+}
+
+.profile-info-item .info-value {
+  display: block;
+  margin-top: 5px;
+  overflow-wrap: break-word;
+  font-size: 16px;
+}
+
+.edit-profile-link {
+  color: #007bff;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.3s;
+  margin-left: 10px;
+}
+
+.edit-profile-link:hover {
+  color: #0056b3;
+}
+
+.edit-profile {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+}
+
+.action-items {
+  padding: 7px;
+}
+
+.chat-button {
+  margin-left: -11px;
+}
+
+#status {
+    font-size: 15px;
+    text-align: center;
+    display: inline-block;
+    transition: color 0.3s;
+    align-self: center;
+    font-weight: 600;
+}
+
+#status.online {
+  color: #228B22;
+}
+
+
+#status.offline {
+    color: gray;
+}

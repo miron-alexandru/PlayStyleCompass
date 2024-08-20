@@ -1,0 +1,61 @@
+.filter-container {
+	display: flex;
+  align-items: center;
+	gap: 8px;
+}
+
+label[for="sort_by"], 
+label[for="filter_by"] {
+  font-size: 14px;
+  color: #333;
+}
+
+select {
+  padding: 5px;
+  font-size: 13px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  color: #333;
+  width: 170px;
+  outline: none;
+}
+
+select option {
+  font-size: 13px;
+  background-color: #f9f9f9;
+  color: #333;
+}
+
+select:hover,
+select:focus {
+  border: 1px solid #333;
+}
+
+.apply-button, .reset-button {
+  color: #fff;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  font-size: 11px;
+}
+
+.apply-button {
+  background-color: #007bff;
+}
+
+.reset-button {
+  background-color: gray;
+}
+
+.reset-button:hover {
+  background-color: #505050;
+}
+
+.sorting, .filter-buttons {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+  margin-bottom: 8px;
+}

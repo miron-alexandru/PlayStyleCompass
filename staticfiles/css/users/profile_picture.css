@@ -1,0 +1,61 @@
+.profile-picture-form {
+  background-color: #f9f9f9;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 20px;
+}
+
+.profile-picture-container {
+  max-width: 1000px;
+}
+
+.title {
+  padding: 10px 0;
+  text-align: center;
+  margin-bottom: 10px;
+  font-size: 23px;
+}
+
+input[type="file"] {
+  display: none;
+}
+
+label[for="id_profile_picture"] {
+  margin-bottom: 10px;
+}
+
+label[for="id_profile_picture"]::before {
+  content: "Choose new image";
+  background-color: #007bff;
+  color: #fff;
+  padding: 8px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 11px;
+  text-align: center;
+}
+
+.current-image p {
+  font-size: 15px;
+  font-weight: bold;
+  margin: 0;
+  padding: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 10px;
+}
+
+.current-image a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.current-image a:hover {
+  text-decoration: underline;
+}
+
+.change-btn {
+  font-size: 13px;
+  padding: 5px 10px;
+}

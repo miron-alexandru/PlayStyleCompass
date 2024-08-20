@@ -1,0 +1,69 @@
+.jumbotron {
+  color: fff;
+  padding-top: 15px;
+  padding-bottom: 20px;
+  padding-left: 105px;
+  padding-right: 105px;
+  margin-bottom: 0px;
+  width: 100%;
+}
+
+.jumbotron h1 {
+  font-size: 35px;
+  margin-bottom: -5px;
+}
+
+.jumbotron p {
+  font-size: 18px;
+  margin-top: 15px;
+}
+
+.register-button {
+  font-size: 15px;
+  padding: 8px 16px;
+}
+
+.game-container, .franchise-container {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+}
+
+.game-container ul,
+.franchise-container ul {
+  list-style: none;
+  display: flex;
+  padding: 0;
+  margin: 0;
+  white-space: nowrap;
+}
+
+
+.my-header {
+  max-width: 1150px;
+  margin: 0 auto;
+}
+
+@media screen and (max-width: 1000px) {
+  .jumbotron {
+    padding-left: 30px;
+    padding-right: 20px;
+  }
+
+  .jumbotron h1 {
+    font-size: 24px;
+  }
+
+  .jumbotron p {
+    font-size: 14px;
+  }
+
+  .register-button {
+    font-size: 12px;
+    padding: 6px 10px;
+  }
+
+  .game-container, .franchise-container {
+    padding: 5px;
+  }
+}
