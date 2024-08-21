@@ -215,8 +215,8 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     const wsUrl = recipientId ? 
-        `ws://${window.location.host}/ws/online-status/${recipientId}/` : 
-        `ws://${window.location.host}/ws/online-status/`;
+        `wss://${window.location.host}/ws/online-status/${recipientId}/` : 
+        `wss://${window.location.host}/ws/online-status/`;
 
     const ws = new WebSocket(wsUrl);
 

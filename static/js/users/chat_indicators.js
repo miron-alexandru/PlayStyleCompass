@@ -2,7 +2,7 @@ const chatContainer = document.getElementById('chat-container');
 const recipientId = Number(chatContainer.dataset.recipientId);
 const userId = Number(chatContainer.dataset.userId);
 
-const chatSocket = new WebSocket(`ws://${window.location.host}/ws/chat/${recipientId}/`);
+const chatSocket = new WebSocket(`wss://${window.location.host}/ws/chat/${recipientId}/`);
 
 const chatInput = document.getElementById('chat-message-input');
 const typingIndicator = document.getElementById('typing-indicator');

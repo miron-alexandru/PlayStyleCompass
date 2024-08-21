@@ -84,6 +84,14 @@ TEMPLATES = [
 # ASGI Application
 ASGI_APPLICATION = "playstyle_manager.asgi.application"
 
+CSRF_TRUSTED_ORIGINS = [
+    'https://localhost',
+    'https://127.0.0.1',
+]
+
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+
 # Channel Layers
 CHANNEL_LAYERS = {"default": {"BACKEND": "channels.layers.InMemoryChannelLayer"}}
 

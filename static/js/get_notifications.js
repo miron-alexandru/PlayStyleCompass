@@ -10,7 +10,7 @@ fetch(authCheckUrl)
       document.cookie = "django_timezone=" + timezone;
 
       const notifySocket = new WebSocket(
-        `ws://${window.location.host}/ws/notify/`
+        `wss://${window.location.host}/ws/notify/`
       );
 
       notifySocket.onopen = function (e) {

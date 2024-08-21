@@ -13,8 +13,8 @@ document.addEventListener("DOMContentLoaded", function() {
     friends.forEach(friend => {
         const recipientId = Number(friend.querySelector('.recipient-id').getAttribute('content'));
         const wsUrl = recipientId ? 
-            `ws://${window.location.host}/ws/online-status/${recipientId}/` : 
-            `ws://${window.location.host}/ws/online-status/`;
+            `wss://${window.location.host}/ws/online-status/${recipientId}/` : 
+            `wss://${window.location.host}/ws/online-status/`;
 
         const ws = new WebSocket(wsUrl);
 
