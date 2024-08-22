@@ -87,6 +87,7 @@ ASGI_APPLICATION = "playstyle_manager.asgi.application"
 CSRF_TRUSTED_ORIGINS = [
     'https://localhost',
     'https://127.0.0.1',
+    'https://playstylecompass.onrender.com'
 ]
 
 SESSION_COOKIE_SECURE = True
