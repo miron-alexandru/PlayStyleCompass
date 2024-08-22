@@ -1,4 +1,4 @@
-django==3.2.1
+django
 python-dotenv
 django-bootstrap4
 django-recaptcha

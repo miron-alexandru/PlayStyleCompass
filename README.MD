@@ -10,6 +10,8 @@
 
 
 ### How to run the website locally:
+#### (Instructions on how to set up the Nginx Server and generate the certification file are below!)
+
 #### Option one:
 * Open a command prompt or terminal
 * Navigate to the project's root directory (containing manage.py)
@@ -18,7 +20,7 @@
 * python manage.py makemigrations
 * python manage.py migrate
 * python manage.py runserver
-* Open the url: http://127.0.0.1:8000/ on your browser to view the website
+* Open the url: https://localhost/ on your browser to view the website
 
 #### Option two:
 * git clone https://github.com/KhadaAke/PlayStyleCompass.git
@@ -30,7 +32,63 @@
 * python manage.py makemigrations
 * python manage.py migrate
 * python manage.py runserver
-* Open the url: http://127.0.0.1:8000/ on your browser to view the website
+* Open the url: https://localhost/ on your browser to view the website
+
+
+### How to obtain certification files using mkcert
+* Instructions on how to install mkcert can be found [here](https://github.com/FiloSottile/mkcert?tab=readme-ov-file#installation)
+* Navigate to the directory where you want to save certificates
+* Open CMD and run mkcert -install
+* Run mkcert to create a certificate for your local development domain. For example, to create certificates for localhost and 127.0.0.1:
+```mkcert localhost 127.0.0.1```
+* This command will generate two files: localhost+2.pem (certificate) and localhost+2-key.pem (private key).
+
+
+### How to set up Nginx Server:
+* Download Nginx from [here](https://nginx.org/en/download.html).
+* Extract and then navigate to 'conf' folder, inside it open the nginx.conf.
+* Copy and paste this server configuration and modify where needed:
+<details> 
+	<summary>Nginx Server Configuration</summary>
+
+	server {
+        listen 80;
+        server_name localhost 127.0.0.1;
+        return 301 https://$host$request_uri;
+    }
+
+ 	 server {
+        listen 443 ssl;
+        server_name localhost 127.0.0.1;
+
+        ssl_certificate /path/to/your/certificate.crt;  # Modify this with the path to your certification files.
+    	ssl_certificate_key /path/to/your/private.key;	# Modify this with the path to your certification files.
+
+        ssl_protocols TLSv1.2 TLSv1.3;
+        ssl_ciphers 'TLS_AES_128_GCM_SHA256:TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384';
+
+        location /ws/ {
+            proxy_pass http://127.0.0.1:8000;  # Daphne’s port
+            proxy_http_version 1.1;
+            proxy_set_header Upgrade $http_upgrade;
+            proxy_set_header Connection "upgrade";
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+            proxy_buffering off;
+        }
+
+        location / {
+            proxy_pass http://127.0.0.1:8000;  # Django’s port
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+            proxy_buffering off;
+        }
+    }
+</details>
 
 Websites for .env configuration: [GiantBomb](https://www.giantbomb.com/) / [SendGrid](https://sendgrid.com/) / [RECAPTCHA](https://www.google.com/recaptcha/about/)
 
