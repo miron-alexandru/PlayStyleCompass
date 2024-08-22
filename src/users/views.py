@@ -1396,7 +1396,7 @@ async def stream_chat_messages(request, recipient_id: int) -> StreamingHttpRespo
     """View used to stream chat messages between the authenticated user and a specified recipient."""
     recipient = await sync_to_async(get_object_or_404)(User, id=recipient_id)
 
-    async def event_stream() -> AsyncIterable[str]:
+    async def event_stream():
         async for message in get_existing_messages(request.user, recipient):
             yield message
 
@@ -1439,7 +1439,7 @@ async def stream_chat_messages(request, recipient_id: int) -> StreamingHttpRespo
                 last_id = message["id"]
             await asyncio.sleep(0.1)
 
-    async def get_existing_messages(user, recipient) -> AsyncIterable[str]:
+    async def get_existing_messages(user, recipient) -> AsyncGenerator:
         messages = (
             ChatMessage.objects.filter(
                 Q(sender=user, recipient=recipient)
@@ -1484,13 +1484,7 @@ async def stream_chat_messages(request, recipient_id: int) -> StreamingHttpRespo
         ).alast()
         return last_message.id if last_message else 0
 
-    def sync_event_stream(async_gen: AsyncIterable[str]) -> iter:
-        async def async_gen_to_sync():
-            async for item in async_gen:
-                yield item
-        return async_gen_to_sync()
-
-    return StreamingHttpResponse(sync_event_stream(event_stream()), content_type="text/event-stream")
+    return StreamingHttpResponse(event_stream(), content_type="text/event-stream")
 
 @login_required
 def chat_list(request):
