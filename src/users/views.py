@@ -1484,11 +1484,13 @@ async def stream_chat_messages(request, recipient_id: int) -> StreamingHttpRespo
         ).alast()
         return last_message.id if last_message else 0
 
-    # Convert async generator to sync generator
-    def async_to_sync_iter(async_gen: AsyncIterable[str]) -> AsyncIterator[str]:
-        return (item async for item in async_gen)
+    def sync_event_stream(async_gen: AsyncIterable[str]) -> iter:
+        async def async_gen_to_sync():
+            async for item in async_gen:
+                yield item
+        return async_gen_to_sync()
 
-    return StreamingHttpResponse(async_to_sync_iter(event_stream()), content_type="text/event-stream")
+    return StreamingHttpResponse(sync_event_stream(event_stream()), content_type="text/event-stream")
 
 @login_required
 def chat_list(request):
