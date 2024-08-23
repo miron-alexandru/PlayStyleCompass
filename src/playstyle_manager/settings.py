@@ -2,6 +2,7 @@ import os
 import sys
 from dotenv import load_dotenv
 from django.utils.translation import gettext_lazy as _
+import dj_database_url
 
 # Load environment variables from .env file
 load_dotenv()
@@ -14,7 +15,7 @@ sys.path.insert(0, os.path.join(BASE_DIR, "src"))
 
 # General Settings
 SECRET_KEY = str(os.getenv("SECRET_KEY"))
-DEBUG = True
+DEBUG = os.getenv('DEBUG', 'True') == 'True'
 ALLOWED_HOSTS = ["127.0.0.1", "localhost", "playstylecompass.onrender.com"]
 
 # Installed Apps
@@ -111,17 +112,28 @@ EMAIL_USE_TLS = True
 # Password Reset Timeout
 PASSWORD_RESET_TIMEOUT = 1800
 
-# Database Configuration
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": os.path.join(BASE_DIR, "utils/db.sqlite3"),
-    },
+if not DEBUG:
+    # Database Configuration
+    DATABASES = {
+    "default": dj_database_url.parse(os.environ.get("DATABASE_URL"))
+    ,
     "games_db": {
         "ENGINE": "django.db.backends.sqlite3",
         "NAME": os.path.join(BASE_DIR, "utils/games_data.db"),
     },
 }
+else:
+    # Database Configuration
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": os.path.join(BASE_DIR, "utils/db.sqlite3"),
+        },
+        "games_db": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": os.path.join(BASE_DIR, "utils/games_data.db"),
+        },
+    }
 
 # Database Routers
 DATABASE_ROUTERS = [

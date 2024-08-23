@@ -19,3 +19,4 @@ django-tz-detect
 whitenoise
 gunicorn
 psycopg2
+dj-databsase-url
