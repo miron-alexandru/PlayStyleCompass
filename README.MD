@@ -9,47 +9,68 @@
 
 
 
-### How to run the website locally:
-#### (Instructions on how to set up the Nginx Server and generate the certification file are below!)
+### This guide will walk you through the steps to set up the PlayStyleCompass website locally, including setting up the Nginx server and generating SSL certificates.
 
-#### Option one:
-* Open a command prompt or terminal
-* Navigate to the project's root directory (containing manage.py)
-* pip install -r requirements.txt
-* Create a file named .env and paste the contents from 'env-example.txt' and then fill the variables with your data
-* python manage.py makemigrations
-* python manage.py migrate
-* python manage.py runserver
-* Open the url: https://localhost/ on your browser to view the website
+### Prerequisites
+- Python 3.x installed
+- Git installed
+- pip installed
+- [mkcert](https://github.com/FiloSottile/mkcert?tab=readme-ov-file#installation) installed for creating local SSL certificates
+- [Nginx](https://nginx.org/en/download.html) downloaded
 
-#### Option two:
-* git clone https://github.com/KhadaAke/PlayStyleCompass.git
-* cd PlayStyleCompass
-* python -m venv env
-* source env/Scripts/activate (env\Scripts\activate for Windows)
-* pip install -r requirements.txt
-* Create a file named .env and paste the contents from 'env-example.txt' and then fill the variables with your data
-* python manage.py makemigrations
-* python manage.py migrate
-* python manage.py runserver
-* Open the url: https://localhost/ on your browser to view the website
+#### Option 1: Run the Website Locally
+1. **Open a Command Prompt or Terminal.**
+2. **Navigate to the Project's Root Directory (containing manage.py).**
+3. **Install Required Packages:** `pip install -r requirements.txt`
+4. **Set Up Environment Variables:** Create a file named '.env', paste the contents from 'env-example.txt' into '.env', and then fill the variables with your data.
+5. **Apply Migrations:** 
+```
+python manage.py makemigrations
+python manage.py migrate
+```
+6. **Run the Development Server:** `python manage.py runserver`
+7. **Open the Website:** Visit https://localhost/ in your browser.
 
+#### Option 2: Clone and Run the Website Locally
+1. **Clone the Repository:** `git clone https://github.com/KhadaAke/PlayStyleCompass.git`
+2. **Navigate to the Project Directory:** `cd PlayStyleCompass`
+3. **Set Up a Virtual Environment:**
+```
+python -m venv env
+source env/Scripts/activate  # For Windows
+source env/bin/activate      # For macOS/Linux
+```
+4. **Install Required Packages:** `pip install -r requirements.txt`
+5. **Set Up Environment Variables:** Create a file named '.env', paste the contents from 'env-example.txt' into '.env', and then fill the variables with your data.
+6. **Apply Migrations:** 
+```
+python manage.py makemigrations
+python manage.py migrate
+```
+7. **Run the Development Server:** `python manage.py runserver`
+8. **Open the Website:** Visit https://localhost/ in your browser.
 
-### How to obtain certification files using mkcert
-* Instructions on how to install mkcert can be found [here](https://github.com/FiloSottile/mkcert?tab=readme-ov-file#installation)
-* Navigate to the directory where you want to save certificates
-* Open CMD and run mkcert -install
-* Run mkcert to create a certificate for your local development domain. For example, to create certificates for localhost and 127.0.0.1:
-```mkcert localhost 127.0.0.1```
-* This command will generate two files: localhost+2.pem (certificate) and localhost+2-key.pem (private key).
+### Obtaining SSL Certificates with mkcert
+1. **Install mkcert:** Follow the instructions [here](https://github.com/FiloSottile/mkcert?tab=readme-ov-file#installation)
+2. **Generate Certificates:**
+* Navigate to the directory where you want to save the certificates.
+* Open CMD and run the following commands:
+```
+mkcert -install
+mkcert localhost 127.0.0.1
+```
+* This will generate two files: localhost+2.pem (certificate) and localhost+2-key.pem (private key).
 
-
-### How to set up Nginx Server:
+### Setting Up Nginx Server
+1. **Download Nginx** 
 * Download Nginx from [here](https://nginx.org/en/download.html).
-* Extract and then navigate to 'conf' folder, inside it open the nginx.conf.
-* Copy and paste this server configuration and modify where needed:
+* Extract the downloaded file.
+2. **Configure Nginx:**
+* Navigate to the 'conf' folder within the Nginx directory.
+* Open the 'nginx.conf' file.
+3. **Add Server Configuration:** Copy and paste the following server configuration into the 'nginx.conf' file, and modify it where necessary:
 <details> 
-	<summary>Nginx Server Configuration</summary>
+    <summary>Nginx Server Configuration</summary>
 
 	server {
         listen 80;
