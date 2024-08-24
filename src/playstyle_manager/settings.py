@@ -48,7 +48,7 @@ AWS_STORAGE_BUCKET_NAME = str(os.getenv("BUCKET_NAME"))
 AWS_S3_REGION_NAME = 'eu-north-1'
 AWS_QUERYSTRING_AUTH = False
 
-AWS_S3_CUSTOM_DOMAIN = f'{BUCKET_NAME}.s3.amazonaws.com'
+AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
 AWS_S3_OBJECT_PARAMETERS = {
     'CacheControl': 'max-age=86400',
 }
