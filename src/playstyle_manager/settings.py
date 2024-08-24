@@ -27,6 +27,7 @@ INSTALLED_APPS = [
     "daphne",
     "rosetta",
     "tz_detect",
+    "storages",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -39,6 +40,19 @@ INSTALLED_APPS = [
 # Recaptcha Settings
 RECAPTCHA_PUBLIC_KEY = str(os.getenv("RECAPTCHA_PUBLIC_KEY"))
 RECAPTCHA_PRIVATE_KEY = str(os.getenv("RECAPTCHA_PRIVATE_KEY"))
+
+# AWS S3 settings
+AWS_ACCESS_KEY_ID = str(os.getenv("AWS_ACCESS_KEY"))
+AWS_SECRET_ACCESS_KEY = str(os.getenv("AWS_SECRET_KEY"))
+AWS_STORAGE_BUCKET_NAME = str(os.getenv("BUCKET_NAME"))
+AWS_S3_REGION_NAME = 'eu-north-1'
+AWS_QUERYSTRING_AUTH = False
+
+AWS_S3_CUSTOM_DOMAIN = f'{BUCKET_NAME}.s3.amazonaws.com'
+AWS_S3_OBJECT_PARAMETERS = {
+    'CacheControl': 'max-age=86400',
+}
+
 
 # Form Renderer
 FORM_RENDERER = "django.forms.renderers.TemplatesSetting"
@@ -187,8 +201,12 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
 
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
-MEDIA_URL = "/media/"
-MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+if DEBUG:
+    MEDIA_URL = "/media/"
+    MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+else:
+    DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+    MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/media/'
 
 # Authentication Settings
 LOGIN_URL = "users:login"
