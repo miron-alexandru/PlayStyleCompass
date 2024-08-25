@@ -5,6 +5,7 @@ from django.utils.translation import gettext_lazy as _
 import dj_database_url
 from google.oauth2 import service_account
 from google.cloud import storage
+import json
 
 # Load environment variables from .env file
 load_dotenv()
@@ -58,10 +59,12 @@ AWS_S3_OBJECT_PARAMETERS = {
 
 # GS Settings
 GS_BUCKET_NAME = str(os.getenv("GS_BUCKET_NAME"))
-GOOGLE_APPLICATION_CREDENTIALS = service_account.Credentials.from_service_account_file(
-    '/etc/secrets/gcs.json'
+GOOGLE_APPLICATION_CREDENTIALS = service_account.Credentials.from_service_account_info(
+    json.loads(os.environ.get('GCS_KEY_JSON'))
 )
-print(GOOGLE_APPLICATION_CREDENTIALS)
+GS_CREDENTIALS = service_account.Credentials.from_service_account_info(
+    json.loads(os.environ.get('GCS_KEY_JSON'))
+)
 # Form Renderer
 FORM_RENDERER = "django.forms.renderers.TemplatesSetting"
 
