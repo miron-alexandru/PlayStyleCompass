@@ -59,9 +59,8 @@ AWS_S3_OBJECT_PARAMETERS = {
 # GS Settings
 GS_BUCKET_NAME = str(os.getenv("GS_BUCKET_NAME"))
 GS_CREDENTIALS = service_account.Credentials.from_service_account_file(
-    os.path.join(BASE_DIR, 'gcs-key.json')
+    '/etc/secrets/GCS_KEY_JSON'
 )
-
 
 # Form Renderer
 FORM_RENDERER = "django.forms.renderers.TemplatesSetting"
