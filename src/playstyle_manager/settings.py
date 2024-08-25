@@ -3,6 +3,8 @@ import sys
 from dotenv import load_dotenv
 from django.utils.translation import gettext_lazy as _
 import dj_database_url
+from google.oauth2 import service_account
+from google.cloud import storage
 
 # Load environment variables from .env file
 load_dotenv()
@@ -24,6 +26,7 @@ INSTALLED_APPS = [
     "users",
     "bootstrap4",
     "django_recaptcha",
+    "modeltranslation",
     "daphne",
     "rosetta",
     "tz_detect",
@@ -52,6 +55,12 @@ AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
 AWS_S3_OBJECT_PARAMETERS = {
     'CacheControl': 'max-age=86400',
 }
+
+# GS Settings
+GS_BUCKET_NAME = str(os.getenv("GS_BUCKET_NAME"))
+GS_CREDENTIALS = service_account.Credentials.from_service_account_file(
+    os.path.join(BASE_DIR, 'gcs-key.json')
+)
 
 
 # Form Renderer
@@ -205,8 +214,8 @@ if DEBUG:
     MEDIA_URL = "/media/"
     MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 else:
-    DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-    MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/media/'
+    DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
+    MEDIA_URL = f"https://storage.googleapis.com/{GS_BUCKET_NAME}/"
 
 # Authentication Settings
 LOGIN_URL = "users:login"
