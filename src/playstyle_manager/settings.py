@@ -59,12 +59,14 @@ AWS_S3_OBJECT_PARAMETERS = {
 
 # GS Settings
 GS_BUCKET_NAME = str(os.getenv("GS_BUCKET_NAME"))
-GOOGLE_APPLICATION_CREDENTIALS = service_account.Credentials.from_service_account_info(
-    json.loads(os.environ.get('GCS_KEY_JSON'))
-)
-GS_CREDENTIALS = service_account.Credentials.from_service_account_info(
-    json.loads(os.environ.get('GCS_KEY_JSON'))
-)
+
+if not DEBUG:
+    GOOGLE_APPLICATION_CREDENTIALS = service_account.Credentials.from_service_account_info(
+        json.loads(os.getenv('GCS_KEY_JSON'))
+    )
+    GS_CREDENTIALS = service_account.Credentials.from_service_account_info(
+        json.loads(os.getenv('GCS_KEY_JSON'))
+    )
 # Form Renderer
 FORM_RENDERER = "django.forms.renderers.TemplatesSetting"
 
@@ -218,8 +220,7 @@ if DEBUG:
 else:
     DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
     MEDIA_URL = f"https://storage.googleapis.com/{GS_BUCKET_NAME}/"
-    DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
-    STATICFILES_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
+
 
 # Authentication Settings
 LOGIN_URL = "users:login"
