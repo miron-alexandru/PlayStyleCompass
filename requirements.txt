@@ -22,4 +22,5 @@ psycopg2
 dj_database_url
 django-storages
 boto3
+django-modeltranslation
 google-cloud-storage
