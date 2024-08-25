@@ -61,7 +61,7 @@ GS_BUCKET_NAME = str(os.getenv("GS_BUCKET_NAME"))
 GOOGLE_APPLICATION_CREDENTIALS = service_account.Credentials.from_service_account_file(
     '/etc/secrets/gcs.json'
 )
-
+print(GOOGLE_APPLICATION_CREDENTIALS)
 # Form Renderer
 FORM_RENDERER = "django.forms.renderers.TemplatesSetting"
 
