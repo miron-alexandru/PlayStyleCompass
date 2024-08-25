@@ -58,8 +58,8 @@ AWS_S3_OBJECT_PARAMETERS = {
 
 # GS Settings
 GS_BUCKET_NAME = str(os.getenv("GS_BUCKET_NAME"))
-GS_CREDENTIALS = service_account.Credentials.from_service_account_file(
-    '/etc/secrets/GCS_KEY_JSON'
+GOOGLE_APPLICATION_CREDENTIALS = service_account.Credentials.from_service_account_file(
+    '/etc/secrets/gcs.json'
 )
 
 # Form Renderer
@@ -215,6 +215,8 @@ if DEBUG:
 else:
     DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
     MEDIA_URL = f"https://storage.googleapis.com/{GS_BUCKET_NAME}/"
+    DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
+    STATICFILES_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
 
 # Authentication Settings
 LOGIN_URL = "users:login"
