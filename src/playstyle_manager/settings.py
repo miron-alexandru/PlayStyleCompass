@@ -61,12 +61,10 @@ AWS_S3_OBJECT_PARAMETERS = {
 GS_BUCKET_NAME = str(os.getenv("GS_BUCKET_NAME"))
 
 if not DEBUG:
-    GOOGLE_APPLICATION_CREDENTIALS = service_account.Credentials.from_service_account_info(
-        json.loads(os.getenv('GCS_KEY_JSON'))
-    )
-    GS_CREDENTIALS = service_account.Credentials.from_service_account_info(
-        json.loads(os.getenv('GCS_KEY_JSON'))
-    )
+    GS_CREDENTIALS = service_account.Credentials.from_service_account_file(
+    '/etc/secrets/gcs_key.json'
+)
+
 # Form Renderer
 FORM_RENDERER = "django.forms.renderers.TemplatesSetting"
 
