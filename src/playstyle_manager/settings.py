@@ -45,40 +45,16 @@ INSTALLED_APPS = [
 RECAPTCHA_PUBLIC_KEY = str(os.getenv("RECAPTCHA_PUBLIC_KEY"))
 RECAPTCHA_PRIVATE_KEY = str(os.getenv("RECAPTCHA_PRIVATE_KEY"))
 
-# AWS S3 settings
-AWS_ACCESS_KEY_ID = str(os.getenv("AWS_ACCESS_KEY"))
-AWS_SECRET_ACCESS_KEY = str(os.getenv("AWS_SECRET_KEY"))
-AWS_STORAGE_BUCKET_NAME = str(os.getenv("BUCKET_NAME"))
-AWS_S3_REGION_NAME = 'eu-north-1'
-AWS_QUERYSTRING_AUTH = False
-
-AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
-AWS_S3_OBJECT_PARAMETERS = {
-    'CacheControl': 'max-age=86400',
-}
-
 # GS Settings
 GS_BUCKET_NAME = str(os.getenv("GS_BUCKET_NAME"))
 
-#GOOGLE_APPLICATION_CREDENTIALS = service_account.Credentials.from_service_account_file(
- #   os.path.join(BASE_DIR, "gcs-key.json")
-#)
 #GS_CREDENTIALS = service_account.Credentials.from_service_account_file(
  #   os.path.join(BASE_DIR, "gcs-key.json")
 #)
-GOOGLE_APP_CREDENTIALS = os.getenv('GOOGLE_APPLICATION_CREDENTIALS')
-GS_APP_CREDENTIALS = os.getenv('GS_CREDENTIALS')
 
-# Create a Google Cloud Storage client
-if GOOGLE_APP_CREDENTIALS:
-    GOOGLE_APPLICATION_CREDENTIALS = service_account.Credentials.from_service_account_info(
-        json.loads(GOOGLE_APP_CREDENTIALS)
-    )
-
-if GS_APP_CREDENTIALS:
-    GS_CREDENTIALS = service_account.Credentials.from_service_account_info(
-        json.loads(GS_APP_CREDENTIALS)
-    )
+GS_CREDENTIALS = service_account.Credentials.from_service_account_info(
+    '/etc/secrets/gcs-key.json'
+)
 
 # Form Renderer
 FORM_RENDERER = "django.forms.renderers.TemplatesSetting"
