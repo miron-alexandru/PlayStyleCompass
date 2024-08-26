@@ -48,17 +48,19 @@ RECAPTCHA_PRIVATE_KEY = str(os.getenv("RECAPTCHA_PRIVATE_KEY"))
 # GS Settings
 GS_BUCKET_NAME = str(os.getenv("GS_BUCKET_NAME"))
 
-#GS_CREDENTIALS = service_account.Credentials.from_service_account_file(
- #   os.path.join(BASE_DIR, "gcs-key.json")
-#)
+if DEBUG:
+    GS_CREDENTIALS = service_account.Credentials.from_service_account_file(
+        os.path.join(BASE_DIR, "gcs-key.json")
+    )
+else:
+    SERVICE_ACCOUNT_FILE = '/etc/secrets/gcs-key.json'
+    print(SERVICE_ACCOUNT_FILE)
 
-SERVICE_ACCOUNT_FILE = '/etc/secrets/gcs-key.json'
+    with open(SERVICE_ACCOUNT_FILE) as f:
+        print(f)
+        service_account_info = json.load(f)
 
-# Load the credentials file
-with open(SERVICE_ACCOUNT_FILE) as f:
-    service_account_info = json.load(f)
-
-GS_CREDENTIALS = service_account.Credentials.from_service_account_info(service_account_info)
+    GS_CREDENTIALS = service_account.Credentials.from_service_account_info(service_account_info)
 
 # Form Renderer
 FORM_RENDERER = "django.forms.renderers.TemplatesSetting"
