@@ -60,9 +60,17 @@ AWS_S3_OBJECT_PARAMETERS = {
 # GS Settings
 GS_BUCKET_NAME = str(os.getenv("GS_BUCKET_NAME"))
 
-if not DEBUG:
-    GS_CREDENTIALS = service_account.Credentials.from_service_account_file(
-    '/etc/secrets/gcs_key.json'
+#GOOGLE_APPLICATION_CREDENTIALS = service_account.Credentials.from_service_account_file(
+ #   os.path.join(BASE_DIR, "gcs-key.json")
+#)
+#GS_CREDENTIALS = service_account.Credentials.from_service_account_file(
+ #   os.path.join(BASE_DIR, "gcs-key.json")
+#)
+GS_CREDENTIALS = service_account.Credentials.from_service_account_file(
+    '/etc/secrets/GCS_KEY_JSON'
+)
+GOOGLE_APPLICATION_CREDENTIALS = service_account.Credentials.from_service_account_file(
+    '/etc/secrets/GCS_KEY_JSON'
 )
 
 # Form Renderer
@@ -215,6 +223,7 @@ STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 if DEBUG:
     MEDIA_URL = "/media/"
     MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+    DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
 else:
     DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
     MEDIA_URL = f"https://storage.googleapis.com/{GS_BUCKET_NAME}/"

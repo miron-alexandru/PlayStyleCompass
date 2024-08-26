@@ -21,6 +21,7 @@ from .models import UserProfile, ContactMessage, Message, UserProfile
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from utils.constants import GAMING_COMMITMENT_CHOICES, PLATFORM_CHOICES, GENRE_CHOICES
+from django.core.files.storage import default_storage
 
 
 class CustomAuthenticationForm(AuthenticationForm):
@@ -293,12 +294,11 @@ class ProfilePictureForm(forms.ModelForm):
     def delete_old_profile_picture(self, instance):
         """Delete the old profile picture if it exists."""
         if instance.pk:
-            old_profile_picture = UserProfile.objects.get(
-                pk=instance.pk
-            ).profile_picture
+            old_profile_picture = UserProfile.objects.get(pk=instance.pk).profile_picture
             if old_profile_picture:
-                if os.path.isfile(old_profile_picture.path):
-                    os.remove(old_profile_picture.path)
+                # Use the storage backend to check if the file exists and delete it
+                if default_storage.exists(old_profile_picture.name):
+                    default_storage.delete(old_profile_picture.name)
 
     def resize_image(self, image_field):
         """Resize the image."""
