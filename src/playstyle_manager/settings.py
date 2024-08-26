@@ -66,12 +66,19 @@ GS_BUCKET_NAME = str(os.getenv("GS_BUCKET_NAME"))
 #GS_CREDENTIALS = service_account.Credentials.from_service_account_file(
  #   os.path.join(BASE_DIR, "gcs-key.json")
 #)
-GS_CREDENTIALS = service_account.Credentials.from_service_account_file(
-    '/etc/secrets/GCS_KEY_JSON'
-)
-GOOGLE_APPLICATION_CREDENTIALS = service_account.Credentials.from_service_account_file(
-    '/etc/secrets/GCS_KEY_JSON'
-)
+GOOGLE_APP_CREDENTIALS = os.getenv('GOOGLE_APPLICATION_CREDENTIALS')
+GS_APP_CREDENTIALS = os.getenv('GS_CREDENTIALS')
+
+# Create a Google Cloud Storage client
+if GOOGLE_APP_CREDENTIALS:
+    GOOGLE_APPLICATION_CREDENTIALS = service_account.Credentials.from_service_account_info(
+        json.loads(GOOGLE_APPLICATION_CREDENTIALS)
+    )
+
+if GS_APP_CREDENTIALS:
+    GS_CREDENTIALS = service_account.Credentials.from_service_account_info(
+        json.loads(GS_APP_CREDENTIALS)
+    )
 
 # Form Renderer
 FORM_RENDERER = "django.forms.renderers.TemplatesSetting"
