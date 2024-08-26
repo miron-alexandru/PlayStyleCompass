@@ -52,9 +52,13 @@ GS_BUCKET_NAME = str(os.getenv("GS_BUCKET_NAME"))
  #   os.path.join(BASE_DIR, "gcs-key.json")
 #)
 
-GS_CREDENTIALS = service_account.Credentials.from_service_account_info(
-    '/etc/secrets/gcs-key.json'
-)
+SERVICE_ACCOUNT_FILE = '/etc/secrets/gcs-key.json'
+
+# Load the credentials file
+with open(SERVICE_ACCOUNT_FILE) as f:
+    service_account_info = json.load(f)
+
+GS_CREDENTIALS = service_account.Credentials.from_service_account_info(service_account_info)
 
 # Form Renderer
 FORM_RENDERER = "django.forms.renderers.TemplatesSetting"
