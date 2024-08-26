@@ -72,7 +72,7 @@ GS_APP_CREDENTIALS = os.getenv('GS_CREDENTIALS')
 # Create a Google Cloud Storage client
 if GOOGLE_APP_CREDENTIALS:
     GOOGLE_APPLICATION_CREDENTIALS = service_account.Credentials.from_service_account_info(
-        json.loads(GOOGLE_APPLICATION_CREDENTIALS)
+        json.loads(GOOGLE_APP_CREDENTIALS)
     )
 
 if GS_APP_CREDENTIALS:
