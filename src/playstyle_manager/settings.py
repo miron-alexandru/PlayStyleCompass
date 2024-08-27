@@ -53,7 +53,7 @@ if DEBUG:
         os.path.join(BASE_DIR, "gcs-key.json")
     )
 else:
-    GS_CREDENTIALS = service_account.Credentials.from_service_account_info('/etc/secrets/gcs-key.json')
+    GS_CREDENTIALS = service_account.Credentials.from_service_account_file('/etc/secrets/gcs-key.json')
 
 # Form Renderer
 FORM_RENDERER = "django.forms.renderers.TemplatesSetting"
