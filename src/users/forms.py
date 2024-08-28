@@ -281,7 +281,7 @@ class ProfilePictureForm(forms.ModelForm):
 
         if instance.profile_picture:
             # Delete the old profile picture if it exists
-            #self.delete_old_profile_picture(instance)
+            self.delete_old_profile_picture(instance)
 
             # Resize and save the new profile picture
             self.resize_image(instance.profile_picture)
