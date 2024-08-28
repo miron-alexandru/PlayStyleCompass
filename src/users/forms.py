@@ -281,7 +281,7 @@ class ProfilePictureForm(forms.ModelForm):
 
         if instance.profile_picture:
             # Delete the old profile picture if it exists
-            self.delete_old_profile_picture(instance)
+            #self.delete_old_profile_picture(instance)
 
             # Resize and save the new profile picture
             self.resize_image(instance.profile_picture)
@@ -296,7 +296,9 @@ class ProfilePictureForm(forms.ModelForm):
         if instance.pk:
             old_profile_picture = UserProfile.objects.get(pk=instance.pk).profile_picture
             if old_profile_picture:
-                old_profile_picture.delete(save=False)
+                # Use the storage backend to check if the file exists and delete it
+                if default_storage.exists(old_profile_picture.name):
+                    default_storage.delete(old_profile_picture.name)
 
     def resize_image(self, image_field):
         """Resize the image."""
