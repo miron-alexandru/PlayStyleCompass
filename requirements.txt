@@ -23,3 +23,4 @@ dj_database_url
 django-storages
 django-modeltranslation
 google-cloud-storage
+boto

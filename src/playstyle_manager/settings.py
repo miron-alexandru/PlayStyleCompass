@@ -50,6 +50,7 @@ RECAPTCHA_PRIVATE_KEY = str(os.getenv("RECAPTCHA_PRIVATE_KEY"))
 GS_BUCKET_NAME = str(os.getenv("GS_BUCKET_NAME"))
 GS_PROJECT_ID = str(os.getenv("GS_PROJECT_ID"))
 GS_DEFAULT_ACL = 'publicRead'
+GS_BLOB_CHUNK_SIZE = 1024 * 256 * 40
 
 if DEBUG:
     GS_CREDENTIALS = service_account.Credentials.from_service_account_file(
