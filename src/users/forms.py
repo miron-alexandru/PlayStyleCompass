@@ -306,12 +306,11 @@ class ProfilePictureForm(forms.ModelForm):
             max_size = (250, 250)
             image.thumbnail(max_size, Image.LANCZOS)
 
-            # Process and save the image to storage
             original_name = os.path.basename(image_field.name)
             self.processed_image_to_file(image, image_field, original_name)
 
     def processed_image_to_file(self, image, image_field, original_name=None):
-        """Convert a processed image to a file and save it to the cloud storage."""
+        """Convert a processed image to a file."""
         image_buffer = BytesIO()
         image.save(image_buffer, format="PNG")
 
@@ -322,11 +321,7 @@ class ProfilePictureForm(forms.ModelForm):
         user_id = self.instance.user.id
         new_name = f"profile_picture_{timestamp}_{user_id}.png"
 
-        # Save the image using the default storage (Google Cloud Storage)
-        file_path = default_storage.save(new_name, content_file)
-
-        # Update the image field with the new path
-        image_field.name = file_path
+        image_field.save(new_name, content_file, save=False)
 
 
 class ContactForm(forms.ModelForm):
