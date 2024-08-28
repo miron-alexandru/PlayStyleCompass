@@ -112,6 +112,7 @@ CSRF_TRUSTED_ORIGINS = [
     'https://localhost',
     'https://127.0.0.1',
     'https://playstylecompass.onrender.com'
+    'https://playstylecompass-1.onrender.com'
 ]
 
 SESSION_COOKIE_SECURE = True
