@@ -474,54 +474,29 @@ def change_password_done(request):
     }
     return render(request, "account_actions/change_succeeded.html", context)
 
-from PIL import Image
-from io import BytesIO
-from django.core.files.uploadedfile import InMemoryUploadedFile
 
 @login_required
 def update_profile_picture(request):
-    """View for profile image update without using a form."""
+    """View for profile image update."""
     if request.method == "POST":
-        if 'profile_picture' in request.FILES:
-            profile_picture = request.FILES['profile_picture']
+        form = ProfilePictureForm(
+            request.POST, request.FILES, instance=request.user.userprofile
+        )
 
-            # Process the uploaded image
-            if profile_picture:
-                # Create an Image object
-                with Image.open(profile_picture) as image:
-                    # Resize the image
-                    max_size = (250, 250)
-                    image.thumbnail(max_size, Image.LANCZOS)
-
-                    # Prepare the processed image for saving
-                    image_buffer = BytesIO()
-                    image.save(image_buffer, format='PNG')
-                    content_file = ContentFile(image_buffer.getvalue())
-
-                    # Generate filename with timestamp and user's unique ID
-                    timestamp = timezone.now().strftime("%Y.%m.%d.%H.%M")
-                    user_id = request.user.id
-                    new_name = f"profile_picture_{timestamp}_{user_id}.png"
-
-                    # Save the new image
-                    user_profile = request.user.userprofile
-                    old_profile_picture = user_profile.profile_picture
-
-                    # Delete old profile picture if it exists
-                    if old_profile_picture and default_storage.exists(old_profile_picture.name):
-                        default_storage.delete(old_profile_picture.name)
-
-                    # Save the new profile picture
-                    user_profile.profile_picture.save(new_name, content_file, save=False)
-                    user_profile.save()
-
+        if form.is_valid():
+            form.save()
             return redirect("users:profile_picture")
 
+    else:
+        form = ProfilePictureForm(instance=request.user.userprofile)
+
     context = {
+        "form": form,
         "page_title": _("Change Profile Picture :: PlayStyle Compass"),
     }
 
     return render(request, "account_actions/update_profile_picture.html", context)
+
 
 
 def contact(request):
