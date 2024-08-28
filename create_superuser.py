@@ -2,7 +2,7 @@ import os
 import django
 from django.contrib.auth.models import User
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'your_project.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'src.playstyle_manager.settings')
 django.setup()
 
 def create_superuser(username, email, password):
