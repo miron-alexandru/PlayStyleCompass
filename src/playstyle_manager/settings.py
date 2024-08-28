@@ -53,7 +53,15 @@ if DEBUG:
         os.path.join(BASE_DIR, "gcs-key.json")
     )
 else:
-    GS_CREDENTIALS = service_account.Credentials.from_service_account_file('/etc/secrets/gcs-key.json')
+    gcs_credentials = os.getenv("GS_CREDENTIALS_JSON")
+    if gcs_credentials:
+        gcs_info = json.loads(gcs_credentials)
+        credentials = service_account.Credentials.from_service_account_info(gcs_info)
+    else:
+        credentials = None
+
+GS_CREDENTIALS = credentials
+GS_DEFAULT_ACL = 'publicRead'
 
 # Form Renderer
 FORM_RENDERER = "django.forms.renderers.TemplatesSetting"
