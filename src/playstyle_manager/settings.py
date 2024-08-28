@@ -48,6 +48,8 @@ RECAPTCHA_PRIVATE_KEY = str(os.getenv("RECAPTCHA_PRIVATE_KEY"))
 
 # GS Settings
 GS_BUCKET_NAME = str(os.getenv("GS_BUCKET_NAME"))
+GS_PROJECT_ID = str(os.getenv("GS_PROJECT_ID"))
+GS_DEFAULT_ACL = 'publicRead'
 
 if DEBUG:
     GS_CREDENTIALS = service_account.Credentials.from_service_account_file(
@@ -56,15 +58,11 @@ if DEBUG:
 else:
     service_account_info = json.load(open('/etc/secrets/service_account.json'))
     if service_account_info:
-        print('Service Info Exists')
         credentials = service_account.Credentials.from_service_account_info(service_account_info)
-        print(credentials)
     else:
-        print('Service Info does not Exist')
         credentials = None
 
 GS_CREDENTIALS = credentials
-GS_DEFAULT_ACL = 'publicRead'
 
 # Form Renderer
 FORM_RENDERER = "django.forms.renderers.TemplatesSetting"
