@@ -277,40 +277,59 @@ class ProfilePictureForm(forms.ModelForm):
     )
 
     def save(self, commit=True):
-        instance = super().save(commit=False)
+        print("Saving profile picture form...")
 
+        instance = super().save(commit=False)
         if instance.profile_picture:
+            print("Profile picture provided.")
+
             # Delete the old profile picture if it exists
+            print("Deleting old profile picture if it exists...")
             self.delete_old_profile_picture(instance)
 
             # Resize and save the new profile picture
+            print("Resizing and saving new profile picture...")
             self.resize_image(instance.profile_picture)
 
         if commit:
+            print("Committing instance to database...")
             instance.save()
 
+        print("Profile picture form saved successfully.")
         return instance
 
     def delete_old_profile_picture(self, instance):
         """Delete the old profile picture if it exists."""
         if instance.pk:
+            print("Instance primary key exists, checking for old profile picture...")
             old_profile_picture = UserProfile.objects.get(pk=instance.pk).profile_picture
             if old_profile_picture:
+                print(f"Old profile picture found: {old_profile_picture.name}")
+
                 # Use the storage backend to check if the file exists and delete it
                 if default_storage.exists(old_profile_picture.name):
+                    print(f"Deleting old profile picture from storage: {old_profile_picture.name}")
                     default_storage.delete(old_profile_picture.name)
+                else:
+                    print(f"Old profile picture does not exist in storage: {old_profile_picture.name}")
+            else:
+                print("No old profile picture found.")
 
     def resize_image(self, image_field):
         """Resize the image."""
+        print(f"Resizing image: {image_field.name}")
         with Image.open(image_field) as image:
             max_size = (250, 250)
             image.thumbnail(max_size, Image.LANCZOS)
 
             original_name = os.path.basename(image_field.name)
+            print(f"Original image name: {original_name}")
+
             self.processed_image_to_file(image, image_field, original_name)
 
     def processed_image_to_file(self, image, image_field, original_name=None):
         """Convert a processed image to a file."""
+        print("Converting processed image to file...")
         image_buffer = BytesIO()
         image.save(image_buffer, format="PNG")
 
@@ -320,8 +339,10 @@ class ProfilePictureForm(forms.ModelForm):
         timestamp = timezone.now().strftime("%Y.%m.%d.%H.%M")
         user_id = self.instance.user.id
         new_name = f"profile_picture_{timestamp}_{user_id}.png"
+        print(f"Saving processed image with new name: {new_name}")
 
         image_field.save(new_name, content_file, save=False)
+        print(f"Processed image saved as: {new_name}")
 
 
 class ContactForm(forms.ModelForm):
