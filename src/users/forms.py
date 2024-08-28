@@ -263,6 +263,34 @@ class CustomClearableFileInput(forms.ClearableFileInput):
     template_name = "widgets/custom_change_img.html"
 
 
+def save_to_google_cloud_storage(image, user_id):
+    """
+    Saves the processed image to Google Cloud Storage.
+
+    :param image: PIL Image object of the profile picture
+    :param user_id: The ID of the user to generate a unique filename
+    :return: The path where the image was saved
+    """
+    # Resize the image if necessary
+    max_size = (250, 250)
+    image.thumbnail(max_size, Image.LANCZOS)
+
+    # Create an in-memory file buffer to save the image
+    image_buffer = BytesIO()
+    image.save(image_buffer, format="PNG")
+
+    # Create a ContentFile to be saved by the storage backend
+    content_file = ContentFile(image_buffer.getvalue())
+
+    # Generate a unique filename
+    timestamp = timezone.now().strftime("%Y.%m.%d.%H.%M")
+    new_name = f"profile_picture_{timestamp}_{user_id}.png"
+
+    # Save the image to Google Cloud Storage
+    file_path = default_storage.save(new_name, content_file)
+
+    return file_path
+
 class ProfilePictureForm(forms.ModelForm):
     """Custom profile picture form."""
 
@@ -283,8 +311,13 @@ class ProfilePictureForm(forms.ModelForm):
             # Delete the old profile picture if it exists
             self.delete_old_profile_picture(instance)
 
-            # Resize and save the new profile picture
-            self.resize_image(instance.profile_picture)
+            # Open the uploaded image file
+            with Image.open(instance.profile_picture) as image:
+                # Save the new profile picture to Google Cloud Storage
+                file_path = save_to_google_cloud_storage(image, self.instance.user.id)
+                
+                # Update the instance with the new file path
+                instance.profile_picture.name = file_path
 
         if commit:
             instance.save()
@@ -299,29 +332,6 @@ class ProfilePictureForm(forms.ModelForm):
                 # Use the storage backend to check if the file exists and delete it
                 if default_storage.exists(old_profile_picture.name):
                     default_storage.delete(old_profile_picture.name)
-
-    def resize_image(self, image_field):
-        """Resize the image."""
-        with Image.open(image_field) as image:
-            max_size = (250, 250)
-            image.thumbnail(max_size, Image.LANCZOS)
-
-            original_name = os.path.basename(image_field.name)
-            self.processed_image_to_file(image, image_field, original_name)
-
-    def processed_image_to_file(self, image, image_field, original_name=None):
-        """Convert a processed image to a file."""
-        image_buffer = BytesIO()
-        image.save(image_buffer, format="PNG")
-
-        content_file = ContentFile(image_buffer.getvalue())
-
-        # Generate filename with timestamp and user's unique ID
-        timestamp = timezone.now().strftime("%Y.%m.%d.%H.%M")
-        user_id = self.instance.user.id
-        new_name = f"profile_picture_{timestamp}_{user_id}.png"
-
-        image_field.save(new_name, content_file, save=False)
 
 
 class ContactForm(forms.ModelForm):
