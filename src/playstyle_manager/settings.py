@@ -53,7 +53,7 @@ if not DEBUG:
         os.path.join(BASE_DIR, "gcs-key.json")
     )
 else:
-    service_account_info = json.load(open('etc/secrets/service_account.json'))
+    service_account_info = json.load(open('/etc/secrets/service_account.json'))
     if service_account_info:
         print('Service Info Exists')
         credentials = service_account.Credentials.from_service_account_info(service_account_info)
