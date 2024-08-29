@@ -80,4 +80,6 @@ urlpatterns = [
     path("multiplayer-games/", views.view_multiplayer_games, name="multiplayer_games"),
     path("game-library/", views.game_library, name="game_library"),
     path("news/", views.latest_news, name="latest_news"),
+    path("similar-games/<int:game_guid>/", views.similar_games, name="similar_games"),
+    path("similar-games-directory/", views.similar_games_directory, name="similar_games_directory" )
 ]

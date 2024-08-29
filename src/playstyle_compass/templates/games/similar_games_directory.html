@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+
+{% block page_header %}
+<div class="header">
+    <h3>{% trans "SIMILAR GAMES DIRECTORY" %}</h3>
+</div>
+{% endblock page_header %}
+
+{% block description %}
+{% blocktrans %}Browse our extensive game directory and find similar games by clicking on any title. Expand your collection today!{% endblocktrans %}
+{% endblock description %}
+
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/playstyle_compass/similar_games.css' %}">
+
+<div class="games-list">
+    {% if games_by_letter %}
+        {% for letter, games in games_by_letter.items %}
+            <div class="letter-section">
+                <h3>{{ letter }}</h3>
+                <div class="game-items">
+                    {% for game in games %}
+                        <div class="game-item">
+                            <a href="{% url 'playstyle_compass:similar_games' game.guid %}">
+                                Similar Games to {{ game.title }}
+                            </a>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>{% trans "No games found." %}</p>
+    {% endif %}
+</div>
+
+{% endblock %}

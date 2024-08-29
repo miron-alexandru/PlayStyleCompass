@@ -44,6 +44,8 @@ from .helper_functions.views_helpers import (
     get_user_context,
     get_associated_platforms,
     sort_articles,
+    get_similar_games,
+    get_first_letter,
 )
 
 
@@ -1165,3 +1167,50 @@ def latest_news(request):
     }
 
     return render(request, "base/latest_news.html", context)
+
+
+def similar_games_directory(request):
+    """View to display all games with links to their similar games pages, organized alphabetically."""
+    games = Game.objects.all().order_by('title')
+    
+    # Initialize a dictionary to categorize games by their starting letter
+    games_by_letter = {}
+    for game in games:
+        # Determine the first alphabetical character of the game's title
+        first_letter = get_first_letter(game.title)
+        
+        # Group games by their starting letter
+        if first_letter not in games_by_letter:
+            games_by_letter[first_letter] = []
+        games_by_letter[first_letter].append(game)
+
+    # Sort the dictionary keys alphabetically and ensure '#' (for non-alphabetical titles) is at the end
+    sorted_letters = sorted(games_by_letter.keys() - {'#'})
+    if '#' in games_by_letter:
+        sorted_letters.append('#')
+
+    # Create a new dictionary with games sorted by letter, including '#' at the end if present
+    sorted_games_by_letter = {letter: games_by_letter.get(letter, []) for letter in sorted_letters}
+
+    context = {
+        "page_title": "Similar Games Directory :: PlayStyle Compass",
+        "games_by_letter": sorted_games_by_letter,
+    }
+
+    return render(request, 'games/similar_games_directory.html', context)
+
+
+def similar_games(request, game_guid):
+    user, user_preferences, user_friends = get_user_context(request)
+    main_game = get_object_or_404(Game, guid=game_guid)
+    similar_games = get_similar_games(main_game)
+
+    context = {
+        "page_title": f"Games like {main_game.title} :: PlayStyle Compass",
+        "main_game": main_game,
+        "similar_games": similar_games,
+        "user_preferences": user_preferences,
+        "user_friends": user_friends,
+    }
+
+    return render(request, "games/similar_games.html", context)

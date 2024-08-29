@@ -128,7 +128,7 @@ EMAIL_USE_TLS = True
 PASSWORD_RESET_TIMEOUT = 1800
 
 if not DEBUG:
-    # Database Configuration
+    # Database Configuration (PostgreSQL)
     DATABASES = {
     "default": dj_database_url.parse(os.environ.get("DATABASE_URL"))
     ,
@@ -138,7 +138,7 @@ if not DEBUG:
     },
 }
 else:
-    # Database Configuration
+    # Database Configuration (SQLITE 3)
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.sqlite3",

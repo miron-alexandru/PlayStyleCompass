@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+
+{% block page_header %}
+<div class="header">
+    <h3>{% trans "SIMILAR GAMES TO" %} {{ main_game.title|upper }}</h3>
+</div>
+{% endblock page_header %}
+
+{% block description %}
+{% blocktrans %}Explore games that share similarities with other games. Discover new favorites and expand your collection!{% endblocktrans %}
+{% endblock description %}
+
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/playstyle_compass/common_styles.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/playstyle_compass/similar_games.css' %}">
+<div class="games-collection">
+    <section class="main-game-section">
+        <h2>{% trans "Featured Game" %}</h2>
+        {% include "games/game_recommendations_section.html" with game=main_game %}
+    </section>
+
+    <div class="separator">
+        <hr>
+    </div>
+
+    <section class="similar-games-section">
+        <h2>{% trans "Similar Games" %}</h2>
+        {% for game in similar_games %}
+            {% include "games/game_recommendations_section.html" with game=game %}
+        {% empty %}
+            <p>No similar games found.</p>
+        {% endfor %}
+    </section>
+</div>
+
+<script src="{% static 'js/playstyle_compass/share_game.js' %}" defer></script>
+<script src="{% static 'js/playstyle_compass/favorite_games_and_queue.js' %}" defer></script>
+<script src="{% static 'js/playstyle_compass/reviews_section.js' %}" defer></script>
+<script src="{% static 'js/playstyle_compass/star_rating.js' %}" defer></script>
+
+{% endblock content %}

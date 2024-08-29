@@ -1,0 +1,99 @@
+.main-game-section {
+    margin-bottom: 40px;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #f9f9f9;
+}
+
+.main-game-section h2 {
+    font-size: 1.5em;
+    color: #222;
+    margin-bottom: 15px;
+    font-weight: 600;
+    text-align: center;
+}
+
+.separator {
+    margin: 10px 0;
+    text-align: center;
+}
+
+.separator hr {
+    border: none;
+    border-top: 2px solid #ddd;
+    width: 60%;
+    margin: 0 auto;
+}
+
+.similar-games-section {
+    padding: 20px;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
+
+.similar-games-section h2 {
+    font-size: 1.5em;
+    color: #222;
+    margin-bottom: 15px;
+    font-weight: 600;
+    text-align: center;
+}
+
+
+.games-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+
+.games-list h2 {
+    font-size: 1.5em;
+    margin: 0 0 20px 0;
+    color: #333;
+}
+
+.letter-section {
+    width: 100%;
+    margin-bottom: 40px;
+}
+
+.letter-section h3 {
+    font-size: 1.5em;
+    margin: 10px 0;
+    color: #666;
+    border-bottom: 2px solid #ccc;
+    padding-bottom: 5px;
+}
+
+.game-items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+
+.game-item {
+    flex: 1 1 calc(25% - 20px);
+    max-width: calc(25% - 20px);
+    box-sizing: border-box;
+}
+
+.game-item a {
+    display: block;
+    padding: 15px;
+    text-decoration: none;
+    color: #007bff;
+    font-size: 1em;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    transition: background-color 0.3s, color 0.3s;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.game-item a:hover {
+    background-color: #007bff;
+    color: #fff;
+}

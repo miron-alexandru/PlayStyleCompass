@@ -2,12 +2,13 @@
 The 'views_helpers' module contains the recommendation engine and 
 other helper functions used for differend views."""
 
+import re
 from datetime import date, datetime
 from collections import defaultdict
 from fuzzywuzzy import fuzz
 
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
-from django.db.models import Q
+from django.db.models import Q, Count
 from django.shortcuts import get_object_or_404
 from playstyle_compass.models import UserPreferences, Game, Review, Franchise
 from users.models import FriendList
@@ -347,3 +348,55 @@ def sort_articles(articles, sort_by):
         return articles.order_by("-title")
     else:
         return articles
+
+def safe_split(value):
+    return set(value.split(',')) if value else set()
+
+def get_similar_games(game, min_matching_attributes=3):
+    """Find games similar to the given game based on shared attributes."""
+    
+    # Extract and clean the attributes of the main game, converting them into sets for easy comparison
+    attributes = {
+        'genres': safe_split(game.genres),
+        'themes': safe_split(game.themes),
+        'concepts': safe_split(game.concepts),
+        'platforms': safe_split(game.platforms),
+        'developers': safe_split(game.developers)
+    }
+
+    def count_matching_attributes(other_game):
+        """Count how many attributes of the other_game match with the main game's attributes."""
+        # Extract and clean the attributes of the other game
+        game_attributes = {
+            'genres': safe_split(other_game.genres),
+            'themes': safe_split(other_game.themes),
+            'concepts': safe_split(other_game.concepts),
+            'platforms': safe_split(other_game.platforms),
+            'developers': safe_split(other_game.developers)
+        }
+        
+        match_count = 0
+        
+        # Iterate over each attribute type and check for intersections
+        for attr, values in attributes.items():
+            if values & game_attributes[attr]:  # Check if there is any common attribute
+                match_count += 1
+        
+        return match_count
+
+    # Query all games from the database excluding the main game itself
+    all_games = Game.objects.exclude(guid=game.guid)
+    
+    # Filter games to find those with at least the specified number of matching attributes
+    matching_games = []
+    for g in all_games:
+        if count_matching_attributes(g) >= min_matching_attributes:
+            matching_games.append(g)
+
+    return matching_games
+
+
+def get_first_letter(title):
+    """Extracts the first alphabetical character from a title, skipping numbers."""
+    match = re.search(r'[a-zA-Z]', title)
+    return match.group(0).upper() if match else '#'

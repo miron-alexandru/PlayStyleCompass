@@ -125,6 +125,7 @@ Websites for .env configuration: [GiantBomb](https://www.giantbomb.com/) / [Send
 <summary><h2>PlayStyle Compass Changelog</h2></summary>
 
 ### Version v2.1:
+* Implemented Similar Games: Users are able to view games that are similar to other games.
 * Switched WebSocket connections from ws to wss for enhanced security.
 * Chat updates: File attachment displayed in pinned messages / Message displayed when the pinned message is not found in chat / Minor CSS updated.
 * Users are able to Pin / Unpin chat messages.
