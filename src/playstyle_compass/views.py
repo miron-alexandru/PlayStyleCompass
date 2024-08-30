@@ -1193,7 +1193,7 @@ def similar_games_directory(request):
     sorted_games_by_letter = {letter: games_by_letter.get(letter, []) for letter in sorted_letters}
 
     context = {
-        "page_title": "Similar Games Directory :: PlayStyle Compass",
+        "page_title": _("Similar Games Directory :: PlayStyle Compass"),
         "games_by_letter": sorted_games_by_letter,
     }
 
@@ -1205,8 +1205,10 @@ def similar_games(request, game_guid):
     main_game = get_object_or_404(Game, guid=game_guid)
     similar_games = get_similar_games(main_game)
 
+    translated_page_title = _("Games like")
+
     context = {
-        "page_title": f"Games like {main_game.title} :: PlayStyle Compass",
+        "page_title": f"{translated_page_title} {main_game.title} :: PlayStyle Compass",
         "main_game": main_game,
         "similar_games": similar_games,
         "user_preferences": user_preferences,

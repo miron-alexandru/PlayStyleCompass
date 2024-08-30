@@ -41,6 +41,7 @@
 }
 
 
+
 .games-list {
     display: flex;
     flex-direction: column;
@@ -81,7 +82,9 @@
 }
 
 .game-item a {
-    display: block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     padding: 15px;
     text-decoration: none;
     color: #007bff;
@@ -91,6 +94,11 @@
     transition: background-color 0.3s, color 0.3s;
     text-align: center;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    height: 90px;
+    line-height: 1.2em;
+    overflow: hidden;
+    white-space: wrap;
+    text-overflow: ellipsis;
 }
 
 .game-item a:hover {

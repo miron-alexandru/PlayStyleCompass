@@ -30,7 +30,7 @@
         {% for game in similar_games %}
             {% include "games/game_recommendations_section.html" with game=game %}
         {% empty %}
-            <p>No similar games found.</p>
+            <p>{% trans "No similar games found." %}</p>
         {% endfor %}
     </section>
 </div>

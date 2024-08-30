@@ -23,8 +23,8 @@
                 <div class="game-items">
                     {% for game in games %}
                         <div class="game-item">
-                            <a href="{% url 'playstyle_compass:similar_games' game.guid %}">
-                                Similar Games to {{ game.title }}
+                            <a href="{% url 'playstyle_compass:similar_games' game.guid %}" target="_blank">
+                                {% trans "Similar Games to" %} {{ game.title }}
                             </a>
                         </div>
                     {% endfor %}
