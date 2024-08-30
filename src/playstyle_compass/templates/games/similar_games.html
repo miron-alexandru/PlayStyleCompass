@@ -15,6 +15,7 @@
 {% block content %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/playstyle_compass/common_styles.css' %}">
 <link rel="stylesheet" type="text/css" href="{% static 'css/playstyle_compass/similar_games.css' %}">
+
 <div class="games-collection">
     <section class="main-game-section">
         <h2>{% trans "Featured Game" %}</h2>
@@ -34,6 +35,27 @@
         {% endfor %}
     </section>
 </div>
+
+{% if pagination %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/playstyle_compass/pagination.css' %}">
+<div class="pagination">
+  <span class="step-links">
+    {% if similar_games.has_previous %}
+    <a href="?page=1">&laquo; {% trans "First" %}</a>
+    <a href="?page={{ games.previous_page_number }}">{% trans "Previous" %}</a>
+    {% endif %}
+
+    <span class="current-page">
+      {% trans "Page" %} {{ similar_games.number }} {% trans "of" %} {{ similar_games.paginator.num_pages }}
+    </span>
+
+    {% if similar_games.has_next %}
+    <a href="?page={{ similar_games.next_page_number }}">{% trans "Next" %}</a>
+    <a href="?page={{ similar_games.paginator.num_pages }}">{% trans "Last" %} &raquo;</a>
+    {% endif %}
+  </span>
+</div>
+{% endif %}
 
 <script src="{% static 'js/playstyle_compass/share_game.js' %}" defer></script>
 <script src="{% static 'js/playstyle_compass/favorite_games_and_queue.js' %}" defer></script>

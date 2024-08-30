@@ -1204,6 +1204,7 @@ def similar_games(request, game_guid):
     user, user_preferences, user_friends = get_user_context(request)
     main_game = get_object_or_404(Game, guid=game_guid)
     similar_games = get_similar_games(main_game)
+    similar_games = paginate_matching_games(request, similar_games)
 
     translated_page_title = _("Games like")
 
@@ -1213,6 +1214,7 @@ def similar_games(request, game_guid):
         "similar_games": similar_games,
         "user_preferences": user_preferences,
         "user_friends": user_friends,
+        "pagination": True,
     }
 
     return render(request, "games/similar_games.html", context)
