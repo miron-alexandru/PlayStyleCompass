@@ -26,7 +26,9 @@ CREATE TABLE IF NOT EXISTS Games (
     linux_req_min TEXT default '',
     linux_req_rec TEXT default '',
     average_score REAL DEFAULT 0,
-    total_reviews DEFAULT 0
+    total_reviews DEFAULT 0,
+    translated_description_ro TEXT,
+    translated_overview_ro TEXT
 );
 """
 

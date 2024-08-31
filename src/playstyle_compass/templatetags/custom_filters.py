@@ -6,6 +6,7 @@ from datetime import datetime
 from django import template
 from itertools import zip_longest
 from django.utils.translation import gettext as _
+from django.utils.translation import get_language
 from django.apps import apps
 from django.urls import reverse
 from pytz import timezone
@@ -246,3 +247,31 @@ def querystring_replace(request, **kwargs):
         else:
             query_dict[key] = value
     return query_dict.urlencode()
+
+@register.filter
+def get_translated_field(game, field_name):
+    """
+    Returns the translated field value if the current language is 'ro'.
+    Otherwise returns the default field value.
+    """
+
+    current_lang = get_language()
+
+    if field_name == 'description':
+        if current_lang == 'ro':
+            if game.translated_description_ro:
+                return game.translated_description_ro
+            else:
+                return 'N/A'
+        else:
+            return game.description or 'N/A'
+    elif field_name == 'overview':
+        if current_lang == 'ro':
+            if game.translated_overview_ro:
+                return game.translated_overview_ro
+            else:
+                return 'N/A'
+        else:
+            return game.overview or 'N/A'
+    else:
+        return 'N/A'

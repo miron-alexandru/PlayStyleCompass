@@ -75,10 +75,10 @@
         </div>
         {% endif %}
       </div>
-      <p>{{ game.description|default:"N/A" }}</p>
+      <p>{{ game|get_translated_field:"description" }}</p>
       <p><strong>{% trans "Description:" %}</strong>
-        <span class="overview">{{ game.overview|default:"N/A"|truncatewords_html:"50" }}</span>
-        <span class="full-text" style="display: none;">{{ game.overview|default:"N/A" }}</span>
+        <span class="overview">{{ game|get_translated_field:"overview"|truncatewords_html:"50" }}</span>
+        <span class="full-text" style="display: none;">{{  game|get_translated_field:"overview" }}</span>
         <button class="read-button" style="display: none;" onclick="readMore(this);">{% trans "[Read more...]" %}</button>
       </p>
       <p><strong>{% trans "Release date:" %}</strong> {{ game.release_date|default:"N/A"}}</p>

@@ -121,6 +121,8 @@ class Game(models.Model):
     linux_req_rec = models.TextField(default="")
     average_score = models.FloatField(default=0)
     total_reviews = models.IntegerField(default=0)
+    translated_description_ro = models.TextField(blank=True, null=True)
+    translated_overview_ro = models.TextField(blank=True, null=True)
 
     def update_score(self):
         reviews = self.review_set.all()
