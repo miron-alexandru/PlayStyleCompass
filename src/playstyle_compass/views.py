@@ -935,6 +935,34 @@ def similar_playstyles(request):
     return render(request, "misc/similar_playstyles.html", context)
 
 
+@login_required
+def play_histories(request):
+    """View used to show users with similar gaming history."""
+    user_preferences, created = UserPreferences.objects.get_or_create(user=request.user)
+
+    # Compare gaming history
+    preferences_to_compare = ["gaming_history"]
+    similarity_threshold = 0.6
+
+    all_user_prefs = UserPreferences.objects.exclude(user=request.user)
+
+    # Find users with similar gaming history
+    similar_user_gaming_history = [
+        user
+        for user in all_user_prefs
+        if calculate_average_similarity(user_preferences, user, preferences_to_compare)
+        >= similarity_threshold
+    ]
+
+    context = {
+        "page_title": _("Kinded Play Histories :: PlayStyle Compass"),
+        "similar_user_gaming_history": similar_user_gaming_history,
+        "user_preferences": user_preferences,
+    }
+
+    return render(request, "misc/play_histories.html", context)
+
+
 def view_franchises(request):
     """View used to display all franchises."""
     all_franchises = Franchise.objects.all()
@@ -1171,33 +1199,35 @@ def latest_news(request):
 
 def similar_games_directory(request):
     """View to display all games with links to their similar games pages, organized alphabetically."""
-    games = Game.objects.all().order_by('title')
-    
+    games = Game.objects.all().order_by("title")
+
     # Initialize a dictionary to categorize games by their starting letter
     games_by_letter = {}
     for game in games:
         # Determine the first alphabetical character of the game's title
         first_letter = get_first_letter(game.title)
-        
+
         # Group games by their starting letter
         if first_letter not in games_by_letter:
             games_by_letter[first_letter] = []
         games_by_letter[first_letter].append(game)
 
     # Sort the dictionary keys alphabetically and ensure '#' (for non-alphabetical titles) is at the end
-    sorted_letters = sorted(games_by_letter.keys() - {'#'})
-    if '#' in games_by_letter:
-        sorted_letters.append('#')
+    sorted_letters = sorted(games_by_letter.keys() - {"#"})
+    if "#" in games_by_letter:
+        sorted_letters.append("#")
 
     # Create a new dictionary with games sorted by letter, including '#' at the end if present
-    sorted_games_by_letter = {letter: games_by_letter.get(letter, []) for letter in sorted_letters}
+    sorted_games_by_letter = {
+        letter: games_by_letter.get(letter, []) for letter in sorted_letters
+    }
 
     context = {
         "page_title": _("Similar Games Directory :: PlayStyle Compass"),
         "games_by_letter": sorted_games_by_letter,
     }
 
-    return render(request, 'games/similar_games_directory.html', context)
+    return render(request, "games/similar_games_directory.html", context)
 
 
 def similar_games(request, game_guid):

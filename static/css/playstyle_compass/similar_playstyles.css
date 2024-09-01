@@ -46,18 +46,19 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    padding-top: 10px;
+    padding-top: 5px;
     padding-bottom: 15px;
     border-bottom: 0.1px solid #333;
 }
 
 .profile-image {
-    max-width: 180px;
-    max-height: 180px;
-    border-radius: 50px;
+    width: 170px;
+    height: 170px;
+    border-radius: 50%;
     border: 3px solid #333;
     box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
     overflow: hidden;
+    object-fit: cover;
 }
 
 .user-name {

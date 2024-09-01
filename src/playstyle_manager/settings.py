@@ -18,7 +18,7 @@ sys.path.insert(0, os.path.join(BASE_DIR, "src"))
 
 # General Settings
 SECRET_KEY = str(os.getenv("SECRET_KEY"))
-DEBUG = os.getenv('DEBUG', 'True') == 'True'
+DEBUG = os.getenv("DEBUG", "True") == "True"
 ALLOWED_HOSTS = ["127.0.0.1", "localhost", "playstylecompass.onrender.com"]
 
 # Installed Apps
@@ -53,7 +53,9 @@ if DEBUG:
         os.path.join(BASE_DIR, "gcs-key.json")
     )
 else:
-    GS_CREDENTIALS = service_account.Credentials.from_service_account_file('/etc/secrets/gcs-key.json')
+    GS_CREDENTIALS = service_account.Credentials.from_service_account_file(
+        "/etc/secrets/gcs-key.json"
+    )
 
 # Form Renderer
 FORM_RENDERER = "django.forms.renderers.TemplatesSetting"
@@ -101,9 +103,9 @@ TEMPLATES = [
 ASGI_APPLICATION = "playstyle_manager.asgi.application"
 
 CSRF_TRUSTED_ORIGINS = [
-    'https://localhost',
-    'https://127.0.0.1',
-    'https://playstylecompass.onrender.com'
+    "https://localhost",
+    "https://127.0.0.1",
+    "https://playstylecompass.onrender.com",
 ]
 
 SESSION_COOKIE_SECURE = True
@@ -130,13 +132,12 @@ PASSWORD_RESET_TIMEOUT = 1800
 if not DEBUG:
     # Database Configuration (PostgreSQL)
     DATABASES = {
-    "default": dj_database_url.parse(os.environ.get("DATABASE_URL"))
-    ,
-    "games_db": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": os.path.join(BASE_DIR, "utils/games_data.db"),
-    },
-}
+        "default": dj_database_url.parse(os.environ.get("DATABASE_URL")),
+        "games_db": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": os.path.join(BASE_DIR, "utils/games_data.db"),
+        },
+    }
 else:
     # Database Configuration (SQLITE 3)
     DATABASES = {
@@ -205,9 +206,9 @@ STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 if DEBUG:
     MEDIA_URL = "/media/"
     MEDIA_ROOT = os.path.join(BASE_DIR, "media")
-    DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
+    DEFAULT_FILE_STORAGE = "django.core.files.storage.FileSystemStorage"
 else:
-    DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
+    DEFAULT_FILE_STORAGE = "storages.backends.gcloud.GoogleCloudStorage"
     MEDIA_URL = f"https://storage.googleapis.com/{GS_BUCKET_NAME}/"
 
 

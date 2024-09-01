@@ -1486,6 +1486,7 @@ async def stream_chat_messages(request, recipient_id: int) -> StreamingHttpRespo
 
     return StreamingHttpResponse(event_stream(), content_type="text/event-stream")
 
+
 @login_required
 def chat_list(request):
     """View function used to display a list of chat conversations involving the logged-in user."""
@@ -1642,11 +1643,23 @@ def load_pinned_messages(request, recipient_id):
     pinned_messages_queryset = ChatMessage.objects.filter(
         pinned_by=request.user, recipient=recipient
     ).values(
-        "id", "content", "sender__id", "sender__userprofile__profile_name", "created_at", "file", "file_size"
+        "id",
+        "content",
+        "sender__id",
+        "sender__userprofile__profile_name",
+        "created_at",
+        "file",
+        "file_size",
     ) | ChatMessage.objects.filter(
         pinned_by=request.user, sender=recipient
     ).values(
-        "id", "content", "sender__id", "sender__userprofile__profile_name", "created_at", "file", "file_size"
+        "id",
+        "content",
+        "sender__id",
+        "sender__userprofile__profile_name",
+        "created_at",
+        "file",
+        "file_size",
     )
 
     pinned_messages = list(pinned_messages_queryset.order_by("-created_at"))

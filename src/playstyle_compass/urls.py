@@ -58,6 +58,7 @@ urlpatterns = [
     path("games_shared/", views.view_games_shared, name="games_shared"),
     path("delete_shared_games/", views.delete_shared_games, name="delete_shared_games"),
     path("similar_playstyles/", views.similar_playstyles, name="similar_playstyles"),
+    path("play_histories/", views.play_histories, name="play_histories"),
     path("view_franchises/", views.view_franchises, name="view_franchises"),
     path("franchise/<int:franchise_id>/", views.franchise, name="franchise"),
     path("search/franchises/", views.search_franchises, name="search_franchises"),
@@ -81,5 +82,9 @@ urlpatterns = [
     path("game-library/", views.game_library, name="game_library"),
     path("news/", views.latest_news, name="latest_news"),
     path("similar-games/<int:game_guid>/", views.similar_games, name="similar_games"),
-    path("similar-games-directory/", views.similar_games_directory, name="similar_games_directory" )
+    path(
+        "similar-games-directory/",
+        views.similar_games_directory,
+        name="similar_games_directory",
+    ),
 ]

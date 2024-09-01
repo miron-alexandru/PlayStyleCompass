@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load static %}
+
+{% block page_header %}
+<div class="header">
+    <h3>{% trans "KINDRED PLAY HISTORIES" %}</h3>
+</div>
+{% endblock page_header %}
+
+{% block description %}
+{% trans "Discover gamers who share a similar gaming journey and connect over common experiences." %}
+{% endblock description %}
+
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/playstyle_compass/similar_playstyles.css' %}">
+
+{% if user_preferences.gaming_history %}
+{% if similar_user_gaming_history %}
+<div class="user-playstyles-container">
+    {% for user_playstyle in similar_user_gaming_history %}
+    <div class="user-playstyle">
+        <div class="user-name">
+            <a href="{% url 'users:view_profile' profile_name=user_playstyle.user.userprofile.profile_name %}">
+                {{user_playstyle.user.userprofile.profile_name }}
+            </a>
+        </div>
+        <div class="user-profile-picture">
+            {% if user_playstyle.user.userprofile.profile_picture %}
+            <img src="{{ user_playstyle.user.userprofile.profile_picture.url }}"
+                alt="{{ user_playstyle.user.userprofile.profile_name }}'s Profile Picture" class="profile-image">
+            {% else %}
+            <img src="{% static 'images/default_profile_picture.jpg' %}" alt="Default Profile Picture" class="profile-image">
+            {% endif %}
+        </div>
+        <div class="user-details">
+            <p><strong>{% trans "Games played:" %}</strong> {{ user_playstyle.gaming_history }}</p>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+{% else %}
+<p class="no-results">{% trans "No users with similar Play Histories found." %}</p>
+{% endif %}
+{% else %}
+<p class="text-center">{% trans "You have not defined your Gaming History yet." %}<a
+    href="{% url 'playstyle_compass:gaming_preferences' %}"> {% trans "Click here to start" %}</a>.</p>
+{% endif %}
+
+{% endblock content %}

@@ -294,7 +294,9 @@ class ProfilePictureForm(forms.ModelForm):
     def delete_old_profile_picture(self, instance):
         """Delete the old profile picture if it exists."""
         if instance.pk:
-            old_profile_picture = UserProfile.objects.get(pk=instance.pk).profile_picture
+            old_profile_picture = UserProfile.objects.get(
+                pk=instance.pk
+            ).profile_picture
             if old_profile_picture:
                 # Use the storage backend to check if the file exists and delete it
                 if default_storage.exists(old_profile_picture.name):

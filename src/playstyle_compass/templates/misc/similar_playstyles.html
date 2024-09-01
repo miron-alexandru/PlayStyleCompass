@@ -31,8 +31,7 @@
                 alt="{{ user_playstyle.user.userprofile.profile_name }}'s Profile Picture" class="profile-image">
 
             {% else %}
-            <img src="{{ user_playstyle.user.userprofile.profile_picture.url }}"
-                alt="{{ user_playstyle.user.userprofile.profile_name }}'s Profile Picture" class="profile-image">
+            <img src="{% static 'images/default_profile_picture.jpg' %}" alt="Default Profile Picture" class="profile-image">
             {% endif %}
         </div>
         <div class="user-details">

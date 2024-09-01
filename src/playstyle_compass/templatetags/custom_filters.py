@@ -248,6 +248,7 @@ def querystring_replace(request, **kwargs):
             query_dict[key] = value
     return query_dict.urlencode()
 
+
 @register.filter
 def get_translated_field(game, field_name):
     """
@@ -257,21 +258,21 @@ def get_translated_field(game, field_name):
 
     current_lang = get_language()
 
-    if field_name == 'description':
-        if current_lang == 'ro':
+    if field_name == "description":
+        if current_lang == "ro":
             if game.translated_description_ro:
                 return game.translated_description_ro
             else:
-                return 'N/A'
+                return "N/A"
         else:
-            return game.description or 'N/A'
-    elif field_name == 'overview':
-        if current_lang == 'ro':
+            return game.description or "N/A"
+    elif field_name == "overview":
+        if current_lang == "ro":
             if game.translated_overview_ro:
                 return game.translated_overview_ro
             else:
-                return 'N/A'
+                return "N/A"
         else:
-            return game.overview or 'N/A'
+            return game.overview or "N/A"
     else:
-        return 'N/A'
+        return "N/A"
