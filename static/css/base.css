@@ -102,6 +102,10 @@ input[type="email"]:focus,
   background-image: none;
 }
 
+.navbar-brand {
+  margin-left: 5%;
+}
+
 .navbar {
   background-color: #3498db;
   border: none;
@@ -142,6 +146,7 @@ input[type="email"]:focus,
 .contact-us {
   display: flex;
   align-items: top;
+  padding-left: 10px!important;
 }
 
 .contact-icon {
@@ -150,7 +155,13 @@ input[type="email"]:focus,
 
 .container {
   flex: 1;
-  padding: 0px 0;
+  max-width: 1500px;
+  width: 90%;
+  margine: 0 auto;
+}
+
+.collapse {
+  margin-right: 100px;
 }
 
 .nav-item {
@@ -168,7 +179,6 @@ input[type="email"]:focus,
   overflow: hidden;
   object-fit: cover;
 }
-
 
 .page-header {
   color: #2c3e50;
@@ -189,10 +199,9 @@ input[type="email"]:focus,
   font-size: 19px;
   font-weight: bold;
   color: #fff;
-  margin-left: 90px;
+  margin-left: 5.1%;
   letter-spacing: 2px;
   max-width: 1139px;
-  margin: 0 auto;
 }
 
 .profile-header {
@@ -206,7 +215,6 @@ input[type="email"]:focus,
   font-size: 19px;
   font-weight: bold;
   color: #fff;
-  margin-left: 90px;
   letter-spacing: 2px;
   max-width: 1139px;
   margin: 0 auto;

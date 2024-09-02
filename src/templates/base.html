@@ -38,7 +38,7 @@
         {% if user.is_authenticated %}
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navItemDropdown" role="button" data-toggle="dropdown">
-              {% trans "Playstyle & Recommendations" %}
+              {% trans "Playstyle" %}
           </a>
           <div class="dropdown-menu navbar-dropdown">
             <a class="dropdown-item" href="{% url 'playstyle_compass:gaming_preferences'%}">
@@ -53,6 +53,13 @@
             <a class="dropdown-item" href="{% url 'playstyle_compass:play_histories'%}">
               {% trans "Kindred Play Histories" %}
             </a>
+          </div>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navItemDropdown" role="button" data-toggle="dropdown">
+              {% trans "Recommendations" %}
+          </a>
+          <div class="dropdown-menu navbar-dropdown">
             <a class="dropdown-item" href="{% url 'playstyle_compass:get_recommendations'%}">
               {% trans "Game Recommendations" %}
             </a>
@@ -229,12 +236,16 @@
                   </a>
                   <ul class="dropdown-menu notifications-dropdown text-wrap" id="notify"></ul>
                 </li>
+                <li class="nav-item">
+              <a class="nav-link contact-us" href="{% url 'users:contact' %}">{% trans "Contact" %} <i class="fa-regular fa-comments contact-icon"></i></a>
+          </li>
             </div>
           </div>
-          {% endif %}
+          {% else %}
           <li class="nav-item">
               <a class="nav-link contact-us" href="{% url 'users:contact' %}">{% trans "Contact" %} <i class="fa-regular fa-comments contact-icon"></i></a>
           </li>
+          {% endif %}
         </ul>
       </div>
     </div>

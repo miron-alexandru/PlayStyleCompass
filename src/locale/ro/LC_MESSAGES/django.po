@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-09-01 10:38+0300\n"
-"PO-Revision-Date: 2024-09-01 10:38+0230\n"
+"POT-Creation-Date: 2024-09-02 11:04+0300\n"
+"PO-Revision-Date: 2024-09-02 11:05+0230\n"
 "Last-Translator:   <tokisaki.kurumir99@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -61,7 +61,7 @@ msgstr ""
 "Bine ai venit la PlayStyle Compass - portalul personalizat care îți deschide drumul către descoperirea jocurilor video perfect adaptate preferințelor tale unice, istoricului tău în gaming și inclinațiilor de gen. Indiferent dacă ești un entuziast casual sau un pasionat dedicat al jocurilor, aplicația noastră analizează cu meticulozitate profilul tău individual în gaming, oferind recomandări care se potrivesc gusturilor tale distincte. Începe o călătorie palpitantă prin lumea posibilităților de gaming, creând un cont cu noi!"
 
 #: .\src\playstyle_compass\templates\base\index.html:23
-#: .\src\templates\base.html:216
+#: .\src\templates\base.html:223
 #: .\src\users\templates\registration\register.html:104
 msgid "Register"
 msgstr "Înregistrare"
@@ -277,12 +277,12 @@ msgid "Games"
 msgstr "Jocuri"
 
 #: .\src\playstyle_compass\templates\base\search_bar_only.html:24
-#: .\src\templates\base.html:114 .\src\templates\base.html:149
+#: .\src\templates\base.html:121 .\src\templates\base.html:156
 msgid "Franchises"
 msgstr "Francize"
 
 #: .\src\playstyle_compass\templates\base\search_bar_only.html:28
-#: .\src\templates\base.html:117 .\src\templates\base.html:154
+#: .\src\templates\base.html:124 .\src\templates\base.html:161
 msgid "Characters"
 msgstr "Caractere"
 
@@ -1209,7 +1209,6 @@ msgid "Similar PlayStyles :: PlayStyle Compass"
 msgstr "Stiluri de Joc Similare :: PlayStyle Compass"
 
 #: .\src\playstyle_compass\views.py:958
-#| msgid "Define PlayStyle :: PlayStyle Compass"
 msgid "Kinded Play Histories :: PlayStyle Compass"
 msgstr "Istorii de Joc Similare :: PlayStyle Compass"
 
@@ -1237,19 +1236,20 @@ msgstr "Catalog Jocuri Similare :: PlayStyle Compass"
 msgid "Games like"
 msgstr "Jocuri ca"
 
-#: .\src\playstyle_manager\settings.py:191 .\src\templates\base.html:299
+#: .\src\playstyle_manager\settings.py:191 .\src\templates\base.html:310
 msgid "English"
 msgstr "Engleză"
 
-#: .\src\playstyle_manager\settings.py:191 .\src\templates\base.html:307
+#: .\src\playstyle_manager\settings.py:191 .\src\templates\base.html:318
 msgid "Romanian"
 msgstr "Română"
 
 #: .\src\templates\base.html:41
-msgid "Playstyle & Recommendations"
-msgstr "Playstyle & Recomandări"
+#| msgid "Create Playstyle"
+msgid "Playstyle"
+msgstr "Playstyle"
 
-#: .\src\templates\base.html:45 .\src\templates\base.html:134
+#: .\src\templates\base.html:45 .\src\templates\base.html:141
 msgid "Create Playstyle"
 msgstr "Creează Playstyle"
 
@@ -1265,160 +1265,166 @@ msgstr "Playstyle Similar"
 msgid "Kindred Play Histories"
 msgstr "Istorii de Joc Similare"
 
-#: .\src\templates\base.html:57
+#: .\src\templates\base.html:60
+#| msgid "Get Recommendations"
+msgid "Recommendations"
+msgstr "Recomandări"
+
+#: .\src\templates\base.html:64
 msgid "Game Recommendations"
 msgstr "Recomandări de Jocuri"
 
-#: .\src\templates\base.html:60
+#: .\src\templates\base.html:67
 msgid "Quiz Recommendations"
 msgstr "Recomandările din Chestionar"
 
-#: .\src\templates\base.html:66
+#: .\src\templates\base.html:73
 msgid "Personal Collection"
 msgstr "Colecție Personală"
 
-#: .\src\templates\base.html:70
+#: .\src\templates\base.html:77
 msgid "Favorite Games"
 msgstr "Jocuri Favorite"
 
-#: .\src\templates\base.html:73
+#: .\src\templates\base.html:80
 msgid "Game Queue"
 msgstr "Jocuri Programate"
 
-#: .\src\templates\base.html:76
+#: .\src\templates\base.html:83
 msgid "My Reviews"
 msgstr "Recenziile mele"
 
-#: .\src\templates\base.html:82
+#: .\src\templates\base.html:89
 msgid "Game Categories"
 msgstr "Categorii de Jocuri"
 
-#: .\src\templates\base.html:86
+#: .\src\templates\base.html:93
 msgid "Single-player Games"
 msgstr "Jocuri Single-player"
 
-#: .\src\templates\base.html:89
+#: .\src\templates\base.html:96
 msgid "Multiplayer Games"
 msgstr "Jocuri Multiplayer"
 
-#: .\src\templates\base.html:92
+#: .\src\templates\base.html:99
 msgid "Top Rated Games"
 msgstr "Top Jocuri"
 
-#: .\src\templates\base.html:95
+#: .\src\templates\base.html:102
 msgid "Upcoming Games"
 msgstr "Jocuri în Dezvoltare"
 
-#: .\src\templates\base.html:101
+#: .\src\templates\base.html:108
 msgid "Explore"
 msgstr "Explorează"
 
-#: .\src\templates\base.html:105
+#: .\src\templates\base.html:112
 msgid "News"
 msgstr "Știri"
 
-#: .\src\templates\base.html:108 .\src\templates\base.html:139
+#: .\src\templates\base.html:115 .\src\templates\base.html:146
 msgid "Game Library"
 msgstr "Biblioteca de Jocuri"
 
-#: .\src\templates\base.html:111 .\src\templates\base.html:144
+#: .\src\templates\base.html:118 .\src\templates\base.html:151
 msgid "Similar Games Directory"
 msgstr "Catalog Jocuri Similare"
 
-#: .\src\templates\base.html:123
+#: .\src\templates\base.html:130
 msgid "Other"
 msgstr "Altele"
 
-#: .\src\templates\base.html:127
+#: .\src\templates\base.html:134
 msgid "Preference Quiz"
 msgstr "Chestionarul de Preferințe"
 
-#: .\src\templates\base.html:189
+#: .\src\templates\base.html:196
 msgid "Account"
 msgstr "Cont"
 
-#: .\src\templates\base.html:192
+#: .\src\templates\base.html:199
 msgid "My Profile"
 msgstr "Profilul meu"
 
-#: .\src\templates\base.html:193
+#: .\src\templates\base.html:200
 #: .\src\users\templates\user_related\user_profile.html:80
 msgid "Profile Details"
 msgstr "Detalii Profil"
 
-#: .\src\templates\base.html:194
+#: .\src\templates\base.html:201
 msgid "Inbox"
 msgstr "Inbox"
 
-#: .\src\templates\base.html:196
+#: .\src\templates\base.html:203
 msgid "Shared Games"
 msgstr "Jocuri Distribuite"
 
-#: .\src\templates\base.html:198
+#: .\src\templates\base.html:205
 msgid "Chats"
 msgstr "Conversații"
 
-#: .\src\templates\base.html:199
+#: .\src\templates\base.html:206
 msgid "Friends List"
 msgstr "Listă de Prieteni"
 
-#: .\src\templates\base.html:200
+#: .\src\templates\base.html:207
 msgid "Friend Requests"
 msgstr "Cereri de Prietenie"
 
-#: .\src\templates\base.html:201
+#: .\src\templates\base.html:208
 msgid "Block List"
 msgstr "Listă de blocări"
 
-#: .\src\templates\base.html:203
+#: .\src\templates\base.html:210
 msgid "Change Profile Picture"
 msgstr "Schimbă Poza de Profil"
 
-#: .\src\templates\base.html:204
+#: .\src\templates\base.html:211
 msgid "Change Profile Name"
 msgstr "Schimbă Numele de Profil"
 
-#: .\src\templates\base.html:206
+#: .\src\templates\base.html:213
 #: .\src\users\templates\account_actions\password_change_form.html:69
 msgid "Change Password"
 msgstr "Schimbă Parola"
 
-#: .\src\templates\base.html:207
+#: .\src\templates\base.html:214
 #: .\src\users\templates\account_actions\change_email.html:57
 msgid "Change Email"
 msgstr "Schimbă Adresa de Email"
 
-#: .\src\templates\base.html:209
+#: .\src\templates\base.html:216
 msgid "Delete Account"
 msgstr "Șterge Contul"
 
-#: .\src\templates\base.html:211
+#: .\src\templates\base.html:218
 msgid "Log Out"
 msgstr "Deconectare"
 
-#: .\src\templates\base.html:219
+#: .\src\templates\base.html:226
 #: .\src\users\templates\registration\login.html:52
 msgid "Log in"
 msgstr "Autentificare"
 
-#: .\src\templates\base.html:236 .\src\users\templates\general\contact.html:19
+#: .\src\templates\base.html:240 .\src\templates\base.html:246
+#: .\src\users\templates\general\contact.html:19
 msgid "Contact"
 msgstr "Contact"
 
-#: .\src\templates\base.html:261
+#: .\src\templates\base.html:272
 msgid "Please confirm your email address to unlock all features."
 msgstr ""
 "Te rugăm să confirmi adresa de email pentru a debloca toate funcțiile."
 
-#: .\src\templates\base.html:263
+#: .\src\templates\base.html:274
 msgid "Resend verification link"
 msgstr "Retrimite link-ul de verificare"
 
-#: .\src\templates\base.html:317
+#: .\src\templates\base.html:328
 msgid "PlayStyle Compass. All rights reserved."
 msgstr "PlayStyle Compass. Toate drepturile rezervate."
 
-#: .\src\templates\base.html:322
+#: .\src\templates\base.html:333
 msgid "Go top"
 msgstr "Mergi sus"
 
