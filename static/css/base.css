@@ -157,7 +157,7 @@ input[type="email"]:focus,
   flex: 1;
   max-width: 1500px;
   width: 90%;
-  margine: 0 auto;
+  margin: 0 auto;
 }
 
 .collapse {

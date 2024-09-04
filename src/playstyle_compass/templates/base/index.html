@@ -8,7 +8,6 @@
 <div class="jumbotron">
   <div class="my-header">
     <h1 class="display-5">{% trans "Find Your Ideal Games" %}</h1>
-
     <p class="lead">
       {% blocktrans %}
       Welcome to PlayStyle Compass – your personalized gateway to uncovering video games perfectly
@@ -18,7 +17,6 @@
       gaming possibilities by creating an account with us!
       {% endblocktrans %}
     </p>
-
     {% if not user.is_authenticated %}
     <a class="btn btn-lg btn-primary register-button" href="{% url 'users:register' %}" role="button">{% trans "Register" %}
       &raquo;</a>
