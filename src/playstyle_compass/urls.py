@@ -87,4 +87,6 @@ urlpatterns = [
         views.similar_games_directory,
         name="similar_games_directory",
     ),
+    path("open-world-games/", views.open_world_games, name="open_world_games"),
+    path("linear-gameplay-games/", views.linear_gameplay_games, name="linear_gameplay_games"),
 ]

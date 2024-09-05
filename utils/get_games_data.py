@@ -43,7 +43,8 @@ from data_processing import (
 # create_game_modes_data(guids, mode_strings, num_games=10, offset=0)
 
 # Obtain games based on concepts (used for preference quiz)
-# create_quiz_data(concept_ids, num_games=2, offset=12)
+concepts = ['3015-207', '3015-383']  # open world & linear gameplay concepts
+create_quiz_data(concepts, num_games=100, offset=100)
 
 # Obtain News data
-create_news_data(num_articles=100, year=2024, latest_week=False)
+#create_news_data(num_articles=100, year=2024, latest_week=False)

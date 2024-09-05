@@ -1248,3 +1248,40 @@ def similar_games(request, game_guid):
     }
 
     return render(request, "games/similar_games.html", context)
+
+
+def open_world_games(request):
+    """View to display all open world games."""
+    user, user_preferences, user_friends = get_user_context(request)
+
+    open_world_games = Game.objects.filter(concepts__icontains="Open World").order_by("title")
+    open_world_games = paginate_matching_games(request, open_world_games)
+
+    context = {
+        "page_title": _("Open World Games :: PlayStyle Compass"),
+        "games": open_world_games,
+        "user_preferences": user_preferences,
+        "user_friends": user_friends,
+        "pagination": True,
+    }
+
+    return render(request, "games/open_world_games.html", context)
+
+
+def linear_gameplay_games(request):
+    """View to display all linear gameplay games."""
+    user, user_preferences, user_friends = get_user_context(request)
+
+    linear_games = Game.objects.filter(concepts__icontains="Linear Gameplay").order_by("title")
+
+    linear_games = paginate_matching_games(request, linear_games)
+
+    context = {
+        "page_title": _("Linear Gameplay Games :: PlayStyle Compass"),
+        "games": linear_games,
+        "user_preferences": user_preferences,
+        "user_friends": user_friends,
+        "pagination": True,
+    }
+
+    return render(request, "games/linear_gameplay_games.html", context)
