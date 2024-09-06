@@ -89,6 +89,12 @@
               {% trans "Game Categories" %}
           </a>
           <div class="dropdown-menu navbar-dropdown">
+            <a class="dropdown-item" href="{% url 'playstyle_compass:top_rated_games'%}">
+              {% trans "Top Rated Games" %}
+            </a>
+            <a class="dropdown-item" href="{% url 'playstyle_compass:upcoming_games'%}">
+              {% trans "Upcoming Games" %}
+            </a>
             <a class="dropdown-item" href="{% url 'playstyle_compass:singleplayer_games'%}">
               {% trans "Single-player Games" %}
             </a>
@@ -98,14 +104,17 @@
             <a class="dropdown-item" href="{% url 'playstyle_compass:open_world_games'%}">
               {% trans "Open-World Games" %}
             </a>
+            <a class="dropdown-item" href="{% url 'playstyle_compass:indie_games'%}">
+              {% trans "Indie Games" %}
+            </a>
+            <a class="dropdown-item" href="{% url 'playstyle_compass:steam_games'%}">
+              {% trans "Steam Games" %}
+            </a>
+            <a class="dropdown-item" href="{% url 'playstyle_compass:free_to_play_games'%}">
+              {% trans "Free to Play Games" %}
+            </a>
             <a class="dropdown-item" href="{% url 'playstyle_compass:linear_gameplay_games'%}">
               {% trans "Linear Gameplay Games" %}
-            </a>
-            <a class="dropdown-item" href="{% url 'playstyle_compass:top_rated_games'%}">
-              {% trans "Top Rated Games" %}
-            </a>
-            <a class="dropdown-item" href="{% url 'playstyle_compass:upcoming_games'%}">
-              {% trans "Upcoming Games" %}
             </a>
           </div>
         </li>

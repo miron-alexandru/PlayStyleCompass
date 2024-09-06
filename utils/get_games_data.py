@@ -43,8 +43,13 @@ from data_processing import (
 # create_game_modes_data(guids, mode_strings, num_games=10, offset=0)
 
 # Obtain games based on concepts (used for preference quiz)
-concepts = ['3015-207', '3015-383']  # open world & linear gameplay concepts
-create_quiz_data(concepts, num_games=100, offset=100)
+#create_quiz_data(concept_ids, num_games=5, offset=30)
+
+# Otain games based on certain concepts (Used for different game categories)
+# concepts = ['3015-207', '3015-383']  # open world & linear gameplay concepts
+# concepts = ['3015-1308', '3015-718', '3015-2911']  # steam games, indie games, free to play
+concepts = ['3015-718']
+create_quiz_data(concepts, num_games=100, offset=1)
 
 # Obtain News data
 #create_news_data(num_articles=100, year=2024, latest_week=False)

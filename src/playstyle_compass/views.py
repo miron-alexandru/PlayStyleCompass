@@ -1249,17 +1249,26 @@ def similar_games(request, game_guid):
 
     return render(request, "games/similar_games.html", context)
 
+def get_filtered_games(request, filter_keyword):
+    """Helper function to filter games based on a keyword and paginate the results."""
+    user, user_preferences, user_friends = get_user_context(request)
+
+    # Filter games by keyword and order by title
+    games = Game.objects.filter(concepts__icontains=filter_keyword).order_by("title")
+
+    # Paginate the filtered games
+    games = paginate_matching_games(request, games)
+
+    return games, user_preferences, user_friends
+
 
 def open_world_games(request):
     """View to display all open world games."""
-    user, user_preferences, user_friends = get_user_context(request)
-
-    open_world_games = Game.objects.filter(concepts__icontains="Open World").order_by("title")
-    open_world_games = paginate_matching_games(request, open_world_games)
+    games, user_preferences, user_friends = get_filtered_games(request, "Open World")
 
     context = {
         "page_title": _("Open World Games :: PlayStyle Compass"),
-        "games": open_world_games,
+        "games": games,
         "user_preferences": user_preferences,
         "user_friends": user_friends,
         "pagination": True,
@@ -1270,18 +1279,59 @@ def open_world_games(request):
 
 def linear_gameplay_games(request):
     """View to display all linear gameplay games."""
-    user, user_preferences, user_friends = get_user_context(request)
-
-    linear_games = Game.objects.filter(concepts__icontains="Linear Gameplay").order_by("title")
-
-    linear_games = paginate_matching_games(request, linear_games)
+    games, user_preferences, user_friends = get_filtered_games(request, "Linear Gameplay")
 
     context = {
         "page_title": _("Linear Gameplay Games :: PlayStyle Compass"),
-        "games": linear_games,
+        "games": games,
         "user_preferences": user_preferences,
         "user_friends": user_friends,
         "pagination": True,
     }
 
     return render(request, "games/linear_gameplay_games.html", context)
+
+
+def indie_games(request):
+    """View to display all Indie games."""
+    games, user_preferences, user_friends = get_filtered_games(request, "Indie")
+
+    context = {
+        "page_title": _("Indie Games :: PlayStyle Compass"),
+        "games": games,
+        "user_preferences": user_preferences,
+        "user_friends": user_friends,
+        "pagination": True,
+    }
+
+    return render(request, "games/indie_games.html", context)
+
+
+def steam_games(request):
+    """View to display all Steam games."""
+    games, user_preferences, user_friends = get_filtered_games(request, "Steam")
+
+    context = {
+        "page_title": _("Steam Games :: PlayStyle Compass"),
+        "games": games,
+        "user_preferences": user_preferences,
+        "user_friends": user_friends,
+        "pagination": True,
+    }
+
+    return render(request, "games/steam_games.html", context)
+
+
+def free_to_play_games(request):
+    """View to display all Free to Play games."""
+    games, user_preferences, user_friends = get_filtered_games(request, "Free to Play")
+
+    context = {
+        "page_title": _("Free to Play Games :: PlayStyle Compass"),
+        "games": games,
+        "user_preferences": user_preferences,
+        "user_friends": user_friends,
+        "pagination": True,
+    }
+
+    return render(request, "games/free_to_play_games.html", context)

@@ -106,6 +106,7 @@ concept_ids = [
     "3015-1467",
     "3015-1018",
     "3015-133",
+    "3015-718",
 ]
 
 concept_names = [
@@ -180,6 +181,7 @@ concept_names = [
     "Ranking System",
     "Never-Ending",
     "Game Based on Literature",
+    "Steam",
 ]
 
 
