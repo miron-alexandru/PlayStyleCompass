@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-09-06 12:58+0300\n"
-"PO-Revision-Date: 2024-09-06 13:01+0230\n"
+"POT-Creation-Date: 2024-09-07 13:59+0300\n"
+"PO-Revision-Date: 2024-09-07 14:01+0230\n"
 "Last-Translator:   <tokisaki.kurumir99@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -61,7 +61,7 @@ msgstr ""
 "Bine ai venit la PlayStyle Compass - portalul personalizat care îți deschide drumul către descoperirea jocurilor video perfect adaptate preferințelor tale unice, istoricului tău în gaming și inclinațiilor de gen. Indiferent dacă ești un entuziast casual sau un pasionat dedicat al jocurilor, aplicația noastră analizează cu meticulozitate profilul tău individual în gaming, oferind recomandări care se potrivesc gusturilor tale distincte. Începe o călătorie palpitantă prin lumea posibilităților de gaming, creând un cont cu noi!"
 
 #: .\src\playstyle_compass\templates\base\index.html:21
-#: .\src\templates\base.html:238
+#: .\src\templates\base.html:241
 #: .\src\users\templates\registration\register.html:104
 msgid "Register"
 msgstr "Înregistrare"
@@ -277,12 +277,12 @@ msgid "Games"
 msgstr "Jocuri"
 
 #: .\src\playstyle_compass\templates\base\search_bar_only.html:24
-#: .\src\templates\base.html:136 .\src\templates\base.html:171
+#: .\src\templates\base.html:139 .\src\templates\base.html:174
 msgid "Franchises"
 msgstr "Francize"
 
 #: .\src\playstyle_compass\templates\base\search_bar_only.html:28
-#: .\src\templates\base.html:139 .\src\templates\base.html:176
+#: .\src\templates\base.html:142 .\src\templates\base.html:179
 msgid "Characters"
 msgstr "Caractere"
 
@@ -448,7 +448,6 @@ msgid "You haven't added any games to your Favorites yet."
 msgstr "Nu ai adăugat încă niciun joc la Favoritele tale."
 
 #: .\src\playstyle_compass\templates\games\free_to_play_games.html:4
-#| msgid "POPULAR GAMES"
 msgid "FREE TO PLAY GAMES"
 msgstr "JOCURI FREE TO PLAY"
 
@@ -466,6 +465,7 @@ msgstr ""
 #: .\src\playstyle_compass\templates\games\open_world_games.html:6
 #: .\src\playstyle_compass\templates\games\steam_games.html:6
 #: .\src\playstyle_compass\templates\games\top_rated_games.html:6
+#: .\src\playstyle_compass\templates\games\vr_games.html:6
 msgid "Empty for now, come back later!"
 msgstr "Gol pentru moment, reveniți mai târziu!"
 
@@ -715,7 +715,6 @@ msgid "You have no games in this category."
 msgstr "Nu ai niciun joc in această categorie."
 
 #: .\src\playstyle_compass\templates\games\indie_games.html:4
-#| msgid "UPCOMING GAMES"
 msgid "INDIE GAMES"
 msgstr "JOCURI INDIE"
 
@@ -916,7 +915,6 @@ msgid "No Single-player games have been added yet."
 msgstr "Nu au fost adăugate încă jocuri single-player."
 
 #: .\src\playstyle_compass\templates\games\steam_games.html:4
-#| msgid "SHARED GAMES"
 msgid "STEAM GAMES"
 msgstr "JOCURI STEAM"
 
@@ -947,6 +945,19 @@ msgstr ""
 #: .\src\playstyle_compass\templates\games\view_game.html:28
 msgid "Sorry, the game does not exist."
 msgstr "Ne pare rău, jocul nu există."
+
+#: .\src\playstyle_compass\templates\games\vr_games.html:4
+#| msgid "SHARED GAMES"
+msgid "VR GAMES"
+msgstr "JOCURI VR"
+
+#: .\src\playstyle_compass\templates\games\vr_games.html:5
+msgid ""
+"Immerse yourself in the world of virtual reality with a collection of games "
+"designed for an unparalleled VR experience."
+msgstr ""
+"Aprofundează în lumea realității virtuale cu o colecție de jocuri concepute "
+"pentru o experiență VR de neegalat."
 
 #: .\src\playstyle_compass\templates\misc\play_histories.html:7
 msgid "KINDRED PLAY HISTORIES"
@@ -1317,25 +1328,27 @@ msgid "Linear Gameplay Games :: PlayStyle Compass"
 msgstr "Jocuri cu Gameplay Liniar :: PlayStyle Compass"
 
 #: .\src\playstyle_compass\views.py:1300
-#| msgid "Shared Games :: PlayStyle Compass"
 msgid "Indie Games :: PlayStyle Compass"
 msgstr "Jocuri Indie :: PlayStyle Compass"
 
 #: .\src\playstyle_compass\views.py:1315
-#| msgid "Shared Games :: PlayStyle Compass"
 msgid "Steam Games :: PlayStyle Compass"
 msgstr "Jocuri Steam :: PlayStyle Compass"
 
 #: .\src\playstyle_compass\views.py:1330
-#| msgid "Open World Games :: PlayStyle Compass"
 msgid "Free to Play Games :: PlayStyle Compass"
 msgstr "Jocuri Free to Play :: PlayStyle Compass"
 
-#: .\src\playstyle_manager\settings.py:191 .\src\templates\base.html:325
+#: .\src\playstyle_compass\views.py:1345
+#| msgid "Indie Games :: PlayStyle Compass"
+msgid "VR Games :: PlayStyle Compass"
+msgstr "Jocuri VR :: PlayStyle Compass"
+
+#: .\src\playstyle_manager\settings.py:191 .\src\templates\base.html:328
 msgid "English"
 msgstr "Engleză"
 
-#: .\src\playstyle_manager\settings.py:191 .\src\templates\base.html:333
+#: .\src\playstyle_manager\settings.py:191 .\src\templates\base.html:336
 msgid "Romanian"
 msgstr "Română"
 
@@ -1343,7 +1356,7 @@ msgstr "Română"
 msgid "Playstyle"
 msgstr "Playstyle"
 
-#: .\src\templates\base.html:45 .\src\templates\base.html:156
+#: .\src\templates\base.html:45 .\src\templates\base.html:159
 msgid "Create Playstyle"
 msgstr "Creează Playstyle"
 
@@ -1412,12 +1425,10 @@ msgid "Open-World Games"
 msgstr "Jocuri Open-World"
 
 #: .\src\templates\base.html:108
-#| msgid "Favorite Games"
 msgid "Indie Games"
 msgstr "Jocuri Indie"
 
 #: .\src\templates\base.html:111
-#| msgid "Shared Games"
 msgid "Steam Games"
 msgstr "Jocuri Steam"
 
@@ -1429,117 +1440,122 @@ msgstr "Jocuri Free to Play"
 msgid "Linear Gameplay Games"
 msgstr "Jocuri cu Gameplay Liniar"
 
-#: .\src\templates\base.html:123
+#: .\src\templates\base.html:120
+#| msgid "Games"
+msgid "VR Games"
+msgstr "Jocuri VR"
+
+#: .\src\templates\base.html:126
 msgid "Explore"
 msgstr "Explorează"
 
-#: .\src\templates\base.html:127
+#: .\src\templates\base.html:130
 msgid "News"
 msgstr "Știri"
 
-#: .\src\templates\base.html:130 .\src\templates\base.html:161
+#: .\src\templates\base.html:133 .\src\templates\base.html:164
 msgid "Game Library"
 msgstr "Biblioteca de Jocuri"
 
-#: .\src\templates\base.html:133 .\src\templates\base.html:166
+#: .\src\templates\base.html:136 .\src\templates\base.html:169
 msgid "Similar Games Directory"
 msgstr "Catalog Jocuri Similare"
 
-#: .\src\templates\base.html:145
+#: .\src\templates\base.html:148
 msgid "Other"
 msgstr "Altele"
 
-#: .\src\templates\base.html:149
+#: .\src\templates\base.html:152
 msgid "Preference Quiz"
 msgstr "Chestionarul de Preferințe"
 
-#: .\src\templates\base.html:211
+#: .\src\templates\base.html:214
 msgid "Account"
 msgstr "Cont"
 
-#: .\src\templates\base.html:214
+#: .\src\templates\base.html:217
 msgid "My Profile"
 msgstr "Profilul meu"
 
-#: .\src\templates\base.html:215
+#: .\src\templates\base.html:218
 #: .\src\users\templates\user_related\user_profile.html:80
 msgid "Profile Details"
 msgstr "Detalii Profil"
 
-#: .\src\templates\base.html:216
+#: .\src\templates\base.html:219
 msgid "Inbox"
 msgstr "Inbox"
 
-#: .\src\templates\base.html:218
+#: .\src\templates\base.html:221
 msgid "Shared Games"
 msgstr "Jocuri Distribuite"
 
-#: .\src\templates\base.html:220
+#: .\src\templates\base.html:223
 msgid "Chats"
 msgstr "Conversații"
 
-#: .\src\templates\base.html:221
+#: .\src\templates\base.html:224
 msgid "Friends List"
 msgstr "Listă de Prieteni"
 
-#: .\src\templates\base.html:222
+#: .\src\templates\base.html:225
 msgid "Friend Requests"
 msgstr "Cereri de Prietenie"
 
-#: .\src\templates\base.html:223
+#: .\src\templates\base.html:226
 msgid "Block List"
 msgstr "Listă de blocări"
 
-#: .\src\templates\base.html:225
+#: .\src\templates\base.html:228
 msgid "Change Profile Picture"
 msgstr "Schimbă Poza de Profil"
 
-#: .\src\templates\base.html:226
+#: .\src\templates\base.html:229
 msgid "Change Profile Name"
 msgstr "Schimbă Numele de Profil"
 
-#: .\src\templates\base.html:228
+#: .\src\templates\base.html:231
 #: .\src\users\templates\account_actions\password_change_form.html:69
 msgid "Change Password"
 msgstr "Schimbă Parola"
 
-#: .\src\templates\base.html:229
+#: .\src\templates\base.html:232
 #: .\src\users\templates\account_actions\change_email.html:57
 msgid "Change Email"
 msgstr "Schimbă Adresa de Email"
 
-#: .\src\templates\base.html:231
+#: .\src\templates\base.html:234
 msgid "Delete Account"
 msgstr "Șterge Contul"
 
-#: .\src\templates\base.html:233
+#: .\src\templates\base.html:236
 msgid "Log Out"
 msgstr "Deconectare"
 
-#: .\src\templates\base.html:241
+#: .\src\templates\base.html:244
 #: .\src\users\templates\registration\login.html:52
 msgid "Log in"
 msgstr "Autentificare"
 
-#: .\src\templates\base.html:255 .\src\templates\base.html:261
+#: .\src\templates\base.html:258 .\src\templates\base.html:264
 #: .\src\users\templates\general\contact.html:19
 msgid "Contact"
 msgstr "Contact"
 
-#: .\src\templates\base.html:287
+#: .\src\templates\base.html:290
 msgid "Please confirm your email address to unlock all features."
 msgstr ""
 "Te rugăm să confirmi adresa de email pentru a debloca toate funcțiile."
 
-#: .\src\templates\base.html:289
+#: .\src\templates\base.html:292
 msgid "Resend verification link"
 msgstr "Retrimite link-ul de verificare"
 
-#: .\src\templates\base.html:343
+#: .\src\templates\base.html:346
 msgid "PlayStyle Compass. All rights reserved."
 msgstr "PlayStyle Compass. Toate drepturile rezervate."
 
-#: .\src\templates\base.html:348
+#: .\src\templates\base.html:351
 msgid "Go top"
 msgstr "Mergi sus"
 

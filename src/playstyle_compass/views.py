@@ -1335,3 +1335,18 @@ def free_to_play_games(request):
     }
 
     return render(request, "games/free_to_play_games.html", context)
+
+
+def vr_games(request):
+    """View to display all Virtual Reality games."""
+    games, user_preferences, user_friends = get_filtered_games(request, "Virtual Reality")
+
+    context = {
+        "page_title": _("VR Games :: PlayStyle Compass"),
+        "games": games,
+        "user_preferences": user_preferences,
+        "user_friends": user_friends,
+        "pagination": True,
+    }
+
+    return render(request, "games/vr_games.html", context)
