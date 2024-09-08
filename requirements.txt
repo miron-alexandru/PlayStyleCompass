@@ -24,3 +24,5 @@ django-storages
 boto3
 django-modeltranslation
 google-cloud-storage
+social-auth-app-django
+social-auth-core

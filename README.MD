@@ -124,6 +124,9 @@ Websites for .env configuration: [GiantBomb](https://www.giantbomb.com/) / [Send
 <details>
 <summary><h2>PlayStyle Compass Changelog</h2></summary>
 
+### Version v2.2:
+* Implemented google account login.
+
 ### Version v2.1:
 * New pages for game categories: Steam Games, Free to Play Games, Indie Games, Open-World Games, Linear Gameplay Games
 * Implemented Kindred Play Histories: Users can find other users that played similar games based on their gaming history.
