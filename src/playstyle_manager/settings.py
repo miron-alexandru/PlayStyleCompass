@@ -23,6 +23,7 @@ ALLOWED_HOSTS = ["127.0.0.1", "localhost", "playstylecompass.onrender.com"]
 
 # Installed Apps
 INSTALLED_APPS = [
+    'social_django',
     "playstyle_compass",
     "users",
     "bootstrap4",
@@ -65,6 +66,7 @@ MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "social_django.middleware.SocialAuthExceptionMiddleware", 
     "django.middleware.locale.LocaleMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -74,6 +76,24 @@ MIDDLEWARE = [
     "tz_detect.middleware.TimezoneMiddleware",
     "users.middleware.UserTimezoneMiddleware",
 ]
+
+
+AUTHENTICATION_BACKENDS = (
+    'social_core.backends.google.GoogleOAuth2',
+    'django.contrib.auth.backends.ModelBackend',
+)
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = str(os.getenv("GOOGLE_CLIENT_ID"))
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = str(os.getenv("GOOGLE_CLIENT_SECRET"))
+
+SOCIAL_AUTH_URL_NAMESPACE = 'social'
+SOCIAL_AUTH_LOGIN_ERROR_URL = '/login-error/'
+SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/'
+SOCIAL_AUTH_RAISE_EXCEPTIONS = False
+
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
+
 
 # Locale Paths
 LOCALE_PATHS = [os.path.join(BASE_DIR, "src", "locale")]

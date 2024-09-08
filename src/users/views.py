@@ -274,6 +274,7 @@ def register(request):
 def register_user(form, request):
     """Function to successfully register a user."""
     new_user = form.save(commit=False)
+    new_user._profile_created = True
     new_user.save()
 
     user_profile = UserProfile(
@@ -289,7 +290,7 @@ def register_user(form, request):
     user_profile.save()
     new_user.save()
 
-    login(request, new_user)
+    login(request, new_user, backend='django.contrib.auth.backends.ModelBackend')
     activate_email(request, new_user, form.cleaned_data.get("email"))
 
     return redirect("playstyle_compass:index")
