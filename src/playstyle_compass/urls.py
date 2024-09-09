@@ -88,7 +88,11 @@ urlpatterns = [
         name="similar_games_directory",
     ),
     path("open-world-games/", views.open_world_games, name="open_world_games"),
-    path("linear-gameplay-games/", views.linear_gameplay_games, name="linear_gameplay_games"),
+    path(
+        "linear-gameplay-games/",
+        views.linear_gameplay_games,
+        name="linear_gameplay_games",
+    ),
     path("steam-games/", views.steam_games, name="steam_games"),
     path("indie-games/", views.indie_games, name="indie_games"),
     path("free-to-play-games", views.free_to_play_games, name="free_to_play_games"),

@@ -25,6 +25,7 @@
 .register-button {
   font-size: 15px;
   padding: 8px 16px;
+  margin-top: 5px;
 }
 
 .game-container, .franchise-container {

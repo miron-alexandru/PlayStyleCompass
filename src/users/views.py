@@ -95,7 +95,7 @@ from .models import (
     QuizUserResponse,
     ChatMessage,
 )
-from .tokens import account_activation_token
+from .tokens import account_activation_token, account_deletion_token
 
 
 class ProfileUpdateView(LoginRequiredMixin, UpdateView):
@@ -244,6 +244,46 @@ def activate_email(request, user, to_email):
 
 @require_POST
 @login_required
+def send_deletion_email(request):
+    """Send account deletion confirmation email."""
+    user = request.user
+    if not user.userprofile.email_confirmed:
+        messages.error(request, _("Email address not confirmed!"))
+        return redirect("playstyle_compass:index")
+
+    mail_subject = _("Confirm your account deletion.")
+    message = render_to_string(
+        "registration/delete_account.html",
+        {
+            "user": user.username,
+            "domain": get_current_site(request).domain,
+            "uid": urlsafe_base64_encode(force_bytes(user.pk)),
+            "token": account_deletion_token.make_token(user),
+            "protocol": "https" if request.is_secure() else "http",
+        },
+    )
+    email = EmailMessage(mail_subject, message, to=[user.email])
+    email.content_subtype = "html"
+    if email.send():
+        message = _(
+            "Hello <b>%(user)s</b>, please go to your email <b>%(to_email)s</b> inbox and click on the received link to confirm your account deletion. <b>Note:</b> If you cannot find the email in your inbox, we recommend checking your spam folder."
+        ) % {
+            "user": user.username,
+            "to_email": user.email,
+        }
+
+        messages.success(request, mark_safe(message))
+    else:
+        messages.error(
+            request,
+            _("Problem sending email to %(to_email)s, check if you typed it correctly.")
+            % {"to_email": user.email},
+        )
+    return redirect("playstyle_compass:index")
+
+
+@require_POST
+@login_required
 def resend_activation_link(request):
     """Resend email activation link to the user."""
     email = request.user.email
@@ -290,7 +330,7 @@ def register_user(form, request):
     user_profile.save()
     new_user.save()
 
-    login(request, new_user, backend='django.contrib.auth.backends.ModelBackend')
+    login(request, new_user, backend="django.contrib.auth.backends.ModelBackend")
     activate_email(request, new_user, form.cleaned_data.get("email"))
 
     return redirect("playstyle_compass:index")
@@ -303,21 +343,80 @@ def delete_account(request):
         form = DeleteAccountForm(request.POST)
 
         if form.is_valid():
-            password = form.cleaned_data["password"]
-            if request.user.check_password(password):
-                request.user.delete()
-                messages.success(
-                    request, _("Your account has been successfully deleted!")
-                )
-                return redirect("playstyle_compass:index")
-            else:
-                form.add_error("password", _("Incorrect password. Please try again."))
+            if "delete_with_password" in request.POST:
+                # Delete account with password
+                password = form.cleaned_data["password"]
+                if request.user.check_password(password):
+                    request.user.delete()
+                    messages.success(
+                        request, _("Your account has been successfully deleted!")
+                    )
+                    return redirect("playstyle_compass:index")
+                else:
+                    form.add_error(
+                        "password", _("Incorrect password. Please try again.")
+                    )
+
+            elif "delete_with_email" in request.POST:
+                # Send email for account deletion confirmation
+                if request.user.userprofile.email_confirmed:
+                    mail_subject = _("Confirm your account deletion.")
+                    message = render_to_string(
+                        "registration/delete_account.html",
+                        {
+                            "user": request.user,
+                            "domain": get_current_site(request).domain,
+                            "uid": urlsafe_base64_encode(force_bytes(request.user.pk)),
+                            "token": account_deletion_token.make_token(request.user),
+                            "protocol": "https" if request.is_secure() else "http",
+                        },
+                    )
+                    email = EmailMessage(mail_subject, message, to=[request.user.email])
+                    if email.send():
+                        messages.success(
+                            request,
+                            _(
+                                "A confirmation email has been sent to your address. Please follow the instructions to complete the deletion process."
+                            ),
+                        )
+                    else:
+                        messages.error(
+                            request,
+                            _(
+                                "Problem sending email to %(to_email)s, please check if it is correct."
+                            )
+                            % {"to_email": request.user.email},
+                        )
+                else:
+                    messages.error(
+                        request,
+                        _(
+                            "Please confirm your email address before attempting to delete your account."
+                        ),
+                    )
     else:
         form = DeleteAccountForm()
 
     context = {"form": form, "page_title": _("Delete Account :: PlayStyle Compass")}
-
     return render(request, "account_actions/delete_account.html", context)
+
+
+@login_required
+def confirm_deletion(request, uidb64, token):
+    """Confirm the account deletion request via a confirmation link."""
+    try:
+        uid = force_str(urlsafe_base64_decode(uidb64))
+        user = User.objects.get(pk=uid)
+    except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+        user = None
+
+    if user is not None and account_deletion_token.check_token(user, token):
+        user.delete()
+        messages.success(request, _("Your account has been deleted successfully."))
+        return redirect("playstyle_compass:index")
+    else:
+        messages.error(request, _("The confirmation link is invalid or has expired."))
+        return redirect("playstyle_compass:index")
 
 
 @login_required

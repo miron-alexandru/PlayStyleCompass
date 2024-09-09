@@ -31,7 +31,7 @@
 button[type="submit"] {
   background-color: #007bff;
   color: #fff;
-  padding: 6px 12px;
+  padding: 5px 10px;
   border: none;
   border-radius: 5px;
   font-size: 14px;
@@ -49,7 +49,7 @@ button[type="submit"]:hover {
   top: 50%;
   transform: translateY(-50%);
   border: none;
-  background-color: #fff;
+  background-color: transparent;
   font-size: 15px;
   color: #007c89;
   font-weight: bold;
@@ -57,7 +57,7 @@ button[type="submit"]:hover {
 
 .show-hide-button:hover,
 .show-hide-button:focus {
-  background-color: #fff;
+  background-color: transparent;
   border: none;
   color: #00323a;
 }
@@ -72,4 +72,12 @@ button[type="submit"]:hover {
   font-size: 12px;
   color: #6c757d;
   margin-top: 5px;
+}
+
+.login-form {
+  margin-bottom: 7px;
+}
+
+.login-alternative {
+  text-align: center;
 }

@@ -1,0 +1,10 @@
+{% load i18n %}
+{% autoescape off %}
+{% trans "Hi" %} {{ user.username }},
+
+{% trans "We received a request to delete your account. Please click on the link below to confirm this request:" %}
+
+{{ protocol }}://{{ domain }}{% url 'confirm_deletion' uidb64=uid token=token %}
+
+{% trans "If you did not request this, please ignore this email." %}
+{% endautoescape %}

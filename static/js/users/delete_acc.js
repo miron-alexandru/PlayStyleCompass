@@ -6,9 +6,11 @@ document.addEventListener("DOMContentLoaded", function () {
   const deleteForm = document.getElementById("delete-form");
   const passwordInput = document.getElementById("id_password");
 
-  const confirmAndSubmit = function () {
-    if (confirm("Confirm")) {
+  const confirmAndSubmit = function (event) {
+    if (confirm("Are you sure you want to proceed?")) {
       deleteForm.submit();
+    } else {
+      event.preventDefault();
     }
   };
 

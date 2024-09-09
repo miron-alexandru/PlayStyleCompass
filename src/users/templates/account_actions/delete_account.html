@@ -33,12 +33,16 @@
         </ul>
         {% endif %}
       </div>
-      {% if not user.userprofile.email_confirmed %}
-      <button type="button" class="btn btn-danger disabled" id="delete-button-disabled" 
-      title="{% trans 'Confirm your email address to unlock this!' %}">
-      {% trans "Delete" %}</button>
+      {% if user.userprofile.email_confirmed %}
+      <div class="form-group">
+        <button type="submit" name="delete_with_password" class="btn btn-danger" id="delete-button">{% trans "Delete with Password" %}</button>
+        <p class="text-center">or</p>
+        <button type="submit" name="delete_with_email" class="btn btn-warning">{% trans "Delete with Email Confirmation" %}</button>
+      </div>
       {% else %}
-      <button type="button" class="btn btn-danger" id="delete-button">{% trans "Delete" %}</button>
+      <button type="button" class="btn btn-danger disabled" id="delete-button-disabled"
+      title="{% trans 'Confirm your email address to unlock this!' %}">
+      {% trans "Delete with Email Confirmation" %}</button>
       {% endif %}
     </form>
   </div>

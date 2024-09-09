@@ -13,27 +13,27 @@ from channels.db import database_sync_to_async
 from django.contrib.auth.signals import user_logged_in, user_logged_out
 from django.utils import timezone
 import pytz
-from django.contrib.auth import get_user_model
 
-User = get_user_model()
 
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
-    if created and not getattr(instance, '_profile_created', False):
+    if created and not getattr(instance, "_profile_created", False):
         # Check if the user already has a UserProfile
         if not UserProfile.objects.filter(user=instance).exists():
             base_name = f"Player_{random.randint(1000, 9999)}"
 
             unique_name = base_name
             while UserProfile.objects.filter(profile_name=unique_name).exists():
-                suffix = ''.join(random.choices(string.ascii_letters + string.digits, k=4))
+                suffix = "".join(
+                    random.choices(string.ascii_letters + string.digits, k=4)
+                )
                 unique_name = f"Player_{random.randint(1000, 9999)}_{suffix}"
-            
+
             user_profile = UserProfile(
                 user=instance,
                 profile_name=unique_name,
                 profile_picture="profile_pictures/default_pfp/default_profile_picture.png",
-                timezone='',
+                timezone="",
             )
             user_profile.save()
 

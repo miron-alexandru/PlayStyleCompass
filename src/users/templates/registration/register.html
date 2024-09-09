@@ -100,8 +100,11 @@
       </ul>
       {% endif %}
     </div>
-
+    <div class="text-center">
     <button name="submit" class="btn btn-primary">{% trans "Register" %}</button>
+  </div>
+    <p class="text-center">or</p>
+        <p class="text-center"><a href="{% url 'social:begin' 'google-oauth2' %}">{% trans "Log in" %}</a> {% trans "with your Google Account" %}
     <input type="hidden" name="next" value="{% url 'playstyle_compass:index' %}" />
   </form>
 </div>

@@ -125,6 +125,8 @@ Websites for .env configuration: [GiantBomb](https://www.giantbomb.com/) / [Send
 <summary><h2>PlayStyle Compass Changelog</h2></summary>
 
 ### Version v2.2:
+* Users are able to delete their account using email confirmation.
+* Improved Google Account Login (css / html)
 * Implemented google account login.
 
 ### Version v2.1:

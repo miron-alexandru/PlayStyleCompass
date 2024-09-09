@@ -22,6 +22,7 @@ from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from utils.constants import GAMING_COMMITMENT_CHOICES, PLATFORM_CHOICES, GENRE_CHOICES
 from django.core.files.storage import default_storage
+from django.core.exceptions import ValidationError
 
 
 class CustomAuthenticationForm(AuthenticationForm):
@@ -152,7 +153,11 @@ class DeleteAccountForm(forms.Form):
 
     password = forms.CharField(
         label="",
-        widget=forms.PasswordInput(attrs={"placeholder": ""}),
+        widget=forms.PasswordInput(
+            attrs={
+                "placeholder": "",
+            }
+        ),
     )
 
 

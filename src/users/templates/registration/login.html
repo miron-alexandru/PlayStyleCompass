@@ -20,7 +20,7 @@
 
 <div class="my-container">
     <h2>{% trans "Log Into Your Account" %}</h2>
-    <form method="post" action="{% url 'users:login' %}" class="form">
+    <form method="post" action="{% url 'users:login' %}" class="form login-form">
         {% csrf_token %}
         <div class="form-group">
             {% if form.non_field_errors %}
@@ -48,13 +48,15 @@
             </div>
         </div>
 
-        {% buttons %}
-        <button name="submit" class="btn btn-primary">{% trans "Log in" %}</button>
-        {% endbuttons %}
+        <div class="text-center">
+            <button name="submit" class="btn btn-primary">{% trans "Log in" %}</button>
+        </div>
+
         <input type="hidden" name="next" value="{% url 'playstyle_compass:index' %}" />
+        <p class="text-center">or</p>
+        <p class="text-center"><a href="{% url 'social:begin' 'google-oauth2' %}">{% trans "Log in" %}</a> {% trans "with your Google Account" %}
     </form>
 
-    <p><a href="{% url 'social:begin' 'google-oauth2' %}">Login</a> {% trans "with your Google Account" %}</p>
     <a href="{% url 'users:password_reset' %}">{% trans "Forgot password?" %}</a>
     <p>{% trans "Don't have an account?" %} <a href="{% url 'users:register' %}">{% trans "Sign up now!" %}</a></p>
 </div>

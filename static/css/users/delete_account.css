@@ -50,14 +50,36 @@ button.btn-danger {
   background-color: #e74c3c;
   color: #fff;
   border: none;
-  padding: 12px 20px;
+  padding: 8px 16px;
   cursor: pointer;
   border-radius: 5px;
   font-size: 16px;
   width: 100%;
 }
 
-.btn-danger.disabled {
+button.btn-danger.disabled {
   cursor: not-allowed;
   opacity: 0.7;
+}
+
+button.btn-warning {
+  background-color: #f39c12;
+  color: #fff; /* White text */
+  border: none;
+  padding: 8px 16px;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 16px;
+  width: 100%;
+}
+
+button.btn-warning.disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.text-center {
+  font-size: 16px;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }

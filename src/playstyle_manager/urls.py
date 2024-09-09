@@ -13,8 +13,13 @@ urlpatterns = i18n_patterns(
     path("admin/", admin.site.urls),
     path("", include("playstyle_compass.urls")),
     path("users/", include("users.urls")),
-    path('users/', include('social_django.urls', namespace='social')),
+    path("users/", include("social_django.urls", namespace="social")),
     path("activate/<uidb64>/<token>", views.activate, name="activate"),
+    path(
+        "confirm-deletion/<uidb64>/<token>/",
+        views.confirm_deletion,
+        name="confirm_deletion",
+    ),
     path(
         "password-reset/done/",
         auth_views.PasswordResetDoneView.as_view(

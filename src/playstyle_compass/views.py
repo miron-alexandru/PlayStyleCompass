@@ -1249,6 +1249,7 @@ def similar_games(request, game_guid):
 
     return render(request, "games/similar_games.html", context)
 
+
 def get_filtered_games(request, filter_keyword):
     """Helper function to filter games based on a keyword and paginate the results."""
     user, user_preferences, user_friends = get_user_context(request)
@@ -1279,7 +1280,9 @@ def open_world_games(request):
 
 def linear_gameplay_games(request):
     """View to display all linear gameplay games."""
-    games, user_preferences, user_friends = get_filtered_games(request, "Linear Gameplay")
+    games, user_preferences, user_friends = get_filtered_games(
+        request, "Linear Gameplay"
+    )
 
     context = {
         "page_title": _("Linear Gameplay Games :: PlayStyle Compass"),
@@ -1339,7 +1342,9 @@ def free_to_play_games(request):
 
 def vr_games(request):
     """View to display all Virtual Reality games."""
-    games, user_preferences, user_friends = get_filtered_games(request, "Virtual Reality")
+    games, user_preferences, user_friends = get_filtered_games(
+        request, "Virtual Reality"
+    )
 
     context = {
         "page_title": _("VR Games :: PlayStyle Compass"),

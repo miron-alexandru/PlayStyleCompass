@@ -1,4 +1,5 @@
 from django.utils import timezone
+from django.core.exceptions import ObjectDoesNotExist
 
 
 class UserTimezoneMiddleware:
@@ -17,8 +18,11 @@ class UserTimezoneMiddleware:
                 tz = timezone.get_current_timezone()
                 if tz:
                     tz = str(tz)
-                    if tz != request.user.userprofile.timezone:
-                        request.user.userprofile.timezone = tz
-                        request.user.userprofile.save()
+                    try:
+                        if tz != request.user.userprofile.timezone:
+                            request.user.userprofile.timezone = tz
+                            request.user.userprofile.save()
+                    except ObjectDoesNotExist:
+                        pass
 
         return response
