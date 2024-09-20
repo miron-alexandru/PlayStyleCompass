@@ -9,10 +9,11 @@ from django.utils.translation import gettext_lazy as _
 
 from .tokens import account_activation_token
 
+
 def send_email_confirmation(backend, user, response, *args, **kwargs):
-    request = kwargs.get('request')
-    is_new = kwargs.get('is_new')
-    
+    request = kwargs.get("request")
+    is_new = kwargs.get("is_new")
+
     if is_new and not user.userprofile.email_confirmed:
         to_email = user.email
         mail_subject = str(_("Activate your user account."))
@@ -43,4 +44,3 @@ def send_email_confirmation(backend, user, response, *args, **kwargs):
                 )
                 % {"to_email": to_email},
             )
-
