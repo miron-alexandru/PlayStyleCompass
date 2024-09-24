@@ -333,6 +333,20 @@ GENRE_CHOICES = [
     ("Driving/Racing", "Driving/Racing"),
 ]
 
+GAME_MODES_CHOICES = [
+    ("Battle Royale", "Battle Royale"),
+    ("Team Deathmatch", "Team Deathmatch"),
+    ("Casual", "Casual"),
+    ("Competitive", "Competitive"),
+    ("Cooperative", "Cooperative"),
+    ("Free-for-All", "Free-for-All"),
+    ("Capture the Flag", "Capture the Flag"),
+    ("Survival", "Survival"),
+    ("Ranked", "Ranked"),
+    ("Story Mode", "Story Mode"),
+]
+
+
 
 API_KEY = str(os.getenv("GBAPI_KEY"))
 GOOGLE_API_KEY = str(os.getenv("GOOGLE_API_KEY"))

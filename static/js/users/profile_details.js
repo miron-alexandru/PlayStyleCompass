@@ -1,10 +1,12 @@
 $(document).ready(function() {
-    $('input[name="gaming_genres"]').on('change', function(evt) {
-        var checked = $('input[name="gaming_genres"]:checked');
+    $('input[name="gaming_genres"], input[name="favorite_game_modes"]').on('change', function(evt) {
+        var name = $(this).attr('name');
+        var checked = $('input[name="' + name + '"]:checked');
+        
         if (checked.length >= 3) {
-            $('input[name="gaming_genres"]').not(':checked').prop('disabled', true);
+            $('input[name="' + name + '"]').not(':checked').prop('disabled', true);
         } else {
-            $('input[name="gaming_genres"]').not(':checked').prop('disabled', false);
+            $('input[name="' + name + '"]').not(':checked').prop('disabled', false);
         }
     });
 });

@@ -20,7 +20,7 @@ from django_recaptcha.fields import ReCaptchaField
 from .models import UserProfile, ContactMessage, Message, UserProfile
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
-from utils.constants import GAMING_COMMITMENT_CHOICES, PLATFORM_CHOICES, GENRE_CHOICES
+from utils.constants import GAMING_COMMITMENT_CHOICES, PLATFORM_CHOICES, GENRE_CHOICES, GAME_MODES_CHOICES
 from django.core.files.storage import default_storage
 from django.core.exceptions import ValidationError
 
@@ -447,6 +447,10 @@ class UserProfileForm(forms.ModelForm):
             "favorite_franchise",
             "last_finished_game",
             "streaming_preferences",
+            "current_game",
+            "favorite_soundtrack",
+            "gaming_alias",
+            "favorite_game_modes",
         ]
         widgets = {
             "bio": forms.Textarea(
@@ -484,10 +488,23 @@ class UserProfileForm(forms.ModelForm):
             "streaming_preferences": forms.TextInput(
                 attrs={"placeholder": _("What is your preferred streaming platform?")}
             ),
+            "current_game": forms.TextInput(
+                attrs={"placeholder": _("What game are you currently playing?")}
+            ),
+            "favorite_soundtrack": forms.TextInput(
+                attrs={"placeholder": _("What is your favorite soundtrack from a game?")}
+            ),
+            "gaming_alias": forms.TextInput(
+                attrs={"placeholder": _("What is your gaming nickname or alias?")}
+            ),
         }
 
     gaming_genres = forms.MultipleChoiceField(
         choices=GENRE_CHOICES, widget=forms.CheckboxSelectMultiple, required=False
+    )
+
+    favorite_game_modes = forms.MultipleChoiceField(
+        choices=GAME_MODES_CHOICES, widget=forms.CheckboxSelectMultiple, required=False
     )
 
     def clean_gaming_genres(self):
@@ -495,6 +512,12 @@ class UserProfileForm(forms.ModelForm):
         if len(genres) > 3:
             raise forms.ValidationError(_("You can only select up to 3 genres."))
         return ", ".join(genres) if genres else ""
+
+    def clean_favorite_game_modes(self):
+        game_modes = self.cleaned_data.get("favorite_game_modes")
+        if len(game_modes) > 3:
+            raise forms.ValidationError(_("You can only select up to 3 game modes."))
+        return ", ".join(game_modes) if game_modes else ""
 
     def clean_social_media(self):
         social_media = self.cleaned_data.get("social_media")

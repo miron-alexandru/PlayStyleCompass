@@ -24,7 +24,15 @@
           {{ form.bio }}
       </div>
       <div class="form-group">
-          <label for="id_favorite_game">{% trans "Last Finished Game" %}</label>
+          <label for="id_gaming_alias">{% trans "Gaming Alias" %}</label>
+          {{ form.gaming_alias }}
+      </div>
+      <div class="form-group">
+          <label for="id_current_game">{% trans "Current Game" %}</label>
+          {{ form.current_game }}
+      </div>
+      <div class="form-group">
+          <label for="id_last_finished_game">{% trans "Last Finished Game" %}</label>
           {{ form.last_finished_game }}
       </div>
       <div class="form-group">
@@ -32,7 +40,7 @@
           {{ form.favorite_game }}
       </div>
       <div class="form-group">
-          <label for="id_favorite_game">{% trans "Favorite Franchise" %}</label>
+          <label for="id_favorite_franchise">{% trans "Favorite Franchise" %}</label>
           {{ form.favorite_franchise }}
       </div>
       <div class="form-group">
@@ -40,9 +48,20 @@
           {{ form.favorite_character }}
       </div>
       <div class="form-group">
+          <label for="id_favorite_soundtrack">{% trans "Favorite Soundtrack" %}</label>
+          {{ form.favorite_soundtrack }}
+      </div>
+      <div class="form-group">
           <label for="id_gaming_genres">{% trans "Favorite Genres" %}</label>
           {{ form.gaming_genres }}
           {% for error in form.gaming_genres.errors %}
+            <div class="custom-error-list">{{ error }}</div>
+        {% endfor %}
+      </div>
+      <div class="form-group">
+          <label for="id_favorite_game_modes">{% trans "Favorite Game Modes" %}</label>
+          {{ form.favorite_game_modes }}
+          {% for error in form.favorite_game_modes.errors %}
             <div class="custom-error-list">{{ error }}</div>
         {% endfor %}
       </div>

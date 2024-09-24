@@ -187,6 +187,14 @@
         <span class="info-value">{{ user_profile.bio|default:"-" }}</span>
     </div>
     <div class="profile-info-item">
+        <span class="info-label">{% trans "Gaming Alias" %}</span>
+        <span class="info-value">{{ user_profile.gaming_alias|default:"-" }}</span>
+    </div>
+    <div class="profile-info-item">
+        <span class="info-label">{% trans "Current Game" %}</span>
+        <span class="info-value">{{ user_profile.current_game|default:"-"|game_link|safe }}</span>
+    </div>
+    <div class="profile-info-item">
         <span class="info-label">{% trans "Last Finished Game" %}</span>
         <span class="info-value">{{ user_profile.last_finished_game|default:"-"|game_link|safe }}</span>
     </div>
@@ -203,8 +211,16 @@
       <span class="info-value">{{ user_profile.favorite_character|default:"-"|object_link:"character"|safe }}</span>
     </div>
     <div class="profile-info-item">
+        <span class="info-label">{% trans "Favorite Soundtrack" %}</span>
+        <span class="info-value">{{ user_profile.favorite_soundtrack|default:"-" }}</span>
+    </div>
+    <div class="profile-info-item">
         <span class="info-label">{% trans "Favorite Genres" %}</span>
         <span class="info-value">{{ user_profile.gaming_genres|default:"-" }}</span>
+    </div>
+    <div class="profile-info-item">
+        <span class="info-label">{% trans "Favorite Game Modes" %}</span>
+        <span class="info-value">{{ user_profile.favorite_game_modes|default:"-" }}</span>
     </div>
     <div class="profile-info-item">
         <span class="info-label">{% trans "Gaming Commitment" %}</span>
