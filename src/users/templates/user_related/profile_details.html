@@ -15,80 +15,185 @@
 {% block content %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/users/profile_details.css' %}">
 <link rel="stylesheet" type="text/css" href="{% static 'css/users/common.css' %}">
-
 <div class="form-container">
   <form method="post">
       {% csrf_token %}
+      {% if form.non_field_errors %}
+        <div class="custom-error-list">
+            {% for error in form.non_field_errors %}
+              <p>{{ error }}</p>
+            {% endfor %}
+        </div>
+      {% endif %}
       <div class="form-group">
           <label for="id_bio">{% trans "Bio" %}</label>
           {{ form.bio }}
+          {% if form.bio.errors %}
+              <div class="custom-error-list">
+                  {% for error in form.bio.errors %}
+                      <p>{{ error }}</p>
+                  {% endfor %}
+              </div>
+          {% endif %}
       </div>
       <div class="form-group">
           <label for="id_gaming_alias">{% trans "Gaming Alias" %}</label>
           {{ form.gaming_alias }}
+          {% if form.gaming_alias.errors %}
+              <div class="custom-error-list">
+                  {% for error in form.gaming_alias.errors %}
+                      <p>{{ error }}</p>
+                  {% endfor %}
+              </div>
+          {% endif %}
       </div>
       <div class="form-group">
           <label for="id_current_game">{% trans "Current Game" %}</label>
           {{ form.current_game }}
+          {% if form.current_game.errors %}
+              <div class="custom-error-list">
+                  {% for error in form.current_game.errors %}
+                      <p>{{ error }}</p>
+                  {% endfor %}
+              </div>
+          {% endif %}
       </div>
       <div class="form-group">
           <label for="id_last_finished_game">{% trans "Last Finished Game" %}</label>
           {{ form.last_finished_game }}
+          {% if form.last_finished_game.errors %}
+              <div class="custom-error-list">
+                  {% for error in form.last_finished_game.errors %}
+                      <p>{{ error }}</p>
+                  {% endfor %}
+              </div>
+          {% endif %}
       </div>
       <div class="form-group">
           <label for="id_favorite_game">{% trans "Favorite Game" %}</label>
           {{ form.favorite_game }}
+          {% if form.favorite_game.errors %}
+              <div class="custom-error-list">
+                  {% for error in form.favorite_game.errors %}
+                      <p>{{ error }}</p>
+                  {% endfor %}
+              </div>
+          {% endif %}
       </div>
       <div class="form-group">
           <label for="id_favorite_franchise">{% trans "Favorite Franchise" %}</label>
           {{ form.favorite_franchise }}
+          {% if form.favorite_franchise.errors %}
+              <div class="custom-error-list">
+                  {% for error in form.favorite_franchise.errors %}
+                      <p>{{ error }}</p>
+                  {% endfor %}
+              </div>
+          {% endif %}
       </div>
       <div class="form-group">
           <label for="id_favorite_character">{% trans "Favorite Character" %}</label>
           {{ form.favorite_character }}
+          {% if form.favorite_character.errors %}
+              <div class="custom-error-list">
+                  {% for error in form.favorite_character.errors %}
+                      <p>{{ error }}</p>
+                  {% endfor %}
+              </div>
+          {% endif %}
       </div>
       <div class="form-group">
           <label for="id_favorite_soundtrack">{% trans "Favorite Soundtrack" %}</label>
           {{ form.favorite_soundtrack }}
+          {% if form.favorite_soundtrack.errors %}
+              <div class="custom-error-list">
+                  {% for error in form.favorite_soundtrack.errors %}
+                      <p>{{ error }}</p>
+                  {% endfor %}
+              </div>
+          {% endif %}
       </div>
       <div class="form-group">
           <label for="id_gaming_genres">{% trans "Favorite Genres" %}</label>
           {{ form.gaming_genres }}
-          {% for error in form.gaming_genres.errors %}
-            <div class="custom-error-list">{{ error }}</div>
-        {% endfor %}
+          {% if form.gaming_genres.errors %}
+              <div class="custom-error-list">
+                  {% for error in form.gaming_genres.errors %}
+                      <p>{{ error }}</p>
+                  {% endfor %}
+              </div>
+          {% endif %}
       </div>
       <div class="form-group">
           <label for="id_favorite_game_modes">{% trans "Favorite Game Modes" %}</label>
           {{ form.favorite_game_modes }}
-          {% for error in form.favorite_game_modes.errors %}
-            <div class="custom-error-list">{{ error }}</div>
-        {% endfor %}
+          {% if form.favorite_game_modes.errors %}
+              <div class="custom-error-list">
+                  {% for error in form.favorite_game_modes.errors %}
+                      <p>{{ error }}</p>
+                  {% endfor %}
+              </div>
+          {% endif %}
       </div>
       <div class="form-group">
           <label for="id_type_of_gamer">{% trans "Gaming Commitment" %}</label>
           {{ form.gaming_commitment }}
+          {% if form.gaming_commitment.errors %}
+              <div class="custom-error-list">
+                  {% for error in form.gaming_commitment.errors %}
+                      <p>{{ error }}</p>
+                  {% endfor %}
+              </div>
+          {% endif %}
       </div>
       <div class="form-group">
           <label for="id_main_gaming_platform">{% trans "Main Platform" %}</label>
           {{ form.main_gaming_platform }}
+          {% if form.main_gaming_platform.errors %}
+              <div class="custom-error-list">
+                  {% for error in form.main_gaming_platform.errors %}
+                      <p>{{ error }}</p>
+                  {% endfor %}
+              </div>
+          {% endif %}
       </div>
       <div class="form-group">
           <label for="id_gaming_setup">{% trans "Gaming Setup" %}</label>
           {{ form.gaming_setup }}
+          {% if form.gaming_setup.errors %}
+              <div class="custom-error-list">
+                  {% for error in form.gaming_setup.errors %}
+                      <p>{{ error }}</p>
+                  {% endfor %}
+              </div>
+          {% endif %}
       </div>
       <div class="form-group">
           <label for="id_main_gaming_platform">{% trans "Preferred Streaming Platform" %}</label>
           {{ form.streaming_preferences }}
+          {% if form.streaming_preferences.errors %}
+              <div class="custom-error-list">
+                  {% for error in form.streaming_preferences.errors %}
+                      <p>{{ error }}</p>
+                  {% endfor %}
+              </div>
+          {% endif %}
       </div>
       <div class="form-group">
-        <label for="id_social_media">{% trans "Social Media" %}</label>
-        {{ form.social_media }}
-        {% for error in form.social_media.errors %}
-            <div class="custom-error-list">{{ error }}</div>
-        {% endfor %}
-    </div>
+          <label for="id_social_media">{% trans "Social Media" %}</label>
+          {{ form.social_media }}
+          {% if form.social_media.errors %}
+              <div class="custom-error-list">
+                  {% for error in form.social_media.errors %}
+                      <p>{{ error }}</p>
+                  {% endfor %}
+              </div>
+          {% endif %}
+      </div>
+      <div class="form-buttons">
       <button type="submit">{% trans "Save changes" %}</button>
+      <button type="submit" name="reset_profile" class="reset-btn">{% trans "Reset details" %}</button>
+  </div>
   </form>
 </div>
 

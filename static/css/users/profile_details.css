@@ -37,3 +37,16 @@
   resize: vertical;
   min-height: 100px;
 }
+
+.reset-btn {
+  background-color: #DC143C!important;
+}
+
+.reset-btn:hover {
+    background-color: #8B0000!important;
+}
+
+.form-buttons {
+  display: flex;
+  justify-content: flex-start;
+}

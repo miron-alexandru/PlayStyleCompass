@@ -1332,10 +1332,32 @@ def profile_details(request):
     profile_name = request.user.userprofile.profile_name
 
     if request.method == "POST":
-        form = UserProfileForm(request.POST, instance=user_profile)
-        if form.is_valid():
-            form.save()
+        if "reset_profile" in request.POST:
+            user_profile.bio = ""
+            user_profile.gaming_alias = ""
+            user_profile.current_game = ""
+            user_profile.last_finished_game = ""
+            user_profile.favorite_game = ""
+            user_profile.favorite_franchise = ""
+            user_profile.favorite_character = ""
+            user_profile.favorite_soundtrack = ""
+            user_profile.gaming_genres = ""
+            user_profile.favorite_game_modes = ""
+            user_profile.gaming_commitment = ""
+            user_profile.main_gaming_platform = ""
+            user_profile.gaming_setup = ""
+            user_profile.streaming_preferences = ""
+            user_profile.social_media = ""
+
+            user_profile.save()
             return redirect("users:view_profile", profile_name=profile_name)
+
+        else:
+            form = UserProfileForm(request.POST, instance=user_profile)
+            if form.is_valid():
+                form.save()
+                return redirect("users:view_profile", profile_name=profile_name)
+
     else:
         form = UserProfileForm(instance=user_profile)
 
