@@ -48,8 +48,17 @@
             </div>
         </div>
 
+        <div class="form-group form-check">
+        <div class="form-check-input">
+            {{ form.remember_me }}
+        </div>
+            <label class="form-check-label" for="{{ form.remember_me.id_for_label }}">
+                {% trans "Remember me" %}
+            </label>
+        </div>
+
         <div class="text-center">
-            <button name="submit" class="btn btn-primary">{% trans "Log in" %}</button>
+            <button name="submit" class="btn btn-primary login-btn">{% trans "Log in" %}</button>
         </div>
 
         <input type="hidden" name="next" value="{% url 'playstyle_compass:index' %}" />

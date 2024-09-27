@@ -125,6 +125,7 @@ Websites for .env configuration: [GiantBomb](https://www.giantbomb.com/) / [Send
 <summary><h2>PlayStyle Compass Changelog</h2></summary>
 
 ### Version v2.2:
+* Remember Me functionality added for login.
 * Users are able to reset their profile details.
 * New profile details added: Favorite Soundtrack, Gaming Alias, Current Game and Favorite Game Modes.
 * Users are able to delete their account using email confirmation.

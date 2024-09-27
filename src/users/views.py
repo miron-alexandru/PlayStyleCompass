@@ -163,7 +163,7 @@ class ProfileUpdateView(LoginRequiredMixin, UpdateView):
 
 
 class CustomLoginView(LoginView):
-    """Cusotm user login view."""
+    """Custom user login view."""
 
     authentication_form = CustomAuthenticationForm
     template_name = "registration/login.html"
@@ -174,6 +174,17 @@ class CustomLoginView(LoginView):
 
         return super().dispatch(request, *args, **kwargs)
 
+    def form_valid(self, form):
+        response = super().form_valid(form)
+
+        remember_me = form.cleaned_data.get('remember_me')
+
+        if remember_me:
+            self.request.session.set_expiry(1209600)
+        else:
+            self.request.session.set_expiry(0)
+
+        return response
 
 def custom_logout(request):
     """Custom logout view."""

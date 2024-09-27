@@ -207,47 +207,56 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 document.addEventListener("DOMContentLoaded", function() {
-    const recipientMeta = document.getElementById('recipient-id');
-    let recipientId = '';
+    fetch(authCheckUrl)
+        .then((response) => response.json())
+        .then((data) => {
+            if (data.authenticated) {
+                const recipientMeta = document.getElementById('recipient-id');
+                let recipientId = '';
 
-    if (recipientMeta) {
-        recipientId = Number(recipientMeta.getAttribute('content'));
-    }
+                if (recipientMeta) {
+                    recipientId = Number(recipientMeta.getAttribute('content'));
+                }
 
-    const wsUrl = recipientId ? 
-        `wss://${window.location.host}/ws/online-status/${recipientId}/` : 
-        `wss://${window.location.host}/ws/online-status/`;
+                const wsUrl = recipientId ? 
+                    `wss://${window.location.host}/ws/online-status/${recipientId}/` : 
+                    `wss://${window.location.host}/ws/online-status/`;
 
-    const ws = new WebSocket(wsUrl);
+                const ws = new WebSocket(wsUrl);
 
-    ws.onmessage = function(event) {
-        const data = JSON.parse(event.data);
-        const statusElement = document.getElementById('status');
-        const lastSeenElement = document.querySelector('.last-seen');
+                ws.onmessage = function(event) {
+                    const data = JSON.parse(event.data);
+                    const statusElement = document.getElementById('status');
+                    const lastSeenElement = document.querySelector('.last-seen');
 
-        if (statusElement) {
-            statusElement.innerText = data.status ? translate('Online') : translate('Offline');
+                    if (statusElement) {
+                        statusElement.innerText = data.status ? translate('Online') : translate('Offline');
 
-            if (data.status) {
-                statusElement.classList.remove('offline');
-                statusElement.classList.add('online');
-            } else {
-                statusElement.classList.remove('online');
-                statusElement.classList.add('offline');
+                        if (data.status) {
+                            statusElement.classList.remove('offline');
+                            statusElement.classList.add('online');
+                        } else {
+                            statusElement.classList.remove('online');
+                            statusElement.classList.add('offline');
+                        }
+                    }
+
+                    if (lastSeenElement) {
+                        if (data.status) {
+                            lastSeenElement.style.display = 'none';
+                        } else {
+                            lastSeenElement.style.display = 'block';
+                            lastSeenElement.innerHTML = `<strong>(Last Seen: </strong>${data.last_online})`;
+                        }
+                    }
+                };
+
+                ws.onerror = function(error) {
+                    console.error('WebSocket error:', error);
+                };
             }
-        }
-
-        if (lastSeenElement) {
-            if (data.status) {
-                lastSeenElement.style.display = 'none';
-            } else {
-                lastSeenElement.style.display = 'block';
-                lastSeenElement.innerHTML = `<strong>(Last Seen: </strong>${data.last_online})`;
-            }
-        }
-    };
-
-    ws.onerror = function(error) {
-        console.error('WebSocket error:', error);
-    };
+        })
+        .catch((error) => {
+            console.error('Auth check failed:', error);
+        });
 });

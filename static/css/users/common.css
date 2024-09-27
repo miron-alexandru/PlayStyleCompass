@@ -81,3 +81,14 @@ button[type="submit"]:hover {
 .login-alternative {
   text-align: center;
 }
+
+.form-check {
+  margin-top: -5px;
+  display: flex;
+  align-items: center;
+}
+
+.form-check-label {
+  display: inline-block!important;
+  margin-bottom: -4px!important;
+}

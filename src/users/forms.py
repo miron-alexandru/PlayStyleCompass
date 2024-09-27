@@ -48,6 +48,8 @@ class CustomAuthenticationForm(AuthenticationForm):
         ),
     )
 
+    remember_me = forms.BooleanField(required=False, label='Remember Me')
+
 
 class CustomRegistrationForm(UserCreationForm):
     """Custom registration form."""
