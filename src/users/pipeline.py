@@ -6,6 +6,8 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.contrib import messages
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
+from django.contrib.auth import get_user_model
+from playstyle_compass.models import UserPreferences 
 
 from .tokens import account_activation_token
 
@@ -44,3 +46,20 @@ def send_email_confirmation(backend, user, response, *args, **kwargs):
                 )
                 % {"to_email": to_email},
             )
+
+User = get_user_model()
+
+def create_or_link_user(backend, uid, user=None, *args, **kwargs):
+    """Ensure that only one account is linked to a social login."""
+    email = kwargs.get('details', {}).get('email')
+    
+    if email:
+        try:
+            existing_user = User.objects.get(email=email)
+            if existing_user and user != existing_user:
+                # If there's already an account with this email, return the existing user
+                return {'is_new': False, 'user': existing_user}
+        except User.DoesNotExist:
+            # No existing user found, proceed with new user creation
+            pass
+    return {'is_new': False, 'user': user}

@@ -46,10 +46,10 @@ def create_user_models(sender, instance, created, **kwargs):
             user_profile = UserProfile.objects.create(user=instance)
             user_profile.profile_name = "admin"
             user_profile.save()
-        UserPreferences.objects.create(user=instance)
 
-
-post_save.connect(create_user_models, sender=User)
+        user_preferences = UserPreferences.objects.create(user=instance)
+        user_preferences.quiz_recommendations = []
+        user_preferences.save()
 
 
 @receiver(post_save, sender=Notification)
