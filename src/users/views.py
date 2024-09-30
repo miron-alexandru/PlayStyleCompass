@@ -1375,6 +1375,7 @@ def profile_details(request):
     context = {
         "page_title": _("Profile Details :: PlayStyle Compass"),
         "form": form,
+        "user_profile": user_profile,
     }
 
     return render(request, "user_related/profile_details.html", context)

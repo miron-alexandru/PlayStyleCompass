@@ -15,7 +15,9 @@
 {% block content %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/users/profile_details.css' %}">
 <link rel="stylesheet" type="text/css" href="{% static 'css/users/common.css' %}">
-<div class="form-container">
+<div class="form-container" 
+     data-gaming-genres="{{ user_profile.gaming_genres|default:'' }}" 
+     data-favorite-game-modes="{{ user_profile.favorite_game_modes|default:'' }}">
   <form method="post">
       {% csrf_token %}
       {% if form.non_field_errors %}

@@ -1,12 +1,31 @@
-$(document).ready(function() {
-    $('input[name="gaming_genres"], input[name="favorite_game_modes"]').on('change', function(evt) {
-        var name = $(this).attr('name');
-        var checked = $('input[name="' + name + '"]:checked');
-        
-        if (checked.length >= 3) {
-            $('input[name="' + name + '"]').not(':checked').prop('disabled', true);
-        } else {
-            $('input[name="' + name + '"]').not(':checked').prop('disabled', false);
-        }
-    });
+document.addEventListener("DOMContentLoaded", () => {
+    const genres = $('.form-container').data('gaming-genres').split(',').map(g => g.trim());
+    const gameModes = $('.form-container').data('favorite-game-modes').split(',').map(g => g.trim());
+
+    const checkCheckboxes = (items) => {
+        items.forEach(item => {
+            const checkbox = document.querySelector(`input[type="checkbox"][value="${item}"]`);
+            if (checkbox) checkbox.checked = true;
+        });
+    };
+
+    checkCheckboxes(genres);
+    checkCheckboxes(gameModes);
+});
+
+$(document).ready(() => {
+    const toggleCheckboxes = (name) => {
+        const checkedCount = $(`input[name="${name}"]:checked`).length;
+        const checkboxes = $(`input[name="${name}"]`).not(':checked');
+
+        checkboxes.prop('disabled', checkedCount >= 3);
+    };
+
+    const initToggle = (name) => {
+        toggleCheckboxes(name);
+        $(`input[name="${name}"]`).on('change', () => toggleCheckboxes(name));
+    };
+
+    initToggle('gaming_genres');
+    initToggle('favorite_game_modes');
 });
