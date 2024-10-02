@@ -20,7 +20,12 @@ from django_recaptcha.fields import ReCaptchaField
 from .models import UserProfile, ContactMessage, Message, UserProfile
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
-from utils.constants import GAMING_COMMITMENT_CHOICES, PLATFORM_CHOICES, GENRE_CHOICES, GAME_MODES_CHOICES
+from utils.constants import (
+    GAMING_COMMITMENT_CHOICES,
+    PLATFORM_CHOICES,
+    GENRE_CHOICES,
+    GAME_MODES_CHOICES,
+)
 from django.core.files.storage import default_storage
 from django.core.exceptions import ValidationError
 
@@ -48,7 +53,7 @@ class CustomAuthenticationForm(AuthenticationForm):
         ),
     )
 
-    remember_me = forms.BooleanField(required=False, label='Remember Me')
+    remember_me = forms.BooleanField(required=False, label="Remember Me")
 
 
 class CustomRegistrationForm(UserCreationForm):
@@ -494,7 +499,9 @@ class UserProfileForm(forms.ModelForm):
                 attrs={"placeholder": _("What game are you currently playing?")}
             ),
             "favorite_soundtrack": forms.TextInput(
-                attrs={"placeholder": _("What is your favorite soundtrack from a game?")}
+                attrs={
+                    "placeholder": _("What is your favorite soundtrack from a game?")
+                }
             ),
             "gaming_alias": forms.TextInput(
                 attrs={"placeholder": _("What is your gaming nickname or alias?")}

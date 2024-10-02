@@ -21,19 +21,35 @@ class UserProfile(models.Model):
     quiz_taken = models.BooleanField(default=False)
     bio = models.TextField(max_length=50, blank=True, null=False, default="")
     favorite_game = models.CharField(max_length=50, blank=True, null=False, default="")
-    favorite_character = models.CharField(max_length=50, blank=True, null=False, default="")
-    gaming_commitment = models.CharField(max_length=50, blank=True, null=False, default="")
-    main_gaming_platform = models.CharField(max_length=50, blank=True, null=False, default="")
+    favorite_character = models.CharField(
+        max_length=50, blank=True, null=False, default=""
+    )
+    gaming_commitment = models.CharField(
+        max_length=50, blank=True, null=False, default=""
+    )
+    main_gaming_platform = models.CharField(
+        max_length=50, blank=True, null=False, default=""
+    )
     social_media = models.CharField(max_length=100, blank=True, null=False, default="")
     gaming_setup = models.TextField(blank=True, null=False, max_length=150, default="")
     gaming_genres = models.CharField(max_length=255, blank=True, null=False)
-    favorite_franchise = models.CharField(max_length=50, blank=True, null=False, default="")
-    last_finished_game = models.CharField(max_length=50, blank=True, null=False, default="")
+    favorite_franchise = models.CharField(
+        max_length=50, blank=True, null=False, default=""
+    )
+    last_finished_game = models.CharField(
+        max_length=50, blank=True, null=False, default=""
+    )
     current_game = models.CharField(max_length=50, blank=True, null=False, default="")
-    favorite_soundtrack = models.CharField(max_length=50, blank=True, null=False, default="")
+    favorite_soundtrack = models.CharField(
+        max_length=50, blank=True, null=False, default=""
+    )
     gaming_alias = models.CharField(max_length=50, blank=True, null=False, default="")
-    favorite_game_modes = models.CharField(max_length=255, blank=True, null=False, default="")
-    streaming_preferences = models.CharField(max_length=50, blank=True, null=False, default="")
+    favorite_game_modes = models.CharField(
+        max_length=255, blank=True, null=False, default=""
+    )
+    streaming_preferences = models.CharField(
+        max_length=50, blank=True, null=False, default=""
+    )
     last_chat_notification = models.DateTimeField(null=True, blank=True)
     is_online = models.BooleanField(default=False)
     last_online = models.DateTimeField(null=True, blank=True, auto_now_add=True)

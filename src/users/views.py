@@ -177,7 +177,7 @@ class CustomLoginView(LoginView):
     def form_valid(self, form):
         response = super().form_valid(form)
 
-        remember_me = form.cleaned_data.get('remember_me')
+        remember_me = form.cleaned_data.get("remember_me")
 
         if remember_me:
             self.request.session.set_expiry(1209600)
@@ -185,6 +185,7 @@ class CustomLoginView(LoginView):
             self.request.session.set_expiry(0)
 
         return response
+
 
 def custom_logout(request):
     """Custom logout view."""
