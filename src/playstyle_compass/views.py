@@ -17,7 +17,7 @@ from django.utils.translation import gettext as _
 from django.utils.html import format_html, escape
 from django.views.decorators.http import require_POST
 
-from utils.constants import genres, all_platforms, all_themes
+from utils.constants import genres, all_platforms, all_themes, connection_type, game_style
 from users.models import Notification
 from .models import (
     UserPreferences,
@@ -114,6 +114,8 @@ def gaming_preferences(request):
         "genres": genres,
         "platforms": all_platforms,
         "themes": all_themes,
+        "game_styles": game_style,
+        "connection_types": connection_type,
     }
 
     return render(request, "preferences/create_gaming_preferences.html", context)
@@ -130,12 +132,16 @@ def update_preferences(request):
         favorite_genres = request.POST.getlist("favorite_genres")
         themes = request.POST.getlist("themes")
         platforms = request.POST.getlist("platforms")
+        connection_types = request.POST.getlist("connection_types")
+        game_styles = request.POST.getlist("game_styles")
+
 
         user_preferences.gaming_history = gaming_history
         user_preferences.favorite_genres = ", ".join(favorite_genres)
         user_preferences.themes = ", ".join(themes)
         user_preferences.platforms = ", ".join(platforms)
-
+        user_preferences.connection_types = ", ".join(connection_types)
+        user_preferences.game_styles = ", ".join(game_styles)
         user_preferences.save()
 
     context = {
@@ -144,6 +150,8 @@ def update_preferences(request):
         "genres": genres,
         "themes": all_themes,
         "platforms": all_platforms,
+        "connection_types": connection_type,
+        "game_styles": game_style,
     }
 
     return render(request, "preferences/update_gaming_preferences.html", context)
@@ -180,6 +188,20 @@ def save_platforms(request):
         request, "platforms", "playstyle_compass:update_preferences"
     )
 
+@login_required
+def save_connection_types(request):
+    """Save platforms for the user."""
+    return _save_user_preference(
+        request, "connection_types", "playstyle_compass:update_preferences"
+    )
+
+@login_required
+def save_game_styles(request):
+    """Save platforms for the user."""
+    return _save_user_preference(
+        request, "game_styles", "playstyle_compass:update_preferences"
+    )
+
 
 def _save_user_preference(request, field_name, redirect_view):
     """Common function to save user preferences."""
@@ -206,6 +228,8 @@ def save_all_preferences(request):
         )
         user_preferences.themes = ", ".join(request.POST.getlist("themes"))
         user_preferences.platforms = ", ".join(request.POST.getlist("platforms"))
+        user_preferences.connection_types = ", ".join(request.POST.getlist("connection_types"))
+        user_preferences.game_styles = ", ".join(request.POST.getlist("game_styles"))
 
         user_preferences.save()
 
@@ -223,6 +247,8 @@ def clear_preferences(request):
         user_preferences.favorite_genres = ""
         user_preferences.themes = ""
         user_preferences.platforms = ""
+        user_preferences.connection_types = ""
+        user_preferences.game_styles = ""
         user_preferences.save()
 
     return redirect("playstyle_compass:update_preferences")

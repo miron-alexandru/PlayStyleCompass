@@ -10,7 +10,7 @@
 
 {% block description %}
 {% blocktrans %}
-Explore and manage your gaming preferences. You can provide your gaming history, favorite genres,and preferred platforms. Once you've defined your PlayStyle, you can get personalized game recommendations.
+Explore and manage your gaming preferences. You can provide your gaming history, favorite genres, and preferred platforms. Once you've defined your PlayStyle, you can get personalized game recommendations.
 {% endblocktrans %}
 {% endblock description %}
 
@@ -73,11 +73,43 @@ Explore and manage your gaming preferences. You can provide your gaming history,
     </fieldset>
   </div>
 
+  <div class="section">
+    <fieldset>
+      <legend class="form-label">{% trans "Select Game Style" %}</legend>
+      <div>
+        {% for game_style in game_styles %}
+        <label>
+          <input type="checkbox" name="game_styles" value="{{ game_style }}"
+          {% if game_style in user_preferences.game_styles %}checked{% endif %}>
+          {{ game_style }}
+        </label>
+        {% endfor %}
+      </div>
+    </fieldset>
+  </div>
+
+    <div class="section">
+    <fieldset>
+      <legend class="form-label">{% trans "Select Connection Type" %}</legend>
+      <div>
+        {% for connection_type in connection_types %}
+        <label>
+          <input type="checkbox" name="connection_types" value="{{ connection_type }}"
+          {% if connection_type in user_preferences.connection_types %}checked{% endif %}>
+          {{ connection_type }}
+        </label>
+        {% endfor %}
+      </div>
+    </fieldset>
+  </div>
+
   <div class="warnings">
     <p class="warning" id="history-warning">{% trans "Please enter at least one game that you have played." %}</p>
     <p class="warning" id="genre-warning">{% trans "Please select at least one genre." %}</p>
     <p class="warning" id="theme-warning">{% trans "Please select at least one theme." %}</p>
     <p class="warning" id="platform-warning">{% trans "Please select at least one platform." %}</p>
+    <p class="warning" id="connection-warning">{% trans "Please select at least one connection type." %}</p>
+    <p class="warning" id="style-warning">{% trans "Please select at least one game style." %}</p>
   </div>
 
   <input class="btn btn-primary" type="submit" value="{% trans 'Update Preferences' %}" id="update-button">

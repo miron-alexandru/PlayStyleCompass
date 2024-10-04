@@ -1,11 +1,14 @@
 document.addEventListener("DOMContentLoaded", () => {
   let changesMade = false;
   const maxSelections = 3;
+  const singleMaxSelections = 1;
   const gamingHistoryInput = document.getElementById("gaming_history");
   const historySaveButton = document.getElementById("save-history-button");
   const genresSaveButton = document.getElementById("save-genres-button");
   const themesSaveButton = document.getElementById("save-themes-button");
   const platformsSaveButton = document.getElementById("save-platforms-button");
+  const gameStylesSaveButton = document.getElementById("save-game-styles-button");
+  const connectionTypesSaveButton = document.getElementById("save-connection-types-button");
   const saveAllButton = document.getElementById("save-all-button");
 
   const favoriteGenreCheckboxes = document.querySelectorAll(
@@ -14,9 +17,14 @@ document.addEventListener("DOMContentLoaded", () => {
   const favoritePlatformCheckboxes = document.querySelectorAll(
     'input[name="platforms"]'
   );
-
   const themesCheckboxes = document.querySelectorAll(
     'input[name="themes"]'
+  );
+  const gameStylesCheckboxes = document.querySelectorAll(
+    'input[name="game_styles"]'
+  );
+  const connectionTypesCheckboxes = document.querySelectorAll(
+    'input[name="connection_types"]'
   );
 
   const hasValue = (inputElement) => inputElement.value.trim() !== "";
@@ -62,6 +70,16 @@ document.addEventListener("DOMContentLoaded", () => {
       maxSelections
     );
 
+    gameStylesSaveButton.disabled = !hasSelectedCheckboxes(
+      gameStylesCheckboxes,
+      singleMaxSelections
+    );
+
+    connectionTypesSaveButton.disabled = !hasSelectedCheckboxes(
+      connectionTypesCheckboxes,
+      singleMaxSelections
+    );
+
     saveAllButton.disabled =
       !changesMade ||
       !(
@@ -70,10 +88,14 @@ document.addEventListener("DOMContentLoaded", () => {
         hasSelectedCheckboxes(favoriteGenreCheckboxes, maxSelections) &&
         hasSelectedCheckboxes(themesCheckboxes, maxSelections) &&
         hasSelectedCheckboxes(favoritePlatformCheckboxes, maxSelections) &&
+        hasSelectedCheckboxes(gameStylesCheckboxes, singleMaxSelections) &&
+        hasSelectedCheckboxes(connectionTypesCheckboxes, singleMaxSelections) &&
         !isAnyCheckboxListEmpty([
           favoriteGenreCheckboxes,
           themesCheckboxes,
           favoritePlatformCheckboxes,
+          gameStylesCheckboxes,
+          connectionTypesCheckboxes,
         ])
       );
   };
@@ -105,6 +127,8 @@ document.addEventListener("DOMContentLoaded", () => {
   addEventListenerToCheckboxes(favoriteGenreCheckboxes);
   addEventListenerToCheckboxes(themesCheckboxes);
   addEventListenerToCheckboxes(favoritePlatformCheckboxes);
+  addEventListenerToCheckboxes(gameStylesCheckboxes);
+  addEventListenerToCheckboxes(connectionTypesCheckboxes);
 
   updateSaveButtons();
   updateSaveButtonTitle();

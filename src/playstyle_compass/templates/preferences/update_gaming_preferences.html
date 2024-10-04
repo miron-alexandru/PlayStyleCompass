@@ -109,6 +109,51 @@
 </div>
 </div>
 
+<div class="section" id="connection-types-section">
+  <div class="playstyle-title">{% trans "Preferred Connection Types" %}</div>
+  <p class="playstyle-text">{{ user_preferences.connection_types|safe }}</p>
+  <button class="change-button" data-section="connection-types">{% trans "Edit" %}</button>
+  <div class="editing-form" id="connection-types-form" style="display: none;">
+    <form method="post" action="{% url 'playstyle_compass:save_connection_types' %}">
+      {% csrf_token %}
+      <fieldset>
+        <div>
+          {% for connection in connection_types %}
+          <label>
+            <input type="checkbox" name="connection_types" value="{{ connection }}" {% if connection in user_preferences.connection_types %}checked{% endif %}>
+            {{ connection }}
+          </label>
+          {% endfor %}
+        </div>
+      </fieldset>
+      <button type="submit" class="save-button" data-section="connection-types" style="display: none;" id="save-connection-types-button">{% trans "Save" %}</button>
+    </form>
+  </div>
+</div>
+
+<div class="section" id="game-styles-section">
+  <div class="playstyle-title">{% trans "Preferred Game Styles" %}</div>
+  <p class="playstyle-text">{{ user_preferences.game_styles|safe }}</p>
+  <button class="change-button" data-section="game-styles">{% trans "Edit" %}</button>
+  <div class="editing-form" id="game-styles-form" style="display: none;">
+    <form method="post" action="{% url 'playstyle_compass:save_game_styles' %}">
+      {% csrf_token %}
+      <fieldset>
+        <div>
+          {% for style in game_styles %}
+          <label>
+            <input type="checkbox" name="game_styles" value="{{ style }}" {% if style in user_preferences.game_styles %}checked{% endif %}>
+            {{ style }}
+          </label>
+          {% endfor %}
+        </div>
+      </fieldset>
+      <button type="submit" class="save-button" data-section="game-styles" style="display: none;" id="save-game-styles-button">{% trans "Save" %}</button>
+    </form>
+  </div>
+</div>
+
+
 <div class="button-container">
   <form method="get" action="{% url 'playstyle_compass:get_recommendations' %}">
     <button type="submit" class="btn btn-primary">{% trans "Get Recommendations" %}</button>

@@ -234,6 +234,10 @@ all_platforms = [
     "Browser",
 ]
 
+connection_type = ["Online", "Offline"]
+
+game_style = ["Single-Player", "Multiplayer"]
+
 game_ids_to_add = [
     "3030-85645",
     "3030-85432",

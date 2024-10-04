@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
   const maxSelections = 3;
+  const singleMaxSelections = 1;
   const changeButtons = document.querySelectorAll(".change-button");
   const saveButtons = document.querySelectorAll(".save-button");
 
@@ -22,10 +23,10 @@ document.addEventListener("DOMContentLoaded", function () {
       const checkboxes = form.querySelectorAll('input[type="checkbox"]');
       checkboxes.forEach((checkbox) => {
         checkbox.addEventListener("change", function () {
-          updateCheckboxStates(checkboxes);
+          updateCheckboxStates(checkboxes, section);
         });
       });
-      updateCheckboxStates(checkboxes);
+      updateCheckboxStates(checkboxes, section);
     });
   });
 
@@ -38,12 +39,17 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
-  const updateCheckboxStates = (checkboxes) => {
+  const updateCheckboxStates = (checkboxes, section) => {
     const selectedCount = Array.from(checkboxes).filter(
       (cb) => cb.checked
     ).length;
+
+    const currentMaxSelections = (section === 'game-styles' || section === 'connection-types') 
+      ? singleMaxSelections 
+      : maxSelections;
+
     checkboxes.forEach((checkbox) => {
-      checkbox.disabled = selectedCount >= maxSelections && !checkbox.checked;
+      checkbox.disabled = selectedCount >= currentMaxSelections && !checkbox.checked;
     });
   };
 });
