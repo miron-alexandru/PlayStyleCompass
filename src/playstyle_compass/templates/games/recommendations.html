@@ -58,7 +58,7 @@
         {% trans "No category" %}
     {% endif %}
   </h4>
-  <ul>
+<ul>
     {% for game in paginated_page.object_list %}
     {% include "games/game_recommendations_section.html" %}
     {% endfor %}
@@ -66,11 +66,10 @@
   <div class="pagination">
     <span class="step-links">
       {% if paginated_page.has_previous %}
-      <a
-        href="?category={{ category }}{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}&page=1">&laquo;
-        {% trans "First" %}</a>
-      <a
-        href="?category={{ category }}{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}&page={{ paginated_page.previous_page_number }}">{% trans "Previous" %}</a>
+      <a href="?category={{ category }}{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}&{{ category }}_page=1">&laquo;
+      {% trans "First" %}</a>
+    <a href="?category={{ category }}{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}&{{ category }}_page={{ paginated_page.previous_page_number }}">
+      {% trans "Previous" %}</a>
       {% endif %}
 
       <span class="current-page">
@@ -78,12 +77,11 @@
       </span>
 
       {% if paginated_page.has_next %}
-      <a
-        href="?category={{ category }}{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}&page={{ paginated_page.next_page_number }}">{% trans "Next" %}</a>
-      <a
-        href="?category={{ category }}{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}&page={{ paginated_page.paginator.num_pages }}">{% trans "Last" %}
-        &raquo;</a>
-      {% endif %}
+      <a href="?category={{ category }}{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}&{{ category }}_page={{ paginated_page.next_page_number }}">
+      {% trans "Next" %}</a>
+    <a href="?category={{ category }}{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}&{{ category }}_page={{ paginated_page.paginator.num_pages }}">
+      {% trans "Last" %} &raquo;</a>
+          {% endif %}
     </span>
   </div>
 

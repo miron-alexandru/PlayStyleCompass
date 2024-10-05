@@ -23,7 +23,11 @@ urlpatterns = [
     path(
         "save_all_preferences/", views.save_all_preferences, name="save_all_preferences"
     ),
-    path("save_connection_types/", views.save_connection_types, name="save_connection_types"),
+    path(
+        "save_connection_types/",
+        views.save_connection_types,
+        name="save_connection_types",
+    ),
     path("save_game_styles/", views.save_game_styles, name="save_game_styles"),
     path("toggle_favorite/", views.toggle_favorite, name="toggle_favorite"),
     path("favorite_games/", views.favorite_games, name="favorite_games"),

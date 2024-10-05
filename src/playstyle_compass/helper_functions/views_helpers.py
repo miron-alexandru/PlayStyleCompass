@@ -51,29 +51,29 @@ class RecommendationEngine:
 
     def process_gaming_history(self, gaming_history):
         """Process the user's gaming history to find matching games and genres."""
-        unique_games = set()
-        unique_genres = set()
-        games_to_exclude = set()
+        unique_games, unique_genres, games_to_exclude = set(), set(), set()
+
+        def process_game(matching_game):
+            unique_games.add(matching_game)
+            unique_genres.update(matching_game.genres)
+            matching_genre_games = self.find_matching_genre_games(matching_game)
+
+            for genre_game in matching_genre_games:
+                if genre_game not in self.matching_games["gaming_history"]:
+                    self.matching_games["gaming_history"].append(genre_game)
+                if (
+                    self.parse_release_date(genre_game.release_date)
+                    >= self.current_date
+                ):
+                    games_to_exclude.add(genre_game)
 
         for history_game in gaming_history:
             matching_title_games = self.find_matching_title_games(history_game)
-
             for matching_game in matching_title_games:
                 if matching_game not in unique_games:
-                    unique_games.add(matching_game)
-                    unique_genres.add(matching_game.genres)
+                    process_game(matching_game)
 
-                    matching_genre_games = self.find_matching_genre_games(matching_game)
-
-                    for genre_game in matching_genre_games:
-                        if genre_game not in self.matching_games["gaming_history"]:
-                            self.matching_games["gaming_history"].append(genre_game)
-
-                        release_date = self.parse_release_date(genre_game.release_date)
-
-                        if release_date >= self.current_date:
-                            games_to_exclude.add(genre_game)
-
+        # Remove excluded games from the final list
         self.matching_games["gaming_history"] = [
             game
             for game in self.matching_games["gaming_history"]
@@ -81,7 +81,12 @@ class RecommendationEngine:
         ]
 
     def apply_filters(self, genres, themes, platforms):
-        """Apply genre and platform filters to matching games."""
+        """Apply genre, theme, and platform filters to matching games."""
+
+        def apply_filter(filter_conditions):
+            """Helper function to apply filter conditions and exclude upcoming games."""
+            return Game.objects.filter(filter_conditions).exclude(upcoming_filter)
+
         genre_filters = Q()
         theme_filters = Q()
         platform_filters = Q()
@@ -98,18 +103,14 @@ class RecommendationEngine:
         common_filters = genre_filters & platform_filters
         upcoming_filter = Q(release_date__gte=self.current_date)
 
-        self.matching_games["favorite_genres"] = Game.objects.filter(
-            genre_filters
-        ).exclude(upcoming_filter)
-        self.matching_games["themes"] = Game.objects.filter(theme_filters).exclude(
-            upcoming_filter
+        self.matching_games.update(
+            {
+                "favorite_genres": apply_filter(genre_filters),
+                "themes": apply_filter(theme_filters),
+                "common_genres_platforms": apply_filter(common_filters),
+                "preferred_platforms": apply_filter(platform_filters),
+            }
         )
-        self.matching_games["common_genres_platforms"] = Game.objects.filter(
-            common_filters
-        ).exclude(upcoming_filter)
-        self.matching_games["preferred_platforms"] = Game.objects.filter(
-            platform_filters
-        ).exclude(upcoming_filter)
 
     def process_user_data(self):
         """Process user preferences, gaming history, and apply filters."""

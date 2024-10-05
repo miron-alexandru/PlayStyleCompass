@@ -17,7 +17,13 @@ from django.utils.translation import gettext as _
 from django.utils.html import format_html, escape
 from django.views.decorators.http import require_POST
 
-from utils.constants import genres, all_platforms, all_themes, connection_type, game_style
+from utils.constants import (
+    genres,
+    all_platforms,
+    all_themes,
+    connection_type,
+    game_style,
+)
 from users.models import Notification
 from .models import (
     UserPreferences,
@@ -135,7 +141,6 @@ def update_preferences(request):
         connection_types = request.POST.getlist("connection_types")
         game_styles = request.POST.getlist("game_styles")
 
-
         user_preferences.gaming_history = gaming_history
         user_preferences.favorite_genres = ", ".join(favorite_genres)
         user_preferences.themes = ", ".join(themes)
@@ -188,12 +193,14 @@ def save_platforms(request):
         request, "platforms", "playstyle_compass:update_preferences"
     )
 
+
 @login_required
 def save_connection_types(request):
     """Save platforms for the user."""
     return _save_user_preference(
         request, "connection_types", "playstyle_compass:update_preferences"
     )
+
 
 @login_required
 def save_game_styles(request):
@@ -228,7 +235,9 @@ def save_all_preferences(request):
         )
         user_preferences.themes = ", ".join(request.POST.getlist("themes"))
         user_preferences.platforms = ", ".join(request.POST.getlist("platforms"))
-        user_preferences.connection_types = ", ".join(request.POST.getlist("connection_types"))
+        user_preferences.connection_types = ", ".join(
+            request.POST.getlist("connection_types")
+        )
         user_preferences.game_styles = ", ".join(request.POST.getlist("game_styles"))
 
         user_preferences.save()
