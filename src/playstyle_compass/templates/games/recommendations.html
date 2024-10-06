@@ -25,6 +25,8 @@
   <button class="category-button" data-category="themes">{% trans "Favorite Themes" %}</button>
   <button class="category-button" data-category="preferred_platforms">{% trans "Preferred Platforms" %}</button>
   <button class="category-button" data-category="common_genres_platforms">{% trans "Common Genres and Platforms" %}</button>
+  <button class="category-button" data-category="game_styles">{% trans "Game Styles" %}</button>
+  <button class="category-button" data-category="connection_types">{% trans "Connection Types" %}</button>
 </div>
 
 <div class="sorting">
@@ -54,6 +56,10 @@
         {% trans "Games matching your Favorite Themes:" %} {{ user_preferences|getattr:category }}
     {% elif category == "preferred_platforms" %}
         {% trans "Games recommended for your Preferred Platforms:" %} {{ user_preferences|getattr:category }}
+    {% elif category == "game_styles" %}
+        {% trans "Games matching your preferred Game Styles:" %} {{ user_preferences|getattr:category }}
+    {% elif category == "connection_types" %}
+        {% trans "Games matching your preferred Connection Types:" %} {{ user_preferences|getattr:category }}
     {% else %}
         {% trans "No category" %}
     {% endif %}
