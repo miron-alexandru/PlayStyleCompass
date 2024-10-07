@@ -5,6 +5,7 @@ other helper functions used for differend views."""
 import re
 from datetime import date, datetime
 from collections import defaultdict
+from operator import itemgetter
 from fuzzywuzzy import fuzz
 
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
@@ -30,7 +31,8 @@ class RecommendationEngine:
         history_game_lower = history_game.lower()
 
         return [
-            game for game in self.games
+            game
+            for game in self.games
             if fuzz.ratio(history_game_lower, game.title.lower()) > 65
         ]
 
@@ -79,11 +81,41 @@ class RecommendationEngine:
         ]
 
     def _apply_filters(self, genres, themes, platforms, game_styles, connection_types):
-        """Apply genre, theme, platform, game style, and connection type filters to matching games."""
+        """Apply filters to matching games."""
 
         def apply_filter(filter_conditions):
             """Helper function to apply filter conditions and exclude upcoming games."""
             return Game.objects.filter(filter_conditions).exclude(upcoming_filter)
+
+        def calculate_recommendation_score(game):
+            """Helper function to calculate recommendation score for a game."""
+
+            score = 0
+
+            if game.genres:
+                if any(genre in game.genres for genre in genres):
+                    score += WEIGHTS["genre"]
+
+            if game.themes:
+                if any(theme in game.themes for theme in themes):
+                    score += WEIGHTS["theme"]
+
+            if game.platforms:
+                if any(platform in game.platforms for platform in platforms):
+                    score += WEIGHTS["platform"]
+
+            if game.concepts:
+                if any(game_style in game.concepts for game_style in game_styles):
+                    score += WEIGHTS["game_style"]
+
+            if game.concepts:
+                if any(
+                    connection_type in game.concepts
+                    for connection_type in connection_types
+                ):
+                    score += WEIGHTS["connection_type"]
+
+            return score
 
         genre_filters = Q()
         theme_filters = Q()
@@ -91,6 +123,16 @@ class RecommendationEngine:
         game_style_filters = Q()
         connection_type_filters = Q()
 
+        # Define weight for each category in the recommendation system
+        WEIGHTS = {
+            "genre": 3,
+            "theme": 1,
+            "platform": 3,
+            "game_style": 1,
+            "connection_type": 1,
+        }
+
+        # Build Q objects for filtering
         for genre in genres:
             genre_filters |= Q(genres__icontains=genre)
 
@@ -126,6 +168,23 @@ class RecommendationEngine:
             }
         )
 
+        # Pre-filter games before applying the recommendation algorithm
+        pre_filtered_games = Game.objects.filter(
+            genre_filters | theme_filters | platform_filters
+        ).exclude(upcoming_filter)
+
+        game_scores = defaultdict(int)
+
+        for game in pre_filtered_games:
+            # Calculate the recommendation score for each game
+            game_scores[game] = calculate_recommendation_score(game)
+
+        playstyle_games = sorted(game_scores.items(), key=itemgetter(1), reverse=True)
+
+        # Add the recommended games to the matching games with a score threshold
+        self.matching_games["playstyle_games"] = [
+            game for game, score in playstyle_games if score > 6
+        ]
 
     def _process_user_data(self):
         """Process user gaming history and apply filters."""
@@ -145,13 +204,17 @@ class RecommendationEngine:
             platform.strip() for platform in self.user_preferences.platforms.split(",")
         ]
         game_styles = [
-            game_style.strip() for game_style in self.user_preferences.game_styles.split(",")
+            game_style.strip()
+            for game_style in self.user_preferences.game_styles.split(",")
         ]
         connection_types = [
-            connection_type.strip() for connection_type in self.user_preferences.connection_types.split(",")
+            connection_type.strip()
+            for connection_type in self.user_preferences.connection_types.split(",")
         ]
 
-        self._apply_filters(favorite_genres, themes, preferred_platforms, game_styles, connection_types)
+        self._apply_filters(
+            favorite_genres, themes, preferred_platforms, game_styles, connection_types
+        )
 
     def _initialize_matching_games(self):
         """Initialize a dictionary to store matching games in different categories."""

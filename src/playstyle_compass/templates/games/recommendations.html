@@ -27,6 +27,7 @@
   <button class="category-button" data-category="common_genres_platforms">{% trans "Common Genres and Platforms" %}</button>
   <button class="category-button" data-category="game_styles">{% trans "Game Styles" %}</button>
   <button class="category-button" data-category="connection_types">{% trans "Connection Types" %}</button>
+  <button class="category-button" data-category="playstyle_games">{% trans "PlayStyle" %}</button>
 </div>
 
 <div class="sorting">
@@ -46,7 +47,9 @@
 <div class="game-recommendations-container {{ category|slugify }}">
   {% if paginated_page.object_list %}
   <h4>
-    {% if category == "common_genres_platforms" %}
+    {% if category == "playstyle_games" %}
+        {% trans "Games matching your PlayStyle" %}
+    {% elif category == "common_genres_platforms" %}
         {% trans "Games that match your preferred Genres and Platforms" %}
     {% elif category == "gaming_history" %}
         {% trans "Games recommended based on your Gaming History:" %} {{ user_preferences|getattr:category }}

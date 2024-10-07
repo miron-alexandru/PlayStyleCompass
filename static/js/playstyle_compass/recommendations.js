@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const getCategoryAndPageFromURL = () => {
     const searchParams = new URLSearchParams(window.location.search);
-    const category = searchParams.get("category") || "gaming_history";
+    const category = searchParams.get("category") || "playstyle_games";
     const page = searchParams.get("page") || 1;
     const sort = searchParams.get("sort") || "recommended";
     return {
