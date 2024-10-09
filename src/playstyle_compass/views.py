@@ -1390,3 +1390,20 @@ def vr_games(request):
     }
 
     return render(request, "games/vr_games.html", context)
+
+def beginner_games(request):
+    """View to display all Beginner-Friendly games."""
+    user, user_preferences, user_friends = get_user_context(request)
+    games = Game.objects.filter(is_casual=True)
+    games = paginate_matching_games(request, games)
+
+    context = {
+        "page_title": _("Beginner Games :: PlayStyle Compass"),
+        "games": games,
+        "user_preferences": user_preferences,
+        "user_friends": user_friends,
+        "pagination": True,
+    }
+
+    return render(request, "games/beginner_games.html", context)
+

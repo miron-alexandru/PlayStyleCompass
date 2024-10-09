@@ -89,6 +89,9 @@
               {% trans "Game Categories" %}
           </a>
           <div class="dropdown-menu navbar-dropdown">
+            <a class="dropdown-item" href="{% url 'playstyle_compass:beginner_games'%}">
+              {% trans "Beginner-Friendly Games" %}
+            </a>
             <a class="dropdown-item" href="{% url 'playstyle_compass:top_rated_games'%}">
               {% trans "Top Rated Games" %}
             </a>

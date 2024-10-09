@@ -103,4 +103,5 @@ urlpatterns = [
     path("indie-games/", views.indie_games, name="indie_games"),
     path("free-to-play-games", views.free_to_play_games, name="free_to_play_games"),
     path("vr-games", views.vr_games, name="vr_games"),
+    path("beginner-games", views.beginner_games, name="beginner_games"),
 ]

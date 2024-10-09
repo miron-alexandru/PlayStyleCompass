@@ -115,6 +115,7 @@ class Game(models.Model):
     franchises = models.CharField(max_length=200)
     videos = models.TextField()
     concepts = models.CharField(max_length=200)
+    is_casual = models.BooleanField(default=False)
     pc_req_min = models.TextField(default="")
     pc_req_rec = models.TextField(default="")
     mac_req_min = models.TextField(default="")

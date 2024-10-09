@@ -63,7 +63,7 @@ from sql_queries import (
 )
 
 
-def parse_game_data(game_id):
+def parse_game_data(game_id, rawg_coop=False):
     """Parse the game data."""
     try:
         game_data = fetch_game_data(game_id)["results"]
@@ -90,6 +90,7 @@ def parse_game_data(game_id):
     franchises = get_franchises(game_data)
     videos = get_embed_links(gameplay_video_ids)
     concepts = get_game_concepts(game_data, concept_ids)
+    is_casual = 1 if rawg_coop else 0
 
     steam_app_id = get_steam_app_id(title)
 
@@ -124,6 +125,7 @@ def parse_game_data(game_id):
         franchises,
         videos,
         concepts,
+        is_casual,
         pc_req_min,
         pc_req_rec,
         mac_req_min,
@@ -158,7 +160,7 @@ def process_user_reviews(game_id):
         return None
 
 
-def create_games_data_db(game_ids):
+def create_games_data_db(game_ids, rawg_coop=False):
     """Inserts game data and reviews data into the database using the provided game IDs."""
     with sqlite3.connect("games_data.db") as db_connection:
         cursor = db_connection.cursor()
@@ -185,13 +187,14 @@ def create_games_data_db(game_ids):
                 franchises,
                 videos,
                 concepts,
+                is_casual,
                 pc_req_min,
                 pc_req_rec,
                 mac_req_min,
                 mac_req_rec,
                 linux_req_min,
                 linux_req_rec,
-            ) = parse_game_data(game_id)
+            ) = parse_game_data(game_id, rawg_coop)
 
             game_values = (
                 guid,
@@ -210,6 +213,7 @@ def create_games_data_db(game_ids):
                 franchises,
                 videos,
                 concepts,
+                is_casual,
                 pc_req_min,
                 pc_req_rec,
                 mac_req_min,

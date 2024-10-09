@@ -125,6 +125,7 @@ Websites for .env configuration: [GiantBomb](https://www.giantbomb.com/) / [Send
 <summary><h2>PlayStyle Compass Changelog</h2></summary>
 
 ### Version v2.2:
+* Added Beginner-Friendly games page.
 * New recommendations based on PlayStyle.
 * New recommendations based on connection types and game styles.
 * Added new preferences: Connection Types & Game Styles

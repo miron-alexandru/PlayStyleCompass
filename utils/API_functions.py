@@ -6,7 +6,7 @@ from datetime import datetime, timedelta
 import requests
 from youtubesearchpython import VideosSearch
 
-from constants import BASE_URL, headers, API_KEY, GAMESPOT_API_KEY
+from constants import BASE_URL, headers, API_KEY, GAMESPOT_API_KEY, RAWG_API_KEY
 from data_extraction import get_requirements
 
 steam_app_list = None
@@ -254,6 +254,64 @@ def get_all_articles_from_last_7_days(api_key, num_articles=100):
         offset += num_articles
 
     return all_articles
+
+
+def fetch_games_by_genre(genre_id, page_size=10, page=1):
+    url = "https://api.rawg.io/api/games"
+    params = {
+        'key': RAWG_API_KEY,
+        'genres': genre_id,
+        'page_size': page_size,
+        'page': page
+    }
+    
+    response = requests.get(url, params=params)
+    
+    if response.status_code == 200:
+        games = response.json().get('results', [])
+        return [game['name'] for game in games]
+    else:
+        return None
+
+
+def find_game_on_giantbomb(game_name):
+    """Searches for a game on GiantBomb using the GiantBomb API based on the provided game name."""
+    url = 'https://www.giantbomb.com/api/search/'
+    params = {
+        'api_key': API_KEY,
+        'format': 'json',
+        'query': game_name,
+        'resources': 'game',
+        'field_list': 'name,id',
+        'limit': 1
+    }
+    response = requests.get(url, params=params, headers=headers)
+    
+    if response.status_code == 200:
+        results = response.json().get('results', [])
+        if results:
+            return f"3030-{results[0]['id']}"
+        else:
+            return None
+    else:
+        return f"Failed to search for {game_name}, status code: {response.status_code}"
+
+
+def fetch_game_ids_by_genre(genre_id, page_size=10, page=1):
+    """
+    Fetches a list of game IDs from the RAWG API based on the specified genre, 
+    then searches for those games on GiantBomb and returns a list of game IDs.
+    """
+    game_names = fetch_games_by_genre(genre_id, page_size, page)
+    if game_names:
+        game_ids = []
+        for game_name in game_names:
+            game_id = find_game_on_giantbomb(game_name)
+            if game_id:
+                game_ids.append(game_id)
+        return game_ids
+    else:
+        return []
 
 
 class FetchDataException(Exception):
