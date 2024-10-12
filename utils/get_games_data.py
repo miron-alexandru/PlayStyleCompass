@@ -3,7 +3,11 @@ The get_games_data module calls the necessary functions to create
 and populate the games database with the necessary data.
 """
 
-from API_functions import fetch_game_ids_by_platforms, fetch_data, fetch_game_ids_by_genre
+from API_functions import (
+    fetch_game_ids_by_platforms,
+    fetch_data,
+    fetch_game_ids_by_genre,
+)
 from data_extraction import extract_guids, extract_character_guids
 
 from constants import (
@@ -53,7 +57,7 @@ from data_processing import (
 # create_quiz_data(concepts, num_games=100, offset=1)
 
 # Obtain News data
-#create_news_data(num_articles=100, year=2024, latest_week=True)
+# create_news_data(num_articles=100, year=2024, latest_week=True)
 
 # Obtain casual games data
 casual_game_ids = fetch_game_ids_by_genre(40, 40, 2)

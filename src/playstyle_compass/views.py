@@ -1391,6 +1391,7 @@ def vr_games(request):
 
     return render(request, "games/vr_games.html", context)
 
+
 def beginner_games(request):
     """View to display all Beginner-Friendly games."""
     user, user_preferences, user_friends = get_user_context(request)
@@ -1406,4 +1407,3 @@ def beginner_games(request):
     }
 
     return render(request, "games/beginner_games.html", context)
-

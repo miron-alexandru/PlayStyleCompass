@@ -259,36 +259,36 @@ def get_all_articles_from_last_7_days(api_key, num_articles=100):
 def fetch_games_by_genre(genre_id, page_size=10, page=1):
     url = "https://api.rawg.io/api/games"
     params = {
-        'key': RAWG_API_KEY,
-        'genres': genre_id,
-        'page_size': page_size,
-        'page': page
+        "key": RAWG_API_KEY,
+        "genres": genre_id,
+        "page_size": page_size,
+        "page": page,
     }
-    
+
     response = requests.get(url, params=params)
-    
+
     if response.status_code == 200:
-        games = response.json().get('results', [])
-        return [game['name'] for game in games]
+        games = response.json().get("results", [])
+        return [game["name"] for game in games]
     else:
         return None
 
 
 def find_game_on_giantbomb(game_name):
     """Searches for a game on GiantBomb using the GiantBomb API based on the provided game name."""
-    url = 'https://www.giantbomb.com/api/search/'
+    url = "https://www.giantbomb.com/api/search/"
     params = {
-        'api_key': API_KEY,
-        'format': 'json',
-        'query': game_name,
-        'resources': 'game',
-        'field_list': 'name,id',
-        'limit': 1
+        "api_key": API_KEY,
+        "format": "json",
+        "query": game_name,
+        "resources": "game",
+        "field_list": "name,id",
+        "limit": 1,
     }
     response = requests.get(url, params=params, headers=headers)
-    
+
     if response.status_code == 200:
-        results = response.json().get('results', [])
+        results = response.json().get("results", [])
         if results:
             return f"3030-{results[0]['id']}"
         else:
@@ -299,7 +299,7 @@ def find_game_on_giantbomb(game_name):
 
 def fetch_game_ids_by_genre(genre_id, page_size=10, page=1):
     """
-    Fetches a list of game IDs from the RAWG API based on the specified genre, 
+    Fetches a list of game IDs from the RAWG API based on the specified genre,
     then searches for those games on GiantBomb and returns a list of game IDs.
     """
     game_names = fetch_games_by_genre(genre_id, page_size, page)
