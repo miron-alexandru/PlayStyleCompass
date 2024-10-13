@@ -138,4 +138,6 @@ urlpatterns = [
         views.load_pinned_messages,
         name="load_pinned_messages",
     ),
+    path("follow/<int:user_id>/", views.follow_user, name="follow_user"),
+    path("unfollow/<int:user_id>/", views.unfollow_user, name="unfollow_user"),
 ]

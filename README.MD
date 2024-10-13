@@ -125,6 +125,7 @@ Websites for .env configuration: [GiantBomb](https://www.giantbomb.com/) / [Send
 <summary><h2>PlayStyle Compass Changelog</h2></summary>
 
 ### Version v2.2:
+* Implemented Followig System: Users are able to follow / unfollow other users.
 * Added Beginner-Friendly games page.
 * New recommendations based on PlayStyle.
 * New recommendations based on connection types and game styles.

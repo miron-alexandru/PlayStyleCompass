@@ -276,3 +276,13 @@ class ChatMessage(models.Model):
         return (
             f"{self.sender.username} to {self.recipient.username}: {self.content[:20]}"
         )
+
+
+class Follow(models.Model):
+    """This represents a follow relation between two users."""
+    follower = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="following", on_delete=models.CASCADE)
+    followed = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="followers", on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('follower', 'followed')

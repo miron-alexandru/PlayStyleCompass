@@ -46,6 +46,8 @@ const translate = (key) => {
             'Pin': 'Fixează',
             'Unpin': 'Desprinde',
             'Sender': 'Expeditor',
+            'Follow': 'Urmăriți',
+            'Unfollow': 'Dezabonați-vă',
         },
     };
 

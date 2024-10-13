@@ -18,7 +18,6 @@ google-api-python-client
 django-tz-detect
 whitenoise
 gunicorn
-psycopg2
 dj_database_url
 django-storages
 boto3

@@ -94,6 +94,7 @@ from .models import (
     Notification,
     QuizUserResponse,
     ChatMessage,
+    Follow,
 )
 from .tokens import account_activation_token, account_deletion_token
 
@@ -1011,6 +1012,7 @@ def view_profile(request, profile_name):
 
         is_blocked = profile_to_view in request_user.userprofile.blocked_users.all()
         is_friend = get_friend_status(request_user, profile_to_view)
+        is_following = Follow.objects.filter(follower=request.user, followed=user).exists()
 
         context.update(
             {
@@ -1024,6 +1026,7 @@ def view_profile(request, profile_name):
                 "show_reviews": user_stats["user_preferences"].show_reviews,
                 "show_favorites": user_stats["user_preferences"].show_favorites,
                 "is_blocked": is_blocked,
+                "is_following": is_following,
             }
         )
 
@@ -1805,3 +1808,37 @@ def load_pinned_messages(request, recipient_id):
             message["sender__userprofile__profile_name"] = _("You")
 
     return JsonResponse(pinned_messages, safe=False)
+
+
+@login_required
+def follow_user(request, user_id):
+    """View used to follow users."""
+    if request.method == 'POST':
+        user_to_follow = get_object_or_404(User, id=user_id)
+        follow, created = Follow.objects.get_or_create(follower=request.user, followed=user_to_follow)
+        
+        if created:
+            message = _("You are now following {0}.".format(user_to_follow.userprofile.profile_name))
+        else:
+            message = _("You are already following {0}.".format(user_to_follow.userprofile.profile_name))
+
+        return JsonResponse({"message": message, "status": "following"})
+
+    return JsonResponse({"error": "Invalid request"}, status=400)
+
+@login_required
+def unfollow_user(request, user_id):
+    """View used to unfollow users."""
+    if request.method == 'POST':
+        user_to_unfollow = get_object_or_404(User, id=user_id)
+        follow = Follow.objects.filter(follower=request.user, followed=user_to_unfollow).first()
+        
+        if follow:
+            follow.delete()
+            message = _("You have unfollowed {0}.".format(user_to_unfollow.userprofile.profile_name))
+        else:
+            message = _("You are not following {0}.".format(user_to_unfollow.userprofile.profile_name))
+
+        return JsonResponse({"message": message, "status": "unfollowing"})
+
+    return JsonResponse({"error": "Invalid request"}, status=400)

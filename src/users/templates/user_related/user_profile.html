@@ -109,13 +109,24 @@
         <button class="remove-friend-button" onclick='triggerRemoveFriend("{{ user_id }}")'>{% trans "Unfriend" %}</button>
       </div>
       {% endif %}
-      {% endif %}
       {% if is_friend != you %}
-      <div class="send-message">
+      <button id="follow-button" 
+          class="{% if is_following %}unfollow-button{% else %}follow-button{% endif %}" 
+          data-user-id="{{ user_id }}" 
+          data-follow-url="{% url 'users:follow_user' user_id %}" 
+          data-unfollow-url="{% url 'users:unfollow_user' user_id %}">
+        {% if is_following %}
+            {% trans "Unfollow" %}
+        {% else %}
+            {% trans "Follow" %}
+        {% endif %}
+      </button>
+      {% endif %}
+      {% endif %}
+    </div>
+    <div class="send-message">
         <a href="{% url 'users:send_message' user_id=user_id %}">{% trans "Send Message" %}</a>
         <a class="chat-button" href="{% url 'users:chat' recipient_id=user_id %}">{% trans "Start Chat" %}</a>
-    </div>
-    {% endif %}
     </div>
     <div class="d-flex justify-content-center align-items-center">
       <div class="stat-item">

@@ -72,12 +72,14 @@
 
 .friend-request,
 .remove-friend {
-  margin-left: 10px;
+  margin-left: 7px;
 }
 
 .friend-request-button,
 .remove-friend-button,
-.block-toggle-button {
+.block-toggle-button,
+.follow-button,
+.unfollow-button {
   padding: 6px 12px;
   border-radius: 50px;
   border: none;
@@ -91,7 +93,9 @@
 
 .friend-request-button:focus,
 .remove-friend-button:focus,
-.block-toggle-button:focus {
+.block-toggle-button:focus,
+.follow-button:focus,
+.unfollow-button:focus {
   outline: none;
 }
 
@@ -125,6 +129,24 @@
 
 .block-toggle-button.unblock:hover {
     background-color: green;
+}
+
+.follow-button {
+  background-color: #007bff;
+  margin-left: 7px;
+}
+
+.follow-button:hover {
+  background-color: #0056b3;
+}
+
+.unfollow-button {
+  background-color: #6c757d;
+  margin-left: 7px;
+}
+
+.unfollow-button:hover {
+  background-color: #5a6268;
 }
 
 
@@ -162,6 +184,9 @@
   color: #333;
 }
 
+.send-message {
+  padding: 4px;
+}
 .send-message a {
   text-decoration: none;
   color: #3498db;
@@ -226,10 +251,7 @@
 
 .action-items {
   padding: 7px;
-}
-
-.chat-button {
-  margin-left: -11px;
+  margin-top: 5px;
 }
 
 #status {
