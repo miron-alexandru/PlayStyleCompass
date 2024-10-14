@@ -24,7 +24,7 @@ from utils.constants import (
     connection_type,
     game_style,
 )
-from users.models import Notification
+from users.models import Notification, Follow
 from .models import (
     UserPreferences,
     Game,
@@ -596,6 +596,19 @@ def add_review(request, game_id):
             }
 
             Review.objects.create(**review_data)
+
+            followers = Follow.objects.filter(followed=user).select_related('follower')
+            for follower in followers:
+                follower_user = follower.follower
+                profile_url = reverse("users:view_profile", args=[profile_name])
+                game_url = reverse("playstyle_compass:view_game", args=[game.guid])
+
+                message = (
+                    f'<a class="notification-profile" title="View Profile" href="{profile_url}">{profile_name}</a> '
+                    f'has posted a new review for <a class="notification-link" title="View Game" href="{game_url}">{game.title}</a>!'
+                )
+                notification = Notification(user=follower_user, message=message)
+                notification.save()
 
             messages.success(request, _("Your review has been successfully submitted."))
             return HttpResponseRedirect(

@@ -1022,6 +1022,7 @@ def view_profile(request, profile_name):
                 "user_preferences": user_stats["user_preferences"],
                 "user_reviews_count": user_stats["user_reviews_count"],
                 "review_likes_count": user_stats["review_likes_count"],
+                "follower_count": user_stats["follower_count"],
                 "show_in_queue": user_stats["user_preferences"].show_in_queue,
                 "show_reviews": user_stats["user_preferences"].show_reviews,
                 "show_favorites": user_stats["user_preferences"].show_favorites,
@@ -1079,10 +1080,13 @@ def get_user_stats(user):
     for review in reviews:
         review_likes_count += review.likes
 
+    follower_count = Follow.objects.filter(followed=user).count()
+
     return {
         "user_preferences": user_preferences,
         "user_reviews_count": user_reviews_count,
         "review_likes_count": review_likes_count,
+        "follower_count": follower_count,
     }
 
 
@@ -1816,8 +1820,19 @@ def follow_user(request, user_id):
     if request.method == 'POST':
         user_to_follow = get_object_or_404(User, id=user_id)
         follow, created = Follow.objects.get_or_create(follower=request.user, followed=user_to_follow)
-        
+
         if created:
+            follower_profile_name = request.user.userprofile.profile_name
+            profile_url = reverse("users:view_profile", args=[follower_profile_name])
+            
+            message = (
+                f'<a class="notification-profile" title="View User Profile" href="{profile_url}">{follower_profile_name}</a> '
+                "has started following you!"
+            )
+
+            notification = Notification(user=user_to_follow, message=message)
+            notification.save()
+
             message = _("You are now following {0}.".format(user_to_follow.userprofile.profile_name))
         else:
             message = _("You are already following {0}.".format(user_to_follow.userprofile.profile_name))
