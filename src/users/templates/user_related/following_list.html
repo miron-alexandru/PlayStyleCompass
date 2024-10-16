@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load static %}
+
+{% block page_header %}
+<div class="header">
+  <h3>{% trans "FOLLOWING" %}</h3>
+</div>
+{% endblock page_header %}
+
+{% block description %}
+{% blocktrans %}Browse the list of users that this person is following. Stay updated on their connections and interests!{% endblocktrans %}
+{% endblock description %}
+
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/users/follow_system.css' %}">
+<div class="following-container">
+    <h2 class="following-title">{{ profile_user.userprofile.profile_name }} - {% trans "Following" %}</h2>
+    <ul class="followers-list">
+      {% for follow in following %}
+        <li class="follower-item">
+		  <a href="{% url 'users:view_profile' follow.profile_name %}" class="follower-link">
+		    <div class="follower-info">
+		      <img src="{{ follow.user.userprofile.profile_picture.url }}" alt="{{ follow.profile_name }}'s profile picture" class="follow-profile-picture">
+		      <div class="follower-details">
+		        <span class="follower-name">{{ follow.profile_name }}</span>
+		        <span class="follower-bio">{{ follow.user.userprofile.bio }}</span>
+		      </div>
+		    </div>
+		  </a>
+		</li>
+      {% empty %}
+        <li class="no-followers">{% trans "Not following anyone yet." %}</li>
+      {% endfor %}
+    </ul>
+</div>
+{% endblock content %}

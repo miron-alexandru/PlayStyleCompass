@@ -191,8 +191,16 @@
         <p class="stat-value">{{ review_likes_count }}</p>
       </div>
       <div class="stat-item">
-        <p class="stat-label">{% trans "Followers" %}</p>
-        <p class="stat-value">{{ follower_count }}</p>
+          <p class="stat-label">
+              <a href="{% url 'users:following_list' user_id %}" target="_blank">{% trans "Following" %}</a>
+          </p>
+          <p class="stat-value">{{ following_count }}</p>
+      </div>
+      <div class="stat-item">
+          <p class="stat-label">
+              <a href="{% url 'users:followers_list' user_id %}" target="_blank">{% trans "Followers" %}</a>
+          </p>
+          <p class="stat-value">{{ follower_count }}</p>
       </div>
     </div>
   </div>

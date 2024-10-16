@@ -220,6 +220,8 @@
               <a class="dropdown-item" href="{% url 'users:view_profile' user.userprofile.profile_name %}">{% trans "My Profile" %}</a>
               <a class="dropdown-item" href="{% url 'users:profile_details'%}">{% trans "Profile Details" %}</a>
               <a class="dropdown-item" href="{% url 'users:inbox'%}">{% trans "Inbox" %}</a>
+              <a class="dropdown-item" href="{% url 'users:following_list' user.id %}">{% trans "Following" %}</a>
+              <a class="dropdown-item" href="{% url 'users:followers_list' user.id %}">{% trans "Followers" %}</a>
               <div class="dropdown-divider"></div>
               <a class="dropdown-item" href="{% url 'playstyle_compass:games_shared'%}">{% trans "Shared Games" %}</a>
               <div class="dropdown-divider"></div>

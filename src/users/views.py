@@ -1023,6 +1023,7 @@ def view_profile(request, profile_name):
                 "user_reviews_count": user_stats["user_reviews_count"],
                 "review_likes_count": user_stats["review_likes_count"],
                 "follower_count": user_stats["follower_count"],
+                "following_count": user_stats["following_count"],
                 "show_in_queue": user_stats["user_preferences"].show_in_queue,
                 "show_reviews": user_stats["user_preferences"].show_reviews,
                 "show_favorites": user_stats["user_preferences"].show_favorites,
@@ -1081,12 +1082,14 @@ def get_user_stats(user):
         review_likes_count += review.likes
 
     follower_count = Follow.objects.filter(followed=user).count()
+    following_count = Follow.objects.filter(follower=user).count()
 
     return {
         "user_preferences": user_preferences,
         "user_reviews_count": user_reviews_count,
         "review_likes_count": review_likes_count,
         "follower_count": follower_count,
+        "following_count": following_count,
     }
 
 
@@ -1833,9 +1836,9 @@ def follow_user(request, user_id):
             notification = Notification(user=user_to_follow, message=message)
             notification.save()
 
-            message = _("You are now following {0}.".format(user_to_follow.userprofile.profile_name))
+            message = _("You are now following %s.") % user_to_follow.userprofile.profile_name
         else:
-            message = _("You are already following {0}.".format(user_to_follow.userprofile.profile_name))
+            message = _("You are already following %s.") % user_to_follow.userprofile.profile_name
 
         return JsonResponse({"message": message, "status": "following"})
 
@@ -1850,10 +1853,58 @@ def unfollow_user(request, user_id):
         
         if follow:
             follow.delete()
-            message = _("You have unfollowed {0}.".format(user_to_unfollow.userprofile.profile_name))
+            message = _("You have unfollowed %s.") % user_to_unfollow.userprofile.profile_name
         else:
-            message = _("You are not following {0}.".format(user_to_unfollow.userprofile.profile_name))
+            message = _("You are not following %s.") % user_to_unfollow.userprofile.profile_name
+
 
         return JsonResponse({"message": message, "status": "unfollowing"})
 
     return JsonResponse({"error": "Invalid request"}, status=400)
+
+
+@login_required
+def followers_list(request, user_id):
+    """View used to display the list of followers for a user."""
+    user = get_object_or_404(User, id=user_id)
+    followers = Follow.objects.filter(followed=user).select_related('follower')
+
+    followers_with_names = [
+        {
+            'user': follow.follower,
+            'profile_name': follow.follower.userprofile.profile_name,
+        }
+        for follow in followers
+    ]
+
+    context = {
+        "page_title": _("Followers :: PlayStyle Compass"),
+        'followers': followers_with_names,
+        'profile_user': user
+    }
+
+    return render(request, 'user_related/followers_list.html', context)
+
+
+@login_required
+def following_list(request, user_id):
+    """View used to display the list of users the user is following."""
+    user = get_object_or_404(User, id=user_id)
+    following = Follow.objects.filter(follower=user).select_related('followed')
+
+    # Create a list of following users with their profile names
+    following_with_names = [
+        {
+            'user': follow.followed,
+            'profile_name': follow.followed.userprofile.profile_name,
+        }
+        for follow in following
+    ]
+
+    context = {
+        "page_title": _("Following :: PlayStyle Compass"),
+        'following': following_with_names,
+        'profile_user': user
+    }
+
+    return render(request, 'user_related/following_list.html', context)
