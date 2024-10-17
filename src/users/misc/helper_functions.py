@@ -144,6 +144,27 @@ def save_quiz_responses(user, questions, form):
             raise ValidationError("Invalid option selected")
 
 
+def create_notification(user, message, notification_type):
+    """Helper function used to create a notification and mark the delivered
+    based on user preferences."""
+    user_preferences = user.userprofile
+
+    delivered = True
+    preference_field = f"receive_{notification_type}_notifications"
+
+    if hasattr(user_preferences, preference_field):
+        delivered = getattr(user_preferences, preference_field)
+
+    notification = Notification(
+        user=user,
+        message=message,
+        notification_type=notification_type,
+        delivered=delivered
+    )
+
+    notification.save()
+
+
 def process_chat_notification(sender, recipient):
     """Helper function used to send a notification when a message in chat is sent
     if the right amount of time has passed since the last notification was sent."""
@@ -164,8 +185,7 @@ def process_chat_notification(sender, recipient):
             f'<a class="notification-link" title="Open Chat" href="{navigation_url}">Open Chat</a>'
         )
 
-        notification = Notification(user=recipient, message=message)
-        notification.save()
+        create_notification(recipient, message=message, notification_type="chat_message")
 
         recipient.userprofile.last_chat_notification = now
         recipient.userprofile.save()

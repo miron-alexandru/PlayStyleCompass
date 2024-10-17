@@ -23,10 +23,13 @@ fetch(authCheckUrl)
 
       notifySocket.onmessage = function (e) {
         if (notifySocket.readyState === WebSocket.OPEN) {
-          const data = JSON.parse(e.data);
-          addNotification(data);
+            const data = JSON.parse(e.data);
+
+            if (data.delivered) {
+                addNotification(data);
+            }
         }
-      };
+    };
 
       const addNotification = function (data) {
         notifications.push(data);

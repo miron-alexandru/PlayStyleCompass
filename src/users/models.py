@@ -56,6 +56,12 @@ class UserProfile(models.Model):
     blocked_users = models.ManyToManyField(
         settings.AUTH_USER_MODEL, related_name="blocked_by", blank=True
     )
+    receive_review_notifications = models.BooleanField(default=True)
+    receive_follow_notifications = models.BooleanField(default=True)
+    receive_friend_request_notifications = models.BooleanField(default=True)
+    receive_message_notifications = models.BooleanField(default=True)
+    receive_chat_message_notifications = models.BooleanField(default=True)
+    receiver_shared_game_notifications = models.BooleanField(default=True)
 
     def clean(self):
         profile_name = self.profile_name
@@ -199,12 +205,23 @@ class Message(models.Model):
 
 
 class Notification(models.Model):
+    NOTIFICATION_TYPES = [
+        ('review', 'Review'),
+        ('follow', 'Follow'),
+        ('friend_request', 'Friend Request'),
+        ('message', 'Message'),
+        ('chat_message', 'Chat Message'),
+        ('shared_game', 'Shared Game'),
+    ]
+
     id = models.AutoField(primary_key=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    message = models.CharField(max_length=100)
+    message = models.CharField(max_length=200)
     is_read = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     timestamp = models.DateTimeField(blank=True, null=True)
+    notification_type = models.CharField(max_length=20, choices=NOTIFICATION_TYPES)
+    delivered = models.BooleanField(default=True)
 
     def save(self, *args, **kwargs):
         if self.timestamp is None:
@@ -213,9 +230,7 @@ class Notification(models.Model):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return f"Notification(id={self.id}, user={self.user.username}, message='{self.message}', is_read={self.is_read}, is_active={self.is_active})"
-
-        super().save(*args, **kwargs)
+        return f"Notification(id={self.id}, user={self.user.username}, message='{self.message}', is_read={self.is_read}, is_active={self.is_active}, type={self.notification_type})"
 
 
 class QuizQuestion(models.Model):

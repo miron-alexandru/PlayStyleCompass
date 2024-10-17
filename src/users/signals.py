@@ -69,6 +69,8 @@ def notification_created(sender, instance, created, **kwargs):
                 "is_read": instance.is_read,
                 "is_active": instance.is_active,
                 "timestamp": instance.timestamp,
+                "delivered": instance.delivered,
+                "notification_type": instance.notification_type,
             },
         )
 

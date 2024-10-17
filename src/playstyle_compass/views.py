@@ -25,6 +25,7 @@ from utils.constants import (
     game_style,
 )
 from users.models import Notification, Follow
+from users.misc.helper_functions import create_notification
 from .models import (
     UserPreferences,
     Game,
@@ -607,8 +608,8 @@ def add_review(request, game_id):
                     f'<a class="notification-profile" title="View Profile" href="{profile_url}">{profile_name}</a> '
                     f'has posted a new review for <a class="notification-link" title="View Game" href="{game_url}">{game.title}</a>!'
                 )
-                notification = Notification(user=follower_user, message=message)
-                notification.save()
+
+                create_notification(follower_user, message=message, notification_type="review")
 
             messages.success(request, _("Your review has been successfully submitted."))
             return HttpResponseRedirect(
@@ -856,8 +857,7 @@ def share_game(request, game_id):
                 <a class="notification-link" title="Navigate" href="{navigation_url}">Navigate to shared games</a>
                 """
 
-            notification = Notification(user=receiver, message=message)
-            notification.save()
+            create_notification(receiver, message=message, notification_type="shared_game")
 
             return JsonResponse(
                 {

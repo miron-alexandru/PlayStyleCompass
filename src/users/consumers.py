@@ -68,6 +68,7 @@ class NotificationConsumer(AsyncWebsocketConsumer):
                         "is_read": notification.is_read,
                         "is_active": notification.is_active,
                         "timestamp": notification.timestamp.isoformat(),
+                        "delivered": notification.delivered,
                     }
                 )
 
@@ -82,6 +83,7 @@ class NotificationConsumer(AsyncWebsocketConsumer):
             "is_read": event.get("is_read"),
             "is_active": event.get("is_active"),
             "timestamp": event.get("timestamp"),
+            "delivered": event.get("delivered"),
         }
 
         await self.send(text_data=json.dumps(notification_data))
@@ -92,8 +94,7 @@ class NotificationConsumer(AsyncWebsocketConsumer):
 
     @database_sync_to_async
     def get_all_notifications(self, user):
-        return list(Notification.objects.filter(user=user, is_active=True))
-
+        return list(Notification.objects.filter(user=user, is_active=True, delivered=True))
 
 class ChatConsumer(AsyncWebsocketConsumer):
     """

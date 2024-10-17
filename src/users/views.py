@@ -84,6 +84,7 @@ from .misc.helper_functions import (
     get_quiz_questions,
     save_quiz_responses,
     process_chat_notification,
+    create_notification,
 )
 
 from .models import (
@@ -787,8 +788,7 @@ def send_friend_request(request, *args, **kwargs):
                             f'<a class="notification-link" title="Navigate" href="{navigation_url}">View friend requests</a>'
                         )
 
-                        notification = Notification(user=receiver, message=message)
-                        notification.save()
+                        create_notification(receiver, message=message, notification_type="friend_request")
 
             else:
                 result["message"] = _(
@@ -844,10 +844,7 @@ def accept_friend_request(request, *args, **kwargs):
                         "accepted your friend request!"
                     )
 
-                    notification = Notification(
-                        user=friend_request.sender, message=message
-                    )
-                    notification.save()
+                    create_notification(friend_request.sender, message=message, notification_type="friend_request")
 
                 except Exception as e:
                     result["message"] = str(e)
@@ -933,10 +930,7 @@ def decline_friend_request(request, *args, **kwargs):
                         "declined your friend request!"
                     )
 
-                    notification = Notification(
-                        user=friend_request.sender, message=message
-                    )
-                    notification.save()
+                    create_notification(friend_request.sender, message=message, notification_type="friend_request")
 
                 except Exception as e:
                     result["message"] = str(e)
@@ -1130,10 +1124,7 @@ def send_message(request, user_id):
                 f'<a class="notification-link" title="Navigate" href="{navigation_url}">View inbox</a>'
             )
 
-            notification = Notification(
-                user=message_receiver, message=notification_message
-            )
-            notification.save()
+            create_notification(message_receiver, message=notification_message, notification_type=message)
 
             return redirect(request.META.get("HTTP_REFERER", "users:inbox"))
     else:
@@ -1833,8 +1824,7 @@ def follow_user(request, user_id):
                 "has started following you!"
             )
 
-            notification = Notification(user=user_to_follow, message=message)
-            notification.save()
+            create_notification(user_to_follow, message=message, notification_type="follow")
 
             message = _("You are now following %s.") % user_to_follow.userprofile.profile_name
         else:
