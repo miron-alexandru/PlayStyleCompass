@@ -1,0 +1,129 @@
+.notifications-container {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.notifications-title {
+  text-align: center;
+  margin-bottom: 30px;
+  color: #333;
+  font-size: 24px;
+}
+
+.floating-card {
+  background-color: #fff;
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  transition: all 0.3s ease;
+}
+
+.floating-card:hover {
+  transform: translateY(-5px);
+}
+
+.form-group {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.label-description-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    font-weight: bold;
+    font-size: 16px;
+    margin-bottom: 0;
+    color: #333;
+}
+
+.form-group .description {
+    font-size: 14px;
+    color: #777;
+    margin: 0;
+    line-height: 1.4;
+}
+
+.form-group .switch {
+    margin-left: auto;
+}
+
+
+.switch {
+    position: relative; 
+    display: inline-block;
+    width: 50px;
+    height: 28px;
+    margin-top: 20px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: 0.4s;
+    border-radius: 34px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 24px;
+    width: 24px;
+    left: 2px;
+    bottom: 2px; 
+    background-color: white;
+    transition: 0.4s;
+}
+
+input:checked + .slider {
+    background-color: #4CAF50;
+}
+
+input:focus + .slider {
+    box-shadow: 0 0 1px #4CAF50;
+}
+
+input:checked + .slider:before {
+    transform: translateX(22px);
+}
+
+.slider.round {
+    border-radius: 34px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
+
+.btn-submit {
+  background-color: #007bff;
+  color: #fff;
+  padding: 7px 14px;
+  border: none;
+  border-radius: 5px;
+  font-size: 15px;
+  display: block;
+  margin: 0 auto;
+  transition: background-color 0.3s ease;
+}
+
+.btn-submit:hover {
+  background-color: #0056b3;
+}

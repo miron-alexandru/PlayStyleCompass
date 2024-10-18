@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block page_header %}
+<div class="header">
+    <h3>{% trans "NOTIFICATION SETTINGS" %}</h3>
+</div>
+{% endblock page_header %}
+
+{% block description %}
+{% blocktrans %}Manage your notification preferences to stay updated on important activities. Tailor your experience to ensure you never miss what matters most to you!{% endblocktrans %}
+{% endblock description %}
+
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/users/notification_settings.css' %}">
+
+<div class="notifications-container">
+    <h2 class="notifications-title">{% trans "Notification Settings" %}</h2>
+    <form method="post">
+        {% csrf_token %}
+
+        <div class="floating-card">
+            <div class="form-group">
+                <div class="label-description-container">
+                    <label for="receive_review_notifications">{% trans "Following's Reviews Notifications" %}</label>
+                    <p class="description">{% trans "Receive notifications when users you follow write a new game review." %}</p>
+                </div>
+                <label class="switch">
+                    <input type="checkbox" id="receive_review_notifications" name="receive_review_notifications" {% if form.receive_review_notifications.value %}checked{% endif %}>
+                    <span class="slider round"></span>
+                </label>
+            </div>
+        </div>
+
+        <div class="floating-card">
+            <div class="form-group">
+                <div class="label-description-container">
+                    <label for="receive_follow_notifications">{% trans "Follow Notifications" %}</label>
+                    <p class="description">{% trans "Receive notifications when someone starts following you." %}</p>
+                </div>
+                <label class="switch">
+                    <input type="checkbox" id="receive_follow_notifications" name="receive_follow_notifications" {% if form.receive_follow_notifications.value %}checked{% endif %}>
+                    <span class="slider round"></span>
+                </label>
+            </div>
+        </div>
+
+        <div class="floating-card">
+            <div class="form-group">
+                <div class="label-description-container">
+                    <label for="receive_friend_request_notifications">{% trans "Friend Request Notifications" %}</label>
+                    <p class="description">{% trans "Receive notifications when someone sends or accepts your friend request." %}</p>
+                </div>
+                <label class="switch">
+                    <input type="checkbox" id="receive_friend_request_notifications" name="receive_friend_request_notifications" {% if form.receive_friend_request_notifications.value %}checked{% endif %}>
+                    <span class="slider round"></span>
+                </label>
+            </div>
+        </div>
+
+        <div class="floating-card">
+            <div class="form-group">
+                <div class="label-description-container">
+                    <label for="receive_message_notifications">{% trans "Message Notifications" %}</label>
+                    <p class="description">{% trans "Receive notifications when you get a new private message from another user." %}</p>
+                </div>
+                <label class="switch">
+                    <input type="checkbox" id="receive_message_notifications" name="receive_message_notifications" {% if form.receive_message_notifications.value %}checked{% endif %}>
+                    <span class="slider round"></span>
+                </label>
+            </div>
+        </div>
+
+        <div class="floating-card">
+            <div class="form-group">
+                <div class="label-description-container">
+                    <label for="receive_chat_message_notifications">{% trans "Chat Message Notifications" %}</label>
+                    <p class="description">{% trans "Receive notifications for incoming chat messages." %}</p>
+                </div>
+                <label class="switch">
+                    <input type="checkbox" id="receive_chat_message_notifications" name="receive_chat_message_notifications" {% if form.receive_chat_message_notifications.value %}checked{% endif %}>
+                    <span class="slider round"></span>
+                </label>
+            </div>
+        </div>
+
+        <div class="floating-card">
+            <div class="form-group">
+                <div class="label-description-container">
+                    <label for="receiver_shared_game_notifications">{% trans "Shared Game Notifications" %}</label>
+                    <p class="description">{% trans "Receive notifications when someone shares a game with you." %}</p>
+                </div>
+                <label class="switch">
+                    <input type="checkbox" id="receiver_shared_game_notifications" name="receiver_shared_game_notifications" {% if form.receiver_shared_game_notifications.value %}checked{% endif %}>
+                    <span class="slider round"></span>
+                </label>
+            </div>
+        </div>
+
+        <button type="submit" class="btn-submit">{% trans "Save" %}</button>
+    </form>
+</div>
+{% endblock %}

@@ -75,6 +75,7 @@ from .forms import (
     MessageForm,
     QuizForm,
     UserProfileForm,
+    NotificationSettingsForm,
 )
 
 from .misc.helper_functions import (
@@ -1898,3 +1899,23 @@ def following_list(request, user_id):
     }
 
     return render(request, 'user_related/following_list.html', context)
+
+
+@login_required
+def notification_settings(request):
+    user_profile = request.user.userprofile
+    
+    if request.method == 'POST':
+        form = NotificationSettingsForm(request.POST, instance=user_profile)
+        if form.is_valid():
+            form.save()
+            return redirect('users:notification_settings')
+    else:
+        form = NotificationSettingsForm(instance=user_profile)
+
+    context = {
+        "page_title": _("Notification Settings :: PlayStyle Compass"),
+        'form': form,
+    }
+
+    return render(request, 'user_related/notification_settings.html', context)
