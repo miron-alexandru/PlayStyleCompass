@@ -206,12 +206,12 @@ class Message(models.Model):
 
 class Notification(models.Model):
     NOTIFICATION_TYPES = [
-        ('review', 'Review'),
-        ('follow', 'Follow'),
-        ('friend_request', 'Friend Request'),
-        ('message', 'Message'),
-        ('chat_message', 'Chat Message'),
-        ('shared_game', 'Shared Game'),
+        ("review", "Review"),
+        ("follow", "Follow"),
+        ("friend_request", "Friend Request"),
+        ("message", "Message"),
+        ("chat_message", "Chat Message"),
+        ("shared_game", "Shared Game"),
     ]
 
     id = models.AutoField(primary_key=True)
@@ -295,12 +295,17 @@ class ChatMessage(models.Model):
 
 class Follow(models.Model):
     """This represents a follow relation between two users."""
-    follower = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="following", on_delete=models.CASCADE)
-    followed = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="followers", on_delete=models.CASCADE)
+
+    follower = models.ForeignKey(
+        settings.AUTH_USER_MODEL, related_name="following", on_delete=models.CASCADE
+    )
+    followed = models.ForeignKey(
+        settings.AUTH_USER_MODEL, related_name="followers", on_delete=models.CASCADE
+    )
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        unique_together = ('follower', 'followed')
+        unique_together = ("follower", "followed")
 
     def __str__(self):
-        return f'{self.follower} follows {self.followed}'
+        return f"{self.follower} follows {self.followed}"

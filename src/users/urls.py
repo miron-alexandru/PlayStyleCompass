@@ -140,7 +140,11 @@ urlpatterns = [
     ),
     path("follow/<int:user_id>/", views.follow_user, name="follow_user"),
     path("unfollow/<int:user_id>/", views.unfollow_user, name="unfollow_user"),
-    path('followers/<int:user_id>/', views.followers_list, name='followers_list'),
-    path('following/<int:user_id>/', views.following_list, name='following_list'),
-    path('notifications/settings/', views.notification_settings, name='notification_settings'),
+    path("followers/<int:user_id>/", views.followers_list, name="followers_list"),
+    path("following/<int:user_id>/", views.following_list, name="following_list"),
+    path(
+        "notifications/settings/",
+        views.notification_settings,
+        name="notification_settings",
+    ),
 ]

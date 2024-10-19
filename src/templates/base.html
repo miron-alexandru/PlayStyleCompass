@@ -210,37 +210,34 @@
                 </a>
             </span>
         </li>
-
-          <li class="nav-item dropdown" id="hoverDropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button" data-toggle="dropdown"
-              aria-haspopup="true" aria-expanded="false">
-              {% trans "Account" %}
-            </a>
-            <div class="dropdown-menu" aria-labelledby="profileDropdown">
-              <a class="dropdown-item" href="{% url 'users:view_profile' user.userprofile.profile_name %}">{% trans "My Profile" %}</a>
-              <a class="dropdown-item" href="{% url 'users:profile_details'%}">{% trans "Profile Details" %}</a>
-              <a class="dropdown-item" href="{% url 'users:inbox'%}">{% trans "Inbox" %}</a>
-              <a class="dropdown-item" href="{% url 'users:notification_settings'%}">{% trans "Notification Settings" %}</a>
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="{% url 'users:following_list' user.id %}">{% trans "Following" %}</a>
-              <a class="dropdown-item" href="{% url 'users:followers_list' user.id %}">{% trans "Followers" %}</a>
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="{% url 'playstyle_compass:games_shared'%}">{% trans "Shared Games" %}</a>
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="{% url 'users:chat_list' %}">{% trans "Chats" %}</a>
-              <a class="dropdown-item" href="{% url 'users:friends_list' user.id %}">{% trans "Friends List" %}</a>
-              <a class="dropdown-item" href="{% url 'users:friend_requests' user.id %}">{% trans "Friend Requests" %}</a>
-              <a class="dropdown-item" href="{% url 'users:block_list' %}">{% trans "Block List" %}</a>
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="{% url 'users:profile_picture' %}">{% trans "Change Profile Picture" %}</a>
-              <a class="dropdown-item" href="{% url 'users:change_profile_name' %}">{% trans "Change Profile Name" %}</a>
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="{% url 'users:change_password' %}">{% trans "Change Password" %}</a>
-              <a class="dropdown-item" href="{% url 'users:change_email' %}">{% trans "Change Email" %}</a>
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="{% url 'users:delete_account' %}">{% trans "Delete Account" %}</a>
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="{% url 'users:logout' %}">{% trans "Log Out" %}</a>
+        <li class="nav-item dropdown" id="hoverDropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            {% trans "Account" %}
+          </a>
+          <div class="dropdown-menu" aria-labelledby="profileDropdown">
+            <a class="dropdown-item" href="{% url 'users:view_profile' user.userprofile.profile_name %}">{% trans "View Profile" %}</a>
+            <a class="dropdown-item" href="{% url 'users:profile_details'%}">{% trans "Edit Profile Info" %}</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="{% url 'users:inbox'%}">{% trans "Messages" %}</a>
+            <a class="dropdown-item" href="{% url 'users:following_list' user.id %}">{% trans "Following List" %}</a>
+            <a class="dropdown-item" href="{% url 'users:followers_list' user.id %}">{% trans "Followers List" %}</a>
+            <a class="dropdown-item" href="{% url 'users:friends_list' user.id %}">{% trans "Your Friends" %}</a>
+            <a class="dropdown-item" href="{% url 'users:friend_requests' user.id %}">{% trans "Friend Requests" %}</a>
+            <a class="dropdown-item" href="{% url 'users:chat_list' %}">{% trans "Chat Rooms" %}</a>
+            <a class="dropdown-item" href="{% url 'users:block_list' %}">{% trans "Blocked Users" %}</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="{% url 'playstyle_compass:games_shared'%}">{% trans "Games Shared" %}</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="{% url 'users:notification_settings'%}">{% trans "Manage Notifications" %}</a>
+            <a class="dropdown-item" href="{% url 'users:profile_picture' %}">{% trans "Update Profile Picture" %}</a>
+            <a class="dropdown-item" href="{% url 'users:change_profile_name' %}">{% trans "Update Profile Name" %}</a>
+            <a class="dropdown-item" href="{% url 'users:change_password' %}">{% trans "Update Password" %}</a>
+            <a class="dropdown-item" href="{% url 'users:change_email' %}">{% trans "Update Email Address" %}</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="{% url 'users:delete_account' %}">{% trans "Deactivate Account" %}</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="{% url 'users:logout' %}">{% trans "Sign Out" %}</a>
           </div>
           </li>
           {% else %}

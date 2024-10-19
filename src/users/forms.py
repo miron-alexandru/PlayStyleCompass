@@ -541,21 +541,22 @@ class UserProfileForm(forms.ModelForm):
 
 class NotificationSettingsForm(forms.ModelForm):
     """Form used to manage notification settings."""
+
     class Meta:
         model = UserProfile
         fields = [
-            'receive_review_notifications',
-            'receive_follow_notifications',
-            'receive_friend_request_notifications',
-            'receive_message_notifications',
-            'receive_chat_message_notifications',
-            'receiver_shared_game_notifications',
+            "receive_review_notifications",
+            "receive_follow_notifications",
+            "receive_friend_request_notifications",
+            "receive_message_notifications",
+            "receive_chat_message_notifications",
+            "receiver_shared_game_notifications",
         ]
         widgets = {
-            'receive_review_notifications': forms.CheckboxInput(),
-            'receive_follow_notifications': forms.CheckboxInput(),
-            'receive_friend_request_notifications': forms.CheckboxInput(),
-            'receive_message_notifications': forms.CheckboxInput(),
-            'receive_chat_message_notifications': forms.CheckboxInput(),
-            'receiver_shared_game_notifications': forms.CheckboxInput(),
+            "receive_review_notifications": forms.CheckboxInput(),
+            "receive_follow_notifications": forms.CheckboxInput(),
+            "receive_friend_request_notifications": forms.CheckboxInput(),
+            "receive_message_notifications": forms.CheckboxInput(),
+            "receive_chat_message_notifications": forms.CheckboxInput(),
+            "receiver_shared_game_notifications": forms.CheckboxInput(),
         }

@@ -94,7 +94,10 @@ class NotificationConsumer(AsyncWebsocketConsumer):
 
     @database_sync_to_async
     def get_all_notifications(self, user):
-        return list(Notification.objects.filter(user=user, is_active=True, delivered=True))
+        return list(
+            Notification.objects.filter(user=user, is_active=True, delivered=True)
+        )
+
 
 class ChatConsumer(AsyncWebsocketConsumer):
     """

@@ -598,7 +598,7 @@ def add_review(request, game_id):
 
             Review.objects.create(**review_data)
 
-            followers = Follow.objects.filter(followed=user).select_related('follower')
+            followers = Follow.objects.filter(followed=user).select_related("follower")
             for follower in followers:
                 follower_user = follower.follower
                 profile_url = reverse("users:view_profile", args=[profile_name])
@@ -609,7 +609,9 @@ def add_review(request, game_id):
                     f'has posted a new review for <a class="notification-link" title="View Game" href="{game_url}">{game.title}</a>!'
                 )
 
-                create_notification(follower_user, message=message, notification_type="review")
+                create_notification(
+                    follower_user, message=message, notification_type="review"
+                )
 
             messages.success(request, _("Your review has been successfully submitted."))
             return HttpResponseRedirect(
@@ -857,7 +859,9 @@ def share_game(request, game_id):
                 <a class="notification-link" title="Navigate" href="{navigation_url}">Navigate to shared games</a>
                 """
 
-            create_notification(receiver, message=message, notification_type="shared_game")
+            create_notification(
+                receiver, message=message, notification_type="shared_game"
+            )
 
             return JsonResponse(
                 {

@@ -159,7 +159,7 @@ def create_notification(user, message, notification_type):
         user=user,
         message=message,
         notification_type=notification_type,
-        delivered=delivered
+        delivered=delivered,
     )
 
     notification.save()
@@ -185,7 +185,9 @@ def process_chat_notification(sender, recipient):
             f'<a class="notification-link" title="Open Chat" href="{navigation_url}">Open Chat</a>'
         )
 
-        create_notification(recipient, message=message, notification_type="chat_message")
+        create_notification(
+            recipient, message=message, notification_type="chat_message"
+        )
 
         recipient.userprofile.last_chat_notification = now
         recipient.userprofile.save()

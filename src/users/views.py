@@ -789,7 +789,11 @@ def send_friend_request(request, *args, **kwargs):
                             f'<a class="notification-link" title="Navigate" href="{navigation_url}">View friend requests</a>'
                         )
 
-                        create_notification(receiver, message=message, notification_type="friend_request")
+                        create_notification(
+                            receiver,
+                            message=message,
+                            notification_type="friend_request",
+                        )
 
             else:
                 result["message"] = _(
@@ -845,7 +849,11 @@ def accept_friend_request(request, *args, **kwargs):
                         "accepted your friend request!"
                     )
 
-                    create_notification(friend_request.sender, message=message, notification_type="friend_request")
+                    create_notification(
+                        friend_request.sender,
+                        message=message,
+                        notification_type="friend_request",
+                    )
 
                 except Exception as e:
                     result["message"] = str(e)
@@ -931,7 +939,11 @@ def decline_friend_request(request, *args, **kwargs):
                         "declined your friend request!"
                     )
 
-                    create_notification(friend_request.sender, message=message, notification_type="friend_request")
+                    create_notification(
+                        friend_request.sender,
+                        message=message,
+                        notification_type="friend_request",
+                    )
 
                 except Exception as e:
                     result["message"] = str(e)
@@ -1005,9 +1017,17 @@ def view_profile(request, profile_name):
         request_user = request.user
         profile_to_view = user_profile.user
 
-        is_blocked = profile_to_view in request_user.userprofile.blocked_users.all()
+        is_blocked = (
+            profile_to_view in request_user.userprofile.blocked_users.all()
+            if request.user.is_authenticated
+            else None
+        )
         is_friend = get_friend_status(request_user, profile_to_view)
-        is_following = Follow.objects.filter(follower=request.user, followed=user).exists()
+        is_following = (
+            Follow.objects.filter(follower=request.user, followed=user).exists()
+            if request.user.is_authenticated
+            else None
+        )
 
         context.update(
             {
@@ -1125,7 +1145,11 @@ def send_message(request, user_id):
                 f'<a class="notification-link" title="Navigate" href="{navigation_url}">View inbox</a>'
             )
 
-            create_notification(message_receiver, message=notification_message, notification_type=message)
+            create_notification(
+                message_receiver,
+                message=notification_message,
+                notification_type=message,
+            )
 
             return redirect(request.META.get("HTTP_REFERER", "users:inbox"))
     else:
@@ -1812,42 +1836,58 @@ def load_pinned_messages(request, recipient_id):
 @login_required
 def follow_user(request, user_id):
     """View used to follow users."""
-    if request.method == 'POST':
+    if request.method == "POST":
         user_to_follow = get_object_or_404(User, id=user_id)
-        follow, created = Follow.objects.get_or_create(follower=request.user, followed=user_to_follow)
+        follow, created = Follow.objects.get_or_create(
+            follower=request.user, followed=user_to_follow
+        )
 
         if created:
             follower_profile_name = request.user.userprofile.profile_name
             profile_url = reverse("users:view_profile", args=[follower_profile_name])
-            
+
             message = (
                 f'<a class="notification-profile" title="View User Profile" href="{profile_url}">{follower_profile_name}</a> '
                 "has started following you!"
             )
 
-            create_notification(user_to_follow, message=message, notification_type="follow")
+            create_notification(
+                user_to_follow, message=message, notification_type="follow"
+            )
 
-            message = _("You are now following %s.") % user_to_follow.userprofile.profile_name
+            message = (
+                _("You are now following %s.") % user_to_follow.userprofile.profile_name
+            )
         else:
-            message = _("You are already following %s.") % user_to_follow.userprofile.profile_name
+            message = (
+                _("You are already following %s.")
+                % user_to_follow.userprofile.profile_name
+            )
 
         return JsonResponse({"message": message, "status": "following"})
 
     return JsonResponse({"error": "Invalid request"}, status=400)
 
+
 @login_required
 def unfollow_user(request, user_id):
     """View used to unfollow users."""
-    if request.method == 'POST':
+    if request.method == "POST":
         user_to_unfollow = get_object_or_404(User, id=user_id)
-        follow = Follow.objects.filter(follower=request.user, followed=user_to_unfollow).first()
-        
+        follow = Follow.objects.filter(
+            follower=request.user, followed=user_to_unfollow
+        ).first()
+
         if follow:
             follow.delete()
-            message = _("You have unfollowed %s.") % user_to_unfollow.userprofile.profile_name
+            message = (
+                _("You have unfollowed %s.") % user_to_unfollow.userprofile.profile_name
+            )
         else:
-            message = _("You are not following %s.") % user_to_unfollow.userprofile.profile_name
-
+            message = (
+                _("You are not following %s.")
+                % user_to_unfollow.userprofile.profile_name
+            )
 
         return JsonResponse({"message": message, "status": "unfollowing"})
 
@@ -1858,64 +1898,64 @@ def unfollow_user(request, user_id):
 def followers_list(request, user_id):
     """View used to display the list of followers for a user."""
     user = get_object_or_404(User, id=user_id)
-    followers = Follow.objects.filter(followed=user).select_related('follower')
+    followers = Follow.objects.filter(followed=user).select_related("follower")
 
     followers_with_names = [
         {
-            'user': follow.follower,
-            'profile_name': follow.follower.userprofile.profile_name,
+            "user": follow.follower,
+            "profile_name": follow.follower.userprofile.profile_name,
         }
         for follow in followers
     ]
 
     context = {
         "page_title": _("Followers :: PlayStyle Compass"),
-        'followers': followers_with_names,
-        'profile_user': user
+        "followers": followers_with_names,
+        "profile_user": user,
     }
 
-    return render(request, 'user_related/followers_list.html', context)
+    return render(request, "user_related/followers_list.html", context)
 
 
 @login_required
 def following_list(request, user_id):
     """View used to display the list of users the user is following."""
     user = get_object_or_404(User, id=user_id)
-    following = Follow.objects.filter(follower=user).select_related('followed')
+    following = Follow.objects.filter(follower=user).select_related("followed")
 
     # Create a list of following users with their profile names
     following_with_names = [
         {
-            'user': follow.followed,
-            'profile_name': follow.followed.userprofile.profile_name,
+            "user": follow.followed,
+            "profile_name": follow.followed.userprofile.profile_name,
         }
         for follow in following
     ]
 
     context = {
         "page_title": _("Following :: PlayStyle Compass"),
-        'following': following_with_names,
-        'profile_user': user
+        "following": following_with_names,
+        "profile_user": user,
     }
 
-    return render(request, 'user_related/following_list.html', context)
+    return render(request, "user_related/following_list.html", context)
 
 
 @login_required
 def notification_settings(request):
     user_profile = request.user.userprofile
-    
-    if request.method == 'POST':
+
+    if request.method == "POST":
         form = NotificationSettingsForm(request.POST, instance=user_profile)
         if form.is_valid():
             form.save()
-            return redirect('users:notification_settings')
+            return redirect("users:notification_settings")
     else:
         form = NotificationSettingsForm(instance=user_profile)
 
     context = {
         "page_title": _("Notification Settings :: PlayStyle Compass"),
-        'form': form,
+        "form": form,
     }
 
-    return render(request, 'user_related/notification_settings.html', context)
+    return render(request, "user_related/notification_settings.html", context)
