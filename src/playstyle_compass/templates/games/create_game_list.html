@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block page_header %}
+<div class="header">
+  <h3>{% trans "CREATE GAME LIST" %}</h3>
+</div>
+{% endblock page_header %}
+
+{% block description %}
+{% trans "Create your custom game list and share it with friends." %}
+{% endblock description %}
+
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/playstyle_compass/create_game_list.css' %}">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<div class="center-wrapper">
+    <div class="form-container">
+        <h2 class="create-list-title">{% trans "Create Your Game List" %}</h2>
+        <form method="POST">
+            {% csrf_token %}
+            
+            <div class="form-group">
+                <label for="id_title">{% trans "Title" %}</label>
+                {{ form.title }}
+                {% if form.title.errors %}
+                    <div class="error">{{ form.title.errors }}</div>
+                {% endif %}
+            </div>
+            
+            <div class="form-group">
+                <label for="id_description">{% trans "Description" %}</label>
+                {{ form.description }}
+                {% if form.description.errors %}
+                    <div class="error">{{ form.description.errors }}</div>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                <label for="id_games">{% trans "Select Games" %}</label>
+                <input type="text" id="game_search" placeholder="{% trans 'Search games...' %}" class="form-control">
+                <div class="scrollable-checkbox-container">
+                    <div id="games-list">
+                        {% for game in form.games.field.queryset %}
+                            <div class="game-item">
+                                <label>
+                                    <input type="checkbox" name="games" value="{{ game.pk }}"> {{ game.title }}
+                                </label>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <button type="submit" class="btn-submit">{% trans "Save List" %}</button>
+        </form>
+    </div>
+</div>
+
+<script src="{% static 'js/playstyle_compass/create_game_list.js' %}"></script>
+
+{% endblock content %}

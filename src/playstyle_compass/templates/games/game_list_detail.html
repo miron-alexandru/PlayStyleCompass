@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+
+{% block page_header %}
+<div class="header">
+  <h3>{% trans "GAME LIST" %}</h3>
+</div>
+{% endblock page_header %}
+
+{% block description %}
+{% trans "Check out the games in this collection." %}
+{% endblock description %}
+
+
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/playstyle_compass/common_styles.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/playstyle_compass/game_list_detail.css' %}">
+
+<div class="game-list-info">
+  <h2>{{ game_list.title }}</h2>
+  <p>{{ game_list.description }}</p>
+  <p><strong>{% trans "Created by" %}:</strong> 
+    <a href="{% url 'users:view_profile' game_list.owner.userprofile.profile_name %}">
+      {{ game_list.owner.userprofile.profile_name }}
+    </a>
+  </p>
+</div>
+
+{% if games %}
+{% for game in games %}
+<div class="games-collection">
+  {% include "games/game_recommendations_section.html" %}
+</div>
+{% endfor %}
+{% else %}
+<p class="text-center">{% block empty_message %}{% endblock empty_message %}</p>
+{% endif %}
+
+{% if pagination %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/playstyle_compass/pagination.css' %}">
+<div class="pagination">
+  <span class="step-links">
+    {% if games.has_previous %}
+    <a href="?page=1">&laquo; {% trans "First" %}</a>
+    <a href="?page={{ games.previous_page_number }}">{% trans "Previous" %}</a>
+    {% endif %}
+
+    <span class="current-page">
+      {% trans "Page" %} {{ games.number }} {% trans "of" %} {{ games.paginator.num_pages }}
+    </span>
+
+    {% if games.has_next %}
+    <a href="?page={{ games.next_page_number }}">{% trans "Next" %}</a>
+    <a href="?page={{ games.paginator.num_pages }}">{% trans "Last" %} &raquo;</a>
+    {% endif %}
+  </span>
+</div>
+{% endif %}
+
+<script src="{% static 'js/playstyle_compass/share_game.js' %}" defer></script>
+<script src="{% static 'js/playstyle_compass/favorite_games_and_queue.js' %}" defer></script>
+<script src="{% static 'js/playstyle_compass/reviews_section.js' %}" defer></script>
+<script src="{% static 'js/playstyle_compass/star_rating.js' %}" defer></script>
+
+{% endblock content %}

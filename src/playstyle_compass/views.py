@@ -35,8 +35,9 @@ from .models import (
     Character,
     GameModes,
     News,
+    GameList,
 )
-from .forms import ReviewForm
+from .forms import ReviewForm, GameListForm
 
 from .helper_functions.views_helpers import (
     RecommendationEngine,
@@ -1424,3 +1425,71 @@ def beginner_games(request):
     }
 
     return render(request, "games/beginner_games.html", context)
+
+
+def create_game_list(request):
+    """View used to create a game list."""
+    if request.method == 'POST':
+        form = GameListForm(request.POST)
+        if form.is_valid():
+            game_list = form.save(commit=False)
+            game_list.owner = request.user
+            game_list.save()
+            return redirect('playstyle_compass:game_list_detail', pk=game_list.pk)
+    else:
+        form = GameListForm()
+
+    context = {
+        "page_title": _("Create Game List :: PlayStyle Compass"),
+        "form": form,
+    }
+
+    return render(request, 'games/create_game_list.html', context)
+
+
+def game_list_detail(request, pk):
+    """View used to view a game list."""
+    game_list = GameList.objects.get(pk=pk)
+    games = Game.objects.filter(guid__in=game_list.game_guids)
+    games = paginate_matching_games(request, games)
+
+    context = {
+        "page_title": _("View Game List :: PlayStyle Compass"),
+        "game_list": game_list,
+        "games": games,
+        "pagination": True,
+    }
+
+    return render(request, 'games/game_list_detail.html', context)
+
+
+def share_game_list(request, pk):
+    """View used to share a game list."""
+    game_list = GameList.objects.get(pk=pk)
+    if request.method == 'POST':
+        users_to_share_with = request.POST.getlist('shared_with')
+        game_list.shared_with.set(users_to_share_with)
+        return redirect('playstyle_compass:game_list_detail', pk=game_list.pk)
+    users = User.objects.exclude(pk=request.user.pk)
+
+    context = {
+        "page_title": _("Share Game List :: PlayStyle Compass"),
+        "game_list": game_list,
+        "users": users,
+    }
+
+    return render(request, 'games/share_game_list.html', context)
+
+
+def user_game_lists(request, user_id):
+    """View used to display game lists of a user."""
+    user = get_object_or_404(User, id=user_id)
+    game_lists = GameList.objects.filter(owner=user)
+
+    context = {
+        "page_title": _("Game Lists :: PlayStyle Compass"),
+        "game_lists": game_lists,
+        "user": user,
+    }
+
+    return render(request, 'games/user_game_lists.html', context)

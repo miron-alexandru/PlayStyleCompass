@@ -104,4 +104,8 @@ urlpatterns = [
     path("free-to-play-games", views.free_to_play_games, name="free_to_play_games"),
     path("vr-games", views.vr_games, name="vr_games"),
     path("beginner-games", views.beginner_games, name="beginner_games"),
+    path('create-game-list/', views.create_game_list, name='create_game_list'),
+    path('game-list-detail/<int:pk>/', views.game_list_detail, name='game_list_detail'),
+    path('share-game-list/<int:pk>', views.share_game_list, name='share_game_list'),
+    path('game-lists/<int:user_id>', views.user_game_lists, name='user_game_lists'),
 ]

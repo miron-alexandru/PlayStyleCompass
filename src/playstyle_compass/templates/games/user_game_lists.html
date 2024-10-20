@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block page_header %}
+<div class="header">
+  <h3>{% trans "GAME LISTS" %}</h3>
+</div>
+{% endblock page_header %}
+
+{% block description %}
+{% trans "Explore the game lists and discover new games." %}
+{% endblock description %}
+
+
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/playstyle_compass/user_game_lists.css' %}">
+
+<div class="game-lists-container">
+  <h2 class="users-lists-title">{% trans "Game Lists by" %} <a href="{% url 'users:view_profile' user.userprofile.profile_name %}">
+      {{ user.userprofile.profile_name }}
+    </a></h2>
+
+  {% if game_lists %}
+    <div class="game-lists">
+      {% for game_list in game_lists %}
+        <div class="game-list-item">
+          <h3>{% trans "List Title:" %} {{ game_list.title }}</h3>
+          <p><strong>{% trans "List Description:" %}</strong> {{ game_list.description }}</p>
+          <p><strong>{% trans "Created by" %}:</strong> {{ game_list.owner.userprofile.profile_name }}</p>
+          <a href="{% url 'playstyle_compass:game_list_detail' game_list.id %}" class="view-button">{% trans "View List" %}</a>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p>{% trans "This user has not created any game lists yet." %}</p>
+  {% endif %}
+</div>
+{% endblock content %}

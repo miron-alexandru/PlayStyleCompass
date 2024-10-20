@@ -2,7 +2,7 @@
 
 from django import forms
 
-from .models import Review
+from .models import Review, Game, GameList
 from django.utils.translation import gettext_lazy as _
 
 
@@ -32,3 +32,42 @@ class ReviewForm(forms.ModelForm):
                 }
             ),
         }
+
+
+class GameListForm(forms.ModelForm):
+    title = forms.CharField(
+        max_length=200,
+        widget=forms.TextInput(attrs={
+            'placeholder': _('Enter the title of your game list'),
+            'class': 'form-control',
+        }),
+        required=True
+    )
+    
+    description = forms.CharField(
+        widget=forms.Textarea(attrs={
+            'placeholder': _('Enter a description for your game list (optional)'),
+            'class': 'form-control',
+            'rows': 4,
+        }),
+        required=False
+    )
+    
+    games = forms.ModelMultipleChoiceField(
+        queryset=Game.objects.all(),
+        widget=forms.CheckboxSelectMultiple,
+        required=True,
+        help_text=_("Select games to include in the list.")
+    )
+
+    class Meta:
+        model = GameList
+        fields = ['title', 'description', 'games']
+
+    def save(self, commit=True):
+        game_list = super().save(commit=False)
+        game_list.game_guids = list(self.cleaned_data['games'].values_list('guid', flat=True))
+        if commit:
+            game_list.save()
+        return game_list
+

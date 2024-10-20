@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block page_header %}
+<div class="header">
+  <h3>{% trans "SHARE GAME LIST" %}</h3>
+</div>
+{% endblock page_header %}
+
+{% block description %}
+{% trans "Share a custom game list with friends and discover new games together. Allow others to explore favorite picks and create their own lists." %}
+{% endblock description %}
+
+{% block content %}
+<form method="POST">
+    {% csrf_token %}
+    <label for="shared_with">Share with friends:</label>
+    <select name="shared_with" multiple>
+        {% for user in users %}
+        <option value="{{ user.id }}">{{ user.username }}</option>
+        {% endfor %}
+    </select>
+    <button type="submit">Share</button>
+</form>
+{% endblock content %}
