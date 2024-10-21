@@ -1427,6 +1427,7 @@ def beginner_games(request):
     return render(request, "games/beginner_games.html", context)
 
 
+@login_required
 def create_game_list(request):
     """View used to create a game list."""
     if request.method == 'POST':
@@ -1434,7 +1435,13 @@ def create_game_list(request):
         if form.is_valid():
             game_list = form.save(commit=False)
             game_list.owner = request.user
+
+            additional_games = form.cleaned_data.get('additional_games', '')
+            additional_games_list = [game.strip() for game in additional_games.split(',')] if additional_games else []
+
+            game_list.additional_games = additional_games_list
             game_list.save()
+
             return redirect('playstyle_compass:game_list_detail', pk=game_list.pk)
     else:
         form = GameListForm()
@@ -1447,35 +1454,107 @@ def create_game_list(request):
     return render(request, 'games/create_game_list.html', context)
 
 
+@login_required
+def edit_game_list(request, pk):
+    """View to edit an existing game list."""
+    game_list = get_object_or_404(GameList, pk=pk)
+
+    if game_list.owner != request.user:
+        return redirect('playstyle_compass:game_list_detail', pk=game_list.pk)
+
+    if request.method == 'POST':
+        form = GameListForm(request.POST, instance=game_list)
+        if form.is_valid():
+            updated_game_list = form.save(commit=False)
+            updated_game_list.owner = request.user
+
+            additional_games = form.cleaned_data.get('additional_games', '')
+            additional_games_list = [game.strip() for game in additional_games.split(',')] if additional_games else []
+
+            updated_game_list.additional_games = additional_games_list
+            updated_game_list.save()
+
+            return redirect('playstyle_compass:game_list_detail', pk=updated_game_list.pk)
+    else:
+        form = GameListForm(instance=game_list)
+
+    context = {
+        "page_title": _("Edit Game List :: PlayStyle Compass"),
+        "form": form,
+        "game_list": game_list,
+    }
+
+    return render(request, 'games/edit_game_list.html', context)
+
+
+@login_required
+def delete_game_list(request, pk):
+    """View used to delete a game list."""
+    game_list = get_object_or_404(GameList, pk=pk)
+
+    if game_list.owner == request.user:
+        game_list.delete()
+        messages.success(request, "Game list deleted successfully.")
+    else:
+        messages.error(request, "You are not allowed to delete this game list.")
+
+    return redirect('playstyle_compass:user_game_lists', user_id=request.user.id)
+
+
+@login_required
+def delete_all_game_lists(request):
+    """View used to delete all game lists for the logged-in user."""
+    if request.method == 'POST':
+        game_lists = GameList.objects.filter(owner=request.user)
+
+        deleted_count, _ = game_lists.delete()
+
+        if deleted_count > 0:
+            messages.success(request, f"{deleted_count} game lists deleted successfully.")
+        else:
+            messages.error(request, "You have no game lists to delete.")
+
+    return redirect('playstyle_compass:user_game_lists', user_id=request.user.id)
+
+
 def game_list_detail(request, pk):
     """View used to view a game list."""
     game_list = GameList.objects.get(pk=pk)
     games = Game.objects.filter(guid__in=game_list.game_guids)
     games = paginate_matching_games(request, games)
+    additional_games = game_list.additional_games
+    user, user_preferences, user_friends = get_user_context(request)
 
     context = {
         "page_title": _("View Game List :: PlayStyle Compass"),
         "game_list": game_list,
         "games": games,
+        "user_preferences": user_preferences,
+        "user_friends": user_friends,
         "pagination": True,
+        "additional_games": additional_games,
     }
 
     return render(request, 'games/game_list_detail.html', context)
 
 
+@login_required
 def share_game_list(request, pk):
     """View used to share a game list."""
     game_list = GameList.objects.get(pk=pk)
+
     if request.method == 'POST':
         users_to_share_with = request.POST.getlist('shared_with')
         game_list.shared_with.set(users_to_share_with)
+        messages.success(request, _("Game list successfully shared!"))
         return redirect('playstyle_compass:game_list_detail', pk=game_list.pk)
-    users = User.objects.exclude(pk=request.user.pk)
+
+    user, user_preferences, user_friends = get_user_context(request)
 
     context = {
         "page_title": _("Share Game List :: PlayStyle Compass"),
         "game_list": game_list,
-        "users": users,
+        "user_friends": user_friends,
     }
 
     return render(request, 'games/share_game_list.html', context)

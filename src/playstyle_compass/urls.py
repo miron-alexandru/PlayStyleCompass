@@ -108,4 +108,7 @@ urlpatterns = [
     path('game-list-detail/<int:pk>/', views.game_list_detail, name='game_list_detail'),
     path('share-game-list/<int:pk>', views.share_game_list, name='share_game_list'),
     path('game-lists/<int:user_id>', views.user_game_lists, name='user_game_lists'),
+    path('edit-game-list/<int:pk>/', views.edit_game_list, name='edit_game_list'),
+    path('delete-game-list/<int:pk>/', views.delete_game_list, name='delete_game_list'),
+    path('delete-all-game-lists', views.delete_all_game_lists, name='delete_all_game_lists'),
 ]

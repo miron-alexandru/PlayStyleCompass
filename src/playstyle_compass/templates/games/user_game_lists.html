@@ -12,7 +12,6 @@
 {% trans "Explore the game lists and discover new games." %}
 {% endblock description %}
 
-
 {% block content %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/playstyle_compass/user_game_lists.css' %}">
 
@@ -25,15 +24,43 @@
     <div class="game-lists">
       {% for game_list in game_lists %}
         <div class="game-list-item">
-          <h3>{% trans "List Title:" %} {{ game_list.title }}</h3>
-          <p><strong>{% trans "List Description:" %}</strong> {{ game_list.description }}</p>
+          <p><strong>{% trans "Title:" %}</strong> {{ game_list.title }}</p>
+          <p><strong>{% trans "Description:" %}</strong> {{ game_list.description }}</p>
           <p><strong>{% trans "Created by" %}:</strong> {{ game_list.owner.userprofile.profile_name }}</p>
-          <a href="{% url 'playstyle_compass:game_list_detail' game_list.id %}" class="view-button">{% trans "View List" %}</a>
+          
+          <div class="button-group">
+            <a href="{% url 'playstyle_compass:game_list_detail' game_list.id %}" class="view-button">{% trans "View List" %}</a>
+              <a href="{% url 'playstyle_compass:share_game_list' game_list.id %}" class="share-button">{% trans "Share List" %}</a>
+
+            {% if game_list.owner == request.user %}
+              <a href="{% url 'playstyle_compass:edit_game_list' game_list.id %}" class="edit-button">{% trans "Edit List" %}</a>
+
+              <form action="{% url 'playstyle_compass:delete_game_list' game_list.id %}" method="post" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit" class="delete-list-button" onclick="return confirm('{% trans 'Are you sure you want to delete this list?' %}')">
+                  {% trans "Delete List" %}
+                </button>
+              </form>
+            {% endif %}
+          </div>
         </div>
       {% endfor %}
     </div>
+
+    {% if user == request.user %}
+    <div class="delete-all-container">
+      <form action="{% url 'playstyle_compass:delete_all_game_lists' %}" method="post">
+        {% csrf_token %}
+        <button type="submit" class="delete-all-button" onclick="return confirm('{% trans 'Are you sure you want to delete all game lists?' %}')">
+          {% trans "Delete All Lists" %}
+        </button>
+      </form>
+    </div>
+    {% endif %}
+
   {% else %}
     <p>{% trans "This user has not created any game lists yet." %}</p>
   {% endif %}
+
 </div>
 {% endblock content %}

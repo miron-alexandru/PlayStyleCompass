@@ -12,7 +12,6 @@
 {% trans "Check out the games in this collection." %}
 {% endblock description %}
 
-
 {% block content %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/playstyle_compass/common_styles.css' %}">
 <link rel="stylesheet" type="text/css" href="{% static 'css/playstyle_compass/game_list_detail.css' %}">
@@ -21,20 +20,35 @@
   <h2>{{ game_list.title }}</h2>
   <p>{{ game_list.description }}</p>
   <p><strong>{% trans "Created by" %}:</strong> 
-    <a href="{% url 'users:view_profile' game_list.owner.userprofile.profile_name %}">
+    <a class="list-creator" href="{% url 'users:view_profile' game_list.owner.userprofile.profile_name %}">
       {{ game_list.owner.userprofile.profile_name }}
     </a>
+    <a href="{% url 'playstyle_compass:share_game_list' game_list.id %}" class="share-list-button">{% trans "Share List" %}</a>
+    {% if game_list.owner == request.user %}
+    <a href="{% url 'playstyle_compass:edit_game_list' game_list.id %}" class="edit-button">{% trans "Edit List" %}</a>
+    {% endif %}
   </p>
 </div>
 
 {% if games %}
-{% for game in games %}
-<div class="games-collection">
-  {% include "games/game_recommendations_section.html" %}
-</div>
-{% endfor %}
+  <div class="games-collection">
+    {% for game in games %}
+      {% include "games/game_recommendations_section.html" %}
+    {% endfor %}
+  </div>
 {% else %}
-<p class="text-center">{% block empty_message %}{% endblock empty_message %}</p>
+  <p class="text-center">{% block empty_message %}{% endblock empty_message %}</p>
+{% endif %}
+
+{% if games.number == 1 and additional_games %}
+  <div class="additional-games">
+    <h3>{% trans "Additional Games" %}</h3>
+    <ul>
+      {% for additional_game in additional_games %}
+        <li>{{ additional_game }}</li>
+      {% endfor %}
+    </ul>
+  </div>
 {% endif %}
 
 {% if pagination %}
@@ -42,8 +56,8 @@
 <div class="pagination">
   <span class="step-links">
     {% if games.has_previous %}
-    <a href="?page=1">&laquo; {% trans "First" %}</a>
-    <a href="?page={{ games.previous_page_number }}">{% trans "Previous" %}</a>
+      <a href="?page=1">&laquo; {% trans "First" %}</a>
+      <a href="?page={{ games.previous_page_number }}">{% trans "Previous" %}</a>
     {% endif %}
 
     <span class="current-page">
@@ -51,8 +65,8 @@
     </span>
 
     {% if games.has_next %}
-    <a href="?page={{ games.next_page_number }}">{% trans "Next" %}</a>
-    <a href="?page={{ games.paginator.num_pages }}">{% trans "Last" %} &raquo;</a>
+      <a href="?page={{ games.next_page_number }}">{% trans "Next" %}</a>
+      <a href="?page={{ games.paginator.num_pages }}">{% trans "Last" %} &raquo;</a>
     {% endif %}
   </span>
 </div>

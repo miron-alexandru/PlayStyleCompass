@@ -13,10 +13,10 @@
     width: 100%;
 }
 
-.create-list-title {
-    margin-bottom: 1.5rem;
+.create-list-title, .edit-list-title {
+    margin-bottom: 1.4rem;
     color: #333;
-    font-size: 1.8rem;
+    font-size: 1.7rem;
     text-align: center;
 }
 
@@ -55,7 +55,6 @@ label {
     background-color: #218838;
 }
 
-/* Styling for checkboxes */
 .form-group input[type="checkbox"] {
     margin-right: 10px;
 }

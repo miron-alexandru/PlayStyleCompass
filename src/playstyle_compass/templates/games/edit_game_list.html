@@ -4,12 +4,12 @@
 
 {% block page_header %}
 <div class="header">
-  <h3>{% trans "CREATE GAME LIST" %}</h3>
+  <h3>{% trans "EDIT GAME LIST" %}</h3>
 </div>
 {% endblock page_header %}
 
 {% block description %}
-{% trans "Create your custom game list and share it with friends." %}
+{% trans "Edit your custom game list and update it." %}
 {% endblock description %}
 
 {% block content %}
@@ -17,7 +17,7 @@
 
 <div class="center-wrapper">
     <div class="form-container">
-        <h2 class="create-list-title">{% trans "Create Your Game List" %}</h2>
+        <h2 class="edit-list-title">{% trans "Edit Your Game List" %}</h2>
         <form method="POST">
             {% csrf_token %}
             
@@ -45,7 +45,7 @@
                         {% for game in form.games.field.queryset %}
                             <div class="game-item">
                                 <label>
-                                    <input type="checkbox" name="games" value="{{ game.pk }}"> {{ game.title }}
+                                    <input type="checkbox" name="games" value="{{ game.pk }}" {% if game in form.games.value %}checked{% endif %}> {{ game.title }}
                                 </label>
                             </div>
                         {% endfor %}
@@ -61,7 +61,7 @@
                 {% endif %}
             </div>
 
-            <button type="submit" class="btn-submit">{% trans "Save List" %}</button>
+            <button type="submit" class="btn-submit">{% trans "Update List" %}</button>
         </form>
     </div>
 </div>
@@ -69,4 +69,3 @@
 <script src="{% static 'js/playstyle_compass/create_game_list.js' %}"></script>
 
 {% endblock content %}
-

@@ -60,6 +60,12 @@ class GameListForm(forms.ModelForm):
         help_text=_("Select games to include in the list.")
     )
 
+    additional_games = forms.CharField(
+        label="Add additional games (comma-separated)", 
+        required=False,
+        widget=forms.TextInput(attrs={"placeholder": _("Enter additional game names")})
+    )
+
     class Meta:
         model = GameList
         fields = ['title', 'description', 'games']
