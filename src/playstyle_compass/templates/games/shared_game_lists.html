@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+{% load custom_filters %}
+
+{% block page_header %}
+<div class="header">
+  <h3>{% trans "SHARED GAME LISTS" %}</h3>
+</div>
+{% endblock page_header %}
+
+{% block description %}
+{% trans "Discover game lists shared with you or explore the ones you've shared with others. Find new games and collaborate with friends on your favorite picks." %}
+{% endblock description %}
+
+
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/playstyle_compass/user_game_lists.css' %}">
+
+<div class="game-lists-toggle-buttons">
+  <a href="?view=received" class="toggle-button {% if view_type == 'received' %}active{% endif %}">
+    {% trans "Lists Received" %}
+  </a>
+  <a href="?view=shared" class="toggle-button {% if view_type == 'shared' %}active{% endif %}">
+    {% trans "Lists Shared" %}
+  </a>
+</div>
+
+<div class="game-lists-section">
+  {% if game_lists %}
+    <div class="game-lists">
+      {% for game_list in game_lists %}
+        <div class="game-list-item">
+          <p><strong>{% trans "Title:" %}</strong> {{ game_list.title }}</p>
+          <p><strong>{% trans "Description:" %}</strong> {{ game_list.description }}</p>
+          <p><strong>Shared with:</strong> {{ game_list.share_count }} users</p>
+          <p><strong>Total games in list:</strong> {{ game_list.total_games }}</p>
+          
+          {% if view_type == 'shared' %}
+            <p><strong>{% trans "Shared with:" %}</strong>
+              {% for shared_user in game_list.shared_with.all %}
+              <a href="{% url 'users:view_profile' shared_user.userprofile.profile_name %}">
+                {{ shared_user.userprofile.profile_name }}
+              </a> {% if not forloop.last %}, {% endif %}
+              {% endfor %}
+            </p>
+          {% else %}
+            <p><strong>{% trans "Created by" %}: </strong><a href="{% url 'users:view_profile' game_list.owner.userprofile.profile_name %}">
+                {{ game_list.owner.userprofile.profile_name }}
+              </a></p>
+
+          {% endif %}
+
+          <a href="{% url 'playstyle_compass:game_list_detail' game_list.id %}" class="view-button">{% trans "View List" %}</a>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p class="empty-message">
+      {% if view_type == 'shared' %}
+        {% trans "You have not shared any game lists with others." %}
+      {% else %}
+        {% trans "No game lists have been shared with you." %}
+      {% endif %}
+    </p>
+  {% endif %}
+</div>
+
+{% endblock content %}

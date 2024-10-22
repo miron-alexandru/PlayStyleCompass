@@ -1572,3 +1572,25 @@ def user_game_lists(request, user_id):
     }
 
     return render(request, 'games/user_game_lists.html', context)
+
+
+@login_required
+def shared_game_lists(request):
+    """View to display game lists shared with and by the user."""
+    user = request.user
+    view_type = request.GET.get('view', 'received')
+
+    if view_type == 'shared':
+        game_lists = GameList.objects.filter(owner=user, shared_with__isnull=False).distinct()
+        page_title = _("Game Lists You Shared with Others")
+    else:
+        game_lists = GameList.objects.filter(shared_with=user)
+        page_title = _("Game Lists Shared With You")
+
+    context = {
+        "page_title": page_title,
+        "game_lists": game_lists,
+        "view_type": view_type,
+    }
+
+    return render(request, 'games/shared_game_lists.html', context)

@@ -111,4 +111,5 @@ urlpatterns = [
     path('edit-game-list/<int:pk>/', views.edit_game_list, name='edit_game_list'),
     path('delete-game-list/<int:pk>/', views.delete_game_list, name='delete_game_list'),
     path('delete-all-game-lists', views.delete_all_game_lists, name='delete_all_game_lists'),
+    path('shared-game-lists/', views.shared_game_lists, name='shared_game_lists'),
 ]

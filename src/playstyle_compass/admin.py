@@ -9,6 +9,7 @@ from .models import (
     Character,
     GameModes,
     News,
+    GameList,
 )
 
 admin.site.register(UserPreferences)
@@ -19,3 +20,4 @@ admin.site.register(Franchise)
 admin.site.register(Character)
 admin.site.register(GameModes)
 admin.site.register(News)
+admin.site.register(GameList)

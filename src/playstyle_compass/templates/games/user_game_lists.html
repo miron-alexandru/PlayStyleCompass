@@ -26,6 +26,8 @@
         <div class="game-list-item">
           <p><strong>{% trans "Title:" %}</strong> {{ game_list.title }}</p>
           <p><strong>{% trans "Description:" %}</strong> {{ game_list.description }}</p>
+          <p><strong>Shared with:</strong> {{ game_list.share_count }} users</p>
+          <p><strong>Total games in list:</strong> {{ game_list.total_games }}</p>
           <p><strong>{% trans "Created by" %}:</strong> {{ game_list.owner.userprofile.profile_name }}</p>
           
           <div class="button-group">
@@ -59,7 +61,7 @@
     {% endif %}
 
   {% else %}
-    <p>{% trans "This user has not created any game lists yet." %}</p>
+    <p class="empty-message">{% trans "This user has not created any game lists yet." %}</p>
   {% endif %}
 
 </div>

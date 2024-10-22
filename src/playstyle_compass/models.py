@@ -343,3 +343,13 @@ class GameList(models.Model):
 
     def __str__(self):
         return self.title
+
+    @property
+    def share_count(self):
+        """Returns the number of users the game list is shared with."""
+        return self.shared_with.count()
+
+    @property
+    def total_games(self):
+        """Returns the total number of games in the list."""
+        return len(self.game_guids) + len(self.additional_games)

@@ -78,7 +78,7 @@
   padding: 6px 12px;
   border-radius: 5px;
   text-decoration: none;
-  font-size: 14px;
+  font-size: 13px;
   transition: background-color 0.3s ease;
 }
 
@@ -130,4 +130,39 @@
   color: white;
 }
 
+.toggle-button {
+  display: inline-block;
+  margin: 3px;
+  font-size: 14px;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+  border-radius: 5px;
+  text-decoration: none;
+}
 
+.toggle-button.active {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.toggle-button:hover {
+  background-color: #0056b3;
+  color: #fff;
+  text-decoration: none;
+}
+
+.empty-message {
+    color: #555;
+    font-size: 14px;
+    margin: 15px 0;
+    text-align: center;
+    padding: 10px;
+}
+
+.empty-message p {
+    margin: 0;
+}
