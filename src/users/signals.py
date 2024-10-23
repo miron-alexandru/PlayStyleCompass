@@ -43,9 +43,10 @@ def create_user_models(sender, instance, created, **kwargs):
     """Create user models."""
     if created:
         if instance.is_superuser:
-            user_profile = UserProfile.objects.create(user=instance)
-            user_profile.profile_name = "admin"
-            user_profile.save()
+            user_profile, created = UserProfile.objects.get_or_create(user=instance)
+            if created:
+                user_profile.profile_name = "admin"
+                user_profile.save()
 
         user_preferences = UserPreferences.objects.create(user=instance)
         user_preferences.quiz_recommendations = []
