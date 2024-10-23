@@ -88,15 +88,29 @@
         <div class="floating-card">
             <div class="form-group">
                 <div class="label-description-container">
-                    <label for="receiver_shared_game_notifications">{% trans "Shared Game Notifications" %}</label>
+                    <label for="receive_shared_game_notifications">{% trans "Shared Game Notifications" %}</label>
                     <p class="description">{% trans "Receive notifications when someone shares a game with you." %}</p>
                 </div>
                 <label class="switch">
-                    <input type="checkbox" id="receiver_shared_game_notifications" name="receiver_shared_game_notifications" {% if form.receiver_shared_game_notifications.value %}checked{% endif %}>
+                    <input type="checkbox" id="receive_shared_game_notifications" name="receive_shared_game_notifications" {% if form.receive_shared_game_notifications.value %}checked{% endif %}>
                     <span class="slider round"></span>
                 </label>
             </div>
         </div>
+
+        <div class="floating-card">
+            <div class="form-group">
+                <div class="label-description-container">
+                    <label for="receive_shared_game_list_notifications">{% trans "Shared Game List Notifications" %}</label>
+                    <p class="description">{% trans "Receive notifications when someone shares a game list with you." %}</p>
+                </div>
+                <label class="switch">
+                    <input type="checkbox" id="receive_shared_game_list_notifications" name="receive_shared_game_list_notifications" {% if form.receive_shared_game_list_notifications.value %}checked{% endif %}>
+                    <span class="slider round"></span>
+                </label>
+            </div>
+        </div>
+
 
         <button type="submit" class="btn-submit">{% trans "Save" %}</button>
     </form>

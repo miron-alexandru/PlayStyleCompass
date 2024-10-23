@@ -61,7 +61,8 @@ class UserProfile(models.Model):
     receive_friend_request_notifications = models.BooleanField(default=True)
     receive_message_notifications = models.BooleanField(default=True)
     receive_chat_message_notifications = models.BooleanField(default=True)
-    receiver_shared_game_notifications = models.BooleanField(default=True)
+    receive_shared_game_notifications = models.BooleanField(default=True)
+    receive_shared_game_list_notifications = models.BooleanField(default=True)
 
     def clean(self):
         profile_name = self.profile_name
@@ -212,6 +213,7 @@ class Notification(models.Model):
         ("message", "Message"),
         ("chat_message", "Chat Message"),
         ("shared_game", "Shared Game"),
+        ("shared_game_list", "Shared Game List")
     ]
 
     id = models.AutoField(primary_key=True)

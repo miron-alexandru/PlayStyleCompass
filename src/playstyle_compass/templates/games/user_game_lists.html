@@ -16,9 +16,27 @@
 <link rel="stylesheet" type="text/css" href="{% static 'css/playstyle_compass/user_game_lists.css' %}">
 
 <div class="game-lists-container">
-  <h2 class="users-lists-title">{% trans "Game Lists by" %} <a href="{% url 'users:view_profile' user.userprofile.profile_name %}">
+  <h2 class="users-lists-title">{% trans "Game Lists by" %} 
+    <a href="{% url 'users:view_profile' user.userprofile.profile_name %}">
       {{ user.userprofile.profile_name }}
-    </a></h2>
+    </a>
+  </h2>
+
+  <div class="sorting-options">
+    <form method="GET">
+      <label for="sort_by">{% trans "Sort by:" %}</label>
+      <select name="sort_by" id="sort_by">
+        <option value="title" {% if sort_by == 'title' %}selected{% endif %}>{% trans "Title" %}</option>
+        <option value="total_games" {% if sort_by == 'total_games' %}selected{% endif %}>{% trans "Total Games" %}</option>
+        <option value="created_at" {% if sort_by == 'created_at' %}selected{% endif %}>{% trans "Date" %}</option>
+      </select>
+      <select name="order" id="order">
+        <option value="asc" {% if order == 'asc' %}selected{% endif %}>{% trans "Ascending" %}</option>
+        <option value="desc" {% if order == 'desc' %}selected{% endif %}>{% trans "Descending" %}</option>
+      </select>
+      <button type="submit" class="sort-button">{% trans "Sort" %}</button>
+    </form>
+  </div>
 
   {% if game_lists %}
     <div class="game-lists">
@@ -26,13 +44,13 @@
         <div class="game-list-item">
           <p><strong>{% trans "Title:" %}</strong> {{ game_list.title }}</p>
           <p><strong>{% trans "Description:" %}</strong> {{ game_list.description }}</p>
-          <p><strong>Shared with:</strong> {{ game_list.share_count }} users</p>
-          <p><strong>Total games in list:</strong> {{ game_list.total_games }}</p>
-          <p><strong>{% trans "Created by" %}:</strong> {{ game_list.owner.userprofile.profile_name }}</p>
+          <p><strong>{% trans "Shared with:" %}</strong> {{ game_list.share_count }} users</p>
+          <p><strong>{% trans "Total games in list:" %}</strong> {{ game_list.total_games }}</p>
+          <p><strong>{% trans "Created by:" %}</strong> {{ game_list.owner.userprofile.profile_name }}</p>
           
           <div class="button-group">
             <a href="{% url 'playstyle_compass:game_list_detail' game_list.id %}" class="view-button">{% trans "View List" %}</a>
-              <a href="{% url 'playstyle_compass:share_game_list' game_list.id %}" class="share-button">{% trans "Share List" %}</a>
+            <a href="{% url 'playstyle_compass:share_game_list' game_list.id %}" class="share-button">{% trans "Share List" %}</a>
 
             {% if game_list.owner == request.user %}
               <a href="{% url 'playstyle_compass:edit_game_list' game_list.id %}" class="edit-button">{% trans "Edit List" %}</a>
@@ -50,16 +68,15 @@
     </div>
 
     {% if user == request.user %}
-    <div class="delete-all-container">
-      <form action="{% url 'playstyle_compass:delete_all_game_lists' %}" method="post">
-        {% csrf_token %}
-        <button type="submit" class="delete-all-button" onclick="return confirm('{% trans 'Are you sure you want to delete all game lists?' %}')">
-          {% trans "Delete All Lists" %}
-        </button>
-      </form>
-    </div>
+      <div class="delete-all-container">
+        <form action="{% url 'playstyle_compass:delete_all_game_lists' %}" method="post">
+          {% csrf_token %}
+          <button type="submit" class="delete-all-button" onclick="return confirm('{% trans 'Are you sure you want to delete all game lists?' %}')">
+            {% trans "Delete All Lists" %}
+          </button>
+        </form>
+      </div>
     {% endif %}
-
   {% else %}
     <p class="empty-message">{% trans "This user has not created any game lists yet." %}</p>
   {% endif %}

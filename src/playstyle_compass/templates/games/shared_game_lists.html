@@ -13,7 +13,6 @@
 {% trans "Discover game lists shared with you or explore the ones you've shared with others. Find new games and collaborate with friends on your favorite picks." %}
 {% endblock description %}
 
-
 {% block content %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/playstyle_compass/user_game_lists.css' %}">
 
@@ -24,6 +23,24 @@
   <a href="?view=shared" class="toggle-button {% if view_type == 'shared' %}active{% endif %}">
     {% trans "Lists Shared" %}
   </a>
+</div>
+
+<div class="sorting-options">
+  <form method="GET">
+    <input type="hidden" name="view" value="{{ view_type }}">
+    <label for="sort_by">{% trans "Sort by:" %}</label>
+    <select name="sort_by" id="sort_by">
+      <option value="title" {% if sort_by == 'title' %} selected{% endif %}>{% trans "Title" %}</option>
+      <option value="total_games" {% if sort_by == 'total_games' %} selected{% endif %}>{% trans "Total Games" %}</option>
+    </select>
+
+    <select name="order" id="order">
+      <option value="asc" {% if order == 'asc' %} selected{% endif %}>{% trans "Ascending" %}</option>
+      <option value="desc" {% if order == 'desc' %} selected{% endif %}>{% trans "Descending" %}</option>
+    </select>
+
+    <button type="submit" class="sort-button">{% trans "Sort" %}</button>
+  </form>
 </div>
 
 <div class="game-lists-section">
@@ -39,16 +56,15 @@
           {% if view_type == 'shared' %}
             <p><strong>{% trans "Shared with:" %}</strong>
               {% for shared_user in game_list.shared_with.all %}
-              <a href="{% url 'users:view_profile' shared_user.userprofile.profile_name %}">
-                {{ shared_user.userprofile.profile_name }}
-              </a> {% if not forloop.last %}, {% endif %}
+                <a href="{% url 'users:view_profile' shared_user.userprofile.profile_name %}">
+                  {{ shared_user.userprofile.profile_name }}
+                </a> {% if not forloop.last %}, {% endif %}
               {% endfor %}
             </p>
           {% else %}
             <p><strong>{% trans "Created by" %}: </strong><a href="{% url 'users:view_profile' game_list.owner.userprofile.profile_name %}">
                 {{ game_list.owner.userprofile.profile_name }}
               </a></p>
-
           {% endif %}
 
           <a href="{% url 'playstyle_compass:game_list_detail' game_list.id %}" class="view-button">{% trans "View List" %}</a>

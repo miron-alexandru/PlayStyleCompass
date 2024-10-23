@@ -125,6 +125,8 @@ Websites for .env configuration: [GiantBomb](https://www.giantbomb.com/) / [Send
 <summary><h2>PlayStyle Compass Changelog</h2></summary>
 
 ### Version v2.2:
+* Notifications when sharing a game list.
+* Implemented Sorting for Game Lists and Shared Game Lists pages.
 * Displaying the number of games and share count for each list.
 * Implemented a page where users can view game lists they've received or shared.
 * Implemented Game Lists: Users can create, edit, share, and delete custom game lists.

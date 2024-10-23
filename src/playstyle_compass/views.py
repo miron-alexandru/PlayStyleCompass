@@ -1546,6 +1546,23 @@ def share_game_list(request, pk):
     if request.method == 'POST':
         users_to_share_with = request.POST.getlist('shared_with')
         game_list.shared_with.set(users_to_share_with)
+
+        # Create notifications for each user the game list is shared with
+        for user_id in users_to_share_with:
+            receiver = User.objects.get(pk=user_id)
+
+            profile_url = reverse('users:view_profile', args=[request.user.userprofile.profile_name])
+            game_list_url = reverse('playstyle_compass:game_list_detail', args=[game_list.pk])
+
+            message = format_html(
+                '<a class="notification-profile" href="{}">{}</a> has shared a game list with you: <a href="{}">{}</a>',
+                profile_url, request.user.userprofile.profile_name, game_list_url, game_list.title
+            )
+            
+            create_notification(
+                receiver, message=message, notification_type="shared_game_list"
+            )
+
         messages.success(request, _("Game list successfully shared!"))
         return redirect('playstyle_compass:game_list_detail', pk=game_list.pk)
 
@@ -1561,14 +1578,29 @@ def share_game_list(request, pk):
 
 
 def user_game_lists(request, user_id):
-    """View used to display game lists of a user."""
+    """View used to display game lists of a user with sorting options."""
     user = get_object_or_404(User, id=user_id)
     game_lists = GameList.objects.filter(owner=user)
+
+    sort_by = request.GET.get('sort_by', 'created_at')
+    order = request.GET.get('order', 'desc')
+
+    # Get game lists into a list for Python sorting
+    game_lists = list(game_lists)
+
+    if sort_by == 'title':
+        game_lists.sort(key=lambda x: x.title, reverse=(order == 'desc'))
+    elif sort_by == 'total_games':
+        game_lists.sort(key=lambda x: x.total_games, reverse=(order == 'desc'))
+    elif sort_by == 'created_at':
+        game_lists.sort(key=lambda x: x.created_at, reverse=(order == 'desc'))
 
     context = {
         "page_title": _("Game Lists :: PlayStyle Compass"),
         "game_lists": game_lists,
         "user": user,
+        "sort_by": sort_by,
+        "order": order,
     }
 
     return render(request, 'games/user_game_lists.html', context)
@@ -1579,6 +1611,8 @@ def shared_game_lists(request):
     """View to display game lists shared with and by the user."""
     user = request.user
     view_type = request.GET.get('view', 'received')
+    sort_by = request.GET.get('sort_by', 'title')
+    order = request.GET.get('order', 'desc')
 
     if view_type == 'shared':
         game_lists = GameList.objects.filter(owner=user, shared_with__isnull=False).distinct()
@@ -1587,10 +1621,18 @@ def shared_game_lists(request):
         game_lists = GameList.objects.filter(shared_with=user)
         page_title = _("Game Lists Shared With You")
 
+    game_lists = list(game_lists)
+    if sort_by == 'title':
+        game_lists.sort(key=lambda x: x.title, reverse=(order == 'desc'))
+    elif sort_by == 'total_games':
+        game_lists.sort(key=lambda x: x.total_games, reverse=(order == 'desc'))
+
     context = {
         "page_title": page_title,
         "game_lists": game_lists,
         "view_type": view_type,
+        "sort_by": sort_by,
+        "order": order,
     }
 
     return render(request, 'games/shared_game_lists.html', context)

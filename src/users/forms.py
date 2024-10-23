@@ -550,7 +550,8 @@ class NotificationSettingsForm(forms.ModelForm):
             "receive_friend_request_notifications",
             "receive_message_notifications",
             "receive_chat_message_notifications",
-            "receiver_shared_game_notifications",
+            "receive_shared_game_notifications",
+            "receive_shared_game_list_notifications",
         ]
         widgets = {
             "receive_review_notifications": forms.CheckboxInput(),
@@ -558,5 +559,6 @@ class NotificationSettingsForm(forms.ModelForm):
             "receive_friend_request_notifications": forms.CheckboxInput(),
             "receive_message_notifications": forms.CheckboxInput(),
             "receive_chat_message_notifications": forms.CheckboxInput(),
-            "receiver_shared_game_notifications": forms.CheckboxInput(),
+            "receive_shared_game_notifications": forms.CheckboxInput(),
+            "receive_shared_game_list_notifications": forms.CheckboxInput(),
         }
