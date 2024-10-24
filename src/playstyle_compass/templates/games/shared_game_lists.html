@@ -56,15 +56,25 @@
           {% if view_type == 'shared' %}
             <p><strong>{% trans "Shared with:" %}</strong>
               {% for shared_user in game_list.shared_with.all %}
-                <a href="{% url 'users:view_profile' shared_user.userprofile.profile_name %}">
-                  {{ shared_user.userprofile.profile_name }}
-                </a> {% if not forloop.last %}, {% endif %}
+                {% if shared_user != request.user %}
+                  <a href="{% url 'users:view_profile' shared_user.userprofile.profile_name %}">
+                    {{ shared_user.userprofile.profile_name }}
+                  </a>{% if not forloop.last %}, {% endif %}
+                {% endif %}
               {% endfor %}
             </p>
           {% else %}
-            <p><strong>{% trans "Created by" %}: </strong><a href="{% url 'users:view_profile' game_list.owner.userprofile.profile_name %}">
-                {{ game_list.owner.userprofile.profile_name }}
-              </a></p>
+            <p><strong>{% trans "Shared By:" %}</strong>
+              {% if game_list.shared_by_users %}
+                {% for shared_user in game_list.shared_by_users %}
+                  <a href="{% url 'users:view_profile' shared_user.userprofile.profile_name %}">
+                    {{ shared_user.userprofile.profile_name }}
+                  </a>{% if not forloop.last %}, {% endif %}
+                {% endfor %}
+              {% else %}
+                {% trans "Unknown" %}
+              {% endif %}
+            </p>
           {% endif %}
 
           <a href="{% url 'playstyle_compass:game_list_detail' game_list.id %}" class="view-button">{% trans "View List" %}</a>

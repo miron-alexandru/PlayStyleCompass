@@ -338,6 +338,7 @@ class GameList(models.Model):
     game_guids = models.JSONField(default=list)
     additional_games = models.JSONField(default=list)
     shared_with = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True, related_name="shared_game_lists")
+    shared_by = models.JSONField(default=dict, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

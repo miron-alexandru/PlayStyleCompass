@@ -1545,23 +1545,35 @@ def share_game_list(request, pk):
 
     if request.method == 'POST':
         users_to_share_with = request.POST.getlist('shared_with')
-        game_list.shared_with.set(users_to_share_with)
+        game_list.shared_with.add(*users_to_share_with)
 
-        # Create notifications for each user the game list is shared with
+        # Initialize or update 'shared_by' to track who shared the list
+        shared_by_info = game_list.shared_by or {}
+
         for user_id in users_to_share_with:
             receiver = User.objects.get(pk=user_id)
 
+            # Ensure shared_by contains a list for each user
+            if str(user_id) not in shared_by_info:
+                shared_by_info[str(user_id)] = []
+            if isinstance(shared_by_info[str(user_id)], int):
+                shared_by_info[str(user_id)] = [shared_by_info[str(user_id)]]
+
+            # Add the current user to the list of sharers
+            if request.user.id not in shared_by_info[str(user_id)]:
+                shared_by_info[str(user_id)].append(request.user.id)
+
+            # Create a notification for the user receiving the shared list
             profile_url = reverse('users:view_profile', args=[request.user.userprofile.profile_name])
             game_list_url = reverse('playstyle_compass:game_list_detail', args=[game_list.pk])
-
             message = format_html(
                 '<a class="notification-profile" href="{}">{}</a> has shared a game list with you: <a href="{}">{}</a>',
                 profile_url, request.user.userprofile.profile_name, game_list_url, game_list.title
             )
-            
-            create_notification(
-                receiver, message=message, notification_type="shared_game_list"
-            )
+            create_notification(receiver, message=message, notification_type="shared_game_list")
+
+        game_list.shared_by = shared_by_info
+        game_list.save()
 
         messages.success(request, _("Game list successfully shared!"))
         return redirect('playstyle_compass:game_list_detail', pk=game_list.pk)
@@ -1615,15 +1627,27 @@ def shared_game_lists(request):
     order = request.GET.get('order', 'desc')
 
     if view_type == 'shared':
-        game_lists = GameList.objects.filter(owner=user, shared_with__isnull=False).distinct()
+        game_lists = GameList.objects.all()
+        game_lists = [game_list for game_list in game_lists if str(user.id) in game_list.shared_by]
         page_title = _("Game Lists You Shared with Others")
     else:
+        # Get lists that have been shared with the user
         game_lists = GameList.objects.filter(shared_with=user)
         page_title = _("Game Lists Shared With You")
 
+        # Track all users who shared the list with the current user
+        for game_list in game_lists:
+            shared_by_user_ids = game_list.shared_by.get(str(user.id), [])
+            if isinstance(shared_by_user_ids, int):
+                shared_by_user_ids = [shared_by_user_ids]  # Ensure it's a list
+
+            # Attach users who shared the game list
+            game_list.shared_by_users = User.objects.filter(id__in=shared_by_user_ids) if shared_by_user_ids else []
+
     game_lists = list(game_lists)
+
     if sort_by == 'title':
-        game_lists.sort(key=lambda x: x.title, reverse=(order == 'desc'))
+        game_lists.sort(key=lambda x: x.title.lower(), reverse=(order == 'desc'))
     elif sort_by == 'total_games':
         game_lists.sort(key=lambda x: x.total_games, reverse=(order == 'desc'))
 
