@@ -17,8 +17,8 @@
 
 <div class="game-lists-container">
   <h2 class="users-lists-title">{% trans "Game Lists by" %} 
-    <a href="{% url 'users:view_profile' user.userprofile.profile_name %}">
-      {{ user.userprofile.profile_name }}
+    <a href="{% url 'users:view_profile' list_user.userprofile.profile_name %}">
+      {{ list_user.userprofile.profile_name }}
     </a>
   </h2>
 
@@ -67,7 +67,7 @@
       {% endfor %}
     </div>
 
-    {% if user == request.user %}
+    {% if list_user == request.user %}
       <div class="delete-all-container">
         <form action="{% url 'playstyle_compass:delete_all_game_lists' %}" method="post">
           {% csrf_token %}

@@ -1610,7 +1610,7 @@ def user_game_lists(request, user_id):
     context = {
         "page_title": _("Game Lists :: PlayStyle Compass"),
         "game_lists": game_lists,
-        "user": user,
+        "list_user": user,
         "sort_by": sort_by,
         "order": order,
     }
