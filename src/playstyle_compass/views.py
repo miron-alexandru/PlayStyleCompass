@@ -1550,18 +1550,15 @@ def share_game_list(request, pk):
         # Initialize or update 'shared_by' to track who shared the list
         shared_by_info = game_list.shared_by or {}
 
+        sharer_id = str(request.user.id)
+        if sharer_id not in shared_by_info:
+            shared_by_info[sharer_id] = []
+
         for user_id in users_to_share_with:
             receiver = User.objects.get(pk=user_id)
 
-            # Ensure shared_by contains a list for each user
-            if str(user_id) not in shared_by_info:
-                shared_by_info[str(user_id)] = []
-            if isinstance(shared_by_info[str(user_id)], int):
-                shared_by_info[str(user_id)] = [shared_by_info[str(user_id)]]
-
-            # Add the current user to the list of sharers
-            if request.user.id not in shared_by_info[str(user_id)]:
-                shared_by_info[str(user_id)].append(request.user.id)
+            if user_id not in shared_by_info[sharer_id]:
+                shared_by_info[sharer_id].append(user_id)
 
             # Create a notification for the user receiving the shared list
             profile_url = reverse('users:view_profile', args=[request.user.userprofile.profile_name])
@@ -1628,7 +1625,10 @@ def shared_game_lists(request):
 
     if view_type == 'shared':
         game_lists = GameList.objects.all()
-        game_lists = [game_list for game_list in game_lists if str(user.id) in game_list.shared_by]
+        game_lists = [
+            game_list for game_list in game_lists 
+            if str(user.id) in game_list.shared_by and game_list.shared_by[str(user.id)]
+        ]
         page_title = _("Game Lists You Shared with Others")
     else:
         # Get lists that have been shared with the user
@@ -1637,9 +1637,10 @@ def shared_game_lists(request):
 
         # Track all users who shared the list with the current user
         for game_list in game_lists:
-            shared_by_user_ids = game_list.shared_by.get(str(user.id), [])
-            if isinstance(shared_by_user_ids, int):
-                shared_by_user_ids = [shared_by_user_ids]  # Ensure it's a list
+            shared_by_user_ids = [
+                sharer_id for sharer_id, receivers in game_list.shared_by.items() 
+                if str(user.id) in receivers
+            ]
 
             # Attach users who shared the game list
             game_list.shared_by_users = User.objects.filter(id__in=shared_by_user_ids) if shared_by_user_ids else []
