@@ -1,4 +1,5 @@
-.franchise-container li, .character-container li {
+.franchise-container li,
+.character-container li {
   display: flex;
   align-items: start;
   border: 1px solid #ddd;
@@ -9,12 +10,14 @@
   background-color: #f5f5f5;
 }
 
-.franchise-info, .character-info {
+.franchise-info,
+.character-info {
   flex: 1;
   padding: 5px 10px 5px 10px;
 }
 
-.franchise-image img, .character-image img {
+.franchise-image img,
+.character-image img {
   max-width: 210px;
   max-height: 500px;
   border: 1px solid #ddd;
@@ -23,17 +26,19 @@
   margin-left: 5;
 }
 
-.read-button, .read-button-games {
+.read-button,
+.read-button-games {
   background: none;
   border: none;
   padding: 0;
-  color: #007BFF;
+  color: #007bff;
   cursor: pointer;
   font-size: 14px;
   text-decoration: underline;
 }
 
-.read-button:hover, .read-button-games:hover {
+.read-button:hover,
+.read-button-games:hover {
   text-decoration: none;
 }
 

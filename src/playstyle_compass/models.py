@@ -332,12 +332,17 @@ class News(models.Model):
 
 class GameList(models.Model):
     """Represents a game list."""
-    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="game_lists")
+
+    owner = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="game_lists"
+    )
     title = models.CharField(max_length=255)
     description = models.TextField(blank=True, null=True)
     game_guids = models.JSONField(default=list)
     additional_games = models.JSONField(default=list)
-    shared_with = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True, related_name="shared_game_lists")
+    shared_with = models.ManyToManyField(
+        settings.AUTH_USER_MODEL, blank=True, related_name="shared_game_lists"
+    )
     shared_by = models.JSONField(default=dict, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

@@ -42,7 +42,7 @@ a:hover {
 }
 
 .btn-danger:hover {
-  background-color: #c82333!important;
+  background-color: #c82333 !important;
 }
 
 .btn-danger:focus {
@@ -105,13 +105,12 @@ a:hover {
 
 .save-button:disabled,
 .save-all-button:disabled {
-  opacity: .65;
+  opacity: 0.65;
 }
 
 .form-label {
   font-size: 18px;
 }
-
 
 #saving-spinner {
   display: inline-block;

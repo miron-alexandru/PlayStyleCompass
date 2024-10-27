@@ -1,4 +1,5 @@
-.games-li, .franchises-li {
+.games-li,
+.franchises-li {
   display: inline-block;
   vertical-align: top;
   padding: 5px;
@@ -6,14 +7,16 @@
   overflow: hidden;
 }
 
-.game-image, .franchise-image {
+.game-image,
+.franchise-image {
   position: relative;
   overflow: hidden;
   border: 1px solid #ddd;
   border-radius: 5px;
 }
 
-.game-image img, .franchise-image img {
+.game-image img,
+.franchise-image img {
   display: block;
   max-width: 100%;
   max-height: 200px;
@@ -21,15 +24,18 @@
   transition: transform 0.3s ease;
 }
 
-.game-image:hover img, .franchise-image:hover img {
+.game-image:hover img,
+.franchise-image:hover img {
   transform: scale(1.05);
 }
 
-.games, .franchises {
+.games,
+.franchises {
   padding-bottom: 5px;
 }
 
-.games h3, .franchises h3 {
+.games h3,
+.franchises h3 {
   padding-top: 25px;
   color: #2f6187;
   position: relative;
@@ -42,13 +48,15 @@
   color: #3e6a91;
 }
 
-.games-description, .franchises-description {
+.games-description,
+.franchises-description {
   color: #555;
   font-size: 16px;
   padding-bottom: 15px;
 }
 
-.game-title, .franchise-title {
+.game-title,
+.franchise-title {
   display: none;
   position: absolute;
   bottom: 0;

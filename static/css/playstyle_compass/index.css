@@ -28,7 +28,8 @@
   margin-top: 5px;
 }
 
-.game-container, .franchise-container {
+.game-container,
+.franchise-container {
   display: flex;
   flex-wrap: nowrap;
   overflow-x: auto;
@@ -62,7 +63,8 @@
     padding: 6px 10px;
   }
 
-  .game-container, .franchise-container {
+  .game-container,
+  .franchise-container {
     padding: 5px;
   }
 }

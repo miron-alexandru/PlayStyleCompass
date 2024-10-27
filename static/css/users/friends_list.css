@@ -89,14 +89,12 @@
 }
 
 .status.online {
-    color: green;
+  color: green;
 }
-
 
 .status.offline {
-    color: #555;
+  color: #555;
 }
-
 
 @media screen and (max-width: 767px) {
   .card {

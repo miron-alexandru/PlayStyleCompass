@@ -6,20 +6,16 @@ const favoriteGenreCheckboxes = document.querySelectorAll(
 const preferredPlatformCheckboxes = document.querySelectorAll(
   'input[name="platforms"]'
 );
-const themesCheckboxes = document.querySelectorAll(
-  'input[name="themes"]'
-);
+const themesCheckboxes = document.querySelectorAll('input[name="themes"]');
 const connectionsCheckboxes = document.querySelectorAll(
   'input[name="connection_types"]'
 );
-const stylesCheckboxes = document.querySelectorAll(
-  'input[name="game_styles"]'
-);
+const stylesCheckboxes = document.querySelectorAll('input[name="game_styles"]');
 
 const gamingHistoryInput = document.getElementById("gaming_history");
 const updateButton = document.getElementById("update-button");
 const genreWarning = document.getElementById("genre-warning");
-const themeWarning = document.getElementById('theme-warning');
+const themeWarning = document.getElementById("theme-warning");
 const platformWarning = document.getElementById("platform-warning");
 const historyWarning = document.getElementById("history-warning");
 const connectionWarning = document.getElementById("connection-warning");
@@ -51,15 +47,15 @@ function updateWarnings() {
     (cb) => cb.checked
   );
 
-
   const hasSelectedGenres =
     selectedGenres.length >= 1 && selectedGenres.length <= maxSelections;
-  const hasSelectedThemes = 
+  const hasSelectedThemes =
     selectedThemes.length >= 1 && selectedGenres.length <= maxSelections;
   const hasSelectedPlatforms =
     selectedPlatforms.length >= 1 && selectedPlatforms.length <= maxSelections;
   const hasSelectedConnections =
-    selectedConnections.length >= 1 && selectedConnections.length <= singularSelections;
+    selectedConnections.length >= 1 &&
+    selectedConnections.length <= singularSelections;
   const hasSelectedStyles =
     selectedStyles.length >= 1 && selectedStyles.length <= singularSelections;
   const hasGamingHistory = gamingHistoryInput.value.trim() !== "";
@@ -72,7 +68,12 @@ function updateWarnings() {
   styleWarning.style.display = hasSelectedStyles ? "none" : "block";
 
   updateButton.disabled =
-    !hasSelectedGenres || !hasSelectedThemes || !hasSelectedPlatforms || !hasGamingHistory || !hasSelectedConnections || !hasSelectedStyles;
+    !hasSelectedGenres ||
+    !hasSelectedThemes ||
+    !hasSelectedPlatforms ||
+    !hasGamingHistory ||
+    !hasSelectedConnections ||
+    !hasSelectedStyles;
 }
 
 favoriteGenreCheckboxes.forEach((checkbox) => {

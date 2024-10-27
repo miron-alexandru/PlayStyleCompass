@@ -4,7 +4,9 @@ $(document).ready(function () {
   saveAllButton.click(function (event) {
     event.preventDefault();
 
-    const formData = $("#history-section form, #genres-section form, #themes-section form, #platforms-section form, #game-styles-section form, #connection-types-section form").serialize();
+    const formData = $(
+      "#history-section form, #genres-section form, #themes-section form, #platforms-section form, #game-styles-section form, #connection-types-section form"
+    ).serialize();
 
     $("#saving-spinner").show();
 

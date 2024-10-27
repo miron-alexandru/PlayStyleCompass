@@ -1,98 +1,98 @@
 .share-game-list-container {
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 30px;
-    background-color: #fff;
-    border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    text-align: center;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 30px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  text-align: center;
 }
 
 .share-form {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
 .form-label {
-    font-size: 1.1rem;
-    color: #2c3e50;
-    font-weight: 600;
+  font-size: 1.1rem;
+  color: #2c3e50;
+  font-weight: 600;
 }
 
 .btn-submit {
-    background-color: #3498db;
-    color: white;
-    padding: 8px 16px;
-    border: none;
-    border-radius: 4px;
-    font-size: 1.0rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+  background-color: #3498db;
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 .btn-submit:hover {
-    background-color: #2980b9;
+  background-color: #2980b9;
 }
 
 .friends-checkbox-list {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    margin-top: 0px;
-    padding: 10px;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    border: 1px solid #ddd;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 0px;
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border: 1px solid #ddd;
 }
 
 .friend-checkbox {
-    display: flex;
-    align-items: center;
-    gap: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .friend-checkbox input {
-    margin: 0;
-    cursor: pointer;
-    width: 20px;
-    height: 20px;
-    border: 2px solid #3498db;
-    border-radius: 4px;
-    background-color: #fff;
-    transition: border-color 0.3s ease, background-color 0.3s ease;
+  margin: 0;
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #3498db;
+  border-radius: 4px;
+  background-color: #fff;
+  transition: border-color 0.3s ease, background-color 0.3s ease;
 }
 
 .friend-checkbox input:checked {
-    background-color: #3498db;
-    border-color: #3498db;
+  background-color: #3498db;
+  border-color: #3498db;
 }
 
 .friend-checkbox input:checked::before {
-    content: '✔';
-    color: white;
-    position: absolute;
-    left: 3px;
-    top: -2px;
-    font-size: 16px;
+  content: "✔";
+  color: white;
+  position: absolute;
+  left: 3px;
+  top: -2px;
+  font-size: 16px;
 }
 
 .friend-checkbox label {
-    font-size: 0.95rem;
-    color: #333;
-    cursor: pointer;
-    transition: color 0.3s ease;
+  font-size: 0.95rem;
+  color: #333;
+  cursor: pointer;
+  transition: color 0.3s ease;
 }
 
 .friend-checkbox:hover label {
-    color: #3498db;
-    font-weight: 600;
+  color: #3498db;
+  font-weight: 600;
 }
 
 .friend-checkbox input:focus {
-    outline: none;
-    border-color: #2980b9;
-    box-shadow: 0 0 5px rgba(0, 0, 255, 0.2);
+  outline: none;
+  border-color: #2980b9;
+  box-shadow: 0 0 5px rgba(0, 0, 255, 0.2);
 }

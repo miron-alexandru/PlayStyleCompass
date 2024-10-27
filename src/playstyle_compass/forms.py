@@ -37,43 +37,48 @@ class ReviewForm(forms.ModelForm):
 class GameListForm(forms.ModelForm):
     title = forms.CharField(
         max_length=200,
-        widget=forms.TextInput(attrs={
-            'placeholder': _('Enter the title of your game list'),
-            'class': 'form-control',
-        }),
-        required=True
+        widget=forms.TextInput(
+            attrs={
+                "placeholder": _("Enter the title of your game list"),
+                "class": "form-control",
+            }
+        ),
+        required=True,
     )
-    
+
     description = forms.CharField(
-        widget=forms.Textarea(attrs={
-            'placeholder': _('Enter a description for your game list (optional)'),
-            'class': 'form-control',
-            'rows': 4,
-        }),
-        required=False
+        widget=forms.Textarea(
+            attrs={
+                "placeholder": _("Enter a description for your game list (optional)"),
+                "class": "form-control",
+                "rows": 4,
+            }
+        ),
+        required=False,
     )
-    
+
     games = forms.ModelMultipleChoiceField(
         queryset=Game.objects.all(),
         widget=forms.CheckboxSelectMultiple,
         required=True,
-        help_text=_("Select games to include in the list.")
+        help_text=_("Select games to include in the list."),
     )
 
     additional_games = forms.CharField(
-        label="Add additional games (comma-separated)", 
+        label="Add additional games (comma-separated)",
         required=False,
-        widget=forms.TextInput(attrs={"placeholder": _("Enter additional game names")})
+        widget=forms.TextInput(attrs={"placeholder": _("Enter additional game names")}),
     )
 
     class Meta:
         model = GameList
-        fields = ['title', 'description', 'games']
+        fields = ["title", "description", "games"]
 
     def save(self, commit=True):
         game_list = super().save(commit=False)
-        game_list.game_guids = list(self.cleaned_data['games'].values_list('guid', flat=True))
+        game_list.game_guids = list(
+            self.cleaned_data["games"].values_list("guid", flat=True)
+        )
         if commit:
             game_list.save()
         return game_list
-

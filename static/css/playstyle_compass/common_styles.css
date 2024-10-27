@@ -85,7 +85,6 @@ button[type="submit"]:hover {
 }
 
 @media screen and (max-width: 1000px) {
-
   .games-collection li,
   .results li {
     flex-direction: column;

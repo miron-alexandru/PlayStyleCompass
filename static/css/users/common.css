@@ -89,6 +89,6 @@ button[type="submit"]:hover {
 }
 
 .form-check-label {
-  display: inline-block!important;
-  margin-bottom: -4px!important;
+  display: inline-block !important;
+  margin-bottom: -4px !important;
 }

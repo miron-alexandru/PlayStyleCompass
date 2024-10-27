@@ -2,7 +2,7 @@ const searchInput = document.getElementById("search-input");
 const searchResults = document.getElementById("search-results");
 const searchTypeRadios = document.getElementsByName("search_type");
 const searchForm = document.querySelector(".search-form");
-let currentSearchType = getSelectedSearchType(); 
+let currentSearchType = getSelectedSearchType();
 
 searchInput.addEventListener("input", function () {
   const query = searchInput.value.trim();
@@ -21,8 +21,8 @@ searchInput.addEventListener("input", function () {
     .then((data) => {
       let resultsHTML = "";
       data.results.forEach((result) => {
-        let titleOrName = '';
-        if (searchType === 'characters') {
+        let titleOrName = "";
+        if (searchType === "characters") {
           titleOrName = result.name;
         } else {
           titleOrName = result.title;
@@ -35,8 +35,12 @@ searchInput.addEventListener("input", function () {
     });
 });
 
-document.getElementById("search-form").addEventListener("submit", function (event) {
-    let searchType = document.querySelector('input[name="search_type"]:checked').value;
+document
+  .getElementById("search-form")
+  .addEventListener("submit", function (event) {
+    let searchType = document.querySelector(
+      'input[name="search_type"]:checked'
+    ).value;
 
     if (searchType === "games") {
       this.action = searchGames;
@@ -47,12 +51,14 @@ document.getElementById("search-form").addEventListener("submit", function (even
     }
   });
 
-document.querySelectorAll('input[name="search_type"]').forEach(function (radio) {
-  radio.addEventListener("change", function () {
-    currentSearchType = getSelectedSearchType();
-    searchInput.dispatchEvent(new Event("input"));
+document
+  .querySelectorAll('input[name="search_type"]')
+  .forEach(function (radio) {
+    radio.addEventListener("change", function () {
+      currentSearchType = getSelectedSearchType();
+      searchInput.dispatchEvent(new Event("input"));
+    });
   });
-});
 
 function fillSearchBar(value) {
   searchInput.value = decodeURIComponent(value);
@@ -62,7 +68,7 @@ function fillSearchBar(value) {
     searchForm.action = searchGames;
   } else if (searchType === "franchises") {
     searchForm.action = searchFranchises;
-  } else if (searchType === "characters" ) {
+  } else if (searchType === "characters") {
     searchForm.action = searchCharacters;
   }
 
@@ -89,7 +95,6 @@ function validateSearch() {
 
   return true;
 }
-
 
 function getSelectedSearchType() {
   for (const radio of searchTypeRadios) {

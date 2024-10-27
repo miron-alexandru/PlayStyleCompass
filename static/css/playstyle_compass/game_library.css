@@ -1,10 +1,10 @@
 .filter-container {
-	display: flex;
+  display: flex;
   align-items: center;
-	gap: 8px;
+  gap: 8px;
 }
 
-label[for="sort_by"], 
+label[for="sort_by"],
 label[for="filter_by"] {
   font-size: 14px;
   color: #333;
@@ -32,7 +32,8 @@ select:focus {
   border: 1px solid #333;
 }
 
-.apply-button, .reset-button {
+.apply-button,
+.reset-button {
   color: #fff;
   padding: 5px 10px;
   border: none;
@@ -52,7 +53,8 @@ select:focus {
   background-color: #505050;
 }
 
-.sorting, .filter-buttons {
+.sorting,
+.filter-buttons {
   display: flex;
   align-items: center;
   gap: 8px;

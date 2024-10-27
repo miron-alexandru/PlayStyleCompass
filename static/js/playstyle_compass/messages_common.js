@@ -25,7 +25,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
   const updateCheckboxes = () => {
     const checkboxContainer = document.querySelector(".messages-grid-inbox");
-    messagesCheckboxes = checkboxContainer.querySelectorAll(".message-checkbox");
+    messagesCheckboxes =
+      checkboxContainer.querySelectorAll(".message-checkbox");
   };
 
   const toggleAllCheckboxes = () => {
@@ -43,7 +44,7 @@ document.addEventListener("DOMContentLoaded", function () {
   messagesCheckboxes = document.querySelectorAll(".message-checkbox");
 
   messagesCheckboxes.forEach((checkbox) =>
-    checkbox.addEventListener("click", function() {
+    checkbox.addEventListener("click", function () {
       console.log("Message selected:", checkbox.value);
       updateButtonText();
     })

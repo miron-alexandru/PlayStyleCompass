@@ -7,8 +7,12 @@ document.addEventListener("DOMContentLoaded", () => {
   const genresSaveButton = document.getElementById("save-genres-button");
   const themesSaveButton = document.getElementById("save-themes-button");
   const platformsSaveButton = document.getElementById("save-platforms-button");
-  const gameStylesSaveButton = document.getElementById("save-game-styles-button");
-  const connectionTypesSaveButton = document.getElementById("save-connection-types-button");
+  const gameStylesSaveButton = document.getElementById(
+    "save-game-styles-button"
+  );
+  const connectionTypesSaveButton = document.getElementById(
+    "save-connection-types-button"
+  );
   const saveAllButton = document.getElementById("save-all-button");
 
   const favoriteGenreCheckboxes = document.querySelectorAll(
@@ -17,9 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const favoritePlatformCheckboxes = document.querySelectorAll(
     'input[name="platforms"]'
   );
-  const themesCheckboxes = document.querySelectorAll(
-    'input[name="themes"]'
-  );
+  const themesCheckboxes = document.querySelectorAll('input[name="themes"]');
   const gameStylesCheckboxes = document.querySelectorAll(
     'input[name="game_styles"]'
   );

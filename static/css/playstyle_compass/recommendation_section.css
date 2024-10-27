@@ -37,7 +37,7 @@ small {
   background: none;
   border: none;
   padding: 0;
-  color: #007BFF;
+  color: #007bff;
   cursor: pointer;
   font-size: 14px;
   text-decoration: underline;
@@ -47,7 +47,6 @@ small {
 .read-button-review:hover {
   text-decoration: none;
 }
-
 
 .friend-dropdown-content {
   display: none;
@@ -62,7 +61,9 @@ small {
   display: inline-block;
 }
 
-.share-button, .favorite-star, .queue-clock {
+.share-button,
+.favorite-star,
+.queue-clock {
   cursor: pointer;
 }
 
@@ -127,7 +128,8 @@ small {
   margin-top: 1px;
 }
 
-span.stars, span.stars span {
+span.stars,
+span.stars span {
   display: inline-block;
   background: url(https://svgur.com/i/148G.svg) 0 0 repeat-x;
   width: 100px;
@@ -167,14 +169,15 @@ span.stars span {
   color: black;
   text-align: center;
   margin-bottom: 6px;
-  background-color: #E0E0E0;
+  background-color: #e0e0e0;
   border-radius: 6px;
 }
 
-.show-hide-req, .show-hide-videos {
+.show-hide-req,
+.show-hide-videos {
   background: none;
   border: none;
-  color: #007BFF;
+  color: #007bff;
   cursor: pointer;
   text-decoration: none;
   font-weight: bold;

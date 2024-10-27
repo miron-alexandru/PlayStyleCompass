@@ -1,42 +1,43 @@
-.followers-container, .following-container {
-    max-width: 550px;
-    margin: 20px auto;
-    padding: 20px;
-    background-color: #f7f7f7;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+.followers-container,
+.following-container {
+  max-width: 550px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #f7f7f7;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .followers-list {
-    list-style: none;
-    padding: 0;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
 }
 
 .follower-item {
-    flex: 1 1 calc(33.333% - 15px);
-    padding: 10px;
-    display: flex;
-    align-items: center;
-    box-sizing: border-box;
+  flex: 1 1 calc(33.333% - 15px);
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
 }
 
 .follower-item:last-child {
-    border-bottom: none;
+  border-bottom: none;
 }
 
 .follower-link {
-    text-decoration: none;
-    color: #1da1f2;
-    display: flex;
-    align-items: center;
+  text-decoration: none;
+  color: #1da1f2;
+  display: flex;
+  align-items: center;
 }
 
 .follower-link:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
 .follow-profile-picture {
@@ -50,37 +51,38 @@
 }
 
 .follower-name {
-    font-weight: bold;
-    font-size: 15px;
+  font-weight: bold;
+  font-size: 15px;
 }
 
 .no-followers {
-    text-align: center;
-    color: #657786;
-    padding: 20px 0;
+  text-align: center;
+  color: #657786;
+  padding: 20px 0;
 }
 
-.followers-title, .following-title {
-    font-size: 22px;
-    font-weight: bold;
-    text-align: center;
-    margin: 20px 0;
-    color: #2d3e50;
+.followers-title,
+.following-title {
+  font-size: 22px;
+  font-weight: bold;
+  text-align: center;
+  margin: 20px 0;
+  color: #2d3e50;
 }
 
 .follower-info {
-    display: flex;
-    align-itemse: flex-start;
-    align-self: center;
+  display: flex;
+  align-items: flex-start;
+  align-self: center;
 }
 
 .follower-details {
-    margin-left: 10px;
-    align-self: center;
+  margin-left: 10px;
+  align-self: center;
 }
 
 .follower-bio {
-    font-size: 12px;
-    color: #657786;
-    display: block;
+  font-size: 12px;
+  color: #657786;
+  display: block;
 }

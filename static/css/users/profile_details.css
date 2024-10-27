@@ -30,7 +30,7 @@
   background-color: #fff;
   border-color: #a5c9ff;
   outline: 0;
-  box-shadow: 0 0 0 0.1rem rgba(0, 123, 255, .25);
+  box-shadow: 0 0 0 0.1rem rgba(0, 123, 255, 0.25);
 }
 
 .form-group textarea {
@@ -39,11 +39,11 @@
 }
 
 .reset-btn {
-  background-color: #DC143C!important;
+  background-color: #dc143c !important;
 }
 
 .reset-btn:hover {
-    background-color: #8B0000!important;
+  background-color: #8b0000 !important;
 }
 
 .form-buttons {

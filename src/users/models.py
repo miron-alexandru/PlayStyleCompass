@@ -213,7 +213,7 @@ class Notification(models.Model):
         ("message", "Message"),
         ("chat_message", "Chat Message"),
         ("shared_game", "Shared Game"),
-        ("shared_game_list", "Shared Game List")
+        ("shared_game_list", "Shared Game List"),
     ]
 
     id = models.AutoField(primary_key=True)

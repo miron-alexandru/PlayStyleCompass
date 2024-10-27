@@ -499,7 +499,7 @@ input[type="email"]:focus,
   font-size: 15px;
 }
 
-.notifications-dropdown {;
+.notifications-dropdown {
   position: absolute;
   width: 280px!important;
   margin-top: 21px;
@@ -568,8 +568,8 @@ input[type="email"]:focus,
 
 .language-options {
   display: none;
-  list-stylee: none;
-  paddinge: 0;
+  list-style: none;
+  padding: 0;
   margin-left: -35px;
   margin-top: 95px;
 }

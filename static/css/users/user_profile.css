@@ -46,7 +46,6 @@
   color: #555 !important;
 }
 
-
 .friends-text-container {
   border: none;
   border-radius: 50%;
@@ -87,7 +86,7 @@
   transition: background-color 0.3s ease;
   font-size: 12px;
   color: #ffffff;
-  white-space: nowrap; 
+  white-space: nowrap;
   font-weight: 600;
 }
 
@@ -100,7 +99,7 @@
 }
 
 .friend-request-button {
-  background-color: #228B22;
+  background-color: #228b22;
 }
 
 .remove-friend-button {
@@ -116,19 +115,19 @@
 }
 
 .block-toggle-button.block {
-    background-color: red;
+  background-color: red;
 }
 
 .block-toggle-button.block:hover {
-    background-color: darkred;
+  background-color: darkred;
 }
 
 .block-toggle-button.unblock {
-    background-color: #228B22;
+  background-color: #228b22;
 }
 
 .block-toggle-button.unblock:hover {
-    background-color: green;
+  background-color: green;
 }
 
 .follow-button {
@@ -148,7 +147,6 @@
 .unfollow-button:hover {
   background-color: #5a6268;
 }
-
 
 .friend-request-message {
   padding-top: 2px;
@@ -255,19 +253,18 @@
 }
 
 #status {
-    font-size: 15px;
-    text-align: center;
-    display: inline-block;
-    transition: color 0.3s;
-    align-self: center;
-    font-weight: 600;
+  font-size: 15px;
+  text-align: center;
+  display: inline-block;
+  transition: color 0.3s;
+  align-self: center;
+  font-weight: 600;
 }
 
 #status.online {
-  color: #228B22;
+  color: #228b22;
 }
 
-
 #status.offline {
-    color: gray;
+  color: gray;
 }

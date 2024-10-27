@@ -1,74 +1,75 @@
 .center-wrapper {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .form-container {
-    background-color: #fff;
-    padding: 2rem;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    max-width: 500px;
-    width: 100%;
+  background-color: #fff;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 500px;
+  width: 100%;
 }
 
-.create-list-title, .edit-list-title {
-    margin-bottom: 1.4rem;
-    color: #333;
-    font-size: 1.7rem;
-    text-align: center;
+.create-list-title,
+.edit-list-title {
+  margin-bottom: 1.4rem;
+  color: #333;
+  font-size: 1.7rem;
+  text-align: center;
 }
 
 .form-group {
-    margin-bottom: 1.5rem;
+  margin-bottom: 1.5rem;
 }
 
 label {
-    font-weight: bold;
-    color: #555;
-    display: block;
-    margin-bottom: 0.5rem;
+  font-weight: bold;
+  color: #555;
+  display: block;
+  margin-bottom: 0.5rem;
 }
 
 .error {
-    color: red;
-    font-size: 0.875rem;
-    margin-top: 0.5rem;
+  color: red;
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
 }
 
 .btn-submit {
-    display: inline-block;
-    padding: 10px 20px;
-    background-color: #28a745;
-    color: #fff;
-    font-size: 1rem;
-    font-weight: bold;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    width: 100%;
-    transition: background-color 0.3s ease;
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #28a745;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 100%;
+  transition: background-color 0.3s ease;
 }
 
 .btn-submit:hover {
-    background-color: #218838;
+  background-color: #218838;
 }
 
 .form-group input[type="checkbox"] {
-    margin-right: 10px;
+  margin-right: 10px;
 }
 
 .form-groupe label:hover {
-    cursor: pointer;
-    color: #007bff;
+  cursor: pointer;
+  color: #007bff;
 }
 
 .scrollable-checkbox-container {
-    max-height: 300px;
-    overflow-y: auto;
-    margin: 10px 0;
-    border: 1px solid #ccc;
-    padding: 10px;
-    border-radius: 5px;
+  max-height: 300px;
+  overflow-y: auto;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 5px;
 }

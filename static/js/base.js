@@ -21,7 +21,6 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 
-
 document.addEventListener("DOMContentLoaded", function () {
   let descriptionContent = document
     .getElementById("description-content")
@@ -34,7 +33,6 @@ document.addEventListener("DOMContentLoaded", function () {
     pageDescription.style.display = "none";
   }
 });
-
 
 document.addEventListener("DOMContentLoaded", function () {
   let closeButtons = document.querySelectorAll(".message .close");
@@ -58,15 +56,16 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
-  let messages = document.querySelectorAll('.message .alert:not([style="display: none;"])');
+  let messages = document.querySelectorAll(
+    '.message .alert:not([style="display: none;"])'
+  );
   messages.forEach(function (message) {
     setTimeout(function () {
-      let closeButton = message.querySelector('.close');
+      let closeButton = message.querySelector(".close");
       closeButton.click();
     }, 5000);
   });
 });
-
 
 const profilePictureUpload = document.getElementById("profile-picture-upload");
 
@@ -124,14 +123,12 @@ $(document).ready(function () {
     });
   });
 
-
-$(document).on("click", function (event) {
+  $(document).on("click", function (event) {
     if (!$(event.target).closest(".nav-item.dropdown").length) {
       $(".dropdown-menu").hide();
     }
   });
 });
-
 
 $(document).ready(function () {
   $(window).scroll(function () {
@@ -148,115 +145,116 @@ $(document).ready(function () {
   });
 });
 
-
 $(document).ready(function () {
-    $('.profile-name').mouseenter(function () {
-        let $this = $(this);
-        let $tooltip = $this.siblings('.custom-tooltip');
+  $(".profile-name")
+    .mouseenter(function () {
+      let $this = $(this);
+      let $tooltip = $this.siblings(".custom-tooltip");
 
-        if ($this[0].scrollWidth > $this[0].clientWidth) {
-            $tooltip.show();
-        }
-    }).mouseleave(function () {
-        let $tooltip = $(this).siblings('.custom-tooltip');
-        $tooltip.hide();
+      if ($this[0].scrollWidth > $this[0].clientWidth) {
+        $tooltip.show();
+      }
+    })
+    .mouseleave(function () {
+      let $tooltip = $(this).siblings(".custom-tooltip");
+      $tooltip.hide();
     });
 });
 
-
 let lastScrollTop = 0;
 
-$(window).on("scroll", function() {
-    const windowWidth = $(window).width();
-    if (windowWidth <= 1100) return;
+$(window).on("scroll", function () {
+  const windowWidth = $(window).width();
+  if (windowWidth <= 1100) return;
 
-    const scrollTop = $(this).scrollTop();
+  const scrollTop = $(this).scrollTop();
 
-    if (scrollTop === 0) {
-        $(".navbar").removeClass("fixed");
-    } else if (scrollTop > lastScrollTop) {
-        $(".navbar").removeClass("fixed");
-    } else {
-        $(".navbar").addClass("fixed");
-    }
-    lastScrollTop = scrollTop;
+  if (scrollTop === 0) {
+    $(".navbar").removeClass("fixed");
+  } else if (scrollTop > lastScrollTop) {
+    $(".navbar").removeClass("fixed");
+  } else {
+    $(".navbar").addClass("fixed");
+  }
+  lastScrollTop = scrollTop;
 });
 
-
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
   const resendLink = document.getElementById("resend-link");
   if (resendLink) {
-    resendLink.addEventListener("click", function(event) {
+    resendLink.addEventListener("click", function (event) {
       event.preventDefault();
-      const emailUrl = document.getElementById("resend-email").getAttribute("data-email-url");
+      const emailUrl = document
+        .getElementById("resend-email")
+        .getAttribute("data-email-url");
 
       fetch(emailUrl, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
-          'X-CSRFToken': csrfToken,
+          "Content-Type": "application/json",
+          "X-CSRFToken": csrfToken,
         },
         body: JSON.stringify({}),
-      })
-      .catch(error => {
-        console.error('There was a problem with the fetch operation:', error);
+      }).catch((error) => {
+        console.error("There was a problem with the fetch operation:", error);
       });
     });
   }
 });
 
+document.addEventListener("DOMContentLoaded", function () {
+  fetch(authCheckUrl)
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.authenticated) {
+        const recipientMeta = document.getElementById("recipient-id");
+        let recipientId = "";
 
-document.addEventListener("DOMContentLoaded", function() {
-    fetch(authCheckUrl)
-        .then((response) => response.json())
-        .then((data) => {
-            if (data.authenticated) {
-                const recipientMeta = document.getElementById('recipient-id');
-                let recipientId = '';
+        if (recipientMeta) {
+          recipientId = Number(recipientMeta.getAttribute("content"));
+        }
 
-                if (recipientMeta) {
-                    recipientId = Number(recipientMeta.getAttribute('content'));
-                }
+        const wsUrl = recipientId
+          ? `wss://${window.location.host}/ws/online-status/${recipientId}/`
+          : `wss://${window.location.host}/ws/online-status/`;
 
-                const wsUrl = recipientId ? 
-                    `wss://${window.location.host}/ws/online-status/${recipientId}/` : 
-                    `wss://${window.location.host}/ws/online-status/`;
+        const ws = new WebSocket(wsUrl);
 
-                const ws = new WebSocket(wsUrl);
+        ws.onmessage = function (event) {
+          const data = JSON.parse(event.data);
+          const statusElement = document.getElementById("status");
+          const lastSeenElement = document.querySelector(".last-seen");
 
-                ws.onmessage = function(event) {
-                    const data = JSON.parse(event.data);
-                    const statusElement = document.getElementById('status');
-                    const lastSeenElement = document.querySelector('.last-seen');
+          if (statusElement) {
+            statusElement.innerText = data.status
+              ? translate("Online")
+              : translate("Offline");
 
-                    if (statusElement) {
-                        statusElement.innerText = data.status ? translate('Online') : translate('Offline');
-
-                        if (data.status) {
-                            statusElement.classList.remove('offline');
-                            statusElement.classList.add('online');
-                        } else {
-                            statusElement.classList.remove('online');
-                            statusElement.classList.add('offline');
-                        }
-                    }
-
-                    if (lastSeenElement) {
-                        if (data.status) {
-                            lastSeenElement.style.display = 'none';
-                        } else {
-                            lastSeenElement.style.display = 'block';
-                            lastSeenElement.innerHTML = `<strong>(Last Seen: </strong>${data.last_online})`;
-                        }
-                    }
-                };
-
-                ws.onerror = function(error) {
-                    console.error('WebSocket error:', error);
-                };
+            if (data.status) {
+              statusElement.classList.remove("offline");
+              statusElement.classList.add("online");
+            } else {
+              statusElement.classList.remove("online");
+              statusElement.classList.add("offline");
             }
-        })
-        .catch((error) => {
-            console.error('Auth check failed:', error);
-        });
+          }
+
+          if (lastSeenElement) {
+            if (data.status) {
+              lastSeenElement.style.display = "none";
+            } else {
+              lastSeenElement.style.display = "block";
+              lastSeenElement.innerHTML = `<strong>(Last Seen: </strong>${data.last_online})`;
+            }
+          }
+        };
+
+        ws.onerror = function (error) {
+          console.error("WebSocket error:", error);
+        };
+      }
+    })
+    .catch((error) => {
+      console.error("Auth check failed:", error);
+    });
 });

@@ -1,6 +1,8 @@
 $(document).ready(function () {
-  $.getScript("/static/js/playstyle_compass/reviews_template.js", function() {
-  });
+  $.getScript(
+    "/static/js/playstyle_compass/reviews_template.js",
+    function () {}
+  );
 
   $(".game-container").each(function () {
     let container = $(this);
@@ -51,54 +53,68 @@ $(document).ready(function () {
     };
 
     const renderReviews = (reviewsList, reviews) => {
-    reviewsList.empty();
-    if (reviews.length === 0) {
+      reviewsList.empty();
+      if (reviews.length === 0) {
         reviewsList.html(
-            "<p>" +
+          "<p>" +
             translate("There are currently no reviews for this game.") +
             "</p>"
         );
-    } else {
+      } else {
         $.each(reviews, function (index, review) {
-            let description = review.description.substring(0, 300);
-            let truncated = description.length < review.description.length;
-            let buttonHtml = truncated
-                ? `<button class="read-button-review" data-toggle="read-more">${translate("[Read more...]")}</button>`
-                : "";
-            let authorName = authorNameTemplate(review);
+          let description = review.description.substring(0, 300);
+          let truncated = description.length < review.description.length;
+          let buttonHtml = truncated
+            ? `<button class="read-button-review" data-toggle="read-more">${translate(
+                "[Read more...]"
+              )}</button>`
+            : "";
+          let authorName = authorNameTemplate(review);
 
-            let reviewHtml = reviewTemplate(review, authorName, description, truncated, buttonHtml);
-            reviewsList.append(reviewHtml);
+          let reviewHtml = reviewTemplate(
+            review,
+            authorName,
+            description,
+            truncated,
+            buttonHtml
+          );
+          reviewsList.append(reviewHtml);
         });
-    }
+      }
 
-    const authorNameLinks = document.querySelectorAll(".author-name");
-    authorNameLinks.forEach(function(link) {
-      link.addEventListener("click", function(event) {
+      const authorNameLinks = document.querySelectorAll(".author-name");
+      authorNameLinks.forEach(function (link) {
+        link.addEventListener("click", function (event) {
           event.preventDefault();
           const profileUrl = "/users/view_profile/" + this.textContent;
-          
-          fetch(profileUrl)
-              .then(response => {
-                  if (!response.ok) {
-                      throw new Error("Bad network response.");
-                  }
-                  const contentType = response.headers.get("content-type");
-                  if (contentType && contentType.includes("application/json")) {
-                      showMessage($(this).closest(".author-container"), "The user does not exist or has deleted their account.");
-                      return;
-                  } else {
-                      window.open(profileUrl, '_blank');
-                  }
-              })
-              .catch(error => {
-                  console.error("There was a problem with the fetch operation:", error);
-              });
-        });
-    });
 
-    reviewsList.show();
-};
+          fetch(profileUrl)
+            .then((response) => {
+              if (!response.ok) {
+                throw new Error("Bad network response.");
+              }
+              const contentType = response.headers.get("content-type");
+              if (contentType && contentType.includes("application/json")) {
+                showMessage(
+                  $(this).closest(".author-container"),
+                  "The user does not exist or has deleted their account."
+                );
+                return;
+              } else {
+                window.open(profileUrl, "_blank");
+              }
+            })
+            .catch((error) => {
+              console.error(
+                "There was a problem with the fetch operation:",
+                error
+              );
+            });
+        });
+      });
+
+      reviewsList.show();
+    };
 
     const showMessage = (container, message) => {
       let customMessage = $(`<div class="success-message">${message}</div>`);
@@ -124,8 +140,11 @@ $(document).ready(function () {
         e.preventDefault();
 
         if (!isLoggedIn()) {
-            showMessage($(this).closest(".author-container"), "Please log in to send friend requests.");
-            return;
+          showMessage(
+            $(this).closest(".author-container"),
+            "Please log in to send friend requests."
+          );
+          return;
         }
 
         let friendReqUrl = $(this)
@@ -188,7 +207,7 @@ $(document).ready(function () {
           console.error(`Error incrementing ${actionType}:`, error);
         },
       });
-    }
+    };
 
     container.on("click", ".thumbs-up", function (event) {
       sendRatingAction("like", event);
@@ -215,17 +234,17 @@ $(document).ready(function () {
 });
 
 function isLoggedIn() {
-    let authenticated = false;
-    $.ajax({
-        type: "GET",
-        url: authCheckUrl,
-        async: false,
-        success: function(response) {
-            authenticated = response.authenticated;
-        },
-        error: function(xhr, status, error) {
-            console.error("Error checking authentication:", error);
-        }
-    });
-    return authenticated;
+  let authenticated = false;
+  $.ajax({
+    type: "GET",
+    url: authCheckUrl,
+    async: false,
+    success: function (response) {
+      authenticated = response.authenticated;
+    },
+    error: function (xhr, status, error) {
+      console.error("Error checking authentication:", error);
+    },
+  });
+  return authenticated;
 }

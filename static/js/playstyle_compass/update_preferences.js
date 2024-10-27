@@ -44,12 +44,14 @@ document.addEventListener("DOMContentLoaded", function () {
       (cb) => cb.checked
     ).length;
 
-    const currentMaxSelections = (section === 'game-styles' || section === 'connection-types') 
-      ? singleMaxSelections 
-      : maxSelections;
+    const currentMaxSelections =
+      section === "game-styles" || section === "connection-types"
+        ? singleMaxSelections
+        : maxSelections;
 
     checkboxes.forEach((checkbox) => {
-      checkbox.disabled = selectedCount >= currentMaxSelections && !checkbox.checked;
+      checkbox.disabled =
+        selectedCount >= currentMaxSelections && !checkbox.checked;
     });
   };
 });

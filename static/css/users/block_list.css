@@ -59,7 +59,7 @@
   text-align: center;
   border: 1px solid #ccc;
   transition: background-color 0.3s ease, color 0.3s ease;
-  width: auto; 
+  width: auto;
   max-width: 100px;
 }
 
@@ -80,5 +80,3 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   max-width: 600px;
 }
-
-

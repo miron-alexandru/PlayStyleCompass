@@ -71,7 +71,7 @@
   text-align: center;
   border: 1px solid #ccc;
   transition: background-color 0.3s ease, color 0.3s ease;
-  width: auto; 
+  width: auto;
   max-width: 100px;
 }
 

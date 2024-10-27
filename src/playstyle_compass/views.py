@@ -1430,19 +1430,23 @@ def beginner_games(request):
 @login_required
 def create_game_list(request):
     """View used to create a game list."""
-    if request.method == 'POST':
+    if request.method == "POST":
         form = GameListForm(request.POST)
         if form.is_valid():
             game_list = form.save(commit=False)
             game_list.owner = request.user
 
-            additional_games = form.cleaned_data.get('additional_games', '')
-            additional_games_list = [game.strip() for game in additional_games.split(',')] if additional_games else []
+            additional_games = form.cleaned_data.get("additional_games", "")
+            additional_games_list = (
+                [game.strip() for game in additional_games.split(",")]
+                if additional_games
+                else []
+            )
 
             game_list.additional_games = additional_games_list
             game_list.save()
 
-            return redirect('playstyle_compass:game_list_detail', pk=game_list.pk)
+            return redirect("playstyle_compass:game_list_detail", pk=game_list.pk)
     else:
         form = GameListForm()
 
@@ -1451,7 +1455,7 @@ def create_game_list(request):
         "form": form,
     }
 
-    return render(request, 'games/create_game_list.html', context)
+    return render(request, "games/create_game_list.html", context)
 
 
 @login_required
@@ -1460,21 +1464,27 @@ def edit_game_list(request, pk):
     game_list = get_object_or_404(GameList, pk=pk)
 
     if game_list.owner != request.user:
-        return redirect('playstyle_compass:game_list_detail', pk=game_list.pk)
+        return redirect("playstyle_compass:game_list_detail", pk=game_list.pk)
 
-    if request.method == 'POST':
+    if request.method == "POST":
         form = GameListForm(request.POST, instance=game_list)
         if form.is_valid():
             updated_game_list = form.save(commit=False)
             updated_game_list.owner = request.user
 
-            additional_games = form.cleaned_data.get('additional_games', '')
-            additional_games_list = [game.strip() for game in additional_games.split(',')] if additional_games else []
+            additional_games = form.cleaned_data.get("additional_games", "")
+            additional_games_list = (
+                [game.strip() for game in additional_games.split(",")]
+                if additional_games
+                else []
+            )
 
             updated_game_list.additional_games = additional_games_list
             updated_game_list.save()
 
-            return redirect('playstyle_compass:game_list_detail', pk=updated_game_list.pk)
+            return redirect(
+                "playstyle_compass:game_list_detail", pk=updated_game_list.pk
+            )
     else:
         form = GameListForm(instance=game_list)
 
@@ -1484,7 +1494,7 @@ def edit_game_list(request, pk):
         "game_list": game_list,
     }
 
-    return render(request, 'games/edit_game_list.html', context)
+    return render(request, "games/edit_game_list.html", context)
 
 
 @login_required
@@ -1498,23 +1508,25 @@ def delete_game_list(request, pk):
     else:
         messages.error(request, "You are not allowed to delete this game list.")
 
-    return redirect('playstyle_compass:user_game_lists', user_id=request.user.id)
+    return redirect("playstyle_compass:user_game_lists", user_id=request.user.id)
 
 
 @login_required
 def delete_all_game_lists(request):
     """View used to delete all game lists for the logged-in user."""
-    if request.method == 'POST':
+    if request.method == "POST":
         game_lists = GameList.objects.filter(owner=request.user)
 
         deleted_count, _ = game_lists.delete()
 
         if deleted_count > 0:
-            messages.success(request, f"{deleted_count} game lists deleted successfully.")
+            messages.success(
+                request, f"{deleted_count} game lists deleted successfully."
+            )
         else:
             messages.error(request, "You have no game lists to delete.")
 
-    return redirect('playstyle_compass:user_game_lists', user_id=request.user.id)
+    return redirect("playstyle_compass:user_game_lists", user_id=request.user.id)
 
 
 def game_list_detail(request, pk):
@@ -1535,7 +1547,7 @@ def game_list_detail(request, pk):
         "additional_games": additional_games,
     }
 
-    return render(request, 'games/game_list_detail.html', context)
+    return render(request, "games/game_list_detail.html", context)
 
 
 @login_required
@@ -1543,8 +1555,8 @@ def share_game_list(request, pk):
     """View used to share a game list."""
     game_list = GameList.objects.get(pk=pk)
 
-    if request.method == 'POST':
-        users_to_share_with = request.POST.getlist('shared_with')
+    if request.method == "POST":
+        users_to_share_with = request.POST.getlist("shared_with")
         game_list.shared_with.add(*users_to_share_with)
 
         # Initialize or update 'shared_by' to track who shared the list
@@ -1561,19 +1573,28 @@ def share_game_list(request, pk):
                 shared_by_info[sharer_id].append(user_id)
 
             # Create a notification for the user receiving the shared list
-            profile_url = reverse('users:view_profile', args=[request.user.userprofile.profile_name])
-            game_list_url = reverse('playstyle_compass:game_list_detail', args=[game_list.pk])
+            profile_url = reverse(
+                "users:view_profile", args=[request.user.userprofile.profile_name]
+            )
+            game_list_url = reverse(
+                "playstyle_compass:game_list_detail", args=[game_list.pk]
+            )
             message = format_html(
                 '<a class="notification-profile" href="{}">{}</a> has shared a game list with you: <a href="{}">{}</a>',
-                profile_url, request.user.userprofile.profile_name, game_list_url, game_list.title
+                profile_url,
+                request.user.userprofile.profile_name,
+                game_list_url,
+                game_list.title,
             )
-            create_notification(receiver, message=message, notification_type="shared_game_list")
+            create_notification(
+                receiver, message=message, notification_type="shared_game_list"
+            )
 
         game_list.shared_by = shared_by_info
         game_list.save()
 
         messages.success(request, _("Game list successfully shared!"))
-        return redirect('playstyle_compass:game_list_detail', pk=game_list.pk)
+        return redirect("playstyle_compass:game_list_detail", pk=game_list.pk)
 
     user, user_preferences, user_friends = get_user_context(request)
 
@@ -1583,7 +1604,7 @@ def share_game_list(request, pk):
         "user_friends": user_friends,
     }
 
-    return render(request, 'games/share_game_list.html', context)
+    return render(request, "games/share_game_list.html", context)
 
 
 def user_game_lists(request, user_id):
@@ -1591,18 +1612,18 @@ def user_game_lists(request, user_id):
     user = get_object_or_404(User, id=user_id)
     game_lists = GameList.objects.filter(owner=user)
 
-    sort_by = request.GET.get('sort_by', 'created_at')
-    order = request.GET.get('order', 'desc')
+    sort_by = request.GET.get("sort_by", "created_at")
+    order = request.GET.get("order", "desc")
 
     # Get game lists into a list for Python sorting
     game_lists = list(game_lists)
 
-    if sort_by == 'title':
-        game_lists.sort(key=lambda x: x.title, reverse=(order == 'desc'))
-    elif sort_by == 'total_games':
-        game_lists.sort(key=lambda x: x.total_games, reverse=(order == 'desc'))
-    elif sort_by == 'created_at':
-        game_lists.sort(key=lambda x: x.created_at, reverse=(order == 'desc'))
+    if sort_by == "title":
+        game_lists.sort(key=lambda x: x.title, reverse=(order == "desc"))
+    elif sort_by == "total_games":
+        game_lists.sort(key=lambda x: x.total_games, reverse=(order == "desc"))
+    elif sort_by == "created_at":
+        game_lists.sort(key=lambda x: x.created_at, reverse=(order == "desc"))
 
     context = {
         "page_title": _("Game Lists :: PlayStyle Compass"),
@@ -1612,21 +1633,22 @@ def user_game_lists(request, user_id):
         "order": order,
     }
 
-    return render(request, 'games/user_game_lists.html', context)
+    return render(request, "games/user_game_lists.html", context)
 
 
 @login_required
 def shared_game_lists(request):
     """View to display game lists shared with and by the user."""
     user = request.user
-    view_type = request.GET.get('view', 'received')
-    sort_by = request.GET.get('sort_by', 'title')
-    order = request.GET.get('order', 'desc')
+    view_type = request.GET.get("view", "received")
+    sort_by = request.GET.get("sort_by", "title")
+    order = request.GET.get("order", "desc")
 
-    if view_type == 'shared':
+    if view_type == "shared":
         game_lists = GameList.objects.all()
         game_lists = [
-            game_list for game_list in game_lists 
+            game_list
+            for game_list in game_lists
             if str(user.id) in game_list.shared_by and game_list.shared_by[str(user.id)]
         ]
         page_title = _("Game Lists You Shared with Others")
@@ -1638,19 +1660,24 @@ def shared_game_lists(request):
         # Track all users who shared the list with the current user
         for game_list in game_lists:
             shared_by_user_ids = [
-                sharer_id for sharer_id, receivers in game_list.shared_by.items() 
+                sharer_id
+                for sharer_id, receivers in game_list.shared_by.items()
                 if str(user.id) in receivers
             ]
 
             # Attach users who shared the game list
-            game_list.shared_by_users = User.objects.filter(id__in=shared_by_user_ids) if shared_by_user_ids else []
+            game_list.shared_by_users = (
+                User.objects.filter(id__in=shared_by_user_ids)
+                if shared_by_user_ids
+                else []
+            )
 
     game_lists = list(game_lists)
 
-    if sort_by == 'title':
-        game_lists.sort(key=lambda x: x.title.lower(), reverse=(order == 'desc'))
-    elif sort_by == 'total_games':
-        game_lists.sort(key=lambda x: x.total_games, reverse=(order == 'desc'))
+    if sort_by == "title":
+        game_lists.sort(key=lambda x: x.title.lower(), reverse=(order == "desc"))
+    elif sort_by == "total_games":
+        game_lists.sort(key=lambda x: x.total_games, reverse=(order == "desc"))
 
     context = {
         "page_title": page_title,
@@ -1660,4 +1687,4 @@ def shared_game_lists(request):
         "order": order,
     }
 
-    return render(request, 'games/shared_game_lists.html', context)
+    return render(request, "games/shared_game_lists.html", context)

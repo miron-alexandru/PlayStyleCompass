@@ -6,13 +6,13 @@
 }
 
 .reviews-container {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 }
 
 .reviews-container button,
 .reviews-container a {
-    margin-right: 6px;
+  margin-right: 6px;
 }
 
 .review-header {
@@ -53,7 +53,7 @@
 .edit-review-btn {
   background: none;
   border: none;
-  color: #007BFF;
+  color: #007bff;
   cursor: pointer;
   text-decoration: none;
   font-weight: bold;
@@ -84,7 +84,6 @@
   font-weight: bolder;
   color: #333;
   cursor: pointer;
-
 }
 
 .author-name:hover {
@@ -122,6 +121,6 @@
 }
 
 .all-reviews {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 }

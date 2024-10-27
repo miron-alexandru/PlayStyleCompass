@@ -4,8 +4,7 @@ document.querySelectorAll(".overview").forEach(function (truncatedText) {
 
   if (truncatedText.innerHTML === fullText.innerHTML) {
     readButton.style.display = "none";
-  }
-  else {
+  } else {
     readButton.style.display = "inline";
   }
 });
@@ -26,14 +25,14 @@ function readMore(button) {
   }
 }
 
-
 document.querySelectorAll(".games-list").forEach(function (truncatedGames) {
   let fullGames = truncatedGames.parentNode.querySelector(".full-games");
-  let readButtonGames = truncatedGames.parentNode.querySelector(".read-button-games");
-  
+  let readButtonGames =
+    truncatedGames.parentNode.querySelector(".read-button-games");
+
   if (truncatedGames.innerHTML.trim() === fullGames.innerHTML.trim()) {
     readButtonGames.style.display = "none";
-    } else {
+  } else {
     readButtonGames.style.display = "inline";
   }
 });

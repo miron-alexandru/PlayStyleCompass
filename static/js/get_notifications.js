@@ -23,13 +23,13 @@ fetch(authCheckUrl)
 
       notifySocket.onmessage = function (e) {
         if (notifySocket.readyState === WebSocket.OPEN) {
-            const data = JSON.parse(e.data);
+          const data = JSON.parse(e.data);
 
-            if (data.delivered) {
-                addNotification(data);
-            }
+          if (data.delivered) {
+            addNotification(data);
+          }
         }
-    };
+      };
 
       const addNotification = function (data) {
         notifications.push(data);
@@ -162,18 +162,18 @@ fetch(authCheckUrl)
 
       const formatDate = (timestamp) => {
         const date = new Date(timestamp);
-        
+
         const options = {
           timeZone: timezone,
-          month: 'long',
-          day: 'numeric',
-          year: 'numeric',
-          hour: 'numeric',
-          minute: 'numeric',
-          hour12: true
+          month: "long",
+          day: "numeric",
+          year: "numeric",
+          hour: "numeric",
+          minute: "numeric",
+          hour12: true,
         };
 
-        return date.toLocaleString('en-US', options);
+        return date.toLocaleString("en-US", options);
       };
 
       const updateNotifications = () => {
