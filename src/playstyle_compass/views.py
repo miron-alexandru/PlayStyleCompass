@@ -36,8 +36,9 @@ from .models import (
     GameModes,
     News,
     GameList,
+    ListReview,
 )
-from .forms import ReviewForm, GameListForm
+from .forms import ReviewForm, GameListForm, ListReviewForm
 
 from .helper_functions.views_helpers import (
     RecommendationEngine,
@@ -1537,6 +1538,10 @@ def game_list_detail(request, pk):
     additional_games = game_list.additional_games
     user, user_preferences, user_friends = get_user_context(request)
 
+    reviews = ListReview.objects.filter(game_list=game_list).order_by('-created_at')
+    review_form = ListReviewForm()
+    review = ListReview.objects.filter(game_list=game_list, user=request.user).first()
+
     context = {
         "page_title": _("View Game List :: PlayStyle Compass"),
         "game_list": game_list,
@@ -1545,6 +1550,9 @@ def game_list_detail(request, pk):
         "user_friends": user_friends,
         "pagination": True,
         "additional_games": additional_games,
+        'reviews': reviews,
+        'form': review_form,
+        'review': review,
     }
 
     return render(request, "games/game_list_detail.html", context)
@@ -1688,3 +1696,72 @@ def shared_game_lists(request):
     }
 
     return render(request, "games/shared_game_lists.html", context)
+
+
+@login_required
+def like_game_list(request, list_id):
+    """Toggles the like status for a game list."""
+    game_list = get_object_or_404(GameList, id=list_id)
+
+    if request.user in game_list.liked_by.all():
+        game_list.liked_by.remove(request.user)
+        liked = False
+    else:
+        game_list.liked_by.add(request.user)
+        liked = True
+
+
+    return JsonResponse({"liked": liked, "like_count": game_list.like_count})
+
+
+@login_required
+@require_POST
+def review_game_list(request, game_list_id):
+    """Create or update a review for a specific game list."""
+    game_list = get_object_or_404(GameList, id=game_list_id)
+    existing_review = ListReview.objects.filter(game_list=game_list, user=request.user).first()
+    
+    if existing_review:
+        form = ListReviewForm(request.POST, instance=existing_review)
+    else:
+        form = ListReviewForm(request.POST)
+
+    if form.is_valid():
+        review = form.save(commit=False)
+        review.user = request.user
+        review.game_list = game_list
+        review.save()
+        
+        return JsonResponse({
+            'message': 'Review submitted successfully!',
+            'review_id': review.id,
+            'title': review.title,
+            'rating': review.rating,
+            'review_text': review.review_text,
+            'created_at': review.created_at.strftime('%Y-%m-%d %H:%M:%S'),
+        })
+
+    return JsonResponse({'errors': form.errors}, status=400)
+
+
+@login_required
+@require_POST
+def edit_game_list_review(request, review_id):
+    """Edit an existing review."""
+    review = get_object_or_404(ListReview, id=review_id, user=request.user)
+    
+    form = ListReviewForm(request.POST, instance=review)
+
+    if form.is_valid():
+        form.save()
+        return JsonResponse({
+            'message': 'Review updated successfully!',
+            'review_id': review.id,
+            'title': review.title,
+            'author': review.user.userprofile.profile_name,
+            'rating': review.rating,
+            'review_text': review.review_text,
+            'created_at': review.created_at.strftime('%Y-%m-%d %H:%M:%S'),
+        })
+
+    return JsonResponse({'errors': form.errors}, status=400)

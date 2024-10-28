@@ -5,6 +5,7 @@ from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.db.models import Avg, Count
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 
 class UserPreferences(models.Model):
@@ -344,8 +345,16 @@ class GameList(models.Model):
         settings.AUTH_USER_MODEL, blank=True, related_name="shared_game_lists"
     )
     shared_by = models.JSONField(default=dict, blank=True)
+    liked_by = models.ManyToManyField(
+        settings.AUTH_USER_MODEL, blank=True, related_name="liked_game_lists"
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    @property
+    def like_count(self):
+        """Returns the total number of likes for the game list."""
+        return self.liked_by.count()
 
     def __str__(self):
         return self.title
@@ -359,3 +368,28 @@ class GameList(models.Model):
     def total_games(self):
         """Returns the total number of games in the list."""
         return len(self.game_guids) + len(self.additional_games)
+
+
+class ListReview(models.Model):
+    """Model to store user reviews and ratings for game lists."""
+
+    game_list = models.ForeignKey(
+        'GameList', on_delete=models.CASCADE, related_name='reviews'
+    )
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='reviews'
+    )
+    title = models.CharField(max_length=255, blank=False)
+    rating = models.PositiveSmallIntegerField(
+        validators=[MinValueValidator(1), MaxValueValidator(5)],
+        help_text="Rating between 1 (worst) and 5 (best)"
+    )
+    review_text = models.TextField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        unique_together = ('game_list', 'user')
+
+    def __str__(self):
+        return f"Review by {self.user} on {self.game_list}"

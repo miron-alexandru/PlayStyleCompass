@@ -80,8 +80,8 @@
   background-color: #f9f9f9;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  overflow: hidden; /* Prevent content from spilling outside */
-  word-wrap: break-word; /* Break long words onto the next line */
+  overflow: hidden;
+  word-wrap: break-word;
 }
 
 .additional-games h3 {
@@ -109,10 +109,10 @@
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   font-size: 1.1em;
   color: #444;
-  word-wrap: break-word; /* Ensure long words break properly */
-  overflow: hidden; /* Prevent overflowing content */
-  white-space: normal; /* Allow text to wrap */
-  text-overflow: ellipsis; /* Add ellipsis if the text overflows */
+  word-wrap: break-word;
+  overflow: hidden;
+  white-space: normal;
+  text-overflow: ellipsis;
 }
 
 .additional-games li:hover {
@@ -123,4 +123,185 @@
 .additional-games li:before {
   content: "🎮";
   margin-right: 10px;
+}
+
+#like-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: transparent;
+  border: none;
+  color: #d4d4d4;
+  font-size: 18px;
+  cursor: pointer;
+  transition: color 0.3s ease, transform 0.2s ease;
+  padding: 4px;
+}
+
+#like-button .fa-heart {
+  color: #ff4d4d;
+}
+
+#like-button .fa-regular {
+  color: #d4d4d4;
+}
+
+#like-button:hover .fa-heart {
+  color: #ff6666;
+  transform: scale(1.1);
+}
+
+#like-button:hover .fa-regular {
+  color: #b3b3b3;
+  transform: scale(1.1);
+}
+
+#like-count {
+  position: absolute;
+  top: 15px;
+  right: 39px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #707070;
+  vertical-align: middle;
+}
+
+
+.review-section, .existing-reviews {
+  margin: 20px auto;
+  padding: 20px;
+  border-radius: 8px;
+  background-color: #f7f7f7;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border: 1px solid #e0e0e0;
+  transition: box-shadow 0.3s;
+}
+
+.review-head {
+  font-size: 16px;
+  font-weight: 600;
+  color: #0056b3;
+  margin-bottom: 10px;
+  border-bottom: 2px solid #cce5ff;
+  padding-bottom: 4px;
+}
+
+.reviews-head {
+  font-size: 20px;
+  margin-bottom: 18px;
+  border-bottom: 2px solid #007bff;
+  color: #003366;
+  padding-bottom: 6px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+
+.card {
+  background-color: #f7f7f7;
+  padding: 12px;
+  margin-bottom: 12px;
+  border: 1px solid #dee2e6;
+  border-radius: 6px;
+  transition: transform 0.2s;
+}
+
+.card:hover {
+  transform: scale(1.01);
+}
+
+.btn {
+  padding: 6px 12px;
+  font-size: 13px;
+  border: none;
+  border-radius: 4px;
+  color: #fff;
+  background-color: #007bff;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.btn:hover {
+  background-color: #0056b3;
+}
+
+
+.form-input, .form-textarea, .form-select select {
+  width: 100%;
+  height: 41px;
+  display: block;
+  color: #495057;
+  font-size: 15px;
+  background: #fff;
+  border: 1px solid #d5dee6;
+  padding: 6px 35px 6px 10px;
+  border-radius: 21px;
+}
+
+.form-input:focus, .form-textarea:focus, .form-select select:focus {
+  color: #495057;
+  background-color: #fff;
+  border-color: #a5c9ff;
+  outline: 0;
+  box-shadow: 0 0 0 0.1rem rgba(0, 123, 255, .25);
+}
+
+textarea.form-textarea {
+  height: 80px;
+  resize: none;
+  margin-bottom: 20px;
+}
+
+label {
+  font-weight: 600;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.edit-review-form {
+  background-color: #f4f4f4;
+  border: none;
+  padding: 0.8rem;
+  margin-top: 0.8rem;
+}
+
+.edit-review-form input[type="text"],
+.edit-review-form select,
+.edit-review-form textarea {
+  width: 100%;
+  height: 41px;
+  display: block;
+  color: #495057;
+  font-size: 15px;
+  background: #fff;
+  border: 1px solid #d5dee6;
+  padding: 6px 35px 6px 10px;
+  border-radius: 21px;
+}
+
+.edit-review-form textarea {
+  height: 100px!important;
+} 
+
+.edit-review-form input[type="text"]:focus,
+.edit-review-form select:focus,
+.edit-review-form textarea:focus {
+  border-color: #007bff;
+}
+
+.edit-review-button {
+  font-size: 13px;
+  background-color: #007bff;
+  color: white;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  display: block;
+  width: fit-content;
+  margin-top: 7px;
+}
+
+.edit-review-button:hover {
+  background-color: #0056b3;
 }

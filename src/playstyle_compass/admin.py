@@ -10,6 +10,7 @@ from .models import (
     GameModes,
     News,
     GameList,
+    ListReview,
 )
 
 admin.site.register(UserPreferences)
@@ -21,3 +22,4 @@ admin.site.register(Character)
 admin.site.register(GameModes)
 admin.site.register(News)
 admin.site.register(GameList)
+admin.site.register(ListReview)

@@ -2,7 +2,7 @@
 
 from django import forms
 
-from .models import Review, Game, GameList
+from .models import Review, Game, GameList, ListReview
 from django.utils.translation import gettext_lazy as _
 
 
@@ -82,3 +82,16 @@ class GameListForm(forms.ModelForm):
         if commit:
             game_list.save()
         return game_list
+
+
+class ListReviewForm(forms.ModelForm):
+    """Form for submitting a rating and review."""
+
+    class Meta:
+        model = ListReview
+        fields = ['title', 'rating', 'review_text']
+        widgets = {
+            'rating': forms.Select(choices=[(i, i) for i in range(1, 6)]),
+            'review_text': forms.Textarea(attrs={'rows': 3, 'placeholder': 'Write your review here...'}),
+            'title': forms.TextInput(attrs={'placeholder': 'Review Title'}),
+        }

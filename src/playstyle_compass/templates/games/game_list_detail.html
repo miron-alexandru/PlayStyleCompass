@@ -24,6 +24,10 @@
       {{ game_list.owner.userprofile.profile_name }}
     </a>
     <a href="{% url 'playstyle_compass:share_game_list' game_list.id %}" class="share-list-button">{% trans "Share List" %}</a>
+    <button id="like-button" data-url="{% url 'playstyle_compass:like_game_list' game_list.id %}" class="like-list-button" title="{% trans 'Like List' %}"> 
+        <i class="{% if user in game_list.liked_by.all %}fa-solid fa-heart{% else %}fa-regular fa-heart{% endif %}"></i>
+    </button>
+    <span id="like-count">{{ game_list.like_count }}</span>
     {% if game_list.owner == request.user %}
     <a href="{% url 'playstyle_compass:edit_game_list' game_list.id %}" class="edit-button">{% trans "Edit List" %}</a>
     {% endif %}
@@ -37,7 +41,7 @@
     {% endfor %}
   </div>
 {% else %}
-  <p class="text-center">{% block empty_message %}{% endblock empty_message %}</p>
+  <p class="text-center">{% block empty_message %}{% trans "No games available." %}{% endblock empty_message %}</p>
 {% endif %}
 
 {% if games.number == 1 and additional_games %}
@@ -50,6 +54,53 @@
     </ul>
   </div>
 {% endif %}
+
+<div class="review-section">
+  <p class="reviews-head">{% trans "Rate and Review this List" %}</p>
+
+  {% if user.is_authenticated %}
+      {% if review %}
+        <div class="existing-review card">
+          <p class="review-head">{% trans "Your Review" %}</p>
+          <p><strong>{% trans "Title:" %}</strong> <span class="review-title">{{ review.title }}</span></p>
+          <p><strong>{% trans "Rating:" %}</strong> <span class="review-rating">{{ review.rating }}</span></p>
+          <p><strong>{% trans "Review:" %}</strong> <span class="review-text">{{ review.review_text }}</span></p>
+            <button class="edit-review-button" data-id="{{ review.id }}" data-action-url="{% url 'playstyle_compass:edit_game_list_review' review.id %}">{% trans "Edit Review" %}</button>
+      {% else %}
+        <form id="review-form" class="review-form" action="{% url 'playstyle_compass:review_game_list' game_list.id %}" method="post">
+          {% csrf_token %}
+          <label for="id_title">{{ form.title.label }}</label>
+          <input type="text" name="title" class="form-input" placeholder="{% trans 'Review Title' %}" required />
+          
+          <label for="id_rating">{{ form.rating.label }}</label>
+          <div class="form-select">{{ form.rating }}</div>
+          
+          <label for="id_review_text">{{ form.review_text.label }}</label>
+          <textarea name="review_text" class="form-textarea" placeholder="{% trans 'Write your review here...' %}" required></textarea>
+          
+          <button type="submit" class="btn btn-primary">{% trans "Submit Review" %}</button>
+        </form>
+      {% endif %}
+  {% else %}
+    <p class="alert alert-warning">{% trans "You need to be logged in to submit a review." %}</p>
+  {% endif %}
+</div>
+
+<div class="existing-reviews">
+  <p class="reviews-head">{% trans "Reviews" %}</p>
+  <div id="reviews-container">
+    {% for review in reviews %}
+      <div class="review card" data-id="{{ review.id }}">
+        <p><strong>{% trans "Title:" %}</strong> {{ review.title }}</p>
+        <p><strong>{% trans "Author:" %}</strong> {{ review.user.userprofile.profile_name }}</p>
+        <p><strong>{% trans "Rating:" %}</strong> {{ review.rating }}</p>
+        <p><strong>{% trans "Review:" %}</strong> {{ review.review_text }}</p>
+      </div>
+    {% empty %}
+      <p>{% trans "No reviews yet. Be the first to review this list!" %}</p>
+    {% endfor %}
+  </div>
+</div>
 
 {% if pagination %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/playstyle_compass/pagination.css' %}">
@@ -72,6 +123,7 @@
 </div>
 {% endif %}
 
+<script src="{% static 'js/playstyle_compass/game_list_detail.js' %}" defer></script>
 <script src="{% static 'js/playstyle_compass/share_game.js' %}" defer></script>
 <script src="{% static 'js/playstyle_compass/favorite_games_and_queue.js' %}" defer></script>
 <script src="{% static 'js/playstyle_compass/reviews_section.js' %}" defer></script>
