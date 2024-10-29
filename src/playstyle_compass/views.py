@@ -1733,12 +1733,12 @@ def review_game_list(request, game_list_id):
         review.save()
         
         return JsonResponse({
-            'message': 'Review submitted successfully!',
+            'message': _('Review submitted successfully!'),
             'review_id': review.id,
             'title': review.title,
             'rating': review.rating,
             'review_text': review.review_text,
-            'created_at': review.created_at.strftime('%Y-%m-%d %H:%M:%S'),
+            'author': review.user.userprofile.profile_name,
         })
 
     return JsonResponse({'errors': form.errors}, status=400)
@@ -1755,13 +1755,22 @@ def edit_game_list_review(request, review_id):
     if form.is_valid():
         form.save()
         return JsonResponse({
-            'message': 'Review updated successfully!',
+            'message': _('Review updated successfully!'),
             'review_id': review.id,
             'title': review.title,
             'author': review.user.userprofile.profile_name,
             'rating': review.rating,
             'review_text': review.review_text,
-            'created_at': review.created_at.strftime('%Y-%m-%d %H:%M:%S'),
         })
 
     return JsonResponse({'errors': form.errors}, status=400)
+
+
+@login_required
+@require_POST
+def delete_game_list_review(request, review_id):
+    """Delete a specific review for a game list."""
+    review = get_object_or_404(ListReview, id=review_id, user=request.user)
+    review.delete()
+    
+    return JsonResponse({'message': _('Review deleted successfully!')})

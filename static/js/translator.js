@@ -48,6 +48,8 @@ const translate = (key) => {
             'Sender': 'Expeditor',
             'Follow': 'Urmăriți',
             'Unfollow': 'Dezabonați-vă',
+            'Edit Your Review:': 'Editează-ți Recenzia:',
+            'Update Review': 'Actualizează Recenzia',
         },
     };
 

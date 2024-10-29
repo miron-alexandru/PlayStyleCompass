@@ -65,7 +65,12 @@
           <p><strong>{% trans "Title:" %}</strong> <span class="review-title">{{ review.title }}</span></p>
           <p><strong>{% trans "Rating:" %}</strong> <span class="review-rating">{{ review.rating }}</span></p>
           <p><strong>{% trans "Review:" %}</strong> <span class="review-text">{{ review.review_text }}</span></p>
+          <div class="review-buttons">
             <button class="edit-review-button" data-id="{{ review.id }}" data-action-url="{% url 'playstyle_compass:edit_game_list_review' review.id %}">{% trans "Edit Review" %}</button>
+            <button class="delete-review-button" data-id="{{ review.id }}" data-action-url="{% url 'playstyle_compass:delete_game_list_review' review.id %}">
+                {% trans "Delete Review" %}
+              </button>
+            </div>
       {% else %}
         <form id="review-form" class="review-form" action="{% url 'playstyle_compass:review_game_list' game_list.id %}" method="post">
           {% csrf_token %}
@@ -92,7 +97,9 @@
     {% for review in reviews %}
       <div class="review card" data-id="{{ review.id }}">
         <p><strong>{% trans "Title:" %}</strong> {{ review.title }}</p>
-        <p><strong>{% trans "Author:" %}</strong> {{ review.user.userprofile.profile_name }}</p>
+        <p><strong>{% trans "Author:" %}</strong> <a class="list-creator" href="{% url 'users:view_profile' review.user.userprofile.profile_name %}">
+      {{ review.user.userprofile.profile_name}}
+    </a></p>
         <p><strong>{% trans "Rating:" %}</strong> {{ review.rating }}</p>
         <p><strong>{% trans "Review:" %}</strong> {{ review.review_text }}</p>
       </div>

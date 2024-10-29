@@ -125,6 +125,8 @@ Websites for .env configuration: [GiantBomb](https://www.giantbomb.com/) / [Send
 <summary><h2>PlayStyle Compass Changelog</h2></summary>
 
 ### Version v2.2:
+* Users can like game lists.
+* Users are able to review and rate game lists.
 * Users can now easily track the sharing of game lists. They can view which users have shared specific game lists with them and see whom they have shared their own lists with
 * Notifications when sharing a game list.
 * Implemented Sorting for Game Lists and Shared Game Lists pages.

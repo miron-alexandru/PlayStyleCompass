@@ -2,7 +2,7 @@
   position: relative;
   background: linear-gradient(145deg, #ffffff, #f1f1f1);
   padding: 1.2rem;
-  border-radius: 8px;
+  border-radius: 5px;
   max-width: 600px;
   margin: 0 auto;
   text-align: center;
@@ -28,7 +28,18 @@
 
 .list-creator {
   color: #3498db;
-  text-decoration: none;
+  text-decoration: none !important;
+  font-weight: 600;
+  transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+.list-creator:hover {
+  color: #1d6fa5;
+  text-decoration: underline;
+}
+
+.list-creator:active {
+  color: #0f4d73;
 }
 
 .game-list-info a:hover {
@@ -289,9 +300,13 @@ label {
   border-color: #007bff;
 }
 
-.edit-review-button {
+.review-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.edit-review-button, .delete-review-button {
   font-size: 13px;
-  background-color: #007bff;
   color: white;
   padding: 5px 10px;
   border: none;
@@ -302,6 +317,18 @@ label {
   margin-top: 7px;
 }
 
+.edit-review-button {
+  background-color: #007bff;
+}
+
 .edit-review-button:hover {
   background-color: #0056b3;
+}
+
+.delete-review-button {
+  background-color: red;
+}
+
+.delete-review-button:hover {
+  background-color: darkred;
 }

@@ -119,4 +119,5 @@ urlpatterns = [
     path("like-game-list/<int:list_id>/", views.like_game_list, name="like_game_list"),
     path('create-review/<int:game_list_id>/', views.review_game_list, name='review_game_list'),
     path('edit-review/<int:review_id>/', views.edit_game_list_review, name='edit_game_list_review'),
+    path('delete-review/<int:review_id>/', views.delete_game_list_review, name='delete_game_list_review'),
 ]
