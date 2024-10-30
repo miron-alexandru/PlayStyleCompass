@@ -572,16 +572,20 @@ input[type="email"]:focus,
   list-style: none;
   padding: 0;
   margin-left: -35px;
-  margin-top: 95px;
+  margin-top: 90px;
 }
 
 .language-options li {
   display: flex;
   align-items: center;
+  margin: -15px 0;
+  padding: 0;
 }
 
 .language-name {
   font-size: 14px;
+  margin-left: 3px;
+  margin-bottom: 3px;
 }
 
 .flag-icon {
@@ -591,6 +595,7 @@ input[type="email"]:focus,
   display: inline-block;
   cursor: pointer;
   vertical-align: -3px;
+  margin-left: -5px;
 }
 
 .flag-icon.en:before {
@@ -628,16 +633,18 @@ input[type="email"]:focus,
   color: #fff;
   border: none;
   border-radius: 50%;
-  padding: 5px 10px 10px;
-  cursor: pointer;
+  width: 40px;
+  height: 40px;
   font-size: 19px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.scroll-top-btn span {
+.scroll-top-btn i {
+  font-size: 17px;
   display: block;
+  align-self: center;
 }
 
 .scroll-top-btn:hover {
@@ -650,14 +657,14 @@ input[type="email"]:focus,
 }
 
 .custom-tooltip {
-    position: absolute;
-    background-color: #bfe6f7;
-    color: inherit;
-    font-size: 13px;
-    padding: 2px 3px;
-    border-radius: 5px;
-    margin-top: -2px;
-    margin-left: -5px;
+  position: absolute;
+  background-color: #bfe6f7;
+  color: inherit;
+  font-size: 13px;
+  padding: 2px 3px;
+  border-radius: 5px;
+  margin-top: -2px;
+  margin-left: -5px;
 }
 
 .quiz-message {

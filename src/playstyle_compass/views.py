@@ -62,15 +62,15 @@ def index(request):
     """View for Home Page"""
     upcoming_titles = [
         "Little Nightmares III",
-        "Reka",
-        "Obscurity: Unknown Threat",
-        "Princess Peach Showtime!",
+        "Assassin's Creed Shadows",
+        "Astrobotanica",
+        "Death Stranding 2: On the Beach",
         "Earthblade",
         "Vampire: The Masquerade - Bloodlines 2",
-        "Anger Foot",
+        "Monster Hunter Wilds",
         "S.T.A.L.K.E.R. 2: Heart of Chornobyl",
         "Wuchang: Fallen Feathers",
-        "Zenless Zone Zero",
+        "The Relic: First Guardian",
     ]
     popular_titles = [
         "Honkai: Star Rail",
