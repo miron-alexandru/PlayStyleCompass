@@ -17,6 +17,7 @@
   <title>{% block title %}{{ page_title }}{% endblock title %}</title>
   {% bootstrap_css %}
   {% bootstrap_javascript jquery='full' %}
+  <script src="{% static 'js/themes.js' %}" async></script>
   <script src="{% static 'js/lightbox-plus-jquery.min.js' %}" defer></script>
   <script src="{% static 'js/get_notifications.js' %}" defer></script>
   <script src="{% static 'js/translator.js' %}" defer></script>
@@ -72,6 +73,7 @@
           <a class="nav-link dropdown-toggle" href="#" id="navItemDropdown" role="button" data-toggle="dropdown">
               {% trans "Personal Collection" %}
           </a>
+          <button onclick="toggleTheme()">Dark</button>
           <div class="dropdown-menu navbar-dropdown">
             <a class="dropdown-item" href="{% url 'playstyle_compass:create_game_list'%}">
               {% trans "Create Game List" %}

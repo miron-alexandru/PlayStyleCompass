@@ -1,3 +1,5 @@
+@import url('../variables.css');
+
 .games-li,
 .franchises-li {
   display: inline-block;
@@ -25,7 +27,6 @@
   width: 100%;
   height: 95px;
   overflow: hidden;
-  border: 1px solid #ddd;
   border-radius: 5px;
 }
 
@@ -50,7 +51,6 @@
 .games h3,
 .franchises h3 {
   padding-top: 25px;
-  color: #2f6187;
   position: relative;
   width: 100%;
   overflow: hidden;
@@ -58,12 +58,12 @@
   font-size: 18px;
   line-height: 1;
   margin: 0 0 12px;
-  color: #3e6a91;
+  color: var(--listing-title);
 }
 
 .games-description,
 .franchises-description {
-  color: #555;
+  color: var(--descriptions-color);
   font-size: 16px;
   padding-bottom: 15px;
 }
