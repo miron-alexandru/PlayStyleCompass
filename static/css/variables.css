@@ -1,8 +1,9 @@
+/* Base Theme Variables */
 :root {
-  --background-color: #f7f7f7;     
-  --secondary-background: #3498db; 
-  --text-color: #2c3e50;           
-  --primary-color: #6200ee; 
+  --background-color: #f7f7f7;
+  --secondary-background: #3498db;
+  --text-color: #2c3e50;
+  --primary-color: #6200ee;
   --header-color: #2f4255;
   --index-header: #e9ecef;
   --footer-color: #2c3e50;
@@ -11,20 +12,33 @@
   --listing-title: #3e6a91;
   --search-color: #fff;
   --result-color: #f0f0f0;
-  --dropown-item: #333;
+  --dropdown-item: #333;
   --dropdown-menu: #fff;
   --user-hover: #1a1a1a;
   --navlink-hover: #0f0f0f;
   --dropdown-hover: #eaeaea;
   --bell-background: lightblue;
+  --article-border: #ddd;
+  --header-desc: #555;
+  --section-color: #f0f0f0;
+  --buttons-color: #007bff;
+  --game-container: #f6f6f6;
+  --sorting-border: #999;
+  --game-container-border: #ddd;
+  --input-color: #fff;
+  --game-lists: #f9f9f9;
+  --game-list: #f5f5f5;
+  --game-list-hover: #e8e8e8;
+  --list-sorting: #ddd;
 }
 
+/* Dark Theme  */
 .dark-theme {
-  --background-color: #141414;       
-  --secondary-background: #3a3a3a;   
-  --text-color: #eaeaea;             
+  --background-color: #141414;
+  --secondary-background: #3a3a3a;
+  --text-color: #eaeaea;
   --primary-color: #bb86fc;
-  --header-color:  #1a1a1a;
+  --header-color: #1a1a1a;
   --index-header: #1a1a1a;
   --footer-color: #1a1a1a;
   --fixed-navbar: #5a5a5a;
@@ -32,9 +46,22 @@
   --listing-title: #5e96b1;
   --search-color: #1a1a1a;
   --result-color: #3a3a3a;
-  --dropown-item: #eaeaea;
+  --dropdown-item: #eaeaea;
   --dropdown-menu: #2a2a2a;
   --user-hover: #a0a0a0;
   --navlink-hover: #b0b0b0;
   --dropdown-hover: #1f1f1f;
   --bell-background: #b0b0b0;
+  --article-border: #222;
+  --header-desc: #999999;
+  --section-color: #1a1a1a;
+  --buttons-color: #4a90e2;
+  --game-container: #1a1a1a;
+  --sorting-border: #2a2a2a;
+  --game-container-border: #141414;
+  --input-color: #222222;
+  --game-lists: #1a1a1a;
+  --game-list: #2b2b2b;
+  --game-list-hover: #242424;
+  --list-sorting: #666;
+}

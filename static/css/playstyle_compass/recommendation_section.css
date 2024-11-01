@@ -26,7 +26,7 @@ small {
 .game-image img {
   max-width: 210px;
   max-height: 500px;
-  border: 1px solid #ddd;
+  border: 1px solid var(--game-container-border);
   border-radius: 5px;
   margin-right: 10px;
   margin-left: 5;

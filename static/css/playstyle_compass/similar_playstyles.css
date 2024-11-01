@@ -12,7 +12,7 @@
   border-radius: 8px;
   overflow: hidden;
   transition: transform 0.3s;
-  background-color: #f7f7f7;
+  background-color: var(--section-color);
 }
 
 .user-playstyle:hover {
@@ -27,11 +27,11 @@
 .user-details p {
   margin: 5px 0;
   font-size: 16px;
-  color: #555;
+  color: var(--text-color);
 }
 
 .user-details strong {
-  color: #333;
+  color: var(--text-color);
   font-weight: bold;
 }
 
@@ -47,14 +47,14 @@
   justify-content: center;
   padding-top: 5px;
   padding-bottom: 15px;
-  border-bottom: 0.1px solid #333;
+  border-bottom: 0.1px solid var(--text-color);
 }
 
 .profile-image {
   width: 170px;
   height: 170px;
   border-radius: 50%;
-  border: 3px solid #333;
+  border: 3px solid var(--text-color);
   box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
   overflow: hidden;
   object-fit: cover;
@@ -70,7 +70,7 @@
 }
 
 .user-name a {
-  color: #333;
+  color: var(--text-color);
   text-decoration: none;
 }
 

@@ -5,12 +5,12 @@
 .game-recommendations-container li {
   display: flex;
   align-items: start;
-  border: 1px solid #ddd;
+  border: 1px solid var(--game-container-border);
   border-radius: 5px;
   padding: 10px;
   margin: 10px 0;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  background-color: #f5f5f5;
+  background-color: var(--game-container);
 }
 
 .category-buttons {
@@ -47,29 +47,29 @@ ul {
 
 label[for="sort-select"] {
   font-size: 15px;
-  color: #333;
+  color: var(--text-color);
 }
 
 #sort-select {
   padding: 5px;
   font-size: 14px;
-  border: 1px solid #ccc;
+  border: 1px solid var(--sorting-border);
   border-radius: 5px;
-  background-color: #f9f9f9;
-  color: #333;
+  background-color: var(--game-container);
+  color: var(--text-color);
   width: 170px;
   outline: none;
 }
 
 #sort-select option {
   font-size: 14px;
-  background-color: #f9f9f9;
-  color: #333;
+  background-color: var(--dropdown-menu);
+  color: var(--dropdown-item);
 }
 
 #sort-select:hover,
 #sort-select:focus {
-  border: 1px solid #333;
+  border: 1px solid var(--sorting-border);
 }
 
 .sorting {

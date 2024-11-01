@@ -5,7 +5,7 @@
 }
 
 .form-container {
-  background-color: #fff;
+  background-color: var(--game-container);
   padding: 2rem;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -16,7 +16,7 @@
 .create-list-title,
 .edit-list-title {
   margin-bottom: 1.4rem;
-  color: #333;
+  color: var(--text-color);
   font-size: 1.7rem;
   text-align: center;
 }
@@ -27,7 +27,7 @@
 
 label {
   font-weight: bold;
-  color: #555;
+  color: var(--text-color);
   display: block;
   margin-bottom: 0.5rem;
 }

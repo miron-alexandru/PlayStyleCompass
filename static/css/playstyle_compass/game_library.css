@@ -7,24 +7,24 @@
 label[for="sort_by"],
 label[for="filter_by"] {
   font-size: 14px;
-  color: #333;
+  color: var(--text-color);
 }
 
 select {
   padding: 5px;
   font-size: 13px;
-  border: 1px solid #ccc;
+  border: 1px solid var(--list-sorting);
   border-radius: 5px;
-  background-color: #f9f9f9;
-  color: #333;
+  background-color: var(--dropdown-menu);
+  color: var(--text-color);
   width: 170px;
   outline: none;
 }
 
 select option {
   font-size: 13px;
-  background-color: #f9f9f9;
-  color: #333;
+  background-color: var(--dropdown-menu);
+  color: var(--text-color);
 }
 
 select:hover,
