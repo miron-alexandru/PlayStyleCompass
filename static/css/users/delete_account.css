@@ -5,9 +5,9 @@
 }
 
 .delete-account {
-  background-color: #f7f7f7;
+  background-color: var(--user-container);
   padding: 20px;
-  border: 1px solid #ccc;
+  border: 1px solid var(--game-container-border);
   border-radius: 5px;
 }
 
@@ -64,13 +64,18 @@ button.btn-danger.disabled {
 
 button.btn-warning {
   background-color: #f39c12;
-  color: #fff; /* White text */
+  color: #fff;
   border: none;
   padding: 8px 16px;
   cursor: pointer;
   border-radius: 5px;
   font-size: 16px;
   width: 100%;
+}
+
+button.btn-warning:hover {
+  color: #fff;
+  background-color: #d68a0f;
 }
 
 button.btn-warning.disabled {

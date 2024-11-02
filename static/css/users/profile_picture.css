@@ -1,6 +1,6 @@
 .profile-picture-form {
-  background-color: #f9f9f9;
-  border: 1px solid #ccc;
+  background-color: var(--user-container);
+  border: 1px solid var(--game-container-border);
   border-radius: 5px;
   padding: 20px;
 }

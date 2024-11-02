@@ -3,8 +3,8 @@
   max-width: 550px;
   margin: 20px auto;
   padding: 20px;
-  background-color: #f7f7f7;
-  border: 1px solid #ddd;
+  background-color: var(--user-container);
+  border: 1px solid var(--game-container-border);
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
@@ -67,7 +67,7 @@
   font-weight: bold;
   text-align: center;
   margin: 20px 0;
-  color: #2d3e50;
+  color: var(--text-color);
 }
 
 .follower-info {

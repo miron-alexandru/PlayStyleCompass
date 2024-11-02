@@ -64,8 +64,19 @@ input[type="email"] {
   display: block;
   color: var(--text-color)!important;
   font-size: 15px;
+  background: var(--input-color)!important;
+  border: 1px solid var(--input-border);
+  padding: 6px 35px 6px 10px;
+  border-radius: 21px;
+}
+
+#id_message, #id_bio, #id_gaming_setup {
+  width: 100%;
+  display: block;
+  color: var(--text-color)!important;
+  font-size: 15px;
   background: var(--input-color);
-  border: 1px solid #d5dee6;
+  border: 1px solid var(--input-border);
   padding: 6px 35px 6px 10px;
   border-radius: 21px;
 }
@@ -80,20 +91,9 @@ input[type="email"]:focus,
  {
   color: var(--text-color)!important;
   background-color: var(--input-color);
-  border-color: #a5c9ff;
+  border-color: var(--input-focus);
   outline: 0;
-  box-shadow: 0 0 0 0.1rem rgba(0, 123, 255, .25);
-}
-
-#id_message, #id_bio, #id_gaming_setup {
-  width: 100%;
-  display: block;
-  color: var(--text-color)!important;
-  font-size: 15px;
-  background: #fff;
-  border: 1px solid #d5dee6;
-  padding: 6px 35px 6px 10px;
-  border-radius: 21px;
+  box-shadow: 0 0 0 0.1rem var(--input-shadow);
 }
 
 .form-control.is-valid,
@@ -290,7 +290,6 @@ input[type="email"]:focus,
   border: none;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   border-radius: 4px;
-  transition: transform 0.2s ease-in-out, opacity 0.2s ease-in-out;
   position: absolute;
   top: 102%;
   left: 50%;
@@ -330,7 +329,6 @@ input[type="email"]:focus,
   font-size: 14px;
   color: var(--dropdown-item);
   padding: 7px 14px;
-  transition: background-color 0.3s;
   border-radius: 0px;
   overflow: hidden;
 }
@@ -485,17 +483,17 @@ input[type="email"]:focus,
 }
 
 .notification-read {
-  background-color: #fafafa;
+  background-color: var(--notification-read);
   border-radius: 30px;
 }
 
 .notification-unread {
-  background-color: #f0f0f0;
+  background-color: var(--notification-unread);
   border-radius: 30px;
 }
 
 .notification-read:hover, .notification-unread:hover {
-  background-color: #dcdcdc;
+  background-color: var(--notification-hover);
 }
 
 .notification-content {
@@ -551,7 +549,7 @@ input[type="email"]:focus,
   cursor: pointer;
   border: none;
   border-radius: 50px;
-  color: black;
+  color: var(--text-color);
 }
 
 .mark-all-read-btn {
@@ -563,7 +561,7 @@ input[type="email"]:focus,
 }
 
 .mark-all-inactive-btn:hover, .mark-all-read-btn:hover {
-  color: #555;
+  color: #777;
 }
 
 .mark-icon {
@@ -758,7 +756,6 @@ input[type="email"]:focus,
     border: none;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     border-radius: 4px;
-    transition: transform 0.2s ease-in-out, opacity 0.2s ease-in-out;
     position: absolute;
     width: 100%;
   }
@@ -772,7 +769,6 @@ input[type="email"]:focus,
     font-size: 14px;
     color: #333;
     padding: 10px 15px;
-    transition: background-color 0.3s;
     border-radius: 0px;
     overflow: hidden;
   }

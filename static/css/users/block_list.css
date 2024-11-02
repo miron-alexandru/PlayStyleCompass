@@ -11,7 +11,7 @@
   padding: 15px;
   margin-bottom: 12px;
   border-radius: 15px;
-  background-color: #ffffff;
+  background-color: var(--user-container);
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
   transition: box-shadow 0.3s ease;
   flex: 1 1 calc(33.333% - 15px);
@@ -29,7 +29,7 @@
   border-radius: 50%;
   margin-right: 15px;
   object-fit: cover;
-  border: 3px solid #f0f0f0;
+  border: 3px solid var(--user-container-border);
 }
 
 .block-details {
@@ -40,7 +40,7 @@
 
 .blocked-user-link {
   text-decoration: none;
-  color: #333;
+  color: var(--text-color);
   font-weight: 600;
   font-size: 1.1rem;
   margin-bottom: 5px;
@@ -71,12 +71,12 @@
 .empty-block-list {
   text-align: center;
   font-size: 1.2rem;
-  color: #444;
+  color: var(--text-color);
   padding: 25px;
   margin: 20px auto;
-  border: 1px solid #ddd;
+  border: 1px solid var(--game-container-border);
   border-radius: 10px;
-  background-color: #f9f9f9;
+  background-color: var(--user-container);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   max-width: 600px;
 }

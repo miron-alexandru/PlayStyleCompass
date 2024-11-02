@@ -1,9 +1,9 @@
 .user-profile-card {
-  background-color: #f7f7f7;
+  background-color: var(--user-container);
   width: 600px;
   margin: 0 auto;
   padding: 15px;
-  border: 1px solid #ddd;
+  border: 1px solid var(--game-container-border);
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   text-align: center;
@@ -14,7 +14,7 @@
 .user-profile-picture {
   padding-top: 2px;
   padding-bottom: 7px;
-  border-bottom: 0.1px solid #333;
+  border-bottom: 0.1px solid var(--user-image-border);
 }
 
 .user-actions {
@@ -25,7 +25,7 @@
   width: 170px;
   height: 170px;
   border-radius: 50%;
-  border: 3px solid #333;
+  border: 3px solid var(--user-image-border);
   box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
   overflow: hidden;
   object-fit: cover;
@@ -34,16 +34,16 @@
 .user-name {
   font-size: 24px;
   font-weight: 600;
-  color: #1a1a1a;
+  color: var(--text-color);
 }
 
 .user-name a {
-  color: #333;
+  color: var(--text-color);
   text-decoration: none;
 }
 
 .user-name a:hover {
-  color: #555 !important;
+  color: var(--user-hover) !important;
 }
 
 .friends-text-container {
@@ -177,9 +177,9 @@
 }
 
 .stat-value {
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 600;
-  color: #333;
+  color: var(--text-color);
 }
 
 .send-message {
@@ -207,7 +207,7 @@
   width: calc(50% - 10px);
   margin-bottom: 20px;
   box-sizing: border-box;
-  background-color: #f0f0f0;
+  background-color: var(--user-info);
   padding: 15px;
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);

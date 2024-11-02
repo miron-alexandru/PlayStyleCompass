@@ -1,7 +1,8 @@
 .card {
   border-radius: 50px;
   padding: 150px;
-  background-color: #f7f7f7;
+  background-color: var(--user-container);
+  border: 1px solid var(--game-container-border);
   transition: transform 0.03s ease-in-out;
 }
 
@@ -10,7 +11,7 @@
 }
 
 .card-title {
-  color: #333;
+  color: var(--text-color);
   font-size: 19px;
 }
 
@@ -58,7 +59,7 @@
 .incoming-requests {
   text-align: center;
   font-size: 19px;
-  color: #2d3e50;
+  color: var(--text-color);
   margin-bottom: 8px;
   font-weight: bold;
   text-transform: uppercase;
@@ -76,6 +77,10 @@
   margin-top: 5px;
   overflow: hidden;
   object-fit: cover;
+}
+
+.friend-request {
+  background-color: var(--friend-request);
 }
 
 @media screen and (max-width: 767px) {

@@ -584,7 +584,8 @@ def change_password_done(request):
     context = {
         "page_title": _("Password Change Done :: PlayStyle Compass"),
         "response": _(
-            "You have changed your password, go to the homepage by clicking the button below."
+            "Your password has been successfully changed!<br><br>"
+            "To return to the homepage, please click the button below."
         ),
     }
     return render(request, "account_actions/change_succeeded.html", context)

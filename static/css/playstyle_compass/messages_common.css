@@ -45,7 +45,7 @@
 }
 
 .message-card {
-  background-color: #fff;
+  background-color: var(--messages-container);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
   overflow: hidden;
@@ -142,23 +142,23 @@ p {
 label[for="sort-order"] {
   font-size: 16px;
   font-weight: bold;
-  color: #333;
+  color: var(--text-color);
 }
 
 #sort-order {
   padding: 5px;
   font-size: 14px;
-  border: 1px solid #ccc;
+  border: 1px solid var(--sorting-border);
   border-radius: 5px;
-  background-color: #f9f9f9;
-  color: #333;
+  background-color: var(--dropdown-menu);
+  color: var(--text-color);
   outline: none;
 }
 
 #sort-order option {
   font-size: 14px;
-  background-color: #f9f9f9;
-  color: #333;
+  background-color: var(--dropdown-menu);
+  color: var(--text-color);
 }
 
 #sort-order:hover,

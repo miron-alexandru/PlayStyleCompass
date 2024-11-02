@@ -1,5 +1,5 @@
 .review {
-  border: 1px solid #ccc;
+  border: 1px solid var(--game-container-border);
   padding: 10px;
   margin: 10px;
   border-radius: 5px;
@@ -16,9 +16,10 @@
 }
 
 .review-header {
-  background-color: #f2f2f2;
+  background-color: var(--review-header);
   padding: 5px;
-  border-bottom: 1px solid #ccc;
+  border-bottom: 1px solid var(--game-container-border);
+  border-radius: 6px;
 }
 
 .review-header p {
@@ -77,18 +78,16 @@
 
 .author-link {
   font-weight: bold;
-  text-decoration: none !important;
 }
 
 .author-name {
   font-weight: bolder;
-  color: #333;
+  color: var(--text-color);
   cursor: pointer;
 }
 
 .author-name:hover {
-  color: darkblue;
-  text-decoration: none !important;
+  color: #666;
 }
 
 .thumbs-up,

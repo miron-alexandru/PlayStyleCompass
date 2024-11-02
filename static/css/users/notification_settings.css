@@ -7,12 +7,12 @@
 .notifications-title {
   text-align: center;
   margin-bottom: 30px;
-  color: #333;
+  color: var(--text-color);
   font-size: 24px;
 }
 
 .floating-card {
-  background-color: #fff;
+  background-color: var(--user-container);
   border-radius: 15px;
   padding: 20px;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
@@ -40,12 +40,12 @@
   font-weight: bold;
   font-size: 16px;
   margin-bottom: 0;
-  color: #333;
+  color: var(--text-color);
 }
 
 .form-group .description {
   font-size: 14px;
-  color: #777;
+  color: #888;
   margin: 0;
   line-height: 1.4;
 }

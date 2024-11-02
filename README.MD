@@ -125,6 +125,7 @@ Websites for .env configuration: [GiantBomb](https://www.giantbomb.com/) / [Send
 <summary><h2>PlayStyle Compass Changelog</h2></summary>
 
 ### Version v2.2:
+* Implemented Dark Theme: Users are able to switch between the normal and dark theme.
 * Users can like game lists.
 * Users are able to review and rate game lists.
 * Users can now easily track the sharing of game lists. They can view which users have shared specific game lists with them and see whom they have shared their own lists with

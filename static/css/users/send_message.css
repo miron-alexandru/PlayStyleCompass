@@ -3,9 +3,8 @@
   margin: 5px auto;
   padding: 20px;
   box-sizing: border-box;
-  background-color: #f0f0f0;
+  background-color: var(--user-container);
   border-radius: 15px;
-  box-shadow: 5px 5px 15px #d9d9d9, -5px -5px 15px #ffffff;
 }
 
 .submit-button {
