@@ -584,17 +584,29 @@ input[type="email"]:focus,
   font-size: 12px;
 }
 
-.language-switcher {
+.language-switcher, .dark-toggle {
   position: fixed;
-  top: 50%;
-  left: 5px;
   transform: translateY(-50%);
   z-index: 1000;
   display: flex;
   align-items: center;
 }
 
+.language-switcher {
+  top: 50%;
+  left: 5px;
+}
+
+.dark-toggle {
+  top: 44%;
+  left: 5px;
+}
+
 .globe-icon {
+  font-size: 20px;
+}
+
+.dark-icon {
   font-size: 20px;
 }
 
