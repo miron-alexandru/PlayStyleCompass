@@ -48,7 +48,7 @@ form label {
 .question {
   font-size: 1.08em;
   font-weight: bold;
-  color: #333;
+  color: var(--text-color);
 }
 
 .submit-quiz {

@@ -47,6 +47,12 @@
   --input-focus: #a5c9ff;
   --input-shadow: rgba(0, 123, 255, 0.11);
   --friend-request: #f6f6f6;
+  --success-alert-background: #dff0d8;
+  --success-alert-color: #3c763d;
+  --error-alert-background: #f8d7da;
+  --error-alert-color: #721c24;
+  --separator-border: #ddd;
+  --list-review-text: #0056b3;
 }
 
 /* Dark Theme  */
@@ -98,4 +104,10 @@
   --input-focus: #121212;
   --input-shadow: rgba(0, 0, 0, 0.25);
   --friend-request: #333333;
+  --success-alert-background: #3b3b3b;
+  --success-alert-color: #a3e5b1;
+  --error-alert-background: #4c1c1c;
+  --error-alert-color: #f8d7da;
+  --separator-border: #0f0f0f;
+  --list-review-text: #f9f9f9;        
 }

@@ -70,7 +70,7 @@ input[type="email"] {
   border-radius: 21px;
 }
 
-#id_message, #id_bio, #id_gaming_setup {
+#id_message, #id_bio, #id_gaming_setup, {
   width: 100%;
   display: block;
   color: var(--text-color)!important;
@@ -247,9 +247,21 @@ input[type="email"]:focus,
 }
 
 .alert-success {
-  color: #3c763d;
-  background-color: #dff0d8;
-  border-color: #d6e9c6;
+  color: var(--success-alert-color);
+  background-color: var(--success-alert-background);
+  border: none;
+}
+
+.alert-info {
+  font-size: 15px;
+  padding: 9px;
+  background-color: var(--result-color);
+  color: var(--text-color);
+}
+
+.alert-error {
+  background-color: var(--error-alert-background);
+  color: var(--error-alert-color);
 }
 
 .alert.fade {
@@ -689,11 +701,6 @@ input[type="email"]:focus,
 .quiz-message {
   text-align: center;
   margin: 0 auto;
-}
-
-.alert-info {
-  font-size: 15px;
-  padding: 9px;
 }
 
 

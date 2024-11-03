@@ -10,7 +10,11 @@ class Command(BaseCommand):
 
     def add_arguments(self, parser):
         parser.add_argument(
-            "csv_file", type=str, help="Path to the CSV file containing quiz questions."
+            "csv_file",
+            type=str,
+            nargs="?",  # Makes this argument optional
+            default="src/users/quiz/quiz_questions.csv",
+            help="Path to the CSV file containing quiz questions. Defaults to 'src/users/quiz/quiz_questions.csv'."
         )
 
     def handle(self, *args, **options):
