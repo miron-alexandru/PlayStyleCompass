@@ -598,13 +598,22 @@ input[type="email"]:focus,
   transform: translateY(-50%);
 }
 
+.language-switcher:hover .globe-icon {
+  transform: scale(1.1);
+}
+
 .dark-toggle {
   top: 42%;
   left: 5px;
 }
 
+#theme-icon {
+  display: none;
+}
+
 .globe-icon {
   font-size: 20px;
+  transition: color 0.3s ease, transform 0.2s ease;
 }
 
 .dark-toggle:hover {
@@ -613,8 +622,8 @@ input[type="email"]:focus,
 }
 
 .dark-icon {
-  color: #d4c46b;
-  font-size: 24px;
+  color: #333333;
+  font-size: 23px;
   transition: color 0.3s ease, transform 0.2s ease;
   transform-origin: center;
 }

@@ -24,6 +24,9 @@ const initializeTheme = () => {
   }
 
   updateThemeIcon(isDarkTheme);
+
+  const themeIcon = document.getElementById('theme-icon');
+  themeIcon.style.display = 'inline';
 };
 
 document.addEventListener('DOMContentLoaded', initializeTheme);
