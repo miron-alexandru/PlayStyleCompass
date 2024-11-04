@@ -17,7 +17,7 @@
   <title>{% block title %}{{ page_title }}{% endblock title %}</title>
   {% bootstrap_css %}
   {% bootstrap_javascript jquery='full' %}
-  <script src="{% static 'js/themes.js' %}" async></script>
+  <script src="{% static 'js/themes.js' %}" defer></script>
   <script src="{% static 'js/lightbox-plus-jquery.min.js' %}" defer></script>
   <script src="{% static 'js/get_notifications.js' %}" defer></script>
   <script src="{% static 'js/translator.js' %}" defer></script>
@@ -30,6 +30,7 @@
 {% tz_detect %}
 
 <body>
+  <script src="{% static 'js/start_theme.js' %}" ></script>
   <nav class="navbar navbar-expand-md navbar-light">
     <div class="container">
       <a class="navbar-brand" href="{% url 'playstyle_compass:index'%}">
@@ -373,7 +374,7 @@
 </div>
 
 <div class="dark-toggle">
-  <i class="fa-solid fa-moon dark-icon" onclick="toggleTheme()"></i>
+  <i id="theme-icon" class="fa-solid fa-moon dark-icon" onclick="toggleTheme()"></i>
 </div>
 
   <footer class="footer">

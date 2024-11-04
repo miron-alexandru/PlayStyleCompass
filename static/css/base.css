@@ -586,19 +586,20 @@ input[type="email"]:focus,
 
 .language-switcher, .dark-toggle {
   position: fixed;
-  transform: translateY(-50%);
   z-index: 1000;
   display: flex;
   align-items: center;
+  cursor: pointer;
 }
 
 .language-switcher {
   top: 50%;
   left: 5px;
+  transform: translateY(-50%);
 }
 
 .dark-toggle {
-  top: 44%;
+  top: 42%;
   left: 5px;
 }
 
@@ -606,8 +607,25 @@ input[type="email"]:focus,
   font-size: 20px;
 }
 
+.dark-toggle:hover {
+  background-color: transparent;
+  transform: scale(1.1);
+}
+
 .dark-icon {
-  font-size: 20px;
+  color: #d4c46b;
+  font-size: 24px;
+  transition: color 0.3s ease, transform 0.2s ease;
+  transform-origin: center;
+}
+
+.dark-toggle:hover .dark-icon {
+  color: #fffacd;
+  transform: rotate(20deg) translateY(0);
+}
+
+.dark-theme .dark-icon {
+  color: #f1c40f;
 }
 
 .language-options {
