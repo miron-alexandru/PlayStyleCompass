@@ -33,9 +33,13 @@
   <script src="{% static 'js/start_theme.js' %}" ></script>
   <nav class="navbar navbar-expand-md navbar-light">
     <div class="container">
-      <a class="navbar-brand" href="{% url 'playstyle_compass:index'%}">
-        <img src="{% static 'images/playstyle.png' %}" alt="PlayStyle Compass Logo">
-      </a>
+      <a class="navbar-brand" href="{% url 'playstyle_compass:index' %}">
+          <img id="logo-image" style="visibility: hidden;"
+            src="{% static 'images/playstyle.png' %}" 
+            alt="PlayStyle Compass Logo"
+            data-light-src="{% static 'images/playstyle.png' %}" 
+            data-dark-src="{% static 'images/playstyle-dark.png' %}">
+        </a>
       <ul class="navbar-nav ml-auto">
         {% if user.is_authenticated %}
         <li class="nav-item dropdown">
