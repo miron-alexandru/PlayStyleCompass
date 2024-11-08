@@ -148,3 +148,46 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 });
+
+
+document.addEventListener("DOMContentLoaded", function () {
+  document.querySelectorAll(".like-review-button").forEach(button => {
+    button.addEventListener("click", function () {
+      const url = this.getAttribute("data-url");
+
+      fetch(url, {
+        method: "POST",
+        headers: {
+          "X-CSRFToken": csrfToken,
+        },
+      })
+        .then(response => response.json())
+        .then(data => {
+          const icon = this.querySelector("i");
+          icon.className = data.liked ? "fa-solid fa-heart" : "fa-regular fa-heart";
+
+          const likeCount = document.getElementById(`like-count-${data.review_id}`);
+          likeCount.textContent = data.like_count;
+        });
+    });
+  });
+});
+
+
+$(document).ready(function () {
+  $(".game-list-review-stars").each(function () {
+    const gameListReviewScore = parseInt($(this).data("review-score"), 10);
+    const gameListReviewStarsHtml = generateGameListReviewStars(gameListReviewScore);
+    $(this).html(gameListReviewStarsHtml);
+  });
+});
+
+const generateGameListReviewStars = (score) => {
+  let gameListReviewStarsHtml = "";
+  for (let i = 1; i <= 5; i++) {
+    gameListReviewStarsHtml += `<i class="fas fa-star ${
+      i <= score ? "game-list-review-gold-star" : "game-list-review-empty-star"
+    }"></i>`;
+  }
+  return gameListReviewStarsHtml;
+};

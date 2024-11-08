@@ -1774,3 +1774,22 @@ def delete_game_list_review(request, review_id):
     review.delete()
     
     return JsonResponse({'message': _('Review deleted successfully!')})
+
+
+@login_required
+def like_game_list_review(request, review_id):
+    """Toggles the like status for a review."""
+    review = get_object_or_404(ListReview, id=review_id)
+
+    if request.user in review.liked_by.all():
+        review.liked_by.remove(request.user)
+        liked = False
+    else:
+        review.liked_by.add(request.user)
+        liked = True
+
+    return JsonResponse({
+        "liked": liked,
+        "like_count": review.like_count,
+        "review_id": review_id,
+    })

@@ -63,7 +63,10 @@
         <div class="existing-review card">
           <p class="review-head">{% trans "Your Review" %}</p>
           <p><strong>{% trans "Title:" %}</strong> <span class="review-title">{{ review.title }}</span></p>
-          <p><strong>{% trans "Rating:" %}</strong> <span class="review-rating">{{ review.rating }}</span></p>
+          <p>
+          <strong>{% trans "Rating:" %}</strong>
+          <span class="game-list-review-stars" data-review-score="{{ review.rating }}"></span>
+          </p>
           <p><strong>{% trans "Review:" %}</strong> <span class="review-text">{{ review.review_text }}</span></p>
           <div class="review-buttons">
             <button class="edit-review-button" data-id="{{ review.id }}" data-action-url="{% url 'playstyle_compass:edit_game_list_review' review.id %}">{% trans "Edit Review" %}</button>
@@ -98,16 +101,30 @@
       <div class="review card" data-id="{{ review.id }}">
         <p><strong>{% trans "Title:" %}</strong> {{ review.title }}</p>
         <p><strong>{% trans "Author:" %}</strong> <a class="list-creator" href="{% url 'users:view_profile' review.user.userprofile.profile_name %}">
-      {{ review.user.userprofile.profile_name}}
-    </a></p>
-        <p><strong>{% trans "Rating:" %}</strong> {{ review.rating }}</p>
+          {{ review.user.userprofile.profile_name }}
+        </a></p>
+        <p>
+  <strong>{% trans "Rating:" %}</strong>
+  <span class="game-list-review-stars" data-review-score="{{ review.rating }}"></span>
+</p>
         <p><strong>{% trans "Review:" %}</strong> {{ review.review_text }}</p>
+        <p>
+          <button
+          id="like-button-{{ review.id }}"
+          data-url="{% url 'playstyle_compass:like_list_review' review.id %}"
+          class="like-review-button"
+          title="{% trans 'Like Review' %}">
+          <i class="{% if user in review.liked_by.all %}fa-solid fa-heart{% else %}fa-regular fa-heart{% endif %}"></i>
+        </button>
+        <span id="like-count-{{ review.id }}" class="like-review-count">{{ review.like_count }}</span>
+        </p>
       </div>
     {% empty %}
       <p>{% trans "No reviews yet. Be the first to review this list!" %}</p>
     {% endfor %}
   </div>
 </div>
+
 
 {% if pagination %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/playstyle_compass/pagination.css' %}">

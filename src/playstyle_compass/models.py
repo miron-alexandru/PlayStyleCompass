@@ -387,9 +387,19 @@ class ListReview(models.Model):
     review_text = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    liked_by = models.ManyToManyField(
+        settings.AUTH_USER_MODEL,
+        related_name='liked_reviews',
+        blank=True,
+    )
 
     class Meta:
         unique_together = ('game_list', 'user')
 
     def __str__(self):
         return f"Review by {self.user} on {self.game_list}"
+
+    @property
+    def like_count(self):
+        """Returns the number of likes."""
+        return self.liked_by.count()
