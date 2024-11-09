@@ -116,6 +116,7 @@ Websites for .env configuration: [GiantBomb](https://www.giantbomb.com/) / [Send
 
 ## Project Preview
 ![Home](project-preview/home.PNG)
+![Dark-home](project-preview/dark-theme.PNG)
 ![Account Actions](project-preview/acc-actions.PNG)
 ![Game Details](project-preview/view-game.PNG)
 ## All images can be found [here](https://github.com/miron-alexandru/PlayStyleCompass/tree/main/project-preview)
@@ -123,6 +124,10 @@ Websites for .env configuration: [GiantBomb](https://www.giantbomb.com/) / [Send
 
 <details>
 <summary><h2>PlayStyle Compass Changelog</h2></summary>
+
+### Version v2.3:
+* Users are able to like game list reviews.
+* Logo is updated based on the selected theme.
 
 ### Version v2.2:
 * Implemented Dark Theme: Users are able to switch between the normal and dark theme.
