@@ -27,7 +27,6 @@ class UserPreferences(models.Model):
     show_in_queue = models.BooleanField(default=True)
     show_reviews = models.BooleanField(default=True)
     show_favorites = models.BooleanField(default=True)
-    show_game_list_reviews = models.BooleanField(default=True)
 
     def add_favorite_game(self, game_id):
         """Add a game to favorites."""

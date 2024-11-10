@@ -1812,14 +1812,6 @@ def reviewed_game_lists(request, user_id=None):
     other_user_profile = user != request.user
     user_preferences, created = UserPreferences.objects.get_or_create(user=user)
 
-    # Check permissions for viewing reviewed game lists in other user profiles
-    if other_user_profile:
-        if not user_preferences.show_game_list_reviews:
-            messages.error(
-                request, _("You don't have permission to view this content.")
-            )
-            return redirect("playstyle_compass:index")
-
     # Retrieve reviewed game lists
     reviewed_lists = ListReview.objects.filter(user=user)
     reviewed_game_lists = [review.game_list for review in reviewed_lists]

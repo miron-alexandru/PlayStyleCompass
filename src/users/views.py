@@ -56,7 +56,7 @@ from django.views.generic.edit import UpdateView
 from django.urls import reverse, reverse_lazy
 from django.contrib.auth.tokens import default_token_generator
 
-from playstyle_compass.models import UserPreferences, Review, Game
+from playstyle_compass.models import UserPreferences, Review, Game, ListReview, GameList
 
 from playstyle_compass.helper_functions.views_helpers import (
     paginate_matching_games,
@@ -1040,6 +1040,8 @@ def view_profile(request, profile_name):
                 "review_likes_count": user_stats["review_likes_count"],
                 "follower_count": user_stats["follower_count"],
                 "following_count": user_stats["following_count"],
+                "game_list_count": user_stats["game_list_count"],
+                "game_list_reviews_count": user_stats["game_list_reviews_count"],
                 "show_in_queue": user_stats["user_preferences"].show_in_queue,
                 "show_reviews": user_stats["user_preferences"].show_reviews,
                 "show_favorites": user_stats["user_preferences"].show_favorites,
@@ -1099,6 +1101,8 @@ def get_user_stats(user):
 
     follower_count = Follow.objects.filter(followed=user).count()
     following_count = Follow.objects.filter(follower=user).count()
+    game_list_count = GameList.objects.filter(owner=user).count()
+    game_list_reviews_count = ListReview.objects.filter(user=user).count()
 
     return {
         "user_preferences": user_preferences,
@@ -1106,6 +1110,8 @@ def get_user_stats(user):
         "review_likes_count": review_likes_count,
         "follower_count": follower_count,
         "following_count": following_count,
+        "game_list_count": game_list_count,
+        "game_list_reviews_count": game_list_reviews_count,
     }
 
 

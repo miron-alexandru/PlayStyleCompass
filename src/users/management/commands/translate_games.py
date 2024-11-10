@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand
 from playstyle_compass.models import Game
-from googletrans import Translator
+from deep_translator import GoogleTranslator
 
 
 class Command(BaseCommand):
@@ -9,7 +9,7 @@ class Command(BaseCommand):
     )
 
     def handle(self, *args, **kwargs):
-        translator = Translator()
+        translator = GoogleTranslator(source='auto', target='ro')
 
         games = Game.objects.all()
         for game in games:
@@ -50,7 +50,7 @@ def translate_text(text, lang_code, translator):
     Translates the given text to the specified language code using the provided translator.
     """
     try:
-        translated_text = translator.translate(text, dest=lang_code).text
+        translated_text = translator.translate(text)
         return translated_text
     except Exception as e:
         print(f"Error translating text: {e}")

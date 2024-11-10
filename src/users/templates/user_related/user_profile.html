@@ -128,7 +128,7 @@
         <a href="{% url 'users:send_message' user_id=user_id %}">{% trans "Send Message" %}</a>
         <a class="chat-button" href="{% url 'users:chat' recipient_id=user_id %}">{% trans "Start Chat" %}</a>
     </div>
-    <div class="d-flex justify-content-center align-items-center">
+    <div class="d-flex justify-content-center align-items-center profile-stats">
       <div class="stat-item">
         <p class="stat-label">
           {% trans "You" as you %}
@@ -189,6 +189,18 @@
       <div class="stat-item">
         <p class="stat-label">{% trans "Review Likes" %}</p>
         <p class="stat-value">{{ review_likes_count }}</p>
+      </div>
+      <div class="stat-item">
+          <p class="stat-label">
+              <a href="{% url 'playstyle_compass:user_game_lists' user_id %}" target="_blank">{% trans "Game Lists" %}</a>
+          </p>
+          <p class="stat-value">{{ game_list_count }}</p>
+      </div>
+      <div class="stat-item">
+          <p class="stat-label">
+              <a href="{% url 'playstyle_compass:reviewed_game_lists_with_id' user_id %}" target="_blank">{% trans "Reviewed Lists" %}</a>
+          </p>
+          <p class="stat-value">{{ game_list_reviews_count }}</p>
       </div>
       <div class="stat-item">
           <p class="stat-label">

@@ -268,3 +268,14 @@
 #status.offline {
   color: gray;
 }
+
+.profile-stats {
+  display: flex;
+  justify-content: space-around; 
+  align-items: center;
+  flex-wrap: wrap; 
+  max-width: 100%;
+  overflow: hidden;
+  padding: 0 1rem;
+  box-sizing: border-box;
+}
