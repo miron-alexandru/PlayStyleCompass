@@ -1456,7 +1456,7 @@ def create_game_list(request):
         "form": form,
     }
 
-    return render(request, "games/create_game_list.html", context)
+    return render(request, "game_list/create_game_list.html", context)
 
 
 @login_required
@@ -1495,7 +1495,7 @@ def edit_game_list(request, pk):
         "game_list": game_list,
     }
 
-    return render(request, "games/edit_game_list.html", context)
+    return render(request, "game_list/edit_game_list.html", context)
 
 
 @login_required
@@ -1508,6 +1508,7 @@ def delete_game_list(request, pk):
         messages.success(request, "Game list deleted successfully.")
     else:
         messages.error(request, "You are not allowed to delete this game list.")
+        return redirect("playstyle_compass:game_list_detail", pk=game_list.pk)
 
     return redirect("playstyle_compass:user_game_lists", user_id=request.user.id)
 
@@ -1538,7 +1539,7 @@ def game_list_detail(request, pk):
     additional_games = game_list.additional_games
     user, user_preferences, user_friends = get_user_context(request)
 
-    reviews = ListReview.objects.filter(game_list=game_list).order_by('-created_at')
+    reviews = ListReview.objects.filter(game_list=game_list).order_by("-created_at")
     review_form = ListReviewForm()
     review = ListReview.objects.filter(game_list=game_list, user=request.user).first()
 
@@ -1550,12 +1551,12 @@ def game_list_detail(request, pk):
         "user_friends": user_friends,
         "pagination": True,
         "additional_games": additional_games,
-        'reviews': reviews,
-        'form': review_form,
-        'review': review,
+        "reviews": reviews,
+        "form": review_form,
+        "review": review,
     }
 
-    return render(request, "games/game_list_detail.html", context)
+    return render(request, "game_list/game_list_detail.html", context)
 
 
 @login_required
@@ -1612,7 +1613,7 @@ def share_game_list(request, pk):
         "user_friends": user_friends,
     }
 
-    return render(request, "games/share_game_list.html", context)
+    return render(request, "game_list/share_game_list.html", context)
 
 
 def user_game_lists(request, user_id):
@@ -1641,7 +1642,7 @@ def user_game_lists(request, user_id):
         "order": order,
     }
 
-    return render(request, "games/user_game_lists.html", context)
+    return render(request, "game_list/user_game_lists.html", context)
 
 
 @login_required
@@ -1695,7 +1696,7 @@ def shared_game_lists(request):
         "order": order,
     }
 
-    return render(request, "games/shared_game_lists.html", context)
+    return render(request, "game_list/shared_game_lists.html", context)
 
 
 @login_required
@@ -1710,7 +1711,6 @@ def like_game_list(request, list_id):
         game_list.liked_by.add(request.user)
         liked = True
 
-
     return JsonResponse({"liked": liked, "like_count": game_list.like_count})
 
 
@@ -1719,8 +1719,10 @@ def like_game_list(request, list_id):
 def review_game_list(request, game_list_id):
     """Create or update a review for a specific game list."""
     game_list = get_object_or_404(GameList, id=game_list_id)
-    existing_review = ListReview.objects.filter(game_list=game_list, user=request.user).first()
-    
+    existing_review = ListReview.objects.filter(
+        game_list=game_list, user=request.user
+    ).first()
+
     if existing_review:
         form = ListReviewForm(request.POST, instance=existing_review)
     else:
@@ -1731,17 +1733,19 @@ def review_game_list(request, game_list_id):
         review.user = request.user
         review.game_list = game_list
         review.save()
-        
-        return JsonResponse({
-            'message': _('Review submitted successfully!'),
-            'review_id': review.id,
-            'title': review.title,
-            'rating': review.rating,
-            'review_text': review.review_text,
-            'author': review.user.userprofile.profile_name,
-        })
 
-    return JsonResponse({'errors': form.errors}, status=400)
+        return JsonResponse(
+            {
+                "message": _("Review submitted successfully!"),
+                "review_id": review.id,
+                "title": review.title,
+                "rating": review.rating,
+                "review_text": review.review_text,
+                "author": review.user.userprofile.profile_name,
+            }
+        )
+
+    return JsonResponse({"errors": form.errors}, status=400)
 
 
 @login_required
@@ -1749,21 +1753,23 @@ def review_game_list(request, game_list_id):
 def edit_game_list_review(request, review_id):
     """Edit an existing review."""
     review = get_object_or_404(ListReview, id=review_id, user=request.user)
-    
+
     form = ListReviewForm(request.POST, instance=review)
 
     if form.is_valid():
         form.save()
-        return JsonResponse({
-            'message': _('Review updated successfully!'),
-            'review_id': review.id,
-            'title': review.title,
-            'author': review.user.userprofile.profile_name,
-            'rating': review.rating,
-            'review_text': review.review_text,
-        })
+        return JsonResponse(
+            {
+                "message": _("Review updated successfully!"),
+                "review_id": review.id,
+                "title": review.title,
+                "author": review.user.userprofile.profile_name,
+                "rating": review.rating,
+                "review_text": review.review_text,
+            }
+        )
 
-    return JsonResponse({'errors': form.errors}, status=400)
+    return JsonResponse({"errors": form.errors}, status=400)
 
 
 @login_required
@@ -1772,8 +1778,8 @@ def delete_game_list_review(request, review_id):
     """Delete a specific review for a game list."""
     review = get_object_or_404(ListReview, id=review_id, user=request.user)
     review.delete()
-    
-    return JsonResponse({'message': _('Review deleted successfully!')})
+
+    return JsonResponse({"message": _("Review deleted successfully!")})
 
 
 @login_required
@@ -1788,8 +1794,50 @@ def like_game_list_review(request, review_id):
         review.liked_by.add(request.user)
         liked = True
 
-    return JsonResponse({
-        "liked": liked,
-        "like_count": review.like_count,
-        "review_id": review_id,
-    })
+    return JsonResponse(
+        {
+            "liked": liked,
+            "like_count": review.like_count,
+            "review_id": review_id,
+        }
+    )
+
+
+@login_required
+def reviewed_game_lists(request, user_id=None):
+    """View to get the reviewed game lists."""
+    # Determine the user based on the provided user_id or the authenticated user
+    user = request.user if user_id is None else get_object_or_404(User, id=user_id)
+
+    other_user_profile = user != request.user
+    user_preferences, created = UserPreferences.objects.get_or_create(user=user)
+
+    # Check permissions for viewing reviewed game lists in other user profiles
+    if other_user_profile:
+        if not user_preferences.show_game_list_reviews:
+            messages.error(
+                request, _("You don't have permission to view this content.")
+            )
+            return redirect("playstyle_compass:index")
+
+    # Retrieve reviewed game lists
+    reviewed_lists = ListReview.objects.filter(user=user)
+    reviewed_game_lists = [review.game_list for review in reviewed_lists]
+
+    current_viewer_preferences, created = UserPreferences.objects.get_or_create(
+        user=request.user
+    )
+
+    user_friends = get_friend_list(request.user)
+
+    context = {
+        "page_title": _("Reviewed Game Lists :: PlayStyle Compass"),
+        "game_lists": reviewed_game_lists,
+        "user_preferences": user_preferences,
+        "other_user": other_user_profile,
+        "list_user": user,
+        "current_viewer_preferences": current_viewer_preferences,
+        "user_friends": user_friends,
+    }
+
+    return render(request, "game_list/reviewed_game_lists.html", context)

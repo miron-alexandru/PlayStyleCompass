@@ -27,6 +27,7 @@ class UserPreferences(models.Model):
     show_in_queue = models.BooleanField(default=True)
     show_reviews = models.BooleanField(default=True)
     show_favorites = models.BooleanField(default=True)
+    show_game_list_reviews = models.BooleanField(default=True)
 
     def add_favorite_game(self, game_id):
         """Add a game to favorites."""
@@ -369,32 +370,37 @@ class GameList(models.Model):
         """Returns the total number of games in the list."""
         return len(self.game_guids) + len(self.additional_games)
 
+    @property
+    def review_count(self):
+        """Returns the total number of reviews for the game list."""
+        return self.reviews.count()
+
 
 class ListReview(models.Model):
     """Model to store user reviews and ratings for game lists."""
 
     game_list = models.ForeignKey(
-        'GameList', on_delete=models.CASCADE, related_name='reviews'
+        "GameList", on_delete=models.CASCADE, related_name="reviews"
     )
     user = models.ForeignKey(
-        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='reviews'
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="reviews"
     )
     title = models.CharField(max_length=255, blank=False)
     rating = models.PositiveSmallIntegerField(
         validators=[MinValueValidator(1), MaxValueValidator(5)],
-        help_text="Rating between 1 (worst) and 5 (best)"
+        help_text="Rating between 1 (worst) and 5 (best)",
     )
     review_text = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     liked_by = models.ManyToManyField(
         settings.AUTH_USER_MODEL,
-        related_name='liked_reviews',
+        related_name="liked_reviews",
         blank=True,
     )
 
     class Meta:
-        unique_together = ('game_list', 'user')
+        unique_together = ("game_list", "user")
 
     def __str__(self):
         return f"Review by {self.user} on {self.game_list}"

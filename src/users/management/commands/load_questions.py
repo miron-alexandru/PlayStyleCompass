@@ -14,7 +14,7 @@ class Command(BaseCommand):
             type=str,
             nargs="?",  # Makes this argument optional
             default="src/users/quiz/quiz_questions.csv",
-            help="Path to the CSV file containing quiz questions. Defaults to 'src/users/quiz/quiz_questions.csv'."
+            help="Path to the CSV file containing quiz questions. Defaults to 'src/users/quiz/quiz_questions.csv'.",
         )
 
     def handle(self, *args, **options):

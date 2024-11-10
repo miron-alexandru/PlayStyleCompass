@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block page_header %}
+<div class="header">
+  <h3>{% trans "REVIEWED GAME LISTS" %}</h3>
+</div>
+{% endblock page_header %}
+
+{% block description %}
+{% trans "Discover and explore insightful game lists reviewed and rated." %}
+{% endblock description %}
+
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/playstyle_compass/user_game_lists.css' %}">
+
+<div class="game-lists-container">
+  <h2 class="users-lists-title">{% trans "Game Lists Reviewed by" %} 
+    <a href="{% url 'users:view_profile' list_user.userprofile.profile_name %}">
+      {{ list_user.userprofile.profile_name }}
+    </a>
+  </h2>
+
+  {% if game_lists %}
+    <div class="game-lists">
+      {% for game_list in game_lists %}
+        <div class="game-list-item">
+          <p><strong>{% trans "Title:" %}</strong> {{ game_list.title }}</p>
+          <p><strong>{% trans "Description:" %}</strong> {{ game_list.description }}</p>
+          <p><strong>{% trans "Shared with:" %}</strong> {{ game_list.share_count }} users</p>
+          <p><strong>{% trans "Total games in list:" %}</strong> {{ game_list.total_games }}</p>
+          <p><strong>{% trans "Likes:" %}</strong> {{ game_list.like_count }}</p>
+          <p><strong>{% trans "Reviews:" %}</strong> {{ game_list.review_count }}</p>
+            <p><strong>{% trans "Created by:" %}</strong> <a class="list-creator" href="{% url 'users:view_profile' game_list.owner.userprofile.profile_name %}">
+            {{ game_list.owner.userprofile.profile_name }}
+          </a></p>
+
+          <div class="button-group">
+            <a href="{% url 'playstyle_compass:game_list_detail' game_list.id %}" class="view-button">{% trans "View List" %}</a>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p class="empty-message">{% trans "This user has not reviewed any game lists yet." %}</p>
+  {% endif %}
+</div>
+{% endblock content %}

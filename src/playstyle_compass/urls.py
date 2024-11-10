@@ -117,8 +117,30 @@ urlpatterns = [
     ),
     path("shared-game-lists/", views.shared_game_lists, name="shared_game_lists"),
     path("like-game-list/<int:list_id>/", views.like_game_list, name="like_game_list"),
-    path('create-review/<int:game_list_id>/', views.review_game_list, name='review_game_list'),
-    path('edit-review/<int:review_id>/', views.edit_game_list_review, name='edit_game_list_review'),
-    path('delete-review/<int:review_id>/', views.delete_game_list_review, name='delete_game_list_review'),
-    path('like-list-review/<int:review_id>', views.like_game_list_review, name='like_list_review'),
+    path(
+        "create-review/<int:game_list_id>/",
+        views.review_game_list,
+        name="review_game_list",
+    ),
+    path(
+        "edit-review/<int:review_id>/",
+        views.edit_game_list_review,
+        name="edit_game_list_review",
+    ),
+    path(
+        "delete-review/<int:review_id>/",
+        views.delete_game_list_review,
+        name="delete_game_list_review",
+    ),
+    path(
+        "like-list-review/<int:review_id>",
+        views.like_game_list_review,
+        name="like_list_review",
+    ),
+    path(
+        "reviewed_game_lists/<int:user_id>/",
+        views.reviewed_game_lists,
+        name="reviewed_game_lists_with_id",
+    ),
+    path("reviewed_game_lists/", views.reviewed_game_lists, name="reviewed_game_lists"),
 ]

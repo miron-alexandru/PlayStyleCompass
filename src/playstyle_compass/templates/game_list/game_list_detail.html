@@ -59,35 +59,39 @@
   <p class="reviews-head">{% trans "Rate and Review this List" %}</p>
 
   {% if user.is_authenticated %}
-      {% if review %}
-        <div class="existing-review card">
-          <p class="review-head">{% trans "Your Review" %}</p>
-          <p><strong>{% trans "Title:" %}</strong> <span class="review-title">{{ review.title }}</span></p>
-          <p>
-          <strong>{% trans "Rating:" %}</strong>
-          <span class="game-list-review-stars" data-review-score="{{ review.rating }}"></span>
-          </p>
-          <p><strong>{% trans "Review:" %}</strong> <span class="review-text">{{ review.review_text }}</span></p>
-          <div class="review-buttons">
-            <button class="edit-review-button" data-id="{{ review.id }}" data-action-url="{% url 'playstyle_compass:edit_game_list_review' review.id %}">{% trans "Edit Review" %}</button>
-            <button class="delete-review-button" data-id="{{ review.id }}" data-action-url="{% url 'playstyle_compass:delete_game_list_review' review.id %}">
-                {% trans "Delete Review" %}
-              </button>
-            </div>
+      {% if game_list.owner != user %}
+          {% if review %}
+            <div class="existing-review card">
+              <p class="review-head">{% trans "Your Review" %}</p>
+              <p><strong>{% trans "Title:" %}</strong> <span class="review-title">{{ review.title }}</span></p>
+              <p>
+              <strong>{% trans "Rating:" %}</strong>
+              <span class="game-list-review-stars" data-review-score="{{ review.rating }}"></span>
+              </p>
+              <p><strong>{% trans "Review:" %}</strong> <span class="review-text">{{ review.review_text }}</span></p>
+              <div class="review-buttons">
+                <button class="edit-review-button" data-id="{{ review.id }}" data-action-url="{% url 'playstyle_compass:edit_game_list_review' review.id %}">{% trans "Edit Review" %}</button>
+                <button class="delete-review-button" data-id="{{ review.id }}" data-action-url="{% url 'playstyle_compass:delete_game_list_review' review.id %}">
+                    {% trans "Delete Review" %}
+                  </button>
+                </div>
+          {% else %}
+            <form id="review-form" class="review-form" action="{% url 'playstyle_compass:review_game_list' game_list.id %}" method="post">
+              {% csrf_token %}
+              <label for="id_title">{{ form.title.label }}</label>
+              <input type="text" name="title" class="form-input" placeholder="{% trans 'Review Title' %}" required />
+              
+              <label for="id_rating">{{ form.rating.label }}</label>
+              <div class="form-select">{{ form.rating }}</div>
+              
+              <label for="id_review_text">{{ form.review_text.label }}</label>
+              <textarea name="review_text" class="form-textarea" placeholder="{% trans 'Write your review here...' %}" required></textarea>
+              
+              <button type="submit" class="btn btn-primary">{% trans "Submit Review" %}</button>
+            </form>
+          {% endif %}
       {% else %}
-        <form id="review-form" class="review-form" action="{% url 'playstyle_compass:review_game_list' game_list.id %}" method="post">
-          {% csrf_token %}
-          <label for="id_title">{{ form.title.label }}</label>
-          <input type="text" name="title" class="form-input" placeholder="{% trans 'Review Title' %}" required />
-          
-          <label for="id_rating">{{ form.rating.label }}</label>
-          <div class="form-select">{{ form.rating }}</div>
-          
-          <label for="id_review_text">{{ form.review_text.label }}</label>
-          <textarea name="review_text" class="form-textarea" placeholder="{% trans 'Write your review here...' %}" required></textarea>
-          
-          <button type="submit" class="btn btn-primary">{% trans "Submit Review" %}</button>
-        </form>
+        <p class="alert alert-info">{% trans "You cannot review your own list." %}</p>
       {% endif %}
   {% else %}
     <p class="alert alert-warning">{% trans "You need to be logged in to submit a review." %}</p>
