@@ -38,7 +38,7 @@ from .models import (
     GameList,
     ListReview,
 )
-from .forms import ReviewForm, GameListForm, ListReviewForm
+from .forms import ReviewForm, GameListForm, ListReviewForm, PrivacySettingsForm
 
 from .helper_functions.views_helpers import (
     RecommendationEngine,
@@ -1833,3 +1833,23 @@ def reviewed_game_lists(request, user_id=None):
     }
 
     return render(request, "game_list/reviewed_game_lists.html", context)
+
+
+@login_required
+def privacy_settings(request):
+    user_preferences = get_object_or_404(UserPreferences, user=request.user)
+
+    if request.method == "POST":
+        form = PrivacySettingsForm(request.POST, instance=user_preferences)
+        if form.is_valid():
+            form.save()
+            return redirect("playstyle_compass:privacy_settings")
+    else:
+        form = PrivacySettingsForm(instance=user_preferences)
+
+    context = {
+        "page_title": _("Privacy Settings :: PlayStyle Compass"),
+        "form": form,
+    }
+
+    return render(request, "preferences/privacy_settings.html", context)

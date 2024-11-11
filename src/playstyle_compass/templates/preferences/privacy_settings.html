@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block page_header %}
+<div class="header">
+    <h3>{% trans "PRIVACY SETTINGS" %}</h3>
+</div>
+{% endblock page_header %}
+
+{% block description %}
+{% blocktrans %}Manage the visibility of your content and activity.{% endblocktrans %}
+{% endblock description %}
+
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/users/notification_settings.css' %}">
+
+<div class="notifications-container">
+    <h2 class="notifications-title">{% trans "Privacy Settings" %}</h2>
+    <form method="post">
+        {% csrf_token %}
+
+        <div class="floating-card">
+            <div class="form-group">
+                <div class="label-description-container">
+                    <label for="show_in_queue">{% trans "Show Queue" %}</label>
+                    <p class="description">{% trans "Allow other users to see the games you have added to your queue." %}</p>
+                </div>
+                <label class="switch">
+                    <input type="checkbox" id="show_in_queue" name="show_in_queue" {% if form.show_in_queue.value %}checked{% endif %}>
+                    <span class="slider round"></span>
+                </label>
+            </div>
+        </div>
+
+        <div class="floating-card">
+            <div class="form-group">
+                <div class="label-description-container">
+                    <label for="show_favorites">{% trans "Show Favorites" %}</label>
+                    <p class="description">{% trans "Allow other users to see the games you have marked as favorites." %}</p>
+                </div>
+                <label class="switch">
+                    <input type="checkbox" id="show_favorites" name="show_favorites" {% if form.show_favorites.value %}checked{% endif %}>
+                    <span class="slider round"></span>
+                </label>
+            </div>
+        </div>
+
+        <div class="floating-card">
+            <div class="form-group">
+                <div class="label-description-container">
+                    <label for="show_reviews">{% trans "Show Reviews" %}</label>
+                    <p class="description">{% trans "Allow other users to see the reviews you have written for games." %}</p>
+                </div>
+                <label class="switch">
+                    <input type="checkbox" id="show_reviews" name="show_reviews" {% if form.show_reviews.value %}checked{% endif %}>
+                    <span class="slider round"></span>
+                </label>
+            </div>
+        </div>
+
+        <button type="submit" class="btn-submit">{% trans "Save" %}</button>
+    </form>
+</div>
+{% endblock %}

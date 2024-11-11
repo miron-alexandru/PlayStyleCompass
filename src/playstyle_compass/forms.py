@@ -2,7 +2,7 @@
 
 from django import forms
 
-from .models import Review, Game, GameList, ListReview
+from .models import Review, Game, GameList, ListReview, UserPreferences
 from django.utils.translation import gettext_lazy as _
 
 
@@ -96,4 +96,21 @@ class ListReviewForm(forms.ModelForm):
                 attrs={"rows": 3, "placeholder": "Write your review here..."}
             ),
             "title": forms.TextInput(attrs={"placeholder": "Review Title"}),
+        }
+
+
+class PrivacySettingsForm(forms.ModelForm):
+    """Manage privacy settings."""
+
+    class Meta:
+        model = UserPreferences
+        fields = [
+            "show_in_queue",
+            "show_reviews",
+            "show_favorites",
+        ]
+        widgets = {
+            "show_in_queue": forms.CheckboxInput(),
+            "show_reviews": forms.CheckboxInput(),
+            "show_favorites": forms.CheckboxInput(),
         }

@@ -143,4 +143,9 @@ urlpatterns = [
         name="reviewed_game_lists_with_id",
     ),
     path("reviewed_game_lists/", views.reviewed_game_lists, name="reviewed_game_lists"),
+    path(
+        "privacy/settings/",
+        views.privacy_settings,
+        name="privacy_settings",
+    ),
 ]
