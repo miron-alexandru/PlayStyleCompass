@@ -138,14 +138,15 @@ urlpatterns = [
         name="like_list_review",
     ),
     path(
-        "reviewed_game_lists/<int:user_id>/",
+        "reviewed-game-lists/<int:user_id>/",
         views.reviewed_game_lists,
         name="reviewed_game_lists_with_id",
     ),
-    path("reviewed_game_lists/", views.reviewed_game_lists, name="reviewed_game_lists"),
+    path("reviewed-game-lists/", views.reviewed_game_lists, name="reviewed_game_lists"),
     path(
         "privacy/settings/",
         views.privacy_settings,
         name="privacy_settings",
     ),
+    path("explore-game-lists", views.explore_game_lists, name="explore_game_lists"),
 ]

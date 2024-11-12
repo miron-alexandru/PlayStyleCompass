@@ -150,6 +150,9 @@
             <a class="dropdown-item" href="{% url 'playstyle_compass:game_library'%}">
               {% trans "Game Library" %}
             </a>
+            <a class="dropdown-item" href="{% url 'playstyle_compass:explore_game_lists'%}">
+              {% trans "Explore Game Lists" %}
+            </a>
             <a class="dropdown-item" href="{% url 'playstyle_compass:similar_games_directory'%}">
               {% trans "Similar Games Directory" %}
             </a>
@@ -181,6 +184,11 @@
           <a class="nav-link" href="{% url 'playstyle_compass:game_library'%}">
             {% trans "Game Library" %}
           </a>
+        </li>
+        <li class="nav-item">
+        <a class="dropdown-item" href="{% url 'playstyle_compass:explore_game_lists'%}">
+              {% trans "Explore Game Lists" %}
+            </a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="{% url 'playstyle_compass:similar_games_directory'%}">

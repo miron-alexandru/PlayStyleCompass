@@ -126,6 +126,8 @@ Websites for .env configuration: [GiantBomb](https://www.giantbomb.com/) / [Send
 <summary><h2>PlayStyle Compass Changelog</h2></summary>
 
 ### Version v2.3:
+* Created Public Game Lists page: Users are able to view game lists from other users that are public.
+* Created Reviewed Game Lists page: Users are able to view game lists that they reviewed.
 * Users are able to like game list reviews.
 * Logo is updated based on the selected theme.
 

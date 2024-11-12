@@ -57,7 +57,7 @@ label {
 }
 
 .form-group input[type="checkbox"] {
-  margin-right: 10px;
+  margin-right: 5px;
 }
 
 .form-groupe label:hover {
@@ -72,4 +72,16 @@ label {
   border: 1px solid var(--input-border);
   padding: 10px;
   border-radius: 5px;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-left: 20px;
+  margin-top: -5px;
+}
+
+.checkbox-label input[type="checkbox"] {
+  margin-top: -1px;
 }

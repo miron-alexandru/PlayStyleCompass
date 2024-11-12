@@ -1853,3 +1853,29 @@ def privacy_settings(request):
     }
 
     return render(request, "preferences/privacy_settings.html", context)
+
+
+def explore_game_lists(request):
+    """View used to explore public game lists."""
+    game_lists = GameList.objects.filter(is_public=True)
+
+    sort_by = request.GET.get("sort_by", "created_at")
+    order = request.GET.get("order", "desc")
+
+    game_lists = list(game_lists)
+
+    if sort_by == "title":
+        game_lists.sort(key=lambda x: x.title, reverse=(order == "desc"))
+    elif sort_by == "total_games":
+        game_lists.sort(key=lambda x: x.total_games, reverse=(order == "desc"))
+    elif sort_by == "created_at":
+        game_lists.sort(key=lambda x: x.created_at, reverse=(order == "desc"))
+
+    context = {
+        "page_title": _("Explore Game Lists :: PlayStyle Compass"),
+        "game_lists": game_lists,
+        "sort_by": sort_by,
+        "order": order,
+    }
+
+    return render(request, "game_list/explore_game_lists.html", context)

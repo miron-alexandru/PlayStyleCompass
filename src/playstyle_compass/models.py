@@ -350,6 +350,7 @@ class GameList(models.Model):
     )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    is_public = models.BooleanField(default=False)
 
     @property
     def like_count(self):

@@ -61,6 +61,13 @@
                 {% endif %}
             </div>
 
+            <div class="form-group">
+              <label for="id_is_public" class="checkbox-label">
+                {{ form.is_public }}
+                {% trans "Make public" %}
+              </label>
+            </div>
+
             <button type="submit" class="btn-submit">{% trans "Update List" %}</button>
         </form>
     </div>

@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block page_header %}
+<div class="header">
+  <h3>{% trans "EXPLORE GAME LISTS" %}</h3>
+</div>
+{% endblock page_header %}
+
+{% block description %}
+{% trans "Discover game lists created by the community and find your next favorite games." %}
+{% endblock description %}
+
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/playstyle_compass/user_game_lists.css' %}">
+
+<div class="game-lists-container">
+  <h2 class="users-lists-title">{% trans "Game Lists From the Community" %}</h2>
+
+  <div class="sorting-options">
+    <form method="GET">
+      <label for="sort_by">{% trans "Sort by:" %}</label>
+      <select name="sort_by" id="sort_by">
+        <option value="title" {% if sort_by == 'title' %}selected{% endif %}>{% trans "Title" %}</option>
+        <option value="total_games" {% if sort_by == 'total_games' %}selected{% endif %}>{% trans "Total Games" %}</option>
+        <option value="created_at" {% if sort_by == 'created_at' %}selected{% endif %}>{% trans "Date" %}</option>
+      </select>
+      <select name="order" id="order">
+        <option value="asc" {% if order == 'asc' %}selected{% endif %}>{% trans "Ascending" %}</option>
+        <option value="desc" {% if order == 'desc' %}selected{% endif %}>{% trans "Descending" %}</option>
+      </select>
+      <button type="submit" class="sort-button">{% trans "Sort" %}</button>
+    </form>
+  </div>
+
+  {% if game_lists %}
+    <div class="game-lists">
+      {% for game_list in game_lists %}
+        <div class="game-list-item">
+          <p><strong>{% trans "Title:" %}</strong> {{ game_list.title }}</p>
+          <p><strong>{% trans "Description:" %}</strong> {{ game_list.description }}</p>
+          <p><strong>{% trans "Shared with:" %}</strong> {{ game_list.share_count }} users</p>
+          <p><strong>{% trans "Total games in list:" %}</strong> {{ game_list.total_games }}</p>
+          <p><strong>{% trans "Likes:" %}</strong> {{ game_list.like_count }}</p>
+          <p><strong>{% trans "Reviews:" %}</strong> {{ game_list.review_count }}</p>
+          <p><strong>{% trans "Created by:" %}</strong> 
+            <a href="{% url 'users:view_profile' game_list.owner.userprofile.profile_name %}">
+              {{ game_list.owner.userprofile.profile_name }}
+            </a>
+          </p>
+          
+          <div class="button-group">
+            <a href="{% url 'playstyle_compass:game_list_detail' game_list.id %}" class="view-button">{% trans "View List" %}</a>
+            <a href="{% url 'playstyle_compass:share_game_list' game_list.id %}" class="share-button">{% trans "Share List" %}</a>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p class="empty-message">{% trans "There are no public game lists to display." %}</p>
+  {% endif %}
+</div>
+{% endblock content %}

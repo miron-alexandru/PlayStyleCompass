@@ -70,9 +70,15 @@ class GameListForm(forms.ModelForm):
         widget=forms.TextInput(attrs={"placeholder": _("Enter additional game names")}),
     )
 
+    is_public = forms.BooleanField(
+        label=_("Make public"),
+        required=False,
+        widget=forms.CheckboxInput(attrs={"class": "form-check-input"}),
+    )
+
     class Meta:
         model = GameList
-        fields = ["title", "description", "games"]
+        fields = ["title", "description", "games", "is_public"]
 
     def save(self, commit=True):
         game_list = super().save(commit=False)

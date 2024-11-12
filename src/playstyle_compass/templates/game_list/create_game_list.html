@@ -54,11 +54,10 @@
             </div>
 
             <div class="form-group">
-                <label for="id_additional_games">{% trans "Add Additional Games (comma-separated)" %}</label>
-                {{ form.additional_games }}
-                {% if form.additional_games.errors %}
-                    <div class="error">{{ form.additional_games.errors }}</div>
-                {% endif %}
+              <label for="id_is_public" class="checkbox-label">
+                {{ form.is_public }}
+                {% trans "Make public" %}
+              </label>
             </div>
 
             <button type="submit" class="btn-submit">{% trans "Save List" %}</button>
@@ -69,4 +68,3 @@
 <script src="{% static 'js/playstyle_compass/create_game_list.js' %}"></script>
 
 {% endblock content %}
-
