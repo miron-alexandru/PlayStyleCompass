@@ -340,7 +340,7 @@ class GameList(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField(blank=True, null=True)
     game_guids = models.JSONField(default=list)
-    additional_games = models.JSONField(default=list)
+    additional_games = models.CharField(max_length=1000, blank=True)
     shared_with = models.ManyToManyField(
         settings.AUTH_USER_MODEL, blank=True, related_name="shared_game_lists"
     )

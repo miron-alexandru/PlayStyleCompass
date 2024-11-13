@@ -1436,15 +1436,6 @@ def create_game_list(request):
         if form.is_valid():
             game_list = form.save(commit=False)
             game_list.owner = request.user
-
-            additional_games = form.cleaned_data.get("additional_games", "")
-            additional_games_list = (
-                [game.strip() for game in additional_games.split(",")]
-                if additional_games
-                else []
-            )
-
-            game_list.additional_games = additional_games_list
             game_list.save()
 
             return redirect("playstyle_compass:game_list_detail", pk=game_list.pk)
@@ -1470,22 +1461,8 @@ def edit_game_list(request, pk):
     if request.method == "POST":
         form = GameListForm(request.POST, instance=game_list)
         if form.is_valid():
-            updated_game_list = form.save(commit=False)
-            updated_game_list.owner = request.user
-
-            additional_games = form.cleaned_data.get("additional_games", "")
-            additional_games_list = (
-                [game.strip() for game in additional_games.split(",")]
-                if additional_games
-                else []
-            )
-
-            updated_game_list.additional_games = additional_games_list
-            updated_game_list.save()
-
-            return redirect(
-                "playstyle_compass:game_list_detail", pk=updated_game_list.pk
-            )
+            form.save()
+            return redirect("playstyle_compass:game_list_detail", pk=game_list.pk)
     else:
         form = GameListForm(instance=game_list)
 
@@ -1536,7 +1513,7 @@ def game_list_detail(request, pk):
     game_list = GameList.objects.get(pk=pk)
     games = Game.objects.filter(guid__in=game_list.game_guids)
     games = paginate_matching_games(request, games)
-    additional_games = game_list.additional_games
+    additional_games = game_list.additional_games.split(",") if game_list.additional_games else []
     user, user_preferences, user_friends = get_user_context(request)
 
     reviews = ListReview.objects.filter(game_list=game_list).order_by("-created_at")

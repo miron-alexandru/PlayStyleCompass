@@ -65,7 +65,7 @@ class GameListForm(forms.ModelForm):
     )
 
     additional_games = forms.CharField(
-        label="Add additional games (comma-separated)",
+        label="Additional games (comma-separated)",
         required=False,
         widget=forms.TextInput(attrs={"placeholder": _("Enter additional game names")}),
     )
@@ -78,7 +78,22 @@ class GameListForm(forms.ModelForm):
 
     class Meta:
         model = GameList
-        fields = ["title", "description", "games", "is_public"]
+        fields = ["title", "description", "games", "additional_games", "is_public"]
+
+    def __init__(self, *args, **kwargs):
+        instance = kwargs.get("instance")
+        super().__init__(*args, **kwargs)
+
+        if instance and instance.game_guids:
+            preselected_games = Game.objects.filter(guid__in=instance.game_guids)
+            self.fields["games"].initial = preselected_games
+
+        if instance and instance.additional_games:
+            self.fields["additional_games"].initial = instance.additional_games
+
+    def clean_additional_games(self):
+        additional_games = self.cleaned_data.get("additional_games", "").strip()
+        return additional_games
 
     def save(self, commit=True):
         game_list = super().save(commit=False)

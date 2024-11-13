@@ -42,6 +42,11 @@
     <div class="game-lists">
       {% for game_list in game_lists %}
         <div class="game-list-item">
+          {% if game_list.is_public %}
+          <div class="game-lists-indicator">
+            <span title="{% trans 'This list is featured in the public game lists page' %}" class="game-lists-icon">📋</span>
+          </div>
+          {% endif %}
           <p><strong>{% trans "Title:" %}</strong> {{ game_list.title }}</p>
           <p><strong>{% trans "Description:" %}</strong> {{ game_list.description }}</p>
           <p><strong>{% trans "Shared with:" %}</strong> {{ game_list.share_count }} users</p>
