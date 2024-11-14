@@ -368,7 +368,10 @@ class GameList(models.Model):
     @property
     def total_games(self):
         """Returns the total number of games in the list."""
-        return len(self.game_guids) + len(self.additional_games)
+        additional_games_count = (
+            len(self.additional_games.split(",")) if self.additional_games else 0
+        )
+        return len(self.game_guids) + additional_games_count
 
     @property
     def review_count(self):

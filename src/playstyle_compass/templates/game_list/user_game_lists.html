@@ -29,6 +29,11 @@
         <option value="title" {% if sort_by == 'title' %}selected{% endif %}>{% trans "Title" %}</option>
         <option value="total_games" {% if sort_by == 'total_games' %}selected{% endif %}>{% trans "Total Games" %}</option>
         <option value="created_at" {% if sort_by == 'created_at' %}selected{% endif %}>{% trans "Date" %}</option>
+        <option value="share_count" {% if sort_by == 'share_count' %}selected{% endif %}>{% trans "Shares" %}</option>
+        <option value="like_count" {% if sort_by == 'like_count' %}selected{% endif %}>{% trans "Likes" %}</option>
+        <option value="review_count" {% if sort_by == 'review_count' %}selected{% endif %}>{% trans "Reviews" %}</option>
+        <option value="updated_at" {% if sort_by == 'updated_at' %}selected{% endif %}>{% trans "Last Updated" %}</option>
+        <option value="activity_level" {% if sort_by == 'activity_level' %}selected{% endif %}>{% trans "Activity Level" %}</option>
       </select>
       <select name="order" id="order">
         <option value="asc" {% if order == 'asc' %}selected{% endif %}>{% trans "Ascending" %}</option>

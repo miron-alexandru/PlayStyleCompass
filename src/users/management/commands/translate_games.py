@@ -9,7 +9,7 @@ class Command(BaseCommand):
     )
 
     def handle(self, *args, **kwargs):
-        translator = GoogleTranslator(source='auto', target='ro')
+        translator = GoogleTranslator(source="auto", target="ro")
 
         games = Game.objects.all()
         for game in games:

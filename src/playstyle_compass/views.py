@@ -1513,7 +1513,9 @@ def game_list_detail(request, pk):
     game_list = GameList.objects.get(pk=pk)
     games = Game.objects.filter(guid__in=game_list.game_guids)
     games = paginate_matching_games(request, games)
-    additional_games = game_list.additional_games.split(",") if game_list.additional_games else []
+    additional_games = (
+        game_list.additional_games.split(",") if game_list.additional_games else []
+    )
     user, user_preferences, user_friends = get_user_context(request)
 
     reviews = ListReview.objects.filter(game_list=game_list).order_by("-created_at")
@@ -1600,16 +1602,29 @@ def user_game_lists(request, user_id):
 
     sort_by = request.GET.get("sort_by", "created_at")
     order = request.GET.get("order", "desc")
+    reverse_order = order == "desc"
 
-    # Get game lists into a list for Python sorting
     game_lists = list(game_lists)
 
     if sort_by == "title":
-        game_lists.sort(key=lambda x: x.title, reverse=(order == "desc"))
+        game_lists.sort(key=lambda x: x.title.lower(), reverse=reverse_order)
     elif sort_by == "total_games":
-        game_lists.sort(key=lambda x: x.total_games, reverse=(order == "desc"))
+        game_lists.sort(key=lambda x: x.total_games, reverse=reverse_order)
     elif sort_by == "created_at":
-        game_lists.sort(key=lambda x: x.created_at, reverse=(order == "desc"))
+        game_lists.sort(key=lambda x: x.created_at, reverse=reverse_order)
+    elif sort_by == "share_count":
+        game_lists.sort(key=lambda x: x.share_count, reverse=reverse_order)
+    elif sort_by == "like_count":
+        game_lists.sort(key=lambda x: x.like_count, reverse=reverse_order)
+    elif sort_by == "review_count":
+        game_lists.sort(key=lambda x: x.review_count, reverse=reverse_order)
+    elif sort_by == "updated_at":
+        game_lists.sort(key=lambda x: x.updated_at, reverse=reverse_order)
+    elif sort_by == "activity_level":
+        game_lists.sort(
+            key=lambda x: (x.share_count + x.like_count + x.review_count),
+            reverse=reverse_order,
+        )
 
     context = {
         "page_title": _("Game Lists :: PlayStyle Compass"),
@@ -1838,15 +1853,29 @@ def explore_game_lists(request):
 
     sort_by = request.GET.get("sort_by", "created_at")
     order = request.GET.get("order", "desc")
+    reverse_order = order == "desc"
 
     game_lists = list(game_lists)
 
     if sort_by == "title":
-        game_lists.sort(key=lambda x: x.title, reverse=(order == "desc"))
+        game_lists.sort(key=lambda x: x.title.lower(), reverse=reverse_order)
     elif sort_by == "total_games":
-        game_lists.sort(key=lambda x: x.total_games, reverse=(order == "desc"))
+        game_lists.sort(key=lambda x: x.total_games, reverse=reverse_order)
     elif sort_by == "created_at":
-        game_lists.sort(key=lambda x: x.created_at, reverse=(order == "desc"))
+        game_lists.sort(key=lambda x: x.created_at, reverse=reverse_order)
+    elif sort_by == "share_count":
+        game_lists.sort(key=lambda x: x.share_count, reverse=reverse_order)
+    elif sort_by == "like_count":
+        game_lists.sort(key=lambda x: x.like_count, reverse=reverse_order)
+    elif sort_by == "review_count":
+        game_lists.sort(key=lambda x: x.review_count, reverse=reverse_order)
+    elif sort_by == "updated_at":
+        game_lists.sort(key=lambda x: x.updated_at, reverse=reverse_order)
+    elif sort_by == "activity_level":
+        game_lists.sort(
+            key=lambda x: (x.share_count + x.like_count + x.review_count),
+            reverse=reverse_order,
+        )
 
     context = {
         "page_title": _("Explore Game Lists :: PlayStyle Compass"),
