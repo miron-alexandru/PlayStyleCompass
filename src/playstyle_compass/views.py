@@ -37,8 +37,15 @@ from .models import (
     News,
     GameList,
     ListReview,
+    ListComment,
 )
-from .forms import ReviewForm, GameListForm, ListReviewForm, PrivacySettingsForm
+from .forms import ( 
+    ReviewForm,
+    GameListForm,
+    ListReviewForm,
+    PrivacySettingsForm,
+    ListCommentForm,
+)
 
 from .helper_functions.views_helpers import (
     RecommendationEngine,
@@ -1510,17 +1517,27 @@ def delete_all_game_lists(request):
 
 def game_list_detail(request, pk):
     """View used to view a game list."""
-    game_list = GameList.objects.get(pk=pk)
-    games = Game.objects.filter(guid__in=game_list.game_guids)
-    games = paginate_matching_games(request, games)
-    additional_games = (
-        game_list.additional_games.split(",") if game_list.additional_games else []
-    )
+    game_list = get_object_or_404(GameList, pk=pk)
+    games = paginate_matching_games(request, Game.objects.filter(guid__in=game_list.game_guids))
+    additional_games = game_list.additional_games.split(",") if game_list.additional_games else []
     user, user_preferences, user_friends = get_user_context(request)
 
     reviews = ListReview.objects.filter(game_list=game_list).order_by("-created_at")
     review_form = ListReviewForm()
     review = ListReview.objects.filter(game_list=game_list, user=request.user).first()
+
+    # Handle comments
+    comment_form = ListCommentForm()
+    if request.method == 'POST' and 'comment_submit' in request.POST:
+        comment_form = ListCommentForm(request.POST)
+        if comment_form.is_valid():
+            comment = comment_form.save(commit=False)
+            comment.game_list = game_list
+            comment.user = request.user
+            comment.save()
+            return redirect('playstyle_compass:game_list_detail', pk=pk)
+
+    comments = ListComment.objects.filter(game_list=game_list)
 
     context = {
         "page_title": _("View Game List :: PlayStyle Compass"),
@@ -1533,6 +1550,8 @@ def game_list_detail(request, pk):
         "reviews": reviews,
         "form": review_form,
         "review": review,
+        "comment_form": comment_form,
+        "comments": comments,
     }
 
     return render(request, "game_list/game_list_detail.html", context)
@@ -1885,3 +1904,13 @@ def explore_game_lists(request):
     }
 
     return render(request, "game_list/explore_game_lists.html", context)
+
+
+@require_POST
+def delete_list_comment(request, comment_id):
+    if request.method == "POST":
+        comment = get_object_or_404(ListComment, id=comment_id, user=request.user)
+        comment.delete()
+        return JsonResponse({"success": True})
+
+    return JsonResponse({"success": False}, status=400)

@@ -2,7 +2,7 @@
 
 from django import forms
 
-from .models import Review, Game, GameList, ListReview, UserPreferences
+from .models import Review, Game, GameList, ListReview, UserPreferences, ListComment
 from django.utils.translation import gettext_lazy as _
 
 
@@ -134,4 +134,18 @@ class PrivacySettingsForm(forms.ModelForm):
             "show_in_queue": forms.CheckboxInput(),
             "show_reviews": forms.CheckboxInput(),
             "show_favorites": forms.CheckboxInput(),
+        }
+
+
+class ListCommentForm(forms.ModelForm):
+    """Form for leaving a comment on a Game List."""
+    class Meta:
+        model = ListComment
+        fields = ['text']
+        widgets = {
+            'text': forms.Textarea(attrs={
+                'class': 'form-textarea',
+                'placeholder': _('Write your comment here...'),
+                'rows': 4,
+            }),
         }

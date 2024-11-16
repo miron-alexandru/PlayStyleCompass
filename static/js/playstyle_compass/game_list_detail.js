@@ -191,3 +191,54 @@ const generateGameListReviewStars = (score) => {
   }
   return gameListReviewStarsHtml;
 };
+
+
+document.addEventListener("DOMContentLoaded", function () {
+  const toggleBtn = document.getElementById("toggle-comments-btn");
+  const commentsDiv = document.getElementById("comments");
+
+  toggleBtn.addEventListener("click", function () {
+    const isHidden = commentsDiv.classList.contains("hidden");
+
+    if (isHidden) {
+      commentsDiv.classList.remove("hidden");
+      toggleBtn.textContent = translate('Hide Comments');
+    } else {
+      commentsDiv.classList.add("hidden");
+      toggleBtn.textContent = translate('Show Comments');
+    }
+  });
+});
+
+
+document.addEventListener("DOMContentLoaded", function () {
+  const deleteButtons = document.querySelectorAll(".delete-comment-btn");
+
+  deleteButtons.forEach((button) => {
+    button.addEventListener("click", function () {
+      const commentElement = this.closest(".comment");
+      const deleteUrl = commentElement.getAttribute("data-delete-url");
+
+      const confirmed = confirm("Are you sure you want to delete this comment?");
+
+      if (confirmed) {
+        fetch(deleteUrl, {
+          method: "POST",
+          headers: {
+            "X-CSRFToken": csrfToken,
+          },
+        })
+          .then((response) => {
+            if (response.ok) {
+              commentElement.remove();
+            } else {
+              alert("Failed to delete the comment.");
+            }
+          })
+          .catch(() => {
+            alert("An error occurred. Please try again.");
+          });
+      }
+    });
+  });
+});

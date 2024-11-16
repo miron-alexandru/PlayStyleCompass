@@ -55,6 +55,53 @@
   </div>
 {% endif %}
 
+<div class="comment-section">
+  <p class="comments-head">{% trans "Leave a Comment" %}</p>
+  {% if user.is_authenticated %}
+    <form action="" method="post" class="comment-form">
+      {% csrf_token %}
+      {{ comment_form.text }}
+      <button type="submit" name="comment_submit" class="btn btn-primary">{% trans "Post Comment" %}</button>
+    </form>
+  {% else %}
+    <p class="alert alert-warning">{% trans "You need to be logged in to leave a comment." %}</p>
+  {% endif %}
+</div>
+
+<div class="comments-section">
+  <button id="toggle-comments-btn" class="show-comments-btn">
+    {% trans "Show Comments" %}
+  </button>
+  <div id="comments" class="comments hidden">
+  <p class="comments-head">{% trans "Comments" %}</p>
+  {% if comments %}
+    <ul>
+      {% for comment in comments %}
+        <li class="comment" data-delete-url="{% url 'playstyle_compass:delete_list_comment' comment.id %}">
+          <p class="comment-author-text">
+            <a class="comment-author" href="{% url 'users:view_profile' comment.user.userprofile.profile_name %}">
+              {{ comment.user.userprofile.profile_name }}
+            </a>
+            {% trans "wrote:" %}
+          </p>
+          <p class="list-comment">{{ comment.text }}</p>
+          <p class="comment-meta">
+            {% trans "Posted on" %} {{ comment.created_at|date:"SHORT_DATE_FORMAT" }}
+          </p>
+          {% if comment.user == request.user %}
+            <button class="delete-comment-btn">
+              {% trans "Delete" %}
+            </button>
+          {% endif %}
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>{% trans "No comments yet. Be the first to comment!" %}</p>
+  {% endif %}
+</div>
+</div>
+
 <div class="review-section">
   <p class="reviews-head">{% trans "Rate and Review this List" %}</p>
 

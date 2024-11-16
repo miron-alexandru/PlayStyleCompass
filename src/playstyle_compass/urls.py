@@ -149,4 +149,5 @@ urlpatterns = [
         name="privacy_settings",
     ),
     path("explore-game-lists", views.explore_game_lists, name="explore_game_lists"),
+    path('delete-list-comment/<int:comment_id>/', views.delete_list_comment, name='delete_list_comment'),
 ]
