@@ -7,6 +7,7 @@ from django.dispatch import receiver
 from django.db.models import Avg, Count
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.utils.translation import gettext_lazy as _
+from django.utils.timezone import now, timedelta
 
 
 class UserPreferences(models.Model):
@@ -427,3 +428,6 @@ class ListComment(models.Model):
         ordering = ['-created_at']
         verbose_name = _("List Comment")
         verbose_name_plural = _("List Comments")
+
+    def is_editable(self):
+        return now() <= self.created_at + timedelta(minutes=10)

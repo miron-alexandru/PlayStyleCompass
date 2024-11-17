@@ -409,7 +409,7 @@ label {
   transition: border-color 0.3s ease;
 }
 
-.comment-form button {
+.comment-form button, .save-edit-btn {
   align-self: flex-start;
   padding: 5px 10px;
   font-size: 13px;
@@ -505,10 +505,8 @@ label {
   padding: 5px;
 }
 
-.delete-comment-btn {
+.delete-comment-btn, .edit-comment-btn {
   position: absolute;
-  bottom: 10px;
-  right: 8px;
   padding: 5px;
   font-size: 12px;
   background: none;
@@ -518,8 +516,18 @@ label {
   transition: color 0.3s ease, background-color 0.3s ease;
 }
 
+.delete-comment-btn {
+  bottom: 10px;
+  right: 8px;
+}
+
 .delete-comment-btn:hover {
   color: #adb5bd;
+}
+
+.edit-comment-btn {
+  left: 8px;
+  bottom: 10px;
 }
 
 .comment-author {

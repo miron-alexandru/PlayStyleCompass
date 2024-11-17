@@ -1526,18 +1526,8 @@ def game_list_detail(request, pk):
     review_form = ListReviewForm()
     review = ListReview.objects.filter(game_list=game_list, user=request.user).first()
 
-    # Handle comments
     comment_form = ListCommentForm()
-    if request.method == 'POST' and 'comment_submit' in request.POST:
-        comment_form = ListCommentForm(request.POST)
-        if comment_form.is_valid():
-            comment = comment_form.save(commit=False)
-            comment.game_list = game_list
-            comment.user = request.user
-            comment.save()
-            return redirect('playstyle_compass:game_list_detail', pk=pk)
-
-    comments = ListComment.objects.filter(game_list=game_list)
+    comments = ListComment.objects.filter(game_list=game_list).order_by('created_at')
 
     context = {
         "page_title": _("View Game List :: PlayStyle Compass"),
@@ -1906,11 +1896,61 @@ def explore_game_lists(request):
     return render(request, "game_list/explore_game_lists.html", context)
 
 
-@require_POST
+@login_required
 def delete_list_comment(request, comment_id):
     if request.method == "POST":
         comment = get_object_or_404(ListComment, id=comment_id, user=request.user)
         comment.delete()
-        return JsonResponse({"success": True})
+        return JsonResponse({"success": True}, status=200)
 
     return JsonResponse({"success": False}, status=400)
+
+
+@login_required
+def edit_list_comment(request, comment_id):
+    comment = get_object_or_404(ListComment, id=comment_id, user=request.user)
+
+    if not comment.is_editable():
+        return JsonResponse({'error': _("You can no longer edit this comment.")}, status=403)
+
+    if request.method == 'POST':
+        form = ListCommentForm(request.POST, instance=comment)
+        if form.is_valid():
+            form.save()
+            return JsonResponse({'message': _("Comment updated successfully.")})
+    else:
+        form = ListCommentForm(instance=comment)
+
+    return JsonResponse({'form': form.as_p()})
+
+
+@login_required
+def post_list_comment(request, game_list_id):
+    game_list = get_object_or_404(GameList, id=game_list_id)
+
+    if request.method == 'POST':
+        comment_text = request.POST.get('text')
+        if comment_text:
+            comment = ListComment.objects.create(
+                user=request.user,
+                text=comment_text,
+                game_list=game_list
+            )
+
+            profile_url = reverse('users:view_profile', kwargs={'profile_name': request.user.userprofile.profile_name})
+            created_at = comment.created_at.strftime('%m-%d-%Y')
+
+            # Return the response with the necessary data
+            return JsonResponse({
+                'success': True,
+                'comment_text': comment.text,
+                'profile_url': profile_url,
+                'profile_name': request.user.userprofile.profile_name,
+                'created_at': created_at,
+                'delete_url': reverse('playstyle_compass:delete_list_comment', args=[comment.id]),
+                'edit_url': reverse('playstyle_compass:edit_list_comment', args=[comment.id]),
+            })
+        else:
+            return JsonResponse({'success': False, 'error': 'Comment text is required'})
+
+    return JsonResponse({'success': False, 'error': 'Invalid method'})

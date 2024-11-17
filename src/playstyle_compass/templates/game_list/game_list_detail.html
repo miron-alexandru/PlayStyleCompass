@@ -55,12 +55,12 @@
   </div>
 {% endif %}
 
-<div class="comment-section">
+<div class="comment-section" data-post-comment-url="{% url 'playstyle_compass:post_list_comment' game_list.id %}">
   <p class="comments-head">{% trans "Leave a Comment" %}</p>
   {% if user.is_authenticated %}
-    <form action="" method="post" class="comment-form">
+    <form id="comment-form" action="" method="post" class="comment-form">
       {% csrf_token %}
-      {{ comment_form.text }}
+      {{ comment_form.as_p }}
       <button type="submit" name="comment_submit" class="btn btn-primary">{% trans "Post Comment" %}</button>
     </form>
   {% else %}
@@ -89,15 +89,20 @@
             {% trans "Posted on" %} {{ comment.created_at|date:"SHORT_DATE_FORMAT" }}
           </p>
           {% if comment.user == request.user %}
-            <button class="delete-comment-btn">
+            <button class="delete-comment-btn" data-delete-url="{% url 'playstyle_compass:delete_list_comment' comment.id %}">
               {% trans "Delete" %}
             </button>
           {% endif %}
+          {% if comment.user == request.user and comment.is_editable %}
+          <button class="edit-comment-btn" data-edit-url="{% url 'playstyle_compass:edit_list_comment' comment.id %}">
+            {% trans "Edit" %}
+          </button>
+        {% endif %}
         </li>
       {% endfor %}
     </ul>
   {% else %}
-    <p>{% trans "No comments yet. Be the first to comment!" %}</p>
+    <p id="no-comments-msg">{% trans "No comments yet. Be the first to comment!" %}</p>
   {% endif %}
 </div>
 </div>

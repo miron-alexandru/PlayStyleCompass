@@ -211,34 +211,147 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 
-document.addEventListener("DOMContentLoaded", function () {
-  const deleteButtons = document.querySelectorAll(".delete-comment-btn");
+document.addEventListener('click', (event) => {
+  if (event.target.classList.contains("delete-comment-btn")) {
+    const deleteUrl = event.target.getAttribute("data-delete-url");
+    const confirmed = confirm("Are you sure you want to delete this comment?");
 
-  deleteButtons.forEach((button) => {
-    button.addEventListener("click", function () {
-      const commentElement = this.closest(".comment");
-      const deleteUrl = commentElement.getAttribute("data-delete-url");
-
-      const confirmed = confirm("Are you sure you want to delete this comment?");
-
-      if (confirmed) {
-        fetch(deleteUrl, {
-          method: "POST",
-          headers: {
-            "X-CSRFToken": csrfToken,
-          },
+    if (confirmed) {
+      const commentElement = event.target.closest('.comment');
+      
+      fetch(deleteUrl, {
+        method: "POST",
+        headers: {
+          "X-CSRFToken": csrfToken,
+        },
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.success) {
+            commentElement.remove();
+          } else {
+            alert("Failed to delete the comment.");
+          }
         })
-          .then((response) => {
-            if (response.ok) {
-              commentElement.remove();
-            } else {
-              alert("Failed to delete the comment.");
-            }
-          })
-          .catch(() => {
-            alert("An error occurred. Please try again.");
+        .catch(() => {
+          alert("An error occurred. Please try again.");
+        });
+    }
+  }
+});
+
+
+document.addEventListener('click', (event) => {
+  if (event.target.classList.contains('edit-comment-btn')) {
+    const editUrl = event.target.getAttribute('data-edit-url');
+
+    fetch(editUrl, { method: 'GET' })
+      .then(response => response.json())
+      .then(data => {
+        if (data.form) {
+          const commentElement = event.target.closest('.comment');
+          commentElement.innerHTML = data.form;
+
+          const formWrapper = document.createElement('form');
+          formWrapper.method = 'POST';
+          formWrapper.action = editUrl;
+
+          formWrapper.innerHTML = data.form;
+          commentElement.innerHTML = '';
+          commentElement.appendChild(formWrapper);
+
+          const saveButton = document.createElement('button');
+          saveButton.classList.add("save-edit-btn");
+          saveButton.textContent = 'Save';
+          saveButton.addEventListener('click', (e) => {
+            e.preventDefault();
+            const formData = new FormData(formWrapper);
+            fetch(editUrl, {
+              method: 'POST',
+              body: formData,
+              headers: {
+                'X-CSRFToken': csrfToken,
+              },
+            })
+              .then(response => response.json())
+              .then(data => {
+                if (data.message) {
+                  alert(data.message);
+                  location.reload();
+                }
+              });
           });
+
+          formWrapper.appendChild(saveButton);
+        }
+      });
+  }
+});
+
+
+document.addEventListener('DOMContentLoaded', function () {
+  const commentForm = document.getElementById('comment-form');
+  const commentSection = document.querySelector('.comment-section');
+  const commentsSection = document.getElementById('comments');
+  const postCommentUrl = commentSection.getAttribute('data-post-comment-url');
+  
+  commentForm.addEventListener('submit', function (e) {
+    e.preventDefault();
+    
+    const formData = new FormData(commentForm);
+
+    fetch(postCommentUrl, {
+      method: 'POST',
+      body: formData,
+      headers: {
+        'X-CSRFToken': csrfToken,
+        'X-Requested-With': 'XMLHttpRequest', 
+      },
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        const newComment = document.createElement('li');
+        newComment.classList.add('comment');
+        newComment.innerHTML = `
+          <p class="comment-author-text">
+            <a class="comment-author" href="${data.profile_url}">
+              ${data.profile_name}
+            </a> wrote:
+          </p>
+          <p class="list-comment">${data.comment_text}</p>
+          <p class="comment-meta">Posted on ${data.created_at}</p>
+          <button class="edit-comment-btn" data-edit-url="${data.edit_url}">
+            Edit
+          </button>
+          <button class="delete-comment-btn" data-delete-url="${data.delete_url}">
+            Delete
+          </button>
+        `;
+        
+        const commentList = commentsSection.querySelector('ul');
+        if (commentList) {
+          commentList.appendChild(newComment);
+        } else {
+          const newUl = document.createElement('ul');
+          newUl.appendChild(newComment);
+          commentsSection.appendChild(newUl);
+        }
+
+        const noCommentsMessage = document.getElementById('no-comments-msg');
+        if (noCommentsMessage) {
+          noCommentsMessage.style.display = 'none';
+        }
+
+        commentForm.reset();
+      } else {
+        alert("There was an error posting the comment.");
       }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      alert("There was an error posting the comment.");
     });
   });
 });
+
