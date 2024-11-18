@@ -126,6 +126,8 @@ Websites for .env configuration: [GiantBomb](https://www.giantbomb.com/) / [Send
 <summary><h2>PlayStyle Compass Changelog</h2></summary>
 
 ### Version v2.3:
+* Users are able to post, edit and delete comments (without page reload) on game lists.
+* Users are able to leave comments on game lists.
 * Created Public Game Lists page: Users are able to view game lists from other users that are public.
 * Created Reviewed Game Lists page: Users are able to view game lists that they reviewed.
 * Users are able to like game list reviews.

@@ -139,13 +139,16 @@ class PrivacySettingsForm(forms.ModelForm):
 
 class ListCommentForm(forms.ModelForm):
     """Form for leaving a comment on a Game List."""
+
     class Meta:
         model = ListComment
-        fields = ['text']
+        fields = ["text"]
         widgets = {
-            'text': forms.Textarea(attrs={
-                'class': 'form-textarea',
-                'placeholder': _('Write your comment here...'),
-                'rows': 4,
-            }),
+            "text": forms.Textarea(
+                attrs={
+                    "class": "form-textarea",
+                    "placeholder": _("Write your comment here..."),
+                    "rows": 4,
+                }
+            ),
         }

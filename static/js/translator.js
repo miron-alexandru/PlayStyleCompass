@@ -50,6 +50,21 @@ const translate = (key) => {
             'Unfollow': 'Dezabonați-vă',
             'Edit Your Review:': 'Editează-ți Recenzia:',
             'Update Review': 'Actualizează Recenzia',
+            'Hide Comments': 'Ascunde comentariile',
+            'Show Comments': 'Arată comentariile',
+            'Posted on': 'Postat pe',
+            'Delete': 'Șterge',
+            'wrote:': 'a scris:',
+            'Comment text cannot be empty.': 'Textul comentariului nu poate fi gol.',
+            'Are you sure you want to delete this comment?': 'Ești sigur că vrei să ștergi acest comentariu?',
+            'Comment updated successfully.': 'Comentariul a fost actualizat cu succes.',
+            'There was an error posting the comment.': 'A apărut o eroare la postarea comentariului.',
+            'There was an error updating the comment.': 'A apărut o eroare la actualizarea comentariului.',
+            'There was an error loading the edit form.': 'A apărut o eroare la încărcarea formularului de editare.',
+            'Failed to delete the comment.': 'Nu s-a reușit ștergerea comentariului.',
+            'An error occurred. Please try again.': 'A apărut o eroare. Te rugăm să încerci din nou.',
+            'Failed to delete review.': 'Nu s-a reușit ștergerea recenziei.',
+
         },
     };
 

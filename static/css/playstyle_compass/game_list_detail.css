@@ -409,7 +409,7 @@ label {
   transition: border-color 0.3s ease;
 }
 
-.comment-form button, .save-edit-btn {
+.comment-form button, .save-edit-btn, .cancel-edit-btn {
   align-self: flex-start;
   padding: 5px 10px;
   font-size: 13px;
@@ -421,6 +421,12 @@ label {
   transition: background-color 0.3s ease;
   margin-top: -7px;
 }
+
+.cancel-edit-btn { 
+  background-color: #d3d3d3!important;
+  color: #333;
+  margin-left: 5px;
+ }
 
 .comment-form button:hover {
   background-color: #0056b3;

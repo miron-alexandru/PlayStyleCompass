@@ -149,7 +149,19 @@ urlpatterns = [
         name="privacy_settings",
     ),
     path("explore-game-lists", views.explore_game_lists, name="explore_game_lists"),
-    path('delete-list-comment/<int:comment_id>/', views.delete_list_comment, name='delete_list_comment'),
-    path('edit-comment/<int:comment_id>/', views.edit_list_comment, name='edit_list_comment'),
-    path('post-comment/<int:game_list_id>/', views.post_list_comment, name='post_list_comment'),
+    path(
+        "delete-list-comment/<int:comment_id>/",
+        views.delete_list_comment,
+        name="delete_list_comment",
+    ),
+    path(
+        "edit-comment/<int:comment_id>/",
+        views.edit_list_comment,
+        name="edit_list_comment",
+    ),
+    path(
+        "post-comment/<int:game_list_id>/",
+        views.post_list_comment,
+        name="post_list_comment",
+    ),
 ]

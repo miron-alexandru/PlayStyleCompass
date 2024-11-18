@@ -1,0 +1,7 @@
+{% load i18n %}
+
+<form id="edit-comment-form" method="post" action="">
+  {{ form.as_p }}
+  <button type="button" class="save-edit-btn">{% trans "Save" %}</button>
+  <button type="button" class="cancel-edit-btn">{% trans "Cancel" %}</button>
+</form>

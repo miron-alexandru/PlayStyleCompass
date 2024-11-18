@@ -418,14 +418,19 @@ class ListReview(models.Model):
 
 class ListComment(models.Model):
     """Represents a comment left by an user on a Game List."""
-    game_list = models.ForeignKey('GameList', on_delete=models.CASCADE, related_name='comments')
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='comments')
+
+    game_list = models.ForeignKey(
+        "GameList", on_delete=models.CASCADE, related_name="comments"
+    )
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="comments"
+    )
     text = models.TextField(_("Comment"))
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
-        ordering = ['-created_at']
+        ordering = ["-created_at"]
         verbose_name = _("List Comment")
         verbose_name_plural = _("List Comments")
 

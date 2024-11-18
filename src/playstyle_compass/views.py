@@ -5,6 +5,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.template.loader import render_to_string
 from django.http import (
     JsonResponse,
     HttpResponseRedirect,
@@ -39,7 +40,7 @@ from .models import (
     ListReview,
     ListComment,
 )
-from .forms import ( 
+from .forms import (
     ReviewForm,
     GameListForm,
     ListReviewForm,
@@ -1518,8 +1519,12 @@ def delete_all_game_lists(request):
 def game_list_detail(request, pk):
     """View used to view a game list."""
     game_list = get_object_or_404(GameList, pk=pk)
-    games = paginate_matching_games(request, Game.objects.filter(guid__in=game_list.game_guids))
-    additional_games = game_list.additional_games.split(",") if game_list.additional_games else []
+    games = paginate_matching_games(
+        request, Game.objects.filter(guid__in=game_list.game_guids)
+    )
+    additional_games = (
+        game_list.additional_games.split(",") if game_list.additional_games else []
+    )
     user, user_preferences, user_friends = get_user_context(request)
 
     reviews = ListReview.objects.filter(game_list=game_list).order_by("-created_at")
@@ -1527,7 +1532,7 @@ def game_list_detail(request, pk):
     review = ListReview.objects.filter(game_list=game_list, user=request.user).first()
 
     comment_form = ListCommentForm()
-    comments = ListComment.objects.filter(game_list=game_list).order_by('created_at')
+    comments = ListComment.objects.filter(game_list=game_list).order_by("created_at")
 
     context = {
         "page_title": _("View Game List :: PlayStyle Compass"),
@@ -1911,46 +1916,87 @@ def edit_list_comment(request, comment_id):
     comment = get_object_or_404(ListComment, id=comment_id, user=request.user)
 
     if not comment.is_editable():
-        return JsonResponse({'error': _("You can no longer edit this comment.")}, status=403)
+        return JsonResponse(
+            {"error": _("You can no longer edit this comment.")}, status=403
+        )
 
-    if request.method == 'POST':
+    if request.method == "POST":
         form = ListCommentForm(request.POST, instance=comment)
+
         if form.is_valid():
-            form.save()
-            return JsonResponse({'message': _("Comment updated successfully.")})
+            if not form.cleaned_data["text"].strip():
+                return JsonResponse(
+                    {"success": False, "error": _("Comment text cannot be empty.")},
+                    status=400,
+                )
+
+            updated_comment = form.save()
+
+            profile_url = reverse(
+                "users:view_profile",
+                kwargs={"profile_name": request.user.userprofile.profile_name},
+            )
+
+            response_data = {
+                "success": True,
+                "message": _("Comment updated successfully."),
+                "comment_text": updated_comment.text,
+                "created_at": comment.created_at.strftime("%m.%d.%Y"),
+                "profile_url": profile_url,
+                "profile_name": request.user.userprofile.profile_name,
+                "delete_url": reverse(
+                    "playstyle_compass:delete_list_comment", args=[updated_comment.id]
+                ),
+                "edit_url": reverse(
+                    "playstyle_compass:edit_list_comment", args=[updated_comment.id]
+                ),
+            }
+
+            return JsonResponse(response_data)
+        else:
+            return JsonResponse({"success": False, "errors": form.errors}, status=400)
     else:
         form = ListCommentForm(instance=comment)
-
-    return JsonResponse({'form': form.as_p()})
+        form_html = render_to_string(
+            "game_list/edit_comment_form.html", {"form": form}, request=request
+        )
+        return JsonResponse({"form": form_html})
 
 
 @login_required
 def post_list_comment(request, game_list_id):
     game_list = get_object_or_404(GameList, id=game_list_id)
 
-    if request.method == 'POST':
-        comment_text = request.POST.get('text')
+    if request.method == "POST":
+        comment_text = request.POST.get("text")
         if comment_text:
             comment = ListComment.objects.create(
-                user=request.user,
-                text=comment_text,
-                game_list=game_list
+                user=request.user, text=comment_text, game_list=game_list
             )
 
-            profile_url = reverse('users:view_profile', kwargs={'profile_name': request.user.userprofile.profile_name})
-            created_at = comment.created_at.strftime('%m-%d-%Y')
+            profile_url = reverse(
+                "users:view_profile",
+                kwargs={"profile_name": request.user.userprofile.profile_name},
+            )
+            created_at = comment.created_at.strftime("%m.%d.%Y")
 
             # Return the response with the necessary data
-            return JsonResponse({
-                'success': True,
-                'comment_text': comment.text,
-                'profile_url': profile_url,
-                'profile_name': request.user.userprofile.profile_name,
-                'created_at': created_at,
-                'delete_url': reverse('playstyle_compass:delete_list_comment', args=[comment.id]),
-                'edit_url': reverse('playstyle_compass:edit_list_comment', args=[comment.id]),
-            })
+            return JsonResponse(
+                {
+                    "success": True,
+                    "comment_text": comment.text,
+                    "profile_url": profile_url,
+                    "profile_name": request.user.userprofile.profile_name,
+                    "created_at": created_at,
+                    "delete_url": reverse(
+                        "playstyle_compass:delete_list_comment", args=[comment.id]
+                    ),
+                    "edit_url": reverse(
+                        "playstyle_compass:edit_list_comment", args=[comment.id]
+                    ),
+                }
+            )
         else:
-            return JsonResponse({'success': False, 'error': 'Comment text is required'})
+            return JsonResponse({"success": False, "error": "Comment text is required"})
 
-    return JsonResponse({'success': False, 'error': 'Invalid method'})
+    return JsonResponse({"success": False, "error": "Invalid method"})
