@@ -19,13 +19,15 @@
 <div class="game-list-info">
   <h2>{{ game_list.title }}</h2>
   <p>{{ game_list.description }}</p>
-  <p><strong>{% trans "Created by" %}:</strong> 
+  <p><strong>{% trans "Created by" %}:</strong>
     <a class="list-creator" href="{% url 'users:view_profile' game_list.owner.userprofile.profile_name %}">
       {{ game_list.owner.userprofile.profile_name }}
     </a>
-    <a href="{% url 'playstyle_compass:share_game_list' game_list.id %}" class="share-list-button">{% trans "Share List" %}</a>
-    <button id="like-button" data-url="{% url 'playstyle_compass:like_game_list' game_list.id %}" class="like-list-button" title="{% trans 'Like List' %}"> 
-        <i class="{% if user in game_list.liked_by.all %}fa-solid fa-heart{% else %}fa-regular fa-heart{% endif %}"></i>
+    <a href="{% url 'playstyle_compass:share_game_list' game_list.id %}" class="share-list-button">
+      {% trans "Share List" %}</a>
+    <button id="like-button" data-url="{% url 'playstyle_compass:like_game_list' game_list.id %}"
+      class="like-list-button" title="{% trans 'Like List' %}">
+      <i class="{% if user in game_list.liked_by.all %}fa-solid fa-heart{% else %}fa-regular fa-heart{% endif %}"></i>
     </button>
     <span id="like-count">{{ game_list.like_count }}</span>
     {% if game_list.owner == request.user %}
@@ -35,36 +37,36 @@
 </div>
 
 {% if games %}
-  <div class="games-collection">
-    {% for game in games %}
-      {% include "games/game_recommendations_section.html" %}
-    {% endfor %}
-  </div>
+<div class="games-collection">
+  {% for game in games %}
+  {% include "games/game_recommendations_section.html" %}
+  {% endfor %}
+</div>
 {% else %}
-  <p class="text-center">{% block empty_message %}{% trans "No games available." %}{% endblock empty_message %}</p>
+<p class="text-center">{% block empty_message %}{% trans "No games available." %}{% endblock empty_message %}</p>
 {% endif %}
 
 {% if games.number == 1 and additional_games %}
-  <div class="additional-games">
-    <h3>{% trans "Additional Games" %}</h3>
-    <ul>
-      {% for additional_game in additional_games %}
-        <li>{{ additional_game }}</li>
-      {% endfor %}
-    </ul>
-  </div>
+<div class="additional-games">
+  <h3>{% trans "Additional Games" %}</h3>
+  <ul>
+    {% for additional_game in additional_games %}
+    <li>{{ additional_game }}</li>
+    {% endfor %}
+  </ul>
+</div>
 {% endif %}
 
 <div class="comment-section" data-post-comment-url="{% url 'playstyle_compass:post_list_comment' game_list.id %}">
   <p class="comments-head">{% trans "Leave a Comment" %}</p>
   {% if user.is_authenticated %}
-    <form id="comment-form" action="" method="post" class="comment-form">
-      {% csrf_token %}
-      {{ comment_form.as_p }}
-      <button type="submit" name="comment_submit" class="btn btn-primary">{% trans "Post Comment" %}</button>
-    </form>
+  <form id="comment-form" action="" method="post" class="comment-form">
+    {% csrf_token %}
+    {{ comment_form.as_p }}
+    <button type="submit" name="comment_submit" class="btn btn-primary">{% trans "Post Comment" %}</button>
+  </form>
   {% else %}
-    <p class="alert alert-warning">{% trans "You need to be logged in to leave a comment." %}</p>
+  <p class="alert alert-warning">{% trans "You need to be logged in to leave a comment." %}</p>
   {% endif %}
 </div>
 
@@ -73,141 +75,145 @@
     {% trans "Show Comments" %}
   </button>
   <div id="comments" class="comments hidden">
-  <p class="comments-head">{% trans "Comments" %}</p>
-  {% if comments %}
+    <p class="comments-head">{% trans "Comments" %}</p>
+    {% if comments %}
     <ul>
       {% for comment in comments %}
-        <li class="comment" data-delete-url="{% url 'playstyle_compass:delete_list_comment' comment.id %}">
-          <p class="comment-author-text">
-            <a class="comment-author" href="{% url 'users:view_profile' comment.user.userprofile.profile_name %}">
-              {{ comment.user.userprofile.profile_name }}
-            </a>
-            {% trans "wrote:" %}
-          </p>
-          <p class="list-comment">{{ comment.text }}</p>
-          <p class="comment-meta">
-            {% trans "Posted on" %} {{ comment.created_at|date:"SHORT_DATE_FORMAT" }}
-          </p>
-          {% if comment.user == request.user %}
-            <button class="delete-comment-btn" data-delete-url="{% url 'playstyle_compass:delete_list_comment' comment.id %}">
-              {% trans "Delete" %}
-            </button>
-          {% endif %}
-          {% if comment.user == request.user and comment.is_editable %}
-          <button class="edit-comment-btn" data-edit-url="{% url 'playstyle_compass:edit_list_comment' comment.id %}">
-            {% trans "Edit" %}
-          </button>
+      <li class="comment" data-delete-url="{% url 'playstyle_compass:delete_list_comment' comment.id %}">
+        <p class="comment-author-text">
+          <a class="comment-author" href="{% url 'users:view_profile' comment.user.userprofile.profile_name %}">
+            {{ comment.user.userprofile.profile_name }}
+          </a>
+          {% trans "wrote:" %}
+        </p>
+        <p class="list-comment">{{ comment.text }}</p>
+        <p class="comment-meta">
+          {% trans "Posted on" %} {{ comment.created_at|date:"d/m/Y - H:i" }}
+        </p>
+        {% if comment.user == request.user %}
+        <button class="delete-comment-btn"
+          data-delete-url="{% url 'playstyle_compass:delete_list_comment' comment.id %}">
+          {% trans "Delete" %}
+        </button>
         {% endif %}
-        </li>
+        {% if comment.user == request.user and comment.is_editable %}
+        <button class="edit-comment-btn" data-edit-url="{% url 'playstyle_compass:edit_list_comment' comment.id %}">
+          {% trans "Edit" %}
+        </button>
+        {% endif %}
+      </li>
       {% endfor %}
     </ul>
-  {% else %}
+    {% else %}
     <p id="no-comments-msg">{% trans "No comments yet. Be the first to comment!" %}</p>
-  {% endif %}
-</div>
+    {% endif %}
+  </div>
 </div>
 
 <div class="review-section">
   <p class="reviews-head">{% trans "Rate and Review this List" %}</p>
 
   {% if user.is_authenticated %}
-      {% if game_list.owner != user %}
-          {% if review %}
-            <div class="existing-review card">
-              <p class="review-head">{% trans "Your Review" %}</p>
-              <p><strong>{% trans "Title:" %}</strong> <span class="review-title">{{ review.title }}</span></p>
-              <p>
-              <strong>{% trans "Rating:" %}</strong>
-              <span class="game-list-review-stars" data-review-score="{{ review.rating }}"></span>
-              </p>
-              <p><strong>{% trans "Review:" %}</strong> <span class="review-text">{{ review.review_text }}</span></p>
-              <div class="review-buttons">
-                <button class="edit-review-button" data-id="{{ review.id }}" data-action-url="{% url 'playstyle_compass:edit_game_list_review' review.id %}">{% trans "Edit Review" %}</button>
-                <button class="delete-review-button" data-id="{{ review.id }}" data-action-url="{% url 'playstyle_compass:delete_game_list_review' review.id %}">
-                    {% trans "Delete Review" %}
-                  </button>
-                </div>
-          {% else %}
-            <form id="review-form" class="review-form" action="{% url 'playstyle_compass:review_game_list' game_list.id %}" method="post">
-              {% csrf_token %}
-              <label for="id_title">{{ form.title.label }}</label>
-              <input type="text" name="title" class="form-input" placeholder="{% trans 'Review Title' %}" required />
-              
-              <label for="id_rating">{{ form.rating.label }}</label>
-              <div class="form-select">{{ form.rating }}</div>
-              
-              <label for="id_review_text">{{ form.review_text.label }}</label>
-              <textarea name="review_text" class="form-textarea" placeholder="{% trans 'Write your review here...' %}" required></textarea>
-              
-              <button type="submit" class="btn btn-primary">{% trans "Submit Review" %}</button>
-            </form>
-          {% endif %}
-      {% else %}
-        <p class="alert alert-info">{% trans "You cannot review your own list." %}</p>
-      {% endif %}
-  {% else %}
-    <p class="alert alert-warning">{% trans "You need to be logged in to submit a review." %}</p>
-  {% endif %}
-</div>
+  {% if game_list.owner != user %}
+  {% if review %}
+  <div class="existing-review card">
+    <p class="review-head">{% trans "Your Review" %}</p>
+    <p><strong>{% trans "Title:" %}</strong> <span class="review-title">{{ review.title }}</span></p>
+    <p>
+      <strong>{% trans "Rating:" %}</strong>
+      <span class="game-list-review-stars" data-review-score="{{ review.rating }}"></span>
+    </p>
+    <p><strong>{% trans "Review:" %}</strong> <span class="review-text">{{ review.review_text }}</span></p>
+    <p><strong>{% trans "Date:" %}</strong> {{ review.created_at|date:"d/m/Y"}}</p>
+    <div class="review-buttons">
+      <button class="edit-review-button" data-id="{{ review.id }}"
+        data-action-url="{% url 'playstyle_compass:edit_game_list_review' review.id %}">{% trans "Edit Review"
+        %}</button>
+      <button class="delete-review-button" data-id="{{ review.id }}"
+        data-action-url="{% url 'playstyle_compass:delete_game_list_review' review.id %}">
+        {% trans "Delete Review" %}
+      </button>
+    </div>
+    {% else %}
+    <form id="review-form" class="review-form" action="{% url 'playstyle_compass:review_game_list' game_list.id %}"
+      method="post">
+      {% csrf_token %}
+      <label for="id_title">{{ form.title.label }}</label>
+      <input type="text" name="title" class="form-input" placeholder="{% trans 'Review Title' %}" required />
 
-<div class="existing-reviews">
-  <p class="reviews-head">{% trans "Reviews" %}</p>
-  <div id="reviews-container">
-    {% for review in reviews %}
+      <label for="id_rating">{{ form.rating.label }}</label>
+      <div class="form-select">{{ form.rating }}</div>
+
+      <label for="id_review_text">{{ form.review_text.label }}</label>
+      <textarea name="review_text" class="form-textarea" placeholder="{% trans 'Write your review here...' %}"
+        required></textarea>
+
+      <button type="submit" class="btn btn-primary">{% trans "Submit Review" %}</button>
+    </form>
+    {% endif %}
+    {% else %}
+    <p class="alert alert-info">{% trans "You cannot review your own list." %}</p>
+    {% endif %}
+    {% else %}
+    <p class="alert alert-warning">{% trans "You need to be logged in to submit a review." %}</p>
+    {% endif %}
+  </div>
+
+  <div class="existing-reviews">
+    <p class="reviews-head">{% trans "Reviews" %}</p>
+    <div id="reviews-container">
+      {% for review in reviews %}
       <div class="review card" data-id="{{ review.id }}">
-        <p><strong>{% trans "Title:" %}</strong> {{ review.title }}</p>
-        <p><strong>{% trans "Author:" %}</strong> <a class="list-creator" href="{% url 'users:view_profile' review.user.userprofile.profile_name %}">
-          {{ review.user.userprofile.profile_name }}
-        </a></p>
-        <p>
-  <strong>{% trans "Rating:" %}</strong>
-  <span class="game-list-review-stars" data-review-score="{{ review.rating }}"></span>
-</p>
-        <p><strong>{% trans "Review:" %}</strong> {{ review.review_text }}</p>
-        <p>
-          <button
-          id="like-button-{{ review.id }}"
-          data-url="{% url 'playstyle_compass:like_list_review' review.id %}"
-          class="like-review-button"
-          title="{% trans 'Like Review' %}">
-          <i class="{% if user in review.liked_by.all %}fa-solid fa-heart{% else %}fa-regular fa-heart{% endif %}"></i>
-        </button>
-        <span id="like-count-{{ review.id }}" class="like-review-count">{{ review.like_count }}</span>
+        <p><span class="game-list-review-stars" data-review-score="{{ review.rating }}"></span></p>
+        <p class="review-title">{{ review.title }}</p>
+        <p class="review-details">{% trans "Written by" %} <a class="list-creator"
+            href="{% url 'users:view_profile' review.user.userprofile.profile_name %}">
+            {{ review.user.userprofile.profile_name }}
+          </a> on {{ review.created_at|date:"d/m/Y" }}</p>
+        <div class="review-text-container">
+          <p>{{ review.review_text }}</p>
+        </div>
+        <p><button id="like-button-{{ review.id }}" data-url="{% url 'playstyle_compass:like_list_review' review.id %}"
+            class="like-review-button" title="{% trans 'Like Review' %}">
+            <i
+              class="{% if user in review.liked_by.all %}fa-solid fa-heart{% else %}fa-regular fa-heart{% endif %}"></i>
+          </button>
+          <span id="like-count-{{ review.id }}" class="like-review-count">{{ review.like_count }}</span>
         </p>
       </div>
-    {% empty %}
+      {% empty %}
       <p>{% trans "No reviews yet. Be the first to review this list!" %}</p>
-    {% endfor %}
+      {% endfor %}
+    </div>
   </div>
-</div>
 
 
-{% if pagination %}
-<link rel="stylesheet" type="text/css" href="{% static 'css/playstyle_compass/pagination.css' %}">
-<div class="pagination">
-  <span class="step-links">
-    {% if games.has_previous %}
+  {% if pagination %}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/playstyle_compass/pagination.css' %}">
+  <div class="pagination">
+    <span class="step-links">
+      {% if games.has_previous %}
       <a href="?page=1">&laquo; {% trans "First" %}</a>
       <a href="?page={{ games.previous_page_number }}">{% trans "Previous" %}</a>
-    {% endif %}
+      {% endif %}
 
-    <span class="current-page">
-      {% trans "Page" %} {{ games.number }} {% trans "of" %} {{ games.paginator.num_pages }}
-    </span>
+      <span class="current-page">
+        {% trans "Page" %} {{ games.number }} {% trans "of" %} {{ games.paginator.num_pages }}
+      </span>
 
-    {% if games.has_next %}
+      {% if games.has_next %}
       <a href="?page={{ games.next_page_number }}">{% trans "Next" %}</a>
       <a href="?page={{ games.paginator.num_pages }}">{% trans "Last" %} &raquo;</a>
-    {% endif %}
-  </span>
-</div>
-{% endif %}
+      {% endif %}
+    </span>
+  </div>
+  {% endif %}
 
-<script src="{% static 'js/playstyle_compass/game_list_detail.js' %}" defer></script>
-<script src="{% static 'js/playstyle_compass/game_list_comments.js' %}" defer></script>
-<script src="{% static 'js/playstyle_compass/share_game.js' %}" defer></script>
-<script src="{% static 'js/playstyle_compass/favorite_games_and_queue.js' %}" defer></script>
-<script src="{% static 'js/playstyle_compass/reviews_section.js' %}" defer></script>
-<script src="{% static 'js/playstyle_compass/star_rating.js' %}" defer></script>
+  <script src="{% static 'js/playstyle_compass/game_list_detail.js' %}" defer></script>
+  <script src="{% static 'js/playstyle_compass/game_list_comments.js' %}" defer></script>
+  <script src="{% static 'js/playstyle_compass/share_game.js' %}" defer></script>
+  <script src="{% static 'js/playstyle_compass/favorite_games_and_queue.js' %}" defer></script>
+  <script src="{% static 'js/playstyle_compass/reviews_section.js' %}" defer></script>
+  <script src="{% static 'js/playstyle_compass/star_rating.js' %}" defer></script>
 
-{% endblock content %}
+  {% endblock content %}

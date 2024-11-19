@@ -26,16 +26,15 @@ const reviewTemplate = (
                   "I dislike this"
                 )}"></i><span class="dislike-count">${review.dislikes}</span>
             </div>
-            <p><strong>${translate("Title")}:</strong> ${review.title}</p>
-            <p><strong>${translate("Author")}:</strong> ${authorName}</p>
             <div class="review-score">
-                <p><strong>${translate(
-                  "Rating"
-                )}:</strong> <span>${getStarRating(review.score)}</span></p>
+            <p><span>${getStarRating(review.score)}</span></p>
+            </div>
+            <p class="review-title">${review.title}</p>
+            <div class="game-review-details">
+            <p>${translate("written by")} ${authorName}</p>
             </div>
         </div>
         <div class="review-body">
-            <p><strong>${translate("Review")}:</strong></p>
             <div class="review-description-container">
                 <span class="review-description" data-full-description="${
                   review.description

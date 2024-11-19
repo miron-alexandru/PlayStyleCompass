@@ -177,6 +177,32 @@
   vertical-align: middle;
 }
 
+.review-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-color);
+}
+
+.review-text-container {
+  font-size: 15px;
+  color: var(--text-color);
+  margin-top: 10px;
+}
+
+.review-details {
+  font-size: 14px;
+  font-weight: 500;
+  transform: skew(-7deg);
+  display: inline-block;
+  padding-bottom: 5px;
+  border-bottom: 1px solid var(--game-container-border);
+}
+
+.review-text-container p {
+  margin: 0;
+  color: var(--text-color);
+}
+
 .review-section, .existing-reviews {
   margin: 20px auto;
   padding: 20px;

@@ -16,6 +16,7 @@ from django.urls import reverse
 from django.db.models import Avg, Q
 from django.utils.translation import gettext as _
 from django.utils.html import format_html, escape
+from django.utils.timezone import localtime
 from django.views.decorators.http import require_POST
 
 from utils.constants import (
@@ -1529,7 +1530,7 @@ def game_list_detail(request, pk):
 
     reviews = ListReview.objects.filter(game_list=game_list).order_by("-created_at")
     review_form = ListReviewForm()
-    review = ListReview.objects.filter(game_list=game_list, user=request.user).first()
+    review = ListReview.objects.filter(game_list=game_list, user=user).first()
 
     comment_form = ListCommentForm()
     comments = ListComment.objects.filter(game_list=game_list).order_by("created_at")
@@ -1746,6 +1747,7 @@ def review_game_list(request, game_list_id):
                 "review_id": review.id,
                 "title": review.title,
                 "rating": review.rating,
+                "created_at": review.created_at,
                 "review_text": review.review_text,
                 "author": review.user.userprofile.profile_name,
             }
@@ -1771,6 +1773,7 @@ def edit_game_list_review(request, review_id):
                 "title": review.title,
                 "author": review.user.userprofile.profile_name,
                 "rating": review.rating,
+                "created_at": review.created_at,
                 "review_text": review.review_text,
             }
         )
@@ -1937,11 +1940,13 @@ def edit_list_comment(request, comment_id):
                 kwargs={"profile_name": request.user.userprofile.profile_name},
             )
 
+            created_at = localtime(comment.created_at).strftime("%d/%m/%Y - %H:%M")
+
             response_data = {
                 "success": True,
                 "message": _("Comment updated successfully."),
                 "comment_text": updated_comment.text,
-                "created_at": comment.created_at.strftime("%m.%d.%Y"),
+                "created_at": created_at,
                 "profile_url": profile_url,
                 "profile_name": request.user.userprofile.profile_name,
                 "delete_url": reverse(
@@ -1978,7 +1983,7 @@ def post_list_comment(request, game_list_id):
                 "users:view_profile",
                 kwargs={"profile_name": request.user.userprofile.profile_name},
             )
-            created_at = comment.created_at.strftime("%m.%d.%Y")
+            created_at = localtime(comment.created_at).strftime("%d/%m/%Y - %H:%M")
 
             # Return the response with the necessary data
             return JsonResponse(

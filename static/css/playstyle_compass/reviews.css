@@ -1,4 +1,5 @@
 .review {
+  position: relative;
   border: 1px solid var(--game-container-border);
   padding: 10px;
   margin: 10px;
@@ -16,14 +17,24 @@
 }
 
 .review-header {
-  background-color: var(--review-header);
-  padding: 5px;
+  padding-bottom: 5px;
   border-bottom: 1px solid var(--game-container-border);
-  border-radius: 6px;
 }
 
 .review-header p {
-  margin: 5px 0;
+  margin: 0 auto;
+}
+
+.review-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-color);
+}
+
+.game-review-details {
+  font-size: 14px;
+  font-weight: 500;
+  transform: skew(-7deg);
 }
 
 .review-body {
@@ -63,13 +74,13 @@
 
 .friend-request-text {
   display: inline-block;
-  padding: 6px 12px;
+  padding: 5px 10px;
   background-color: green;
   color: #ffffff;
   border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  font-size: 10px;
+  font-size: 9px;
 }
 
 .friend-request-text:hover {
@@ -116,7 +127,12 @@
 }
 
 .like-dislike {
+  position: absolute;
   user-select: none;
+  margin-left: 2px;
+  text-align: right;
+  top: 8px;
+  right: 8px;
 }
 
 .all-reviews {
