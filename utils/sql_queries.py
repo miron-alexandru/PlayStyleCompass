@@ -45,7 +45,8 @@ CREATE TABLE IF NOT EXISTS Reviews (
     likes INTEGER default 0,
     dislikes INTEGER default 0,
     liked_by TEXT default '',
-    disliked_by TEXT default ''
+    disliked_by TEXT default '',
+    date_added TEXT default ''
 );
 """
 
@@ -109,8 +110,8 @@ VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
 """
 
 insert_reviews_sql = """
-INSERT INTO Reviews (reviewers, review_deck, review_description, score, user_id, game_id)
-VALUES (?, ?, ?, ?, ?, ?);
+INSERT INTO Reviews (reviewers, review_deck, review_description, score, user_id, game_id, date_added)
+VALUES (?, ?, ?, ?, ?, ?, ?);
 """
 
 insert_franchise_sql = """

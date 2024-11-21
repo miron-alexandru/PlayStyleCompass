@@ -702,6 +702,7 @@ def get_game_reviews(request, game_id):
             "score": review.score,
             "likes": review.likes,
             "dislikes": review.dislikes,
+            "date_added": localtime(review.date_added).strftime("%d/%m/%Y"),
             "user_id": (
                 invalid_user_id if "-" in str(review.user_id) else review.user_id
             ),

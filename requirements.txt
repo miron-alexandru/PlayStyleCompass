@@ -25,3 +25,4 @@ django-modeltranslation
 google-cloud-storage
 social-auth-app-django
 social-auth-core
+youtube-search-python

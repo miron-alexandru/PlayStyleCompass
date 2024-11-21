@@ -185,6 +185,7 @@ class Review(models.Model):
     dislikes = models.IntegerField(default=0)
     liked_by = models.TextField(blank=True, default="")
     disliked_by = models.TextField(blank=True, default="")
+    date_added = models.DateTimeField(default=now, blank=True)
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)

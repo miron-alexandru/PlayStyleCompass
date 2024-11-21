@@ -31,7 +31,7 @@ const reviewTemplate = (
             </div>
             <p class="review-title">${review.title}</p>
             <div class="game-review-details">
-            <p>${translate("written by")} ${authorName}</p>
+            <p>${translate("Written by")} ${authorName} on ${review.date_added}</p>
             </div>
         </div>
         <div class="review-body">

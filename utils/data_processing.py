@@ -145,6 +145,7 @@ def process_user_reviews(game_id):
             deck = review["deck"]
             description_text = review["description"]
             score = review["score"]
+            date_added = review["date_added"]
             description = extract_description_text(description_text)
             reviews.append(
                 {
@@ -152,6 +153,7 @@ def process_user_reviews(game_id):
                     "deck": deck,
                     "description": description,
                     "score": score,
+                    "date_added": date_added,
                 }
             )
 
@@ -231,6 +233,7 @@ def create_games_data_db(game_ids, rawg_coop=False):
                     review_deck = review["deck"]
                     review_description = review["description"]
                     score = str(review["score"])
+                    date_added = review["date_added"]
 
                     user_id = str(uuid.uuid4())
 
@@ -241,6 +244,7 @@ def create_games_data_db(game_ids, rawg_coop=False):
                         score,
                         user_id,
                         game_id,
+                        date_added,
                     )
                     cursor.execute(insert_reviews_sql, review_values)
 
@@ -489,6 +493,7 @@ def create_game_modes_data(guids, mode_strings, num_games=10, offset=0):
                     franchises,
                     videos,
                     concepts,
+                    is_casual,
                     pc_req_min,
                     pc_req_rec,
                     mac_req_min,
@@ -514,6 +519,7 @@ def create_game_modes_data(guids, mode_strings, num_games=10, offset=0):
                     franchises,
                     videos,
                     concepts,
+                    is_casual,
                     pc_req_min,
                     pc_req_rec,
                     mac_req_min,
@@ -531,6 +537,7 @@ def create_game_modes_data(guids, mode_strings, num_games=10, offset=0):
                         review_deck = review["deck"]
                         review_description = review["description"]
                         score = str(review["score"])
+                        date_added = review["date_added"]
 
                         user_id = str(uuid.uuid4())
 
@@ -541,6 +548,7 @@ def create_game_modes_data(guids, mode_strings, num_games=10, offset=0):
                             score,
                             user_id,
                             game_id,
+                            date_added,
                         )
                         cursor.execute(insert_reviews_sql, review_values)
 
@@ -593,6 +601,7 @@ def create_quiz_data(guids, num_games=1, offset=0):
                     franchises,
                     videos,
                     concepts,
+                    is_casual,
                     pc_req_min,
                     pc_req_rec,
                     mac_req_min,
@@ -618,6 +627,7 @@ def create_quiz_data(guids, num_games=1, offset=0):
                     franchises,
                     videos,
                     concepts,
+                    is_casual,
                     pc_req_min,
                     pc_req_rec,
                     mac_req_min,
@@ -635,6 +645,7 @@ def create_quiz_data(guids, num_games=1, offset=0):
                         review_deck = review["deck"]
                         review_description = review["description"]
                         score = str(review["score"])
+                        date_added = review["date_added"]
 
                         user_id = str(uuid.uuid4())
 
@@ -645,6 +656,7 @@ def create_quiz_data(guids, num_games=1, offset=0):
                             score,
                             user_id,
                             game_id,
+                            date_added,
                         )
                         cursor.execute(insert_reviews_sql, review_values)
 
