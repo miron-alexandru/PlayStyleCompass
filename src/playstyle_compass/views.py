@@ -2006,3 +2006,24 @@ def post_list_comment(request, game_list_id):
             return JsonResponse({"success": False, "error": "Comment text is required"})
 
     return JsonResponse({"success": False, "error": "Invalid method"})
+
+
+@login_required
+def like_game_list_comment(request, comment_id):
+    """Toggles the like status for a comment."""
+    comment = get_object_or_404(ListComment, id=comment_id)
+
+    if request.user in comment.liked_by.all():
+        comment.liked_by.remove(request.user)
+        liked = False
+    else:
+        comment.liked_by.add(request.user)
+        liked = True
+
+    return JsonResponse(
+        {
+            "liked": liked,
+            "like_count": comment.like_count,
+            "comment_id": comment_id,
+        }
+    )

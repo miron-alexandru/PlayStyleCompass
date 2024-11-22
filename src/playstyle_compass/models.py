@@ -429,6 +429,12 @@ class ListComment(models.Model):
     text = models.TextField(_("Comment"))
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    liked_by = models.ManyToManyField(
+        settings.AUTH_USER_MODEL,
+        related_name="liked_comments",
+        blank=True,
+    )
+
 
     class Meta:
         ordering = ["-created_at"]
@@ -437,3 +443,9 @@ class ListComment(models.Model):
 
     def is_editable(self):
         return now() <= self.created_at + timedelta(minutes=10)
+
+    @property
+    def like_count(self):
+        """Returns the number of likes."""
+        return self.liked_by.count()
+

@@ -87,6 +87,16 @@
           {% trans "wrote:" %}
         </p>
         <p class="list-comment">{{ comment.text }}</p>
+        <p>
+        <button id="like-button-{{ comment.id }}" data-url="{% url 'playstyle_compass:like_list_comment' comment.id %}"
+          class="like-comment-button" title="{% trans 'Like Comment' %}">
+            <i class="{% if user in comment.liked_by.all %}fa-solid fa-heart{% else %}fa-regular fa-heart{% endif %}"></i> 
+          </button>
+          <span id="like-count-{{ comment.id }}" class="like-comment-count">
+            {{ comment.like_count }}
+          </span>
+        </p>
+
         <p class="comment-meta">
           {% trans "Posted on" %} {{ comment.created_at|date:"d/m/Y - H:i" }}
         </p>

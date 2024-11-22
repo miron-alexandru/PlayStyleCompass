@@ -53,9 +53,11 @@
 
 .gold-star {
   color: gold;
+  font-size: 17px;
 }
 
 .empty-star {
+  font-size: 17px;
   color: lightgrey;
 }
 

@@ -351,43 +351,43 @@ label {
   background-color: darkred;
 }
 
-.like-review-button {
+.like-review-button, .like-comment-button {
   position: absolute;
   top: 10px;
   right: 10px;
   background-color: transparent;
   border: none;
   color: #d4d4d4;
-  font-size: 18px;
+  font-size: 17px;
   cursor: pointer;
   transition: color 0.3s ease, transform 0.2s ease;
   padding: 4px;
 }
 
-.like-review-button .fa-heart {
+.like-review-button, .like-comment-button .fa-heart {
   color: #ff4d4d;
 }
 
-.like-review-button .fa-regular {
+.like-review-button, .like-comment-button .fa-regular {
   color: #d4d4d4;
 }
 
-.like-review-button:hover .fa-heart {
+.like-review-button:hover, .like-comment-button:hover .fa-heart {
   color: #ff6666;
   transform: scale(1.1);
 }
 
-.like-review-button:hover .fa-regular {
+.like-review-button:hover, .like-comment-button:hover .fa-regular {
   color: #b3b3b3;
   transform: scale(1.1);
 }
 
-.like-review-count {
+.like-review-count, .like-comment-count {
   position: absolute;
   top: 19px;
-  right: 38px;
+  right: 36px;
   color: var(--text-color);
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 600;
   text-align: center;
   line-height: 1;
@@ -396,13 +396,13 @@ label {
 
 .game-list-review-gold-star {
   color: #ffc107;
-  font-size: 16px;
+  font-size: 17px;
   margin-right: 2px;
 }
 
 .game-list-review-empty-star {
   color: #e4e5e9; 
-  font-size: 16px;
+  font-size: 17px;
   margin-right: 2px;
 }
 
@@ -507,6 +507,11 @@ label {
   color: var(--text-color);
 }
 
+.comment:has(.delete-comment-btn, .edit-comment-btn) .comment-meta {
+  margin-bottom: 20px; /* Adjust the space as needed */
+}
+
+
 .comment-author-text {
   font-size: 16px;
   color: var(--text-color);
@@ -516,7 +521,6 @@ label {
   font-size: 12px!important;
   color: var(--text-color);
   text-align: right;
-  margin-bottom: 30px!important;
 }
 
 .hidden {
@@ -539,7 +543,6 @@ label {
 
 .delete-comment-btn, .edit-comment-btn {
   position: absolute;
-  padding: 5px;
   font-size: 12px;
   background: none;
   color: var(--text-color);

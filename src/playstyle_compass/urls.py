@@ -164,4 +164,9 @@ urlpatterns = [
         views.post_list_comment,
         name="post_list_comment",
     ),
+    path(
+        "like-list-comment/<int:comment_id>",
+        views.like_game_list_comment,
+        name="like_list_comment",
+    ),
 ]
