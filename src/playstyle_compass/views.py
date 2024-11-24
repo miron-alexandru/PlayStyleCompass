@@ -2027,3 +2027,57 @@ def like_game_list_comment(request, comment_id):
             "comment_id": comment_id,
         }
     )
+
+
+@login_required
+def toggle_favorite_game_list(request, game_list_id):
+    game_list = get_object_or_404(GameList, id=game_list_id)
+    is_favorited = game_list.toggle_favorite(request.user)
+    print(is_favorited)
+    return JsonResponse({"favorited": is_favorited})
+
+
+@login_required
+def favorite_game_lists(request, user_id=None):
+    """View to display favorite game lists for the specified user."""
+    if user_id:
+        user = get_object_or_404(User, id=user_id)
+    else:
+        user = request.user
+
+    game_lists = GameList.objects.filter(favorites=user)
+
+    sort_by = request.GET.get("sort_by", "created_at")
+    order = request.GET.get("order", "desc")
+    reverse_order = order == "desc"
+
+    game_lists = list(game_lists)
+
+    if sort_by == "title":
+        game_lists.sort(key=lambda x: x.title.lower(), reverse=reverse_order)
+    elif sort_by == "total_games":
+        game_lists.sort(key=lambda x: x.total_games, reverse=reverse_order)
+    elif sort_by == "created_at":
+        game_lists.sort(key=lambda x: x.created_at, reverse=reverse_order)
+    elif sort_by == "share_count":
+        game_lists.sort(key=lambda x: x.share_count, reverse=reverse_order)
+    elif sort_by == "like_count":
+        game_lists.sort(key=lambda x: x.like_count, reverse=reverse_order)
+    elif sort_by == "review_count":
+        game_lists.sort(key=lambda x: x.review_count, reverse=reverse_order)
+    elif sort_by == "updated_at":
+        game_lists.sort(key=lambda x: x.updated_at, reverse=reverse_order)
+    elif sort_by == "activity_level":
+        game_lists.sort(
+            key=lambda x: (x.share_count + x.like_count + x.review_count),
+            reverse=reverse_order,
+        )
+
+    context = {
+        "page_title": _("Favorite Game Lists :: PlayStyle Compass"),
+        "game_lists": game_lists,
+        "sort_by": sort_by,
+        "order": order,
+    }
+
+    return render(request, "game_list/favorite_game_lists.html", context)

@@ -25,6 +25,11 @@
     </a>
     <a href="{% url 'playstyle_compass:share_game_list' game_list.id %}" class="share-list-button">
       {% trans "Share List" %}</a>
+    <button id="favorite-button" data-url="{% url 'playstyle_compass:toggle_favorite_game_list' game_list.id %}"
+      class="favorite-list-button" title="{% trans 'Add to Favorites' %}">
+    <i class="{% if user in game_list.favorites.all %}fa-solid fa-star{% else %}fa-regular fa-star{% endif %}"></i>
+    </button>
+    <span class="list-icon-divider">|</span>
     <button id="like-button" data-url="{% url 'playstyle_compass:like_game_list' game_list.id %}"
       class="like-list-button" title="{% trans 'Like List' %}">
       <i class="{% if user in game_list.liked_by.all %}fa-solid fa-heart{% else %}fa-regular fa-heart{% endif %}"></i>

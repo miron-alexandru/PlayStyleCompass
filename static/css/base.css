@@ -70,7 +70,7 @@ input[type="email"] {
   border-radius: 21px;
 }
 
-#id_message, #id_bio, #id_gaming_setup, {
+#id_message, #id_bio, #id_gaming_setup, .contact-textarea {
   width: 100%;
   display: block;
   color: var(--text-color)!important;

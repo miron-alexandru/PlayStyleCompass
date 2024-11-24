@@ -167,10 +167,50 @@
   transform: scale(1.1);
 }
 
+#favorite-button {
+  position: absolute;
+  top: 9px;
+  right: 57px;
+  background-color: transparent;
+  border: none;
+  color: #d4d4d4;
+  font-size: 17px;
+  cursor: pointer;
+  transition: color 0.3s ease, transform 0.2s ease;
+  padding: 4px;
+}
+
+#favorite-button .fa-star {
+  color: #ffd700;
+}
+
+#favorite-button .fa-regular {
+  color: #d4d4d4;
+}
+
+#favorite-button:hover .fa-star {
+  color: #ffdf00; 
+  transform: scale(1.1);
+}
+
+#favorite-button:hover .fa-regular {
+  color: #b3b3b3;
+  transform: scale(1.1);
+}
+
+.list-icon-divider {
+  position: absolute;
+  top: 11px;
+  right: 49px;
+  color: #d4d4d4;
+  font-size: 18px; 
+}
+
+
 #like-count {
   position: absolute;
   top: 15px;
-  right: 39px;
+  right: 37px;
   font-size: 15px;
   font-weight: 600;
   color: var(--text-color);

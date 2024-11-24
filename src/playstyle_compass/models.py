@@ -354,14 +354,14 @@ class GameList(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     is_public = models.BooleanField(default=False)
+    favorites = models.ManyToManyField(
+        settings.AUTH_USER_MODEL, blank=True, related_name="favorite_game_lists"
+    )
 
     @property
     def like_count(self):
         """Returns the total number of likes for the game list."""
         return self.liked_by.count()
-
-    def __str__(self):
-        return self.title
 
     @property
     def share_count(self):
@@ -380,6 +380,24 @@ class GameList(models.Model):
     def review_count(self):
         """Returns the total number of reviews for the game list."""
         return self.reviews.count()
+
+    @property
+    def favorite_count(self):
+        return self.favorites.count()
+
+    def toggle_favorite(self, user):
+        """Adds or removes the game list from the user's favorites."""
+        if self.favorites.filter(id=user.id).exists():
+            self.favorites.remove(user)
+            return False
+        else:
+            self.favorites.add(user)
+            return True
+
+    def __str__(self):
+        """Returns a string representation of the game list."""
+        return f"{self.title} (Owner: {self.owner.username}, Games: {self.total_games})"
+
 
 
 class ListReview(models.Model):

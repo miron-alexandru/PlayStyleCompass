@@ -83,7 +83,10 @@
               {% trans "Create Game List" %}
             </a>
             <a class="dropdown-item" href="{% url 'playstyle_compass:user_game_lists' request.user.id%}">
-              {% trans "Game Lists" %}
+              {% trans "My Game Lists" %}
+            </a>
+            <a class="dropdown-item" href="{% url 'playstyle_compass:favorite_game_lists' request.user.id%}">
+              {% trans "Favorite Game Lists" %}
             </a>
             <a class="dropdown-item" href="{% url 'playstyle_compass:favorite_games'%}">
               {% trans "Favorite Games" %}

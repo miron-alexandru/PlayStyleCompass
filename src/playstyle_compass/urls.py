@@ -169,4 +169,6 @@ urlpatterns = [
         views.like_game_list_comment,
         name="like_list_comment",
     ),
+    path('toggle-favorite-game-list/<int:game_list_id>/', views.toggle_favorite_game_list, name='toggle_favorite_game_list'),
+    path('favorite-game-lists/<int:user_id>/', views.favorite_game_lists, name='favorite_game_lists'),
 ]

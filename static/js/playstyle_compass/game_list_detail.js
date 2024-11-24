@@ -14,6 +14,21 @@ document.getElementById("like-button").addEventListener("click", function () {
   });
 });
 
+document.getElementById("favorite-button").addEventListener("click", function () {
+  const url = this.getAttribute("data-url");
+  fetch(url, {
+    method: "POST",
+    headers: {
+      "X-CSRFToken": csrfToken,
+    },
+  })
+  .then(response => response.json())
+  .then(data => {
+    const icon = document.querySelector("#favorite-button i");
+    icon.className = data.favorited ? "fa-solid fa-star" : "fa-regular fa-star";
+  })
+  .catch(error => console.error('Error:', error));
+});
 
 const reviewForm = document.getElementById("review-form");
 

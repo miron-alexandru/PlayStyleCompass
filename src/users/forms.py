@@ -350,7 +350,7 @@ class ContactForm(forms.ModelForm):
             ),
             "email": forms.EmailInput(attrs={"placeholder": ""}),
             "subject": forms.TextInput(attrs={"placeholder": ""}),
-            "message": forms.Textarea(attrs={"placeholder": ""}),
+            "message": forms.Textarea(attrs={"placeholder": "", 'class': 'contact-textarea'}),
         }
 
 
