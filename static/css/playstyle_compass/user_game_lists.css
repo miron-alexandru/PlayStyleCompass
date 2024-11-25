@@ -231,3 +231,11 @@
   top: 10px;
   right: 10px;
 }
+
+.favorites-creator {
+  text-decoration: none;
+}
+
+.favorites-creator:hover {
+  text-decoration: none;
+}

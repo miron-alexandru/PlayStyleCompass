@@ -4,19 +4,27 @@
 
 {% block page_header %}
 <div class="header">
-  <h3>{% trans "MY FAVORITE GAME LISTS" %}</h3>
+  {% if other_user %}
+    <h3>{% blocktrans %} FAVORITE GAME LISTS - {% endblocktrans %}<a class="favorites-creator" href="{% url 'users:view_profile' viewing_user %}">{{ viewing_user|upper }}</a></h3>
+  {% else %}
+    <h3>{% trans "MY FAVORITE GAME LISTS" %}</h3>
+  {% endif %}
 </div>
 {% endblock page_header %}
 
 {% block description %}
-{% trans "Browse and manage your favorite game lists created by the community." %}
+{% if other_user %}
+  {% blocktrans %}Browse and manage {{ viewing_user }}'s favorite game lists created by the community.{% endblocktrans %}
+{% else %}
+  {% trans "Browse and manage your favorite game lists created by the community." %}
+{% endif %}
 {% endblock description %}
 
 {% block content %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/playstyle_compass/user_game_lists.css' %}">
 
 <div class="game-lists-container">
-  <h2 class="users-lists-title">{% trans "Your Favorite Game Lists" %}</h2>
+  <h2 class="users-lists-title">{% trans "Favorite Game Lists" %}</h2>
 
   <div class="sorting-options">
     <form method="GET">
@@ -63,7 +71,7 @@
       {% endfor %}
     </div>
   {% else %}
-    <p class="empty-message">{% trans "You haven't added any game lists to your favorites yet." %}</p>
+    <p class="empty-message">{% trans "No game lists have been added to favorites yet." %}</p>
   {% endif %}
 </div>
 {% endblock content %}

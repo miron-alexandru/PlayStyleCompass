@@ -2042,8 +2042,10 @@ def favorite_game_lists(request, user_id=None):
     """View to display favorite game lists for the specified user."""
     if user_id:
         user = get_object_or_404(User, id=user_id)
+        other_user = user != request.user
     else:
         user = request.user
+        other_user = False
 
     game_lists = GameList.objects.filter(favorites=user)
 
@@ -2078,6 +2080,8 @@ def favorite_game_lists(request, user_id=None):
         "game_lists": game_lists,
         "sort_by": sort_by,
         "order": order,
+        "other_user": other_user,
+        "viewing_user": user.userprofile.profile_name,
     }
 
     return render(request, "game_list/favorite_game_lists.html", context)

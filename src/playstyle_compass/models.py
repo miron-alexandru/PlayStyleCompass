@@ -399,7 +399,6 @@ class GameList(models.Model):
         return f"{self.title} (Owner: {self.owner.username}, Games: {self.total_games})"
 
 
-
 class ListReview(models.Model):
     """Model to store user reviews and ratings for game lists."""
 
@@ -453,7 +452,6 @@ class ListComment(models.Model):
         blank=True,
     )
 
-
     class Meta:
         ordering = ["-created_at"]
         verbose_name = _("List Comment")
@@ -466,4 +464,3 @@ class ListComment(models.Model):
     def like_count(self):
         """Returns the number of likes."""
         return self.liked_by.count()
-

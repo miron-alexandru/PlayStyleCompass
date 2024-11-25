@@ -64,20 +64,60 @@ small {
 .share-button,
 .favorite-star,
 .queue-clock {
+  font-size: 16px;
   cursor: pointer;
+}
+
+.favorite-toggle .fas {
+  color: #ffd700;
+}
+
+.favorite-toggle:hover .fas {
+  color: #ffdf00; 
+  transform: scale(1.1);
+}
+
+.favorite-toggle:hover .far {
+  transform: scale(1.1);
+}
+
+.queue-toggle .fa-solid {
+  color: #1e90ff; 
+}
+
+.queue-toggle:hover .fa-solid {
+  color: #187bcd; 
+  transform: scale(1.1);
+}
+
+.queue-toggle:hover .fa-regular { 
+  transform: scale(1.1);
+}
+
+.share-button {
+  color: #4caf50;
+  cursor: pointer;
+}
+
+.share-button:hover {
+  color: #388e3c;
+  transform: scale(1.1);
 }
 
 .friend-dropdown-content {
   display: none;
   position: absolute;
   background-color: #f9f9f9;
-  min-width: 150px;
+  width: auto;
+  min-width: 100px;
+  max-width: 150px;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   z-index: 1;
   border-radius: 5px;
 }
 
 .friend-dropdown-content a {
+  font-size: 14px;
   color: #333;
   padding: 6px 12px;
   text-decoration: none;
