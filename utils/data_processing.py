@@ -164,7 +164,7 @@ def process_user_reviews(game_id):
 
 def create_games_data_db(game_ids, rawg_coop=False):
     """Inserts game data and reviews data into the database using the provided game IDs."""
-    with sqlite3.connect("games_data.db") as db_connection:
+    with sqlite3.connect("playstyle_db.sqlite3") as db_connection:
         cursor = db_connection.cursor()
         cursor.execute(create_table_sql)
         cursor.execute(create_reviews_table)
@@ -291,7 +291,7 @@ def parse_franchise_data(franchise_id):
 
 def create_franchises_data(franchises_ids):
     """Insert the data for each franchise in the database."""
-    with sqlite3.connect("games_data.db") as db_connection:
+    with sqlite3.connect("playstyle_db.sqlite3") as db_connection:
         cursor = db_connection.cursor()
         cursor.execute(create_franchises_table)
         db_connection.commit()
@@ -383,7 +383,7 @@ def parse_character_data(character_id):
 
 def create_characters_data(characters_ids):
     """Insert the data for each franchise in the database."""
-    with sqlite3.connect("games_data.db") as db_connection:
+    with sqlite3.connect("playstyle_db.sqlite3") as db_connection:
         cursor = db_connection.cursor()
         cursor.execute(create_characters_table)
         db_connection.commit()
@@ -438,7 +438,7 @@ def parse_game_modes_data(game, game_mode):
 
 def create_game_modes_data(guids, mode_strings, num_games=10, offset=0):
     """Insert game modes data into the database."""
-    with sqlite3.connect("games_data.db") as db_connection:
+    with sqlite3.connect("playstyle_db.sqlite3") as db_connection:
         cursor = db_connection.cursor()
         cursor.execute(create_game_modes_table)
         db_connection.commit()
@@ -566,7 +566,7 @@ def create_game_modes_data(guids, mode_strings, num_games=10, offset=0):
 
 def create_quiz_data(guids, num_games=1, offset=0):
     """Insert games into the database based on the concepts."""
-    with sqlite3.connect("games_data.db") as db_connection:
+    with sqlite3.connect("playstyle_db.sqlite3") as db_connection:
         cursor = db_connection.cursor()
 
         for guid in guids:
@@ -694,7 +694,7 @@ def parse_news_data(news_data):
 
 def create_news_data(num_articles, year, latest_week=True):
     """Populate the database with gaming related news."""
-    with sqlite3.connect("games_data.db") as db_connection:
+    with sqlite3.connect("playstyle_db.sqlite3") as db_connection:
         cursor = db_connection.cursor()
         cursor.execute(create_news_table)
         db_connection.commit()

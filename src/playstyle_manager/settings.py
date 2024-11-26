@@ -171,32 +171,18 @@ if not DEBUG:
     # Database Configuration (PostgreSQL)
     DATABASES = {
         "default": dj_database_url.parse(os.environ.get("DATABASE_URL")),
-        "games_db": {
-            "ENGINE": "django.db.backends.sqlite3",
-            "NAME": os.path.join(BASE_DIR, "utils/games_data.db"),
-        },
     }
 else:
     # Database Configuration (SQLITE 3)
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.sqlite3",
-            "NAME": os.path.join(BASE_DIR, "utils/db.sqlite3"),
-        },
-        "games_db": {
-            "ENGINE": "django.db.backends.sqlite3",
-            "NAME": os.path.join(BASE_DIR, "utils/games_data.db"),
+            "NAME": os.path.join(BASE_DIR, "utils/playstyle_db.sqlite3"),
         },
     }
 
 # Database Routers
-DATABASE_ROUTERS = [
-    "playstyle_compass.database_router.GameRouter",
-    "playstyle_compass.database_router.ReviewRouter",
-    "playstyle_compass.database_router.FranchiseRouter",
-    "playstyle_compass.database_router.CharacterRouter",
-    "playstyle_compass.database_router.NewsRouter",
-]
+DATABASE_ROUTERS = []
 
 # Default Auto Field
 DEFAULT_AUTO_FIELD = "django.db.models.AutoField"

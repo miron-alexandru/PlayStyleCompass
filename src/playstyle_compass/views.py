@@ -381,38 +381,36 @@ def autocomplete_franchises(request):
 @login_required
 def toggle_favorite(request):
     """View for toggling a game's favorite status for the current user."""
+
     if request.method == "POST":
         game_id = request.POST.get("game_id")
+        game = get_object_or_404(Game, guid=game_id)
         user_preferences = get_object_or_404(UserPreferences, user=request.user)
 
-        favorite_games_list = user_preferences.get_favorite_games()
-
         # Check if the game is already in the favorites and make the necessary changes
-        if int(game_id) in favorite_games_list:
-            user_preferences.remove_favorite_game(game_id)
+        if game in user_preferences.favorite_games.all():
+            user_preferences.favorite_games.remove(game)
             is_favorite = False
         else:
-            user_preferences.add_favorite_game(game_id)
+            user_preferences.favorite_games.add(game)
             is_favorite = True
 
         return JsonResponse({"is_favorite": is_favorite})
-
 
 @login_required
 def toggle_game_queue(request):
     """View for toggling a game's queued status for the current user."""
     if request.method == "POST":
         game_id = request.POST.get("game_id")
+        game = get_object_or_404(Game, guid=game_id)
         user_preferences = get_object_or_404(UserPreferences, user=request.user)
 
-        game_queue = user_preferences.get_game_queue()
-
         # Check if the game is already in the queue and make the necessary changes
-        if int(game_id) in game_queue:
-            user_preferences.remove_game_from_queue(game_id)
+        if game in user_preferences.game_queue.all():
+            user_preferences.game_queue.remove(game)
             in_queue = False
         else:
-            user_preferences.add_game_to_queue(game_id)
+            user_preferences.game_queue.add(game)
             in_queue = True
 
         return JsonResponse({"in_queue": in_queue})
@@ -515,10 +513,8 @@ def _get_games_view(request, page_title, list_name, template_name, user_id=None)
             )
             return redirect("playstyle_compass:index")
 
-    # Get the list of game IDs based on the specified list_name and user_preferences
-    game_list = getattr(user_preferences, f"get_{list_name}")() if not created else []
-
-    games = Game.objects.filter(guid__in=game_list)
+    # Get the list of games
+    games = getattr(user_preferences, f"get_{list_name}")() if not created else []
 
     current_viewer_preferences, created = UserPreferences.objects.get_or_create(
         user=request.user
@@ -529,7 +525,6 @@ def _get_games_view(request, page_title, list_name, template_name, user_id=None)
     context = {
         "page_title": page_title,
         "user_preferences": user_preferences,
-        list_name: game_list,
         "games": games,
         "other_user": other_user_profile,
         "user_name": user.userprofile.profile_name,

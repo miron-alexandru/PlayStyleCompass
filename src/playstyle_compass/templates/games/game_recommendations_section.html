@@ -29,32 +29,33 @@
         {% if user.is_authenticated %}
         <div class="user-actions">
           <span class="favorite-toggle" data-game-id="{{ game.guid }}" title="Add to Favorites">
-            {% if other_user %}
-            {% if game.guid|is_favorite:current_viewer_preferences.favorite_games %}
-            <i class="fas fa-star favorite-star" id="star-{{ game.guid }}"></i>
+          {% if other_user %}
+            {% if game in current_viewer_preferences.favorite_games.all %}
+              <i class="fas fa-star favorite-star" id="star-{{ game.guid }}"></i>
             {% else %}
-            <i class="far fa-star favorite-star" id="star-{{ game.guid }}"></i>
+              <i class="far fa-star favorite-star" id="star-{{ game.guid }}"></i>
             {% endif %}
+          {% else %}
+            {% if game in user_preferences.favorite_games.all %}
+              <i class="fas fa-star favorite-star" id="star-{{ game.guid }}"></i>
             {% else %}
-            {% if game.guid|is_favorite:user_preferences.favorite_games %}
-            <i class="fas fa-star favorite-star" id="star-{{ game.guid }}"></i>
-            {% else %}
-            <i class="far fa-star favorite-star" id="star-{{ game.guid }}"></i>
+              <i class="far fa-star favorite-star" id="star-{{ game.guid }}"></i>
             {% endif %}
             {% endif %}
           </span>
+
 
           <span class="icon-divider">|</span>
 
           <span class="queue-toggle" data-game-id="{{ game.guid }}" title="Add to Game Queue">
             {% if other_user %}
-            {% if game.guid|in_queue:current_viewer_preferences.game_queue %}
+            {% if game in current_viewer_preferences.game_queue.all %}
             <i class="fa-solid fa-clock queue-clock" id="queue-{{ game.guid }}"></i>
             {% else %}
             <i class="fa-regular fa-clock queue-clock" id="queue-{{ game.guid }}"></i>
             {% endif %}
             {% else %}
-            {% if game.guid|in_queue:user_preferences.game_queue %}
+            {% if game in user_preferences.game_queue.all %}
             <i class="fa-solid fa-clock queue-clock" id="queue-{{ game.guid }}"></i>
             {% else %}
             <i class="fa-regular fa-clock queue-clock" id="queue-{{ game.guid }}"></i>
