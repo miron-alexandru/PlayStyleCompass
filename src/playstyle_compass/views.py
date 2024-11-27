@@ -2080,3 +2080,21 @@ def favorite_game_lists(request, user_id=None):
     }
 
     return render(request, "game_list/favorite_game_lists.html", context)
+
+
+def popular_games(request):
+    """View to display popular games."""
+    user, user_preferences, user_friends = get_user_context(request)
+
+    popular_games = Game.objects.filter(is_popular=True)
+    popular_games = paginate_matching_games(request, popular_games)
+
+    context = {
+        "page_title": _("Popular Games :: PlayStyle Compass"),
+        "games": popular_games,
+        "user_preferences": user_preferences,
+        "user_friends": user_friends,
+        "pagination": True,
+    }
+
+    return render(request, "games/popular_games.html", context)

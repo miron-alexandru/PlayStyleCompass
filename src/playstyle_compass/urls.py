@@ -179,4 +179,5 @@ urlpatterns = [
         views.favorite_game_lists,
         name="favorite_game_lists",
     ),
+    path("popular_games/", views.popular_games, name="popular_games"),
 ]

@@ -313,6 +313,43 @@ def fetch_game_ids_by_genre(genre_id, page_size=10, page=1):
     else:
         return []
 
+def get_popular_game_names(page_size=10, page=1):
+    """Fetches popular game names from the RAWG API."""
+    url = "https://api.rawg.io/api/games"
+    params = {
+        'key': RAWG_API_KEY,
+        'ordering': '-rating',
+        'page_size': page_size,
+    }
+    
+    response = requests.get(url, params=params)
+    
+    if response.status_code == 200:
+        games = response.json().get('results', [])
+        return [game['name'] for game in games]
+    else:
+        return None
+
+def fetch_popular_game_ids(page_size=10, page=1):
+    """
+    Fetches popular game names from the RAWG API, 
+    then searches for those games on GiantBomb and returns a list of game IDs.
+    """
+    # Get popular game names from RAWG
+    game_names = get_popular_game_names(page_size, page)
+    
+    if game_names:
+        game_ids = []
+
+        for game_name in game_names:
+            game_id = find_game_on_giantbomb(game_name)
+            if game_id:
+                game_ids.append(game_id)
+        
+        return game_ids
+    else:
+        return []
+
 
 class FetchDataException(Exception):
     """Custom data exception."""

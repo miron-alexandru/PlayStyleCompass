@@ -63,7 +63,7 @@ from sql_queries import (
 )
 
 
-def parse_game_data(game_id, rawg_coop=False):
+def parse_game_data(game_id, rawg_casual=False, rawg_popular=False):
     """Parse the game data."""
     try:
         game_data = fetch_game_data(game_id)["results"]
@@ -90,7 +90,8 @@ def parse_game_data(game_id, rawg_coop=False):
     franchises = get_franchises(game_data)
     videos = get_embed_links(gameplay_video_ids)
     concepts = get_game_concepts(game_data, concept_ids)
-    is_casual = 1 if rawg_coop else 0
+    is_casual = 1 if rawg_casual else 0
+    is_popular = 1 if rawg_popular else 0
 
     steam_app_id = get_steam_app_id(title)
 
@@ -126,6 +127,7 @@ def parse_game_data(game_id, rawg_coop=False):
         videos,
         concepts,
         is_casual,
+        is_popular,
         pc_req_min,
         pc_req_rec,
         mac_req_min,
@@ -162,7 +164,7 @@ def process_user_reviews(game_id):
         return None
 
 
-def create_games_data_db(game_ids, rawg_coop=False):
+def create_games_data_db(game_ids, rawg_casual=False, rawg_popular=False):
     """Inserts game data and reviews data into the database using the provided game IDs."""
     with sqlite3.connect("playstyle_db.sqlite3") as db_connection:
         cursor = db_connection.cursor()
@@ -190,13 +192,14 @@ def create_games_data_db(game_ids, rawg_coop=False):
                 videos,
                 concepts,
                 is_casual,
+                is_popular,
                 pc_req_min,
                 pc_req_rec,
                 mac_req_min,
                 mac_req_rec,
                 linux_req_min,
                 linux_req_rec,
-            ) = parse_game_data(game_id, rawg_coop)
+            ) = parse_game_data(game_id, rawg_casual, rawg_popular)
 
             game_values = (
                 guid,
@@ -216,6 +219,7 @@ def create_games_data_db(game_ids, rawg_coop=False):
                 videos,
                 concepts,
                 is_casual,
+                is_popular,
                 pc_req_min,
                 pc_req_rec,
                 mac_req_min,
@@ -494,6 +498,7 @@ def create_game_modes_data(guids, mode_strings, num_games=10, offset=0):
                     videos,
                     concepts,
                     is_casual,
+                    is_popular,
                     pc_req_min,
                     pc_req_rec,
                     mac_req_min,
@@ -520,6 +525,7 @@ def create_game_modes_data(guids, mode_strings, num_games=10, offset=0):
                     videos,
                     concepts,
                     is_casual,
+                    is_popular,
                     pc_req_min,
                     pc_req_rec,
                     mac_req_min,

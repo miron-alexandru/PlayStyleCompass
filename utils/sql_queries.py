@@ -29,7 +29,8 @@ CREATE TABLE IF NOT EXISTS Games (
     total_reviews DEFAULT 0,
     translated_description_ro TEXT,
     translated_overview_ro TEXT,
-    is_casual INTEGER DEFAULT 0
+    is_casual INTEGER DEFAULT 0,
+    is_popular INTEGER DEFAULT 0
 );
 """
 
@@ -105,8 +106,8 @@ CREATE TABLE IF NOT EXISTS News (
 
 insert_games_sql = """
 INSERT INTO Games 
-(guid, title, description, overview, genres, platforms, themes, image, release_date, developers, game_images, similar_games, dlcs, franchises, videos, concepts, is_casual, pc_req_min, pc_req_rec, mac_req_min, mac_req_rec, linux_req_min, linux_req_rec) 
-VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+(guid, title, description, overview, genres, platforms, themes, image, release_date, developers, game_images, similar_games, dlcs, franchises, videos, concepts, is_casual, is_popular, pc_req_min, pc_req_rec, mac_req_min, mac_req_rec, linux_req_min, linux_req_rec) 
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
 """
 
 insert_reviews_sql = """
