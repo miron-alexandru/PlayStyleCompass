@@ -34,6 +34,16 @@ CREATE TABLE IF NOT EXISTS Games (
 );
 """
 
+create_stores_table_sql = """
+CREATE TABLE IF NOT EXISTS GameStores (
+    id INTEGER PRIMARY KEY,
+    guid INTEGER,
+    title TEXT,
+    store_name TEXT,
+    store_url TEXT,
+);
+"""
+
 create_reviews_table = """
 CREATE TABLE IF NOT EXISTS Reviews (
     id INTEGER PRIMARY KEY,
@@ -102,6 +112,11 @@ CREATE TABLE IF NOT EXISTS News (
     publish_date TEXT,
     platforms TEXT
 );
+"""
+
+insert_game_stores_sql = """
+INSERT INTO GameStores (guid, title, store_name, store_url)
+VALUES (?, ?, ?, ?);
 """
 
 insert_games_sql = """

@@ -172,6 +172,38 @@
           <div class="lazy-video" data-src="{{ video_url }}"></div>
           {% endfor %}
       </div>
+      <p><strong>Stores:</strong> 
+        {% if game.stores %}
+            {% for store in game.stores %}
+                <a href="{{ store.store_url }}" class="store-button" target="_blank">
+                  {% if store.store_name == "Steam" %}
+                      <i class="fab fa-steam"></i> Steam
+                  {% elif store.store_name == "PlayStation Store" %}
+                      <i class="fab fa-playstation"></i> PlayStation Store
+                  {% elif store.store_name == "Xbox Store" %}
+                      <i class="fab fa-xbox"></i> Xbox Store
+                  {% elif store.store_name == "Nintendo Store" %}
+                      <span class="store-icon store-nintendo"></span> Nintendo Store
+                  {% elif store.store_name == "App Store" %}
+                      <i class="fab fa-apple"></i> App Store
+                  {% elif store.store_name == "GOG" %}
+                      <span class="store-icon store-gog"></span> GOG
+                  {% elif store.store_name == "Google Play" %}
+                      <i class="fa-brands fa-google-play"></i> Google Play
+                  {% elif store.store_name == "itch.io" %}
+                      <span class="store-icon store-itchio"></span> itch.io
+                  {% elif store.store_name == "Microsoft Store" %}
+                      <i class="fab fa-windows"></i> Microsoft Store
+                  {% else %}
+                      {{ store.store_name }}
+                  {% endif %}
+                </a>
+            {% endfor %}
+        {% else %}
+            N/A
+        {% endif %}
+      </p>
+
       <div class="reviews-section">
         <div class="reviews-container">
         <p><strong>{% trans "Reviews:" %}</strong></p>

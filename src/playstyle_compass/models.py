@@ -49,11 +49,30 @@ class Game(models.Model):
         self.average_score = reviews.aggregate(Avg("score"))["score__avg"] or 0
         self.save()
 
+    @property
+    def stores(self):
+        """Get all stores related to this game by its guid."""
+        return GameStores.objects.filter(guid=self.guid)
+
     def __str__(self):
         return str(self.title)
 
     class Meta:
         db_table = "Games"
+        ordering = ["title"]
+
+
+class GameStores(models.Model):
+    guid = models.CharField(max_length=100, unique=True)
+    title = models.CharField(max_length=255)
+    store_name = models.CharField(max_length=255, null=True, blank=True)
+    store_url = models.URLField(null=True, blank=True)
+
+    def __str__(self):
+        return f"{self.store_name} ({self.title})"
+
+    class Meta:
+        db_table = "GameStores"
         ordering = ["title"]
 
 

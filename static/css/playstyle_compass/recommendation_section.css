@@ -233,3 +233,71 @@ span.stars span {
 .icon-divider {
   margin: 0 auto;
 }
+
+.store-button {
+  display: inline-block;
+  padding: 6px 12px;
+  font-size: 14px;
+  font-weight: bold;
+  text-align: center;
+  text-decoration: none;
+  background-color: none;
+  color: var(--text-color);
+  border: none;
+  margin-left: -10px;
+  transition: transform 0.2s ease-in-out;
+}
+
+.store-button:hover {
+  transform: scale(1.05);
+}
+
+.store-button:active {
+  transform: scale(1);
+}
+
+.store-button i, .store-button img {
+  font-size: 16px;
+  margin-right: 5px;
+}
+
+.store-icon {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  vertical-align: middle;
+}
+
+.store-gog {
+  background: url('https://www.svgrepo.com/show/341859/gog-com.svg') no-repeat center center;
+  width: 21px;
+  height: 21px;
+  background-size: contain;
+  margin-right: 4px;
+}
+
+.store-nintendo {
+  background: url('https://www.svgrepo.com/show/331503/nintendo.svg') no-repeat center center;
+  width: 20px;
+  height: 20px;
+  background-size: contain;
+  margin-right: 4px;
+}
+
+.store-itchio {
+  background: url('https://www.svgrepo.com/show/331445/itch.svg') no-repeat center center;
+  width: 20px;
+  height: 20px;
+  background-size: contain;
+  margin-right: 4px;
+}
+
+.store-epicgames {
+  background: url('https://www.svgrepo.com/show/341792/epic-games.svg') no-repeat center center;
+  width: 20px;
+  height: 20px;
+  background-size: contain;
+  margin-right: 4px;
+}

@@ -39,8 +39,8 @@ from data_processing import (
 #create_characters_data(characters_ids)
 
 # Obtain games data
-#game_ids = fetch_game_ids_by_platforms(platform_ids, API_KEY, offset=0, limit=1, game_ids_to_add=game_ids_to_add)
-#create_games_data_db(game_ids)
+game_ids = fetch_game_ids_by_platforms(platform_ids, API_KEY, offset=0, limit=1, game_ids_to_add=game_ids_to_add)
+create_games_data_db(game_ids)
 
 # Obtain game modes data
 #guids = ["3015-6130", "3015-322"]
@@ -63,5 +63,5 @@ from data_processing import (
 #create_games_data_db(casual_game_ids, rawg_casual=True)
 
 # Obtain popular games data
-popular_game_ids = fetch_popular_game_ids(page_size=40, page=1)
-create_games_data_db(popular_game_ids, rawg_popular=True)
+#popular_game_ids = fetch_popular_game_ids(page_size=40, page=1)
+#create_games_data_db(popular_game_ids, rawg_popular=True)

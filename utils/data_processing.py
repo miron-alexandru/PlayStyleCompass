@@ -18,6 +18,7 @@ from API_functions import (
     get_latest_gaming_news,
     get_all_articles_from_year,
     get_all_articles_from_last_7_days,
+    get_game_store_info,
 )
 
 from data_extraction import (
@@ -60,6 +61,8 @@ from sql_queries import (
     create_news_table,
     insert_news_sql,
     remove_duplicate_news,
+    create_stores_table_sql,
+    insert_game_stores_sql,
 )
 
 
@@ -170,6 +173,7 @@ def create_games_data_db(game_ids, rawg_casual=False, rawg_popular=False):
         cursor = db_connection.cursor()
         cursor.execute(create_table_sql)
         cursor.execute(create_reviews_table)
+        cursor.execute(create_stores_table_sql)
         db_connection.commit()
 
         for game_id in game_ids:
@@ -228,6 +232,15 @@ def create_games_data_db(game_ids, rawg_casual=False, rawg_popular=False):
                 linux_req_rec,
             )
             cursor.execute(insert_games_sql, game_values)
+
+            store_info = get_game_store_info(title)
+
+            if store_info:
+                for store in store_info:
+                    store_name = store.get('store_name', None)
+                    store_url = store.get('url', None)
+
+                    cursor.execute(insert_game_stores_sql, (guid, title, store_name, store_url))
 
             game_id = guid
 

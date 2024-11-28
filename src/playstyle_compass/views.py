@@ -40,6 +40,7 @@ from .models import (
     GameList,
     ListReview,
     ListComment,
+    GameStores,
 )
 from .forms import (
     ReviewForm,

@@ -126,6 +126,8 @@ Websites for .env configuration: [GiantBomb](https://www.giantbomb.com/) / [Send
 <summary><h2>PlayStyle Compass Changelog</h2></summary>
 
 ### Version v2.3:
+* New Data about Games -> Stores: Users can visit online stores where the games are available for purchase.
+* Created Popular Games page.
 * Moved to the usage of a single db because of the unnecessary complexity of having two separate databases.
 * Users are able to add game lists to their favorites / Created page where users can see their favorite game lists.
 * Users are able to post, edit and delete comments (without page reload) on game lists.
