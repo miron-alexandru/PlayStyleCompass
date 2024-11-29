@@ -40,7 +40,7 @@ CREATE TABLE IF NOT EXISTS GameStores (
     guid INTEGER,
     title TEXT,
     store_name TEXT,
-    store_url TEXT,
+    store_url TEXT
 );
 """
 

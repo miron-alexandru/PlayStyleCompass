@@ -11,6 +11,8 @@ from .models import (
     News,
     GameList,
     ListReview,
+    GameStores,
+    ListComment,
 )
 
 admin.site.register(UserPreferences)
@@ -23,3 +25,6 @@ admin.site.register(GameModes)
 admin.site.register(News)
 admin.site.register(GameList)
 admin.site.register(ListReview)
+admin.site.register(GameStores)
+admin.site.register(ListComment)
+

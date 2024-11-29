@@ -8,16 +8,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-11-25 11:38+0200\n"
-"PO-Revision-Date: 2024-11-25 11:36+0144\n"
+"POT-Creation-Date: 2024-11-29 09:36+0200\n"
+"PO-Revision-Date: 2024-11-29 09:38+0144\n"
 "Last-Translator:   <quality_xqs@yahoo.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n==1?0:(((n%100>19)||((n%100==0)&&(n!=0)))?"
-"2:1));\n"
+"Plural-Forms: nplurals=3; plural=(n==1?0:(((n%100>19)||((n%100==0)&&(n!=0)))?2:1));\n"
 "X-Translated-Using: django-rosetta 0.10.1\n"
 
 #: .\src\playstyle_compass\forms.py:16
@@ -39,8 +38,8 @@ msgstr "Adaugă un titlu pentru recenzia ta..."
 
 #: .\src\playstyle_compass\forms.py:30
 msgid ""
-"Share your detailed review of the game, including your thoughts on gameplay, "
-"graphics, storyline, and overall experience..."
+"Share your detailed review of the game, including your thoughts on gameplay,"
+" graphics, storyline, and overall experience..."
 msgstr ""
 "Distribuie-ți recenzia detaliată a jocului, inclusiv gândurile tale despre "
 "gameplay, grafică, poveste și experiența generală..."
@@ -71,15 +70,15 @@ msgstr "Fă public"
 msgid "Write your comment here..."
 msgstr "Scrie comentariul tău aici..."
 
-#: .\src\playstyle_compass\models.py:447
+#: .\src\playstyle_compass\models.py:420
 msgid "Comment"
 msgstr "Comentariu"
 
-#: .\src\playstyle_compass\models.py:459
+#: .\src\playstyle_compass\models.py:431
 msgid "List Comment"
 msgstr "Comentariu listă"
 
-#: .\src\playstyle_compass\models.py:460
+#: .\src\playstyle_compass\models.py:432
 msgid "List Comments"
 msgstr "Comentarii listă"
 
@@ -90,29 +89,18 @@ msgstr "Găsește-ți Jocurile Ideale"
 #: .\src\playstyle_compass\templates\base\index.html:12
 msgid ""
 "\n"
-"      Welcome to PlayStyle Compass – your personalized gateway to uncovering "
-"video games perfectly\n"
-"      tailored to your unique preferences, gaming background, and genre "
-"inclinations. Whether you're a casual enthusiast or\n"
-"      a dedicated gaming passionate, our application meticulously analyzes "
-"your individual gaming profile, curating\n"
-"      recommendations that align with your distinct tastes. Embark on an "
-"exhilarating journey through the realm of\n"
+"      Welcome to PlayStyle Compass – your personalized gateway to uncovering video games perfectly\n"
+"      tailored to your unique preferences, gaming background, and genre inclinations. Whether you're a casual enthusiast or\n"
+"      a dedicated gaming passionate, our application meticulously analyzes your individual gaming profile, curating\n"
+"      recommendations that align with your distinct tastes. Embark on an exhilarating journey through the realm of\n"
 "      gaming possibilities by creating an account with us!\n"
 "      "
 msgstr ""
 "\n"
-"Bine ai venit la PlayStyle Compass - portalul personalizat care îți deschide "
-"drumul către descoperirea jocurilor video perfect adaptate preferințelor "
-"tale unice, istoricului tău în gaming și inclinațiilor de gen. Indiferent "
-"dacă ești un entuziast casual sau un pasionat dedicat al jocurilor, "
-"aplicația noastră analizează cu meticulozitate profilul tău individual în "
-"gaming, oferind recomandări care se potrivesc gusturilor tale distincte. "
-"Începe o călătorie palpitantă prin lumea posibilităților de gaming, creând "
-"un cont cu noi!"
+"Bine ai venit la PlayStyle Compass - portalul personalizat care îți deschide drumul către descoperirea jocurilor video perfect adaptate preferințelor tale unice, istoricului tău în gaming și inclinațiilor de gen. Indiferent dacă ești un entuziast casual sau un pasionat dedicat al jocurilor, aplicația noastră analizează cu meticulozitate profilul tău individual în gaming, oferind recomandări care se potrivesc gusturilor tale distincte. Începe o călătorie palpitantă prin lumea posibilităților de gaming, creând un cont cu noi!"
 
 #: .\src\playstyle_compass\templates\base\index.html:21
-#: .\src\templates\base.html:292
+#: .\src\templates\base.html:295
 #: .\src\users\templates\registration\register.html:104
 msgid "Register"
 msgstr "Înregistrare"
@@ -147,6 +135,7 @@ msgstr ""
 "iconice."
 
 #: .\src\playstyle_compass\templates\base\index.html:62
+#: .\src\playstyle_compass\templates\games\popular_games.html:4
 msgid "POPULAR GAMES"
 msgstr "JOCURI POPULARE"
 
@@ -161,8 +150,8 @@ msgstr "JOCURI ÎN DEZVOLTARE"
 
 #: .\src\playstyle_compass\templates\base\index.html:75
 msgid ""
-"Explore the latest and most anticipated games coming soon. Don't miss out on "
-"the gaming excitement!"
+"Explore the latest and most anticipated games coming soon. Don't miss out on"
+" the gaming excitement!"
 msgstr ""
 "Descoperiți cele mai noi și cele mai așteptate jocuri care urmează să fie "
 "lansate curând și explorați viitorul entuziasmului în jocuri."
@@ -185,8 +174,8 @@ msgstr "ULTIMELE ȘTIRI"
 
 #: .\src\playstyle_compass\templates\base\latest_news.html:16
 msgid ""
-"Stay updated with the latest in gaming and get the insights and stories that "
-"matter in the gaming world.\n"
+"Stay updated with the latest in gaming and get the insights and stories that"
+" matter in the gaming world.\n"
 msgstr ""
 "Fiți la curent cu ultimele știri din lumea jocurilor video și descoperiți "
 "informațiile și poveștile care contează în universul gaming-ului.\n"
@@ -338,12 +327,12 @@ msgid "Games"
 msgstr "Jocuri"
 
 #: .\src\playstyle_compass\templates\base\search_bar_only.html:24
-#: .\src\templates\base.html:163 .\src\templates\base.html:203
+#: .\src\templates\base.html:166 .\src\templates\base.html:206
 msgid "Franchises"
 msgstr "Francize"
 
 #: .\src\playstyle_compass\templates\base\search_bar_only.html:28
-#: .\src\templates\base.html:166 .\src\templates\base.html:208
+#: .\src\templates\base.html:169 .\src\templates\base.html:211
 msgid "Characters"
 msgstr "Caractere"
 
@@ -381,7 +370,7 @@ msgstr "Imagine indisponibilă"
 #: .\src\playstyle_compass\templates\game_list\reviewed_game_lists.html:30
 #: .\src\playstyle_compass\templates\game_list\shared_game_lists.html:52
 #: .\src\playstyle_compass\templates\game_list\user_game_lists.html:56
-#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:79
+#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:80
 msgid "Description:"
 msgstr "Descriere:"
 
@@ -389,7 +378,7 @@ msgstr "Descriere:"
 #: .\src\playstyle_compass\templates\characters\game_character_template.html:46
 #: .\src\playstyle_compass\templates\franchises\franchise_template.html:25
 #: .\src\playstyle_compass\templates\franchises\franchise_template.html:34
-#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:82
+#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:83
 msgid "[Read more...]"
 msgstr "[Citește mai mult...]"
 
@@ -415,25 +404,25 @@ msgid "Games:"
 msgstr "Jocuri:"
 
 #: .\src\playstyle_compass\templates\characters\game_character_template.html:48
-#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:89
+#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:90
 msgid "Franchises:"
 msgstr "Francize:"
 
 #: .\src\playstyle_compass\templates\characters\game_character_template.html:52
 #: .\src\playstyle_compass\templates\franchises\franchise_template.html:36
-#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:144
+#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:145
 msgid "Images:"
 msgstr "Imagini:"
 
 #: .\src\playstyle_compass\templates\characters\game_character_template.html:53
 #: .\src\playstyle_compass\templates\franchises\franchise_template.html:37
-#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:145
+#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:146
 msgid "(Click on the image to open gallery)"
 msgstr "(Click pe imagine pentru a deschide galeria)"
 
 #: .\src\playstyle_compass\templates\characters\game_character_template.html:72
 #: .\src\playstyle_compass\templates\franchises\franchise_template.html:56
-#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:164
+#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:165
 msgid "Images not available"
 msgstr "Imagini indisponibile"
 
@@ -453,8 +442,8 @@ msgstr "FRANCIZE"
 
 #: .\src\playstyle_compass\templates\franchises\franchise_list.html:12
 msgid ""
-"Discover awesome gaming franchises that have defined the fun. Explore iconic "
-"worlds, meet cool characters, and relive gaming history. Get ready for a "
+"Discover awesome gaming franchises that have defined the fun. Explore iconic"
+" worlds, meet cool characters, and relive gaming history. Get ready for a "
 "blast of nostalgia and fun on our franchises page!"
 msgstr ""
 "Descoperiți francizele de jocuri incredibile care au definit distracția. "
@@ -488,7 +477,8 @@ msgstr "CREEAZĂ LISTA DE JOCURI"
 
 #: .\src\playstyle_compass\templates\game_list\create_game_list.html:12
 msgid "Create your custom game list and share it with friends."
-msgstr "Creează-ți lista personalizată de jocuri și distribuie-o cu prietenii."
+msgstr ""
+"Creează-ți lista personalizată de jocuri și distribuie-o cu prietenii."
 
 #: .\src\playstyle_compass\templates\game_list\create_game_list.html:20
 msgid "Create Your Game List"
@@ -676,7 +666,7 @@ msgstr "Like-uri:"
 #: .\src\playstyle_compass\templates\game_list\favorite_game_lists.html:59
 #: .\src\playstyle_compass\templates\game_list\reviewed_game_lists.html:34
 #: .\src\playstyle_compass\templates\game_list\user_game_lists.html:60
-#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:176
+#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:209
 msgid "Reviews:"
 msgstr "Recenzii:"
 
@@ -900,12 +890,12 @@ msgstr "DISTRIBUIE LISTA DE JOCURI"
 
 #: .\src\playstyle_compass\templates\game_list\share_game_list.html:12
 msgid ""
-"Share a custom game list with friends and discover new games together. Allow "
-"others to explore favorite picks and create their own lists."
+"Share a custom game list with friends and discover new games together. Allow"
+" others to explore favorite picks and create their own lists."
 msgstr ""
 "Distribuie o listă personalizată de jocuri cu prietenii și descoperiți "
-"împreună jocuri noi. Permite altora să exploreze alegerile tale preferate și "
-"să își creeze propriile liste."
+"împreună jocuri noi. Permite altora să exploreze alegerile tale preferate și"
+" să își creeze propriile liste."
 
 #: .\src\playstyle_compass\templates\game_list\share_game_list.html:20
 msgid "Share with friends"
@@ -994,14 +984,14 @@ msgstr "JOCURI DE ÎNCEPĂTORI"
 
 #: .\src\playstyle_compass\templates\games\beginner_games.html:5
 msgid ""
-"Discover a curated selection of beginner-friendly games that are perfect for "
-"newcomers. Whether you're just starting out or looking for a relaxed gaming "
-"experience, this collection offers titles that are easy to pick up and "
+"Discover a curated selection of beginner-friendly games that are perfect for"
+" newcomers. Whether you're just starting out or looking for a relaxed gaming"
+" experience, this collection offers titles that are easy to pick up and "
 "enjoy. Dive into a world of fun, simple mechanics, and engaging gameplay "
 "designed with beginners in mind!"
 msgstr ""
-"Descoperă o selecție curată de jocuri pentru începători, perfecte pentru cei "
-"care abia încep. Fie că ești la început sau căută un joc relaxant, această "
+"Descoperă o selecție curată de jocuri pentru începători, perfecte pentru cei"
+" care abia încep. Fie că ești la început sau căută un joc relaxant, această "
 "colecție oferă titluri ușor de înțeles și de jucat. Intră într-o lume plină "
 "de distracție, mecanici simple și gameplay captivant, creat special pentru "
 "începători!"
@@ -1139,40 +1129,40 @@ msgstr "nu a adăugat nici un joc în Jocurile Programate"
 msgid "You haven't added any games to your Game Queue yet."
 msgstr "Nu ai adăugat nici un joc în Jocurile Programate"
 
-#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:84
+#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:85
 msgid "Release date:"
 msgstr "Data lansării:"
 
-#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:85
+#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:86
 msgid "Developer:"
 msgstr "Dezvoltator:"
 
-#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:86
+#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:87
 msgid "Genre:"
 msgstr "Gen:"
 
-#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:87
+#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:88
 msgid "Platform:"
 msgstr "Platformă:"
 
-#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:88
+#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:89
 msgid "Theme:"
 msgstr "Tematică:"
 
-#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:92
+#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:93
 msgid "DLC:"
 msgstr "Conținut descărcabil (DLC):"
 
-#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:93
+#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:94
 msgid "Similar games:"
 msgstr "Jocuri similare:"
 
-#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:96
+#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:97
 msgid "Requirements:"
 msgstr "Cerințe:"
 
-#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:97
-#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:167
+#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:98
+#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:168
 #: .\src\users\templates\account_actions\password_change_form.html:40
 #: .\src\users\templates\account_actions\password_change_form.html:58
 #: .\src\users\templates\account_actions\password_reset_confirm.html:23
@@ -1184,48 +1174,52 @@ msgstr "Cerințe:"
 msgid "Show"
 msgstr "Afișează"
 
-#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:104
+#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:105
 msgid "PC Minimum"
 msgstr "PC Minime"
 
-#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:110
+#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:111
 msgid "PC Recommended"
 msgstr "PC Recomandate"
 
-#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:116
+#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:117
 msgid "MAC Minimum"
 msgstr "MAC Minime"
 
-#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:122
+#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:123
 msgid "MAC Recommended"
 msgstr "MAC Recomandate"
 
-#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:128
+#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:129
 msgid "Linux Minimum"
 msgstr "Linux Minime"
 
-#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:134
+#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:135
 msgid "Linux Recommended"
 msgstr "Linux Recomandate"
 
-#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:166
+#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:167
 msgid "Gameplay videos:"
 msgstr "Videoclipuri cu gameplay:"
 
-#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:178
+#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:175
+msgid "Stores:"
+msgstr "Magazine:"
+
+#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:211
 #: .\src\playstyle_compass\templates\preferences\privacy_settings.html:52
 msgid "Show Reviews"
 msgstr "Afișează Recenzii"
 
-#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:181
+#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:214
 msgid "Write a Review"
 msgstr "Scrie o Recenzie"
 
-#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:186
+#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:219
 msgid "Delete your Review"
 msgstr "Ștergeți Recenzia"
 
-#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:189
+#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:222
 msgid "Edit your Review"
 msgstr "Editați Recenzia"
 
@@ -1250,7 +1244,7 @@ msgid "Games Received"
 msgstr "Jocuri Primite"
 
 #: .\src\playstyle_compass\templates\games\games_shared.html:22
-#: .\src\templates\base.html:255
+#: .\src\templates\base.html:258
 msgid "Games Shared"
 msgstr "Jocuri Distribuite"
 
@@ -1316,9 +1310,9 @@ msgstr "JOCURI CU GAMEPLAY LINIAR"
 
 #: .\src\playstyle_compass\templates\games\linear_gameplay_games.html:5
 msgid ""
-"Delve into tightly crafted, story-driven linear games that guide you through "
-"structured gameplay experiences with a clear narrative focus and thrilling, "
-"directed progression."
+"Delve into tightly crafted, story-driven linear games that guide you through"
+" structured gameplay experiences with a clear narrative focus and thrilling,"
+" directed progression."
 msgstr ""
 "Aprofundează în jocuri liniare, atent construite și bazate pe poveste, care "
 "te ghidează prin experiențe de joc structurate, cu un accent clar pe "
@@ -1353,6 +1347,17 @@ msgstr ""
 "Descoperă jocuri open-world vaste și captivante, unde ai libertatea de a "
 "explora, de a finaliza misiuni în propriul ritm și de a-ți croi propriul "
 "drum în medii ample și bogat detaliate"
+
+#: .\src\playstyle_compass\templates\games\popular_games.html:5
+#| msgid "Discover some of the most popular games here!"
+msgid "Discover the most popular games, loved by gamers worldwide."
+msgstr ""
+"Descoperă cele mai populare jocuri, iubite de gameri din întreaga lume."
+
+#: .\src\playstyle_compass\templates\games\popular_games.html:6
+msgid "No popular games to display yet. Check back soon!"
+msgstr ""
+"Nu există jocuri populare de afișat momentan. Verifică din nou în curând!"
 
 #: .\src\playstyle_compass\templates\games\recommendations.html:8
 msgid "GAME RECOMMENDATIONS"
@@ -1512,7 +1517,8 @@ msgstr "JOCURI SINGLE-PLAYER"
 #: .\src\playstyle_compass\templates\games\singleplayer_games.html:8
 msgid ""
 "Explore our collection of captivating single-player games. Immerse yourself "
-"in thrilling adventures and experience unforgettable solo gaming experiences."
+"in thrilling adventures and experience unforgettable solo gaming "
+"experiences."
 msgstr ""
 "Explorează colecția noastră de jocuri captivante single-player. Înfruntă-te "
 "în aventuri palpitante și trăiește experiențe de gaming solo de neuitat."
@@ -1632,14 +1638,10 @@ msgstr "PERSONALIZEAZĂ-ȚI STILUL DE JOC"
 #: .\src\playstyle_compass\templates\preferences\create_gaming_preferences.html:12
 msgid ""
 "\n"
-"Explore and manage your gaming preferences. You can provide your gaming "
-"history, favorite genres, and preferred platforms. Once you've defined your "
-"PlayStyle, you can get personalized game recommendations.\n"
+"Explore and manage your gaming preferences. You can provide your gaming history, favorite genres, and preferred platforms. Once you've defined your PlayStyle, you can get personalized game recommendations.\n"
 msgstr ""
 "\n"
-"Explorează și gestionează-ți preferințele de joc. Poți furniza istoricul tău "
-"de jocuri, genurile tale preferate și platformele preferate. După ce îți "
-"definești PlayStyle-ul, vei primi recomandări personalizate de jocuri.\n"
+"Explorează și gestionează-ți preferințele de joc. Poți furniza istoricul tău de jocuri, genurile tale preferate și platformele preferate. După ce îți definești PlayStyle-ul, vei primi recomandări personalizate de jocuri.\n"
 
 #: .\src\playstyle_compass\templates\preferences\create_gaming_preferences.html:24
 msgid "Enter Gaming History"
@@ -1739,8 +1741,8 @@ msgid ""
 "experiences. By sharing your preferences, you'll receive game "
 "recommendations perfectly suited to your unique tastes and interests.\n"
 msgstr ""
-"Preferințele tale de jocuri sunt cheia pentru a debloca o lume de experiențe "
-"adaptate. Prin distribuirea preferințelor tale, vei primi recomandări de "
+"Preferințele tale de jocuri sunt cheia pentru a debloca o lume de experiențe"
+" adaptate. Prin distribuirea preferințelor tale, vei primi recomandări de "
 "jocuri perfect adaptate gusturilor și intereselor tale unice.\n"
 
 #: .\src\playstyle_compass\templates\preferences\update_gaming_preferences.html:113
@@ -1829,255 +1831,260 @@ msgstr "platformele preferate"
 msgid "common preferences"
 msgstr "preferintele comune"
 
-#: .\src\playstyle_compass\views.py:116
+#: .\src\playstyle_compass\views.py:117
 msgid "Home :: PlayStyle Compass"
 msgstr "Acasă :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:131
+#: .\src\playstyle_compass\views.py:132
 msgid "Define PlayStyle :: PlayStyle Compass"
 msgstr "Definește Stilul de Joc :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:165
+#: .\src\playstyle_compass\views.py:166
 msgid "Your PlayStyle :: PlayStyle Compass"
 msgstr "Stilul tău de joc :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:296
+#: .\src\playstyle_compass\views.py:297
 msgid "Recommendations :: PlayStyle Compass"
 msgstr "Recomandări :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:322 .\src\playstyle_compass\views.py:348
-#: .\src\playstyle_compass\views.py:1116
+#: .\src\playstyle_compass\views.py:323 .\src\playstyle_compass\views.py:349
+#: .\src\playstyle_compass\views.py:1112
 msgid "Search Results :: PlayStyle Compass"
 msgstr "Rezultate Căutare :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:434 .\src\playstyle_compass\views.py:508
-#: .\src\playstyle_compass\views.py:514
+#: .\src\playstyle_compass\views.py:433 .\src\playstyle_compass\views.py:507
+#: .\src\playstyle_compass\views.py:513
 msgid "You don't have permission to view this content."
 msgstr "Nu ai permisiunea să vezi acest conținut."
 
-#: .\src\playstyle_compass\views.py:447
+#: .\src\playstyle_compass\views.py:446
 msgid "Games Reviewed :: PlayStyle Compass"
 msgstr "Jocuri Evaluate :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:464
+#: .\src\playstyle_compass\views.py:463
 msgid "Favorites :: PlayStyle Compass"
 msgstr "Favorite :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:476
+#: .\src\playstyle_compass\views.py:475
 msgid "Game Queue :: PlayStyle Compass"
 msgstr "Jocuri Programate :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:550
+#: .\src\playstyle_compass\views.py:546
 msgid "Top Rated Games :: PlayStyle Compass"
 msgstr "Top Jocuri :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:573
+#: .\src\playstyle_compass\views.py:569
 msgid "Upcoming Games :: PlayStyle Compass"
 msgstr "Jocuri în Dezvoltare :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:591
+#: .\src\playstyle_compass\views.py:587
 msgid "You have already reviewed this game!"
 msgstr "Ai evaluat deja acest joc!"
 
-#: .\src\playstyle_compass\views.py:627
+#: .\src\playstyle_compass\views.py:623
 msgid "Your review has been successfully submitted."
 msgstr "Recenzia ta a fost trimisă cu succes."
 
-#: .\src\playstyle_compass\views.py:636
+#: .\src\playstyle_compass\views.py:632
 msgid "Add Review :: PlayStyle Compass"
 msgstr "Adaugă Recenzie :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:656 .\src\playstyle_compass\views.py:798
+#: .\src\playstyle_compass\views.py:652 .\src\playstyle_compass\views.py:794
 msgid "You haven't written any reviews for this game!"
 msgstr "Nu ai scris nicio recenzie pentru acest joc!"
 
-#: .\src\playstyle_compass\views.py:672
+#: .\src\playstyle_compass\views.py:668
 msgid "Your review has been successfully updated."
 msgstr "Recenzia ta a fost actualizată cu succes."
 
-#: .\src\playstyle_compass\views.py:678
+#: .\src\playstyle_compass\views.py:674
 msgid "Edit Review :: PlayStyle Compass"
 msgstr "Editează Recenzia :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:726
+#: .\src\playstyle_compass\views.py:722
 msgid "You cannot like your own review."
 msgstr "Nu poți aprecia propria recenzie."
 
-#: .\src\playstyle_compass\views.py:743 .\src\playstyle_compass\views.py:779
+#: .\src\playstyle_compass\views.py:739 .\src\playstyle_compass\views.py:775
 msgid "Review ID invalid."
 msgstr "ID recenzie invalid."
 
-#: .\src\playstyle_compass\views.py:746 .\src\playstyle_compass\views.py:782
+#: .\src\playstyle_compass\views.py:742 .\src\playstyle_compass\views.py:778
 msgid "You must be logged in to like or dislike a review."
 msgstr "Trebuie să fii autentificat pentru a aprecia sau critica o recenzie."
 
-#: .\src\playstyle_compass\views.py:761
+#: .\src\playstyle_compass\views.py:757
 msgid "You cannot dislike your own review."
 msgstr "Nu poți critica propria recenzie."
 
-#: .\src\playstyle_compass\views.py:796
+#: .\src\playstyle_compass\views.py:792
 msgid "Your review has been successfully deleted!"
 msgstr "Recenzia ta a fost ștearsă cu succes!"
 
-#: .\src\playstyle_compass\views.py:839
+#: .\src\playstyle_compass\views.py:835
 #, python-format
 msgid "You have already shared %(game_title)s with %(profile_name)s."
 msgstr "Ai distribuit deja jocul \"%(game_title)s\" către %(profile_name)s."
 
-#: .\src\playstyle_compass\views.py:882
+#: .\src\playstyle_compass\views.py:878
 #, python-format
 msgid "You have successfully shared %(game_title)s with %(profile_name)s."
 msgstr "Ai distribuit cu succes jocul %(game_title)s către %(profile_name)s."
 
-#: .\src\playstyle_compass\views.py:893
+#: .\src\playstyle_compass\views.py:889
 msgid "Receiver ID not provided"
 msgstr "ID destinatar lipsă"
 
-#: .\src\playstyle_compass\views.py:896
+#: .\src\playstyle_compass\views.py:892
 msgid "Invalid request method"
 msgstr "Metodă de cerere invalidă"
 
-#: .\src\playstyle_compass\views.py:922
+#: .\src\playstyle_compass\views.py:918
 msgid "Shared Games :: PlayStyle Compass"
 msgstr "Jocuri Distribuite :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:994
+#: .\src\playstyle_compass\views.py:990
 msgid "Similar PlayStyles :: PlayStyle Compass"
 msgstr "Stiluri de Joc Similare :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:1022
+#: .\src\playstyle_compass\views.py:1018
 msgid "Kinded Play Histories :: PlayStyle Compass"
 msgstr "Istorii de Joc Similare :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:1047
+#: .\src\playstyle_compass\views.py:1043
 msgid "Franchises :: PlayStyle Compass"
 msgstr "Francize :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:1081
+#: .\src\playstyle_compass\views.py:1077
 msgid "Characters :: PlayStyle Compass"
 msgstr "Caractere :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:1215
+#: .\src\playstyle_compass\views.py:1211
 msgid "Game Library :: PlayStyle Compass"
 msgstr "Biblioteca de Jocuri :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:1254
+#: .\src\playstyle_compass\views.py:1250
 msgid "News :: PlayStyle Compass"
 msgstr "Știri :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:1290
+#: .\src\playstyle_compass\views.py:1286
 msgid "Similar Games Directory :: PlayStyle Compass"
 msgstr "Catalog Jocuri Similare :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:1303
+#: .\src\playstyle_compass\views.py:1299
 msgid "Games like"
 msgstr "Jocuri ca"
 
-#: .\src\playstyle_compass\views.py:1335
+#: .\src\playstyle_compass\views.py:1331
 msgid "Open World Games :: PlayStyle Compass"
 msgstr "Jocuri Open-World :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:1352
+#: .\src\playstyle_compass\views.py:1348
 msgid "Linear Gameplay Games :: PlayStyle Compass"
 msgstr "Jocuri cu Gameplay Liniar :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:1367
+#: .\src\playstyle_compass\views.py:1363
 msgid "Indie Games :: PlayStyle Compass"
 msgstr "Jocuri Indie :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:1382
+#: .\src\playstyle_compass\views.py:1378
 msgid "Steam Games :: PlayStyle Compass"
 msgstr "Jocuri Steam :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:1397
+#: .\src\playstyle_compass\views.py:1393
 msgid "Free to Play Games :: PlayStyle Compass"
 msgstr "Jocuri Free to Play :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:1414
+#: .\src\playstyle_compass\views.py:1410
 msgid "VR Games :: PlayStyle Compass"
 msgstr "Jocuri VR :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:1431
+#: .\src\playstyle_compass\views.py:1427
 msgid "Beginner Games :: PlayStyle Compass"
 msgstr "Jocuri pentru începători :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:1456
+#: .\src\playstyle_compass\views.py:1452
 msgid "Create Game List :: PlayStyle Compass"
 msgstr "Creează listă de jocuri :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:1480
+#: .\src\playstyle_compass\views.py:1476
 msgid "Edit Game List :: PlayStyle Compass"
 msgstr "Editează lista de jocuri :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:1540
+#: .\src\playstyle_compass\views.py:1536
 msgid "View Game List :: PlayStyle Compass"
 msgstr "Vizualizează lista de jocuri :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:1600
+#: .\src\playstyle_compass\views.py:1596
 msgid "Game list successfully shared!"
 msgstr "Lista de jocuri a fost împărtășită cu succes!"
 
-#: .\src\playstyle_compass\views.py:1606
+#: .\src\playstyle_compass\views.py:1602
 msgid "Share Game List :: PlayStyle Compass"
 msgstr "Distribuie lista de jocuri :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:1646
+#: .\src\playstyle_compass\views.py:1642
 msgid "Game Lists :: PlayStyle Compass"
 msgstr "Liste de jocuri :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:1671
+#: .\src\playstyle_compass\views.py:1667
 msgid "Game Lists You Shared with Others"
 msgstr "Liste de jocuri împărtășite cu alții"
 
-#: .\src\playstyle_compass\views.py:1675
+#: .\src\playstyle_compass\views.py:1671
 msgid "Game Lists Shared With You"
 msgstr "Liste de jocuri împărtășite cu tine"
 
-#: .\src\playstyle_compass\views.py:1747
+#: .\src\playstyle_compass\views.py:1743
 msgid "Review submitted successfully!"
 msgstr "Recenzia a fost trimisă cu succes!"
 
-#: .\src\playstyle_compass\views.py:1772
+#: .\src\playstyle_compass\views.py:1768
 msgid "Review updated successfully!"
 msgstr "Recenzia a fost actualizată cu succes!"
 
-#: .\src\playstyle_compass\views.py:1792
+#: .\src\playstyle_compass\views.py:1788
 msgid "Review deleted successfully!"
 msgstr "Recenzia a fost ștearsă cu succes!"
 
-#: .\src\playstyle_compass\views.py:1836
+#: .\src\playstyle_compass\views.py:1832
 msgid "Reviewed Game Lists :: PlayStyle Compass"
 msgstr "Liste de jocuri recenzate :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:1861
+#: .\src\playstyle_compass\views.py:1857
 msgid "Privacy Settings :: PlayStyle Compass"
 msgstr "Setări de Confidențialitate :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:1899
+#: .\src\playstyle_compass\views.py:1895
 msgid "Explore Game Lists :: PlayStyle Compass"
 msgstr "Explorează Listele de Jocuri :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:1924
+#: .\src\playstyle_compass\views.py:1920
 msgid "You can no longer edit this comment."
 msgstr "Nu mai poți edita acest comentariu."
 
-#: .\src\playstyle_compass\views.py:1933
+#: .\src\playstyle_compass\views.py:1929
 msgid "Comment text cannot be empty."
 msgstr "Textul comentariului nu poate fi gol"
 
-#: .\src\playstyle_compass\views.py:1948
+#: .\src\playstyle_compass\views.py:1944
 msgid "Comment updated successfully."
 msgstr "Comentariul a fost actualizat cu succes."
 
-#: .\src\playstyle_compass\views.py:2079
+#: .\src\playstyle_compass\views.py:2075
 msgid "Favorite Game Lists :: PlayStyle Compass"
 msgstr "Liste favorite de jocuri :: PlayStyle Compass"
 
-#: .\src\playstyle_manager\settings.py:229 .\src\templates\base.html:379
+#: .\src\playstyle_compass\views.py:2094
+#| msgid "Shared Games :: PlayStyle Compass"
+msgid "Popular Games :: PlayStyle Compass"
+msgstr "Jocuri Populare :: PlayStyle Compass"
+
+#: .\src\playstyle_manager\settings.py:215 .\src\templates\base.html:382
 msgid "English"
 msgstr "Engleză"
 
-#: .\src\playstyle_manager\settings.py:229 .\src\templates\base.html:387
+#: .\src\playstyle_manager\settings.py:215 .\src\templates\base.html:390
 msgid "Romanian"
 msgstr "Română"
 
@@ -2085,7 +2092,7 @@ msgstr "Română"
 msgid "Playstyle"
 msgstr "Playstyle"
 
-#: .\src\templates\base.html:51 .\src\templates\base.html:183
+#: .\src\templates\base.html:51 .\src\templates\base.html:186
 msgid "Create Playstyle"
 msgstr "Creează Playstyle"
 
@@ -2150,191 +2157,197 @@ msgid "Beginner-Friendly Games"
 msgstr "Jocuri pentru Începători"
 
 #: .\src\templates\base.html:114
+#| msgid "Similar Games"
+msgid "Popular Games"
+msgstr "Jocuri Populare"
+
+#: .\src\templates\base.html:117
 msgid "Top Rated Games"
 msgstr "Top Jocuri"
 
-#: .\src\templates\base.html:117
+#: .\src\templates\base.html:120
 msgid "Upcoming Games"
 msgstr "Jocuri în Dezvoltare"
 
-#: .\src\templates\base.html:120
+#: .\src\templates\base.html:123
 msgid "Single-player Games"
 msgstr "Jocuri Single-player"
 
-#: .\src\templates\base.html:123
+#: .\src\templates\base.html:126
 msgid "Multiplayer Games"
 msgstr "Jocuri Multiplayer"
 
-#: .\src\templates\base.html:126
+#: .\src\templates\base.html:129
 msgid "Open-World Games"
 msgstr "Jocuri Open-World"
 
-#: .\src\templates\base.html:129
+#: .\src\templates\base.html:132
 msgid "Indie Games"
 msgstr "Jocuri Indie"
 
-#: .\src\templates\base.html:132
+#: .\src\templates\base.html:135
 msgid "Steam Games"
 msgstr "Jocuri Steam"
 
-#: .\src\templates\base.html:135
+#: .\src\templates\base.html:138
 msgid "Free to Play Games"
 msgstr "Jocuri Free to Play"
 
-#: .\src\templates\base.html:138
+#: .\src\templates\base.html:141
 msgid "Linear Gameplay Games"
 msgstr "Jocuri cu Gameplay Liniar"
 
-#: .\src\templates\base.html:141
+#: .\src\templates\base.html:144
 msgid "VR Games"
 msgstr "Jocuri VR"
 
-#: .\src\templates\base.html:147
+#: .\src\templates\base.html:150
 msgid "Explore"
 msgstr "Explorează"
 
-#: .\src\templates\base.html:151
+#: .\src\templates\base.html:154
 msgid "News"
 msgstr "Știri"
 
-#: .\src\templates\base.html:154 .\src\templates\base.html:188
+#: .\src\templates\base.html:157 .\src\templates\base.html:191
 msgid "Game Library"
 msgstr "Biblioteca de Jocuri"
 
-#: .\src\templates\base.html:157 .\src\templates\base.html:193
+#: .\src\templates\base.html:160 .\src\templates\base.html:196
 #: .\src\users\templates\user_related\user_profile.html:195
 msgid "Game Lists"
 msgstr "Liste de jocuri"
 
-#: .\src\templates\base.html:160 .\src\templates\base.html:198
+#: .\src\templates\base.html:163 .\src\templates\base.html:201
 msgid "Similar Games Directory"
 msgstr "Catalog Jocuri Similare"
 
-#: .\src\templates\base.html:172
+#: .\src\templates\base.html:175
 msgid "Other"
 msgstr "Altele"
 
-#: .\src\templates\base.html:176
+#: .\src\templates\base.html:179
 msgid "Preference Quiz"
 msgstr "Chestionarul de Preferințe"
 
-#: .\src\templates\base.html:242 .\src\templates\base.html:269
+#: .\src\templates\base.html:245 .\src\templates\base.html:272
 msgid "Account"
 msgstr "Cont"
 
-#: .\src\templates\base.html:246
+#: .\src\templates\base.html:249
 msgid "Profile"
 msgstr "Profil"
 
-#: .\src\templates\base.html:247 .\src\users\templates\messaging\chat.html:24
+#: .\src\templates\base.html:250 .\src\users\templates\messaging\chat.html:24
 msgid "View Profile"
 msgstr "Vezi Profil"
 
-#: .\src\templates\base.html:248
+#: .\src\templates\base.html:251
 msgid "Edit Profile Info"
 msgstr "Editează informațiile profilului"
 
-#: .\src\templates\base.html:249
+#: .\src\templates\base.html:252
 msgid "Update Profile Picture"
 msgstr "Actualizează poza de profil"
 
-#: .\src\templates\base.html:250
+#: .\src\templates\base.html:253
 msgid "Update Profile Name"
 msgstr "Actualizează numele profilului"
 
-#: .\src\templates\base.html:254
+#: .\src\templates\base.html:257
 msgid "Gaming"
 msgstr "Jocuri"
 
-#: .\src\templates\base.html:256
+#: .\src\templates\base.html:259
 msgid "Shared Game Lists"
 msgstr "Liste de jocuri împărtășite"
 
-#: .\src\templates\base.html:261
+#: .\src\templates\base.html:264
 msgid "Settings"
 msgstr "Setări"
 
-#: .\src\templates\base.html:262
+#: .\src\templates\base.html:265
 msgid "Manage Notifications"
 msgstr "Gestionează notificările"
 
-#: .\src\templates\base.html:263
+#: .\src\templates\base.html:266
 msgid "Manage Privacy"
 msgstr "Gestionează Confidențialitatea"
 
-#: .\src\templates\base.html:264
+#: .\src\templates\base.html:267
 msgid "Update Password"
 msgstr "Actualizează parola"
 
-#: .\src\templates\base.html:265
+#: .\src\templates\base.html:268
 msgid "Update Email Address"
 msgstr "Actualizează adresa de email"
 
-#: .\src\templates\base.html:270
+#: .\src\templates\base.html:273
 msgid "Deactivate Account"
 msgstr "Dezactivează contul"
 
-#: .\src\templates\base.html:271
+#: .\src\templates\base.html:274
 msgid "Sign Out"
 msgstr "Deconectează-te"
 
-#: .\src\templates\base.html:278
+#: .\src\templates\base.html:281
 msgid "Social"
 msgstr "Social"
 
-#: .\src\templates\base.html:281
+#: .\src\templates\base.html:284
 msgid "Messages"
 msgstr "Mesaje"
 
-#: .\src\templates\base.html:282
+#: .\src\templates\base.html:285
 msgid "Following List"
 msgstr "Lista Urmăriților"
 
-#: .\src\templates\base.html:283
+#: .\src\templates\base.html:286
 msgid "Followers List"
 msgstr "Lista Urmăritorilor"
 
-#: .\src\templates\base.html:284
+#: .\src\templates\base.html:287
 msgid "Your Friends"
 msgstr "Prieteni"
 
-#: .\src\templates\base.html:285
+#: .\src\templates\base.html:288
 msgid "Friend Requests"
 msgstr "Cereri de Prietenie"
 
-#: .\src\templates\base.html:286
+#: .\src\templates\base.html:289
 msgid "Chat Rooms"
 msgstr "Camere de chat"
 
-#: .\src\templates\base.html:287
+#: .\src\templates\base.html:290
 msgid "Blocked Users"
 msgstr "Utilizatori blocați"
 
-#: .\src\templates\base.html:295
+#: .\src\templates\base.html:298
 #: .\src\users\templates\registration\login.html:61
 #: .\src\users\templates\registration\login.html:66
 #: .\src\users\templates\registration\register.html:107
 msgid "Log in"
 msgstr "Autentificare"
 
-#: .\src\templates\base.html:309 .\src\templates\base.html:315
+#: .\src\templates\base.html:312 .\src\templates\base.html:318
 #: .\src\users\templates\general\contact.html:19
 msgid "Contact"
 msgstr "Contact"
 
-#: .\src\templates\base.html:341
+#: .\src\templates\base.html:344
 msgid "Please confirm your email address to unlock all features."
-msgstr "Te rugăm să confirmi adresa de email pentru a debloca toate funcțiile."
+msgstr ""
+"Te rugăm să confirmi adresa de email pentru a debloca toate funcțiile."
 
-#: .\src\templates\base.html:343
+#: .\src\templates\base.html:346
 msgid "Resend verification link"
 msgstr "Retrimite link-ul de verificare"
 
-#: .\src\templates\base.html:401
+#: .\src\templates\base.html:404
 msgid "PlayStyle Compass. All rights reserved."
 msgstr "PlayStyle Compass. Toate drepturile rezervate."
 
-#: .\src\templates\base.html:406
+#: .\src\templates\base.html:409
 msgid "Go top"
 msgstr "Mergi sus"
 
@@ -2348,11 +2361,11 @@ msgstr ""
 
 #: .\src\users\forms.py:65
 msgid ""
-"Choose nickname that will be shown to other users on the platform. This name "
-"is not used for login."
+"Choose nickname that will be shown to other users on the platform. This name"
+" is not used for login."
 msgstr ""
-"Alegeți un nume care va fi afișat altor utilizatori pe platformă. Acest nume "
-"nu este folosit pentru autentificare."
+"Alegeți un nume care va fi afișat altor utilizatori pe platformă. Acest nume"
+" nu este folosit pentru autentificare."
 
 #: .\src\users\forms.py:95
 msgid "Enter the same password as before for verification."
@@ -2378,15 +2391,15 @@ msgstr "Acest nume de utilizator este deja folosit."
 msgid "This email address is already in use."
 msgstr "Acest email este deja folosit."
 
-#: .\src\users\forms.py:144 .\src\users\forms.py:381
+#: .\src\users\forms.py:144 .\src\users\forms.py:383
 msgid "Profile name should be at least three characters long."
 msgstr "Numele de profil trebuie să aibă cel puțin 3 caractere."
 
-#: .\src\users\forms.py:149 .\src\users\forms.py:376
+#: .\src\users\forms.py:149 .\src\users\forms.py:378
 msgid "Profile name should only contain letters and numbers."
 msgstr "Numele de profil trebuie să conțină doar litere și cifre."
 
-#: .\src\users\forms.py:153 .\src\users\forms.py:394
+#: .\src\users\forms.py:153 .\src\users\forms.py:396
 msgid "This profile name is already in use."
 msgstr "Acest nume de profil este deja folosit."
 
@@ -2402,63 +2415,63 @@ msgstr "Noua adresă de email nu poate fi cea curentă."
 msgid "New email addresses must match."
 msgstr "Noile adrese de email trebuie să coincidă."
 
-#: .\src\users\forms.py:386
+#: .\src\users\forms.py:388
 msgid "The new profile name is the same as the existing one."
 msgstr "Noul nume de profil este același ca cel existent."
 
-#: .\src\users\forms.py:468
+#: .\src\users\forms.py:470
 msgid "Tell us a little about yourself..."
 msgstr "Spune-ne puțin despre tine..."
 
-#: .\src\users\forms.py:472
+#: .\src\users\forms.py:474
 msgid "Enter your favorite game..."
 msgstr "Introdu jocul tău preferat..."
 
-#: .\src\users\forms.py:475
+#: .\src\users\forms.py:477
 msgid "Enter your favorite character..."
 msgstr "Introdu personajul tău preferat..."
 
-#: .\src\users\forms.py:480
+#: .\src\users\forms.py:482
 msgid "Enter your social media handle..."
 msgstr "Introdu handle-ul tău de social media..."
 
-#: .\src\users\forms.py:486
+#: .\src\users\forms.py:488
 msgid "Describe your gaming setup..."
 msgstr "Descrie-ți configurația de gaming..."
 
-#: .\src\users\forms.py:490
+#: .\src\users\forms.py:492
 msgid "Enter your favorite franchise..."
 msgstr "Introdu franciza ta preferată..."
 
-#: .\src\users\forms.py:493
+#: .\src\users\forms.py:495
 msgid "What's the most recent game you finished?"
 msgstr "Care este ultimul joc terminat?"
 
-#: .\src\users\forms.py:496
+#: .\src\users\forms.py:498
 msgid "What is your preferred streaming platform?"
 msgstr "Care este platforma ta preferată de streaming?"
 
-#: .\src\users\forms.py:499
+#: .\src\users\forms.py:501
 msgid "What game are you currently playing?"
 msgstr "Ce joc joci în prezent?"
 
-#: .\src\users\forms.py:503
+#: .\src\users\forms.py:505
 msgid "What is your favorite soundtrack from a game?"
 msgstr "Care este coloana sonoră preferată dintr-un joc?"
 
-#: .\src\users\forms.py:507
+#: .\src\users\forms.py:509
 msgid "What is your gaming nickname or alias?"
 msgstr "Care este porecla sau aliasul tău de gaming?"
 
-#: .\src\users\forms.py:522
+#: .\src\users\forms.py:524
 msgid "You can only select up to 3 genres."
 msgstr "Poți selecta doar până la 3 genuri."
 
-#: .\src\users\forms.py:528
+#: .\src\users\forms.py:530
 msgid "You can only select up to 3 game modes."
 msgstr "Poți selecta maximum 3 moduri de joc."
 
-#: .\src\users\forms.py:537
+#: .\src\users\forms.py:539
 msgid "Please enter a valid social media link."
 msgstr "Te rog introdu un link valid către social media."
 
@@ -2469,19 +2482,21 @@ msgstr "Activează-ți contul de utilizator."
 #: .\src\users\pipeline.py:35 .\src\users\views.py:241
 #, python-format
 msgid ""
-"Hello <b>%(user)s</b>, please go to your email <b>%(to_email)s</b> inbox and "
-"click on the received activation link to confirm your registration. <b>Note:"
-"</b> If you cannot find the email in your inbox, we recommend checking your "
-"spam folder."
+"Hello <b>%(user)s</b>, please go to your email <b>%(to_email)s</b> inbox and"
+" click on the received activation link to confirm your registration. "
+"<b>Note:</b> If you cannot find the email in your inbox, we recommend "
+"checking your spam folder."
 msgstr ""
-"Salut <b>%(user)s</b>, te rugăm să mergi la adresa ta de email <b>"
-"%(to_email)s</b> și să dai click pe link-ul de activare primit pentru a-ți "
-"confirma înregistrarea. <b>Notă:</b> Dacă nu găsești email-ul în casuța ta "
-"de mesaje primite, îți recomandăm să verifici și folderul de spam."
+"Salut <b>%(user)s</b>, te rugăm să mergi la adresa ta de email "
+"<b>%(to_email)s</b> și să dai click pe link-ul de activare primit pentru "
+"a-ți confirma înregistrarea. <b>Notă:</b> Dacă nu găsești email-ul în casuța"
+" ta de mesaje primite, îți recomandăm să verifici și folderul de spam."
 
-#: .\src\users\pipeline.py:45 .\src\users\views.py:252 .\src\users\views.py:294
+#: .\src\users\pipeline.py:45 .\src\users\views.py:252
+#: .\src\users\views.py:294
 #, python-format
-msgid "Problem sending email to %(to_email)s, check if you typed it correctly."
+msgid ""
+"Problem sending email to %(to_email)s, check if you typed it correctly."
 msgstr ""
 "Probleme la trimiterea emailului către %(to_email)s, verifică dacă l-ai "
 "introdus corect."
@@ -2549,7 +2564,8 @@ msgstr "Adresa nouă de email:"
 #: .\src\users\templates\account_actions\confirm_email_change.txt:8
 msgid "To confirm this change, please click on the following link:"
 msgstr ""
-"Pentru a confirma această schimbare, te rugăm să dai click pe următorul link:"
+"Pentru a confirma această schimbare, te rugăm să dai click pe următorul "
+"link:"
 
 #: .\src\users\templates\account_actions\confirm_email_change.txt:11
 msgid "If you did not request this change, please ignore this email."
@@ -2570,9 +2586,9 @@ msgid ""
 "account, please proceed carefully. Once deleted, your account and all "
 "associated data will be permanently removed."
 msgstr ""
-"Ne pare rău să te vedem plecând. Dacă dorești să ștergi contul tău PlayStyle "
-"Compass, te rugăm să procedezi cu atenție. Odată șters, contul tău și toate "
-"datele asociate vor fi eliminate permanent."
+"Ne pare rău să te vedem plecând. Dacă dorești să ștergi contul tău PlayStyle"
+" Compass, te rugăm să procedezi cu atenție. Odată șters, contul tău și toate"
+" datele asociate vor fi eliminate permanent."
 
 #: .\src\users\templates\account_actions\delete_account.html:21
 msgid "Delete your account"
@@ -2580,7 +2596,8 @@ msgstr "Șterge-ți contul"
 
 #: .\src\users\templates\account_actions\delete_account.html:23
 msgid ""
-"Are you sure you want to delete your account? This action cannot be undone!!!"
+"Are you sure you want to delete your account? This action cannot be "
+"undone!!!"
 msgstr ""
 "Ești sigur că vrei să ștergi contul? Această acțiune nu poate fi anulată!!!"
 
@@ -2610,7 +2627,8 @@ msgstr "SCHIMBĂ PAROLA"
 #: .\src\users\templates\account_actions\password_change_form.html:12
 msgid ""
 "Ensure the security of your PlayStyle Compass account by updating your "
-"password. Choose a strong and unique password to protect your gaming profile."
+"password. Choose a strong and unique password to protect your gaming "
+"profile."
 msgstr ""
 "Asigură-ți securitatea contului tău PlayStyle Compass actualizând parola. "
 "Alege o parolă puternică și unică pentru a-ți proteja profilul de joc."
@@ -2702,12 +2720,10 @@ msgstr "Cerere de Resetare Parolă"
 
 #: .\src\users\templates\account_actions\password_reset_email.html:89
 msgid ""
-"You're receiving this email because you requested a password reset for your "
-"user account.\n"
+"You're receiving this email because you requested a password reset for your user account.\n"
 "            Please click the button below to reset your password: "
 msgstr ""
-"Primiți acest e-mail deoarece ați solicitat resetarea parolei pentru contul "
-"dvs. de utilizator.\n"
+"Primiți acest e-mail deoarece ați solicitat resetarea parolei pentru contul dvs. de utilizator.\n"
 "Vă rugăm să dați click pe butonul de mai jos pentru a vă reseta parola:"
 
 #: .\src\users\templates\account_actions\password_reset_email.html:91
@@ -2716,7 +2732,8 @@ msgstr "Linkul de resetare este disponibil doar timp de 30 de minute!"
 
 #: .\src\users\templates\account_actions\password_reset_email.html:99
 msgid "If you didn't request a password reset, please ignore this email."
-msgstr "Dacă nu ai cerut o resetare a parolei, te rugăm să ignori acest email."
+msgstr ""
+"Dacă nu ai cerut o resetare a parolei, te rugăm să ignori acest email."
 
 #: .\src\users\templates\account_actions\password_reset_email.html:102
 msgid "Thank you for using"
@@ -2965,8 +2982,8 @@ msgid ""
 "Click on any conversation to continue chatting or review your recent "
 "interactions."
 msgstr ""
-"Aici poți vizualiza toate conversațiile tale curente cu alți utilizatori. Fă "
-"clic pe orice conversație pentru a continua chatul sau pentru a revizui "
+"Aici poți vizualiza toate conversațiile tale curente cu alți utilizatori. Fă"
+" clic pe orice conversație pentru a continua chatul sau pentru a revizui "
 "interacțiunile recente."
 
 #: .\src\users\templates\messaging\chat_list.html:26
@@ -3028,8 +3045,8 @@ msgstr ""
 
 #: .\src\users\templates\registration\delete_account.html:5
 msgid ""
-"We received a request to delete your account. Please click on the link below "
-"to confirm this request:"
+"We received a request to delete your account. Please click on the link below"
+" to confirm this request:"
 msgstr ""
 "Am primit o solicitare pentru ștergerea contului dumneavoastră. Vă rugăm să "
 "faceți click pe linkul de mai jos pentru a confirma această solicitare:"
@@ -3068,8 +3085,8 @@ msgstr "LOGIN"
 
 #: .\src\users\templates\registration\login.html:15
 msgid ""
-"Welcome back to PlayStyle Compass! Log in to access your personalized gaming "
-"recommendations and continue your gaming journey with ease."
+"Welcome back to PlayStyle Compass! Log in to access your personalized gaming"
+" recommendations and continue your gaming journey with ease."
 msgstr ""
 "Bine ai revenit la PlayStyle Compass! Conectează-te pentru a accesa "
 "recomandările personalizate de jocuri și pentru a-ți continua călătoria în "
@@ -3152,8 +3169,8 @@ msgid ""
 "View the list of users who are following this person. See who’s engaging "
 "with their profile!"
 msgstr ""
-"Vizualizați lista utilizatorilor care urmăresc această persoană. Vedeți cine "
-"interacționează cu profilul său!"
+"Vizualizați lista utilizatorilor care urmăresc această persoană. Vedeți cine"
+" interacționează cu profilul său!"
 
 #: .\src\users\templates\user_related\followers_list.html:18
 #: .\src\users\templates\user_related\user_profile.html:213
@@ -3191,8 +3208,8 @@ msgstr "CERERI DE PRIETENIE"
 
 #: .\src\users\templates\user_related\friend_requests.html:12
 msgid ""
-"Review and manage incoming and sent friend requests. Stay connected with new "
-"friends!"
+"Review and manage incoming and sent friend requests. Stay connected with new"
+" friends!"
 msgstr ""
 "Revizuiți și gestionați cererile de prietenie primite și trimise. Rămâneți "
 "conectat cu prietenii noi!"
@@ -3254,8 +3271,8 @@ msgid ""
 "most to you!"
 msgstr ""
 "Gestionează-ți preferințele de notificare pentru a rămâne la curent cu "
-"activitățile importante. Personalizează-ți experiența pentru a te asigura că "
-"nu ratezi niciodată ceea ce contează cel mai mult pentru tine!"
+"activitățile importante. Personalizează-ți experiența pentru a te asigura că"
+" nu ratezi niciodată ceea ce contează cel mai mult pentru tine!"
 
 #: .\src\users\templates\user_related\notification_settings.html:19
 msgid "Notification Settings"
@@ -3287,7 +3304,8 @@ msgstr "Notificări Cereri de Prietenie"
 msgid ""
 "Receive notifications when someone sends or accepts your friend request."
 msgstr ""
-"Primiți notificări când cineva trimite sau acceptă cererea dvs. de prietenie."
+"Primiți notificări când cineva trimite sau acceptă cererea dvs. de "
+"prietenie."
 
 #: .\src\users\templates\user_related\notification_settings.html:65
 msgid "Message Notifications"
@@ -3332,8 +3350,8 @@ msgid ""
 "Customize your gaming persona here. Update bio, select favorite game, and "
 "more. Make your mark in the gaming community."
 msgstr ""
-"Personalizează-ți persona de gaming aici. Actualizează biografia, selectează "
-"jocul preferat și multe altele. Fă-ți simțită prezența în comunitatea de "
+"Personalizează-ți persona de gaming aici. Actualizează biografia, selectează"
+" jocul preferat și multe altele. Fă-ți simțită prezența în comunitatea de "
 "gaming."
 
 #: .\src\users\templates\user_related\profile_details.html:31
@@ -3531,8 +3549,8 @@ msgid ""
 "You can only update your profile name once per hour. Please try again in {} "
 "minutes and {} seconds."
 msgstr ""
-"Poți actualiza numele profilului doar o dată pe oră. Te rog încearcă din nou "
-"în {} minute și {} secunde."
+"Poți actualiza numele profilului doar o dată pe oră. Te rog încearcă din nou"
+" în {} minute și {} secunde."
 
 #: .\src\users\views.py:162
 msgid "Your profile name has been successfully changed!"
@@ -3561,15 +3579,15 @@ msgstr "Confirmați ștergerea contului dvs."
 #: .\src\users\views.py:284
 #, python-format
 msgid ""
-"Hello <b>%(user)s</b>, please go to your email <b>%(to_email)s</b> inbox and "
-"click on the received link to confirm your account deletion. <b>Note:</b> If "
-"you cannot find the email in your inbox, we recommend checking your spam "
+"Hello <b>%(user)s</b>, please go to your email <b>%(to_email)s</b> inbox and"
+" click on the received link to confirm your account deletion. <b>Note:</b> "
+"If you cannot find the email in your inbox, we recommend checking your spam "
 "folder."
 msgstr ""
-"Bună <b>%(user)s</b>, vă rugăm să accesați căsuța de email <b>%(to_email)s</"
-"b> și să faceți clic pe linkul primit pentru a confirma ștergerea contului "
-"dumneavoastră. <b>Notă:</b> Dacă nu găsiți emailul în căsuța de inbox, vă "
-"recomandăm să verificați folderul de spam."
+"Bună <b>%(user)s</b>, vă rugăm să accesați căsuța de email "
+"<b>%(to_email)s</b> și să faceți clic pe linkul primit pentru a confirma "
+"ștergerea contului dumneavoastră. <b>Notă:</b> Dacă nu găsiți emailul în "
+"căsuța de inbox, vă recomandăm să verificați folderul de spam."
 
 #: .\src\users\views.py:324
 msgid "Register :: PlayStyle Compass"
@@ -3658,8 +3676,8 @@ msgid ""
 "An email confirmation has been sent to your current email address. Please "
 "check your inbox and click the link provided to confirm the email change."
 msgstr ""
-"Un email de confirmare a fost trimis la adresa ta de email actuală. Te rugăm "
-"să verifici inboxul și să dai click pe link pentru a confirma schimbarea "
+"Un email de confirmare a fost trimis la adresa ta de email actuală. Te rugăm"
+" să verifici inboxul și să dai click pe link pentru a confirma schimbarea "
 "emailului."
 
 #: .\src\users\views.py:565
@@ -3708,12 +3726,12 @@ msgstr "Contactare Finalizată :: PlayStyle Compass"
 
 #: .\src\users\views.py:658
 msgid ""
-"Thank you for contacting us! Our team will review it within 48 hours and get "
-"back to you as soon as possible.     Go to the homepage by clicking the "
+"Thank you for contacting us! Our team will review it within 48 hours and get"
+" back to you as soon as possible.     Go to the homepage by clicking the "
 "button below."
 msgstr ""
-"Îți mulțumim că ne-ai contactat! Echipa noastră va analiza mesajul în termen "
-"de 48 de ore și îți va răspunde cât mai curând posibil. Mergi la pagina "
+"Îți mulțumim că ne-ai contactat! Echipa noastră va analiza mesajul în termen"
+" de 48 de ore și îți va răspunde cât mai curând posibil. Mergi la pagina "
 "principală dând click pe butonul de mai jos."
 
 #: .\src\users\views.py:673
@@ -3744,8 +3762,8 @@ msgstr "<strong>%(profile_name)s</strong> este deja în lista ta de prieteni."
 #: .\src\users\views.py:749
 msgid "You cannot send a friend request to <strong>yourself.</strong>"
 msgstr ""
-"Nu poți trimite o cerere de prietenie către <strong>propria persoană.</"
-"strong>"
+"Nu poți trimite o cerere de prietenie către <strong>propria "
+"persoană.</strong>"
 
 #: .\src\users\views.py:760
 msgid "You already sent a friend request to this user."
@@ -3832,7 +3850,8 @@ msgstr "Cererea de prietenie a fost anulată."
 
 #: .\src\users\views.py:994
 #, python-format
-msgid "You canceled your friend request for <strong>%(profile_name)s</strong>."
+msgid ""
+"You canceled your friend request for <strong>%(profile_name)s</strong>."
 msgstr ""
 "Ați anulat cererea de prietenie pentru <strong>%(profile_name)s</strong>."
 

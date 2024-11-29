@@ -172,7 +172,7 @@
           <div class="lazy-video" data-src="{{ video_url }}"></div>
           {% endfor %}
       </div>
-      <p><strong>Stores:</strong> 
+      <p><strong>{% trans "Stores:" %}</strong> 
         {% if game.stores %}
             {% for store in game.stores %}
                 <a href="{{ store.store_url }}" class="store-button" target="_blank">

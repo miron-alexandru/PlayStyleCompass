@@ -548,6 +548,15 @@ def create_game_modes_data(guids, mode_strings, num_games=10, offset=0):
                 )
                 cursor.execute(insert_games_sql, game_values)
 
+                store_info = get_game_store_info(title)
+
+                if store_info:
+                    for store in store_info:
+                        store_name = store.get('store_name', None)
+                        store_url = store.get('url', None)
+
+                        cursor.execute(insert_game_stores_sql, (guid, title, store_name, store_url))
+
                 game_id = guid
 
                 if reviews_data:
@@ -655,6 +664,15 @@ def create_quiz_data(guids, num_games=1, offset=0):
                     linux_req_rec,
                 )
                 cursor.execute(insert_games_sql, game_values)
+
+                store_info = get_game_store_info(title)
+
+                if store_info:
+                    for store in store_info:
+                        store_name = store.get('store_name', None)
+                        store_url = store.get('url', None)
+
+                        cursor.execute(insert_game_stores_sql, (guid, title, store_name, store_url))
 
                 game_id = guid
 
