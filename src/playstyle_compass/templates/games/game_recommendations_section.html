@@ -83,6 +83,13 @@
         <button class="read-button" style="display: none;" onclick="readMore(this);">{% trans "[Read more...]" %}</button>
       </p>
       <p><strong>{% trans "Release date:" %}</strong> {{ game.release_date|default:"N/A"}}</p>
+      <p><strong>{% trans "Average Playtime:" %}</strong> 
+        {% if game.playtime and game.playtime > '0' %}
+          {{ game.playtime }} {% trans "hours" %}
+        {% else %}
+          N/A
+        {% endif %}
+      </p>
       <p><strong>{% trans "Developer:" %}</strong> {{ game.developers|default:"N/A"}}</p>
       <p><strong>{% trans "Genre:" %}</strong> {{ game.genres|default:"N/A" }}</p>
       <p><strong>{% trans "Platform:" %}</strong> {{ game.platforms|default:"N/A" }}</p>

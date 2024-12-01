@@ -19,6 +19,7 @@ from API_functions import (
     get_all_articles_from_year,
     get_all_articles_from_last_7_days,
     get_game_store_info,
+    get_game_playtime,
 )
 
 from data_extraction import (
@@ -63,6 +64,7 @@ from sql_queries import (
     remove_duplicate_news,
     create_stores_table_sql,
     insert_game_stores_sql,
+    remove_duplicate_stores,
 )
 
 
@@ -95,6 +97,7 @@ def parse_game_data(game_id, rawg_casual=False, rawg_popular=False):
     concepts = get_game_concepts(game_data, concept_ids)
     is_casual = 1 if rawg_casual else 0
     is_popular = 1 if rawg_popular else 0
+    playtime = get_game_playtime(title)
 
     steam_app_id = get_steam_app_id(title)
 
@@ -131,6 +134,7 @@ def parse_game_data(game_id, rawg_casual=False, rawg_popular=False):
         concepts,
         is_casual,
         is_popular,
+        playtime,
         pc_req_min,
         pc_req_rec,
         mac_req_min,
@@ -197,6 +201,7 @@ def create_games_data_db(game_ids, rawg_casual=False, rawg_popular=False):
                 concepts,
                 is_casual,
                 is_popular,
+                playtime,
                 pc_req_min,
                 pc_req_rec,
                 mac_req_min,
@@ -224,6 +229,7 @@ def create_games_data_db(game_ids, rawg_casual=False, rawg_popular=False):
                 concepts,
                 is_casual,
                 is_popular,
+                playtime,
                 pc_req_min,
                 pc_req_rec,
                 mac_req_min,
@@ -268,6 +274,7 @@ def create_games_data_db(game_ids, rawg_casual=False, rawg_popular=False):
             db_connection.commit()
 
         cursor.execute(remove_duplicates_sql)
+        cursor.execute(remove_duplicate_stores)
         cursor.execute(remove_duplicates_reviews)
         cursor.execute(remove_empty)
         db_connection.commit()
@@ -512,6 +519,7 @@ def create_game_modes_data(guids, mode_strings, num_games=10, offset=0):
                     concepts,
                     is_casual,
                     is_popular,
+                    playtime,
                     pc_req_min,
                     pc_req_rec,
                     mac_req_min,
@@ -539,6 +547,7 @@ def create_game_modes_data(guids, mode_strings, num_games=10, offset=0):
                     concepts,
                     is_casual,
                     is_popular,
+                    playtime,
                     pc_req_min,
                     pc_req_rec,
                     mac_req_min,
@@ -583,6 +592,7 @@ def create_game_modes_data(guids, mode_strings, num_games=10, offset=0):
                 db_connection.commit()
 
             cursor.execute(remove_duplicates_sql)
+            cursor.execute(remove_duplicate_stores)
             cursor.execute(remove_duplicates_reviews)
 
             db_connection.commit()
@@ -700,6 +710,7 @@ def create_quiz_data(guids, num_games=1, offset=0):
                 db_connection.commit()
 
             cursor.execute(remove_duplicates_sql)
+            cursor.execute(remove_duplicate_stores)
             cursor.execute(remove_duplicates_reviews)
             db_connection.commit()
 

@@ -32,6 +32,7 @@ class Game(models.Model):
     concepts = models.CharField(max_length=200)
     is_casual = models.BooleanField(default=False)
     is_popular = models.BooleanField(default=False)
+    playtime = models.CharField(max_length=100, null=True, blank=True)
     pc_req_min = models.TextField(default="")
     pc_req_rec = models.TextField(default="")
     mac_req_min = models.TextField(default="")

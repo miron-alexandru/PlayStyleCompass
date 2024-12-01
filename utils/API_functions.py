@@ -428,6 +428,57 @@ def get_game_store_info(game_name):
     else:
         return None
 
+def search_game_by_name(game_name, page=1, page_size=10):
+    """Searches for a game by its name using the RAWG API."""
+    url = "https://api.rawg.io/api/games"
+    params = {
+        'key': RAWG_API_KEY,
+        'search': game_name,
+        'page': page,
+        'page_size': page_size,
+        'search_exact': True,
+        'search_precise': True,
+    }
+    
+    response = requests.get(url, params=params)
+    
+    if response.status_code == 200:
+        games_data = response.json()
+        if games_data['results']:
+            first_game = games_data['results'][0]
+            game_id = first_game['id']
+            return {'game_id': game_id}
+        else:
+            return None
+    else:
+        print(f"Error: {response.status_code}")
+        return None
+
+def fetch_game_playtime(game_id):
+    """Retrieves the estimated playtime for a game using its ID from the RAWG API."""
+    url = f"https://api.rawg.io/api/games/{game_id}"
+    params = {'key': RAWG_API_KEY}
+    
+    response = requests.get(url, params=params)
+    
+    if response.status_code == 200:
+        game_details = response.json()
+        playtime = game_details.get('playtime', 'N/A')
+        return playtime
+    else:
+        print(f"Error: {response.status_code}")
+        return None
+
+def get_game_playtime(game_name):
+    """Retrieves the estimated playtime for a game based on its name."""
+    game_data = search_game_by_name(game_name)
+    if game_data:
+        game_id = game_data['game_id']
+        playtime = fetch_game_playtime(game_id)
+        return playtime
+    else:
+        return None
+
 
 class FetchDataException(Exception):
     """Custom data exception."""

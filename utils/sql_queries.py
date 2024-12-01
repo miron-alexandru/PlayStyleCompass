@@ -30,7 +30,8 @@ CREATE TABLE IF NOT EXISTS Games (
     translated_description_ro TEXT,
     translated_overview_ro TEXT,
     is_casual INTEGER DEFAULT 0,
-    is_popular INTEGER DEFAULT 0
+    is_popular INTEGER DEFAULT 0,
+    playtime TEXT
 );
 """
 
@@ -121,8 +122,8 @@ VALUES (?, ?, ?, ?);
 
 insert_games_sql = """
 INSERT INTO Games 
-(guid, title, description, overview, genres, platforms, themes, image, release_date, developers, game_images, similar_games, dlcs, franchises, videos, concepts, is_casual, is_popular, pc_req_min, pc_req_rec, mac_req_min, mac_req_rec, linux_req_min, linux_req_rec) 
-VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+(guid, title, description, overview, genres, platforms, themes, image, release_date, developers, game_images, similar_games, dlcs, franchises, videos, concepts, is_casual, is_popular, playtime, pc_req_min, pc_req_rec, mac_req_min, mac_req_rec, linux_req_min, linux_req_rec) 
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
 """
 
 insert_reviews_sql = """
@@ -205,6 +206,15 @@ DELETE FROM News
     SELECT MIN(rowid)
     FROM News
     GROUP BY article_id
+);
+"""
+
+remove_duplicate_stores= """
+DELETE FROM GameStores
+WHERE rowid NOT IN (
+    SELECT MIN(rowid)
+    FROM GameStores
+    GROUP BY guid, store_name, title
 );
 """
 
