@@ -379,7 +379,6 @@ def search_game(game_name, page=1, page_size=10):
             
             return {'game_id': game_id, 'stores': stores}
         else:
-            print("No results found.")
             return None
     else:
         print(f"Error: {response.status_code}")
@@ -428,7 +427,7 @@ def get_game_store_info(game_name):
     else:
         return None
 
-def search_game_by_name(game_name, page=1, page_size=10):
+def search_game_by_namex(game_name, page=1, page_size=10):
     """Searches for a game by its name using the RAWG API."""
     url = "https://api.rawg.io/api/games"
     params = {
@@ -454,7 +453,7 @@ def search_game_by_name(game_name, page=1, page_size=10):
         print(f"Error: {response.status_code}")
         return None
 
-def fetch_game_playtime(game_id):
+def fetch_game_playtimex(game_id):
     """Retrieves the estimated playtime for a game using its ID from the RAWG API."""
     url = f"https://api.rawg.io/api/games/{game_id}"
     params = {'key': RAWG_API_KEY}
@@ -469,7 +468,7 @@ def fetch_game_playtime(game_id):
         print(f"Error: {response.status_code}")
         return None
 
-def get_game_playtime(game_name):
+def get_game_playtimex(game_name):
     """Retrieves the estimated playtime for a game based on its name."""
     game_data = search_game_by_name(game_name)
     if game_data:
@@ -479,6 +478,95 @@ def get_game_playtime(game_name):
     else:
         return None
 
+
+import os
+import re
+import requests
+from roman import fromRoman, toRoman, InvalidRomanNumeralError
+
+
+def convert_roman_to_arabic(roman_str):
+    """Convert a Roman numeral string to an Arabic number (integer)."""
+    try:
+        return str(fromRoman(roman_str))
+    except (InvalidRomanNumeralError, ValueError):
+        return roman_str
+
+
+def convert_arabic_to_roman(arabic_str):
+    """Convert an Arabic number (integer) to a Roman numeral string."""
+    try:
+        num = int(arabic_str)
+        return toRoman(num)
+    except (ValueError, InvalidRomanNumeralError):
+        return arabic_str 
+
+
+def generate_title_variations(game_name):
+    """Generate variations of a game title by converting numbers to Roman numerals and vice versa."""
+    words = game_name.split()
+    variations = {game_name}
+    
+    # Replace numbers with Roman numerals and vice versa
+    for i, word in enumerate(words):
+        if word.isdigit():
+            roman = convert_arabic_to_roman(word)
+            if roman != word:
+                new_variation = " ".join(words[:i] + [roman] + words[i + 1:])
+                variations.add(new_variation)
+        else:
+            arabic = convert_roman_to_arabic(word.upper())
+            if arabic != word:
+                new_variation = " ".join(words[:i] + [arabic] + words[i + 1:])
+                variations.add(new_variation)
+                
+    return variations
+
+
+def fetch_from_api(url, params):
+    """Perform an HTTP GET request to the specified URL with provided parameters."""
+    try:
+        response = requests.get(url, params=params)
+        response.raise_for_status()
+        return response.json()
+    except requests.exceptions.RequestException as e:
+        print(f"API request failed: {e}")
+        return None
+
+
+def search_game_playtime(game_name, page=1, page_size=10):
+    """Search for games on the RAWG API by game title."""
+    url = "https://api.rawg.io/api/games" 
+    params = {
+        'key': RAWG_API_KEY,
+        'search': game_name,
+        'page': page,
+        'page_size': page_size,
+    }
+    data = fetch_from_api(url, params)
+    return data.get('results', []) if data else []
+
+
+def fetch_game_playtime(game_id):
+    """Retrieve the average playtime for a specific game by its ID."""
+    url = f"https://api.rawg.io/api/games/{game_id}"
+    params = {'key': RAWG_API_KEY}
+    data = fetch_from_api(url, params)
+    return data.get('playtime', 'N/A') if data else None
+
+
+def get_game_playtime(game_name):
+    """Get the playtime for a specified game by matching its title or variations."""
+    variations = generate_title_variations(game_name)
+    results = search_game_playtime(game_name)
+
+    for game in results:
+        game_title = game['name'].lower()
+        if any(variation.lower() == game_title for variation in variations):
+            game_id = game['id']
+            return fetch_game_playtime(game_id)
+
+    return None
 
 class FetchDataException(Exception):
     """Custom data exception."""
