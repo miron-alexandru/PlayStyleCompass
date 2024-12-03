@@ -17,6 +17,7 @@ from django.db.models import Avg, Q
 from django.utils.translation import gettext as _
 from django.utils.html import format_html, escape
 from django.utils.timezone import localtime
+from django.utils.http import url_has_allowed_host_and_scheme
 from django.views.decorators.http import require_POST
 
 from utils.constants import (

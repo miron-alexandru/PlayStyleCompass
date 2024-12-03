@@ -362,7 +362,6 @@ def search_game(game_name, page=1, page_size=10):
         'search': game_name,
         'page': page,
         'page_size': page_size,
-        'search_exact': True,
     }
     
     response = requests.get(url, params=params)
@@ -423,8 +422,8 @@ def get_game_store_info(game_name):
                 
                 if store_name:
                     store_details.append({'store_name': store_name, 'url': url})
-            
-            return store_details 
+
+            return store_details
         else:
             return None
     else:
