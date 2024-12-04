@@ -24,6 +24,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.8/umd/popper.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.min.js"></script>
   <link rel="stylesheet" type="text/css" href="{% static 'css/base.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'css/users/global_chat.css' %}">
 </head>
 
 {% load tz_detect %}
@@ -399,6 +400,29 @@
   <i id="theme-icon" class="fa-solid fa-moon dark-icon" title="Dark Theme Toggle" onclick="toggleTheme()"></i>
 </div>
 
+<button id="toggle-chat-button" class="toggle-chat-button">{% trans "Chat" %}</button>
+
+<div class="global-chat-container" id="global-chat-container" data-user-id="{{ request.user.id }}" style="display: none;">
+  <div class="global-chat-header">
+    <h3>{% trans "GLOBAL CHAT" %}</h3>
+  </div>
+  <div id="chat-messages" class="chat-messages">
+    <div id="sse-data" data-stream-url="{% url 'users:stream_global_chat_messages' %}"></div>
+  </div>
+
+  <form id="global-chat-form" x-cloak @submit.prevent="submitglobalmessage" x-data="{ state: 'composing', errors: {}, content: '' }" data-url="{% url 'users:create_global_chat_message' %}">
+    <div class="input-container">
+      <button type="button" id="emoji-button" class="emoji-button" title="Emoji">😊</button>
+      <textarea class="message-textarea" id="chat-message-input" name="content" x-model="content" autofocus placeholder="{% trans 'Message...' %}"></textarea>
+      <button type="submit" class="send-button" :disabled="!content.trim()">➤</button>
+    </div>
+    <div id="emoji-picker" class="emoji-picker"></div>
+    <div x-show="state === 'error'" class="error-message">
+      <p x-text="errors.message"></p>
+    </div>
+  </form>
+</div>
+
   <footer class="footer">
     <div class="my-footer">
       <p>&copy; 2023-{{ current_year }} {% trans "PlayStyle Compass. All rights reserved." %}</p>
@@ -418,6 +442,10 @@
   <script src="{% static 'js/dropdown.js' %}" defer></script>
   <script src="{% static 'js/email_confirmation.js' %}" defer></script>
   <script src="{% static 'js/users/show_hide_password.js' %}" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/@simonwep/pickr/dist/pickr.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/emoji-mart@latest/dist/browser.js"></script>
+  <script src="{% static 'js/users/global_chat.js' %}" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.1/dist/cdn.min.js" defer></script>
 
 </body>
 </html>

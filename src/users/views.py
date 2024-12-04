@@ -97,6 +97,7 @@ from .models import (
     QuizUserResponse,
     ChatMessage,
     Follow,
+    GlobalChatMessage,
 )
 from .tokens import account_activation_token, account_deletion_token
 
@@ -1966,3 +1967,117 @@ def notification_settings(request):
     }
 
     return render(request, "user_related/notification_settings.html", context)
+
+
+@sync_to_async
+def stream_global_chat_messages(request):
+    """View used to stream messages for the global chat."""
+    async def event_stream():
+        async for message in get_existing_global_messages():
+            yield message
+
+        last_id = await get_last_global_message_id()
+        while True:
+            new_messages = (
+                GlobalChatMessage.objects.filter(id__gt=last_id)
+                .annotate(
+                    profile_picture_url=Concat(
+                        Value(settings.MEDIA_URL),
+                        F("sender__userprofile__profile_picture"),
+                        output_field=CharField(),
+                    ),
+                    profile_name=F("sender__userprofile__profile_name")
+                )
+                .order_by("created_at")
+                .values(
+                    "id",
+                    "created_at",
+                    "content",
+                    "sender__id",
+                    "profile_name",
+                    "profile_picture_url",
+                )
+            )
+
+            async for message in new_messages:
+                message["created_at"] = message["created_at"].isoformat()
+                message["content"] = escape(message["content"])
+                json_message = json.dumps(message, cls=DjangoJSONEncoder)
+                yield f"data: {json_message}\n\n"
+                last_id = message["id"]
+
+            await asyncio.sleep(0.1)
+
+    async def get_existing_global_messages() -> AsyncGenerator:
+        messages = (
+            GlobalChatMessage.objects.all()
+            .annotate(
+                profile_picture_url=Concat(
+                    Value(settings.MEDIA_URL),
+                    F("sender__userprofile__profile_picture"),
+                    output_field=CharField(),
+                ),
+                profile_name=F("sender__userprofile__profile_name")
+            )
+            .order_by("created_at")
+            .values(
+                "id",
+                "created_at",
+                "content",
+                "sender__id",
+                "profile_name",
+                "profile_picture_url",
+            )
+        )
+
+        async for message in messages:
+            message["created_at"] = message["created_at"].isoformat()
+            message["content"] = escape(message["content"])
+            json_message = json.dumps(message, cls=DjangoJSONEncoder)
+            yield f"data: {json_message}\n\n"
+
+    async def get_last_global_message_id() -> int:
+        last_message = await GlobalChatMessage.objects.all().alast()
+        return last_message.id if last_message else 0
+
+    return StreamingHttpResponse(event_stream(), content_type="text/event-stream")
+
+
+@login_required
+def create_global_chat_message(request):
+    """View to create/send a global chat message."""
+    if request.method != "POST":
+        return JsonResponse({"error": "Invalid request method"}, status=405)
+
+    content = request.POST.get("content")
+
+    if not content:
+        return JsonResponse({"error": "You must write something"}, status=400)
+
+    user = request.user
+
+    cache_key = f"global_message_count_{user.username}"
+    current_time = time.time()
+
+    message_info = cache.get(cache_key, {"count": 0, "timestamps": []})
+    message_info["timestamps"] = [
+        ts for ts in message_info["timestamps"] if current_time - ts < 20
+    ]
+
+    if len(message_info["timestamps"]) >= 20:
+        return JsonResponse(
+            {"error": "You are sending messages too quickly. Please slow down."},
+            status=429,
+        )
+
+    message_info["timestamps"].append(current_time)
+    message_info["count"] = len(message_info["timestamps"])
+    cache.set(cache_key, message_info, timeout=20)
+
+    GlobalChatMessage.objects.create(
+        sender=user,
+        content=content,
+        created_at=timezone.now(),
+    )
+
+    return JsonResponse({"status": "Message created"}, status=201)

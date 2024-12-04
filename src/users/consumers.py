@@ -198,6 +198,65 @@ class ChatConsumer(AsyncWebsocketConsumer):
         return await database_sync_to_async(get_user_from_session)(self.scope)
 
 
+class GlobalChatConsumer(AsyncWebsocketConsumer):
+    """
+    Handles WebSocket connections for a global chat room where all users can join and exchange messages.
+    """
+
+    async def connect(self):
+        self.user = await self.get_user_from_session()
+
+        # Define a fixed global chat room name
+        self.room_group_name = "global_chat"
+
+        # Add the user to the global chat channel layer group
+        await self.channel_layer.group_add(self.room_group_name, self.channel_name)
+
+        await self.accept()
+
+    async def disconnect(self, close_code):
+        # Remove the user from the global chat group on disconnect
+        await self.channel_layer.group_discard(self.room_group_name, self.channel_name)
+
+    async def receive(self, text_data):
+        # Parse the incoming WebSocket message as JSON
+        text_data_json = json.loads(text_data)
+        message = text_data_json.get("message")
+
+        if message:
+            # Broadcast the message to the global chat group
+            await self.channel_layer.group_send(
+                self.room_group_name,
+                {
+                    "type": "chat_message",
+                    "message": message,
+                    "sender_id": self.user.id,
+                    "sender_name": self.user.userprofile.profile_name,
+                },
+            )
+
+    async def chat_message(self, event):
+        # Retrieve message details from the event
+        message = event["message"]
+        sender_id = event["sender_id"]
+        sender_name = event["sender_name"]
+
+        # Send the message details back to the WebSocket client
+        await self.send(
+            text_data=json.dumps(
+                {
+                    "message": message,
+                    "sender_id": sender_id,
+                    "sender_name": sender_name,
+                }
+            )
+        )
+
+    async def get_user_from_session(self):
+        # Use the utility function to get the user from session
+        return await database_sync_to_async(get_user_from_session)(self.scope)
+
+
 class OnlineStatusConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         # Retrieve the recipient_id from the URL route

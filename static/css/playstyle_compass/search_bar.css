@@ -62,7 +62,7 @@
   font-size: 15px;
 }
 
-button[type="submit"] {
+.search-bar-button {
   position: absolute;
   right: 0;
   font-size: 19px;
@@ -75,11 +75,11 @@ button[type="submit"] {
   transition: background 0.3s ease;
 }
 
-button[type="submit"] i {
+.search-bar-button i {
   font-size: 18px;
 }
 
-button[type="submit"]:hover {
+.search-bar-button:hover {
   background: #d5dee6;
   color: #fff;
 }

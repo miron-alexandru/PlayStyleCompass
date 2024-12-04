@@ -311,3 +311,12 @@ class Follow(models.Model):
 
     def __str__(self):
         return f"{self.follower} follows {self.followed}"
+
+
+class GlobalChatMessage(models.Model):
+    sender = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    content = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.sender.username}: {self.content}"
