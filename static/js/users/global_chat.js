@@ -1,31 +1,38 @@
 document.addEventListener("DOMContentLoaded", function () {
+  const globalChatContainer = document.getElementById('global-chat-container');
+  const profileUrlTemplate = globalChatContainer.getAttribute('data-profile-url-template');
+
+  function generateProfileUrl(profileName) {
+    return profileUrlTemplate.replace('PROFILE_NAME_PLACEHOLDER', encodeURIComponent(profileName));
+  }
+
   const form = document.getElementById("global-chat-form");
-  const inputField = document.getElementById("chat-message-input");
-  const chatMessages = document.getElementById("chat-messages");
-  const sseData = document.getElementById("sse-data");
-  const currentUserId = parseInt(document.getElementById("global-chat-container").getAttribute("data-user-id"));
+  const inputField = document.getElementById("global-chat-message-input");
+  const chatMessages = document.getElementById("global-chat-messages");
+  const sseData = document.getElementById("global-sse-data");
 
   function startSSE(url) {
     const eventSource = new EventSource(url);
     eventSource.onmessage = (event) => {
       const data = JSON.parse(event.data);
-      const isCurrentUser = data.sender__id === currentUserId;
       const formattedTimestamp = formatTimestamp(data.created_at);
 
       const messageHTML = `
-        <div class="message-wrapper" data-message-id="${data.id}">
-          <img src="${data.profile_picture_url}" alt="Profile Picture" class="chat-profile-picture">
-          <div class="message-profile-name">${data.profile_name}</div>
-          <div class="message-box">
-            <div class="message-content-wrapper">
-              <div class="message-content">${wrapUrlsWithAnchorTags(data.content)}</div>
+        <div class="global-message-wrapper" data-message-id="${data.id}">
+          <img src="${data.profile_picture_url}" alt="Profile Picture" class="global-chat-profile-picture">
+          <div class="message-user-name">
+            <a href="${generateProfileUrl(data.profile_name)}" target="_blank">${data.profile_name}</a>
+          </div>
+          <div class="global-message-box">
+            <div class="global-message-content-wrapper">
+              <div class="global-message-content">${wrapUrlsWithAnchorTags(data.content)}</div>
               <div class="message-timestamp">${formattedTimestamp}</div>
             </div>
           </div>
         </div>`;
 
       chatMessages.innerHTML += messageHTML;
-      scrollToBottom();
+      scrollToBottomGlobal();
     };
   }
 
@@ -33,10 +40,11 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 
-function scrollToBottom() {
-  const messagesContainer = document.getElementById("chat-messages");
-  messagesContainer.scrollTop = messagesContainer.scrollHeight;
+function scrollToBottomGlobal() {
+  const messagesContainer = document.getElementById("global-chat-messages");
+  messagesContainer.scrollTo({ top: messagesContainer.scrollHeight, behavior: 'smooth' });
 }
+
 
 function wrapUrlsWithAnchorTags(text) {
   const urlPattern = /(\b(https?:\/\/[^\s]+))/g;
@@ -55,7 +63,7 @@ function submitglobalmessage(event) {
   const formData = new FormData(form);
   const endpointUrl = form.dataset.url;
   const textarea = form.querySelector("textarea");
-  const sendButton = form.querySelector(".send-button");
+  const sendButton = form.querySelector(".global-send-button");
 
   fetch(endpointUrl, {
     method: "POST",
@@ -100,18 +108,15 @@ function submitglobalmessage(event) {
 
 
 document.addEventListener("DOMContentLoaded", () => {
-  const emojiButton = document.getElementById("emoji-button");
-  const emojiPickerContainer = document.getElementById("emoji-picker");
-  const textarea = document.getElementById("chat-message-input");
+  const emojiButton = document.getElementById("global-emoji-button");
+  const emojiPickerContainer = document.getElementById("global-emoji-picker");
+  const textarea = document.getElementById("global-chat-message-input");
 
   const picker = new EmojiMart.Picker({
     onEmojiSelect: (emoji) => {
-      const editTextarea = document.getElementById("edit-textarea");
-      const targetTextarea = editTextarea || textarea;
-
-      targetTextarea.value += emoji.native;
-      targetTextarea.dispatchEvent(new Event("input"));
-      targetTextarea.focus();
+      textarea.value += emoji.native;
+      textarea.dispatchEvent(new Event("input"));
+      textarea.focus();
     },
     emojiSize: 24,
     perLine: 8,
@@ -140,7 +145,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
   toggleButton.addEventListener("click", function () {
     if (chatContainer.style.display === "none") {
-      chatContainer.style.display = "flex"; 
+      chatContainer.style.display = "flex";
+      scrollToBottomGlobal();
     } else {
       chatContainer.style.display = "none";
     }
@@ -151,7 +157,7 @@ document.addEventListener("DOMContentLoaded", function () {
 document.addEventListener("DOMContentLoaded", function () {
   const form = document.getElementById("global-chat-form");
   const textarea = form.querySelector("textarea");
-  const submitButton = form.querySelector(".send-button");
+  const submitButton = form.querySelector(".global-send-button");
 
   textarea.addEventListener("keydown", function (event) {
     if (

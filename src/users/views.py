@@ -2061,10 +2061,10 @@ def create_global_chat_message(request):
 
     message_info = cache.get(cache_key, {"count": 0, "timestamps": []})
     message_info["timestamps"] = [
-        ts for ts in message_info["timestamps"] if current_time - ts < 20
+        ts for ts in message_info["timestamps"] if current_time - ts < 25
     ]
 
-    if len(message_info["timestamps"]) >= 20:
+    if len(message_info["timestamps"]) >= 8:
         return JsonResponse(
             {"error": "You are sending messages too quickly. Please slow down."},
             status=429,
@@ -2072,7 +2072,7 @@ def create_global_chat_message(request):
 
     message_info["timestamps"].append(current_time)
     message_info["count"] = len(message_info["timestamps"])
-    cache.set(cache_key, message_info, timeout=20)
+    cache.set(cache_key, message_info, timeout=25)
 
     GlobalChatMessage.objects.create(
         sender=user,
