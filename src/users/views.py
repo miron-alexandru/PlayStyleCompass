@@ -1566,10 +1566,11 @@ async def stream_chat_messages(request, recipient_id: int) -> StreamingHttpRespo
     recipient = await sync_to_async(get_object_or_404)(User, id=recipient_id)
 
     async def event_stream():
+        last_id = await get_last_message_id(request.user, recipient)
+
         async for message in get_existing_messages(request.user, recipient):
             yield message
 
-        last_id = await get_last_message_id(request.user, recipient)
         while True:
             new_messages = (
                 ChatMessage.objects.filter(
@@ -1599,14 +1600,17 @@ async def stream_chat_messages(request, recipient_id: int) -> StreamingHttpRespo
                 )
             )
 
-            async for message in new_messages:
+            new_messages_list = await sync_to_async(list)(new_messages)
+
+            for message in new_messages_list:
                 message["created_at"] = message["created_at"].isoformat()
                 message["content"] = escape(message["content"])
                 json_message = json.dumps(message, cls=DjangoJSONEncoder)
 
                 yield f"data: {json_message}\n\n"
                 last_id = message["id"]
-            await asyncio.sleep(0.1)
+
+            await asyncio.sleep(1)
 
     async def get_existing_messages(user, recipient) -> AsyncGenerator:
         messages = (
@@ -1999,14 +2003,17 @@ def stream_global_chat_messages(request):
                 )
             )
 
-            async for message in new_messages:
+            new_messages_list = await sync_to_async(list)(new_messages)
+
+            for message in new_messages_list:
                 message["created_at"] = message["created_at"].isoformat()
                 message["content"] = escape(message["content"])
                 json_message = json.dumps(message, cls=DjangoJSONEncoder)
+
                 yield f"data: {json_message}\n\n"
                 last_id = message["id"]
 
-            await asyncio.sleep(0.1)
+            await asyncio.sleep(1)
 
     async def get_existing_global_messages() -> AsyncGenerator:
         messages = (

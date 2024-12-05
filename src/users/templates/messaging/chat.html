@@ -16,7 +16,6 @@
 
 {% block content %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/users/chat.css' %}">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/emoji-mart/css/emoji-mart.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@simonwep/pickr/dist/themes/classic.min.css"/>
 
 <div class="chat-container" id="chat-container" data-user-id="{{ request.user.id }}" data-recipient-id="{{ recipient.id }}">
@@ -76,9 +75,6 @@
     </form>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@simonwep/pickr/dist/pickr.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/emoji-mart@latest/dist/browser.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.1/dist/cdn.min.js" defer></script>
 <script src="{% static 'js/users/chat_indicators.js' %}" defer></script>
 <script src="{% static 'js/users/chat.js' %}" defer></script>
 <script src="{% static 'js/users/chat_features.js' %}" defer></script>

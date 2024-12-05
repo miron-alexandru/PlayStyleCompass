@@ -53,6 +53,8 @@
   --error-alert-color: #721c24;
   --separator-border: #ddd;
   --list-review-text: #0056b3;
+  --global-chat-header: #4e8cff;
+  --global-chat-description: #e0f0ff;
 }
 
 /* Dark Theme  */
@@ -109,5 +111,7 @@
   --error-alert-background: #4c1c1c;
   --error-alert-color: #f8d7da;
   --separator-border: #0f0f0f;
-  --list-review-text: #f9f9f9;        
+  --list-review-text: #f9f9f9;
+  --global-chat-header: #333333;
+  --global-chat-description: #4d4d4d;      
 }

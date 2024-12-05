@@ -1,57 +1,55 @@
 document.addEventListener("DOMContentLoaded", function () {
   const globalChatContainer = document.getElementById('global-chat-container');
-  const profileUrlTemplate = globalChatContainer.getAttribute('data-profile-url-template');
+  const globalChat_ProfileUrlTemplate = globalChatContainer.getAttribute('data-profile-url-template');
 
-  function generateProfileUrl(profileName) {
-    return profileUrlTemplate.replace('PROFILE_NAME_PLACEHOLDER', encodeURIComponent(profileName));
+  function globalChat_generateProfileUrl(profileName) {
+    return globalChat_ProfileUrlTemplate.replace('PROFILE_NAME_PLACEHOLDER', encodeURIComponent(profileName));
   }
 
-  const form = document.getElementById("global-chat-form");
-  const inputField = document.getElementById("global-chat-message-input");
-  const chatMessages = document.getElementById("global-chat-messages");
-  const sseData = document.getElementById("global-sse-data");
+  const globalChat_Form = document.getElementById("global-chat-form");
+  const globalChat_InputField = document.getElementById("global-chat-message-input");
+  const globalChat_Messages = document.getElementById("global-chat-messages");
+  const globalChat_SSEData = document.getElementById("global-sse-data");
 
-  function startSSE(url) {
-    const eventSource = new EventSource(url);
-    eventSource.onmessage = (event) => {
+  function globalChat_startSSE(url) {
+    const globalChat_EventSource = new EventSource(url);
+    globalChat_EventSource.onmessage = (event) => {
       const data = JSON.parse(event.data);
-      const formattedTimestamp = formatTimestamp(data.created_at);
+      const formattedTimestamp = globalChat_formatTimestamp(data.created_at);
 
       const messageHTML = `
         <div class="global-message-wrapper" data-message-id="${data.id}">
           <img src="${data.profile_picture_url}" alt="Profile Picture" class="global-chat-profile-picture">
           <div class="message-user-name">
-            <a href="${generateProfileUrl(data.profile_name)}" target="_blank">${data.profile_name}</a>
+            <a href="${globalChat_generateProfileUrl(data.profile_name)}" target="_blank">${data.profile_name}</a>
           </div>
           <div class="global-message-box">
             <div class="global-message-content-wrapper">
-              <div class="global-message-content">${wrapUrlsWithAnchorTags(data.content)}</div>
-              <div class="message-timestamp">${formattedTimestamp}</div>
+              <div class="global-message-content">${globalChat_wrapUrlsWithAnchorTags(data.content)}</div>
+              <div class="global-message-timestamp">${formattedTimestamp}</div>
             </div>
           </div>
         </div>`;
 
-      chatMessages.innerHTML += messageHTML;
-      scrollToBottomGlobal();
+      globalChat_Messages.innerHTML += messageHTML;
+      globalChat_scrollToBottom();
     };
   }
 
-  startSSE(sseData.getAttribute("data-stream-url"));
+  globalChat_startSSE(globalChat_SSEData.getAttribute("data-stream-url"));
 });
 
-
-function scrollToBottomGlobal() {
+function globalChat_scrollToBottom() {
   const messagesContainer = document.getElementById("global-chat-messages");
   messagesContainer.scrollTo({ top: messagesContainer.scrollHeight, behavior: 'smooth' });
 }
 
-
-function wrapUrlsWithAnchorTags(text) {
+function globalChat_wrapUrlsWithAnchorTags(text) {
   const urlPattern = /(\b(https?:\/\/[^\s]+))/g;
   return text.replace(urlPattern, '<a href="$1" target="_blank">$1</a>');
 }
 
-function formatTimestamp(timestamp) {
+function globalChat_formatTimestamp(timestamp) {
   const date = new Date(timestamp);
   return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 }
@@ -77,96 +75,77 @@ function submitglobalmessage(event) {
     )
     .then(({ status, body }) => {
       if (status === 201) {
-        this.state = "success";
         textarea.focus();
         textarea.value = ""; 
-        this.errors = {};
-        this.content = "";
         sendButton.disabled = !textarea.value.trim();
-
       } else {
-        this.state = "error";
-        this.errors = { message: body.error || "Unknown error" };
-
-        setTimeout(() => {
-          this.state = "";
-          this.errors = {};
-        }, 4000);
+        console.error("Message sending error:", body.error || "Unknown error");
       }
     })
     .catch((error) => {
       console.error("Error:", error);
-      this.state = "error";
-      this.errors = { message: "An error occurred while sending the message." };
-
-      setTimeout(() => {
-        this.state = "";
-        this.errors = {};
-      }, 4000);
     });
 }
 
-
 document.addEventListener("DOMContentLoaded", () => {
-  const emojiButton = document.getElementById("global-emoji-button");
-  const emojiPickerContainer = document.getElementById("global-emoji-picker");
-  const textarea = document.getElementById("global-chat-message-input");
+  const globalChat_EmojiButton = document.getElementById("global-emoji-button");
+  const globalChat_EmojiPickerContainer = document.getElementById("global-emoji-picker");
+  const globalChat_Textarea = document.getElementById("global-chat-message-input");
 
   const picker = new EmojiMart.Picker({
     onEmojiSelect: (emoji) => {
-      textarea.value += emoji.native;
-      textarea.dispatchEvent(new Event("input"));
-      textarea.focus();
+      globalChat_Textarea.value += emoji.native;
+      globalChat_Textarea.dispatchEvent(new Event("input"));
+      globalChat_Textarea.focus();
     },
     emojiSize: 24,
     perLine: 8,
   });
 
-  emojiPickerContainer.innerHTML = "";
-  emojiPickerContainer.appendChild(picker);
+  globalChat_EmojiPickerContainer.innerHTML = "";
+  globalChat_EmojiPickerContainer.appendChild(picker);
 
-  emojiButton.addEventListener("click", () => {
-    emojiPickerContainer.classList.toggle("visible");
+  globalChat_EmojiButton.addEventListener("click", () => {
+    globalChat_EmojiPickerContainer.classList.toggle("visible");
   });
 
   document.addEventListener("click", (event) => {
     if (
-      !emojiPickerContainer.contains(event.target) &&
-      !emojiButton.contains(event.target)
+      !globalChat_EmojiPickerContainer.contains(event.target) &&
+      !globalChat_EmojiButton.contains(event.target)
     ) {
-      emojiPickerContainer.classList.remove("visible");
+      globalChat_EmojiPickerContainer.classList.remove("visible");
     }
   });
 });
 
 document.addEventListener("DOMContentLoaded", function () {
-  const toggleButton = document.getElementById("toggle-chat-button");
-  const chatContainer = document.getElementById("global-chat-container");
+  const globalChat_ToggleButton = document.getElementById("toggle-chat-button");
+  const globalChat_Container = document.getElementById("global-chat-container");
 
-  toggleButton.addEventListener("click", function () {
-    if (chatContainer.style.display === "none") {
-      chatContainer.style.display = "flex";
-      scrollToBottomGlobal();
+  globalChat_ToggleButton.addEventListener("click", function () {
+    if (globalChat_Container.style.display === "none") {
+      globalChat_Container.style.display = "flex";
+      globalChat_scrollToBottom();
     } else {
-      chatContainer.style.display = "none";
+      globalChat_Container.style.display = "none";
     }
   });
 });
 
-
 document.addEventListener("DOMContentLoaded", function () {
-  const form = document.getElementById("global-chat-form");
-  const textarea = form.querySelector("textarea");
-  const submitButton = form.querySelector(".global-send-button");
+  const globalChat_Form = document.getElementById("global-chat-form");
+  const globalChat_Textarea = globalChat_Form.querySelector("textarea");
+  const globalChat_SubmitButton = globalChat_Form.querySelector(".global-send-button");
 
-  textarea.addEventListener("keydown", function (event) {
+  globalChat_Textarea.addEventListener("keydown", function (event) {
     if (
       event.keyCode === 13 &&
       !event.shiftKey &&
-      textarea.value.trim() !== ""
+      globalChat_Textarea.value.trim() !== ""
     ) {
       event.preventDefault();
-      submitButton.click();
+      globalChat_SubmitButton.click();
     }
   });
 });

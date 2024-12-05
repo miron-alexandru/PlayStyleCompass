@@ -25,6 +25,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.min.js"></script>
   <link rel="stylesheet" type="text/css" href="{% static 'css/base.css' %}">
   <link rel="stylesheet" type="text/css" href="{% static 'css/users/global_chat.css' %}">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/emoji-mart/css/emoji-mart.css">
 </head>
 
 {% load tz_detect %}
@@ -400,19 +401,22 @@
   <i id="theme-icon" class="fa-solid fa-moon dark-icon" title="Dark Theme Toggle" onclick="toggleTheme()"></i>
 </div>
 
-<button id="toggle-chat-button" class="toggle-chat-button">{% trans "Chat" %}</button>
+<button id="toggle-chat-button" class="toggle-chat-button">{% trans "Global Chat" %}</button>
 
 <div class="global-chat-container" id="global-chat-container" data-user-id="{{ request.user.id }}"
     data-profile-url-template="{% url 'users:view_profile' 'PROFILE_NAME_PLACEHOLDER' %}" style="display: none;">
   <div class="global-chat-header">
     <h3>{% trans "GLOBAL CHAT" %}</h3>
   </div>
+  <div class="global-chat-description">
+    <p>{% trans "Connect with players from around the world and share your gaming experiences!" %}</p>
+  </div>
   <div id="global-chat-messages" class="global-chat-messages">
     <div id="global-sse-data" data-stream-url="{% url 'users:stream_global_chat_messages' %}"></div>
   </div>
 
   <form id="global-chat-form" x-cloak @submit.prevent="submitglobalmessage" x-data="{ state: 'composing', errors: {}, content: '' }" data-url="{% url 'users:create_global_chat_message' %}">
-    <div class="input-container">
+    <div class="global-input-container">
       <button type="button" id="global-emoji-button" class="global-emoji-button" title="Emoji">😊</button>
       <textarea class="global-message-textarea" id="global--input" name="content" x-model="content" autofocus placeholder="{% trans 'Message...' %}"></textarea>
       <button type="submit" class="global-send-button" :disabled="!content.trim()">➤</button>
