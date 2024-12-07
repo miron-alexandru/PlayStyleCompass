@@ -259,9 +259,9 @@
 .global-emoji-picker {
   display: none;
   position: absolute;
-  bottom: 20px;
-  left: -100px;
-  z-index: 1000;
+  bottom: 0!important;
+  right: -105px!important;
+  width: 100px;
 }
 
 .global-emoji-picker.visible {

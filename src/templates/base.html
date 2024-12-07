@@ -418,7 +418,7 @@
   <form id="global-chat-form" x-cloak @submit.prevent="submitglobalmessage" x-data="{ state: 'composing', errors: {}, content: '' }" data-url="{% url 'users:create_global_chat_message' %}">
     <div class="global-input-container">
       <button type="button" id="global-emoji-button" class="global-emoji-button" title="Emoji">😊</button>
-      <textarea class="global-message-textarea" id="global--input" name="content" x-model="content" autofocus placeholder="{% trans 'Message...' %}"></textarea>
+      <textarea class="global-message-textarea" id="global-input" name="content" x-model="content" autofocus placeholder="{% trans 'Message...' %}"></textarea>
       <button type="submit" class="global-send-button" :disabled="!content.trim()">➤</button>
     </div>
     <div id="global-emoji-picker" class="global-emoji-picker"></div>

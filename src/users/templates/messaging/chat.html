@@ -56,7 +56,7 @@
         <div id="typing-indicator">{{ recipient.userprofile.profile_name }} {% trans "is typing..." %}</div>
     </div>
 
-    <form id="myForm" x-cloak @submit.prevent="submit" x-data="{ state: 'composing', errors: {}, content: '' }"
+    <form class="chat-form" id="myForm" x-cloak @submit.prevent="submit" x-data="{ state: 'composing', errors: {}, content: '' }"
         data-url="{% url 'users:create_message' %}">
         <div class="input-container">
             <i id="file-button" class="fa-solid fa-paperclip file-button" title="Attach File (Max: 25MB)"></i>

@@ -6,8 +6,6 @@ document.addEventListener("DOMContentLoaded", function () {
     return globalChat_ProfileUrlTemplate.replace('PROFILE_NAME_PLACEHOLDER', encodeURIComponent(profileName));
   }
 
-  const globalChat_Form = document.getElementById("global-chat-form");
-  const globalChat_InputField = document.getElementById("global-chat-message-input");
   const globalChat_Messages = document.getElementById("global-chat-messages");
   const globalChat_SSEData = document.getElementById("global-sse-data");
 
@@ -90,7 +88,7 @@ function submitglobalmessage(event) {
 document.addEventListener("DOMContentLoaded", () => {
   const globalChat_EmojiButton = document.getElementById("global-emoji-button");
   const globalChat_EmojiPickerContainer = document.getElementById("global-emoji-picker");
-  const globalChat_Textarea = document.getElementById("global-chat-message-input");
+  const globalChat_Textarea = document.getElementById("global-input");
 
   const picker = new EmojiMart.Picker({
     onEmojiSelect: (emoji) => {
