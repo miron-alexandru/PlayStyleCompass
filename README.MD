@@ -126,6 +126,7 @@ Websites for .env configuration: [GiantBomb](https://www.giantbomb.com/) / [Send
 <summary><h2>PlayStyle Compass Changelog</h2></summary>
 
 ### Version v2.3:
+* Implemented Global Chat: Users are able to communicate in the global chat.
 * New Data about Games -> Playtime: The average playtime of each game is displayed.
 * New Data about Games -> Stores: Users can visit online stores where the games are available for purchase.
 * Created Popular Games page.

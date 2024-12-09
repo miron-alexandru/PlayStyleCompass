@@ -1,9 +1,32 @@
-const toggleDarkTheme = () => {
-  document.body.classList.toggle('dark-theme');
-  const isDarkTheme = document.body.classList.contains('dark-theme');
+const updateChatBackgroundColors = (isDarkTheme) => {
+  const chatMessages = document.querySelector(".chat-messages");
+  const form = document.querySelector("form");
+  const chatContainer = document.querySelector(".chat-container");
 
-  localStorage.setItem('theme', isDarkTheme ? 'dark' : 'light');
-  
+  if (chatMessages && form && chatContainer) {
+    if (isDarkTheme) {
+      const darkThemeColor = "#2a2a2a";
+      chatMessages.style.backgroundColor = darkThemeColor;
+      form.style.backgroundColor = darkThemeColor;
+      chatContainer.style.backgroundColor = darkThemeColor;
+    } else {
+      const savedColor = localStorage.getItem("chatBackgroundColor");
+      const defaultColor = savedColor || "#e6f7ff";
+      chatMessages.style.backgroundColor = defaultColor;
+      form.style.backgroundColor = defaultColor;
+      chatContainer.style.backgroundColor = defaultColor;
+    }
+  }
+};
+
+const toggleDarkTheme = () => {
+  document.body.classList.toggle("dark-theme");
+  const isDarkTheme = document.body.classList.contains("dark-theme");
+
+  localStorage.setItem("theme", isDarkTheme ? "dark" : "light");
+
+  updateChatBackgroundColors(isDarkTheme);
+
   updateThemeIcon(isDarkTheme);
   updateLogoImage(isDarkTheme);
 };

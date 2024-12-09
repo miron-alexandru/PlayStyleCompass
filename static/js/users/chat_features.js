@@ -138,6 +138,15 @@ document.addEventListener("DOMContentLoaded", function () {
     chatContainer.style.backgroundColor = savedColor;
   }
 
+  const isDarkTheme = localStorage.getItem("theme") === "dark";
+  if (isDarkTheme) {
+    document.body.classList.add("dark-theme");
+    const darkThemeColor = "#2a2a2a";
+    chatMessages.style.backgroundColor = darkThemeColor;
+    form.style.backgroundColor = darkThemeColor;
+    chatContainer.style.backgroundColor = darkThemeColor;
+  }
+
   document.addEventListener("click", function (event) {
     const pickrApp = document.querySelector(".pcr-app");
     const isColorPickerContainerDisplayed =
