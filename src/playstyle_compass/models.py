@@ -87,8 +87,12 @@ class UserPreferences(models.Model):
     favorite_genres = models.CharField(max_length=255, blank=True)
     platforms = models.CharField(max_length=255, blank=True)
     themes = models.CharField(max_length=255, blank=True)
-    favorite_games = models.ManyToManyField(Game, related_name='favorite_by_users', blank=True)
-    game_queue = models.ManyToManyField(Game, related_name='queued_by_users', blank=True)
+    favorite_games = models.ManyToManyField(
+        Game, related_name="favorite_by_users", blank=True
+    )
+    game_queue = models.ManyToManyField(
+        Game, related_name="queued_by_users", blank=True
+    )
     quiz_recommendations = models.CharField(max_length=255, blank=True)
     connection_types = models.CharField(max_length=255, blank=True)
     game_styles = models.CharField(max_length=255, blank=True)

@@ -27,4 +27,3 @@ admin.site.register(GameList)
 admin.site.register(ListReview)
 admin.site.register(GameStores)
 admin.site.register(ListComment)
-

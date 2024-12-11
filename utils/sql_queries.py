@@ -209,7 +209,7 @@ DELETE FROM News
 );
 """
 
-remove_duplicate_stores= """
+remove_duplicate_stores = """
 DELETE FROM GameStores
 WHERE rowid NOT IN (
     SELECT MIN(rowid)

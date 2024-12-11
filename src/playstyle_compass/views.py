@@ -399,6 +399,7 @@ def toggle_favorite(request):
 
         return JsonResponse({"is_favorite": is_favorite})
 
+
 @login_required
 def toggle_game_queue(request):
     """View for toggling a game's queued status for the current user."""

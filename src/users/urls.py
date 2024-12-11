@@ -152,5 +152,9 @@ urlpatterns = [
         views.stream_global_chat_messages,
         name="stream_global_chat_messages",
     ),
-    path("create-global-chat-message/", views.create_global_chat_message, name="create_global_chat_message"),
+    path(
+        "create-global-chat-message/",
+        views.create_global_chat_message,
+        name="create_global_chat_message",
+    ),
 ]

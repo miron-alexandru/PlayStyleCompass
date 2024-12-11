@@ -276,15 +276,26 @@ class GlobalChatConsumer(AsyncWebsocketConsumer):
 
     @database_sync_to_async
     def get_existing_messages(self):
-        return list(GlobalChatMessage.objects.all().order_by("created_at").values(
-            "id", "created_at", "content", "sender__id", "sender__userprofile__profile_name", "sender__userprofile__profile_picture"
-        ))
+        return list(
+            GlobalChatMessage.objects.all()
+            .order_by("created_at")
+            .values(
+                "id",
+                "created_at",
+                "content",
+                "sender__id",
+                "sender__userprofile__profile_name",
+                "sender__userprofile__profile_picture",
+            )
+        )
 
     async def send_existing_messages(self):
         messages = await self.get_existing_messages()
 
         for message in messages:
-            profile_picture_url = self.get_full_profile_picture_url(message["sender__userprofile__profile_picture"])
+            profile_picture_url = self.get_full_profile_picture_url(
+                message["sender__userprofile__profile_picture"]
+            )
 
             await self.send(
                 text_data=json.dumps(

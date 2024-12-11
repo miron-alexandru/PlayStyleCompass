@@ -8,5 +8,5 @@ websocket_urlpatterns = [
         "ws/online-status/<int:recipient_id>/", consumers.OnlineStatusConsumer.as_asgi()
     ),
     path("ws/online-status/", consumers.OnlineStatusConsumer.as_asgi()),
-    re_path(r'ws/global_chat/', consumers.GlobalChatConsumer.as_asgi()),
+    re_path(r"ws/global_chat/", consumers.GlobalChatConsumer.as_asgi()),
 ]

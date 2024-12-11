@@ -1974,83 +1974,6 @@ def notification_settings(request):
     return render(request, "user_related/notification_settings.html", context)
 
 
-@sync_to_async
-def stream_global_chat_messages(request):
-    """View used to stream messages for the global chat."""
-    async def event_stream():
-        async for message in get_existing_global_messages():
-            yield message
-
-        last_id = await get_last_global_message_id()
-        while True:
-            new_messages = (
-                GlobalChatMessage.objects.filter(id__gt=last_id)
-                .annotate(
-                    profile_picture_url=Concat(
-                        Value(settings.MEDIA_URL),
-                        F("sender__userprofile__profile_picture"),
-                        output_field=CharField(),
-                    ),
-                    profile_name=F("sender__userprofile__profile_name")
-                )
-                .order_by("created_at")
-                .values(
-                    "id",
-                    "created_at",
-                    "content",
-                    "sender__id",
-                    "profile_name",
-                    "profile_picture_url",
-                )
-            )
-
-            new_messages_list = await sync_to_async(list)(new_messages)
-
-            for message in new_messages_list:
-                message["created_at"] = message["created_at"].isoformat()
-                message["content"] = escape(message["content"])
-                json_message = json.dumps(message, cls=DjangoJSONEncoder)
-
-                yield f"data: {json_message}\n\n"
-                last_id = message["id"]
-
-            await asyncio.sleep(1)
-
-    async def get_existing_global_messages() -> AsyncGenerator:
-        messages = (
-            GlobalChatMessage.objects.all()
-            .annotate(
-                profile_picture_url=Concat(
-                    Value(settings.MEDIA_URL),
-                    F("sender__userprofile__profile_picture"),
-                    output_field=CharField(),
-                ),
-                profile_name=F("sender__userprofile__profile_name")
-            )
-            .order_by("created_at")
-            .values(
-                "id",
-                "created_at",
-                "content",
-                "sender__id",
-                "profile_name",
-                "profile_picture_url",
-            )
-        )
-
-        async for message in messages:
-            message["created_at"] = message["created_at"].isoformat()
-            message["content"] = escape(message["content"])
-            json_message = json.dumps(message, cls=DjangoJSONEncoder)
-            yield f"data: {json_message}\n\n"
-
-    async def get_last_global_message_id() -> int:
-        last_message = await GlobalChatMessage.objects.all().alast()
-        return last_message.id if last_message else 0
-
-    return StreamingHttpResponse(event_stream(), content_type="text/event-stream")
-
-
 @login_required
 def create_global_chat_message(request):
     """View to create/send a global chat message."""
@@ -2074,7 +1997,10 @@ def create_global_chat_message(request):
 
     if len(message_info["timestamps"]) >= 8:
         return JsonResponse(
-            {"error": "You are sending messages too quickly. Please slow down.", "rate_limited": True},
+            {
+                "error": "You are sending messages too quickly. Please slow down.",
+                "rate_limited": True,
+            },
             status=429,
         )
 
@@ -2097,7 +2023,7 @@ def create_global_chat_message(request):
             "sender_id": user.id,
             "sender_name": user.userprofile.profile_name,
             "profile_picture_url": user.userprofile.profile_picture.url,
-        }
+        },
     )
 
     return JsonResponse({"status": "Message created"}, status=201)

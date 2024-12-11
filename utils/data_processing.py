@@ -243,10 +243,12 @@ def create_games_data_db(game_ids, rawg_casual=False, rawg_popular=False):
 
             if store_info:
                 for store in store_info:
-                    store_name = store.get('store_name', None)
-                    store_url = store.get('url', None)
+                    store_name = store.get("store_name", None)
+                    store_url = store.get("url", None)
 
-                    cursor.execute(insert_game_stores_sql, (guid, title, store_name, store_url))
+                    cursor.execute(
+                        insert_game_stores_sql, (guid, title, store_name, store_url)
+                    )
 
             game_id = guid
 
@@ -561,10 +563,12 @@ def create_game_modes_data(guids, mode_strings, num_games=10, offset=0):
 
                 if store_info:
                     for store in store_info:
-                        store_name = store.get('store_name', None)
-                        store_url = store.get('url', None)
+                        store_name = store.get("store_name", None)
+                        store_url = store.get("url", None)
 
-                        cursor.execute(insert_game_stores_sql, (guid, title, store_name, store_url))
+                        cursor.execute(
+                            insert_game_stores_sql, (guid, title, store_name, store_url)
+                        )
 
                 game_id = guid
 
@@ -683,10 +687,12 @@ def create_quiz_data(guids, num_games=1, offset=0):
 
                 if store_info:
                     for store in store_info:
-                        store_name = store.get('store_name', None)
-                        store_url = store.get('url', None)
+                        store_name = store.get("store_name", None)
+                        store_url = store.get("url", None)
 
-                        cursor.execute(insert_game_stores_sql, (guid, title, store_name, store_url))
+                        cursor.execute(
+                            insert_game_stores_sql, (guid, title, store_name, store_url)
+                        )
 
                 game_id = guid
 

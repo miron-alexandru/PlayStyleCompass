@@ -316,31 +316,33 @@ def fetch_game_ids_by_genre(genre_id, page_size=10, page=1):
     else:
         return []
 
+
 def get_popular_game_names(page_size=10, page=1):
     """Fetches popular game names from the RAWG API."""
     url = "https://api.rawg.io/api/games"
     params = {
-        'key': RAWG_API_KEY,
-        'ordering': '-rating',
-        'page_size': page_size,
+        "key": RAWG_API_KEY,
+        "ordering": "-rating",
+        "page_size": page_size,
     }
-    
+
     response = requests.get(url, params=params)
-    
+
     if response.status_code == 200:
-        games = response.json().get('results', [])
-        return [game['name'] for game in games]
+        games = response.json().get("results", [])
+        return [game["name"] for game in games]
     else:
         return None
 
+
 def fetch_popular_game_ids(page_size=10, page=1):
     """
-    Fetches popular game names from the RAWG API, 
+    Fetches popular game names from the RAWG API,
     then searches for those games on GiantBomb and returns a list of game IDs.
     """
     # Get popular game names from RAWG
     game_names = get_popular_game_names(page_size, page)
-    
+
     if game_names:
         game_ids = []
 
@@ -348,7 +350,7 @@ def fetch_popular_game_ids(page_size=10, page=1):
             game_id = find_game_on_giantbomb(game_name)
             if game_id:
                 game_ids.append(game_id)
-        
+
         return game_ids
     else:
         return []
@@ -358,28 +360,28 @@ def search_game(game_name, page=1, page_size=10):
     """Searches for a game by name using the RAWG API and retrieves store information for the game."""
     url = "https://api.rawg.io/api/games"
     params = {
-        'key': RAWG_API_KEY,
-        'search': game_name,
-        'page': page,
-        'page_size': page_size,
+        "key": RAWG_API_KEY,
+        "search": game_name,
+        "page": page,
+        "page_size": page_size,
     }
-    
+
     response = requests.get(url, params=params)
-    
+
     if response.status_code == 200:
         games_data = response.json()
-        if games_data['results']:
-            first_game = games_data['results'][0]
-            game_id = first_game['id']
+        if games_data["results"]:
+            first_game = games_data["results"][0]
+            game_id = first_game["id"]
 
             stores = []
-            if 'stores' in first_game and first_game['stores']:
-                for store_entry in first_game['stores']:
-                    store_id = store_entry['store']['id']
-                    store_name = store_entry['store']['name']
-                    stores.append({'store_id': store_id, 'store_name': store_name})
-            
-            return {'game_id': game_id, 'stores': stores}
+            if "stores" in first_game and first_game["stores"]:
+                for store_entry in first_game["stores"]:
+                    store_id = store_entry["store"]["id"]
+                    store_name = store_entry["store"]["name"]
+                    stores.append({"store_id": store_id, "store_name": store_name})
+
+            return {"game_id": game_id, "stores": stores}
         else:
             return None
     else:
@@ -391,37 +393,44 @@ def fetch_game_stores(game_id):
     """Fetches the store information for a specific game by game ID using the RAWG API."""
     url = f"https://api.rawg.io/api/games/{game_id}/stores"
     params = {
-        'key': RAWG_API_KEY,
+        "key": RAWG_API_KEY,
     }
-    
+
     response = requests.get(url, params=params)
-    
+
     if response.status_code == 200:
         return response.json()
     else:
-        print(f"Error: {response.status_code}") 
+        print(f"Error: {response.status_code}")
         return None
 
 
 def get_game_store_info(game_name):
     """Retrieves detailed store information for a game based on its name."""
     game_data = search_game(game_name)
-    
+
     if game_data:
-        game_id = game_data['game_id']
+        game_id = game_data["game_id"]
         store_data = fetch_game_stores(game_id)
-        
+
         store_details = []
-        
-        if store_data and 'results' in store_data:
-            for store_entry in store_data['results']:
-                store_id = store_entry['store_id']
-                url = store_entry['url']
-                
-                store_name = next((s['store_name'] for s in game_data['stores'] if s['store_id'] == store_id), None)
-                
+
+        if store_data and "results" in store_data:
+            for store_entry in store_data["results"]:
+                store_id = store_entry["store_id"]
+                url = store_entry["url"]
+
+                store_name = next(
+                    (
+                        s["store_name"]
+                        for s in game_data["stores"]
+                        if s["store_id"] == store_id
+                    ),
+                    None,
+                )
+
                 if store_name:
-                    store_details.append({'store_name': store_name, 'url': url})
+                    store_details.append({"store_name": store_name, "url": url})
 
             return store_details
         else:
@@ -444,27 +453,27 @@ def convert_arabic_to_roman(arabic_str):
         num = int(arabic_str)
         return toRoman(num)
     except (ValueError, InvalidRomanNumeralError):
-        return arabic_str 
+        return arabic_str
 
 
 def generate_title_variations(game_name):
     """Generate variations of a game title by converting numbers to Roman numerals and vice versa."""
     words = game_name.split()
     variations = {game_name}
-    
+
     # Replace numbers with Roman numerals and vice versa
     for i, word in enumerate(words):
         if word.isdigit():
             roman = convert_arabic_to_roman(word)
             if roman != word:
-                new_variation = " ".join(words[:i] + [roman] + words[i + 1:])
+                new_variation = " ".join(words[:i] + [roman] + words[i + 1 :])
                 variations.add(new_variation)
         else:
             arabic = convert_roman_to_arabic(word.upper())
             if arabic != word:
-                new_variation = " ".join(words[:i] + [arabic] + words[i + 1:])
+                new_variation = " ".join(words[:i] + [arabic] + words[i + 1 :])
                 variations.add(new_variation)
-                
+
     return variations
 
 
@@ -481,23 +490,23 @@ def fetch_from_api(url, params):
 
 def search_game_playtime(game_name, page=1, page_size=10):
     """Search for games on the RAWG API by game title."""
-    url = "https://api.rawg.io/api/games" 
+    url = "https://api.rawg.io/api/games"
     params = {
-        'key': RAWG_API_KEY,
-        'search': game_name,
-        'page': page,
-        'page_size': page_size,
+        "key": RAWG_API_KEY,
+        "search": game_name,
+        "page": page,
+        "page_size": page_size,
     }
     data = fetch_from_api(url, params)
-    return data.get('results', []) if data else []
+    return data.get("results", []) if data else []
 
 
 def fetch_game_playtime(game_id):
     """Retrieve the average playtime for a specific game by its ID."""
     url = f"https://api.rawg.io/api/games/{game_id}"
-    params = {'key': RAWG_API_KEY}
+    params = {"key": RAWG_API_KEY}
     data = fetch_from_api(url, params)
-    return data.get('playtime', 'N/A') if data else None
+    return data.get("playtime", "N/A") if data else None
 
 
 def get_game_playtime(game_name):
@@ -506,12 +515,13 @@ def get_game_playtime(game_name):
     results = search_game_playtime(game_name)
 
     for game in results:
-        game_title = game['name'].lower()
+        game_title = game["name"].lower()
         if any(variation.lower() == game_title for variation in variations):
-            game_id = game['id']
+            game_id = game["id"]
             return fetch_game_playtime(game_id)
 
     return None
+
 
 class FetchDataException(Exception):
     """Custom data exception."""
