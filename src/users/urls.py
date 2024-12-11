@@ -148,11 +148,6 @@ urlpatterns = [
         name="notification_settings",
     ),
     path(
-        "stream-global-chat-messages/",
-        views.stream_global_chat_messages,
-        name="stream_global_chat_messages",
-    ),
-    path(
         "create-global-chat-message/",
         views.create_global_chat_message,
         name="create_global_chat_message",
