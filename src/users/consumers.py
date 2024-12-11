@@ -11,8 +11,11 @@ from channels.generic.websocket import AsyncWebsocketConsumer
 from channels.db import database_sync_to_async
 from django.contrib.sessions.models import Session
 from django.contrib.auth.models import User
-from .models import Notification, UserProfile
+from .models import Notification, UserProfile, GlobalChatMessage
 from django.utils import timezone
+from django.conf import settings
+from django.urls import reverse
+from datetime import datetime
 import pytz
 
 
@@ -200,54 +203,69 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
 class GlobalChatConsumer(AsyncWebsocketConsumer):
     """
-    Handles WebSocket connections for a global chat room where all users can join and exchange messages.
+    Handles WebSocket connections for the global chat room where all users can join and exchange messages.
     """
 
     async def connect(self):
         self.user = await self.get_user_from_session()
-
-        # Define a fixed global chat room name
         self.room_group_name = "global_chat"
 
-        # Add the user to the global chat channel layer group
         await self.channel_layer.group_add(self.room_group_name, self.channel_name)
-
         await self.accept()
+        await self.send_existing_messages()
 
     async def disconnect(self, close_code):
-        # Remove the user from the global chat group on disconnect
         await self.channel_layer.group_discard(self.room_group_name, self.channel_name)
 
+    def get_full_profile_picture_url(self, profile_picture_path):
+        """Generates the full URL for the profile picture."""
+        base_url = settings.MEDIA_URL
+        return f"{base_url}{profile_picture_path}"
+
+    @database_sync_to_async
+    def get_user_profile_name(self, user):
+        return user.userprofile.profile_name
+
+    @database_sync_to_async
+    def get_profile_picture_url(self, user):
+        return user.userprofile.profile_picture.url
+
     async def receive(self, text_data):
-        # Parse the incoming WebSocket message as JSON
         text_data_json = json.loads(text_data)
         message = text_data_json.get("message")
 
         if message:
-            # Broadcast the message to the global chat group
+            profile_picture_url = await self.get_profile_picture_url(self.user)
+            profile_name = await self.get_user_profile_name(self.user)
+            created_at = datetime.now().isoformat()
+
             await self.channel_layer.group_send(
                 self.room_group_name,
                 {
                     "type": "chat_message",
                     "message": message,
                     "sender_id": self.user.id,
-                    "sender_name": self.user.userprofile.profile_name,
+                    "sender_name": profile_name,
+                    "profile_picture_url": profile_picture_url,
+                    "created_at": created_at,
                 },
             )
 
     async def chat_message(self, event):
-        # Retrieve message details from the event
         message = event["message"]
         sender_id = event["sender_id"]
         sender_name = event["sender_name"]
+        profile_picture_url = event["profile_picture_url"]
+        created_at = event["created_at"]
 
-        # Send the message details back to the WebSocket client
         await self.send(
             text_data=json.dumps(
                 {
                     "message": message,
                     "sender_id": sender_id,
                     "sender_name": sender_name,
+                    "profile_picture_url": profile_picture_url,
+                    "created_at": created_at,
                 }
             )
         )
@@ -255,6 +273,31 @@ class GlobalChatConsumer(AsyncWebsocketConsumer):
     async def get_user_from_session(self):
         # Use the utility function to get the user from session
         return await database_sync_to_async(get_user_from_session)(self.scope)
+
+    @database_sync_to_async
+    def get_existing_messages(self):
+        return list(GlobalChatMessage.objects.all().order_by("created_at").values(
+            "id", "created_at", "content", "sender__id", "sender__userprofile__profile_name", "sender__userprofile__profile_picture"
+        ))
+
+    async def send_existing_messages(self):
+        messages = await self.get_existing_messages()
+
+        for message in messages:
+            profile_picture_url = self.get_full_profile_picture_url(message["sender__userprofile__profile_picture"])
+
+            await self.send(
+                text_data=json.dumps(
+                    {
+                        "id": message["id"],
+                        "message": message["content"],
+                        "sender_id": message["sender__id"],
+                        "sender_name": message["sender__userprofile__profile_name"],
+                        "profile_picture_url": profile_picture_url,
+                        "created_at": message["created_at"].isoformat(),
+                    }
+                )
+            )
 
 
 class OnlineStatusConsumer(AsyncWebsocketConsumer):

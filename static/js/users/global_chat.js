@@ -1,40 +1,139 @@
 document.addEventListener("DOMContentLoaded", function () {
   const globalChatContainer = document.getElementById('global-chat-container');
   const globalChat_ProfileUrlTemplate = globalChatContainer.getAttribute('data-profile-url-template');
+  const errorMessageElement = document.querySelector(".global-error-message p");
 
   function globalChat_generateProfileUrl(profileName) {
     return globalChat_ProfileUrlTemplate.replace('PROFILE_NAME_PLACEHOLDER', encodeURIComponent(profileName));
   }
 
   const globalChat_Messages = document.getElementById("global-chat-messages");
-  const globalChat_SSEData = document.getElementById("global-sse-data");
+  const socket = new WebSocket(`wss://${window.location.host}/ws/global_chat/`);
 
-  function globalChat_startSSE(url) {
-    const globalChat_EventSource = new EventSource(url);
-    globalChat_EventSource.onmessage = (event) => {
-      const data = JSON.parse(event.data);
-      const formattedTimestamp = globalChat_formatTimestamp(data.created_at);
+  socket.onmessage = function (event) {
+    const data = JSON.parse(event.data);
+    const formattedTimestamp = globalChat_formatTimestamp(data.created_at);
 
-      const messageHTML = `
-        <div class="global-message-wrapper" data-message-id="${data.id}">
-          <img src="${data.profile_picture_url}" alt="Profile Picture" class="global-chat-profile-picture">
-          <div class="message-user-name">
-            <a href="${globalChat_generateProfileUrl(data.profile_name)}" target="_blank">${data.profile_name}</a>
+    const messageHTML = `
+      <div class="global-message-wrapper" data-message-id="${data.id}">
+        <img src="${data.profile_picture_url}" alt="Profile Picture" class="global-chat-profile-picture">
+        <div class="message-user-name">
+          <a href="${globalChat_generateProfileUrl(data.sender_name)}" target="_blank">${data.sender_name}</a>
+        </div>
+        <div class="global-message-box">
+          <div class="global-message-content-wrapper">
+            <div class="global-message-content">${globalChat_wrapUrlsWithAnchorTags(data.message)}</div>
+            <div class="global-message-timestamp">${formattedTimestamp}</div>
           </div>
-          <div class="global-message-box">
-            <div class="global-message-content-wrapper">
-              <div class="global-message-content">${globalChat_wrapUrlsWithAnchorTags(data.content)}</div>
-              <div class="global-message-timestamp">${formattedTimestamp}</div>
-            </div>
-          </div>
-        </div>`;
+        </div>
+      </div>`;
 
-      globalChat_Messages.innerHTML += messageHTML;
-      globalChat_scrollToBottom();
-    };
+    globalChat_Messages.innerHTML += messageHTML;
+    globalChat_scrollToBottom();
+  };
+
+  function sendMessage(messageContent) {
+    const messageData = { message: messageContent };
+    socket.send(JSON.stringify(messageData));
   }
 
-  globalChat_startSSE(globalChat_SSEData.getAttribute("data-stream-url"));
+  function createMessage(messageContent) {
+    const form = document.getElementById("global-chat-form");
+    const endpointUrl = form.dataset.url;
+    const sendButton = form.querySelector(".global-send-button");
+    const textarea = form.querySelector("textarea");
+
+    const formData = new FormData();
+    formData.append("content", messageContent);
+
+    fetch(endpointUrl, {
+      method: 'POST',
+      body: formData,
+      headers: {
+        'X-CSRFToken': csrfToken,
+      },
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.status === 'Message created') {
+        textarea.focus();
+        textarea.value = ""; 
+        updateSendButtonState();
+      } else {
+        console.error('Error creating message:', data.error);
+
+        if (data.rate_limited) {
+          disableInputAndButton();
+          showCooldownMessage();
+          startCooldown(15);
+        }
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
+  }
+
+  function updateSendButtonState() {
+    const textarea = document.getElementById("global-input");
+    const sendButton = document.querySelector(".global-send-button");
+    sendButton.disabled = !textarea.value.trim();
+  }
+
+  function disableInputAndButton() {
+    const textarea = document.getElementById("global-input");
+    const sendButton = document.querySelector(".global-send-button");
+    textarea.disabled = true;
+    sendButton.disabled = true;
+  }
+
+  function enableInputAndButton() {
+    const textarea = document.getElementById("global-input");
+    const sendButton = document.querySelector(".global-send-button");
+    textarea.disabled = false;
+    sendButton.disabled = !textarea.value.trim();
+  }
+
+  function showCooldownMessage() {
+    errorMessageElement.style.display = "block"; 
+    errorMessageElement.textContent = "You are sending messages too quickly. Please wait 15 seconds.";
+  }
+
+  function hideCooldownMessage() {
+    errorMessageElement.style.display = "none";
+  }
+
+  function startCooldown(seconds) {
+    let remainingTime = seconds;
+
+    const countdownInterval = setInterval(function () {
+      errorMessageElement.textContent = `You are sending messages too quickly. Please wait ${remainingTime} seconds.`;
+      remainingTime--;
+
+      if (remainingTime < 0) {
+        clearInterval(countdownInterval);
+        enableInputAndButton();
+        hideCooldownMessage();
+      }
+    }, 1000);
+  }
+
+  document.getElementById("global-input").addEventListener("input", function () {
+    updateSendButtonState();
+  });
+
+  document.getElementById("global-chat-form").addEventListener("submit", function (event) {
+    event.preventDefault();
+    const textarea = document.getElementById("global-input");
+    const messageContent = textarea.value.trim();
+
+    if (messageContent) {
+      createMessage(messageContent);
+      sendMessage(messageContent);
+    }
+  });
+
+  updateSendButtonState();
 });
 
 function globalChat_scrollToBottom() {
@@ -50,39 +149,6 @@ function globalChat_wrapUrlsWithAnchorTags(text) {
 function globalChat_formatTimestamp(timestamp) {
   const date = new Date(timestamp);
   return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-}
-
-function submitglobalmessage(event) {
-  event.preventDefault();
-
-  const form = event.target;
-  const formData = new FormData(form);
-  const endpointUrl = form.dataset.url;
-  const textarea = form.querySelector("textarea");
-  const sendButton = form.querySelector(".global-send-button");
-
-  fetch(endpointUrl, {
-    method: "POST",
-    body: formData,
-    headers: {
-      "X-CSRFToken": csrfToken,
-    },
-  })
-    .then((response) =>
-      response.json().then((data) => ({ status: response.status, body: data }))
-    )
-    .then(({ status, body }) => {
-      if (status === 201) {
-        textarea.focus();
-        textarea.value = ""; 
-        sendButton.disabled = !textarea.value.trim();
-      } else {
-        console.error("Message sending error:", body.error || "Unknown error");
-      }
-    })
-    .catch((error) => {
-      console.error("Error:", error);
-    });
 }
 
 document.addEventListener("DOMContentLoaded", () => {

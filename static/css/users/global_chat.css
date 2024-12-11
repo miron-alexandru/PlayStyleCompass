@@ -91,7 +91,7 @@
 .global-send-button {
   position: absolute;
   right: 5px;
-  top: 50%;
+  top: 57%;
   transform: translateY(-50%);
   padding: 0;
   border: none;
@@ -128,19 +128,6 @@
   word-wrap: break-word;
 }
 
-[x-cloak] {
-  display: none !important;
-}
-
-.error-message {
-  background-color: #f8d7da;
-  color: #721c24;
-  padding: 10px;
-  border: 1px solid #f5c6cb;
-  border-radius: 6px;
-  margin-top: 15px;
-  text-align: center;
-}
 
 .global-message-box:last-child {
   border-bottom: none;
@@ -222,7 +209,6 @@
   outline: none;
   margin-top: 10px;
   margin-left: 21px;
-  margin-bottom: 10px;
   height: 38px;
   overflow-y: hidden;
 }
@@ -276,7 +262,7 @@
   margin-left: 0px;
   margin-right: -22px;
   align-self: center;
-  margin-bottom: 5px;
+  margin-bottom: -5px;
 }
 
 .global-emoji-button:hover {
@@ -294,4 +280,17 @@
 .message-user-name {
   font-weight: 600;
   font-size: 13px;
+}
+
+.global-error-message {
+  background-color: var(--chat-color);
+  border: none;
+  margin: 0;
+  text-align: center;
+  padding: 10px;
+}
+
+.global-error-message p {
+  font-size: 13px;
+  color: red;
 }

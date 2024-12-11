@@ -7,6 +7,7 @@ from datetime import timedelta
 import asyncio
 from typing import AsyncGenerator, AsyncIterable, AsyncIterator
 from asgiref.sync import sync_to_async, async_to_sync
+from channels.layers import get_channel_layer
 
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import (
@@ -2068,23 +2069,35 @@ def create_global_chat_message(request):
 
     message_info = cache.get(cache_key, {"count": 0, "timestamps": []})
     message_info["timestamps"] = [
-        ts for ts in message_info["timestamps"] if current_time - ts < 25
+        ts for ts in message_info["timestamps"] if current_time - ts < 15
     ]
 
     if len(message_info["timestamps"]) >= 8:
         return JsonResponse(
-            {"error": "You are sending messages too quickly. Please slow down."},
+            {"error": "You are sending messages too quickly. Please slow down.", "rate_limited": True},
             status=429,
         )
 
     message_info["timestamps"].append(current_time)
     message_info["count"] = len(message_info["timestamps"])
-    cache.set(cache_key, message_info, timeout=25)
+    cache.set(cache_key, message_info, timeout=15)
 
-    GlobalChatMessage.objects.create(
+    global_chat_message = GlobalChatMessage.objects.create(
         sender=user,
         content=content,
         created_at=timezone.now(),
+    )
+
+    channel_layer = get_channel_layer()
+    channel_layer.group_send(
+        "global_chat",
+        {
+            "type": "chat_message",
+            "message": content,
+            "sender_id": user.id,
+            "sender_name": user.userprofile.profile_name,
+            "profile_picture_url": user.userprofile.profile_picture.url,
+        }
     )
 
     return JsonResponse({"status": "Message created"}, status=201)

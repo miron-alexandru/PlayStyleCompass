@@ -411,19 +411,17 @@
   <div class="global-chat-description">
     <p>{% trans "Connect with players from around the world and share your gaming experiences!" %}</p>
   </div>
-  <div id="global-chat-messages" class="global-chat-messages">
-    <div id="global-sse-data" data-stream-url="{% url 'users:stream_global_chat_messages' %}"></div>
-  </div>
+  <div id="global-chat-messages" class="global-chat-messages"></div>
 
-  <form id="global-chat-form" x-cloak @submit.prevent="submitglobalmessage" x-data="{ state: 'composing', errors: {}, content: '' }" data-url="{% url 'users:create_global_chat_message' %}">
+  <form id="global-chat-form" data-url="{% url 'users:create_global_chat_message' %}">
     <div class="global-input-container">
       <button type="button" id="global-emoji-button" class="global-emoji-button" title="Emoji">😊</button>
       <textarea class="global-message-textarea" id="global-input" name="content" x-model="content" autofocus placeholder="{% trans 'Message...' %}"></textarea>
-      <button type="submit" class="global-send-button" :disabled="!content.trim()">➤</button>
+      <button type="submit" class="global-send-button">➤</button>
     </div>
     <div id="global-emoji-picker" class="global-emoji-picker"></div>
-    <div x-show="state === 'error'" class="error-message">
-      <p x-text="errors.message"></p>
+    <div class="global-error-message">
+      <p text="errors.message"></p>
     </div>
   </form>
 </div>

@@ -11,6 +11,7 @@ from .models import (
     QuizQuestion,
     QuizUserResponse,
     ChatMessage,
+    GlobalChatMessage,
 )
 
 
@@ -27,3 +28,4 @@ admin.site.register(FriendRequest)
 admin.site.register(Message)
 admin.site.register(Notification)
 admin.site.register(ChatMessage)
+admin.site.register(GlobalChatMessage)
