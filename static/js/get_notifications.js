@@ -13,14 +13,6 @@ fetch(authCheckUrl)
         `wss://${window.location.host}/ws/notify/`
       );
 
-      notifySocket.onopen = function (e) {
-        console.log("Socket successfully connected.");
-      };
-
-      notifySocket.onclose = function (e) {
-        console.log("Socket closed unexpectedly");
-      };
-
       notifySocket.onmessage = function (e) {
         if (notifySocket.readyState === WebSocket.OPEN) {
           const data = JSON.parse(e.data);

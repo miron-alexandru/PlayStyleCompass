@@ -12,6 +12,41 @@
   z-index: 1000;
 }
 
+.load-more-button {
+  position: absolute;
+  top: 72px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(76, 175, 80, 0.8);
+  color: #333;
+  text-align: center;
+  font-size: 9px;
+  font-weight: 600;
+  padding: 4px 8px;
+  border: none;
+  border-radius: 20px;
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  z-index: 5;
+  display: none;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.load-more-button:hover {
+  background-color: rgba(76, 175, 80, 1); 
+  transform: translateX(-50%) scale(1.05);
+}
+
+.load-more-button:focus {
+  outline: none;
+  box-shadow: 0 0 8px rgba(76, 175, 80, 0.8);
+}
+
+.load-more-button:active {
+  background-color: #388e3c;
+  transform: translateX(-50%) scale(1);
+}
+
 .global-chat-header {
   padding: 10px 15px;
   background-color: var(--global-chat-header);

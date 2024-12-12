@@ -152,4 +152,9 @@ urlpatterns = [
         views.create_global_chat_message,
         name="create_global_chat_message",
     ),
+    path(
+        "get_global_messages/",
+        views.get_chat_messages,
+        name="get_chat_messages",
+    ),
 ]

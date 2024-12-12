@@ -2027,3 +2027,40 @@ def create_global_chat_message(request):
     )
 
     return JsonResponse({"status": "Message created"}, status=201)
+
+
+@login_required
+def get_chat_messages(request):
+    offset = int(request.GET.get('offset', 0))
+    limit = int(request.GET.get('limit', 10))
+
+    messages = GlobalChatMessage.objects.all().order_by("-created_at")[
+            offset:offset + limit
+        ].annotate(
+            sender__userprofile__profile_picture=Concat(
+                Value(settings.MEDIA_URL),
+                F("sender__userprofile__profile_picture"),
+                output_field=CharField()
+            )
+        ).values(
+            "id",
+            "created_at",
+            "content",
+            "sender__id",
+            "sender__userprofile__profile_name",
+            "sender__userprofile__profile_picture",
+        )
+
+    response_data = [
+        {
+            "id": message["id"],
+            "message": message["content"],
+            "sender_id": message["sender__id"],
+            "sender_name": message["sender__userprofile__profile_name"],
+            "profile_picture_url": message["sender__userprofile__profile_picture"],
+            "created_at": message["created_at"].isoformat(),
+        }
+        for message in messages
+    ]
+
+    return JsonResponse(response_data, safe=False)
