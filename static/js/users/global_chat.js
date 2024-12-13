@@ -10,7 +10,9 @@ function globalChat_wrapUrlsWithAnchorTags(text) {
 
 function globalChat_formatTimestamp(timestamp) {
   const date = new Date(timestamp);
-  return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  return date.toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' }) + 
+    ' ' + 
+    date.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', hour12: true });
 }
 
 fetch(authCheckUrl)
@@ -29,9 +31,10 @@ fetch(authCheckUrl)
       const loadMoreButton = document.getElementById("load-more-messages");
       const getMessagesUrl = globalChatContainer.getAttribute('data-get-messages');
       let currentOffset = 20;
+      let allMessagesLoaded = false;
 
-      globalChat_Messages.addEventListener('scroll', function() {
-        if (globalChat_Messages.scrollTop === 0) {
+      globalChat_Messages.addEventListener('scroll', function () {
+        if (globalChat_Messages.scrollTop === 0 && !allMessagesLoaded) {
           loadMoreButton.style.display = 'block';
         } else {
           loadMoreButton.style.display = 'none';
@@ -70,9 +73,15 @@ fetch(authCheckUrl)
       function loadMessages(offset, limit) {
         let messagesLoaded = false;
 
-      fetch(`${getMessagesUrl}?offset=${offset}&limit=${limit}`)
+        fetch(`${getMessagesUrl}?offset=${offset}&limit=${limit}`)
         .then(response => response.json())
         .then(messages => {
+            if (messages.length === 0) {
+              allMessagesLoaded = true;
+              loadMoreButton.style.display = 'none';
+              return;
+            }
+
             messages.forEach(message => {
               const formattedTimestamp = globalChat_formatTimestamp(message.created_at);
 
