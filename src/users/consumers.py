@@ -21,7 +21,6 @@ from django.db.models import Q, F, Value, CharField
 from django.db.models.functions import Concat
 
 
-
 def get_user_from_session(scope):
     # Retrieve the cookie header from the scope
     cookie_header = dict(scope.get("headers")).get(b"cookie", b"").decode()
@@ -301,8 +300,14 @@ class PrivateChatConsumer(AsyncWebsocketConsumer):
     def get_existing_messages(self, offset=0, limit=20):
         messages = list(
             ChatMessage.objects.filter(
-                (Q(sender=self.user, recipient=self.other_user) & ~Q(sender_hidden=True))
-                | (Q(sender=self.other_user, recipient=self.user) & ~Q(recipient_hidden=True))
+                (
+                    Q(sender=self.user, recipient=self.other_user)
+                    & ~Q(sender_hidden=True)
+                )
+                | (
+                    Q(sender=self.other_user, recipient=self.user)
+                    & ~Q(recipient_hidden=True)
+                )
             )
             .annotate(
                 profile_picture_url=Concat(
@@ -323,7 +328,7 @@ class PrivateChatConsumer(AsyncWebsocketConsumer):
                 "file",
                 "file_size",
                 "is_pinned",
-            )[offset:offset + limit]
+            )[offset : offset + limit]
         )
         messages.reverse()
         return messages
@@ -338,7 +343,11 @@ class PrivateChatConsumer(AsyncWebsocketConsumer):
                         "id": message["id"],
                         "message": message["content"],
                         "sender_id": message["sender_id"],
-                        "recipient_id": self.other_user.id if message["sender_id"] == self.user.id else self.user.id,
+                        "recipient_id": (
+                            self.other_user.id
+                            if message["sender_id"] == self.user.id
+                            else self.user.id
+                        ),
                         "file": message["file"],
                         "file_size": message["file_size"],
                         "created_at": message["created_at"].isoformat(),
@@ -439,12 +448,11 @@ class GlobalChatConsumer(AsyncWebsocketConsumer):
                 "sender__id",
                 "sender__userprofile__profile_name",
                 "sender__userprofile__profile_picture",
-            )[offset:offset + limit]
+            )[offset : offset + limit]
         )
         messages.reverse()
 
         return messages
-
 
     async def send_existing_messages(self, offset=0, limit=20):
         messages = await self.get_existing_messages(offset, limit)

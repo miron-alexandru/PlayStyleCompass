@@ -16,7 +16,7 @@ from django.contrib.auth import (
     update_session_auth_hash,
 )
 
-from django.db.models import Q, F, Value, CharField, OuterRef, Subquery
+from django.db.models import Q, F, Value, CharField
 from django.db.models.functions import Concat
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
@@ -49,7 +49,6 @@ from django.http import (
     JsonResponse,
     HttpResponse,
     Http404,
-    StreamingHttpResponse,
 )
 
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -1508,7 +1507,9 @@ def create_message(request):
         file_size=file_size if file_size else None,
     )
 
-    room_group_name = f"private_chat_{min(sender.id, recipient.id)}_{max(sender.id, recipient.id)}"
+    room_group_name = (
+        f"private_chat_{min(sender.id, recipient.id)}_{max(sender.id, recipient.id)}"
+    )
     is_pinned = sender in message.pinned_by.all()
 
     message_data = {
@@ -1959,18 +1960,20 @@ def create_global_chat_message(request):
 
 @login_required
 def get_chat_messages(request):
-    offset = int(request.GET.get('offset', 0))
-    limit = int(request.GET.get('limit', 10))
+    offset = int(request.GET.get("offset", 0))
+    limit = int(request.GET.get("limit", 10))
 
-    messages = GlobalChatMessage.objects.all().order_by("-created_at")[
-            offset:offset + limit
-        ].annotate(
+    messages = (
+        GlobalChatMessage.objects.all()
+        .order_by("-created_at")[offset : offset + limit]
+        .annotate(
             sender__userprofile__profile_picture=Concat(
                 Value(settings.MEDIA_URL),
                 F("sender__userprofile__profile_picture"),
-                output_field=CharField()
+                output_field=CharField(),
             )
-        ).values(
+        )
+        .values(
             "id",
             "created_at",
             "content",
@@ -1978,6 +1981,7 @@ def get_chat_messages(request):
             "sender__userprofile__profile_name",
             "sender__userprofile__profile_picture",
         )
+    )
 
     response_data = [
         {
