@@ -109,11 +109,6 @@ urlpatterns = [
     path("chat/<int:recipient_id>/", views.chat, name="chat"),
     path("create-message/", views.create_message, name="create_message"),
     path(
-        "stream-chat-messages/<int:recipient_id>/",
-        views.stream_chat_messages,
-        name="stream_chat_messages",
-    ),
-    path(
         "delete-chat-messages/<int:recipient_id>/",
         views.delete_chat_messages,
         name="delete_chat_messages",

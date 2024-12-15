@@ -5,18 +5,21 @@ events such as connection, disconnection, and message handling.
 
 import json
 import asyncio
+import pytz
+from datetime import datetime
 
 from http.cookies import SimpleCookie
 from channels.generic.websocket import AsyncWebsocketConsumer
 from channels.db import database_sync_to_async
 from django.contrib.sessions.models import Session
 from django.contrib.auth.models import User
-from .models import Notification, UserProfile, GlobalChatMessage
+from .models import Notification, UserProfile, GlobalChatMessage, ChatMessage
 from django.utils import timezone
 from django.conf import settings
 from django.urls import reverse
-from datetime import datetime
-import pytz
+from django.db.models import Q, F, Value, CharField
+from django.db.models.functions import Concat
+
 
 
 def get_user_from_session(scope):
@@ -195,6 +198,156 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 }
             )
         )
+
+    async def get_user_from_session(self):
+        # Use the utility function to get the user from session
+        return await database_sync_to_async(get_user_from_session)(self.scope)
+
+
+class PrivateChatConsumer(AsyncWebsocketConsumer):
+    """
+    Handles WebSocket connections for private chat between two users.
+    """
+
+    async def connect(self):
+        self.user = await self.get_user_from_session()
+        self.recipient_id = self.scope["url_route"]["kwargs"]["recipient_id"]
+
+        self.other_user = await self.get_user(self.recipient_id)
+        if not self.other_user:
+            await self.close()
+            return
+
+        self.room_group_name = f"private_chat_{min(self.user.id, self.other_user.id)}_{max(self.user.id, self.other_user.id)}"
+
+        await self.channel_layer.group_add(self.room_group_name, self.channel_name)
+        await self.accept()
+        await self.send_existing_messages()
+
+    async def disconnect(self, close_code):
+        await self.channel_layer.group_discard(self.room_group_name, self.channel_name)
+
+    @database_sync_to_async
+    def get_profile_picture_url(self, user):
+        return user.userprofile.profile_picture.url
+
+    async def receive(self, text_data):
+        text_data_json = json.loads(text_data)
+        message = text_data_json.get("message")
+        file = text_data_json.get("file")
+        file_size = text_data_json.get("file_size")
+        profile_picture_url = await self.get_profile_picture_url(self.user)
+        is_pinned = text_data_json.get("is_pinned")
+        edited = text_data_json.get("edited")
+        message_id = text_data_json.get("message_id")
+
+        if message or file:
+            await self.channel_layer.group_send(
+                self.room_group_name,
+                {
+                    "type": "private_chat_message",
+                    "message": message,
+                    "sender_id": self.user.id,
+                    "recipient_id": self.other_user.id,
+                    "file": file,
+                    "file_size": file_size,
+                    "created_at": datetime.now().isoformat(),
+                    "profile_picture_url": profile_picture_url,
+                    "is_pinned": is_pinned,
+                    "edited": edited,
+                    "id": message_id,
+                },
+            )
+
+    async def private_chat_message(self, event):
+        """Handle the private_chat_message event."""
+        message = event.get("message")
+        sender_id = event["sender_id"]
+        recipient_id = event["recipient_id"]
+        file = event.get("file")
+        file_size = event.get("file_size")
+        created_at = event["created_at"]
+        profile_picture_url = event["profile_picture_url"]
+        edited = event["edited"]
+        is_pinned = event["is_pinned"]
+        message_id = event["id"]
+
+        await self.send(
+            text_data=json.dumps(
+                {
+                    "message": message,
+                    "sender_id": sender_id,
+                    "recipient_id": recipient_id,
+                    "file": file,
+                    "file_size": file_size,
+                    "created_at": created_at,
+                    "profile_picture_url": profile_picture_url,
+                    "edited": edited,
+                    "is_pinned": is_pinned,
+                    "id": message_id,
+                }
+            )
+        )
+
+    @database_sync_to_async
+    def get_user(self, user_id):
+        """Fetch the user profile for the given user_id"""
+        try:
+            return User.objects.get(id=user_id)
+        except User.DoesNotExist:
+            return None
+
+    @database_sync_to_async
+    def get_existing_messages(self, offset=0, limit=20):
+        messages = list(
+            ChatMessage.objects.filter(
+                (Q(sender=self.user, recipient=self.other_user) & ~Q(sender_hidden=True))
+                | (Q(sender=self.other_user, recipient=self.user) & ~Q(recipient_hidden=True))
+            )
+            .annotate(
+                profile_picture_url=Concat(
+                    Value(settings.MEDIA_URL),
+                    F("sender__userprofile__profile_picture"),
+                    output_field=CharField(),
+                ),
+                is_pinned=Q(pinned_by__in=[self.user]),
+            )
+            .order_by("-created_at")
+            .values(
+                "id",
+                "created_at",
+                "content",
+                "profile_picture_url",
+                "sender_id",
+                "edited",
+                "file",
+                "file_size",
+                "is_pinned",
+            )[offset:offset + limit]
+        )
+        messages.reverse()
+        return messages
+
+    async def send_existing_messages(self, offset=0, limit=20):
+        messages = await self.get_existing_messages(offset, limit)
+
+        for message in messages:
+            await self.send(
+                text_data=json.dumps(
+                    {
+                        "id": message["id"],
+                        "message": message["content"],
+                        "sender_id": message["sender_id"],
+                        "recipient_id": self.other_user.id if message["sender_id"] == self.user.id else self.user.id,
+                        "file": message["file"],
+                        "file_size": message["file_size"],
+                        "created_at": message["created_at"].isoformat(),
+                        "profile_picture_url": message["profile_picture_url"],
+                        "is_pinned": message["is_pinned"],
+                        "edited": message["edited"],
+                    }
+                )
+            )
 
     async def get_user_from_session(self):
         # Use the utility function to get the user from session

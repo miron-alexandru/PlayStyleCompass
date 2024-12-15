@@ -189,8 +189,19 @@ function submit(event) {
   const fileIndicator = document.getElementById("file-indicator");
   const hasFile = fileInput.files.length > 0;
 
+  // Prepare data to send
+  const messageData = {
+    content: textarea.value.trim(),
+    file: null,
+    file_size: null,
+    message_id: null,
+  };
+
   if (hasFile) {
-    formData.append("file", fileInput.files[0]);
+    const file = fileInput.files[0];
+    messageData.file = file;
+    messageData.file_size = file.size;
+    formData.append("file", file);
   }
 
   fetch(endpointUrl, {
@@ -210,12 +221,19 @@ function submit(event) {
         textarea.value = "";
         fileInput.value = "";
         this.errors = {};
-        this.content = "";
         sendButton.disabled = !textarea.value.trim();
 
         if (hasFile) {
           fileIndicator.style.display = "none";
         }
+
+        messageData.message_id = body.id;
+        messageData.file = body.file;
+        messageData.file_size = body.file_size;
+        messageData.edited = body.edited;
+        messageData.is_pinned = body.is_pinned;
+
+        sendMessage(messageData);
       } else {
         this.state = "error";
         this.errors = { message: body.error || "Unknown error" };
@@ -238,6 +256,24 @@ function submit(event) {
     });
 }
 
+function sendMessage({ content, file, file_size, message_id, edited, is_pinned }) {
+  const message = {
+    message: content,
+    file: file,
+    file_size: file_size,
+    message_id: message_id,
+    edited: edited,
+    is_pinned: is_pinned,
+  };
+
+  if (socket && socket.readyState === WebSocket.OPEN) {
+    socket.send(JSON.stringify(message));
+  } else {
+    console.error("WebSocket connection is not open.");
+  }
+}
+
+
 function editMessage(messageId) {
   const messageElement = document.querySelector(
     `div[data-message-id='${messageId}']`
@@ -249,6 +285,7 @@ function editMessage(messageId) {
     "data-edit-message-url"
   );
   const editUrl = editUrlTemplate.replace("/0/", `/${messageId}/`);
+  console.log(messageId);
 
   const input = messageElement.querySelector("textarea");
   if (input) {
@@ -389,83 +426,85 @@ function togglePinMessage(messageId, button) {
     .catch((error) => console.error("Error:", error));
 }
 
-let eventSource;
+let socket;
 
 document.addEventListener("DOMContentLoaded", function () {
   const sseData = document.getElementById("sse-data");
-  const noMessagesText = translate("No messages. Say something!");
   const chatContainer = document.getElementById("chat-container");
   const chatMessagesContainer = document.getElementById("chat-messages");
   const currentUserId = parseInt(chatContainer.getAttribute("data-user-id"));
+  const recipientId = parseInt(chatContainer.getAttribute("data-recipient-id"));
+  const noMessagesText = translate("No messages. Say something!");
 
-  function startSSE(url) {
-    eventSource = new EventSource(url);
-    eventSource.onmessage = (event) => {
+  function startWebSocket() {
+    const chatSocketUrl = `wss://${window.location.host}/ws/private_chat/${recipientId}/`;
+    socket = new WebSocket(chatSocketUrl);
+
+    socket.onopen = () => {
+      console.log("WebSocket connection established.");
+    };
+
+    socket.onmessage = (event) => {
       const data = JSON.parse(event.data);
-      const isCurrentUser = data.sender__id === currentUserId;
+      const isCurrentUser = data.sender_id === currentUserId;
       const formattedTimestamp = formatTimestamp(data.created_at);
-      const messageTimestamp = data.created_at;
       const isPinned = data.is_pinned;
 
       const messageHTML = `
-            <div class="message-wrapper ${
-              isCurrentUser ? "sent" : "received"
-            }" data-message-id="${data.id}">
-                <img src="${
-                  data.profile_picture_url
-                }" alt="Profile Picture" class="chat-profile-picture">
-                <div class="message-box ${isCurrentUser ? "sent" : "received"}">
-                    <div class="message-content-wrapper" data-creation-time="${
-                      data.created_at
-                    }">
-                        <div class="message-content">${wrapUrlsWithAnchorTags(
-                          data.content
-                        )}</div>
-                        ${
-                          data.file
-                            ? `<div class="message-file">
-                                ${translate("File Attachment: ")}<a href="${
-                                data.file
-                              }" download="${getFileNameFromUrl(
-                                data.file
-                              )}" class="file-link">
-                                    ${getFileNameFromUrl(data.file)}
-                                </a>
-                                ${
-                                  data.file_size
-                                    ? ` (${formatFileSize(data.file_size)})`
-                                    : ""
-                                }
-                            </div>`
-                            : ""
-                        }
-                        ${
-                          data.edited
-                            ? `<div class="message-edited">${translate(
-                                "Edited"
-                              )}</div>`
-                            : ""
-                        }
-                        <div class="message-timestamp">${formattedTimestamp}</div>
-                        ${
-                          isCurrentUser
-                            ? isNewMessage(data.created_at)
-                              ? `<button class="edit-message-button">${translate(
-                                  "Edit"
-                                )}</button>`
-                              : ""
-                            : ""
-                        }
-                        <button class="pin-message-button" data-message-id="${
-                          data.id
-                        }" data-is-pinned="${isPinned}">
-                            ${isPinned ? translate("Unpin") : translate("Pin")}
-                        </button>
-                    </div>
-                </div>
-            </div>`;
+        <div class="message-wrapper ${
+          isCurrentUser ? "sent" : "received"
+        }" data-message-id="${data.id}">
+          <img src="${
+            data.profile_picture_url
+          }" alt="Profile Picture" class="chat-profile-picture">
+          <div class="message-box ${isCurrentUser ? "sent" : "received"}">
+            <div class="message-content-wrapper" data-creation-time="${
+              data.created_at
+            }">
+              <div class="message-content">${wrapUrlsWithAnchorTags(
+                data.message
+              )}</div>
+              ${
+                data.file
+                  ? `<div class="message-file">
+                      ${translate("File Attachment: ")}<a href="${
+                      data.file
+                    }" download="${getFileNameFromUrl(
+                      data.file
+                    )}" class="file-link">
+                          ${getFileNameFromUrl(data.file)}
+                      </a>
+                      ${
+                        data.file_size
+                          ? ` (${formatFileSize(data.file_size)})`
+                          : ""
+                      }
+                  </div>`
+                  : ""
+              }
+              ${
+                data.edited
+                  ? `<div class="message-edited">${translate("Edited")}</div>`
+                  : ""
+              }
+              <div class="message-timestamp">${formattedTimestamp}</div>
+              ${
+                isCurrentUser
+                  ? `<button class="edit-message-button">${translate(
+                      "Edit"
+                    )}</button>`
+                  : ""
+              }
+              <button class="pin-message-button" data-message-id="${
+                data.id
+              }" data-is-pinned="${isPinned}">
+                ${isPinned ? translate("Unpin") : translate("Pin")}
+              </button>
+            </div>
+          </div>
+        </div>`;
 
-      sseData.innerHTML += messageHTML;
+      chatMessagesContainer.innerHTML += messageHTML;
       scrollToBottom();
       checkForMessages();
 
@@ -477,7 +516,32 @@ document.addEventListener("DOMContentLoaded", function () {
 
       handleScroll();
     };
+
+    socket.onclose = (e) => {
+      console.error("WebSocket connection closed unexpectedly.");
+    };
+
+    socket.onerror = (error) => {
+      console.error("WebSocket error:", error);
+    };
   }
+
+  function checkForMessages() {
+    if (chatMessagesContainer.innerHTML.trim() === "") {
+      chatMessagesContainer.innerHTML = `<p class="no-messages-text">${noMessagesText}</p>`;
+    } else {
+      const noMessagesElement = document.querySelector(".no-messages-text");
+      if (noMessagesElement) {
+        noMessagesElement.remove();
+      }
+    }
+  }
+
+  function scrollToBottom() {
+    chatMessagesContainer.scrollTop = chatMessagesContainer.scrollHeight;
+  }
+
+  startWebSocket();
 
   function getFileNameFromUrl(url) {
     const decodedUrl = decodeURIComponent(url);
@@ -564,9 +628,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   if (typeof EventSource !== "undefined") {
-    const streamUrl = sseData.dataset.streamUrl;
     showLoading();
-    startSSE(streamUrl);
     scrollToBottom();
     setTimeout(checkForMessages, 1000);
   } else {

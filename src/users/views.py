@@ -1500,7 +1500,7 @@ def create_message(request):
 
     cache.set(cache_key, message_info, timeout=20)
 
-    ChatMessage.objects.create(
+    message = ChatMessage.objects.create(
         sender=sender,
         recipient=recipient,
         content=content,
@@ -1508,9 +1508,36 @@ def create_message(request):
         file_size=file_size if file_size else None,
     )
 
+    room_group_name = f"private_chat_{min(sender.id, recipient.id)}_{max(sender.id, recipient.id)}"
+    is_pinned = sender in message.pinned_by.all()
+
+    message_data = {
+        "type": "private_chat_message",
+        "message": content,
+        "sender_id": sender.id,
+        "recipient_id": recipient.id,
+        "file": file_url if file_url else None,
+        "file_size": file_size if file_size else None,
+        "profile_picture_url": sender.userprofile.profile_picture.url,
+        "is_pinned": is_pinned,
+        "edited": message.edited,
+        "id": message.id,
+    }
+    channel_layer = get_channel_layer()
+    channel_layer.group_send(room_group_name, message_data)
+
     process_chat_notification(sender, recipient)
 
-    return JsonResponse({"status": "Message created"}, status=201)
+    response_data = {
+        "status": "Message created",
+        "id": message.id,
+        "file": file_url if file_url else None,
+        "file_size": file_size if file_size else None,
+        "edited": message.edited,
+        "is_pinned": is_pinned,
+    }
+
+    return JsonResponse(response_data, status=201)
 
 
 @login_required
@@ -1560,105 +1587,6 @@ def delete_chat_messages(request, recipient_id):
     )
 
     return JsonResponse({"status": "success"})
-
-
-async def stream_chat_messages(request, recipient_id: int) -> StreamingHttpResponse:
-    """View used to stream chat messages between the authenticated user and a specified recipient."""
-    recipient = await sync_to_async(get_object_or_404)(User, id=recipient_id)
-
-    async def event_stream():
-        last_id = await get_last_message_id(request.user, recipient)
-
-        async for message in get_existing_messages(request.user, recipient):
-            yield message
-
-        while True:
-            new_messages = (
-                ChatMessage.objects.filter(
-                    Q(sender=request.user, recipient=recipient)
-                    | Q(sender=recipient, recipient=request.user),
-                    id__gt=last_id,
-                )
-                .annotate(
-                    profile_picture_url=Concat(
-                        Value(settings.MEDIA_URL),
-                        F("sender__userprofile__profile_picture"),
-                        output_field=CharField(),
-                    ),
-                    is_pinned=Q(pinned_by__in=[request.user]),
-                )
-                .order_by("created_at")
-                .values(
-                    "id",
-                    "created_at",
-                    "content",
-                    "profile_picture_url",
-                    "sender__id",
-                    "edited",
-                    "file",
-                    "file_size",
-                    "is_pinned",
-                )
-            )
-
-            new_messages_list = await sync_to_async(list)(new_messages)
-
-            for message in new_messages_list:
-                message["created_at"] = message["created_at"].isoformat()
-                message["content"] = escape(message["content"])
-                json_message = json.dumps(message, cls=DjangoJSONEncoder)
-
-                yield f"data: {json_message}\n\n"
-                last_id = message["id"]
-
-            await asyncio.sleep(1)
-
-    async def get_existing_messages(user, recipient) -> AsyncGenerator:
-        messages = (
-            ChatMessage.objects.filter(
-                Q(sender=user, recipient=recipient)
-                | Q(sender=recipient, recipient=user)
-            )
-            .filter(
-                (Q(sender=user) & Q(sender_hidden=False))
-                | (Q(recipient=user) & Q(recipient_hidden=False))
-            )
-            .annotate(
-                profile_picture_url=Concat(
-                    Value(settings.MEDIA_URL),
-                    F("sender__userprofile__profile_picture"),
-                    output_field=CharField(),
-                ),
-                is_pinned=Q(pinned_by__in=[user]),
-            )
-            .order_by("created_at")
-            .values(
-                "id",
-                "created_at",
-                "content",
-                "profile_picture_url",
-                "sender__id",
-                "edited",
-                "file",
-                "file_size",
-                "is_pinned",
-            )
-        )
-
-        async for message in messages:
-            message["created_at"] = message["created_at"].isoformat()
-            message["content"] = escape(message["content"])
-            json_message = json.dumps(message, cls=DjangoJSONEncoder)
-
-            yield f"data: {json_message}\n\n"
-
-    async def get_last_message_id(user, recipient) -> int:
-        last_message = await ChatMessage.objects.filter(
-            Q(sender=user, recipient=recipient) | Q(sender=recipient, recipient=user)
-        ).alast()
-        return last_message.id if last_message else 0
-
-    return StreamingHttpResponse(event_stream(), content_type="text/event-stream")
 
 
 @login_required
