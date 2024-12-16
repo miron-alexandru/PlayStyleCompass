@@ -285,7 +285,6 @@ function editMessage(messageId) {
     "data-edit-message-url"
   );
   const editUrl = editUrlTemplate.replace("/0/", `/${messageId}/`);
-  console.log(messageId);
 
   const input = messageElement.querySelector("textarea");
   if (input) {
@@ -434,7 +433,72 @@ document.addEventListener("DOMContentLoaded", function () {
   const chatMessagesContainer = document.getElementById("chat-messages");
   const currentUserId = parseInt(chatContainer.getAttribute("data-user-id"));
   const recipientId = parseInt(chatContainer.getAttribute("data-recipient-id"));
+  const getMessagesUrl = chatContainer.getAttribute("data-get-messages");
+  const loadMoreButton = document.getElementById("load-more-private-messages");
   const noMessagesText = translate("No messages. Say something!");
+
+  let currentOffset = 20;
+  let allMessagesLoaded = false;
+
+  function generateMessageHTML(message) {
+    const isCurrentUser = message.sender_id === currentUserId;
+    const formattedTimestamp = formatTimestamp(message.created_at);
+    const isPinned = message.is_pinned;
+
+    return `
+      <div class="message-wrapper ${
+        isCurrentUser ? "sent" : "received"
+      }" data-message-id="${message.id}">
+        <img src="${
+          message.profile_picture_url
+        }" alt="Profile Picture" class="chat-profile-picture">
+        <div class="message-box ${isCurrentUser ? "sent" : "received"}">
+          <div class="message-content-wrapper" data-creation-time="${
+            message.created_at
+          }">
+            <div class="message-content">${wrapUrlsWithAnchorTags(
+              message.message
+            )}</div>
+            ${
+              message.file
+                ? `<div class="message-file">
+                    ${translate("File Attachment: ")}<a href="${
+                  message.file
+                }" download="${getFileNameFromUrl(
+                  message.file
+                )}" class="file-link">
+                        ${getFileNameFromUrl(message.file)}
+                    </a>
+                    ${
+                      message.file_size
+                        ? ` (${formatFileSize(message.file_size)})`
+                        : ""
+                    }
+                </div>`
+                : ""
+            }
+            ${
+              message.edited
+                ? `<div class="message-edited">${translate("Edited")}</div>`
+                : ""
+            }
+            <div class="message-timestamp">${formattedTimestamp}</div>
+            ${
+              isCurrentUser
+                ? `<button class="edit-message-button">${translate(
+                    "Edit"
+                  )}</button>`
+                : ""
+            }
+            <button class="pin-message-button" data-message-id="${
+              message.id
+            }" data-is-pinned="${isPinned}">
+              ${isPinned ? translate("Unpin") : translate("Pin")}
+            </button>
+          </div>
+        </div>
+      </div>`;
+  }
 
   function startWebSocket() {
     const chatSocketUrl = `wss://${window.location.host}/ws/private_chat/${recipientId}/`;
@@ -446,63 +510,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     socket.onmessage = (event) => {
       const data = JSON.parse(event.data);
-      const isCurrentUser = data.sender_id === currentUserId;
-      const formattedTimestamp = formatTimestamp(data.created_at);
-      const isPinned = data.is_pinned;
-
-      const messageHTML = `
-        <div class="message-wrapper ${
-          isCurrentUser ? "sent" : "received"
-        }" data-message-id="${data.id}">
-          <img src="${
-            data.profile_picture_url
-          }" alt="Profile Picture" class="chat-profile-picture">
-          <div class="message-box ${isCurrentUser ? "sent" : "received"}">
-            <div class="message-content-wrapper" data-creation-time="${
-              data.created_at
-            }">
-              <div class="message-content">${wrapUrlsWithAnchorTags(
-                data.message
-              )}</div>
-              ${
-                data.file
-                  ? `<div class="message-file">
-                      ${translate("File Attachment: ")}<a href="${
-                      data.file
-                    }" download="${getFileNameFromUrl(
-                      data.file
-                    )}" class="file-link">
-                          ${getFileNameFromUrl(data.file)}
-                      </a>
-                      ${
-                        data.file_size
-                          ? ` (${formatFileSize(data.file_size)})`
-                          : ""
-                      }
-                  </div>`
-                  : ""
-              }
-              ${
-                data.edited
-                  ? `<div class="message-edited">${translate("Edited")}</div>`
-                  : ""
-              }
-              <div class="message-timestamp">${formattedTimestamp}</div>
-              ${
-                isCurrentUser
-                  ? `<button class="edit-message-button">${translate(
-                      "Edit"
-                    )}</button>`
-                  : ""
-              }
-              <button class="pin-message-button" data-message-id="${
-                data.id
-              }" data-is-pinned="${isPinned}">
-                ${isPinned ? translate("Unpin") : translate("Pin")}
-              </button>
-            </div>
-          </div>
-        </div>`;
+      const messageHTML = generateMessageHTML(data);
 
       chatMessagesContainer.innerHTML += messageHTML;
       scrollToBottom();
@@ -540,6 +548,47 @@ document.addEventListener("DOMContentLoaded", function () {
   function scrollToBottom() {
     chatMessagesContainer.scrollTop = chatMessagesContainer.scrollHeight;
   }
+
+  function loadPrivateMessages(offset, limit) {
+    if (allMessagesLoaded) return;
+
+    fetch(`${getMessagesUrl}?offset=${offset}&limit=${limit}`)
+      .then((response) => response.json())
+      .then((messages) => {
+        if (messages.length === 0) {
+          allMessagesLoaded = true;
+          loadMoreButton.style.display = "none";
+          return;
+        }
+
+        const fragment = document.createDocumentFragment();
+
+        messages.forEach((message) => {
+          const messageHTML = generateMessageHTML(message);
+
+          const tempElement = document.createElement("div");
+          tempElement.innerHTML = messageHTML.trim();
+          fragment.prepend(tempElement.firstChild);
+        });
+
+        chatMessagesContainer.prepend(fragment);
+        moveDateHeaderToTop()
+      })
+      .catch((error) => console.error("Error loading messages:", error));
+  }
+
+  chatMessagesContainer.addEventListener("scroll", function () {
+    if (chatMessagesContainer.scrollTop === 0 && !allMessagesLoaded) {
+      loadMoreButton.style.display = "block";
+    } else {
+      loadMoreButton.style.display = "none";
+    }
+  });
+
+  loadMoreButton.addEventListener("click", function () {
+    loadPrivateMessages(currentOffset, 30);
+    currentOffset += 30;
+  });
 
   startWebSocket();
 
@@ -638,6 +687,16 @@ document.addEventListener("DOMContentLoaded", function () {
   initializeDateHeader();
   chatMessagesContainer.addEventListener("scroll", handleScroll);
 });
+
+function moveDateHeaderToTop() {
+  const chatMessagesContainer = document.getElementById("chat-messages");
+  const dateHeader = document.getElementById("date-header");
+
+  if (dateHeader) {
+    chatMessagesContainer.insertBefore(dateHeader, chatMessagesContainer.firstChild);
+  }
+}
+
 
 function handleScroll() {
   const chatMessagesContainer = document.getElementById("chat-messages");

@@ -152,4 +152,9 @@ urlpatterns = [
         views.get_chat_messages,
         name="get_chat_messages",
     ),
+    path(
+        "get_private_messages/<int:recipient_id>/",
+        views.get_private_chat_messages,
+        name="get_private_chat_messages",
+    ),
 ]

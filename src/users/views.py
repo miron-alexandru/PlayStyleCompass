@@ -1885,6 +1885,7 @@ def following_list(request, user_id):
 
 @login_required
 def notification_settings(request):
+    """View used to manage notification settings."""
     user_profile = request.user.userprofile
 
     if request.method == "POST":
@@ -1960,6 +1961,7 @@ def create_global_chat_message(request):
 
 @login_required
 def get_chat_messages(request):
+    """View used to get a certain number of global chat messages."""
     offset = int(request.GET.get("offset", 0))
     limit = int(request.GET.get("limit", 10))
 
@@ -1991,6 +1993,68 @@ def get_chat_messages(request):
             "sender_name": message["sender__userprofile__profile_name"],
             "profile_picture_url": message["sender__userprofile__profile_picture"],
             "created_at": message["created_at"].isoformat(),
+        }
+        for message in messages
+    ]
+
+    return JsonResponse(response_data, safe=False)
+
+
+@login_required
+def get_private_chat_messages(request, recipient_id):
+    """View used to get a specified number of private chat messages."""
+    offset = int(request.GET.get("offset", 0))
+    limit = int(request.GET.get("limit", 10))
+
+    try:
+        recipient = User.objects.get(id=recipient_id)
+    except User.DoesNotExist:
+        return JsonResponse({"error": "Recipient not found."}, status=404)
+
+    messages = list(
+        ChatMessage.objects.filter(
+            (
+                Q(sender=request.user, recipient=recipient)
+                & ~Q(sender_hidden=True)
+            )
+            | (
+                Q(sender=recipient, recipient=request.user)
+                & ~Q(recipient_hidden=True)
+            )
+        )
+        .annotate(
+            profile_picture_url=Concat(
+                Value(settings.MEDIA_URL),
+                F("sender__userprofile__profile_picture"),
+                output_field=CharField(),
+            ),
+            is_pinned=Q(pinned_by__in=[request.user]),
+        )
+        .order_by("-created_at")
+        .values(
+            "id",
+            "created_at",
+            "content",
+            "profile_picture_url",
+            "sender",
+            "edited",
+            "file",
+            "file_size",
+            "is_pinned",
+        )[offset : offset + limit]
+    )
+
+    response_data = [
+        {
+            "id": message["id"],
+            "message": message["content"],
+            "sender_id": message["sender"],
+            "profile_picture_url": message["profile_picture_url"],
+            "created_at": message["created_at"].isoformat(),
+            "edited": message["edited"],
+            "file": message["file"],
+            "file_size": message["file_size"],
+            "is_pinned": message["is_pinned"],
         }
         for message in messages
     ]

@@ -66,8 +66,8 @@ fetch(authCheckUrl)
       };
 
       loadMoreButton.addEventListener('click', function() {
-        loadMessages(currentOffset, 5);
-        currentOffset += 5;
+        loadMessages(currentOffset, 40);
+        currentOffset += 40;
       });
 
       function loadMessages(offset, limit) {

@@ -18,7 +18,7 @@
 <link rel="stylesheet" type="text/css" href="{% static 'css/users/chat.css' %}">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@simonwep/pickr/dist/themes/classic.min.css"/>
 
-<div class="chat-container" id="chat-container" data-user-id="{{ request.user.id }}" data-recipient-id="{{ recipient.id }}">
+<div class="chat-container" id="chat-container" data-user-id="{{ request.user.id }}" data-recipient-id="{{ recipient.id }}" data-get-messages="{% url 'users:get_private_chat_messages' recipient.id %}">
     <div class="chat-header">
         <a class="profile-link" title="{% trans 'View Profile' %}" href="{% url 'users:view_profile' recipient.userprofile.profile_name %}"><img src="{{ recipient.userprofile.profile_picture.url}} " alt="Profile Picture" class="header-profile-picture"> {{ recipient.userprofile.profile_name }}</a>
         <div id="status"></div>
@@ -49,6 +49,7 @@
         <div id="color-picker"></div>
         <button id="default-color-button">{% trans "Default" %}</button>
     </div>
+    <button id="load-more-private-messages" class="load-more-button private-chat-button">{% trans "Show More" %}</button>
     <div id="chat-messages" class="chat-messages" data-edit-message-url="{% url 'users:edit_message' 0 %}"
         data-pin-message-url="{% url 'users:toggle_pin_message' 0 %}">
         <div id="date-header" class="date-header" style="display:none"></div>
