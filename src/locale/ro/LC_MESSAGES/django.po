@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-12-13 13:31+0200\n"
+"POT-Creation-Date: 2024-12-17 11:12+0200\n"
 "PO-Revision-Date: 2024-12-13 13:29+0144\n"
 "Last-Translator:   <quality_xqs@yahoo.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -218,7 +218,7 @@ msgstr "Sortează după:"
 
 #: .\src\playstyle_compass\templates\base\latest_news.html:41
 #: .\src\playstyle_compass\templates\games\game_library.html:74
-#: .\src\users\templates\messaging\chat.html:50
+#: .\src\users\templates\messaging\chat.html:54
 msgid "Default"
 msgstr "Implicit"
 
@@ -2376,12 +2376,12 @@ msgstr ""
 "Conectează-te cu jucători din întreaga lume și împărtășește-ți experiențele "
 "de gaming!"
 
-#: .\src\templates\base.html:415
+#: .\src\templates\base.html:415 .\src\users\templates\messaging\chat.html:56
 msgid "Show More"
 msgstr "Arată mai mult"
 
-#: .\src\templates\base.html:421 .\src\users\templates\messaging\chat.html:27
-#: .\src\users\templates\messaging\chat.html:65
+#: .\src\templates\base.html:421 .\src\users\templates\messaging\chat.html:30
+#: .\src\users\templates\messaging\chat.html:69
 msgid "Message..."
 msgstr "Mesaj..."
 
@@ -2517,11 +2517,11 @@ msgstr "Poți selecta maximum 3 moduri de joc."
 msgid "Please enter a valid social media link."
 msgstr "Te rog introdu un link valid către social media."
 
-#: .\src\users\pipeline.py:21 .\src\users\views.py:229
+#: .\src\users\pipeline.py:21 .\src\users\views.py:228
 msgid "Activate your user account."
 msgstr "Activează-ți contul de utilizator."
 
-#: .\src\users\pipeline.py:35 .\src\users\views.py:243
+#: .\src\users\pipeline.py:35 .\src\users\views.py:242
 #, python-format
 msgid ""
 "Hello <b>%(user)s</b>, please go to your email <b>%(to_email)s</b> inbox and "
@@ -2534,7 +2534,7 @@ msgstr ""
 "confirma înregistrarea. <b>Notă:</b> Dacă nu găsești email-ul în casuța ta "
 "de mesaje primite, îți recomandăm să verifici și folderul de spam."
 
-#: .\src\users\pipeline.py:45 .\src\users\views.py:254 .\src\users\views.py:296
+#: .\src\users\pipeline.py:45 .\src\users\views.py:253 .\src\users\views.py:295
 #, python-format
 msgid "Problem sending email to %(to_email)s, check if you typed it correctly."
 msgstr ""
@@ -2985,23 +2985,23 @@ msgstr ""
 "Implicați-vă în conversații semnificative, împărtășiți gânduri și bucurați-"
 "vă de interacțiune."
 
-#: .\src\users\templates\messaging\chat.html:35
+#: .\src\users\templates\messaging\chat.html:38
 msgid "Search Message"
 msgstr "Caută Mesaj"
 
-#: .\src\users\templates\messaging\chat.html:36
+#: .\src\users\templates\messaging\chat.html:39
 msgid "Pinned Messages"
 msgstr "Mesaje Fixate"
 
-#: .\src\users\templates\messaging\chat.html:37
+#: .\src\users\templates\messaging\chat.html:40
 msgid "Change Background"
 msgstr "Schimbă Fundalul"
 
-#: .\src\users\templates\messaging\chat.html:44
+#: .\src\users\templates\messaging\chat.html:47
 msgid "Delete Messages"
 msgstr "Șterge Mesajele"
 
-#: .\src\users\templates\messaging\chat.html:56
+#: .\src\users\templates\messaging\chat.html:61
 msgid "is typing..."
 msgstr "scrie..."
 
@@ -3486,14 +3486,14 @@ msgstr ""
 #: .\src\users\templates\user_related\user_profile.html:134
 #: .\src\users\templates\user_related\user_profile.html:153
 #: .\src\users\templates\user_related\user_profile.html:172
-#: .\src\users\views.py:1084 .\src\users\views.py:1701
-#: .\src\users\views.py:1844
+#: .\src\users\views.py:1083 .\src\users\views.py:1630
+#: .\src\users\views.py:1773
 msgid "You"
 msgstr "Tu"
 
 #: .\src\users\templates\user_related\user_profile.html:62
 #: .\src\users\templates\user_related\user_profile.html:106
-#: .\src\users\views.py:1086
+#: .\src\users\views.py:1085
 msgid "Friend"
 msgstr "Prieteni"
 
@@ -3518,7 +3518,7 @@ msgid "Block"
 msgstr "Blochează"
 
 #: .\src\users\templates\user_related\user_profile.html:98
-#: .\src\users\views.py:1088
+#: .\src\users\views.py:1087
 msgid "Stranger"
 msgstr "Străin"
 
@@ -3576,7 +3576,7 @@ msgstr "Parola trebuie să conțină cel puțin un caracter special: @#$%!^&*"
 msgid "Your password must contain at least 1 special character: @#$%!^&*"
 msgstr "Parola trebuie să conțină cel puțin un caracter special: @#$%!^&*"
 
-#: .\src\users\views.py:135
+#: .\src\users\views.py:134
 msgid ""
 "You can only update your profile name once per hour. Please try again in {} "
 "minutes and {} seconds."
@@ -3584,31 +3584,31 @@ msgstr ""
 "Poți actualiza numele profilului doar o dată pe oră. Te rog încearcă din nou "
 "în {} minute și {} secunde."
 
-#: .\src\users\views.py:164
+#: .\src\users\views.py:163
 msgid "Your profile name has been successfully changed!"
 msgstr "Numele tău de profil a fost schimbat cu succes!"
 
-#: .\src\users\views.py:216
+#: .\src\users\views.py:215
 msgid "Thank you for your email confirmation!"
 msgstr "Mulțumim pentru confirmarea prin email!"
 
-#: .\src\users\views.py:219
+#: .\src\users\views.py:218
 msgid "Activation link is invalid!"
 msgstr "Linkul de activare nu este valid!"
 
-#: .\src\users\views.py:259
+#: .\src\users\views.py:258
 msgid "Email address already confirmed!"
 msgstr "Adresa de email a fost deja confirmata!"
 
-#: .\src\users\views.py:268
+#: .\src\users\views.py:267
 msgid "Email address not confirmed!"
 msgstr "Adresa de E-mail nu a fost confirmata!"
 
-#: .\src\users\views.py:271 .\src\users\views.py:380
+#: .\src\users\views.py:270 .\src\users\views.py:379
 msgid "Confirm your account deletion."
 msgstr "Confirmați ștergerea contului dvs."
 
-#: .\src\users\views.py:286
+#: .\src\users\views.py:285
 #, python-format
 msgid ""
 "Hello <b>%(user)s</b>, please go to your email <b>%(to_email)s</b> inbox and "
@@ -3621,19 +3621,19 @@ msgstr ""
 "dumneavoastră. <b>Notă:</b> Dacă nu găsiți emailul în căsuța de inbox, vă "
 "recomandăm să verificați folderul de spam."
 
-#: .\src\users\views.py:326
+#: .\src\users\views.py:325
 msgid "Register :: PlayStyle Compass"
 msgstr "Înregistrare :: PlayStyle Compass"
 
-#: .\src\users\views.py:369
+#: .\src\users\views.py:368
 msgid "Your account has been successfully deleted!"
 msgstr "Contul tău a fost șters cu succes!"
 
-#: .\src\users\views.py:374
+#: .\src\users\views.py:373
 msgid "Incorrect password. Please try again."
 msgstr "Parolă incorectă. Te rugăm să încerci din nou."
 
-#: .\src\users\views.py:396
+#: .\src\users\views.py:395
 msgid ""
 "A confirmation email has been sent to your address. Please follow the "
 "instructions to complete the deletion process."
@@ -3641,53 +3641,53 @@ msgstr ""
 "Un email de confirmare a fost trimis la adresa dumneavoastră. Vă rugăm să "
 "urmați instrucțiunile pentru a finaliza procesul de ștergere."
 
-#: .\src\users\views.py:403
+#: .\src\users\views.py:402
 #, python-format
 msgid "Problem sending email to %(to_email)s, please check if it is correct."
 msgstr ""
 "Problemă la trimiterea emailului către %(to_email)s, te rugăm să verifici "
 "dacă este corect."
 
-#: .\src\users\views.py:411
+#: .\src\users\views.py:410
 msgid ""
 "Please confirm your email address before attempting to delete your account."
 msgstr ""
 "Te rugăm să confirmi adresa ta de email înainte de a încerca să ștergi "
 "contul tău."
 
-#: .\src\users\views.py:417
+#: .\src\users\views.py:416
 msgid "Delete Account :: PlayStyle Compass"
 msgstr "Ștergere Cont :: PlayStyle Compass"
 
-#: .\src\users\views.py:432
+#: .\src\users\views.py:431
 msgid "Your account has been deleted successfully."
 msgstr "Contul tău a fost șters cu succes."
 
-#: .\src\users\views.py:435
+#: .\src\users\views.py:434
 msgid "The confirmation link is invalid or has expired."
 msgstr "Linkul de confirmare este invalid sau a expirat."
 
-#: .\src\users\views.py:470
+#: .\src\users\views.py:469
 msgid "Confirm Email Change"
 msgstr "Confirmare Schimbare Email"
 
-#: .\src\users\views.py:487
+#: .\src\users\views.py:486
 msgid "Change Email :: PlayStyle Compass"
 msgstr "Schimbare Email :: PlayStyle Compass"
 
-#: .\src\users\views.py:508
+#: .\src\users\views.py:507
 msgid "Invalid token for email change."
 msgstr "Token invalid pentru schimbarea emailului."
 
-#: .\src\users\views.py:515
+#: .\src\users\views.py:514
 msgid "Email Address successfully changed!"
 msgstr "Adresa de email a fost schimbată cu succes!"
 
-#: .\src\users\views.py:517
+#: .\src\users\views.py:516
 msgid "Email Change Success :: PlayStyle Compass"
 msgstr "Schimbare Email Reușită :: PlayStyle Compass"
 
-#: .\src\users\views.py:519
+#: .\src\users\views.py:518
 msgid ""
 "You have successfully changed your email address, go to the homepage by "
 "clicking the button below."
@@ -3695,15 +3695,15 @@ msgstr ""
 "Ți-ai schimbat cu succes adresa de email, mergi la pagina principală dând "
 "click pe butonul de mai jos."
 
-#: .\src\users\views.py:529
+#: .\src\users\views.py:528
 msgid "Confirmation email successfully sent!"
 msgstr "Emailul de confirmare a fost trimis cu succes!"
 
-#: .\src\users\views.py:531
+#: .\src\users\views.py:530
 msgid "Email Change Done :: PlayStyle Compass"
 msgstr "Schimbare Email Finalizată :: PlayStyle Compass"
 
-#: .\src\users\views.py:533
+#: .\src\users\views.py:532
 msgid ""
 "An email confirmation has been sent to your current email address. Please "
 "check your inbox and click the link provided to confirm the email change."
@@ -3712,27 +3712,27 @@ msgstr ""
 "să verifici inboxul și să dai click pe link pentru a confirma schimbarea "
 "emailului."
 
-#: .\src\users\views.py:567
+#: .\src\users\views.py:566
 msgid "New password must be different from the old password!"
 msgstr "Noua parolă trebuie să fie diferită de cea veche!"
 
-#: .\src\users\views.py:570
+#: .\src\users\views.py:569
 msgid "New passwords must match."
 msgstr "Noile parole trebuie să coincidă."
 
-#: .\src\users\views.py:576
+#: .\src\users\views.py:575
 msgid "Change Password :: PlayStyle Compass"
 msgstr "Schimbare Parolă :: PlayStyle Compass"
 
-#: .\src\users\views.py:585
+#: .\src\users\views.py:584
 msgid "Password Changed Successfully!"
 msgstr "Parola a fost schimbată cu succes!"
 
-#: .\src\users\views.py:587
+#: .\src\users\views.py:586
 msgid "Password Change Done :: PlayStyle Compass"
 msgstr "Schimbare Parolă Finalizată :: PlayStyle Compass"
 
-#: .\src\users\views.py:589
+#: .\src\users\views.py:588
 msgid ""
 "Your password has been successfully changed!<br><br>To return to the "
 "homepage, please click the button below."
@@ -3740,23 +3740,23 @@ msgstr ""
 "Parola ta a fost schimbată cu succes!<br><br>Pentru a reveni la pagina "
 "principală, te rugăm să apeși butonul de mai jos."
 
-#: .\src\users\views.py:613
+#: .\src\users\views.py:612
 msgid "Change Profile Picture :: PlayStyle Compass"
 msgstr "Schimbare Imagine Profil :: PlayStyle Compass"
 
-#: .\src\users\views.py:628
+#: .\src\users\views.py:627
 msgid "Contact Us :: PlayStyle Compass"
 msgstr "Contactează-ne :: PlayStyle Compass"
 
-#: .\src\users\views.py:655
+#: .\src\users\views.py:654
 msgid "Your message has been successfully submitted!"
 msgstr "Mesajul tău a fost trimis cu succes!"
 
-#: .\src\users\views.py:658
+#: .\src\users\views.py:657
 msgid "Contact Us Done :: PlayStyle Compass"
 msgstr "Contactare Finalizată :: PlayStyle Compass"
 
-#: .\src\users\views.py:660
+#: .\src\users\views.py:659
 msgid ""
 "Thank you for contacting us! Our team will review it within 48 hours and get "
 "back to you as soon as possible.     Go to the homepage by clicking the "
@@ -3766,156 +3766,156 @@ msgstr ""
 "de 48 de ore și îți va răspunde cât mai curând posibil. Mergi la pagina "
 "principală dând click pe butonul de mai jos."
 
-#: .\src\users\views.py:675
+#: .\src\users\views.py:674
 msgid "You must be authenticated to view the friends list."
 msgstr "Trebuie să fii autentificat pentru a vedea lista de prieteni."
 
-#: .\src\users\views.py:681
+#: .\src\users\views.py:680
 msgid "You cannot view the friends list of another user."
 msgstr "Nu poți vedea lista de prieteni a altui utilizator."
 
-#: .\src\users\views.py:689
+#: .\src\users\views.py:688
 msgid "Friends List :: PlayStyle Compass"
 msgstr "Lista de Prieteni :: PlayStyle Compass"
 
-#: .\src\users\views.py:709
+#: .\src\users\views.py:708
 msgid "You can't view the friend requests of another user."
 msgstr "Nu poți vedea cererile de prietenie ale altui utilizator."
 
-#: .\src\users\views.py:717
+#: .\src\users\views.py:716
 msgid "Friend Requests :: PlayStyle Compass"
 msgstr "Cererile de Prietenie :: PlayStyle Compass"
 
-#: .\src\users\views.py:745
+#: .\src\users\views.py:744
 #, python-format
 msgid "<strong>%(profile_name)s</strong> is already in your friends list."
 msgstr "<strong>%(profile_name)s</strong> este deja în lista ta de prieteni."
 
-#: .\src\users\views.py:751
+#: .\src\users\views.py:750
 msgid "You cannot send a friend request to <strong>yourself.</strong>"
 msgstr ""
 "Nu poți trimite o cerere de prietenie către <strong>propria persoană.</"
 "strong>"
 
-#: .\src\users\views.py:762
+#: .\src\users\views.py:761
 msgid "You already sent a friend request to this user."
 msgstr "Ai trimis deja o cerere de prietenie către acest utilizator."
 
-#: .\src\users\views.py:779
+#: .\src\users\views.py:778
 msgid "Friend request sent."
 msgstr "Cerere de prietenie trimisă."
 
-#: .\src\users\views.py:803 .\src\users\views.py:807
+#: .\src\users\views.py:802 .\src\users\views.py:806
 msgid "The user does not exist or has deleted their account."
 msgstr "Utilizatorul nu există sau și-a șters contul."
 
-#: .\src\users\views.py:810
+#: .\src\users\views.py:809
 msgid "You must be logged in to send a friend request."
 msgstr "Trebuie să fii autentificat pentru a trimite o cerere de prietenie."
 
-#: .\src\users\views.py:830
+#: .\src\users\views.py:829
 msgid "Friend request accepted."
 msgstr "Cererea de prietenie a fost acceptată."
 
-#: .\src\users\views.py:835
+#: .\src\users\views.py:834
 #, python-format
 msgid "You are now friends with <strong>%(profile_name)s</strong>."
 msgstr "Ați devenit acum prieteni cu <strong>{%(profile_name)s</strong>."
 
-#: .\src\users\views.py:864
+#: .\src\users\views.py:863
 msgid "That is not your request to accept."
 msgstr "Aceea nu este cererea ta de acceptat."
 
-#: .\src\users\views.py:866
+#: .\src\users\views.py:865
 msgid "Unable to accept that friend request."
 msgstr "Imposibil de acceptat cererea de prietenie."
 
-#: .\src\users\views.py:868
+#: .\src\users\views.py:867
 msgid "You must be authenticated to accept a friend request."
 msgstr "Trebuie să fii autentificat pentru a accepta o cerere de prietenie."
 
-#: .\src\users\views.py:886
+#: .\src\users\views.py:885
 msgid "Successfully removed that friend."
 msgstr "Prietenele au fost eliminate cu succes."
 
-#: .\src\users\views.py:891
+#: .\src\users\views.py:890
 #, python-format
 msgid "You are no longer friends with <strong>%(profile_name)s</strong>."
 msgstr "Nu mai sunteți prieteni cu <strong>%(profile_name)s</strong>."
 
-#: .\src\users\views.py:900
+#: .\src\users\views.py:899
 msgid "There was an error. Unable to remove that friend."
 msgstr "A apărut o eroare. Imposibil de eliminat această prietenie."
 
-#: .\src\users\views.py:902
+#: .\src\users\views.py:901
 msgid "You must be authenticated to remove a friend."
 msgstr "Trebuie să fii autentificat pentru a elimina un prieten."
 
-#: .\src\users\views.py:920
+#: .\src\users\views.py:919
 msgid "Friend request declined."
 msgstr "Cererea de prietenie a fost refuzată."
 
-#: .\src\users\views.py:925
+#: .\src\users\views.py:924
 #, python-format
 msgid "You refused to be friends with <strong>%(profile_name)s</strong>."
 msgstr "Ai refuzat să fii prieten cu <strong>%(profile_name)s</strong>."
 
-#: .\src\users\views.py:954
+#: .\src\users\views.py:953
 msgid "That is not your friend request to decline."
 msgstr "Aceea nu este cererea ta de prietenie de refuzat."
 
-#: .\src\users\views.py:956
+#: .\src\users\views.py:955
 msgid "Unable to decline that friend request."
 msgstr "Imposibil de refuzat cererea de prietenie."
 
-#: .\src\users\views.py:958
+#: .\src\users\views.py:957
 msgid "You must be authenticated to decline a friend request."
 msgstr "Trebuie să fii autentificat pentru a refuza o cerere de prietenie."
 
-#: .\src\users\views.py:983
+#: .\src\users\views.py:982
 msgid "Nothing to cancel. Friend request does not exist."
 msgstr "Nimic de anulat. Cererea de prietenie nu există."
 
-#: .\src\users\views.py:990
+#: .\src\users\views.py:989
 msgid "Friend request canceled."
 msgstr "Cererea de prietenie a fost anulată."
 
-#: .\src\users\views.py:996
+#: .\src\users\views.py:995
 #, python-format
 msgid "You canceled your friend request for <strong>%(profile_name)s</strong>."
 msgstr ""
 "Ați anulat cererea de prietenie pentru <strong>%(profile_name)s</strong>."
 
-#: .\src\users\views.py:1003
+#: .\src\users\views.py:1002
 msgid "Unable to cancel that friend request."
 msgstr "Imposibil de anulat cererea de prietenie."
 
-#: .\src\users\views.py:1005
+#: .\src\users\views.py:1004
 msgid "You must be authenticated to cancel a friend request."
 msgstr "Trebuie să fii autentificat pentru a anula o cerere de prietenie."
 
-#: .\src\users\views.py:1012
+#: .\src\users\views.py:1011
 msgid "User Profile :: PlayStyle Compass"
 msgstr "Profilul Utilizatorului :: PlayStyle Compass"
 
-#: .\src\users\views.py:1143
+#: .\src\users\views.py:1142
 msgid "Message sent successfully!"
 msgstr "Mesaj trimis cu succes!"
 
-#: .\src\users\views.py:1168
+#: .\src\users\views.py:1167
 msgid "Send message :: PlayStyle Compass"
 msgstr "Trimite mesaj :: PlayStyle Compass"
 
-#: .\src\users\views.py:1200
+#: .\src\users\views.py:1199
 msgid "Inbox :: PlayStyle Compass"
 msgstr "Inbox :: PlayStyle Compass"
 
-#: .\src\users\views.py:1298
+#: .\src\users\views.py:1297
 msgid "You can only take the quiz once per day. Please try again in {}"
 msgstr ""
 "Poți să faci chestionarul doar o dată pe zi. Te rog să încerci din nou în {}"
 
-#: .\src\users\views.py:1330
+#: .\src\users\views.py:1329
 #, python-brace-format
 msgid ""
 "Thank you for completing the Preference Quiz! Your responses will help us "
@@ -3927,90 +3927,90 @@ msgstr ""
 "pentru tine. Apasă <a href='{0}'>aici</a> pentru a vedea recomandările tale "
 "de la chestionar."
 
-#: .\src\users\views.py:1339
+#: .\src\users\views.py:1338
 msgid "Preference Quiz :: PlayStyle Compass"
 msgstr "Chestionarul de Preferințe :: PlayStyle Compass"
 
-#: .\src\users\views.py:1363
+#: .\src\users\views.py:1362
 msgid "Quiz Recommendations :: PlayStyle Compass"
 msgstr "Recomandările din Chestionar :: PlayStyle Compass"
 
-#: .\src\users\views.py:1412
+#: .\src\users\views.py:1411
 msgid "Profile Details :: PlayStyle Compass"
 msgstr "Detalii Profil :: PlayStyle Compass"
 
-#: .\src\users\views.py:1429
+#: .\src\users\views.py:1428
 msgid "Chat :: PlayStyle Compass"
 msgstr "Conversație :: PlayStyle Compass"
 
-#: .\src\users\views.py:1699
+#: .\src\users\views.py:1628
 msgid "Sender:"
 msgstr "Expeditor:"
 
-#: .\src\users\views.py:1716
+#: .\src\users\views.py:1645
 msgid "No messages yet"
 msgstr "Niciun mesaj încă"
 
-#: .\src\users\views.py:1726
+#: .\src\users\views.py:1655
 msgid "Chat List :: PlayStyle Compass"
 msgstr "Listă Conversații :: PlayStyle Compass"
 
-#: .\src\users\views.py:1741
+#: .\src\users\views.py:1670
 msgid "You cannot block yourself."
 msgstr "Nu te poți bloca singur."
 
-#: .\src\users\views.py:1744
+#: .\src\users\views.py:1673
 msgid "User is already blocked."
 msgstr "Utilizatorul este deja blocat."
 
-#: .\src\users\views.py:1747
+#: .\src\users\views.py:1676
 msgid "User has been blocked."
 msgstr "Utilizatorul a fost blocat."
 
-#: .\src\users\views.py:1761
+#: .\src\users\views.py:1690
 msgid "You cannot unblock yourself."
 msgstr "Nu te poți debloca singur."
 
-#: .\src\users\views.py:1766
+#: .\src\users\views.py:1695
 msgid "User has been unblocked."
 msgstr "Utilizatorul a fost deblocat."
 
-#: .\src\users\views.py:1768
+#: .\src\users\views.py:1697
 msgid "User was not blocked."
 msgstr "Utilizatorul nu a fost blocat."
 
-#: .\src\users\views.py:1789
+#: .\src\users\views.py:1718
 msgid "Block List :: PlayStyle Compass"
 msgstr "Listă Blocări :: PlayStyle Compass"
 
-#: .\src\users\views.py:1872
+#: .\src\users\views.py:1801
 #, python-format
 msgid "You are now following %s."
 msgstr "Acum îl urmăriți pe %s."
 
-#: .\src\users\views.py:1876
+#: .\src\users\views.py:1805
 #, python-format
 msgid "You are already following %s."
 msgstr "Îl urmăriți deja pe %s."
 
-#: .\src\users\views.py:1897
+#: .\src\users\views.py:1826
 #, python-format
 msgid "You have unfollowed %s."
 msgstr "V-ați dezabonat de la %s."
 
-#: .\src\users\views.py:1901
+#: .\src\users\views.py:1830
 #, python-format
 msgid "You are not following %s."
 msgstr "Nu îl urmăriți pe %s."
 
-#: .\src\users\views.py:1925
+#: .\src\users\views.py:1854
 msgid "Followers :: PlayStyle Compass"
 msgstr "Urmăritori :: PlayStyle Compass"
 
-#: .\src\users\views.py:1949
+#: .\src\users\views.py:1878
 msgid "Following :: PlayStyle Compass"
 msgstr "Urmăriți :: PlayStyle Compass"
 
-#: .\src\users\views.py:1970
+#: .\src\users\views.py:1900
 msgid "Notification Settings :: PlayStyle Compass"
 msgstr "Setări de Notificare :: PlayStyle Compass"

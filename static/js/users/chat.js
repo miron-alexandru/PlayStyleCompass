@@ -428,7 +428,7 @@ function togglePinMessage(messageId, button) {
 let socket;
 
 document.addEventListener("DOMContentLoaded", function () {
-  const sseData = document.getElementById("sse-data");
+  const chatLoading = document.getElementById("chat-loading");
   const chatContainer = document.getElementById("chat-container");
   const chatMessagesContainer = document.getElementById("chat-messages");
   const currentUserId = parseInt(chatContainer.getAttribute("data-user-id"));
@@ -503,10 +503,6 @@ document.addEventListener("DOMContentLoaded", function () {
   function startWebSocket() {
     const chatSocketUrl = `wss://${window.location.host}/ws/private_chat/${recipientId}/`;
     socket = new WebSocket(chatSocketUrl);
-
-    socket.onopen = () => {
-      console.log("WebSocket connection established.");
-    };
 
     socket.onmessage = (event) => {
       const data = JSON.parse(event.data);
@@ -659,11 +655,11 @@ document.addEventListener("DOMContentLoaded", function () {
       loadingDiv.remove();
     }
 
-    if (sseData.children.length === 0) {
+    if (chatLoading.children.length === 0) {
       if (noMessagesDiv) {
         noMessagesDiv.remove();
       }
-      sseData.innerHTML = `<div class="no-messages">${noMessagesText}</div>`;
+      chatLoading.innerHTML = `<div class="no-messages">${noMessagesText}</div>`;
     } else {
       if (noMessagesDiv) {
         noMessagesDiv.remove();
@@ -673,19 +669,26 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function showLoading() {
     const loadingText = translate("Loading Messages...");
-    sseData.innerHTML = `<div class="loading-messages">${loadingText}</div>`;
+    chatLoading.innerHTML = `<div class="loading-messages">${loadingText}</div>`;
   }
 
-  if (typeof EventSource !== "undefined") {
-    showLoading();
-    scrollToBottom();
-    setTimeout(checkForMessages, 1000);
-  } else {
-    sseData.innerHTML = "Your browser doesn't support server-sent events.";
-  }
-
+  showLoading();
+  scrollToBottom();
+  setTimeout(checkForMessages, 1000);
   initializeDateHeader();
   chatMessagesContainer.addEventListener("scroll", handleScroll);
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  const form = document.getElementById("myForm");
+  const sendButton = document.getElementById("send-button");
+  const textarea = document.getElementById("chat-message-input");
+
+  textarea.addEventListener("input", () => {
+    sendButton.disabled = !textarea.value.trim();
+  });
+
+  form.addEventListener("submit", submit);
 });
 
 function moveDateHeaderToTop() {
@@ -803,9 +806,7 @@ document.addEventListener("click", function (event) {
 });
 
 
-document
-  .getElementById("pinned-messages-button")
-  .addEventListener("click", function () {
+document.getElementById("pinned-messages-button").addEventListener("click", function () {
     const dropdown = document.getElementById("pinned-messages-dropdown");
     dropdown.style.display =
       dropdown.style.display === "none" || dropdown.style.display === ""

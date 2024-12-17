@@ -20,7 +20,10 @@
 
 <div class="chat-container" id="chat-container" data-user-id="{{ request.user.id }}" data-recipient-id="{{ recipient.id }}" data-get-messages="{% url 'users:get_private_chat_messages' recipient.id %}">
     <div class="chat-header">
-        <a class="profile-link" title="{% trans 'View Profile' %}" href="{% url 'users:view_profile' recipient.userprofile.profile_name %}"><img src="{{ recipient.userprofile.profile_picture.url}} " alt="Profile Picture" class="header-profile-picture"> {{ recipient.userprofile.profile_name }}</a>
+        <a class="profile-link" title="{% trans 'View Profile' %}" href="{% url 'users:view_profile' recipient.userprofile.profile_name %}">
+            <img src="{{ recipient.userprofile.profile_picture.url }} " alt="Profile Picture" class="header-profile-picture">
+            {{ recipient.userprofile.profile_name }}
+        </a>
         <div id="status"></div>
         <span class="last-seen"></span>
         <div class="search-container" id="search-container">
@@ -41,7 +44,8 @@
                     data-check-url="{% url 'users:check_block_status' user_id=recipient.id %}">
                 </button>
                 <button id="clear-chat-button" data-url="{% url 'users:delete_chat_messages' recipient_id=recipient.id %}">
-                {% trans "Delete Messages" %}</button>
+                    {% trans "Delete Messages" %}
+                </button>
             </div>
         </div>
     </div>
@@ -53,25 +57,24 @@
     <div id="chat-messages" class="chat-messages" data-edit-message-url="{% url 'users:edit_message' 0 %}"
         data-pin-message-url="{% url 'users:toggle_pin_message' 0 %}">
         <div id="date-header" class="date-header" style="display:none"></div>
-        <div id="sse-data"></div>
+        <div id="chat-loading"></div>
         <div id="typing-indicator">{{ recipient.userprofile.profile_name }} {% trans "is typing..." %}</div>
     </div>
 
-    <form class="chat-form" id="myForm" x-cloak @submit.prevent="submit" x-data="{ state: 'composing', errors: {}, content: '' }"
-        data-url="{% url 'users:create_message' %}">
+    <form class="chat-form" id="myForm" data-url="{% url 'users:create_message' %}">
         <div class="input-container">
             <i id="file-button" class="fa-solid fa-paperclip file-button" title="Attach File (Max: 25MB)"></i>
             <input type="file" id="file-input" name="file" style="display: none;">
             <button type="button" id="emoji-button" class="emoji-button" title="Emoji">😊</button>
-            <textarea class="message-textarea" id="chat-message-input" name="content" @input="state = 'composing'; content = $event.target.value" autofocus placeholder="{% trans 'Message...' %}" x-model="content"></textarea>
+            <textarea class="message-textarea" id="chat-message-input" name="content" autofocus placeholder="{% trans 'Message...' %}"></textarea>
             <span id="file-indicator" class="file-indicator"></span>
-            <button type="submit" class="send-button" :disabled="!content.trim()">
+            <button type="submit" class="send-button" id="send-button" disabled>
                 ➤
             </button>
         </div>
         <div id="emoji-picker" class="emoji-picker"></div>
-        <div x-show="state === 'error'" class="error-message">
-            <p x-text="errors.message"></p>
+        <div id="error-message" class="error-message" style="display: none;">
+            <p></p>
         </div>
     </form>
 </div>

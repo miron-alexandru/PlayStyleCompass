@@ -217,7 +217,7 @@ class PrivateChatConsumer(AsyncWebsocketConsumer):
             await self.close()
             return
 
-        self.room_group_name = f"private_chat_{min(self.user.id, self.other_user.id)}_{max(self.user.id, self.other_user.id)}"
+        self.room_group_name = self._generate_room_name(self.user.id, self.other_user.id)
 
         await self.channel_layer.group_add(self.room_group_name, self.channel_name)
         await self.accept()
@@ -226,19 +226,20 @@ class PrivateChatConsumer(AsyncWebsocketConsumer):
     async def disconnect(self, close_code):
         await self.channel_layer.group_discard(self.room_group_name, self.channel_name)
 
-    @database_sync_to_async
-    def get_profile_picture_url(self, user):
-        return user.userprofile.profile_picture.url
-
     async def receive(self, text_data):
+        """
+        Process incoming WebSocket messages and broadcast to the group.
+        """
         text_data_json = json.loads(text_data)
+
         message = text_data_json.get("message")
         file = text_data_json.get("file")
         file_size = text_data_json.get("file_size")
-        profile_picture_url = await self.get_profile_picture_url(self.user)
         is_pinned = text_data_json.get("is_pinned")
         edited = text_data_json.get("edited")
         message_id = text_data_json.get("message_id")
+
+        profile_picture_url = await self.get_profile_picture_url(self.user)
 
         if message or file:
             await self.channel_layer.group_send(
@@ -259,38 +260,44 @@ class PrivateChatConsumer(AsyncWebsocketConsumer):
             )
 
     async def private_chat_message(self, event):
-        """Handle the private_chat_message event."""
-        message = event.get("message")
-        sender_id = event["sender_id"]
-        recipient_id = event["recipient_id"]
-        file = event.get("file")
-        file_size = event.get("file_size")
-        created_at = event["created_at"]
-        profile_picture_url = event["profile_picture_url"]
-        edited = event["edited"]
-        is_pinned = event["is_pinned"]
-        message_id = event["id"]
-
+        """
+        Send the chat message event to the WebSocket client.
+        """
         await self.send(
             text_data=json.dumps(
                 {
-                    "message": message,
-                    "sender_id": sender_id,
-                    "recipient_id": recipient_id,
-                    "file": file,
-                    "file_size": file_size,
-                    "created_at": created_at,
-                    "profile_picture_url": profile_picture_url,
-                    "edited": edited,
-                    "is_pinned": is_pinned,
-                    "id": message_id,
+                    "message": event.get("message"),
+                    "sender_id": event["sender_id"],
+                    "recipient_id": event["recipient_id"],
+                    "file": event.get("file"),
+                    "file_size": event.get("file_size"),
+                    "created_at": event["created_at"],
+                    "profile_picture_url": event["profile_picture_url"],
+                    "edited": event.get("edited"),
+                    "is_pinned": event.get("is_pinned"),
+                    "id": event["id"],
                 }
             )
         )
 
+    def _generate_room_name(self, user_id_1, user_id_2):
+        """
+        Generate a consistent room group name for the chat room.
+        """
+        return f"private_chat_{min(user_id_1, user_id_2)}_{max(user_id_1, user_id_2)}"
+
+    @database_sync_to_async
+    def get_profile_picture_url(self, user):
+        """
+        Retrieve the profile picture URL for a given user.
+        """
+        return user.userprofile.profile_picture.url
+
     @database_sync_to_async
     def get_user(self, user_id):
-        """Fetch the user profile for the given user_id"""
+        """
+        Fetch a User instance by ID.
+        """
         try:
             return User.objects.get(id=user_id)
         except User.DoesNotExist:
@@ -298,6 +305,9 @@ class PrivateChatConsumer(AsyncWebsocketConsumer):
 
     @database_sync_to_async
     def get_existing_messages(self, offset=0, limit=20):
+        """
+        Retrieve existing messages for the chat room, with sender/recipient filters.
+        """
         messages = list(
             ChatMessage.objects.filter(
                 (
@@ -334,6 +344,9 @@ class PrivateChatConsumer(AsyncWebsocketConsumer):
         return messages
 
     async def send_existing_messages(self, offset=0, limit=20):
+        """
+        Send existing messages to the WebSocket client.
+        """
         messages = await self.get_existing_messages(offset, limit)
 
         for message in messages:
@@ -359,7 +372,9 @@ class PrivateChatConsumer(AsyncWebsocketConsumer):
             )
 
     async def get_user_from_session(self):
-        # Use the utility function to get the user from session
+        """
+        Retrieve the user associated with the current session.
+        """
         return await database_sync_to_async(get_user_from_session)(self.scope)
 
 
@@ -379,18 +394,19 @@ class GlobalChatConsumer(AsyncWebsocketConsumer):
     async def disconnect(self, close_code):
         await self.channel_layer.group_discard(self.room_group_name, self.channel_name)
 
-    def get_full_profile_picture_url(self, profile_picture_path):
-        """Generates the full URL for the profile picture."""
-        base_url = settings.MEDIA_URL
-        return f"{base_url}{profile_picture_path}"
-
     @database_sync_to_async
     def get_user_profile_name(self, user):
+        """Retrieve the profile name of the user."""
         return user.userprofile.profile_name
 
     @database_sync_to_async
     def get_profile_picture_url(self, user):
+        """Retrieve the profile picture URL for the user."""
         return user.userprofile.profile_picture.url
+
+    def get_full_profile_picture_url(self, profile_picture_path):
+        """Generates the full URL for the profile picture."""
+        return f"{settings.MEDIA_URL}{profile_picture_path}"
 
     async def receive(self, text_data):
         text_data_json = json.loads(text_data)
@@ -433,7 +449,7 @@ class GlobalChatConsumer(AsyncWebsocketConsumer):
         )
 
     async def get_user_from_session(self):
-        # Use the utility function to get the user from session
+        """Retrieve the user from the session."""
         return await database_sync_to_async(get_user_from_session)(self.scope)
 
     @database_sync_to_async
@@ -455,6 +471,7 @@ class GlobalChatConsumer(AsyncWebsocketConsumer):
         return messages
 
     async def send_existing_messages(self, offset=0, limit=20):
+        """Send existing messages to the WebSocket."""
         messages = await self.get_existing_messages(offset, limit)
 
         for message in messages:
