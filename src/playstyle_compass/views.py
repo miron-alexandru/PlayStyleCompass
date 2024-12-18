@@ -365,7 +365,7 @@ def autocomplete_games(request):
         games = Game.objects.filter(title__icontains=query)
         results = list(games.values("title"))
 
-    return JsonResponse({"results": results}, safe=True)
+    return JsonResponse({"results": results})
 
 
 def autocomplete_franchises(request):
@@ -377,7 +377,7 @@ def autocomplete_franchises(request):
         franchises = Franchise.objects.filter(title__icontains=query)
         results = list(franchises.values("title"))
 
-    return JsonResponse({"results": results}, safe=True)
+    return JsonResponse({"results": results})
 
 
 @login_required
@@ -1129,7 +1129,7 @@ def autocomplete_characters(request):
         characters = Character.objects.filter(name__icontains=query)
         results = list(characters.values("name"))
 
-    return JsonResponse({"results": results}, safe=True)
+    return JsonResponse({"results": results})
 
 
 def get_games_and_context(request, game_mode):

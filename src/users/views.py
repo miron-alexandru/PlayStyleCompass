@@ -44,7 +44,7 @@ from django.utils.encoding import (
     force_bytes,
     force_str,
 )
-from django.utils.safestring import mark_safe
+
 from django.http import (
     JsonResponse,
     HttpResponse,
@@ -238,14 +238,12 @@ def activate_email(request, user, to_email):
         )
         email = EmailMessage(mail_subject, message, to=[to_email])
         if email.send():
-            message = _(
-                "Hello <b>%(user)s</b>, please go to your email <b>%(to_email)s</b> inbox and click on the received activation link to confirm your registration. <b>Note:</b> If you cannot find the email in your inbox, we recommend checking your spam folder."
-            ) % {
-                "user": user,
-                "to_email": to_email,
-            }
-
-            messages.success(request, mark_safe(message))
+            message = format_html(
+                "Hello <b>{}</b>, please go to your email <b>{}</b> inbox and click on the received activation link to confirm your registration. Note: If you cannot find the email in your inbox, we recommend checking your spam folder.",
+                user,
+                to_email,
+            )
+            messages.success(request, message)
         else:
             messages.error(
                 request,
@@ -281,14 +279,13 @@ def send_deletion_email(request):
     email = EmailMessage(mail_subject, message, to=[user.email])
     email.content_subtype = "html"
     if email.send():
-        message = _(
-            "Hello <b>%(user)s</b>, please go to your email <b>%(to_email)s</b> inbox and click on the received link to confirm your account deletion. <b>Note:</b> If you cannot find the email in your inbox, we recommend checking your spam folder."
-        ) % {
-            "user": user.username,
-            "to_email": user.email,
-        }
+        message = format_html(
+            "Hello <strong>{}</strong> please go to your email <strong>{}</strong> inbox and click on the received link to confirm your account deletion. Note: If you cannot find the email in your inbox, we recommend checking your spam folder.",
+            user.username,
+            user.email,
+        )
 
-        messages.success(request, mark_safe(message))
+        messages.success(request, message)
     else:
         messages.error(
             request,
@@ -330,6 +327,7 @@ def register(request):
 def register_user(form, request):
     """Function to successfully register a user."""
     new_user = form.save(commit=False)
+    new_user.set_password(form.cleaned_data["password1"])
     new_user._profile_created = True
     new_user.save()
 
@@ -829,14 +827,10 @@ def accept_friend_request(request, *args, **kwargs):
                     result["message"] = _("Friend request accepted.")
                     messages.success(
                         request,
-                        mark_safe(
-                            _(
-                                "You are now friends with <strong>%(profile_name)s</strong>."
-                            )
-                            % {
-                                "profile_name": friend_request.sender.userprofile.profile_name
-                            }
-                        ),
+                        format_html(
+                            "You are now friends with <strong>{}</strong>.",
+                            friend_request.sender.userprofile.profile_name
+                        )
                     )
 
                     user_in_notification = (
@@ -885,12 +879,10 @@ def remove_friend(request):
                 result["message"] = _("Successfully removed that friend.")
                 messages.success(
                     request,
-                    mark_safe(
-                        _(
-                            "You are no longer friends with <strong>%(profile_name)s</strong>."
-                        )
-                        % {"profile_name": friend_to_remove.userprofile.profile_name}
-                    ),
+                    format_html(
+                        "You are no longer friends with <strong>{}</strong>.",
+                        friend_to_remove.userprofile.profile_name
+                    )
                 )
 
             except Exception as e:
@@ -919,14 +911,10 @@ def decline_friend_request(request, *args, **kwargs):
                     result["message"] = _("Friend request declined.")
                     messages.success(
                         request,
-                        mark_safe(
-                            _(
-                                "You refused to be friends with <strong>%(profile_name)s</strong>."
-                            )
-                            % {
-                                "profile_name": friend_request.sender.userprofile.profile_name
-                            }
-                        ),
+                        format_html(
+                            "You refused to be friends with <strong>{}</strong>.",
+                            friend_request.sender.userprofile.profile_name
+                        )
                     )
 
                     user_in_notification = (
@@ -990,12 +978,10 @@ def cancel_friend_request(request):
 
                 messages.success(
                     request,
-                    mark_safe(
-                        _(
-                            "You canceled your friend request for <strong>%(profile_name)s</strong>."
-                        )
-                        % {"profile_name": receiver.userprofile.profile_name}
-                    ),
+                    format_html(
+                        "You canceled your friend request for <strong>{}</strong>.",
+                        receiver.userprofile.profile_name
+                    )
                 )
 
         else:
