@@ -1407,8 +1407,8 @@ def chat(request, recipient_id: int):
     """View used to open the chat with a certain user."""
     recipient = get_object_or_404(User, id=recipient_id)
 
-    request.session["username"] = request.user.username
-    request.session["recipient_username"] = recipient.username
+    request.session["user_id"] = request.user.id
+    request.session["recipient_id"] = recipient.id
 
     context = {
         "page_title": _("Chat :: PlayStyle Compass"),
@@ -1427,14 +1427,14 @@ def create_message(request):
     content = request.POST.get("content")
     file_url = None
     file_size = None
-    username = request.session.get("username")
-    recipient_username = request.session.get("recipient_username")
+    user_id = request.session.get("user_id")
+    recipient_id = request.session.get("recipient_id")
 
-    if not username or not recipient_username:
+    if not user_id or not recipient_id:
         return JsonResponse({"error": "Forbidden"}, status=403)
 
-    sender = get_object_or_404(User, username=username)
-    recipient = get_object_or_404(User, username=recipient_username)
+    sender = get_object_or_404(User, id=user_id)
+    recipient = get_object_or_404(User, id=recipient_id)
 
     if sender in recipient.userprofile.blocked_users.all():
         profile_name = recipient.userprofile.profile_name
@@ -1466,7 +1466,7 @@ def create_message(request):
         file_url = default_storage.url(file_name)
 
     # Rate limiting check -> max 20 messages in 20 seconds
-    cache_key = f"message_count_{username}"
+    cache_key = f"message_count_{user_id}"
     current_time = time.time()
 
     message_info = cache.get(cache_key, {"count": 0, "timestamps": []})
@@ -1534,12 +1534,12 @@ def edit_message(request, message_id):
         return JsonResponse({"error": "Invalid request method"}, status=405)
 
     new_content = request.POST.get("content")
-    username = request.session.get("username")
+    user_id = request.session.get("user_id")
 
-    if not username:
+    if not user_id:
         return JsonResponse({"error": "Forbidden"}, status=403)
 
-    sender = get_object_or_404(User, username=username)
+    sender = get_object_or_404(User, id=user_id)
     message = get_object_or_404(ChatMessage, id=message_id, sender=sender)
 
     edit_time_limit = timedelta(minutes=2)

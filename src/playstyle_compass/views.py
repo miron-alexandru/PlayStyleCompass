@@ -123,6 +123,10 @@ def index(request):
         "search_bar_type": "search_games",
     }
 
+    session_data = request.session.items()
+    output = "\n".join([f"{key}: {value}" for key, value in session_data])
+    print(f"Session data:<br>{output.replace('\n', '<br>')}")
+
     return render(request, "base/index.html", context)
 
 
