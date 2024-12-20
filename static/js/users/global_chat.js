@@ -23,6 +23,13 @@ fetch(authCheckUrl)
       const globalChat_ProfileUrlTemplate = globalChatContainer.getAttribute('data-profile-url-template');
       const errorMessageElement = document.querySelector(".global-error-message p");
 
+      const chatState = localStorage.getItem('chatState') || 'closed';
+        if (chatState === 'open') {
+          globalChatContainer.style.display = 'flex';
+        } else {
+          globalChatContainer.style.display = 'none';
+        }
+
       function globalChat_generateProfileUrl(profileName) {
         return globalChat_ProfileUrlTemplate.replace('PROFILE_NAME_PLACEHOLDER', encodeURIComponent(profileName));
       }
@@ -258,8 +265,10 @@ fetch(authCheckUrl)
           if (globalChat_Container.style.display === "none") {
             globalChat_Container.style.display = "flex";
             globalChat_scrollToBottom();
+            localStorage.setItem('chatState', 'open');
           } else {
             globalChat_Container.style.display = "none";
+            localStorage.setItem('chatState', 'closed');
           }
         });
 
