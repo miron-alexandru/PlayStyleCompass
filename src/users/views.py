@@ -829,8 +829,8 @@ def accept_friend_request(request, *args, **kwargs):
                         request,
                         format_html(
                             "You are now friends with <strong>{}</strong>.",
-                            friend_request.sender.userprofile.profile_name
-                        )
+                            friend_request.sender.userprofile.profile_name,
+                        ),
                     )
 
                     user_in_notification = (
@@ -881,8 +881,8 @@ def remove_friend(request):
                     request,
                     format_html(
                         "You are no longer friends with <strong>{}</strong>.",
-                        friend_to_remove.userprofile.profile_name
-                    )
+                        friend_to_remove.userprofile.profile_name,
+                    ),
                 )
 
             except Exception as e:
@@ -913,8 +913,8 @@ def decline_friend_request(request, *args, **kwargs):
                         request,
                         format_html(
                             "You refused to be friends with <strong>{}</strong>.",
-                            friend_request.sender.userprofile.profile_name
-                        )
+                            friend_request.sender.userprofile.profile_name,
+                        ),
                     )
 
                     user_in_notification = (
@@ -980,8 +980,8 @@ def cancel_friend_request(request):
                     request,
                     format_html(
                         "You canceled your friend request for <strong>{}</strong>.",
-                        receiver.userprofile.profile_name
-                    )
+                        receiver.userprofile.profile_name,
+                    ),
                 )
 
         else:
@@ -1999,14 +1999,8 @@ def get_private_chat_messages(request, recipient_id):
 
     messages = list(
         ChatMessage.objects.filter(
-            (
-                Q(sender=request.user, recipient=recipient)
-                & ~Q(sender_hidden=True)
-            )
-            | (
-                Q(sender=recipient, recipient=request.user)
-                & ~Q(recipient_hidden=True)
-            )
+            (Q(sender=request.user, recipient=recipient) & ~Q(sender_hidden=True))
+            | (Q(sender=recipient, recipient=request.user) & ~Q(recipient_hidden=True))
         )
         .annotate(
             profile_picture_url=Concat(

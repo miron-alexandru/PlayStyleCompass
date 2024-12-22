@@ -217,7 +217,9 @@ class PrivateChatConsumer(AsyncWebsocketConsumer):
             await self.close()
             return
 
-        self.room_group_name = self._generate_room_name(self.user.id, self.other_user.id)
+        self.room_group_name = self._generate_room_name(
+            self.user.id, self.other_user.id
+        )
 
         await self.channel_layer.group_add(self.room_group_name, self.channel_name)
         await self.accept()

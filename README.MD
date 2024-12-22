@@ -7,6 +7,18 @@
 
 - Write and read reviews from fellow gamers, sharing your thoughts and insights on your favorite titles. Connect with friends, create friend lists, send messages, share your gaming experiences, and many other things to be discovered.
 
+- Engage in global and private chats to connect with the gaming community or hold personal conversations with friends.
+
+- Stay updated with the latest gaming news, including new releases, updates, and industry highlights.
+
+- Explore game categories like Beginner-Friendly Games, Open World Adventures, and more to find titles that match your specific interests.
+
+- Build a social network by following other users and discovering new games through their shared experiences.
+
+- Customize your experience with the ability to switch between dark and light themes, ensuring a comfortable and visually appealing interface that suits your preference.
+
+- Personalize Your Profile: Customize your profile with a picture and unique details like your gaming alias, current game, favorite title, and more to showcase your gaming identity.
+
 
 
 ### This guide will walk you through the steps to set up the PlayStyleCompass website locally, including setting up the Nginx server and generating SSL certificates.
@@ -126,6 +138,7 @@ Websites for .env configuration: [GiantBomb](https://www.giantbomb.com/) / [Send
 <summary><h2>PlayStyle Compass Changelog</h2></summary>
 
 ### Version v2.3:
+* Security improvements
 * Implemented Global Chat: Users are able to communicate in the global chat.
 * New Data about Games -> Playtime: The average playtime of each game is displayed.
 * New Data about Games -> Stores: Users can visit online stores where the games are available for purchase.

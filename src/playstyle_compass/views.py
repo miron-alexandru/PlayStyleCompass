@@ -123,10 +123,6 @@ def index(request):
         "search_bar_type": "search_games",
     }
 
-    session_data = request.session.items()
-    output = "\n".join([f"{key}: {value}" for key, value in session_data])
-    print(f"Session data:<br>{output.replace('\n', '<br>')}")
-
     return render(request, "base/index.html", context)
 
 
@@ -2035,7 +2031,7 @@ def like_game_list_comment(request, comment_id):
 def toggle_favorite_game_list(request, game_list_id):
     game_list = get_object_or_404(GameList, id=game_list_id)
     is_favorited = game_list.toggle_favorite(request.user)
-    print(is_favorited)
+
     return JsonResponse({"favorited": is_favorited})
 
 
