@@ -70,7 +70,7 @@ input[type="email"] {
   border-radius: 21px;
 }
 
-#id_message, #id_bio, #id_gaming_setup, .contact-textarea {
+#id_message, #id_bio, #id_gaming_setup, .contact-textarea, #id_description {
   width: 100%;
   display: block;
   color: var(--text-color)!important;
@@ -87,7 +87,8 @@ input[type="password"]:focus,
 input[type="email"]:focus,
 #id_message:focus,
 #id_bio:focus,
-#id_gaming_setup:focus 
+#id_gaming_setup:focus,
+#id_description:focus 
  {
   color: var(--text-color)!important;
   background-color: var(--input-color);

@@ -13,6 +13,9 @@ from .models import (
     ListReview,
     GameStores,
     ListComment,
+    Poll,
+    PollOption,
+    Vote,
 )
 
 admin.site.register(UserPreferences)
@@ -27,3 +30,6 @@ admin.site.register(GameList)
 admin.site.register(ListReview)
 admin.site.register(GameStores)
 admin.site.register(ListComment)
+admin.site.register(Poll)
+admin.site.register(PollOption)
+admin.site.register(Vote)

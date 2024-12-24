@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load static %}
+
+{% block page_header %}
+<div class="header">
+    <h3>{% trans "CREATE YOUR POLL" %}</h3>
+</div>
+{% endblock page_header %}
+
+{% block description %}
+{% blocktrans %}Create a poll and gather opinions from your audience! Customize your poll title, description, and add options to let people vote.{% endblocktrans %}
+{% endblock description %}
+
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/playstyle_compass/polls.css' %}">
+
+<div class="poll-container">
+    <h2>{% trans "Create Poll" %}</h2>
+    <form method="post" id="pollForm">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="id_title" class="form-label">{{ form.title.label }}</label>
+            <div class="form-input">{{ form.title }}</div>
+        </div>
+        <div class="form-group description-group">
+            <label for="id_description" class="form-label">{{ form.description.label }}</label>
+            <div class="form-input">{{ form.description }}</div>
+        </div>
+
+        <div class="options-section">
+            <h3 class="options-title">{% trans "Options:" %}</h3>
+            <div id="options-container">
+                <div class="form-group option-group">
+                    <input class="option-input" type="text" name="options" placeholder="{% trans 'Option 1' %}">
+                </div>
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <button type="button" class="btn add-option-btn">{% trans "Add Another Option" %}</button>
+            <button type="submit" class="btn submit-btn">{% trans "Create Poll" %}</button>
+        </div>
+    </form>
+</div>
+
+<script>
+    document.querySelector(".add-option-btn").addEventListener("click", function() {
+        const container = document.getElementById("options-container");
+        const newOption = document.createElement("div");
+        newOption.innerHTML = `<div class="form-group option-group"><input class="option-input" type="text" name="options" placeholder="{% trans 'New Option' %}"></div>`;
+        container.appendChild(newOption);
+    });
+</script>
+
+{% endblock content %}

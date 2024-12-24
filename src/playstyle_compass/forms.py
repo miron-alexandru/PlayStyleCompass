@@ -2,7 +2,7 @@
 
 from django import forms
 
-from .models import Review, Game, GameList, ListReview, UserPreferences, ListComment
+from .models import Review, Game, GameList, ListReview, UserPreferences, ListComment, Poll, PollOption
 from django.utils.translation import gettext_lazy as _
 
 
@@ -152,3 +152,27 @@ class ListCommentForm(forms.ModelForm):
                 }
             ),
         }
+
+
+class PollForm(forms.ModelForm):
+    options = forms.CharField(
+        widget=forms.Textarea,
+        help_text="",
+    )
+
+    description = forms.CharField(
+        widget=forms.Textarea(attrs={'rows': 2, 'cols': 40}),
+        help_text="",
+    )
+
+    class Meta:
+        model = Poll
+        fields = ['title', 'description', 'options']
+
+
+class VoteForm(forms.Form):
+    option = forms.ModelChoiceField(queryset=PollOption.objects.none())
+
+    def __init__(self, poll, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['option'].queryset = poll.options.all()

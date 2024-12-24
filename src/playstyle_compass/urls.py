@@ -180,4 +180,8 @@ urlpatterns = [
         name="favorite_game_lists",
     ),
     path("popular_games/", views.popular_games, name="popular_games"),
+    path("polls/new/", views.create_poll, name="create_poll"),
+    path("polls/<int:id>/vote/", views.vote, name="vote"),
+    path("polls/<int:id>/results/", views.poll_results, name="poll_results"),
+    path("polls/community/", views.community_polls, name="community_polls"),
 ]

@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% load custom_filters %}
+{% load static %}
+
+{% block content %}
+<h1>Community Polls</h1>
+
+{% if polls %}
+  <ul>
+    {% for poll in polls %}
+      <li>
+        <h3>{{ poll.title }}</h3>
+        <p>{{ poll.description|default:"No description available" }}</p>
+        <p><small>Created by: {{ poll.created_by.userprofile.profile_name }} on {{ poll.created_at|date:"F j, Y, g:i a" }}</small></p>
+        
+       <form method="post" action="{% url 'playstyle_compass:vote' id=poll.id %}">
+          {% csrf_token %}
+          {{ poll.vote_form.as_p }}
+          <button type="submit">Vote</button>
+      </form>
+        
+        <a href="{% url 'playstyle_compass:poll_results' id=poll.id %}">View Results</a>
+      </li>
+    {% endfor %}
+  </ul>
+{% else %}
+  <p>No polls available at the moment.</p>
+{% endif %}
+
+{% endblock content %}

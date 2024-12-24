@@ -55,8 +55,8 @@ from data_processing import (
 # concepts = ['3015-1308', '3015-718', '3015-2911', '3015-421']  # steam games, indie games, free to play, vr games
 # create_quiz_data(concepts, num_games=5, offset=0)
 
-# Obtain News data
-# create_news_data(num_articles=1, year=2024, latest_week=False)
+#Obtain News data
+create_news_data(num_articles=1, year=2024, latest_week=False)
 
 # Obtain casual games data
 # casual_game_ids = fetch_game_ids_by_genre(genre_id=40, page_size=40, page=2)

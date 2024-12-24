@@ -1,0 +1,80 @@
+.poll-container {
+    width: 30%;
+    margin: 30px auto;
+    padding: 15px;
+    background-color: var(--user-container);
+    border-radius: 6px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+}
+
+.poll-container h2 {
+    text-align: center;
+    color: var(--text-color);
+    font-size: 20px;
+}
+
+.form-group {
+    margin-bottom: 10px;
+}
+
+.form-label {
+    font-size: 14px;
+    color: var(--text-color);
+    font-weight: 600;
+}
+
+.description-group {
+    width: 100%;
+}
+
+.options-section {
+    margin-top: 20px;
+}
+
+.options-title {
+    font-size: 14px;
+    margin-bottom: 5px;
+    font-weight: 600;
+}
+
+.option-group {
+    margin-bottom: 10px;
+}
+
+.form-actions {
+    margin-top: 15px;
+}
+
+.btn {
+    width: 100%;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    margin-top: 12px;
+    padding: 8px 16px;
+    font-size: 13px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease-in-out;
+    margin-top: 5px;
+}
+
+.btn:hover {
+    color: white!important;
+}
+
+.add-option-btn {
+    background-color: #228B22;
+}
+
+.add-option-btn:hover {
+    background-color: #008000;
+}
+
+.submit-btn:hover {
+    background-color: #0056b3;
+}
+
+#id_description {
+    height: 20%;
+}

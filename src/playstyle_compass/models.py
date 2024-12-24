@@ -64,7 +64,7 @@ class Game(models.Model):
 
 
 class GameStores(models.Model):
-    guid = models.CharField(max_length=100, unique=True)
+    guid = models.CharField(max_length=100, unique=False)
     title = models.CharField(max_length=255)
     store_name = models.CharField(max_length=255, null=True, blank=True)
     store_url = models.URLField(null=True, blank=True)
@@ -443,3 +443,34 @@ class ListComment(models.Model):
     def like_count(self):
         """Returns the number of likes."""
         return self.liked_by.count()
+
+
+class Poll(models.Model):
+    title = models.CharField(max_length=100)
+    description = models.TextField(blank=True, null=True)
+    created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="polls")
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Poll: {self.title} (Created by {self.created_by})"
+
+
+class PollOption(models.Model):
+    poll = models.ForeignKey(Poll, on_delete=models.CASCADE, related_name="options")
+    text = models.CharField(max_length=120)
+
+    def __str__(self):
+        return self.text
+
+
+class Vote(models.Model):
+    poll = models.ForeignKey(Poll, on_delete=models.CASCADE, related_name="votes")
+    option = models.ForeignKey(PollOption, on_delete=models.CASCADE, related_name="votes")
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="votes")
+    voted_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ("poll", "user")
+
+    def __str__(self):
+        return f"Vote: User {self.user} voted for '{self.option.text}' in poll '{self.poll.title}'"
