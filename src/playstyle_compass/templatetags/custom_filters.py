@@ -276,3 +276,8 @@ def get_translated_field(game, field_name):
             return game.overview or "N/A"
     else:
         return "N/A"
+
+@register.filter
+def get_item(dictionary, key):
+    """Custom filter to retrieve a value from a dictionary by its key."""
+    return dictionary.get(key, False)

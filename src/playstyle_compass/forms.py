@@ -169,9 +169,19 @@ class PollForm(forms.ModelForm):
         model = Poll
         fields = ['title', 'description', 'options']
 
+    def clean_options(self):
+        options = self.cleaned_data['options']
+        option_list = [opt.strip() for opt in options.splitlines() if opt.strip()]
+        if len(option_list) > 5:
+            raise forms.ValidationError(_("You can only add up to 5 options."))
+        return options
+
 
 class VoteForm(forms.Form):
-    option = forms.ModelChoiceField(queryset=PollOption.objects.none())
+    option = forms.ModelChoiceField(
+        queryset=PollOption.objects.none(),
+        widget=forms.RadioSelect
+    )
 
     def __init__(self, poll, *args, **kwargs):
         super().__init__(*args, **kwargs)

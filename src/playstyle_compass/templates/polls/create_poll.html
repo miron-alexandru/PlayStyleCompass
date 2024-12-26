@@ -13,7 +13,7 @@
 {% endblock description %}
 
 {% block content %}
-<link rel="stylesheet" type="text/css" href="{% static 'css/playstyle_compass/polls.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/playstyle_compass/create_poll.css' %}">
 
 <div class="poll-container">
     <h2>{% trans "Create Poll" %}</h2>
@@ -36,6 +36,15 @@
                 </div>
             </div>
         </div>
+        {% if form.errors %}
+            <div class="form-errors">
+                {% for field in form %}
+                    {% for error in field.errors %}
+                        <p class="error">{{ error }}</p>
+                    {% endfor %}
+                {% endfor %}
+            </div>
+        {% endif %}
 
         <div class="form-actions">
             <button type="button" class="btn add-option-btn">{% trans "Add Another Option" %}</button>
@@ -47,8 +56,15 @@
 <script>
     document.querySelector(".add-option-btn").addEventListener("click", function() {
         const container = document.getElementById("options-container");
+        const optionCount = container.querySelectorAll(".option-group").length;
+        if (optionCount >= 5) {
+            alert("{% trans 'You can only add up to 5 options.' %}");
+            return;
+        }
         const newOption = document.createElement("div");
-        newOption.innerHTML = `<div class="form-group option-group"><input class="option-input" type="text" name="options" placeholder="{% trans 'New Option' %}"></div>`;
+        newOption.innerHTML = `<div class="form-group option-group">
+            <input class="option-input" type="text" name="options" placeholder="{% trans 'New Option' %}">
+        </div>`;
         container.appendChild(newOption);
     });
 </script>

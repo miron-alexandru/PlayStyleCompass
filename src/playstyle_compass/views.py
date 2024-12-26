@@ -2112,18 +2112,24 @@ def popular_games(request):
 def create_poll(request):
     """View used to create a poll."""
     if request.method == "POST":
-        form = PollForm(request.POST)
+        options = request.POST.getlist("options")
+        combined_options = "\n".join(opt.strip() for opt in options if opt.strip())
+
+        post_data = request.POST.copy()
+        post_data["options"] = combined_options
+
+        form = PollForm(post_data)
         if form.is_valid():
             poll = form.save(commit=False)
             poll.created_by = request.user
             poll.save()
 
-            options = request.POST.getlist("options")
             for option_text in options:
                 if option_text.strip():
                     PollOption.objects.create(poll=poll, text=option_text.strip())
 
             return redirect("playstyle_compass:community_polls")
+
     else:
         form = PollForm()
 
@@ -2139,6 +2145,10 @@ def vote(request, id):
     """View used to vote on a poll."""
     poll = get_object_or_404(Poll, id=id)
 
+    if Vote.objects.filter(poll=poll, user=request.user).exists():
+        messages.warning(request, "You have already voted in this poll!")
+        return HttpResponseRedirect(reverse("playstyle_compass:community_polls"))
+
     if request.method == "POST":
         form = VoteForm(poll=poll, data=request.POST)
         if form.is_valid():
@@ -2147,26 +2157,13 @@ def vote(request, id):
                 option=form.cleaned_data['option'],
                 user=request.user
             )
+            messages.success(request, "Your vote has been recorded.")
             return HttpResponseRedirect(reverse("playstyle_compass:community_polls"))
-    else:
-        form = VoteForm(poll=poll)
+        else:
+            messages.error(request, "There was an error with your vote.")
+            return HttpResponseRedirect(reverse("playstyle_compass:community_polls"))
 
-    context = {
-        "poll": poll,
-        "form": form
-    }
-    return render(request, "polls/community_polls.html", context)
-
-
-def poll_results(request, id):
-    """View used to display poll results."""
-    poll = get_object_or_404(Poll, id=id)
-
-    context = {
-        "page_title": _("Poll Results :: PlayStyle Compass"),
-        "poll": poll
-    }
-    return render(request, "polls/poll_results.html", context)
+    return HttpResponseRedirect(reverse("playstyle_compass:community_polls"))
 
 
 def community_polls(request):
@@ -2175,9 +2172,17 @@ def community_polls(request):
     for poll in polls:
         poll.vote_form = VoteForm(poll=poll)
 
+    user_votes = {}
+    for poll in polls:
+        vote = Vote.objects.filter(poll=poll, user=request.user).first()
+        if vote:
+            user_votes[poll.id] = vote.option.id
+
     context = {
         "page_title": _("Community Polls :: PlayStyle Compass"),
-        "polls": polls
+        "polls": polls,
+        "user_votes": user_votes,
     }
     return render(request, "polls/community_polls.html", context)
+
 

@@ -1,30 +1,106 @@
 {% extends "base.html" %}
-{% load custom_filters %}
+{% load i18n %}
 {% load static %}
+{% load custom_filters %}
+
+{% block page_header %}
+<div class="header">
+    <h3>{% trans "COMMUNITY POLLS" %}</h3>
+</div>
+{% endblock page_header %}
+
+{% block description %}
+{% blocktrans %}Browse and participate in polls created by the community. Vote on your favorite options and see how others have voted!{% endblocktrans %}
+{% endblock description %}
+
 
 {% block content %}
-<h1>Community Polls</h1>
+<link rel="stylesheet" type="text/css" href="{% static 'css/playstyle_compass/community_polls.css' %}">
 
-{% if polls %}
-  <ul>
+<div class="polls-container">
+  {% if polls %}
     {% for poll in polls %}
-      <li>
-        <h3>{{ poll.title }}</h3>
-        <p>{{ poll.description|default:"No description available" }}</p>
-        <p><small>Created by: {{ poll.created_by.userprofile.profile_name }} on {{ poll.created_at|date:"F j, Y, g:i a" }}</small></p>
-        
-       <form method="post" action="{% url 'playstyle_compass:vote' id=poll.id %}">
+      <div class="poll-card">
+        <h2>{{ poll.title }}</h2>
+        <p class="poll-description">{{ poll.description|default:_("No description available") }}</p>
+        <p class="poll-meta">
+        {% trans "Created by" %}: 
+          <a href="{% url 'users:view_profile' poll.created_by.userprofile.profile_name %}">
+            {{ poll.created_by.userprofile.profile_name }}
+          </a> 
+          {% trans "on" %} {{ poll.created_at|date:"F j, Y, g:i a" }}
+        </p>
+
+        <form method="post" action="{% url 'playstyle_compass:vote' id=poll.id %}">
           {% csrf_token %}
-          {{ poll.vote_form.as_p }}
-          <button type="submit">Vote</button>
-      </form>
-        
-        <a href="{% url 'playstyle_compass:poll_results' id=poll.id %}">View Results</a>
-      </li>
+          <div class="poll-options">
+            {% for option in poll.options.all %}
+              <div class="radio-option">
+                <label>
+                  <input type="radio" name="option" value="{{ option.id }}" {% if user_votes|get_item:poll.id == option.id %}checked{% endif %}>
+                  {{ option.text }}
+                </label>
+              </div>
+            {% endfor %}
+          </div>
+
+          {% if user_votes|get_item:poll.id %}
+            <div class="poll-voted-message">
+              <span class="icon">✔️</span>
+              <p class="voted-message">{% trans "Your vote:"%} 
+                {% for option in poll.options.all %}
+                  {% if option.id == user_votes|get_item:poll.id %}
+                    <span class="voted-option">{{ option.text }}</span>
+                  {% endif %}
+                {% endfor %}
+              </p>
+            </div>
+          {% else %}
+            <button type="submit" class="vote-button" {% if user_votes|get_item:poll.id %}disabled{% endif %}>{% trans "Vote" %}</button>
+          {% endif %}
+
+        </form>
+        <button class="results-toggle-btn" onclick="toggleResults({{ poll.id }})">{% trans "View Results" %}</button>
+
+        <div id="results-{{ poll.id }}" class="poll-results" style="display: none;">
+          <ul>
+            {% for option in poll.options.all %}
+              <li>{{ option.text }}: {{ option.votes.count }} {% trans "votes" %}</li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
     {% endfor %}
-  </ul>
-{% else %}
-  <p>No polls available at the moment.</p>
-{% endif %}
+  {% else %}
+    <p>{% trans "No polls available at the moment." %}</p>
+  {% endif %}
+</div>
+
+<script>
+  function toggleResults(pollId) {
+    const resultsDiv = document.getElementById('results-' + pollId);
+    if (resultsDiv.style.display === 'none') {
+      resultsDiv.style.display = 'block';
+    } else {
+      resultsDiv.style.display = 'none';
+    }
+  }
+
+  document.querySelectorAll('.poll-card form').forEach(form => {
+    const voteButton = form.querySelector('.vote-button');
+    const radioButtons = form.querySelectorAll('input[type="radio"]');
+
+    function checkVoteStatus() {
+      const isSelected = Array.from(radioButtons).some(radio => radio.checked);
+      voteButton.disabled = !isSelected;
+    }
+
+    checkVoteStatus();
+
+    radioButtons.forEach(radio => {
+      radio.addEventListener('change', checkVoteStatus);
+    });
+  });
+</script>
 
 {% endblock content %}
