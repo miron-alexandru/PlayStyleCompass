@@ -183,4 +183,6 @@ urlpatterns = [
     path("polls/new/", views.create_poll, name="create_poll"),
     path("polls/<int:id>/vote/", views.vote, name="vote"),
     path("polls/community/", views.community_polls, name="community_polls"),
+    path("polls/user_polls/<int:user_id>/", views.user_polls, name="user_polls"),
+    path("polls/delete/<int:poll_id>/", views.delete_poll, name="delete_poll"),
 ]

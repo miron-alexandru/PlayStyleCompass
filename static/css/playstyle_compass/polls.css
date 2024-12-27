@@ -139,3 +139,24 @@
   font-size: 18px;
   color: #4682b4;
 }
+
+.delete-poll-button {
+  background-color: #e63946;
+  color: white;
+  border: none;
+  font-size: 14px;
+  border-radius: 4px;
+  padding: 6px 12px;
+  margin-top: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.delete-poll-button:hover {
+    background-color: #d62839;
+}
+
+.delete-poll-button:focus {
+    outline: 2px solid #ffccd5;
+    outline-offset: 2px;
+}

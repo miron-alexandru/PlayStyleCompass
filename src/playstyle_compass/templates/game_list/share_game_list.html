@@ -18,6 +18,7 @@
     <form method="POST" class="share-form">
         {% csrf_token %}
         <label for="shared_with" class="form-label">{% trans "Share with friends" %}</label>
+        {% if user_friends %}
         <div class="friends-checkbox-list">
             {% for user in user_friends %}
                 <div class="friend-checkbox">
@@ -27,6 +28,9 @@
             {% endfor %}
         </div>
         <button type="submit" class="btn-submit">{% trans "Share" %}</button>
+        {% else %}
+        <p>{% trans "Your friends list is currently empty." %}
+        {% endif %}
     </form>
 </div>
 {% endblock content %}

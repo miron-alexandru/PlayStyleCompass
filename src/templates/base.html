@@ -87,6 +87,9 @@
             <a class="dropdown-item" href="{% url 'playstyle_compass:user_game_lists' request.user.id%}">
               {% trans "My Game Lists" %}
             </a>
+            <a class="dropdown-item" href="{% url 'playstyle_compass:user_polls' request.user.id%}">
+              {% trans "My Polls" %}
+            </a>
             <a class="dropdown-item" href="{% url 'playstyle_compass:favorite_game_lists' request.user.id%}">
               {% trans "Favorite Game Lists" %}
             </a>
@@ -160,6 +163,9 @@
             </a>
             <a class="dropdown-item" href="{% url 'playstyle_compass:explore_game_lists'%}">
               {% trans "Game Lists" %}
+            </a>
+            <a class="dropdown-item" href="{% url 'playstyle_compass:community_polls'%}">
+              {% trans "Polls" %}
             </a>
             <a class="dropdown-item" href="{% url 'playstyle_compass:similar_games_directory'%}">
               {% trans "Similar Games Directory" %}

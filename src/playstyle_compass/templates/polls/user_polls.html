@@ -5,16 +5,30 @@
 
 {% block page_header %}
 <div class="header">
-    <h3>{% trans "COMMUNITY POLLS" %}</h3>
+    {% if is_own_polls %}
+        <h3>{% trans "MY POLLS" %}</h3>
+    {% else %}
+        <h3>
+            {% trans "POLLS CREATED BY" %} 
+            <a href="{% url 'users:view_profile' user.userprofile.profile_name %}">
+                {{ user.userprofile.profile_name }}
+            </a>
+        </h3>
+    {% endif %}
 </div>
 {% endblock page_header %}
 
 {% block description %}
-{% blocktrans %}Browse and participate in polls created by the community. Vote on your favorite options and see how others have voted!{% endblocktrans %}
+{% if is_own_polls %}
+    {% blocktrans %}Manage your polls. Delete polls you’ve created and track how others are engaging with them!{% endblocktrans %}
+{% else %}
+    {% blocktrans %}Discover polls created by this user. Share your opinions by voting and see how others have participated!{% endblocktrans %}
+{% endif %}
 {% endblock description %}
 
 
 {% block content %}
+
 <link rel="stylesheet" type="text/css" href="{% static 'css/playstyle_compass/polls.css' %}">
 
 <div class="polls-container">
@@ -24,11 +38,7 @@
         <h2>{{ poll.title }}</h2>
         <p class="poll-description">{{ poll.description|default:_("No description available") }}</p>
         <p class="poll-meta">
-        {% trans "Created by" %}: 
-          <a href="{% url 'users:view_profile' poll.created_by.userprofile.profile_name %}">
-            {{ poll.created_by.userprofile.profile_name }}
-          </a> 
-          {% trans "on" %} {{ poll.created_at|date:"F j, Y, g:i a" }}
+          {% trans "Created on" %} {{ poll.created_at|date:"F j, Y, g:i a" }}
         </p>
 
         <form method="post" action="{% url 'playstyle_compass:vote' id=poll.id %}">
@@ -47,7 +57,7 @@
           {% if user_votes|get_item:poll.id %}
             <div class="poll-voted-message">
               <span class="icon">✔️</span>
-              <p class="voted-message">{% trans "Your vote:"%} 
+              <p class="voted-message">{% trans "Your vote:" %} 
                 {% for option in poll.options.all %}
                   {% if option.id == user_votes|get_item:poll.id %}
                     <span class="voted-option">{{ option.text }}</span>
@@ -58,9 +68,16 @@
           {% else %}
             <button type="submit" class="vote-button" {% if user_votes|get_item:poll.id %}disabled{% endif %}>{% trans "Vote" %}</button>
           {% endif %}
-
         </form>
+
         <button class="results-toggle-btn" onclick="toggleResults({{ poll.id }})">{% trans "View Results" %}</button>
+         {% if is_own_polls %}
+          <form method="post" action="{% url 'playstyle_compass:delete_poll' poll.id %}" onsubmit="return confirmDelete()">
+            {% csrf_token %}
+            <button type="submit" class="delete-poll-button">{% trans "Delete" %}</button>
+          </form>
+
+          {% endif %}
 
         <div id="results-{{ poll.id }}" class="poll-results" style="display: none;">
           <ul>
@@ -72,7 +89,7 @@
       </div>
     {% endfor %}
   {% else %}
-    <p>{% trans "No polls available at the moment." %}</p>
+    <p>{% trans "No polls created by this user." %}</p>
   {% endif %}
 </div>
 

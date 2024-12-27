@@ -2186,3 +2186,44 @@ def community_polls(request):
     return render(request, "polls/community_polls.html", context)
 
 
+@login_required
+def user_polls(request, user_id):
+    """View to display polls created by a specific user."""
+    user = get_object_or_404(User, id=user_id)
+    polls = Poll.objects.filter(created_by=user).order_by("-created_at")
+
+    user_votes = {}
+    for poll in polls:
+        vote = Vote.objects.filter(poll=poll, user=request.user).first()
+        if vote:
+            user_votes[poll.id] = vote.option.id
+
+    context = {
+        "page_title": _("User Polls"),
+        "polls": polls,
+        "user_votes": user_votes,
+        "user": user,
+        "is_own_polls": request.user == user,
+    }
+    return render(request, "polls/user_polls.html", context)
+
+
+@login_required
+def delete_poll(request, poll_id):
+    """View to delete a specific poll."""
+    poll = get_object_or_404(Poll, id=poll_id)
+
+    if poll.created_by != request.user:
+        messages.error(request, "You are not authorized to delete this poll.")
+        return redirect("playstyle_compass:user_polls", user_id=request.user.id)
+
+    poll.delete()
+    messages.success(request, "Poll deleted successfully.")
+    return redirect("playstyle_compass:user_polls", user_id=request.user.id)
+
+
+
+
+
+
+
