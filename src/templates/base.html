@@ -87,6 +87,9 @@
             <a class="dropdown-item" href="{% url 'playstyle_compass:user_game_lists' request.user.id%}">
               {% trans "My Game Lists" %}
             </a>
+            <a class="dropdown-item" href="{% url 'playstyle_compass:create_poll'%}">
+              {% trans "Create Poll" %}
+            </a>
             <a class="dropdown-item" href="{% url 'playstyle_compass:user_polls' request.user.id%}">
               {% trans "My Polls" %}
             </a>

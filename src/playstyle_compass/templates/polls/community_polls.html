@@ -21,6 +21,11 @@
   {% if polls %}
     {% for poll in polls %}
       <div class="poll-card">
+        {% if poll.created_by == request.user %}
+          <div class="own-poll-badge">
+            {% trans "Your Poll" %}
+          </div>
+        {% endif %}
         <h2>{{ poll.title }}</h2>
         <p class="poll-description">{{ poll.description|default:_("No description available") }}</p>
         <p class="poll-meta">
@@ -37,7 +42,9 @@
             {% for option in poll.options.all %}
               <div class="radio-option">
                 <label>
-                  <input type="radio" name="option" value="{{ option.id }}" {% if user_votes|get_item:poll.id == option.id %}checked{% endif %}>
+                  <input type="radio" name="option" value="{{ option.id }}" 
+                  {% if user_votes|get_item:poll.id == option.id %}checked{% endif %}
+                  {% if user_votes|get_item:poll.id %}disabled{% endif %}>
                   {{ option.text }}
                 </label>
               </div>
@@ -47,7 +54,7 @@
           {% if user_votes|get_item:poll.id %}
             <div class="poll-voted-message">
               <span class="icon">✔️</span>
-              <p class="voted-message">{% trans "Your vote:"%} 
+              <p class="voted-message">{% trans "You voted:"%} 
                 {% for option in poll.options.all %}
                   {% if option.id == user_votes|get_item:poll.id %}
                     <span class="voted-option">{{ option.text }}</span>
