@@ -13,75 +13,62 @@
 {% blocktrans %}Browse and participate in polls created by the community. Vote on your favorite options and see how others have voted!{% endblocktrans %}
 {% endblock description %}
 
-
 {% block content %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/playstyle_compass/polls.css' %}">
 
 <div class="polls-container">
-  {% if polls %}
-    {% for poll in polls %}
+  {% if polls_with_data %}
+    {% for poll_data in polls_with_data %}
+      {% with poll=poll_data.poll total_votes=poll_data.total_votes %}
       <div class="poll-card">
-        {% if poll.created_by == request.user %}
-          <div class="own-poll-badge">
-            {% trans "Your Poll" %}
-          </div>
-        {% endif %}
         <h2>{{ poll.title }}</h2>
-        <p class="poll-description">{{ poll.description|default:_("No description available") }}</p>
-        <p class="poll-meta">
-        {% trans "Created by" %}: 
-          <a href="{% url 'users:view_profile' poll.created_by.userprofile.profile_name %}">
-            {{ poll.created_by.userprofile.profile_name }}
-          </a> 
-          {% trans "on" %} {{ poll.created_at|date:"F j, Y, g:i a" }}
-        </p>
-
         <form method="post" action="{% url 'playstyle_compass:vote' id=poll.id %}">
           {% csrf_token %}
           <div class="poll-options">
-            {% for option in poll.options.all %}
-              <div class="radio-option">
+            {% for option_data in poll_data.options_with_percentages %}
+              <div 
+                class="poll-option" 
+                style="
+                  --percentage: {{ option_data.percentage }}%; 
+                  {% if user_votes|get_item:poll.id == option_data.option.id %}background-color: #e3f2fd; border-color: #2196f3;{% endif %}
+                "
+              >
                 <label>
-                  <input type="radio" name="option" value="{{ option.id }}" 
-                  {% if user_votes|get_item:poll.id == option.id %}checked{% endif %}
-                  {% if user_votes|get_item:poll.id %}disabled{% endif %}>
-                  {{ option.text }}
+                  <input 
+                    type="radio" 
+                    name="option" 
+                    value="{{ option_data.option.id }}"
+                    {% if user_votes|get_item:poll.id == option_data.option.id %}checked{% endif %}
+                    {% if user_votes|get_item:poll.id %}disabled{% endif %}
+                  >
+                  {{ option_data.option.text }}
                 </label>
+                <div class="poll-bar" 
+                  style="
+                    width: {{ option_data.percentage }}%; 
+                    {% if user_votes|get_item:poll.id == option_data.option.id %}background-color: #2196f3;{% endif %}
+                  "
+                ></div>
+                <span class="poll-percentage">{{ option_data.percentage }}%</span>
               </div>
             {% endfor %}
           </div>
-
-          {% if user_votes|get_item:poll.id %}
-            <div class="poll-voted-message">
-              <span class="icon">✔️</span>
-              <p class="voted-message">{% trans "You voted:"%} 
-                {% for option in poll.options.all %}
-                  {% if option.id == user_votes|get_item:poll.id %}
-                    <span class="voted-option">{{ option.text }}</span>
-                  {% endif %}
-                {% endfor %}
-              </p>
-            </div>
-          {% else %}
-            <button type="submit" class="vote-button" {% if user_votes|get_item:poll.id %}disabled{% endif %}>{% trans "Vote" %}</button>
+          <div class="total-votes">
+            <p>{% trans "Total Votes:" %} {{ total_votes }}</p>
+          </div>
+          {% if not user_votes|get_item:poll.id %}
+            <button type="submit" class="vote-button">{% trans "Vote" %}</button>
           {% endif %}
-
         </form>
-        <button class="results-toggle-btn" onclick="toggleResults({{ poll.id }})">{% trans "View Results" %}</button>
-
-        <div id="results-{{ poll.id }}" class="poll-results" style="display: none;">
-          <ul>
-            {% for option in poll.options.all %}
-              <li>{{ option.text }}: {{ option.votes.count }} {% trans "votes" %}</li>
-            {% endfor %}
-          </ul>
-        </div>
       </div>
+      {% endwith %}
     {% endfor %}
   {% else %}
     <p>{% trans "No polls available at the moment." %}</p>
   {% endif %}
 </div>
+
+
 
 <script src="{% static 'js/playstyle_compass/polls.js' %}"></script>
 

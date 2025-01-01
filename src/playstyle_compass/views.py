@@ -2169,18 +2169,29 @@ def vote(request, id):
 def community_polls(request):
     """View used to display polls."""
     polls = Poll.objects.all().order_by("-created_at")
+    user_votes = {}
+
+    polls_with_data = []
     for poll in polls:
         poll.vote_form = VoteForm(poll=poll)
 
-    user_votes = {}
-    for poll in polls:
-        vote = Vote.objects.filter(poll=poll, user=request.user).first()
-        if vote:
-            user_votes[poll.id] = vote.option.id
+        user_vote = poll.user_vote(request.user)
+        if user_vote:
+            user_votes[poll.id] = user_vote.id
+
+        options_with_percentages = poll.options_with_percentages()
+
+        polls_with_data.append(
+            {
+                "poll": poll,
+                "total_votes": poll.total_votes(),
+                "options_with_percentages": options_with_percentages,
+            }
+        )
 
     context = {
         "page_title": _("Community Polls :: PlayStyle Compass"),
-        "polls": polls,
+        "polls_with_data": polls_with_data,
         "user_votes": user_votes,
     }
     return render(request, "polls/community_polls.html", context)

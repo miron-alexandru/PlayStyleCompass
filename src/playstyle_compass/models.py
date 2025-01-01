@@ -2,6 +2,7 @@
 
 from django.conf import settings
 from django.db import models
+from django.db.models import Count, Sum
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.db.models import Avg, Count
@@ -453,6 +454,32 @@ class Poll(models.Model):
 
     def __str__(self):
         return f"Poll: {self.title} (Created by {self.created_by})"
+
+    def total_votes(self):
+        """Calculate the total number of votes across all options in this poll."""
+        return self.options.aggregate(total_votes=Count("votes"))["total_votes"] or 0
+
+    def options_with_percentages(self):
+        """Return options with vote percentages."""
+        total_votes = self.total_votes()
+        options_with_votes = self.options.annotate(vote_count=Count("votes"))
+
+        options_with_percentages = []
+        for option in options_with_votes:
+            option_percentage = (
+                (option.vote_count / total_votes * 100) if total_votes > 0 else 0
+            )
+            options_with_percentages.append(
+                {"option": option, "percentage": round(option_percentage, 1)}
+            )
+        return options_with_percentages
+
+    def user_vote(self, user):
+        """Fetch the user's vote for this poll."""
+        try:
+            return self.votes.get(user=user).option
+        except Vote.DoesNotExist:
+            return None
 
 
 class PollOption(models.Model):
