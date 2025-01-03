@@ -2133,10 +2133,7 @@ def create_poll(request):
     else:
         form = PollForm()
 
-    context = {
-        "page_title": _("Create Poll :: PlayStyle Compass"),
-        "form": form
-    }
+    context = {"page_title": _("Create Poll :: PlayStyle Compass"), "form": form}
     return render(request, "polls/create_poll.html", context)
 
 
@@ -2153,9 +2150,7 @@ def vote(request, id):
         form = VoteForm(poll=poll, data=request.POST)
         if form.is_valid():
             Vote.objects.create(
-                poll=poll,
-                option=form.cleaned_data['option'],
-                user=request.user
+                poll=poll, option=form.cleaned_data["option"], user=request.user
             )
             messages.success(request, "Your vote has been recorded.")
             return HttpResponseRedirect(reverse("playstyle_compass:community_polls"))
@@ -2204,16 +2199,27 @@ def user_polls(request, user_id):
     polls = Poll.objects.filter(created_by=user).order_by("-created_at")
 
     user_votes = {}
+    polls_with_data = []
     for poll in polls:
-        vote = Vote.objects.filter(poll=poll, user=request.user).first()
-        if vote:
-            user_votes[poll.id] = vote.option.id
+        user_vote = poll.user_vote(request.user)
+        if user_vote:
+            user_votes[poll.id] = user_vote.id
+
+        options_with_percentages = poll.options_with_percentages()
+
+        polls_with_data.append(
+            {
+                "poll": poll,
+                "total_votes": poll.total_votes(),
+                "options_with_percentages": options_with_percentages,
+            }
+        )
 
     context = {
         "page_title": _("User Polls"),
-        "polls": polls,
+        "polls_with_data": polls_with_data,
         "user_votes": user_votes,
-        "user": user,
+        "user_polls": user,
         "is_own_polls": request.user == user,
     }
     return render(request, "polls/user_polls.html", context)
@@ -2231,10 +2237,3 @@ def delete_poll(request, poll_id):
     poll.delete()
     messages.success(request, "Poll deleted successfully.")
     return redirect("playstyle_compass:user_polls", user_id=request.user.id)
-
-
-
-
-
-
-

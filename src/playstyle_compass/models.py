@@ -449,7 +449,9 @@ class ListComment(models.Model):
 class Poll(models.Model):
     title = models.CharField(max_length=100)
     description = models.TextField(blank=True, null=True)
-    created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="polls")
+    created_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="polls"
+    )
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -492,8 +494,12 @@ class PollOption(models.Model):
 
 class Vote(models.Model):
     poll = models.ForeignKey(Poll, on_delete=models.CASCADE, related_name="votes")
-    option = models.ForeignKey(PollOption, on_delete=models.CASCADE, related_name="votes")
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="votes")
+    option = models.ForeignKey(
+        PollOption, on_delete=models.CASCADE, related_name="votes"
+    )
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="votes"
+    )
     voted_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:

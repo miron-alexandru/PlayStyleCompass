@@ -2,7 +2,16 @@
 
 from django import forms
 
-from .models import Review, Game, GameList, ListReview, UserPreferences, ListComment, Poll, PollOption
+from .models import (
+    Review,
+    Game,
+    GameList,
+    ListReview,
+    UserPreferences,
+    ListComment,
+    Poll,
+    PollOption,
+)
 from django.utils.translation import gettext_lazy as _
 
 
@@ -161,16 +170,16 @@ class PollForm(forms.ModelForm):
     )
 
     description = forms.CharField(
-        widget=forms.Textarea(attrs={'rows': 2, 'cols': 40}),
+        widget=forms.Textarea(attrs={"rows": 2, "cols": 40}),
         help_text="",
     )
 
     class Meta:
         model = Poll
-        fields = ['title', 'description', 'options']
+        fields = ["title", "description", "options"]
 
     def clean_options(self):
-        options = self.cleaned_data['options']
+        options = self.cleaned_data["options"]
         option_list = [opt.strip() for opt in options.splitlines() if opt.strip()]
         if len(option_list) > 5:
             raise forms.ValidationError(_("You can only add up to 5 options."))
@@ -179,10 +188,9 @@ class PollForm(forms.ModelForm):
 
 class VoteForm(forms.Form):
     option = forms.ModelChoiceField(
-        queryset=PollOption.objects.none(),
-        widget=forms.RadioSelect
+        queryset=PollOption.objects.none(), widget=forms.RadioSelect
     )
 
     def __init__(self, poll, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['option'].queryset = poll.options.all()
+        self.fields["option"].queryset = poll.options.all()
