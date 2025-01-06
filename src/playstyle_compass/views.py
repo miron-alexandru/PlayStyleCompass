@@ -2216,7 +2216,7 @@ def user_polls(request, user_id):
         )
 
     context = {
-        "page_title": _("User Polls"),
+        "page_title": _("User Polls:: PlayStyle Compass"),
         "polls_with_data": polls_with_data,
         "user_votes": user_votes,
         "user_polls": user,
@@ -2237,3 +2237,34 @@ def delete_poll(request, poll_id):
     poll.delete()
     messages.success(request, "Poll deleted successfully.")
     return redirect("playstyle_compass:user_polls", user_id=request.user.id)
+
+
+@login_required
+def voted_polls(request):
+    """View to display polls that the user has voted on."""
+    votes = Vote.objects.filter(user=request.user)
+    voted_polls = Poll.objects.filter(id__in=[vote.poll.id for vote in votes]).order_by("-created_at")
+
+    user_votes = {}
+    polls_with_data = []
+    for poll in voted_polls:
+        user_vote = poll.user_vote(request.user)
+        if user_vote:
+            user_votes[poll.id] = user_vote.id
+
+        options_with_percentages = poll.options_with_percentages()
+
+        polls_with_data.append(
+            {
+                "poll": poll,
+                "total_votes": poll.total_votes(),
+                "options_with_percentages": options_with_percentages,
+            }
+        )
+
+    context = {
+        "page_title": _("Voted Polls:: PlayStyle Compass"),
+        "polls_with_data": polls_with_data,
+        "user_votes": user_votes,
+    }
+    return render(request, "polls/voted_polls.html", context)

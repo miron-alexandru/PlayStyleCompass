@@ -138,6 +138,7 @@ Websites for .env configuration: [GiantBomb](https://www.giantbomb.com/) / [Send
 <summary><h2>PlayStyle Compass Changelog</h2></summary>
 
 ### Version v2.3:
+* Added Voted Polls page: Users are able to see all the polls they voted in.
 * Added Polls: Users are able to create or vote on polls created by other users.
 * Security improvements
 * Implemented Global Chat: Users are able to communicate in the global chat.

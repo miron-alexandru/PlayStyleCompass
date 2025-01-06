@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load static %}
+{% load custom_filters %}
+
+{% block page_header %}
+<div class="header">
+    <h3>{% trans "POLLS YOU VOTED ON" %}</h3>
+</div>
+{% endblock page_header %}
+
+{% block description %}
+{% blocktrans %}See the polls you’ve participated in. Check how your vote compares with others!{% endblocktrans %}
+{% endblock description %}
+
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/playstyle_compass/polls.css' %}">
+
+<div class="polls-container">
+  {% if polls_with_data %}
+    {% for poll_data in polls_with_data %}
+      {% with poll=poll_data.poll total_votes=poll_data.total_votes %}
+      <div class="poll-card">
+        <h2>{{ poll.title }}</h2>
+        <div class="poll-options">
+          {% for option_data in poll_data.options_with_percentages %}
+            <div 
+              class="poll-option" 
+              style="--percentage: {{ option_data.percentage }}%; 
+                     {% if user_votes|get_item:poll.id == option_data.option.id %}background-color: #e3f2fd; border-color: #2196f3;{% endif %}">
+              <label>
+                <input 
+                  type="radio" 
+                  name="option" 
+                  value="{{ option_data.option.id }}"
+                  {% if user_votes|get_item:poll.id == option_data.option.id %}checked{% endif %}
+                  disabled
+                >
+                {{ option_data.option.text }}
+              </label>
+              <div class="poll-bar" 
+                style="width: {{ option_data.percentage }}%; 
+                       {% if user_votes|get_item:poll.id == option_data.option.id %}background-color: #2196f3;{% endif %}">
+              </div>
+              <span class="poll-percentage">{{ option_data.percentage }}%</span>
+            </div>
+          {% endfor %}
+        </div>
+        <div class="total-votes">
+          <p>{% trans "Total Votes:" %} {{ total_votes }}</p>
+        </div>
+      </div>
+      {% endwith %}
+    {% endfor %}
+  {% else %}
+    <p>{% trans "You have not voted on any polls yet." %}</p>
+  {% endif %}
+</div>
+
+<script src="{% static 'js/playstyle_compass/polls.js' %}"></script>
+
+{% endblock content %}
