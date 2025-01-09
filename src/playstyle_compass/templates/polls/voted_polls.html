@@ -55,6 +55,7 @@
         <div class="total-votes">
           <p>{% trans "Total Votes:" %} {{ total_votes }}</p>
         </div>
+        <a href="{% url 'playstyle_compass:share_poll' poll.id %}" class="share-poll-button">{% trans "Share" %}</a>
       </div>
       {% endwith %}
     {% endfor %}

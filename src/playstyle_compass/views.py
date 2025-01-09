@@ -2289,3 +2289,85 @@ def like_poll(request, poll_id):
             "poll_id": poll_id,
         }
     )
+
+
+@login_required
+def poll_detail(request, poll_id):
+    """View to display the details of a specific poll."""
+    poll = get_object_or_404(Poll, id=poll_id)
+
+    # Get user vote for the current poll (if any)
+    user_vote = poll.user_vote(request.user)
+    user_votes = {poll.id: user_vote.id} if user_vote else {}
+
+    # Prepare options with percentages
+    options_with_percentages = poll.options_with_percentages()
+
+    context = {
+        "page_title": _("Poll Detail:: PlayStyle Compass"),
+        "poll": poll,
+        "total_votes": poll.total_votes(),
+        "options_with_percentages": options_with_percentages,
+        "user_votes": user_votes,
+    }
+    return render(request, "polls/poll_detail.html", context)
+
+
+@login_required
+def share_poll(request, poll_id):
+    """View used to share a poll."""
+    poll = Poll.objects.get(id=poll_id)
+
+    if request.method == "POST":
+        users_to_share_with = request.POST.getlist("shared_with")
+        if not users_to_share_with:
+            return HttpResponseBadRequest('At least one friend must be selected to share the poll.')
+
+        poll.shared_with.add(*users_to_share_with)
+
+        # Initialize or update 'shared_by' to track who shared the poll
+        shared_by_info = poll.shared_by or {}
+
+        sharer_id = str(request.user.id)
+        if sharer_id not in shared_by_info:
+            shared_by_info[sharer_id] = []
+
+        for user_id in users_to_share_with:
+            receiver = User.objects.get(pk=user_id)
+
+            if user_id not in shared_by_info[sharer_id]:
+                shared_by_info[sharer_id].append(user_id)
+
+            # Create a notification for the user receiving the shared poll
+            profile_url = reverse(
+                "users:view_profile", args=[request.user.userprofile.profile_name]
+            )
+            poll_url = reverse(
+                "playstyle_compass:poll_detail", args=[poll.pk]
+            )
+            message = format_html(
+                '<a class="notification-profile" href="{}">{}</a> has shared a poll with you: <a href="{}">{}</a>',
+                profile_url,
+                request.user.userprofile.profile_name,
+                poll_url,
+                poll.title,
+            )
+            create_notification(
+                receiver, message=message, notification_type="shared_poll"
+            )
+
+        poll.shared_by = shared_by_info
+        poll.save()
+
+        messages.success(request, _("Poll successfully shared!"))
+        return redirect("playstyle_compass:poll_detail", poll_id=poll.pk)
+
+    user, user_preferences, user_friends = get_user_context(request)
+
+    context = {
+        "page_title": _("Share Poll :: PlayStyle Compass"),
+        "poll": poll,
+        "user_friends": user_friends,
+    }
+
+    return render(request, "polls/share_poll.html", context)

@@ -16,6 +16,12 @@
   text-align: center;
 }
 
+.single-poll .poll-card {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
 .poll-card h2 {
   font-size: 1.5rem;
   margin-bottom: 10px;
@@ -221,7 +227,7 @@
 
 
 .total-votes {
-  background-color: #228B22;
+  background-color: #008080;
   color: white;
   padding: 5px 10px;
   margin-bottom: 10px;
@@ -276,4 +282,27 @@
   font-weight: 600;
   color: var(--text-color);
   vertical-align: middle;
+}
+
+.buttons-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+}
+
+.share-poll-button {
+  background-color: #4169E1;
+  color: white;
+  border: none;
+  font-size: 14px;
+  border-radius: 4px;
+  padding: 6px 12px;
+  cursor: pointer;
+  transitione: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.share-poll-button:hover {
+  background-color: #0066b2;
+  color: white !important;
 }

@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load static %}
+{% load custom_filters %}
+
+{% block page_header %}
+<div class="header">
+    <h3>{% trans "POLL DETAIL" %}</h3>
+</div>
+{% endblock page_header %}
+
+{% block description %}
+{% trans "Participate in this poll and see how others have voted. Make your voice heard!" %}
+{% endblock description %}
+
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/playstyle_compass/polls.css' %}">
+
+<div class="single-poll">
+    <div class="poll-card">
+        <h2>{{ poll.title }}</h2>
+        <button id="like-button" data-url="{% url 'playstyle_compass:like_poll' poll.id %}" 
+            class="like-poll-button" title="{% trans 'Like Poll' %}">
+            <i class="{% if user in poll.liked_by.all %}fa-solid fa-heart{% else %}fa-regular fa-heart{% endif %}"></i>
+        </button>
+        <span id="like-count-{{ poll.id }}" class="like-count">{{ poll.like_count }}</span>
+        <form method="post" action="{% url 'playstyle_compass:vote' id=poll.id %}">
+            {% csrf_token %}
+            <div class="poll-options">
+                {% for option_data in options_with_percentages %}
+                    <div 
+                        class="poll-option" 
+                        style="
+                            --percentage: {{ option_data.percentage }}%; 
+                            {% if user_votes|get_item:poll.id == option_data.option.id %}background-color: #e3f2fd; border-color: #2196f3;
+                            {% endif %}
+                        "
+                    >
+                        <label>
+                            <input 
+                                type="radio" 
+                                name="option" 
+                                value="{{ option_data.option.id }}"
+                                {% if user_votes|get_item:poll.id == option_data.option.id %}checked{% endif %}
+                                {% if user_votes|get_item:poll.id %}disabled{% endif %}
+                            >
+                            {{ option_data.option.text }}
+                        </label>
+                        <div class="poll-bar" 
+                            style="
+                                width: {{ option_data.percentage }}%; 
+                                {% if user_votes|get_item:poll.id == option_data.option.id %}background-color: #2196f3;{% endif %}
+                            "
+                        ></div>
+                        <span class="poll-percentage">{{ option_data.percentage }}%</span>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="total-votes">
+                <p>{% trans "Total Votes:" %} {{ total_votes }}</p>
+            </div>
+            <div class="buttons-container">
+            {% if not user_votes|get_item:poll.id %}
+                <button type="submit" class="vote-button">{% trans "Vote" %}</button>
+            {% endif %}
+            <a href="{% url 'playstyle_compass:share_poll' poll.id %}" class="share-poll-button">
+            {% trans "Share" %}</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="{% static 'js/playstyle_compass/polls.js' %}"></script>
+
+{% endblock content %}

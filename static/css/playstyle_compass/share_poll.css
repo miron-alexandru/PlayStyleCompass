@@ -1,0 +1,104 @@
+.share-poll-container {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 30px;
+  background-color: var(--user-container);
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.share-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-label {
+  font-size: 1.1rem;
+  color: var(--text-color);
+  font-weight: 600;
+}
+
+.btn-submit {
+  background-color: #3498db;
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn-submit:hover {
+  background-color: #2980b9;
+}
+
+.btn-submit:disabled {
+  background-color: #ccc;
+  color: #999;/
+  border: 1px solid #ddd;
+  cursor: not-allowed;
+}
+
+.btn-submit:disabled:hover {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.friends-checkbox-list {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 10px;
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--input-border);
+  background-color: var(--background-color);
+}
+
+.friend-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.friend-checkbox input {
+  margin: 0;
+  cursor: pointer;
+  width: 15px;
+  height: 15px;
+  border: 2px solid var(--input-border);
+  border-radius: 4px;
+  background-color: #fff;
+  transition: border-color 0.3s ease, background-color 0.3s ease;
+}
+
+.friend-checkbox input:checked {
+  background-color: #3498db;
+  border-color: #3498db;
+}
+
+.friend-checkbox label {
+  font-size: 0.95rem;
+  color: var(--text-color);
+  cursor: pointer;
+  transition: color 0.3s ease;
+  margin-top: 5px;
+}
+
+.friend-checkbox:hover label {
+  color: #3498db;
+  font-weight: 600;
+}
+
+.friend-checkbox input:focus {
+  outline: none;
+  border-color: #2980b9;
+  box-shadow: 0 0 5px rgba(0, 0, 255, 0.2);
+}
+

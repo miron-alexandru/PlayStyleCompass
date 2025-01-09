@@ -187,4 +187,6 @@ urlpatterns = [
     path("polls/delete/<int:poll_id>/", views.delete_poll, name="delete_poll"),
     path("polls/voted_polls/", views.voted_polls, name="voted_polls"),
     path("polls/like-poll/<int:poll_id>", views.like_poll, name="like_poll"),
+    path("polls/poll-detail/<int:poll_id>/", views.poll_detail, name="poll_detail"),
+    path("polls/share-poll/<int:poll_id>", views.share_poll, name="share_poll"),
 ]

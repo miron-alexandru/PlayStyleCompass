@@ -62,9 +62,13 @@
           <div class="total-votes">
             <p>{% trans "Total Votes:" %} {{ total_votes }}</p>
           </div>
+          <div class="buttons-container">
           {% if not user_votes|get_item:poll.id %}
             <button type="submit" class="vote-button">{% trans "Vote" %}</button>
           {% endif %}
+          <a href="{% url 'playstyle_compass:share_poll' poll.id %}" class="share-poll-button">
+          {% trans "Share" %}</a>
+        </div>
         </form>
       </div>
       {% endwith %}
@@ -73,8 +77,6 @@
     <p>{% trans "No polls available at the moment." %}</p>
   {% endif %}
 </div>
-
-
 
 <script src="{% static 'js/playstyle_compass/polls.js' %}"></script>
 

@@ -458,6 +458,10 @@ class Poll(models.Model):
         related_name="liked_polls",
         blank=True,
     )
+    shared_with = models.ManyToManyField(
+        settings.AUTH_USER_MODEL, blank=True, related_name="shared_polls"
+    )
+    shared_by = models.JSONField(default=dict, blank=True)
 
     def __str__(self):
         return f"Poll: {self.title} (Created by {self.created_by})"
