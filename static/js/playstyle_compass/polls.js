@@ -30,3 +30,27 @@ document.addEventListener("DOMContentLoaded", function() {
     }
   });
 });
+
+
+document.addEventListener("DOMContentLoaded", function () {
+  document.querySelectorAll(".like-poll-button").forEach(button => {
+    button.addEventListener("click", function () {
+      const url = this.getAttribute("data-url");
+
+      fetch(url, {
+        method: "POST",
+        headers: {
+          "X-CSRFToken": csrfToken,
+        },
+      })
+        .then(response => response.json())
+        .then(data => {
+          const icon = this.querySelector("i");
+          icon.className = data.liked ? "fa-solid fa-heart" : "fa-regular fa-heart";
+
+          const likeCount = document.getElementById(`like-count-${data.poll_id}`);
+          likeCount.textContent = data.like_count;
+        });
+    });
+  });
+});

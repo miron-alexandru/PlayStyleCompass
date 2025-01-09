@@ -36,6 +36,11 @@
       {% with poll=poll_data.poll total_votes=poll_data.total_votes %}
       <div class="poll-card">
         <h2>{{ poll.title }}</h2>
+        <button id="like-button" data-url="{% url 'playstyle_compass:like_poll' poll.id %}"
+          class="like-poll-button" title="{% trans 'Like Poll' %}">
+          <i class="{% if user in poll.liked_by.all %}fa-solid fa-heart{% else %}fa-regular fa-heart{% endif %}"></i>
+        </button>
+        <span id="like-count-{{ poll.id }}" class="like-count">{{ poll.like_count }}</span>
         <form method="post" action="{% url 'playstyle_compass:vote' id=poll.id %}">
           {% csrf_token %}
           <div class="poll-options">
@@ -44,7 +49,8 @@
                 class="poll-option" 
                 style="
                   --percentage: {{ option_data.percentage }}%; 
-                  {% if user_votes|get_item:poll.id == option_data.option.id %}background-color: #e3f2fd; border-color: #2196f3;{% endif %}
+                  {% if user_votes|get_item:poll.id == option_data.option.id %}background-color: #e3f2fd; border-color: #2196f3;
+                  {% endif %}
                 "
               >
                 <label>

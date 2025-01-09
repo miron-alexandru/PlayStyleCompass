@@ -2268,3 +2268,24 @@ def voted_polls(request):
         "user_votes": user_votes,
     }
     return render(request, "polls/voted_polls.html", context)
+
+
+@login_required
+def like_poll(request, poll_id):
+    """Toggles the like status for a poll."""
+    poll = get_object_or_404(Poll, id=poll_id)
+
+    if request.user in poll.liked_by.all():
+        poll.liked_by.remove(request.user)
+        liked = False
+    else:
+        poll.liked_by.add(request.user)
+        liked = True
+
+    return JsonResponse(
+        {
+            "liked": liked,
+            "like_count": poll.like_count,
+            "poll_id": poll_id,
+        }
+    )

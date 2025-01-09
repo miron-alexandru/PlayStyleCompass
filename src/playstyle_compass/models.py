@@ -453,9 +453,19 @@ class Poll(models.Model):
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="polls"
     )
     created_at = models.DateTimeField(auto_now_add=True)
+    liked_by = models.ManyToManyField(
+        settings.AUTH_USER_MODEL,
+        related_name="liked_polls",
+        blank=True,
+    )
 
     def __str__(self):
         return f"Poll: {self.title} (Created by {self.created_by})"
+
+    @property
+    def like_count(self):
+        """Returns the number of likes."""
+        return self.liked_by.count()
 
     def total_votes(self):
         """Calculate the total number of votes across all options in this poll."""
