@@ -38,7 +38,7 @@
 
 .btn-submit:disabled {
   background-color: #ccc;
-  color: #999;/
+  color: #999;
   border: 1px solid #ddd;
   cursor: not-allowed;
 }

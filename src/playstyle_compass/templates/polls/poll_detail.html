@@ -18,7 +18,15 @@
 
 <div class="single-poll">
     <div class="poll-card">
-        <h2>{{ poll.title }}</h2>
+        <h2 class="poll-title">{{ poll.title }}</h2>
+          <p class="poll-description">{{ poll.description }}</p>
+          <p class="poll-details">
+            {% trans "Created by" %} 
+            <a href="{% url 'users:view_profile' profile_name=poll.created_by.userprofile.profile_name %}">
+              {{ poll.created_by.userprofile.profile_name }}
+            </a>
+            {% trans "on" %} {{ poll.created_at|date:"d/m/Y H:i" }}
+          </p>
         <button id="like-button" data-url="{% url 'playstyle_compass:like_poll' poll.id %}" 
             class="like-poll-button" title="{% trans 'Like Poll' %}">
             <i class="{% if user in poll.liked_by.all %}fa-solid fa-heart{% else %}fa-regular fa-heart{% endif %}"></i>
@@ -65,6 +73,12 @@
             {% endif %}
             <a href="{% url 'playstyle_compass:share_poll' poll.id %}" class="share-poll-button">
             {% trans "Share" %}</a>
+            {% if poll.created_by == request.user %}
+              <form method="post" action="{% url 'playstyle_compass:delete_poll' poll.id %}" onsubmit="return confirmDelete()">
+                {% csrf_token %}
+                <button type="submit" class="delete-poll-button">{% trans "Delete" %}</button>
+              </form>
+            {% endif %}
             </div>
         </form>
     </div>

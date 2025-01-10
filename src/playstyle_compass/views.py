@@ -1564,6 +1564,10 @@ def share_game_list(request, pk):
 
     if request.method == "POST":
         users_to_share_with = request.POST.getlist("shared_with")
+
+        if not users_to_share_with:
+            return HttpResponseBadRequest('At least one friend must be selected to share the poll.')
+
         game_list.shared_with.add(*users_to_share_with)
 
         # Initialize or update 'shared_by' to track who shared the list
@@ -2320,6 +2324,7 @@ def share_poll(request, poll_id):
 
     if request.method == "POST":
         users_to_share_with = request.POST.getlist("shared_with")
+
         if not users_to_share_with:
             return HttpResponseBadRequest('At least one friend must be selected to share the poll.')
 

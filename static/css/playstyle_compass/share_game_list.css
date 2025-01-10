@@ -36,6 +36,18 @@
   background-color: #2980b9;
 }
 
+.btn-submit:disabled {
+  background-color: #ccc;
+  color: #999;
+  border: 1px solid #ddd;
+  cursor: not-allowed;
+}
+
+.btn-submit:disabled:hover {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
 .friends-checkbox-list {
   width: 100%;
   display: flex;

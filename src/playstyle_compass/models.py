@@ -448,7 +448,7 @@ class ListComment(models.Model):
 
 class Poll(models.Model):
     title = models.CharField(max_length=100)
-    description = models.TextField(blank=True, null=True)
+    description = models.TextField(blank=True, null=True, max_length=255)
     created_by = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="polls"
     )
