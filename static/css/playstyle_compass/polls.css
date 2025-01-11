@@ -3,6 +3,7 @@
   flex-wrap: wrap;
   gap: 20px;
   justify-content: center;
+  align-items: flex-start;
 }
 
 .poll-card {
@@ -12,8 +13,10 @@
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   padding: 20px;
-  width: 320px;
+  width: 350px;
   text-align: center;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 .single-poll .poll-card {

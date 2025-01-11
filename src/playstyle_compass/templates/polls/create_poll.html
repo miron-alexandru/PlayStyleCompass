@@ -32,7 +32,7 @@
             <h3 class="options-title">{% trans "Options:" %}</h3>
             <div id="options-container">
                 <div class="form-group option-group">
-                    <input class="option-input" type="text" name="options" placeholder="{% trans 'Option 1' %}">
+                    <input class="option-input" type="text" name="options" placeholder="{% trans 'Option 1' %}" maxlength="50">
                 </div>
             </div>
         </div>
@@ -63,7 +63,7 @@
         }
         const newOption = document.createElement("div");
         newOption.innerHTML = `<div class="form-group option-group">
-            <input class="option-input" type="text" name="options" placeholder="{% trans 'New Option' %}">
+            <input class="option-input" type="text" name="options" placeholder="{% trans 'New Option' %}" maxlength="50">
         </div>`;
         container.appendChild(newOption);
     });

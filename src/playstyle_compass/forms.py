@@ -165,12 +165,18 @@ class ListCommentForm(forms.ModelForm):
 
 class PollForm(forms.ModelForm):
     options = forms.CharField(
-        widget=forms.Textarea,
+        widget=forms.TextInput,
         help_text="",
     )
 
     description = forms.CharField(
         widget=forms.Textarea(attrs={"rows": 2, "cols": 40}),
+        max_length=100,
+        help_text="",
+    )
+
+    title = forms.CharField(
+        max_length=50,
         help_text="",
     )
 

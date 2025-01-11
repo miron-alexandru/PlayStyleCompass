@@ -1,3 +1,10 @@
+function confirmDelete(event) {
+  const userConfirmed = confirm("Are you sure you want to delete this poll?");
+  if (!userConfirmed) {
+    event.preventDefault();
+  }
+}
+
 document.addEventListener("DOMContentLoaded", function() {
   window.toggleResults = function(pollId) {
     const resultsDiv = document.getElementById('results-' + pollId);
@@ -8,9 +15,9 @@ document.addEventListener("DOMContentLoaded", function() {
     }
   }
 
-  function confirmDelete() {
-    return confirm("{% trans 'Are you sure you want to delete this poll?' %}");
-  }
+  document.querySelectorAll('.poll-card form[id^="delete-poll-form"]').forEach(form => {
+    form.addEventListener('submit', confirmDelete);
+  });
 
   document.querySelectorAll('.poll-card form').forEach(form => {
     const voteButton = form.querySelector('.vote-button');

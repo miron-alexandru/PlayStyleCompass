@@ -1566,7 +1566,9 @@ def share_game_list(request, pk):
         users_to_share_with = request.POST.getlist("shared_with")
 
         if not users_to_share_with:
-            return HttpResponseBadRequest('At least one friend must be selected to share the poll.')
+            return HttpResponseBadRequest(
+                "At least one friend must be selected to share the game list."
+            )
 
         game_list.shared_with.add(*users_to_share_with)
 
@@ -2220,7 +2222,7 @@ def user_polls(request, user_id):
         )
 
     context = {
-        "page_title": _("User Polls:: PlayStyle Compass"),
+        "page_title": _("User Polls :: PlayStyle Compass"),
         "polls_with_data": polls_with_data,
         "user_votes": user_votes,
         "user_polls": user,
@@ -2247,7 +2249,9 @@ def delete_poll(request, poll_id):
 def voted_polls(request):
     """View to display polls that the user has voted on."""
     votes = Vote.objects.filter(user=request.user)
-    voted_polls = Poll.objects.filter(id__in=[vote.poll.id for vote in votes]).order_by("-created_at")
+    voted_polls = Poll.objects.filter(id__in=[vote.poll.id for vote in votes]).order_by(
+        "-created_at"
+    )
 
     user_votes = {}
     polls_with_data = []
@@ -2308,7 +2312,7 @@ def poll_detail(request, poll_id):
     options_with_percentages = poll.options_with_percentages()
 
     context = {
-        "page_title": _("Poll Detail:: PlayStyle Compass"),
+        "page_title": _("Poll Detail :: PlayStyle Compass"),
         "poll": poll,
         "total_votes": poll.total_votes(),
         "options_with_percentages": options_with_percentages,
@@ -2326,7 +2330,9 @@ def share_poll(request, poll_id):
         users_to_share_with = request.POST.getlist("shared_with")
 
         if not users_to_share_with:
-            return HttpResponseBadRequest('At least one friend must be selected to share the poll.')
+            return HttpResponseBadRequest(
+                "At least one friend must be selected to share the poll."
+            )
 
         poll.shared_with.add(*users_to_share_with)
 
@@ -2347,9 +2353,7 @@ def share_poll(request, poll_id):
             profile_url = reverse(
                 "users:view_profile", args=[request.user.userprofile.profile_name]
             )
-            poll_url = reverse(
-                "playstyle_compass:poll_detail", args=[poll.pk]
-            )
+            poll_url = reverse("playstyle_compass:poll_detail", args=[poll.pk])
             message = format_html(
                 '<a class="notification-profile" href="{}">{}</a> has shared a poll with you: <a href="{}">{}</a>',
                 profile_url,

@@ -72,7 +72,7 @@
           </div>
           <div class="buttons-container">
           {% if not user_votes|get_item:poll.id %}
-            <button type="submit" class="vote-button">{% trans "Vote" %}</button>
+            <button type="submit" class="vote-button" disabled>{% trans "Vote" %}</button>
           {% endif %}
           <a href="{% url 'playstyle_compass:poll_detail' poll.id %}" class="view-poll-button">{% trans "View" %}</a>
           <a href="{% url 'playstyle_compass:share_poll' poll.id %}" class="share-poll-button">{% trans "Share" %}</a>
