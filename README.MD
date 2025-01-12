@@ -138,6 +138,9 @@ Websites for .env configuration: [GiantBomb](https://www.giantbomb.com/) / [Send
 <summary><h2>PlayStyle Compass Changelog</h2></summary>
 
 ### Version v2.3:
+* New info for polls and improved layout + CSS
+* Added Poll Detail page where users are able to view a single Poll.
+* Users are able to Like Polls.
 * Added Voted Polls page: Users are able to see all the polls they voted in.
 * Added Polls: Users are able to create or vote on polls created by other users.
 * Security improvements

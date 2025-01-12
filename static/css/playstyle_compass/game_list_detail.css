@@ -139,7 +139,7 @@
 #like-button {
   position: absolute;
   top: 10px;
-  right: 10px;
+  right: 25px;
   background-color: transparent;
   border: none;
   color: #d4d4d4;
@@ -165,6 +165,16 @@
 #like-button:hover .fa-regular {
   color: #b3b3b3;
   transform: scale(1.1);
+}
+
+#like-count {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-color);
+  vertical-align: middle;
 }
 
 #favorite-button {
@@ -204,17 +214,6 @@
   right: 49px;
   color: #d4d4d4;
   font-size: 18px; 
-}
-
-
-#like-count {
-  position: absolute;
-  top: 15px;
-  right: 37px;
-  font-size: 15px;
-  font-weight: 600;
-  color: var(--text-color);
-  vertical-align: middle;
 }
 
 .review-title {
@@ -394,7 +393,7 @@ label {
 .like-review-button, .like-comment-button {
   position: absolute;
   top: 10px;
-  right: 10px;
+  right: 25px;
   background-color: transparent;
   border: none;
   color: #d4d4d4;
@@ -404,20 +403,20 @@ label {
   padding: 4px;
 }
 
-.like-review-button, .like-comment-button .fa-heart {
+.like-review-button .fa-heart, .like-comment-button .fa-heart {
   color: #ff4d4d;
 }
 
-.like-review-button, .like-comment-button .fa-regular {
+.like-review-button .fa-regular, .like-comment-button .fa-regular {
   color: #d4d4d4;
 }
 
-.like-review-button:hover, .like-comment-button:hover .fa-heart {
+.like-review-button:hover .fa-heart, .like-comment-button:hover .fa-heart {
   color: #ff6666;
   transform: scale(1.1);
 }
 
-.like-review-button:hover, .like-comment-button:hover .fa-regular {
+.like-review-button:hover .fa-regular, .like-comment-button:hover .fa-regular {
   color: #b3b3b3;
   transform: scale(1.1);
 }
@@ -425,7 +424,7 @@ label {
 .like-review-count, .like-comment-count {
   position: absolute;
   top: 19px;
-  right: 36px;
+  right: 15px;
   color: var(--text-color);
   font-size: 14px;
   font-weight: 600;
