@@ -2,7 +2,7 @@
 	
 	function showMessage(message) {
 		var messageContainer = $('<div>').html(message).addClass('friend-request-message');
-		$('.user-actions').append(messageContainer);
+		$('.profile-stats').append(messageContainer);
 
 		setTimeout(function() {
 			messageContainer.remove();

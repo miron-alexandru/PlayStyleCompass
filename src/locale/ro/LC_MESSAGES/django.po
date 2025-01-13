@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-11 12:38+0200\n"
+"POT-Creation-Date: 2025-01-13 11:07+0200\n"
 "PO-Revision-Date: 2025-01-11 11:56+0144\n"
 "Last-Translator:   <quality_xqs@yahoo.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2213,95 +2213,95 @@ msgstr "Editează lista de jocuri :: PlayStyle Compass"
 msgid "View Game List :: PlayStyle Compass"
 msgstr "Vizualizează lista de jocuri :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:1607
+#: .\src\playstyle_compass\views.py:1609
 msgid "Game list successfully shared!"
 msgstr "Lista de jocuri a fost împărtășită cu succes!"
 
-#: .\src\playstyle_compass\views.py:1613
+#: .\src\playstyle_compass\views.py:1615
 msgid "Share Game List :: PlayStyle Compass"
 msgstr "Distribuie lista de jocuri :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:1653
+#: .\src\playstyle_compass\views.py:1655
 msgid "Game Lists :: PlayStyle Compass"
 msgstr "Liste de jocuri :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:1678
+#: .\src\playstyle_compass\views.py:1680
 msgid "Game Lists You Shared with Others"
 msgstr "Liste de jocuri împărtășite cu alții"
 
-#: .\src\playstyle_compass\views.py:1682
+#: .\src\playstyle_compass\views.py:1684
 msgid "Game Lists Shared With You"
 msgstr "Liste de jocuri împărtășite cu tine"
 
-#: .\src\playstyle_compass\views.py:1754
+#: .\src\playstyle_compass\views.py:1756
 msgid "Review submitted successfully!"
 msgstr "Recenzia a fost trimisă cu succes!"
 
-#: .\src\playstyle_compass\views.py:1779
+#: .\src\playstyle_compass\views.py:1781
 msgid "Review updated successfully!"
 msgstr "Recenzia a fost actualizată cu succes!"
 
-#: .\src\playstyle_compass\views.py:1799
+#: .\src\playstyle_compass\views.py:1801
 msgid "Review deleted successfully!"
 msgstr "Recenzia a fost ștearsă cu succes!"
 
-#: .\src\playstyle_compass\views.py:1843
+#: .\src\playstyle_compass\views.py:1845
 msgid "Reviewed Game Lists :: PlayStyle Compass"
 msgstr "Liste de jocuri recenzate :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:1868
+#: .\src\playstyle_compass\views.py:1870
 msgid "Privacy Settings :: PlayStyle Compass"
 msgstr "Setări de Confidențialitate :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:1906
+#: .\src\playstyle_compass\views.py:1908
 msgid "Explore Game Lists :: PlayStyle Compass"
 msgstr "Explorează Listele de Jocuri :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:1931
+#: .\src\playstyle_compass\views.py:1933
 msgid "You can no longer edit this comment."
 msgstr "Nu mai poți edita acest comentariu."
 
-#: .\src\playstyle_compass\views.py:1940
+#: .\src\playstyle_compass\views.py:1942
 msgid "Comment text cannot be empty."
 msgstr "Textul comentariului nu poate fi gol"
 
-#: .\src\playstyle_compass\views.py:1955
+#: .\src\playstyle_compass\views.py:1957
 msgid "Comment updated successfully."
 msgstr "Comentariul a fost actualizat cu succes."
 
-#: .\src\playstyle_compass\views.py:2086
+#: .\src\playstyle_compass\views.py:2088
 msgid "Favorite Game Lists :: PlayStyle Compass"
 msgstr "Liste favorite de jocuri :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:2105
+#: .\src\playstyle_compass\views.py:2107
 msgid "Popular Games :: PlayStyle Compass"
 msgstr "Jocuri Populare :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:2140
+#: .\src\playstyle_compass\views.py:2142
 msgid "Create Poll :: PlayStyle Compass"
 msgstr "Creează sondaj :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:2192
+#: .\src\playstyle_compass\views.py:2194
 msgid "Community Polls :: PlayStyle Compass"
 msgstr "Sondaje Comunitate :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:2223
+#: .\src\playstyle_compass\views.py:2225
 msgid "User Polls :: PlayStyle Compass"
 msgstr "Sondaje Utilizator :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:2270
+#: .\src\playstyle_compass\views.py:2274
 msgid "Voted Polls:: PlayStyle Compass"
 msgstr "Sondaje Votate :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:2311
+#: .\src\playstyle_compass\views.py:2315
 msgid "Poll Detail :: PlayStyle Compass"
 msgstr "Detalii Sondaj :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:2367
+#: .\src\playstyle_compass\views.py:2371
 msgid "Poll successfully shared!"
 msgstr "Sondajul a fost distribuit cu succes!"
 
-#: .\src\playstyle_compass\views.py:2373
+#: .\src\playstyle_compass\views.py:2377
 msgid "Share Poll :: PlayStyle Compass"
 msgstr "Distribuie Sondajul :: PlayStyle Compass"
 
