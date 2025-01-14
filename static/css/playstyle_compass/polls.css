@@ -244,3 +244,127 @@
   color: var(--text-color);
   vertical-align: middle;
 }
+
+
+.polls-toggle-buttons {
+  display: flex;
+  justify-content: flex-start;
+  gap: 6px;
+  margin: 10px 0;
+}
+
+.toggle-button {
+  padding: 6px 12px;
+  background-color: #007bff;
+  color: white;
+  font-size: 14px;
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+}
+
+.toggle-button.active {
+  background-color: #0056b3;
+}
+
+.toggle-button:hover {
+  background-color: #0056b3;
+  color: white;
+}
+
+.sorting-options {
+  text-align: left;
+  margin-bottom: 10px;
+  font-size: 14px;
+}
+
+.sorting-options form {
+  display: inline-flex;
+  gap: 10px;
+}
+
+.sorting-options select {
+  padding: 3px 6px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+.sorting-options button {
+  padding: 4px 8px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.sorting-options button:hover {
+  background-color: #218838;
+}
+
+.polls-section {
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 0 10px;
+}
+
+.polls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: flex-start;
+}
+
+.poll-item {
+  background-color: var(--user-container);
+  padding: 12px;
+  border-radius: 6px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  width: calc(33.33% - 8px);
+  box-sizing: border-box; 
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.poll-item:hover {
+  transform: scale(1.02);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+}
+
+.poll-item p {
+  font-size: 15px;
+  margin: 1px 0;
+}
+
+.poll-item strong {
+  font-weight: bold;
+}
+
+.poll-item a:hover {
+  text-decoration: underline;
+}
+
+.empty-message {
+  text-align: center;
+  color: var(--text-color);
+  font-size: 0.9rem;
+  padding: 12px;
+}
+
+.view-button {
+  display: inline-block;
+  background-color: #007bff;
+  color: white;
+  font-size: 13px;
+  padding: 5px 10px;
+  border-radius: 4px;
+  text-decoration: none;
+  margin-top: 4px;
+}
+
+.view-button:hover {
+  background-color: #0056b3;
+  color: white;
+}

@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+
+{% block page_header %}
+<div class="header">
+    <h3>{% trans "SHARED POLLS" %}</h3>
+</div>
+{% endblock page_header %}
+
+{% block description %}
+{% trans "Discover polls shared with you or explore the ones you've shared with others. Participate and see how others voted!" %}
+{% endblock description %}
+
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/playstyle_compass/polls.css' %}">
+
+<div class="polls-toggle-buttons">
+    <a href="?view=received" class="toggle-button {% if view_type == 'received' %}active{% endif %}">
+        {% trans "Polls Received" %}
+    </a>
+    <a href="?view=shared" class="toggle-button {% if view_type == 'shared' %}active{% endif %}">
+        {% trans "Polls Shared" %}
+    </a>
+</div>
+
+<div class="sorting-options">
+    <form method="GET">
+        <input type="hidden" name="view" value="{{ view_type }}">
+        <label for="sort_by">{% trans "Sort by:" %}</label>
+        <select name="sort_by" id="sort_by">
+            <option value="title" {% if sort_by == 'title' %} selected{% endif %}>{% trans "Title" %}</option>
+            <option value="created_at" {% if sort_by == 'created_at' %} selected{% endif %}>{% trans "Creation Date" %}</option>
+        </select>
+
+        <select name="order" id="order">
+            <option value="asc" {% if order == 'asc' %} selected{% endif %}>{% trans "Ascending" %}</option>
+            <option value="desc" {% if order == 'desc' %} selected{% endif %}>{% trans "Descending" %}</option>
+        </select>
+
+        <button type="submit" class="sort-button">{% trans "Sort" %}</button>
+    </form>
+</div>
+
+<div class="polls-section">
+    {% if polls %}
+    <div class="polls">
+        {% for poll in polls %}
+        <div class="poll-item">
+            <p><strong>{% trans "Title:" %}</strong> {{ poll.title }}</p>
+            <p><strong>{% trans "Description:" %}</strong> {{ poll.description }}</p>
+            <p><strong>{% trans "Total Votes:" %}</strong> {{ poll.total_votes }}</p>
+            
+            {% if view_type == 'shared' %}
+            <p><strong>{% trans "Shared with:" %}</strong>
+                {% for shared_user in poll.shared_with.all %}
+                <a href="{% url 'users:view_profile' shared_user.userprofile.profile_name %}">
+                    {{ shared_user.userprofile.profile_name }}
+                </a>{% if not forloop.last %}, {% endif %}
+                {% endfor %}
+            </p>
+            {% else %}
+            <p><strong>{% trans "Shared By:" %}</strong>
+                {% if poll.shared_by_users %}
+                {% for shared_user in poll.shared_by_users %}
+                <a href="{% url 'users:view_profile' shared_user.userprofile.profile_name %}">
+                    {{ shared_user.userprofile.profile_name }}
+                </a>{% if not forloop.last %}, {% endif %}
+                {% endfor %}
+                {% else %}
+                {% trans "Unknown" %}
+                {% endif %}
+            </p>
+            {% endif %}
+
+            <a href="{% url 'playstyle_compass:poll_detail' poll.id %}" class="view-button">{% trans "View Poll" %}</a>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p class="empty-message">
+        {% if view_type == 'shared' %}
+        {% trans "You have not shared any polls with others." %}
+        {% else %}
+        {% trans "No polls have been shared with you." %}
+        {% endif %}
+    </p>
+    {% endif %}
+</div>
+{% endblock content %}

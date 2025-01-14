@@ -2380,3 +2380,57 @@ def share_poll(request, poll_id):
     }
 
     return render(request, "polls/share_poll.html", context)
+
+
+@login_required
+def shared_polls(request):
+    """View to display polls shared with and by the user."""
+    user = request.user
+    view_type = request.GET.get("view", "received")
+    sort_by = request.GET.get("sort_by", "title")
+    order = request.GET.get("order", "desc")
+
+    if view_type == "shared":
+        polls = Poll.objects.all()
+        polls = [
+            poll
+            for poll in polls
+            if str(user.id) in poll.shared_by and poll.shared_by[str(user.id)]
+        ]
+        page_title = _("Polls You Shared with Others")
+    else:
+        # Get polls that have been shared with the user
+        polls = Poll.objects.filter(shared_with=user)
+        page_title = _("Polls Shared With You")
+
+        # Track all users who shared the poll with the current user
+        for poll in polls:
+            shared_by_user_ids = [
+                sharer_id
+                for sharer_id, receivers in poll.shared_by.items()
+                if str(user.id) in receivers
+            ]
+
+            # Attach users who shared the poll
+            poll.shared_by_users = (
+                User.objects.filter(id__in=shared_by_user_ids)
+                if shared_by_user_ids
+                else []
+            )
+
+    polls = list(polls)
+
+    if sort_by == "title":
+        polls.sort(key=lambda x: x.title.lower(), reverse=(order == "desc"))
+    elif sort_by == "created_at":
+        polls.sort(key=lambda x: x.created_at, reverse=(order == "desc"))
+
+    context = {
+        "page_title": page_title,
+        "polls": polls,
+        "view_type": view_type,
+        "sort_by": sort_by,
+        "order": order,
+    }
+
+    return render(request, "polls/shared_polls.html", context)
