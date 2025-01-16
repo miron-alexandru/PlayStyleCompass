@@ -56,12 +56,12 @@
               <div class="arrow"></div>
               <a href="{% url 'users:send_message' message.sender.id %}" class="reply-button">{% trans "Reply" %}</a>
             {% elif category == 'sent' %}
-            <strong>{% trans "Sent to:" %}</strong><a href="{% url 'users:view_profile' profile_name=message.receiver.userprofile.profile_name %}"
+            {% trans "Sent to:" %}<a href="{% url 'users:view_profile' profile_name=message.receiver.userprofile.profile_name %}"
               class="user-name">{{ message.receiver.userprofile.profile_name }}</a>
             {% endif %}
           </span>
-          <p class="subject"><strong>{% trans "Subject:" %}</strong> {{ message.title }}</p>
-          <p class="timestamp"><strong>{% trans "Date:" %}</strong> {{ message.timestamp|convert_to_user_timezone:request.user.userprofile.timezone }}</p>
+          <p class="subject">{% trans "Subject:" %} {{ message.title }}</p>
+          <p class="timestamp">{% trans "Date:" %} {{ message.timestamp|convert_to_user_timezone:request.user.userprofile.timezone }}</p>
         </div>
         <div class="message-content">
           <p>{{ message.message }}</p>

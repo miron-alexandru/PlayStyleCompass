@@ -5,7 +5,7 @@
 .category-buttons {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
 }
 
 .category-button {
@@ -41,7 +41,6 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
   gap: 15px;
-
 }
 
 .message-card {
@@ -50,6 +49,7 @@
   border-radius: 8px;
   overflow: hidden;
   transition: box-shadow 0.3s ease-in-out;
+  word-break: break-word;
 }
 
 .message-card:hover {
@@ -60,46 +60,43 @@
 .message-header {
   background-color: #3498db;
   color: white;
-  padding: 10px;
+  padding: 5px;
   text-align: left;
 }
 
 .user-info {
   display: flex;
   align-items: center;
-  font-weight: bold;
+  font-weight: 600;
   color: black;
 }
 
 .timestamp, .subject {
+  font-weight: 600;
   color: black;
+  margin: 0;
 }
 
 .message-content {
-  padding: 15px;
-}
-
-p {
-  margin: 6px 0;
-}
+  padding: 10px;
+} 
 
 .empty-category {
   text-align: center;
-  font-weight: bolder;
-  font-size: 20px;
+  font-size: 17px;
   padding: 20px;
 }
 
 .user-name {
   text-decoration: none !important;
-  font-weight: bold;
-  color: #555;
+  font-weight: 600;
+  color: darkblue;
   transition: color 0.3s ease-in-out;
   margin-left: 4px;
 }
 
 .user-name:hover {
-  color: #333;
+  color: #000040;
 }
 
 .delete-button {
@@ -140,13 +137,12 @@ p {
 }
 
 label[for="sort-order"] {
-  font-size: 16px;
-  font-weight: bold;
+  font-size: 15px;
   color: var(--text-color);
 }
 
 #sort-order {
-  padding: 5px;
+  padding: 3px;
   font-size: 14px;
   border: 1px solid var(--sorting-border);
   border-radius: 5px;
@@ -183,6 +179,7 @@ label[for="sort-order"] {
 
 .action-buttons {
   margin-bottom: 15px;
+  margin-top: -5px;
 }
 
 .reply-button {

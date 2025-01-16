@@ -140,6 +140,7 @@ Websites for .env configuration: [GiantBomb](https://www.giantbomb.com/) / [Send
 ### Version v2.3:
 * Created Shared Polls page: Users are able to see the polls they or others shared with them.
 * New info for polls and improved layout + CSS
+* Users are able to share polls.
 * Added Poll Detail page where users are able to view a single Poll.
 * Users are able to Like Polls.
 * Added Voted Polls page: Users are able to see all the polls they voted in.

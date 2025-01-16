@@ -21,7 +21,7 @@
 
 .single-poll .poll-card {
   width: 100%;
-  max-width: 600px;
+  max-width: 400px;
   margin: 0 auto;
 }
 
@@ -206,7 +206,7 @@
 
 #like-button {
   position: absolute;
-  top: 5px;
+  top: 2px;
   right: 25px;
   background-color: transparent;
   border: none;
@@ -237,7 +237,7 @@
 
 .like-count {
   position: absolute;
-  top: 11px;
+  top: 8px;
   right: 15px;
   font-size: 15px;
   font-weight: 600;
@@ -286,8 +286,10 @@
 
 .sorting-options select {
   padding: 3px 6px;
-  border-radius: 4px;
-  border: 1px solid #ccc;
+  border-radius: 5px;
+  color: var(--text-color);
+  background: var(--input-color);
+  border: 1px solid var(--input-border);
 }
 
 .sorting-options button {
@@ -367,4 +369,11 @@
 .view-button:hover {
   background-color: #0056b3;
   color: white;
+}
+
+.sorting-options select:focus {
+  background-color: var(--input-color);
+  border-color: var(--input-focus);
+  outline: 0;
+  box-shadow: 0 0 0 0.1rem var(--input-shadow);
 }
