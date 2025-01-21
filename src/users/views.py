@@ -1101,6 +1101,8 @@ def get_user_stats(user):
         "game_list_reviews_count": game_list_reviews_count,
     }
 
+from django.utils.translation import get_language
+from django.utils.translation import activate
 
 @login_required
 def send_message(request, user_id):
@@ -1142,7 +1144,10 @@ def send_message(request, user_id):
             create_notification(
                 message_receiver,
                 message=notification_message,
-                notification_type=message,
+                notification_type="message",
+                profile_url=profile_url,
+                user_in_notification=user_in_notification,
+                navigation_url=navigation_url
             )
 
             return redirect(request.META.get("HTTP_REFERER", "users:inbox"))

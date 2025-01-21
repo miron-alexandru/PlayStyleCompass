@@ -218,12 +218,13 @@ class Notification(models.Model):
 
     id = models.AutoField(primary_key=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    message = models.CharField(max_length=200)
+    message = models.TextField(null=False, blank=False, default="")
     is_read = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     timestamp = models.DateTimeField(blank=True, null=True)
     notification_type = models.CharField(max_length=20, choices=NOTIFICATION_TYPES)
     delivered = models.BooleanField(default=True)
+    message_ro = models.TextField(null=False, blank=False, default="")
 
     def save(self, *args, **kwargs):
         if self.timestamp is None:

@@ -15,6 +15,7 @@ from django.contrib.sessions.models import Session
 from django.contrib.auth.models import User
 from .models import Notification, UserProfile, GlobalChatMessage, ChatMessage
 from django.utils import timezone
+from django.utils.translation import get_language
 from django.conf import settings
 from django.urls import reverse
 from django.db.models import Q, F, Value, CharField
@@ -63,13 +64,21 @@ class NotificationConsumer(AsyncWebsocketConsumer):
             self.group_name = f"user_{self.user_id}"
             await self.channel_layer.group_add(self.group_name, self.channel_name)
 
+            self.current_language = get_language()
+
             past_notifications = await self.get_all_notifications(user)
 
             for notification in past_notifications:
+
+                if self.current_language == 'ro':
+                    notification_message = notification.message_ro
+                else:
+                    notification_message = notification.message
+
                 await self.send_notification(
                     {
                         "id": notification.id,
-                        "message": notification.message,
+                        "message": notification_message,
                         "is_read": notification.is_read,
                         "is_active": notification.is_active,
                         "timestamp": notification.timestamp.isoformat(),

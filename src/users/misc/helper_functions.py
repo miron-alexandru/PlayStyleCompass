@@ -144,7 +144,15 @@ def save_quiz_responses(user, questions, form):
             raise ValidationError("Invalid option selected")
 
 
-def create_notification(user, message, notification_type):
+NOTIFICATION_TEMPLATES_RO = {
+    "message": (
+        '<a class="notification-profile" title="Vizualizați profilul utilizatorului" href="{profile_url}">{user_in_notification}</a> '
+        "ți-a trimis un mesaj!<br>"
+        '<a class="notification-link" title="Navighează" href="{navigation_url}">Vezi inbox-ul</a>'
+    ),
+}
+
+def create_notification(user, message, notification_type, **kwargs):
     """Helper function used to create a notification and mark the delivered
     based on user preferences."""
     user_preferences = user.userprofile
@@ -155,9 +163,12 @@ def create_notification(user, message, notification_type):
     if hasattr(user_preferences, preference_field):
         delivered = getattr(user_preferences, preference_field)
 
+    message_ro = NOTIFICATION_TEMPLATES_RO.get(notification_type, "").format(**kwargs)
+
     notification = Notification(
         user=user,
         message=message,
+        message_ro=message_ro,
         notification_type=notification_type,
         delivered=delivered,
     )

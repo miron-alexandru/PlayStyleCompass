@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-13 11:07+0200\n"
+"POT-Creation-Date: 2025-01-21 17:29+0200\n"
 "PO-Revision-Date: 2025-01-11 11:56+0144\n"
 "Last-Translator:   <quality_xqs@yahoo.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -117,7 +117,7 @@ msgstr ""
 "un cont cu noi!"
 
 #: .\src\playstyle_compass\templates\base\index.html:21
-#: .\src\templates\base.html:309
+#: .\src\templates\base.html:310
 #: .\src\users\templates\registration\register.html:104
 msgid "Register"
 msgstr "Înregistrare"
@@ -217,6 +217,7 @@ msgstr "Selectează Platformă"
 #: .\src\playstyle_compass\templates\games\game_library.html:72
 #: .\src\playstyle_compass\templates\games\games_shared.html:26
 #: .\src\playstyle_compass\templates\games\recommendations.html:34
+#: .\src\playstyle_compass\templates\polls\shared_polls.html:30
 #: .\src\users\templates\messaging\inbox.html:26
 msgid "Sort by:"
 msgstr "Sortează după:"
@@ -388,6 +389,7 @@ msgstr "Imagine indisponibilă"
 #: .\src\playstyle_compass\templates\game_list\shared_game_lists.html:52
 #: .\src\playstyle_compass\templates\game_list\user_game_lists.html:56
 #: .\src\playstyle_compass\templates\games\game_recommendations_section.html:80
+#: .\src\playstyle_compass\templates\polls\shared_polls.html:51
 msgid "Description:"
 msgstr "Descriere:"
 
@@ -506,6 +508,7 @@ msgstr "Creează-ți lista de jocuri"
 #: .\src\playstyle_compass\templates\game_list\favorite_game_lists.html:33
 #: .\src\playstyle_compass\templates\game_list\shared_game_lists.html:33
 #: .\src\playstyle_compass\templates\game_list\user_game_lists.html:29
+#: .\src\playstyle_compass\templates\polls\shared_polls.html:32
 msgid "Title"
 msgstr "Titlu"
 
@@ -630,6 +633,7 @@ msgstr "Nivel de activitate"
 #: .\src\playstyle_compass\templates\game_list\favorite_game_lists.html:43
 #: .\src\playstyle_compass\templates\game_list\shared_game_lists.html:38
 #: .\src\playstyle_compass\templates\game_list\user_game_lists.html:39
+#: .\src\playstyle_compass\templates\polls\shared_polls.html:37
 msgid "Ascending"
 msgstr "Ascendent"
 
@@ -637,6 +641,7 @@ msgstr "Ascendent"
 #: .\src\playstyle_compass\templates\game_list\favorite_game_lists.html:44
 #: .\src\playstyle_compass\templates\game_list\shared_game_lists.html:39
 #: .\src\playstyle_compass\templates\game_list\user_game_lists.html:40
+#: .\src\playstyle_compass\templates\polls\shared_polls.html:38
 msgid "Descending"
 msgstr "Descendent"
 
@@ -644,6 +649,7 @@ msgstr "Descendent"
 #: .\src\playstyle_compass\templates\game_list\favorite_game_lists.html:46
 #: .\src\playstyle_compass\templates\game_list\shared_game_lists.html:42
 #: .\src\playstyle_compass\templates\game_list\user_game_lists.html:42
+#: .\src\playstyle_compass\templates\polls\shared_polls.html:41
 msgid "Sort"
 msgstr "Sortează"
 
@@ -653,6 +659,7 @@ msgstr "Sortează"
 #: .\src\playstyle_compass\templates\game_list\reviewed_game_lists.html:29
 #: .\src\playstyle_compass\templates\game_list\shared_game_lists.html:51
 #: .\src\playstyle_compass\templates\game_list\user_game_lists.html:55
+#: .\src\playstyle_compass\templates\polls\shared_polls.html:50
 msgid "Title:"
 msgstr "Titlu:"
 
@@ -661,6 +668,7 @@ msgstr "Titlu:"
 #: .\src\playstyle_compass\templates\game_list\reviewed_game_lists.html:31
 #: .\src\playstyle_compass\templates\game_list\shared_game_lists.html:57
 #: .\src\playstyle_compass\templates\game_list\user_game_lists.html:57
+#: .\src\playstyle_compass\templates\polls\shared_polls.html:55
 msgid "Shared with:"
 msgstr "Împărtășit cu:"
 
@@ -960,10 +968,12 @@ msgid "Lists Shared"
 msgstr "Liste împărtășite"
 
 #: .\src\playstyle_compass\templates\game_list\shared_game_lists.html:67
+#: .\src\playstyle_compass\templates\polls\shared_polls.html:63
 msgid "Shared By:"
 msgstr "Împărtășit de:"
 
 #: .\src\playstyle_compass\templates\game_list\shared_game_lists.html:75
+#: .\src\playstyle_compass\templates\polls\shared_polls.html:71
 msgid "Unknown"
 msgstr "Necunoscut"
 
@@ -1285,7 +1295,6 @@ msgid "Games Received"
 msgstr "Jocuri Primite"
 
 #: .\src\playstyle_compass\templates\games\games_shared.html:22
-#: .\src\templates\base.html:272
 msgid "Games Shared"
 msgstr "Jocuri Distribuite"
 
@@ -1698,6 +1707,7 @@ msgstr "Apreciază Sondajul"
 
 #: .\src\playstyle_compass\templates\polls\community_polls.html:71
 #: .\src\playstyle_compass\templates\polls\poll_detail.html:68
+#: .\src\playstyle_compass\templates\polls\shared_polls.html:52
 #: .\src\playstyle_compass\templates\polls\user_polls.html:82
 #: .\src\playstyle_compass\templates\polls\voted_polls.html:64
 msgid "Total Votes:"
@@ -1779,6 +1789,62 @@ msgid ""
 msgstr ""
 "Distribuie un sondaj cu prietenii și adună-le opiniile. Permite altora să "
 "participe și să-ți exploreze sondajele."
+
+#: .\src\playstyle_compass\templates\polls\shared_polls.html:7
+#, fuzzy
+#| msgid "SHARE POLL"
+msgid "SHARED POLLS"
+msgstr "DISTRIBUIE SONDAJUL"
+
+#: .\src\playstyle_compass\templates\polls\shared_polls.html:12
+#, fuzzy
+#| msgid ""
+#| "Discover game lists shared with you or explore the ones you've shared "
+#| "with others. Find new games and collaborate with friends on your favorite "
+#| "picks."
+msgid ""
+"Discover polls shared with you or explore the ones you've shared with "
+"others. Participate and see how others voted!"
+msgstr ""
+"Descoperă liste de jocuri împărtășite cu tine sau explorează-le pe cele pe "
+"care le-ai împărtășit cu alții. Găsește jocuri noi și colaborează cu "
+"prietenii la alegerile tale preferate."
+
+#: .\src\playstyle_compass\templates\polls\shared_polls.html:20
+#, fuzzy
+#| msgid "Lists Received"
+msgid "Polls Received"
+msgstr "Liste Primite"
+
+#: .\src\playstyle_compass\templates\polls\shared_polls.html:23
+#, fuzzy
+#| msgid "Lists Shared"
+msgid "Polls Shared"
+msgstr "Liste împărtășite"
+
+#: .\src\playstyle_compass\templates\polls\shared_polls.html:33
+#, fuzzy
+#| msgid "Create Playstyle"
+msgid "Creation Date"
+msgstr "Creează Playstyle"
+
+#: .\src\playstyle_compass\templates\polls\shared_polls.html:76
+#, fuzzy
+#| msgid "Like Poll"
+msgid "View Poll"
+msgstr "Apreciază Sondajul"
+
+#: .\src\playstyle_compass\templates\polls\shared_polls.html:83
+#, fuzzy
+#| msgid "You have not shared any game lists with others."
+msgid "You have not shared any polls with others."
+msgstr "Nu ai împărtășit nicio listă de jocuri cu alții."
+
+#: .\src\playstyle_compass\templates\polls\shared_polls.html:85
+#, fuzzy
+#| msgid "No game lists have been shared with you."
+msgid "No polls have been shared with you."
+msgstr "Nu ți-a fost împărtășită nicio listă de jocuri."
 
 #: .\src\playstyle_compass\templates\polls\user_polls.html:9
 msgid "MY POLLS"
@@ -2305,11 +2371,23 @@ msgstr "Sondajul a fost distribuit cu succes!"
 msgid "Share Poll :: PlayStyle Compass"
 msgstr "Distribuie Sondajul :: PlayStyle Compass"
 
-#: .\src\playstyle_manager\settings.py:232 .\src\templates\base.html:396
+#: .\src\playstyle_compass\views.py:2400
+#, fuzzy
+#| msgid "Game Lists You Shared with Others"
+msgid "Polls You Shared with Others"
+msgstr "Liste de jocuri împărtășite cu alții"
+
+#: .\src\playstyle_compass\views.py:2404
+#, fuzzy
+#| msgid "Game Lists Shared With You"
+msgid "Polls Shared With You"
+msgstr "Liste de jocuri împărtășite cu tine"
+
+#: .\src\playstyle_manager\settings.py:232 .\src\templates\base.html:397
 msgid "English"
 msgstr "Engleză"
 
-#: .\src\playstyle_manager\settings.py:232 .\src\templates\base.html:404
+#: .\src\playstyle_manager\settings.py:232 .\src\templates\base.html:405
 msgid "Romanian"
 msgstr "Română"
 
@@ -2466,7 +2544,7 @@ msgstr "Altele"
 msgid "Preference Quiz"
 msgstr "Chestionarul de Preferințe"
 
-#: .\src\templates\base.html:259 .\src\templates\base.html:286
+#: .\src\templates\base.html:259 .\src\templates\base.html:287
 msgid "Account"
 msgstr "Cont"
 
@@ -2491,122 +2569,136 @@ msgid "Update Profile Name"
 msgstr "Actualizează numele profilului"
 
 #: .\src\templates\base.html:271
-msgid "Gaming"
-msgstr "Jocuri"
+#, fuzzy
+#| msgid "Shared with:"
+msgid "Shared Content"
+msgstr "Împărtășit cu:"
+
+#: .\src\templates\base.html:272
+#, fuzzy
+#| msgid "Shared Game Lists"
+msgid "Shared Games"
+msgstr "Liste de jocuri împărtășite"
 
 #: .\src\templates\base.html:273
 msgid "Shared Game Lists"
 msgstr "Liste de jocuri împărtășite"
 
-#: .\src\templates\base.html:278
+#: .\src\templates\base.html:274
+#, fuzzy
+#| msgid "Voted Polls"
+msgid "Shared Polls"
+msgstr "Sondaje Votate"
+
+#: .\src\templates\base.html:279
 msgid "Settings"
 msgstr "Setări"
 
-#: .\src\templates\base.html:279
+#: .\src\templates\base.html:280
 msgid "Manage Notifications"
 msgstr "Gestionează notificările"
 
-#: .\src\templates\base.html:280
+#: .\src\templates\base.html:281
 msgid "Manage Privacy"
 msgstr "Gestionează Confidențialitatea"
 
-#: .\src\templates\base.html:281
+#: .\src\templates\base.html:282
 msgid "Update Password"
 msgstr "Actualizează parola"
 
-#: .\src\templates\base.html:282
+#: .\src\templates\base.html:283
 msgid "Update Email Address"
 msgstr "Actualizează adresa de email"
 
-#: .\src\templates\base.html:287
+#: .\src\templates\base.html:288
 msgid "Deactivate Account"
 msgstr "Dezactivează contul"
 
-#: .\src\templates\base.html:288
+#: .\src\templates\base.html:289
 msgid "Sign Out"
 msgstr "Deconectează-te"
 
-#: .\src\templates\base.html:295
+#: .\src\templates\base.html:296
 msgid "Social"
 msgstr "Social"
 
-#: .\src\templates\base.html:298
+#: .\src\templates\base.html:299
 msgid "Messages"
 msgstr "Mesaje"
 
-#: .\src\templates\base.html:299
+#: .\src\templates\base.html:300
 msgid "Following List"
 msgstr "Lista Urmăriților"
 
-#: .\src\templates\base.html:300
+#: .\src\templates\base.html:301
 msgid "Followers List"
 msgstr "Lista Urmăritorilor"
 
-#: .\src\templates\base.html:301
+#: .\src\templates\base.html:302
 msgid "Your Friends"
 msgstr "Prieteni"
 
-#: .\src\templates\base.html:302
+#: .\src\templates\base.html:303
 msgid "Friend Requests"
 msgstr "Cereri de Prietenie"
 
-#: .\src\templates\base.html:303
+#: .\src\templates\base.html:304
 msgid "Chat Rooms"
 msgstr "Camere de chat"
 
-#: .\src\templates\base.html:304
+#: .\src\templates\base.html:305
 msgid "Blocked Users"
 msgstr "Utilizatori blocați"
 
-#: .\src\templates\base.html:312
+#: .\src\templates\base.html:313
 #: .\src\users\templates\registration\login.html:61
 #: .\src\users\templates\registration\login.html:66
 #: .\src\users\templates\registration\register.html:107
 msgid "Log in"
 msgstr "Autentificare"
 
-#: .\src\templates\base.html:326 .\src\templates\base.html:332
+#: .\src\templates\base.html:327 .\src\templates\base.html:333
 #: .\src\users\templates\general\contact.html:19
 msgid "Contact"
 msgstr "Contact"
 
-#: .\src\templates\base.html:358
+#: .\src\templates\base.html:359
 msgid "Please confirm your email address to unlock all features."
 msgstr "Te rugăm să confirmi adresa de email pentru a debloca toate funcțiile."
 
-#: .\src\templates\base.html:360
+#: .\src\templates\base.html:361
 msgid "Resend verification link"
 msgstr "Retrimite link-ul de verificare"
 
-#: .\src\templates\base.html:417
+#: .\src\templates\base.html:418
 msgid "Global Chat"
 msgstr "Chat Global"
 
-#: .\src\templates\base.html:422
+#: .\src\templates\base.html:423
 msgid "GLOBAL CHAT"
 msgstr "CHAT GLOBAL"
 
-#: .\src\templates\base.html:425
+#: .\src\templates\base.html:426
 msgid ""
 "Connect with players from around the world and share your gaming experiences!"
 msgstr ""
 "Conectează-te cu jucători din întreaga lume și împărtășește-ți experiențele "
 "de gaming!"
 
-#: .\src\templates\base.html:427 .\src\users\templates\messaging\chat.html:56
+#: .\src\templates\base.html:428 .\src\users\templates\messaging\chat.html:56
 msgid "Show More"
 msgstr "Arată mai mult"
 
-#: .\src\templates\base.html:433 .\src\users\templates\messaging\chat.html:30
+#: .\src\templates\base.html:434 .\src\users\templates\messaging\chat.html:30
 #: .\src\users\templates\messaging\chat.html:69
 msgid "Message..."
 msgstr "Mesaj..."
 
-#: .\src\templates\base.html:446
+#: .\src\templates\base.html:447
 msgid "PlayStyle Compass. All rights reserved."
 msgstr "PlayStyle Compass. Toate drepturile rezervate."
 
-#: .\src\templates\base.html:451
+#: .\src\templates\base.html:452
 msgid "Go top"
 msgstr "Mergi sus"
 
@@ -3703,8 +3795,8 @@ msgstr ""
 #: .\src\users\templates\user_related\user_profile.html:134
 #: .\src\users\templates\user_related\user_profile.html:153
 #: .\src\users\templates\user_related\user_profile.html:172
-#: .\src\users\views.py:1069 .\src\users\views.py:1616
-#: .\src\users\views.py:1759
+#: .\src\users\views.py:1069 .\src\users\views.py:1621
+#: .\src\users\views.py:1764
 msgid "You"
 msgstr "Tu"
 
@@ -4081,24 +4173,24 @@ msgstr "Trebuie să fii autentificat pentru a anula o cerere de prietenie."
 msgid "User Profile :: PlayStyle Compass"
 msgstr "Profilul Utilizatorului :: PlayStyle Compass"
 
-#: .\src\users\views.py:1128
+#: .\src\users\views.py:1130
 msgid "Message sent successfully!"
 msgstr "Mesaj trimis cu succes!"
 
-#: .\src\users\views.py:1153
+#: .\src\users\views.py:1158
 msgid "Send message :: PlayStyle Compass"
 msgstr "Trimite mesaj :: PlayStyle Compass"
 
-#: .\src\users\views.py:1185
+#: .\src\users\views.py:1190
 msgid "Inbox :: PlayStyle Compass"
 msgstr "Inbox :: PlayStyle Compass"
 
-#: .\src\users\views.py:1283
+#: .\src\users\views.py:1288
 msgid "You can only take the quiz once per day. Please try again in {}"
 msgstr ""
 "Poți să faci chestionarul doar o dată pe zi. Te rog să încerci din nou în {}"
 
-#: .\src\users\views.py:1315
+#: .\src\users\views.py:1320
 #, python-brace-format
 msgid ""
 "Thank you for completing the Preference Quiz! Your responses will help us "
@@ -4110,90 +4202,93 @@ msgstr ""
 "pentru tine. Apasă <a href='{0}'>aici</a> pentru a vedea recomandările tale "
 "de la chestionar."
 
-#: .\src\users\views.py:1324
+#: .\src\users\views.py:1329
 msgid "Preference Quiz :: PlayStyle Compass"
 msgstr "Chestionarul de Preferințe :: PlayStyle Compass"
 
-#: .\src\users\views.py:1348
+#: .\src\users\views.py:1353
 msgid "Quiz Recommendations :: PlayStyle Compass"
 msgstr "Recomandările din Chestionar :: PlayStyle Compass"
 
-#: .\src\users\views.py:1397
+#: .\src\users\views.py:1402
 msgid "Profile Details :: PlayStyle Compass"
 msgstr "Detalii Profil :: PlayStyle Compass"
 
-#: .\src\users\views.py:1414
+#: .\src\users\views.py:1419
 msgid "Chat :: PlayStyle Compass"
 msgstr "Conversație :: PlayStyle Compass"
 
-#: .\src\users\views.py:1614
+#: .\src\users\views.py:1619
 msgid "Sender:"
 msgstr "Expeditor:"
 
-#: .\src\users\views.py:1631
+#: .\src\users\views.py:1636
 msgid "No messages yet"
 msgstr "Niciun mesaj încă"
 
-#: .\src\users\views.py:1641
+#: .\src\users\views.py:1646
 msgid "Chat List :: PlayStyle Compass"
 msgstr "Listă Conversații :: PlayStyle Compass"
 
-#: .\src\users\views.py:1656
+#: .\src\users\views.py:1661
 msgid "You cannot block yourself."
 msgstr "Nu te poți bloca singur."
 
-#: .\src\users\views.py:1659
+#: .\src\users\views.py:1664
 msgid "User is already blocked."
 msgstr "Utilizatorul este deja blocat."
 
-#: .\src\users\views.py:1662
+#: .\src\users\views.py:1667
 msgid "User has been blocked."
 msgstr "Utilizatorul a fost blocat."
 
-#: .\src\users\views.py:1676
+#: .\src\users\views.py:1681
 msgid "You cannot unblock yourself."
 msgstr "Nu te poți debloca singur."
 
-#: .\src\users\views.py:1681
+#: .\src\users\views.py:1686
 msgid "User has been unblocked."
 msgstr "Utilizatorul a fost deblocat."
 
-#: .\src\users\views.py:1683
+#: .\src\users\views.py:1688
 msgid "User was not blocked."
 msgstr "Utilizatorul nu a fost blocat."
 
-#: .\src\users\views.py:1704
+#: .\src\users\views.py:1709
 msgid "Block List :: PlayStyle Compass"
 msgstr "Listă Blocări :: PlayStyle Compass"
 
-#: .\src\users\views.py:1787
+#: .\src\users\views.py:1792
 #, python-format
 msgid "You are now following %s."
 msgstr "Acum îl urmăriți pe %s."
 
-#: .\src\users\views.py:1791
+#: .\src\users\views.py:1796
 #, python-format
 msgid "You are already following %s."
 msgstr "Îl urmăriți deja pe %s."
 
-#: .\src\users\views.py:1812
+#: .\src\users\views.py:1817
 #, python-format
 msgid "You have unfollowed %s."
 msgstr "V-ați dezabonat de la %s."
 
-#: .\src\users\views.py:1816
+#: .\src\users\views.py:1821
 #, python-format
 msgid "You are not following %s."
 msgstr "Nu îl urmăriți pe %s."
 
-#: .\src\users\views.py:1840
+#: .\src\users\views.py:1845
 msgid "Followers :: PlayStyle Compass"
 msgstr "Urmăritori :: PlayStyle Compass"
 
-#: .\src\users\views.py:1864
+#: .\src\users\views.py:1869
 msgid "Following :: PlayStyle Compass"
 msgstr "Urmăriți :: PlayStyle Compass"
 
-#: .\src\users\views.py:1886
+#: .\src\users\views.py:1891
 msgid "Notification Settings :: PlayStyle Compass"
 msgstr "Setări de Notificare :: PlayStyle Compass"
+
+#~ msgid "Gaming"
+#~ msgstr "Jocuri"
