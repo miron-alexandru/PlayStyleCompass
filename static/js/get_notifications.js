@@ -174,7 +174,7 @@ fetch(authCheckUrl)
 
         if (notifications.length === 0) {
           const emptyMessage = document.createElement("li");
-          emptyMessage.textContent = "Nothing to report";
+          emptyMessage.textContent = translate("Nothing to report");
           emptyMessage.className = "empty-notifications";
           ulElement.appendChild(emptyMessage);
           document.getElementById("bellCount").setAttribute("data-count", 0);
@@ -192,18 +192,20 @@ fetch(authCheckUrl)
 
         const markAllReadBtn = document.createElement("button");
         markAllReadBtn.className = "mark-all-read-btn";
-        markAllReadBtn.innerHTML =
-          '<span class="mark-icon">&#10003;</span> Mark as read';
-        markAllReadBtn.title = "Mark All Notifications as Read";
+        const markAllIconHtml = '<span class="mark-icon">&#10003;</span>';
+        const translatedMarkAll = translate("Mark as read")
+        markAllReadBtn.innerHTML = `${markAllIconHtml} ${translatedMarkAll}`
+        markAllReadBtn.title = translate("Mark All Notifications as Read");
         markAllReadBtn.addEventListener("click", () =>
           markAllNotifications("markRead")
         );
 
         const markAllInactiveBtn = document.createElement("button");
         markAllInactiveBtn.className = "mark-all-inactive-btn";
-        markAllInactiveBtn.innerHTML =
-          '<span class="delete-icon"><i class="fa-solid fa-xmark"></i></span> Delete All';
-        markAllInactiveBtn.title = "Delete All Notifications";
+        const deleteIconHTML = '<span class="delete-icon"><i class="fa-solid fa-xmark"></i></span>';
+        const translatedDelete = translate("Delete All");
+        markAllInactiveBtn.innerHTML = `${deleteIconHTML} ${translatedDelete}`;
+        markAllInactiveBtn.title = translate("Delete All Notifications");
         markAllInactiveBtn.addEventListener("click", () =>
           markAllNotifications("markInactive")
         );
@@ -223,7 +225,7 @@ fetch(authCheckUrl)
           newAnchor.classList.add(
             notification.is_read ? "notification-read" : "notification-unread"
           );
-          newAnchor.title = "Click to mark as read.";
+          newAnchor.title = translate("Click to mark as read");
 
           if (!notification.is_read) {
             newAnchor.addEventListener("click", function () {
@@ -246,7 +248,7 @@ fetch(authCheckUrl)
           closeButton.className = "btn-close";
           closeButton.innerHTML =
             '<span class="single-delete-icon"><i class="fa-solid fa-circle-xmark"></i></span>';
-          closeButton.title = "Delete this notification.";
+          closeButton.title = translate("Delete this notification");
 
           closeButton.addEventListener("click", function () {
             removeNotification(index);

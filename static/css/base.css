@@ -553,7 +553,7 @@ input[type="email"]:focus,
 .button-container {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 10px;
+  margin-bottom: 7px;
 }
 
 .mark-all-read-btn, .mark-all-inactive-btn {
@@ -582,7 +582,10 @@ input[type="email"]:focus,
 }
 
 .delete-icon {
-  font-size: 12px;
+  position: relative;
+  font-size: 11px;
+  top: 1px;
+  margin-right: 1px;
 }
 
 .language-switcher, .dark-toggle {

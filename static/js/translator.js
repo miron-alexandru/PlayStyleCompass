@@ -64,6 +64,14 @@ const translate = (key) => {
             'Failed to delete the comment.': 'Nu s-a reușit ștergerea comentariului.',
             'An error occurred. Please try again.': 'A apărut o eroare. Te rugăm să încerci din nou.',
             'Failed to delete review.': 'Nu s-a reușit ștergerea recenziei.',
+            'Delete All': 'Ștergeți Toate',
+            'Delete All Notifications': 'Ștergeți toate notificările',
+            'Mark as read': 'Marcați drept citit',
+            'Mark All Notifications as Read': 'Marcați toate notificările drept citite',
+            'Click to mark as read': 'Click pentru a marca drept citit',
+            'Delete this notification': 'Ștergeți această notificare',
+            'Nothing to report': 'Nimic de raportat',
+
 
         },
     };
