@@ -624,7 +624,13 @@ def add_review(request, game_id):
                 )
 
                 create_notification(
-                    follower_user, message=message, notification_type="review"
+                    follower_user,
+                    message=message,
+                    notification_type="review",
+                    profile_url=profile_url,
+                    profile_name=profile_name,
+                    game_url=game_url,
+                    game_title=game.title
                 )
 
             messages.success(request, _("Your review has been successfully submitted."))
@@ -875,7 +881,12 @@ def share_game(request, game_id):
                 """
 
             create_notification(
-                receiver, message=message, notification_type="shared_game"
+                receiver,
+                message=message,
+                notification_type="shared_game",
+                profile_url=profile_url,
+                user_in_notification=user_in_notification,
+                navigation_url=navigation_url
             )
 
             return JsonResponse(
@@ -1593,14 +1604,20 @@ def share_game_list(request, pk):
                 "playstyle_compass:game_list_detail", args=[game_list.pk]
             )
             message = format_html(
-                '<a class="notification-profile" href="{}">{}</a> has shared a game list with you: <a href="{}">{}</a>',
+                '<a class="notification-profile" href="{}">{}</a> has shared a game list with you <a href="{}">{}</a>',
                 profile_url,
                 request.user.userprofile.profile_name,
                 game_list_url,
                 game_list.title,
             )
             create_notification(
-                receiver, message=message, notification_type="shared_game_list"
+                receiver,
+                message=message,
+                notification_type="shared_game_list",
+                profile_url=profile_url,
+                profile_name=request.user.userprofile.profile_name,
+                game_list_url=game_list_url,
+                game_list_title=game_list.title
             )
 
         game_list.shared_by = shared_by_info
@@ -2355,14 +2372,20 @@ def share_poll(request, poll_id):
             )
             poll_url = reverse("playstyle_compass:poll_detail", args=[poll.pk])
             message = format_html(
-                '<a class="notification-profile" href="{}">{}</a> has shared a poll with you: <a href="{}">{}</a>',
+                '<a class="notification-profile" href="{}">{}</a> has shared a poll with you <a href="{}">{}</a>',
                 profile_url,
                 request.user.userprofile.profile_name,
                 poll_url,
                 poll.title,
             )
             create_notification(
-                receiver, message=message, notification_type="shared_poll"
+                receiver,
+                message=message,
+                notification_type="shared_poll",
+                profile_url=profile_url,
+                profile_name=request.user.userprofile.profile_name,
+                poll_url=poll_url,
+                poll_title=poll.title
             )
 
         poll.shared_by = shared_by_info

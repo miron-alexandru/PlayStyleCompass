@@ -12,7 +12,6 @@ from asgiref.sync import async_to_sync
 from channels.db import database_sync_to_async
 from django.contrib.auth.signals import user_logged_in, user_logged_out
 from django.utils import timezone
-from django.utils.translation import get_language
 import pytz
 
 
@@ -68,6 +67,7 @@ def notification_created(sender, instance, created, **kwargs):
                 "type": "send_notification",
                 "id": instance.id,
                 "message": instance.message,
+                "message_ro": instance.message_ro,
                 "is_read": instance.is_read,
                 "is_active": instance.is_active,
                 "timestamp": instance.timestamp,

@@ -69,16 +69,15 @@ class NotificationConsumer(AsyncWebsocketConsumer):
             past_notifications = await self.get_all_notifications(user)
 
             for notification in past_notifications:
-
-                if self.current_language == 'ro':
-                    notification_message = notification.message_ro
-                else:
-                    notification_message = notification.message
+                notification_message = (
+                    notification.message_ro if self.current_language == "ro" else notification.message
+                )
 
                 await self.send_notification(
                     {
                         "id": notification.id,
-                        "message": notification_message,
+                        "message": notification.message,
+                        "message_ro": notification.message_ro,
                         "is_read": notification.is_read,
                         "is_active": notification.is_active,
                         "timestamp": notification.timestamp.isoformat(),
@@ -91,9 +90,15 @@ class NotificationConsumer(AsyncWebsocketConsumer):
             await self.channel_layer.group_discard(self.group_name, self.channel_name)
 
     async def send_notification(self, event):
+
+        if self.current_language == "ro":
+            notification_message = event.get("message_ro", event.get("message"))
+        else:
+            notification_message = event.get("message")
+
         notification_data = {
             "id": event.get("id"),
-            "message": event.get("message"),
+            "message": notification_message,
             "is_read": event.get("is_read"),
             "is_active": event.get("is_active"),
             "timestamp": event.get("timestamp"),

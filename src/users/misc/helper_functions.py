@@ -9,6 +9,7 @@ from django.core.cache import cache
 from django.core.exceptions import ValidationError
 from datetime import timedelta
 from django.urls import reverse
+from .variables import NOTIFICATION_TEMPLATES_RO
 
 
 def are_friends(user1, user2):
@@ -144,14 +145,6 @@ def save_quiz_responses(user, questions, form):
             raise ValidationError("Invalid option selected")
 
 
-NOTIFICATION_TEMPLATES_RO = {
-    "message": (
-        '<a class="notification-profile" title="Vizualizați profilul utilizatorului" href="{profile_url}">{user_in_notification}</a> '
-        "ți-a trimis un mesaj!<br>"
-        '<a class="notification-link" title="Navighează" href="{navigation_url}">Vezi inbox-ul</a>'
-    ),
-}
-
 def create_notification(user, message, notification_type, **kwargs):
     """Helper function used to create a notification and mark the delivered
     based on user preferences."""
@@ -163,7 +156,12 @@ def create_notification(user, message, notification_type, **kwargs):
     if hasattr(user_preferences, preference_field):
         delivered = getattr(user_preferences, preference_field)
 
-    message_ro = NOTIFICATION_TEMPLATES_RO.get(notification_type, "").format(**kwargs)
+    if notification_type == "friend_request" and kwargs.get('friend_request_acc', False):
+        message_ro = NOTIFICATION_TEMPLATES_RO.get("friend_request_accepted", "").format(**kwargs)
+    elif notification_type == "friend_request" and kwargs.get('friend_request_decline', False):
+        message_ro = NOTIFICATION_TEMPLATES_RO.get("friend_request_declined", "").format(**kwargs)
+    else:
+        message_ro = NOTIFICATION_TEMPLATES_RO.get(notification_type, "").format(**kwargs)
 
     notification = Notification(
         user=user,

@@ -793,6 +793,9 @@ def send_friend_request(request, *args, **kwargs):
                             receiver,
                             message=message,
                             notification_type="friend_request",
+                            profile_url=profile_url,
+                            user_in_notification=user_in_notification,
+                            navigation_url=navigation_url
                         )
 
             else:
@@ -849,6 +852,9 @@ def accept_friend_request(request, *args, **kwargs):
                         friend_request.sender,
                         message=message,
                         notification_type="friend_request",
+                        profile_url=profile_url,
+                        user_in_notification=user_in_notification,
+                        friend_request_acc=True
                     )
 
                 except Exception as e:
@@ -933,6 +939,9 @@ def decline_friend_request(request, *args, **kwargs):
                         friend_request.sender,
                         message=message,
                         notification_type="friend_request",
+                        profile_url=profile_url,
+                        user_in_notification=user_in_notification,
+                        friend_request_decline=True
                     )
 
                 except Exception as e:
@@ -1785,7 +1794,11 @@ def follow_user(request, user_id):
             )
 
             create_notification(
-                user_to_follow, message=message, notification_type="follow"
+                user_to_follow,
+                message=message,
+                notification_type="follow",
+                profile_url=profile_url,
+                follower_profile_name=follower_profile_name
             )
 
             message = (
