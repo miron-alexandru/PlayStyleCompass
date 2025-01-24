@@ -38,4 +38,9 @@ NOTIFICATION_TEMPLATES_RO = {
         '<a class="notification-profile" href="{profile_url}">{profile_name}</a> ți-a distribuit un sondaj '
         '<a href="{poll_url}">{poll_title}</a>'
     ),
+    "chat_message": (
+        '<a class="notification-profile" title="Vizualizați profilul utilizatorului" href="{profile_url}">{user_in_notification}</a> '
+        "ți-a trimis un mesaj nou în Chat!<br>"
+        '<a class="notification-link" title="Deschide Chatul" href="{navigation_url}">Deschide Chatul</a>'
+    ),
 }

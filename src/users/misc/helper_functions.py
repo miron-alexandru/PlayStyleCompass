@@ -195,7 +195,12 @@ def process_chat_notification(sender, recipient):
         )
 
         create_notification(
-            recipient, message=message, notification_type="chat_message"
+            recipient,
+            message=message,
+            notification_type="chat_message",
+            profile_url=profile_url,
+            user_in_notification=user_in_notification,
+            navigation_url=navigation_url
         )
 
         recipient.userprofile.last_chat_notification = now
