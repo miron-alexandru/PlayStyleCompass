@@ -33,7 +33,7 @@ from django.contrib.auth.views import LoginView
 
 from django.template.loader import render_to_string
 from django.contrib.sites.shortcuts import get_current_site
-from django.utils import timezone
+from django.utils import timezone, translation
 from django.utils.translation import gettext as _
 from django.utils.http import (
     urlsafe_base64_encode,
@@ -1110,8 +1110,6 @@ def get_user_stats(user):
         "game_list_reviews_count": game_list_reviews_count,
     }
 
-from django.utils.translation import get_language
-from django.utils.translation import activate
 
 @login_required
 def send_message(request, user_id):
@@ -2058,3 +2056,23 @@ def get_private_chat_messages(request, recipient_id):
     ]
 
     return JsonResponse(response_data, safe=False)
+
+
+@login_required
+def change_language(request):
+    if request.method == "POST" and request.content_type == "application/json":
+        import json
+
+        data = json.loads(request.body)
+        language = data.get("language", "en") 
+        if language in ["en", "ro"]:
+            user_profile = request.user.userprofile
+            user_profile.language = language
+            user_profile.save()
+
+            translation.activate(language)
+            request.session['django_language'] = language
+
+        return JsonResponse({"status": "success"})
+
+    return JsonResponse({"status": "error"}, status=400)

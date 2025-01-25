@@ -157,4 +157,5 @@ urlpatterns = [
         views.get_private_chat_messages,
         name="get_private_chat_messages",
     ),
+    path("change-language/", views.change_language, name="change_language"),
 ]

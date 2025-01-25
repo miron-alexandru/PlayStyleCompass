@@ -76,6 +76,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "tz_detect.middleware.TimezoneMiddleware",
     "users.middleware.UserTimezoneMiddleware",
+    "users.middleware.UserLanguageMiddleware",
 ]
 
 # Authentication Backends:

@@ -258,3 +258,27 @@ document.addEventListener("DOMContentLoaded", function () {
       console.error("Auth check failed:", error);
     });
 });
+
+
+function updateLanguage(event, language) {
+  event.preventDefault();
+  const changeLanguageUrl = document.querySelector('.language-options').getAttribute('data-change-language-url');
+
+  fetch(changeLanguageUrl, {
+      method: "POST",
+      headers: {
+          "X-CSRFToken": csrfToken,
+          "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ language: language }),
+  }).then((response) => {
+      if (response.ok) {
+          const currentPath = window.location.pathname;
+          const newPath = `/${language}${currentPath.slice(3)}`;
+
+          window.location.href = newPath;
+      } else {
+          console.error("Failed to update language in user profile");
+      }
+  });
+}

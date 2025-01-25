@@ -138,6 +138,8 @@ Websites for .env configuration: [GiantBomb](https://www.giantbomb.com/) / [Send
 <summary><h2>PlayStyle Compass Changelog</h2></summary>
 
 ### Version v2.3:
+* Language preferences stored for each user when changing the language.
+* Translated Notifications.
 * Created Shared Polls page: Users are able to see the polls they or others shared with them.
 * New info for polls and improved layout + CSS
 * Users are able to share polls.

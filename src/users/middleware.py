@@ -1,5 +1,6 @@
 from django.utils import timezone
 from django.core.exceptions import ObjectDoesNotExist
+from django.utils import translation
 
 
 class UserTimezoneMiddleware:
@@ -25,4 +26,18 @@ class UserTimezoneMiddleware:
                     except ObjectDoesNotExist:
                         pass
 
+        return response
+
+
+class UserLanguageMiddleware:
+    """Middleware used to set the language preference for users based on their user profile."""
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
+        if request.user.is_authenticated:
+            language = getattr(request.user.userprofile, "language", "en")
+            translation.activate(language)
+            request.session['django_language'] = language
+        response = self.get_response(request)
         return response

@@ -4,6 +4,7 @@ from django.utils import timezone
 from django.conf import settings
 from django.db import models
 from django.core.exceptions import ValidationError
+from django.utils.translation import gettext_lazy as _
 
 
 class UserProfile(models.Model):
@@ -63,6 +64,11 @@ class UserProfile(models.Model):
     receive_chat_message_notifications = models.BooleanField(default=True)
     receive_shared_game_notifications = models.BooleanField(default=True)
     receive_shared_game_list_notifications = models.BooleanField(default=True)
+    language = models.CharField(
+        max_length=5,
+        choices=[('en', _('English')), ('ro', _('Romanian'))],
+        default='en',
+    )
 
     def clean(self):
         profile_name = self.profile_name

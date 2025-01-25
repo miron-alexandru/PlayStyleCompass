@@ -388,22 +388,26 @@
     <div class="globe-container">
         <i class="fa-solid fa-globe globe-icon" title="Language Switcher"></i>
     </div>
-    <div class="language-options">
+    <div class="language-options" data-change-language-url="{% url 'users:change_language' %}">
         <ol>
             <li>
-                <a class="nav-link nav-user waves-eff" href="/en{{ request.get_full_path|slice:'3:' }}" role="button">
-                  <span class="flag-icon en"></span>
-                    <span class="language-name en">
-                        {% trans "English" %}
-                    </span>
+                <a
+                    class="nav-link nav-user waves-eff"
+                    onclick="updateLanguage(event, 'en')"
+                    role="button"
+                >
+                    <span class="flag-icon en"></span>
+                    <span class="language-name en">{% trans "English" %}</span>
                 </a>
             </li>
             <li>
-                <a class="nav-link nav-user waves-eff" href="/ro{{ request.get_full_path|slice:'3:' }}" role="button">
-                  <span class="flag-icon ro"></span>
-                    <span class="language-name ro">
-                        {% trans "Romanian" %}
-                    </span>
+                <a
+                    class="nav-link nav-user waves-eff"
+                    onclick="updateLanguage(event, 'ro')"
+                    role="button"
+                >
+                    <span class="flag-icon ro"></span>
+                    <span class="language-name ro">{% trans "Romanian" %}</span>
                 </a>
             </li>
         </ol>
