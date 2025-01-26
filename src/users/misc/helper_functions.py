@@ -156,12 +156,20 @@ def create_notification(user, message, notification_type, **kwargs):
     if hasattr(user_preferences, preference_field):
         delivered = getattr(user_preferences, preference_field)
 
-    if notification_type == "friend_request" and kwargs.get('friend_request_acc', False):
-        message_ro = NOTIFICATION_TEMPLATES_RO.get("friend_request_accepted", "").format(**kwargs)
-    elif notification_type == "friend_request" and kwargs.get('friend_request_decline', False):
-        message_ro = NOTIFICATION_TEMPLATES_RO.get("friend_request_declined", "").format(**kwargs)
+    if isinstance(message, str):
+        message = message.replace("/ro", "/en")
+
+    updated_kwargs = {
+        key: (value.replace("/en", "/ro") if isinstance(value, str) and "/en" in value else value)
+        for key, value in kwargs.items()
+    }
+
+    if notification_type == "friend_request" and updated_kwargs.get('friend_request_acc', False):
+        message_ro = NOTIFICATION_TEMPLATES_RO.get("friend_request_accepted", "").format(**updated_kwargs)
+    elif notification_type == "friend_request" and updated_kwargs.get('friend_request_decline', False):
+        message_ro = NOTIFICATION_TEMPLATES_RO.get("friend_request_declined", "").format(**updated_kwargs)
     else:
-        message_ro = NOTIFICATION_TEMPLATES_RO.get(notification_type, "").format(**kwargs)
+        message_ro = NOTIFICATION_TEMPLATES_RO.get(notification_type, "").format(**updated_kwargs)
 
     notification = Notification(
         user=user,
