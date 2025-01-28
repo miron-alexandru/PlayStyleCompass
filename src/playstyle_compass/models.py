@@ -462,9 +462,17 @@ class Poll(models.Model):
         settings.AUTH_USER_MODEL, blank=True, related_name="shared_polls"
     )
     shared_by = models.JSONField(default=dict, blank=True)
+    duration = models.DurationField(default=timedelta(days=7))
 
     def __str__(self):
         return f"Poll: {self.title} (Created by {self.created_by})"
+
+    @property
+    def end_time(self):
+        return self.created_at + self.duration
+
+    def has_ended(self):
+        return now() > self.end_time
 
     @property
     def like_count(self):

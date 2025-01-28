@@ -49,7 +49,11 @@
 .poll-details {
   font-size: 14px;
   color: var(--text-color);
-  margin-top: 5px;
+}
+
+.poll-end-date {
+  font-size: 14px;
+  color: var(--text-color);
 }
 
 .poll-details a {

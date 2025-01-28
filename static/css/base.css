@@ -66,18 +66,23 @@ input[type="email"] {
   font-size: 15px;
   background: var(--input-color)!important;
   border: 1px solid var(--input-border);
-  padding: 6px 35px 6px 10px;
+  padding: 6px 10px 6px 10px;
   border-radius: 21px;
 }
 
-#id_message, #id_bio, #id_gaming_setup, .contact-textarea, #id_description {
+#id_message,
+#id_bio,
+#id_gaming_setup,
+.contact-textarea,
+#id_description,
+#id_duration {
   width: 100%;
   display: block;
   color: var(--text-color)!important;
   font-size: 15px;
   background: var(--input-color);
   border: 1px solid var(--input-border);
-  padding: 6px 35px 6px 10px;
+  padding: 6px 10px 6px 10px;
   border-radius: 21px;
 }
 
@@ -88,7 +93,8 @@ input[type="email"]:focus,
 #id_message:focus,
 #id_bio:focus,
 #id_gaming_setup:focus,
-#id_description:focus 
+#id_description:focus,
+#id_duration:focus
  {
   color: var(--text-color)!important;
   background-color: var(--input-color);

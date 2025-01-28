@@ -13,6 +13,7 @@ from .models import (
     PollOption,
 )
 from django.utils.translation import gettext_lazy as _
+from datetime import timedelta
 
 
 class ReviewForm(forms.ModelForm):
@@ -180,9 +181,16 @@ class PollForm(forms.ModelForm):
         help_text="",
     )
 
+    duration = forms.IntegerField(
+        required=True,
+        min_value=1,
+        max_value=7,
+        widget=forms.NumberInput(attrs={"placeholder": "Duration in days (1-7)"})
+    )
+
     class Meta:
         model = Poll
-        fields = ["title", "description", "options"]
+        fields = ["title", "description", "options", "duration"]
 
     def clean_options(self):
         options = self.cleaned_data["options"]
@@ -190,6 +198,10 @@ class PollForm(forms.ModelForm):
         if len(option_list) > 5:
             raise forms.ValidationError(_("You can only add up to 5 options."))
         return options
+
+    def clean_duration(self):
+        duration = self.cleaned_data.get("duration")
+        return timedelta(days=duration)
 
 
 class VoteForm(forms.Form):

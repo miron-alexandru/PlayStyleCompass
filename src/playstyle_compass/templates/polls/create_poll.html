@@ -28,6 +28,12 @@
             <div class="form-input">{{ form.description }}</div>
         </div>
 
+        <div class="form-group duration-group">
+            <label for="id_duration" class="form-label">{{ form.duration.label }}</label>
+            <div class="form-input">{{ form.duration }}</div>
+            <p class="help-text">{% trans "Specify the duration in days (e.g., 7 for one week)." %}</p>
+        </div>
+
         <div class="options-section">
             <h3 class="options-title">{% trans "Options:" %}</h3>
             <div id="options-container">

@@ -43,6 +43,11 @@
               {{ poll.created_by.userprofile.profile_name }}
             </a>
             {% trans "on" %} {{ poll.created_at|date:"d/m/Y H:i" }}
+            {% if not poll.has_ended %}
+            <p class="poll-details">{% trans "Open until:" %} {{ poll.end_time|date:"d M Y, H:i" }}</p>
+            {% else %}
+            <p class="poll-details">{% trans "Poll has ended!" %}</p>
+            {% endif %}
           </p>
         <button id="like-button" data-url="{% url 'playstyle_compass:like_poll' poll.id %}"
           class="like-poll-button" title="{% trans 'Like Poll' %}">
