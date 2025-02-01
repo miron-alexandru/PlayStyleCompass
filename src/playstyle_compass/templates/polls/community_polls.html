@@ -22,34 +22,37 @@
       {% with poll=poll_data.poll total_votes=poll_data.total_votes %}
       <div class="poll-card">
         <h2 class="poll-title">{{ poll.title }}</h2>
-          <p class="poll-description">{{ poll.description }}</p>
-          <p class="poll-details">
-            {% trans "Created by" %} 
-            <a href="{% url 'users:view_profile' profile_name=poll.created_by.userprofile.profile_name %}">
-              {{ poll.created_by.userprofile.profile_name }}
-            </a>
-            {% trans "on" %} {{ poll.created_at|date:"d/m/Y H:i" }}
-            {% if not poll.has_ended %}
-            <p class="poll-details">{% trans "Open until:" %} {{ poll.end_time|date:"d M Y, H:i" }}</p>
-            {% else %}
-            <p class="poll-details">{% trans "Poll has ended!" %}</p>
-            {% endif %}
-          </p>
+        <p class="poll-description">{{ poll.description }}</p>
+        
+        <p class="poll-details">
+          {% trans "Created by" %}
+          <a href="{% url 'users:view_profile' profile_name=poll.created_by.userprofile.profile_name %}">
+            {{ poll.created_by.userprofile.profile_name }}
+          </a>
+          {% trans "on" %} {{ poll.created_at|date:"d/m/Y H:i" }}
+        </p>
+
+        {% if not poll.has_ended %}
+          <p class="poll-details">{% trans "Open until:" %} {{ poll.end_time|date:"d M Y, H:i" }}</p>
+        {% else %}
+          <p class="poll-details poll-ended-message">{% trans "This poll has ended. Thank you for participating!" %}</p>
+        {% endif %}
+        
         <button id="like-button" data-url="{% url 'playstyle_compass:like_poll' poll.id %}"
           class="like-poll-button" title="{% trans 'Like Poll' %}">
           <i class="{% if user in poll.liked_by.all %}fa-solid fa-heart{% else %}fa-regular fa-heart{% endif %}"></i>
         </button>
         <span id="like-count-{{ poll.id }}" class="like-count">{{ poll.like_count }}</span>
+
         <form method="post" action="{% url 'playstyle_compass:vote' id=poll.id %}">
           {% csrf_token %}
           <div class="poll-options">
+            {% with winning_option=poll_data.options_with_percentages|dictsort:"percentage"|last %}
             {% for option_data in poll_data.options_with_percentages %}
               <div 
-                class="poll-option" 
-                style="
-                  --percentage: {{ option_data.percentage }}%; 
-                  {% if user_votes|get_item:poll.id == option_data.option.id %}background-color: #e3f2fd; border-color: #2196f3;
-                  {% endif %}
+                class="poll-option {% if option_data == winning_option and poll.has_ended %}winner{% endif %}"
+                style="--percentage: {{ option_data.percentage }}%;
+                  {% if user_votes|get_item:poll.id == option_data.option.id %}background-color: #e3f2fd; border-color: #2196f3;{% endif %}
                 "
               >
                 <label>
@@ -58,30 +61,41 @@
                     name="option" 
                     value="{{ option_data.option.id }}"
                     {% if user_votes|get_item:poll.id == option_data.option.id %}checked{% endif %}
-                    {% if user_votes|get_item:poll.id %}disabled{% endif %}
+                    {% if user_votes|get_item:poll.id or poll.has_ended %}disabled{% endif %}
                   >
                   {{ option_data.option.text }}
                 </label>
                 <div class="poll-bar" 
-                  style="
-                    width: {{ option_data.percentage }}%; 
+                  style="width: {{ option_data.percentage }}%; 
                     {% if user_votes|get_item:poll.id == option_data.option.id %}background-color: #2196f3;{% endif %}
                   "
                 ></div>
                 <span class="poll-percentage">{{ option_data.percentage }}%</span>
               </div>
             {% endfor %}
+            {% if poll.has_ended %}
+              <p class="poll-details winning-option">
+                {% trans "Winning Option:" %} "{{ winning_option.option.text }}" ({% trans "with" %} {{ winning_option.percentage }}%)
+              </p>
+            {% endif %}
+            {% endwith %}
           </div>
+
           <div class="total-votes">
             <p>{% trans "Total Votes:" %} {{ total_votes }}</p>
           </div>
+
           <div class="buttons-container">
-          {% if not user_votes|get_item:poll.id %}
-            <button type="submit" class="vote-button" disabled>{% trans "Vote" %}</button>
-          {% endif %}
-          <a href="{% url 'playstyle_compass:poll_detail' poll.id %}" class="view-poll-button">{% trans "View" %}</a>
-          <a href="{% url 'playstyle_compass:share_poll' poll.id %}" class="share-poll-button">{% trans "Share" %}</a>
-        </div>
+            {% if poll.has_ended %}
+              <button type="submit" class="vote-button" disabled>{% trans "Poll Closed" %}</button>
+            {% elif user_votes|get_item:poll.id %}
+              <button type="submit" class="vote-button voted" disabled>{% trans "Vote" %}</button>
+            {% else %}
+              <button type="submit" class="vote-button">{% trans "Vote" %}</button>
+            {% endif %}
+            <a href="{% url 'playstyle_compass:poll_detail' poll.id %}" class="view-poll-button">{% trans "View" %}</a>
+            <a href="{% url 'playstyle_compass:share_poll' poll.id %}" class="share-poll-button">{% trans "Share" %}</a>
+          </div>
         </form>
       </div>
       {% endwith %}

@@ -381,3 +381,20 @@
   outline: 0;
   box-shadow: 0 0 0 0.1rem var(--input-shadow);
 }
+
+
+.poll-ended-message {
+  color: #d32f2f;
+  font-weight: 600;
+}
+
+.winner {
+  background-color: #c8e6c9;
+  border-color: #388e3c;
+}
+
+.winning-option {
+  font-weight: 600;
+  color: #4CAF50;
+  margin-bottom: 10px;
+}

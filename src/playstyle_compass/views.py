@@ -2165,9 +2165,15 @@ def vote(request, id):
     """View used to vote on a poll."""
     poll = get_object_or_404(Poll, id=id)
 
+    if poll.has_ended():
+        messages.warning(request, "This poll has ended. Voting is no longer available.")
+        redirect_url = request.META.get('HTTP_REFERER', reverse("playstyle_compass:community_polls"))
+        return redirect(redirect_url)
+
     if Vote.objects.filter(poll=poll, user=request.user).exists():
         messages.warning(request, "You have already voted in this poll!")
-        return HttpResponseRedirect(reverse("playstyle_compass:community_polls"))
+        redirect_url = request.META.get('HTTP_REFERER', reverse("playstyle_compass:community_polls"))
+        return redirect(redirect_url)
 
     if request.method == "POST":
         form = VoteForm(poll=poll, data=request.POST)
@@ -2176,10 +2182,12 @@ def vote(request, id):
                 poll=poll, option=form.cleaned_data["option"], user=request.user
             )
             messages.success(request, "Your vote has been recorded.")
-            return HttpResponseRedirect(reverse("playstyle_compass:community_polls"))
+            redirect_url = request.META.get('HTTP_REFERER', reverse("playstyle_compass:community_polls"))
+            return redirect(redirect_url)
         else:
             messages.error(request, "There was an error with your vote.")
-            return HttpResponseRedirect(reverse("playstyle_compass:community_polls"))
+            redirect_url = request.META.get('HTTP_REFERER', reverse("playstyle_compass:community_polls"))
+            return redirect(redirect_url)
 
     return HttpResponseRedirect(reverse("playstyle_compass:community_polls"))
 

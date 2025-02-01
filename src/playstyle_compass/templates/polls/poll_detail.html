@@ -29,7 +29,7 @@
             {% if not poll.has_ended %}
             <p class="poll-details">{% trans "Open until:" %} {{ poll.end_time|date:"d M Y, H:i" }}</p>
             {% else %}
-            <p class="poll-details">{% trans "Poll has ended!" %}</p>
+            <p class="poll-details poll-ended-message">{% trans "This poll has ended. Thank you for participating!" %}</p>
             {% endif %}
           </p>
         <button id="like-button" data-url="{% url 'playstyle_compass:like_poll' poll.id %}" 
@@ -40,22 +40,21 @@
         <form method="post" action="{% url 'playstyle_compass:vote' id=poll.id %}">
             {% csrf_token %}
             <div class="poll-options">
-                {% for option_data in options_with_percentages %}
-                    <div 
-                        class="poll-option" 
-                        style="
-                            --percentage: {{ option_data.percentage }}%; 
-                            {% if user_votes|get_item:poll.id == option_data.option.id %}background-color: #e3f2fd; border-color: #2196f3;
-                            {% endif %}
-                        "
-                    >
+                {% with winning_option=poll.options_with_percentages|dictsort:"percentage"|last %}
+                {% for option_data in poll.options_with_percentages %}
+                  <div 
+                    class="poll-option {% if option_data == winning_option and poll.has_ended %}winner{% endif %}"
+                    style="--percentage: {{ option_data.percentage }}%;
+                      {% if user_votes|get_item:poll.id == option_data.option.id %}background-color: #e3f2fd; border-color: #2196f3;{% endif %}
+                    "
+                  >
                         <label>
                             <input 
                                 type="radio" 
                                 name="option" 
                                 value="{{ option_data.option.id }}"
                                 {% if user_votes|get_item:poll.id == option_data.option.id %}checked{% endif %}
-                                {% if user_votes|get_item:poll.id %}disabled{% endif %}
+                                {% if user_votes|get_item:poll.id or poll.has_ended %}disabled{% endif %}
                             >
                             {{ option_data.option.text }}
                         </label>
@@ -68,13 +67,23 @@
                         <span class="poll-percentage">{{ option_data.percentage }}%</span>
                     </div>
                 {% endfor %}
+                {% if poll.has_ended %}
+                  <p class="poll-details winning-option">
+                    {% trans "Winning Option:" %} "{{ winning_option.option.text }}" ({% trans "with" %} {{ winning_option.percentage }}%)
+                  </p>
+                {% endif %}
+                {% endwith %}
             </div>
             <div class="total-votes">
                 <p>{% trans "Total Votes:" %} {{ total_votes }}</p>
             </div>
             <div class="buttons-container">
-            {% if not user_votes|get_item:poll.id %}
-                <button type="submit" class="vote-button" disabled>{% trans "Vote" %}</button>
+            {% if poll.has_ended %}
+              <button type="submit" class="vote-button" disabled>{% trans "Poll Closed" %}</button>
+            {% elif user_votes|get_item:poll.id %}
+              <button type="submit" class="vote-button voted" disabled>{% trans "Vote" %}</button>
+            {% else %}
+              <button type="submit" class="vote-button">{% trans "Vote" %}</button>
             {% endif %}
             <a href="{% url 'playstyle_compass:share_poll' poll.id %}" class="share-poll-button">
             {% trans "Share" %}</a>
