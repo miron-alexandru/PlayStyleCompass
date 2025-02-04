@@ -40,11 +40,11 @@
         <form method="post" action="{% url 'playstyle_compass:vote' id=poll.id %}">
             {% csrf_token %}
             <div class="poll-options">
-                {% with winning_option=poll.options_with_percentages|dictsort:"percentage"|last %}
+                {% with winning_option=poll.options_with_percentages|filter_non_zero_options %}
                 {% for option_data in poll.options_with_percentages %}
                   <div 
                     class="poll-option {% if option_data == winning_option and poll.has_ended %}winner{% endif %}"
-                    style="--percentage: {{ option_data.percentage }}%;
+                    style="--percentage: {{ option_data.percentage|clean_percentage }};
                       {% if user_votes|get_item:poll.id == option_data.option.id %}background-color: #e3f2fd; border-color: #2196f3;{% endif %}
                     "
                   >
@@ -60,17 +60,23 @@
                         </label>
                         <div class="poll-bar" 
                             style="
-                                width: {{ option_data.percentage }}%; 
+                                width: {{ option_data.percentage|clean_percentage }}; 
                                 {% if user_votes|get_item:poll.id == option_data.option.id %}background-color: #2196f3;{% endif %}
                             "
                         ></div>
-                        <span class="poll-percentage">{{ option_data.percentage }}%</span>
+                        <span class="poll-percentage">{{ option_data.percentage|clean_percentage }}</span>
                     </div>
                 {% endfor %}
                 {% if poll.has_ended %}
-                  <p class="poll-details winning-option">
-                    {% trans "Winning Option:" %} "{{ winning_option.option.text }}" ({% trans "with" %} {{ winning_option.percentage }}%)
-                  </p>
+                  {% if not winning_option.percentage %}
+                    <p class="poll-details no-votes">
+                      {% trans "No votes were cast in this poll." %}
+                    </p>
+                  {% else %}
+                    <p class="poll-details winning-option">
+                      {% trans "Most Voted:" %} "{{ winning_option.option.text }}" ({% trans "with" %} {{ winning_option.percentage|clean_percentage }})
+                    </p>
+                  {% endif %}
                 {% endif %}
                 {% endwith %}
             </div>
@@ -79,7 +85,7 @@
             </div>
             <div class="buttons-container">
             {% if poll.has_ended %}
-              <button type="submit" class="vote-button" disabled>{% trans "Poll Closed" %}</button>
+              <button type="submit" class="vote-button closed" disabled>{% trans "Poll Closed" %}</button>
             {% elif user_votes|get_item:poll.id %}
               <button type="submit" class="vote-button voted" disabled>{% trans "Vote" %}</button>
             {% else %}

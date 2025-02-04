@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-28 12:38+0200\n"
-"PO-Revision-Date: 2025-01-28 12:42+0144\n"
+"POT-Creation-Date: 2025-02-04 16:00+0200\n"
+"PO-Revision-Date: 2025-02-04 16:04+0144\n"
 "Last-Translator:   <quality_xqs@yahoo.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -750,7 +750,7 @@ msgid "Check out the games in this collection."
 msgstr "Verifică jocurile din această colecție."
 
 #: .\src\playstyle_compass\templates\game_list\game_list_detail.html:22
-#: .\src\playstyle_compass\templates\polls\community_polls.html:27
+#: .\src\playstyle_compass\templates\polls\community_polls.html:28
 #: .\src\playstyle_compass\templates\polls\poll_detail.html:24
 #: .\src\playstyle_compass\templates\polls\user_polls.html:41
 #: .\src\playstyle_compass\templates\polls\voted_polls.html:27
@@ -811,8 +811,8 @@ msgid "Posted on"
 msgstr "Postat pe"
 
 #: .\src\playstyle_compass\templates\game_list\game_list_detail.html:111
-#: .\src\playstyle_compass\templates\polls\poll_detail.html:85
-#: .\src\playstyle_compass\templates\polls\user_polls.html:99
+#: .\src\playstyle_compass\templates\polls\poll_detail.html:100
+#: .\src\playstyle_compass\templates\polls\user_polls.html:114
 msgid "Delete"
 msgstr "Șterge"
 
@@ -922,11 +922,11 @@ msgid "Share with friends"
 msgstr "Distribuie cu prietenii"
 
 #: .\src\playstyle_compass\templates\game_list\share_game_list.html:30
-#: .\src\playstyle_compass\templates\polls\community_polls.html:83
-#: .\src\playstyle_compass\templates\polls\poll_detail.html:80
+#: .\src\playstyle_compass\templates\polls\community_polls.html:103
+#: .\src\playstyle_compass\templates\polls\poll_detail.html:95
 #: .\src\playstyle_compass\templates\polls\share_poll.html:30
-#: .\src\playstyle_compass\templates\polls\user_polls.html:95
-#: .\src\playstyle_compass\templates\polls\voted_polls.html:72
+#: .\src\playstyle_compass\templates\polls\user_polls.html:110
+#: .\src\playstyle_compass\templates\polls\voted_polls.html:86
 msgid "Share"
 msgstr "Distribuie"
 
@@ -1681,57 +1681,87 @@ msgstr ""
 "Răsfoiește și participă la sondajele create de comunitate. Votează opțiunile"
 " tale preferate și vezi cum au votat ceilalți!"
 
-#: .\src\playstyle_compass\templates\polls\community_polls.html:31
+#: .\src\playstyle_compass\templates\polls\community_polls.html:32
 #: .\src\playstyle_compass\templates\polls\poll_detail.html:28
 #: .\src\playstyle_compass\templates\polls\user_polls.html:45
 #: .\src\playstyle_compass\templates\polls\voted_polls.html:31
 msgid "on"
 msgstr "pe"
 
-#: .\src\playstyle_compass\templates\polls\community_polls.html:33
+#: .\src\playstyle_compass\templates\polls\community_polls.html:36
 #: .\src\playstyle_compass\templates\polls\poll_detail.html:30
 #: .\src\playstyle_compass\templates\polls\user_polls.html:47
 #: .\src\playstyle_compass\templates\polls\voted_polls.html:33
-#| msgid "Open Chat"
 msgid "Open until:"
 msgstr "Deschis până la:"
 
-#: .\src\playstyle_compass\templates\polls\community_polls.html:35
+#: .\src\playstyle_compass\templates\polls\community_polls.html:38
 #: .\src\playstyle_compass\templates\polls\poll_detail.html:32
 #: .\src\playstyle_compass\templates\polls\user_polls.html:49
 #: .\src\playstyle_compass\templates\polls\voted_polls.html:35
-#| msgid "Lists Shared"
-msgid "Poll has ended!"
-msgstr "Sondajul s-a încheiat!"
+msgid "This poll has ended. Thank you for participating!"
+msgstr "Acest sondaj s-a încheiat. Vă mulțumim pentru participare!"
 
-#: .\src\playstyle_compass\templates\polls\community_polls.html:39
+#: .\src\playstyle_compass\templates\polls\community_polls.html:42
 #: .\src\playstyle_compass\templates\polls\poll_detail.html:36
 #: .\src\playstyle_compass\templates\polls\user_polls.html:53
 #: .\src\playstyle_compass\templates\polls\voted_polls.html:39
 msgid "Like Poll"
 msgstr "Apreciază Sondajul"
 
-#: .\src\playstyle_compass\templates\polls\community_polls.html:76
+#: .\src\playstyle_compass\templates\polls\community_polls.html:79
 #: .\src\playstyle_compass\templates\polls\poll_detail.html:73
-#: .\src\playstyle_compass\templates\polls\shared_polls.html:52
 #: .\src\playstyle_compass\templates\polls\user_polls.html:87
-#: .\src\playstyle_compass\templates\polls\voted_polls.html:69
+#: .\src\playstyle_compass\templates\polls\voted_polls.html:72
+msgid "No votes were cast in this poll."
+msgstr "Nu au fost exprimate voturi în acest sondaj."
+
+#: .\src\playstyle_compass\templates\polls\community_polls.html:83
+#: .\src\playstyle_compass\templates\polls\poll_detail.html:77
+#: .\src\playstyle_compass\templates\polls\user_polls.html:91
+#: .\src\playstyle_compass\templates\polls\voted_polls.html:76
+#| msgid "Total Votes:"
+msgid "Most Voted:"
+msgstr "Opțiunea câștigătoare:"
+
+#: .\src\playstyle_compass\templates\polls\community_polls.html:83
+#: .\src\playstyle_compass\templates\polls\poll_detail.html:77
+#: .\src\playstyle_compass\templates\polls\user_polls.html:91
+#: .\src\playstyle_compass\templates\polls\voted_polls.html:76
+msgid "with"
+msgstr "cu"
+
+#: .\src\playstyle_compass\templates\polls\community_polls.html:91
+#: .\src\playstyle_compass\templates\polls\poll_detail.html:84
+#: .\src\playstyle_compass\templates\polls\shared_polls.html:52
+#: .\src\playstyle_compass\templates\polls\user_polls.html:98
+#: .\src\playstyle_compass\templates\polls\voted_polls.html:83
 msgid "Total Votes:"
 msgstr "Total Voturi:"
 
-#: .\src\playstyle_compass\templates\polls\community_polls.html:80
-#: .\src\playstyle_compass\templates\polls\poll_detail.html:77
-#: .\src\playstyle_compass\templates\polls\user_polls.html:91
+#: .\src\playstyle_compass\templates\polls\community_polls.html:96
+#: .\src\playstyle_compass\templates\polls\poll_detail.html:88
+#: .\src\playstyle_compass\templates\polls\user_polls.html:102
+#| msgid "Polls"
+msgid "Poll Closed"
+msgstr "Sondaj închis"
+
+#: .\src\playstyle_compass\templates\polls\community_polls.html:98
+#: .\src\playstyle_compass\templates\polls\community_polls.html:100
+#: .\src\playstyle_compass\templates\polls\poll_detail.html:90
+#: .\src\playstyle_compass\templates\polls\poll_detail.html:92
+#: .\src\playstyle_compass\templates\polls\user_polls.html:104
+#: .\src\playstyle_compass\templates\polls\user_polls.html:106
 msgid "Vote"
 msgstr "Votează"
 
-#: .\src\playstyle_compass\templates\polls\community_polls.html:82
-#: .\src\playstyle_compass\templates\polls\user_polls.html:94
-#: .\src\playstyle_compass\templates\polls\voted_polls.html:71
+#: .\src\playstyle_compass\templates\polls\community_polls.html:102
+#: .\src\playstyle_compass\templates\polls\user_polls.html:109
+#: .\src\playstyle_compass\templates\polls\voted_polls.html:85
 msgid "View"
 msgstr "Vizualizează"
 
-#: .\src\playstyle_compass\templates\polls\community_polls.html:90
+#: .\src\playstyle_compass\templates\polls\community_polls.html:110
 msgid "No polls available at the moment."
 msgstr "Nu există sondaje disponibile momentan."
 
@@ -1801,14 +1831,10 @@ msgstr ""
 "participe și să-ți exploreze sondajele."
 
 #: .\src\playstyle_compass\templates\polls\shared_polls.html:7
-#| msgid "SHARE POLL"
 msgid "SHARED POLLS"
 msgstr "SONDAJE DISTRIBUITE"
 
 #: .\src\playstyle_compass\templates\polls\shared_polls.html:12
-#| msgid ""
-#| "Discover game lists shared with you or explore the ones you've shared with "
-#| "others. Find new games and collaborate with friends on your favorite picks."
 msgid ""
 "Discover polls shared with you or explore the ones you've shared with "
 "others. Participate and see how others voted!"
@@ -1817,32 +1843,26 @@ msgstr ""
 "distribuit altora. Participă și vezi cum au votat ceilalți!"
 
 #: .\src\playstyle_compass\templates\polls\shared_polls.html:20
-#| msgid "Lists Received"
 msgid "Polls Received"
 msgstr "Sondaje Primite"
 
 #: .\src\playstyle_compass\templates\polls\shared_polls.html:23
-#| msgid "Lists Shared"
 msgid "Polls Shared"
 msgstr "Sondaje Distribuite"
 
 #: .\src\playstyle_compass\templates\polls\shared_polls.html:33
-#| msgid "Create Playstyle"
 msgid "Creation Date"
 msgstr "Data Creării"
 
 #: .\src\playstyle_compass\templates\polls\shared_polls.html:76
-#| msgid "Like Poll"
 msgid "View Poll"
 msgstr "Vizualizează Sondajul"
 
 #: .\src\playstyle_compass\templates\polls\shared_polls.html:83
-#| msgid "You have not shared any game lists with others."
 msgid "You have not shared any polls with others."
 msgstr "Nu ai distribuit niciun sondaj altora."
 
 #: .\src\playstyle_compass\templates\polls\shared_polls.html:85
-#| msgid "No game lists have been shared with you."
 msgid "No polls have been shared with you."
 msgstr "Nu ți-au fost distribuite sondaje."
 
@@ -1870,7 +1890,7 @@ msgstr ""
 "Descoperă sondajele create de acest utilizator. Împărtășește-ți opiniile "
 "votând și vezi cum au participat alții!"
 
-#: .\src\playstyle_compass\templates\polls\user_polls.html:107
+#: .\src\playstyle_compass\templates\polls\user_polls.html:122
 msgid "No polls created by this user."
 msgstr "Acest utilizator nu a creat niciun sondaj."
 
@@ -1886,7 +1906,7 @@ msgstr ""
 "Vezi sondajele la care ai participat. Verifică cum se compară votul tău cu "
 "al altora!"
 
-#: .\src\playstyle_compass\templates\polls\voted_polls.html:77
+#: .\src\playstyle_compass\templates\polls\voted_polls.html:91
 msgid "You have not voted on any polls yet."
 msgstr "Nu ai votat încă la niciun sondaj."
 
@@ -2342,37 +2362,35 @@ msgstr "Jocuri Populare :: PlayStyle Compass"
 msgid "Create Poll :: PlayStyle Compass"
 msgstr "Creează sondaj :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:2211
+#: .\src\playstyle_compass\views.py:2219
 msgid "Community Polls :: PlayStyle Compass"
 msgstr "Sondaje Comunitate :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:2242
+#: .\src\playstyle_compass\views.py:2250
 msgid "User Polls :: PlayStyle Compass"
 msgstr "Sondaje Utilizator :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:2291
+#: .\src\playstyle_compass\views.py:2299
 msgid "Voted Polls:: PlayStyle Compass"
 msgstr "Sondaje Votate :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:2332
+#: .\src\playstyle_compass\views.py:2340
 msgid "Poll Detail :: PlayStyle Compass"
 msgstr "Detalii Sondaj :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:2394
+#: .\src\playstyle_compass\views.py:2402
 msgid "Poll successfully shared!"
 msgstr "Sondajul a fost distribuit cu succes!"
 
-#: .\src\playstyle_compass\views.py:2400
+#: .\src\playstyle_compass\views.py:2408
 msgid "Share Poll :: PlayStyle Compass"
 msgstr "Distribuie Sondajul :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:2423
-#| msgid "Game Lists You Shared with Others"
+#: .\src\playstyle_compass\views.py:2431
 msgid "Polls You Shared with Others"
 msgstr "Sondaje Pe Care Le-ai Distribuit Altora"
 
-#: .\src\playstyle_compass\views.py:2427
-#| msgid "Game Lists Shared With You"
+#: .\src\playstyle_compass\views.py:2435
 msgid "Polls Shared With You"
 msgstr "Sondaje Distribuite Cu Tine"
 
@@ -2564,12 +2582,10 @@ msgid "Update Profile Name"
 msgstr "Actualizează numele profilului"
 
 #: .\src\templates\base.html:271
-#| msgid "Shared with:"
 msgid "Shared Content"
 msgstr "Conținut Distribuit"
 
 #: .\src\templates\base.html:272
-#| msgid "Shared Game Lists"
 msgid "Shared Games"
 msgstr "Jocuri Distribuite"
 
@@ -2578,7 +2594,6 @@ msgid "Shared Game Lists"
 msgstr "Liste de jocuri împărtășite"
 
 #: .\src\templates\base.html:274
-#| msgid "Voted Polls"
 msgid "Shared Polls"
 msgstr "Sondaje Distribuite"
 
@@ -4288,6 +4303,3 @@ msgstr "Urmăriți :: PlayStyle Compass"
 #: .\src\users\views.py:1902
 msgid "Notification Settings :: PlayStyle Compass"
 msgstr "Setări de Notificare :: PlayStyle Compass"
-
-#~ msgid "Gaming"
-#~ msgstr "Jocuri"

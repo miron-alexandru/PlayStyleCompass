@@ -386,6 +386,7 @@
 .poll-ended-message {
   color: #d32f2f;
   font-weight: 600;
+  margin-bottom: -3px;
 }
 
 .winner {
@@ -396,5 +397,11 @@
 .winning-option {
   font-weight: 600;
   color: #4CAF50;
+  margin-bottom: 10px;
+}
+
+.no-votes {
+  color: #d32f2f;
+  font-weight: 600;
   margin-bottom: 10px;
 }

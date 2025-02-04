@@ -282,3 +282,19 @@ def get_translated_field(game, field_name):
 def get_item(dictionary, key):
     """Custom filter to retrieve a value from a dictionary by its key."""
     return dictionary.get(key, False)
+
+
+@register.filter
+def clean_percentage(value):
+    try:
+        value = float(value)
+        return f"{int(value)}%" if value.is_integer() else f"{value}%"
+    except (ValueError, TypeError):
+        return "0%"
+
+
+@register.filter
+def filter_non_zero_options(options):
+    """Return the option with the highest non-zero percentage."""
+    non_zero_options = [option for option in options if option["percentage"] > 0]
+    return max(non_zero_options, key=lambda x: x["percentage"], default=None)

@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", function() {
   document.querySelectorAll('.poll-card form').forEach(form => {
     const voteButton = form.querySelector('.vote-button');
 
-    if (voteButton && !voteButton.classList.contains('voted')) { 
+    if (voteButton && !(voteButton.classList.contains('voted') || voteButton.classList.contains('closed'))) {
       const radioButtons = form.querySelectorAll('input[type="radio"]');
 
       function checkVoteStatus() {
