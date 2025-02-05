@@ -295,6 +295,9 @@ def clean_percentage(value):
 
 @register.filter
 def filter_non_zero_options(options):
-    """Return the option with the highest non-zero percentage."""
+    """Return the option(s) with the highest non-zero percentage."""
     non_zero_options = [option for option in options if option["percentage"] > 0]
-    return max(non_zero_options, key=lambda x: x["percentage"], default=None)
+    if not non_zero_options:
+        return []
+    max_percentage = max(option["percentage"] for option in non_zero_options)
+    return [option for option in non_zero_options if option["percentage"] == max_percentage]

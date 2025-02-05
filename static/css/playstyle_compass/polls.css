@@ -390,8 +390,8 @@
 }
 
 .winner {
-  background-color: #c8e6c9;
-  border-color: #388e3c;
+  background-color: #c8e6c9!important;
+  border-color: #388e3c!important;
 }
 
 .winning-option {
