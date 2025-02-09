@@ -19,18 +19,47 @@
     <h2>{% trans "Create a Poll" %}</h2>
     <form method="post" id="pollForm">
         {% csrf_token %}
+        
         <div class="form-group">
             <label for="id_title" class="form-label">{{ form.title.label }}</label>
-            <div class="form-input">{{ form.title }}</div>
+            <div class="form-input">
+                {{ form.title }}
+                {% if form.title.errors %}
+                    <div class="form-errors">
+                        {% for error in form.title.errors %}
+                            <p class="error">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
         </div>
+        
         <div class="form-group description-group">
             <label for="id_description" class="form-label">{{ form.description.label }}</label>
-            <div class="form-input">{{ form.description }}</div>
+            <div class="form-input">
+                {{ form.description }}
+                {% if form.description.errors %}
+                    <div class="form-errors">
+                        {% for error in form.description.errors %}
+                            <p class="error">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
         </div>
 
         <div class="form-group duration-group">
             <label for="id_duration" class="form-label">{{ form.duration.label }}</label>
-            <div class="form-input">{{ form.duration }}</div>
+            <div class="form-input">
+                {{ form.duration }}
+                {% if form.duration.errors %}
+                    <div class="form-errors">
+                        {% for error in form.duration.errors %}
+                            <p class="error">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
             <p class="help-text">{% trans "Specify the duration in days (e.g., 7 for one week)." %}</p>
         </div>
 
@@ -38,15 +67,39 @@
             <h3 class="options-title">{% trans "Options:" %}</h3>
             <div id="options-container">
                 <div class="form-group option-group">
-                    <input class="option-input" type="text" name="options" placeholder="{% trans 'Option 1' %}" maxlength="50">
+                    {{ form.options }}
+                    {% if form.options.errors %}
+                        <div class="form-errors">
+                            {% for error in form.options.errors %}
+                                <p class="error">{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
                 </div>
             </div>
         </div>
+
+        <div class="form-group public-poll-group">
+            <label for="id_is_public" class="form-label">{{ form.is_public.label }}</label>
+            <div class="form-input">
+                <input type="checkbox" id="id_is_public" name="is_public" {% if form.is_public.value %}checked{% endif %}>
+                <label for="id_is_public"></label>
+                {% if form.is_public.errors %}
+                    <div class="form-errors">
+                        {% for error in form.is_public.errors %}
+                            <p class="error">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+            <p class="help-text">{% trans "Make this poll public to feature it on the community polls page." %}</p>
+        </div>
+
         {% if form.errors %}
             <div class="form-errors">
                 {% for field in form %}
                     {% for error in field.errors %}
-                        <p class="error">{{ error }}</p>
+                        <p class="error">{{ field.name }} : {{ error }}</p>
                     {% endfor %}
                 {% endfor %}
             </div>

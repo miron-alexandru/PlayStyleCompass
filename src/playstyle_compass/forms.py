@@ -166,31 +166,38 @@ class ListCommentForm(forms.ModelForm):
 
 class PollForm(forms.ModelForm):
     options = forms.CharField(
-        widget=forms.TextInput,
+        widget=forms.TextInput(attrs={'placeholder': 'Option 1'}),
         help_text="",
+        required=True,
     )
 
     description = forms.CharField(
-        widget=forms.Textarea(attrs={"rows": 2, "cols": 40}),
+        widget=forms.Textarea(attrs={"rows": 2, "cols": 40, "placeholder": "Enter poll description here..."}),
         max_length=100,
         help_text="",
     )
 
     title = forms.CharField(
         max_length=50,
+        required=True,
         help_text="",
+        widget=forms.TextInput(attrs={"placeholder": "Enter poll title..."})
     )
-
     duration = forms.IntegerField(
         required=True,
         min_value=1,
         max_value=7,
         widget=forms.NumberInput(attrs={"placeholder": "Duration in days (1-7)"})
     )
+    is_public = forms.BooleanField(
+        required=False,
+        initial=True,
+        label=_("Is this poll public?"),
+    )
 
     class Meta:
         model = Poll
-        fields = ["title", "description", "options", "duration"]
+        fields = ["title", "description", "options", "duration", "is_public"]
 
     def clean_options(self):
         options = self.cleaned_data["options"]

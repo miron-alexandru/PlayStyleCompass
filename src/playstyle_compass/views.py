@@ -2151,7 +2151,10 @@ def create_poll(request):
                 if option_text.strip():
                     PollOption.objects.create(poll=poll, text=option_text.strip())
 
-            return redirect("playstyle_compass:community_polls")
+            messages.success(request, _("Poll successfully created!"))
+            return redirect("playstyle_compass:poll_detail", poll_id=poll.pk)
+        else:
+            return render(request, 'polls/create_poll.html', {'form': form})
 
     else:
         form = PollForm()
@@ -2194,7 +2197,7 @@ def vote(request, id):
 
 def community_polls(request):
     """View used to display polls."""
-    polls = Poll.objects.all().order_by("-created_at")
+    polls = Poll.objects.filter(is_public=True).order_by("-created_at")
     user_votes = {}
 
     polls_with_data = []
@@ -2465,3 +2468,37 @@ def shared_polls(request):
     }
 
     return render(request, "polls/shared_polls.html", context)
+
+
+@login_required
+def completed_polls(request):
+    """View to display all completed polls."""
+    all_polls = Poll.objects.all().order_by("-created_at")
+
+    completed_polls = [poll for poll in all_polls if poll.has_ended()]
+
+    user_votes = {}
+    polls_with_data = []
+    for poll in completed_polls:
+        user_vote = poll.user_vote(request.user)
+        if user_vote:
+            user_votes[poll.id] = user_vote.id
+
+        options_with_percentages = poll.options_with_percentages()
+
+        polls_with_data.append(
+            {
+                "poll": poll,
+                "total_votes": poll.total_votes(),
+                "options_with_percentages": options_with_percentages,
+            }
+        )
+
+    context = {
+        "page_title": _("Completed Polls :: PlayStyle Compass"),
+        "polls_with_data": polls_with_data,
+        "user_votes": user_votes,
+    }
+    return render(request, "polls/completed_polls.html", context)
+
+

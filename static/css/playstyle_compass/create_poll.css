@@ -84,3 +84,50 @@
   color: #6c757d;
   margin-top: 0.25rem;
 }
+
+.public-poll-group .form-input {
+  display: flex;
+  align-items: center;
+}
+
+.public-poll-group input[type="checkbox"] {
+  display: none; 
+}
+
+.public-poll-group input[type="checkbox"] + label {
+  position: relative;
+  width: 40px;
+  height: 20px;
+  background-color: #ccc;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.public-poll-group input[type="checkbox"]:checked + label {
+  background-color: #4caf50;
+}
+
+
+.public-poll-group input[type="checkbox"]:checked + label::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 20px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background-color: white;
+  transition: left 0.3s ease;
+}
+
+.public-poll-group input[type="checkbox"]:not(:checked) + label::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background-color: white;
+}

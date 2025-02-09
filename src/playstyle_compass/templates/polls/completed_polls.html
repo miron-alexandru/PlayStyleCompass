@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load static %}
+{% load custom_filters %}
+
+{% block page_header %}
+<div class="header">
+    <h3>{% trans "COMPLETED POLLS" %}</h3>
+</div>
+{% endblock page_header %}
+
+{% block description %}
+{% blocktrans %}See the polls that have ended and compare your vote with the final results!{% endblocktrans %}
+{% endblock description %}
+
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/playstyle_compass/polls.css' %}">
+
+<div class="polls-container">
+  {% if polls_with_data %}
+    {% for poll_data in polls_with_data %}
+      {% with poll=poll_data.poll total_votes=poll_data.total_votes %}
+      <div class="poll-card">
+        <h2 class="poll-title">{{ poll.title }}</h2>
+          <p class="poll-description">{{ poll.description }}</p>
+          <p class="poll-details">
+            {% trans "Created by" %} 
+            <a href="{% url 'users:view_profile' profile_name=poll.created_by.userprofile.profile_name %}">
+              {{ poll.created_by.userprofile.profile_name }}
+            </a>
+            {% trans "on" %} {{ poll.created_at|date:"d/m/Y H:i" }}
+            <p class="poll-details poll-ended-message">{% trans "This poll has ended. Thank you for participating!" %}</p>
+          </p>
+        <button id="like-button" data-url="{% url 'playstyle_compass:like_poll' poll.id %}"
+          class="like-poll-button" title="{% trans 'Like Poll' %}">
+          <i class="{% if user in poll.liked_by.all %}fa-solid fa-heart{% else %}fa-regular fa-heart{% endif %}"></i>
+        </button>
+        <span id="like-count-{{ poll.id }}" class="like-count">{{ poll.like_count }}</span>
+          <div class="poll-options">
+            {% with winning_options=poll.options_with_percentages|filter_non_zero_options %}
+            {% for option_data in poll_data.options_with_percentages %}
+              <div 
+                class="poll-option {% if option_data in winning_options %}winner{% endif %}"
+                style="--percentage: {{ option_data.percentage|clean_percentage }}; 
+                  {% if user_votes|get_item:poll.id == option_data.option.id %}background-color: #e3f2fd; border-color: #2196f3;{% endif %}"
+              >
+              <label>
+                <input 
+                  type="radio" 
+                  name="option" 
+                  value="{{ option_data.option.id }}"
+                  {% if user_votes|get_item:poll.id == option_data.option.id %}checked{% endif %}
+                  disabled
+                >
+                {{ option_data.option.text }}
+              </label>
+              <div class="poll-bar" 
+                style="width: {{ option_data.percentage|clean_percentage }}; 
+                       {% if user_votes|get_item:poll.id == option_data.option.id %}background-color: #2196f3;{% endif %}">
+              </div>
+              <span class="poll-percentage">{{ option_data.percentage|clean_percentage }}</span>
+            </div>
+          {% endfor %}
+          {% if winning_options %}
+            {% if winning_options|length == 1 %}
+              <p class="poll-details winning-option">
+                {% trans "Most Voted:" %} "{{ winning_options.0.option.text }}" ({% trans "with" %} {{ winning_options.0.percentage|clean_percentage }})
+              </p>
+            {% else %}
+              <p class="poll-details winning-option">
+                {% trans "It's a tie between:" %}
+                {% for option in winning_options %}
+                  "{{ option.option.text }}" ({{ option.percentage|clean_percentage }})
+                  {% if not forloop.last %}{% trans "and" %}{% endif %}
+                {% endfor %}
+              </p>
+            {% endif %}
+          {% else %}
+            <p class="poll-details no-votes">
+              {% trans "No votes were cast in this poll." %}
+            </p>
+          {% endif %}
+          {% endwith %}
+        </div>
+        <div class="total-votes">
+          <p>{% trans "Total Votes:" %} {{ total_votes }}</p>
+        </div>
+        <a href="{% url 'playstyle_compass:poll_detail' poll.id %}" class="view-poll-button">{% trans "View" %}</a>
+        <a href="{% url 'playstyle_compass:share_poll' poll.id %}" class="share-poll-button">{% trans "Share" %}</a>
+      </div>
+      {% endwith %}
+    {% endfor %}
+  {% else %}
+    <p>{% trans "No completed polls to display." %}</p>
+  {% endif %}
+</div>
+
+<script src="{% static 'js/playstyle_compass/polls.js' %}"></script>
+
+{% endblock content %}

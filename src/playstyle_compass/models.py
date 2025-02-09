@@ -463,6 +463,7 @@ class Poll(models.Model):
     )
     shared_by = models.JSONField(default=dict, blank=True)
     duration = models.DurationField(default=timedelta(days=7))
+    is_public = models.BooleanField(default=True)
 
     def __str__(self):
         return f"Poll: {self.title} (Created by {self.created_by})"
