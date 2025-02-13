@@ -630,7 +630,7 @@ def add_review(request, game_id):
                     profile_url=profile_url,
                     profile_name=profile_name,
                     game_url=game_url,
-                    game_title=game.title
+                    game_title=game.title,
                 )
 
             messages.success(request, _("Your review has been successfully submitted."))
@@ -886,7 +886,7 @@ def share_game(request, game_id):
                 notification_type="shared_game",
                 profile_url=profile_url,
                 user_in_notification=user_in_notification,
-                navigation_url=navigation_url
+                navigation_url=navigation_url,
             )
 
             return JsonResponse(
@@ -1617,7 +1617,7 @@ def share_game_list(request, pk):
                 profile_url=profile_url,
                 profile_name=request.user.userprofile.profile_name,
                 game_list_url=game_list_url,
-                game_list_title=game_list.title
+                game_list_title=game_list.title,
             )
 
         game_list.shared_by = shared_by_info
@@ -2154,7 +2154,7 @@ def create_poll(request):
             messages.success(request, _("Poll successfully created!"))
             return redirect("playstyle_compass:poll_detail", poll_id=poll.pk)
         else:
-            return render(request, 'polls/create_poll.html', {'form': form})
+            return render(request, "polls/create_poll.html", {"form": form})
 
     else:
         form = PollForm()
@@ -2170,12 +2170,16 @@ def vote(request, id):
 
     if poll.has_ended():
         messages.warning(request, "This poll has ended. Voting is no longer available.")
-        redirect_url = request.META.get('HTTP_REFERER', reverse("playstyle_compass:community_polls"))
+        redirect_url = request.META.get(
+            "HTTP_REFERER", reverse("playstyle_compass:community_polls")
+        )
         return redirect(redirect_url)
 
     if Vote.objects.filter(poll=poll, user=request.user).exists():
         messages.warning(request, "You have already voted in this poll!")
-        redirect_url = request.META.get('HTTP_REFERER', reverse("playstyle_compass:community_polls"))
+        redirect_url = request.META.get(
+            "HTTP_REFERER", reverse("playstyle_compass:community_polls")
+        )
         return redirect(redirect_url)
 
     if request.method == "POST":
@@ -2185,11 +2189,15 @@ def vote(request, id):
                 poll=poll, option=form.cleaned_data["option"], user=request.user
             )
             messages.success(request, "Your vote has been recorded.")
-            redirect_url = request.META.get('HTTP_REFERER', reverse("playstyle_compass:community_polls"))
+            redirect_url = request.META.get(
+                "HTTP_REFERER", reverse("playstyle_compass:community_polls")
+            )
             return redirect(redirect_url)
         else:
             messages.error(request, "There was an error with your vote.")
-            redirect_url = request.META.get('HTTP_REFERER', reverse("playstyle_compass:community_polls"))
+            redirect_url = request.META.get(
+                "HTTP_REFERER", reverse("playstyle_compass:community_polls")
+            )
             return redirect(redirect_url)
 
     return HttpResponseRedirect(reverse("playstyle_compass:community_polls"))
@@ -2396,7 +2404,7 @@ def share_poll(request, poll_id):
                 profile_url=profile_url,
                 profile_name=request.user.userprofile.profile_name,
                 poll_url=poll_url,
-                poll_title=poll.title
+                poll_title=poll.title,
             )
 
         poll.shared_by = shared_by_info
@@ -2500,5 +2508,3 @@ def completed_polls(request):
         "user_votes": user_votes,
     }
     return render(request, "polls/completed_polls.html", context)
-
-

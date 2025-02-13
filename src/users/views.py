@@ -795,7 +795,7 @@ def send_friend_request(request, *args, **kwargs):
                             notification_type="friend_request",
                             profile_url=profile_url,
                             user_in_notification=user_in_notification,
-                            navigation_url=navigation_url
+                            navigation_url=navigation_url,
                         )
 
             else:
@@ -854,7 +854,7 @@ def accept_friend_request(request, *args, **kwargs):
                         notification_type="friend_request",
                         profile_url=profile_url,
                         user_in_notification=user_in_notification,
-                        friend_request_acc=True
+                        friend_request_acc=True,
                     )
 
                 except Exception as e:
@@ -941,7 +941,7 @@ def decline_friend_request(request, *args, **kwargs):
                         notification_type="friend_request",
                         profile_url=profile_url,
                         user_in_notification=user_in_notification,
-                        friend_request_decline=True
+                        friend_request_decline=True,
                     )
 
                 except Exception as e:
@@ -1154,7 +1154,7 @@ def send_message(request, user_id):
                 notification_type="message",
                 profile_url=profile_url,
                 user_in_notification=user_in_notification,
-                navigation_url=navigation_url
+                navigation_url=navigation_url,
             )
 
             return redirect(request.META.get("HTTP_REFERER", "users:inbox"))
@@ -1796,7 +1796,7 @@ def follow_user(request, user_id):
                 message=message,
                 notification_type="follow",
                 profile_url=profile_url,
-                follower_profile_name=follower_profile_name
+                follower_profile_name=follower_profile_name,
             )
 
             message = (
@@ -2064,14 +2064,14 @@ def change_language(request):
         import json
 
         data = json.loads(request.body)
-        language = data.get("language", "en") 
+        language = data.get("language", "en")
         if language in ["en", "ro"]:
             user_profile = request.user.userprofile
             user_profile.language = language
             user_profile.save()
 
             translation.activate(language)
-            request.session['django_language'] = language
+            request.session["django_language"] = language
 
         return JsonResponse({"status": "success"})
 

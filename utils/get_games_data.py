@@ -56,7 +56,7 @@ from data_processing import (
 # create_quiz_data(concepts, num_games=5, offset=0)
 
 # Obtain News data
-create_news_data(num_articles=1, year=2024, latest_week=False)
+create_news_data(num_articles=1, year=2025, latest_week=False)
 
 # Obtain casual games data
 # casual_game_ids = fetch_game_ids_by_genre(genre_id=40, page_size=40, page=2)

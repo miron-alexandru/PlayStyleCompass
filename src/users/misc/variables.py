@@ -14,11 +14,11 @@ NOTIFICATION_TEMPLATES_RO = {
         "ți-a acceptat cererea de prietenie!"
     ),
     "friend_request_declined": (
-    '<a class="notification-profile" title="Vizualizați profilul utilizatorului" href="{profile_url}">{user_in_notification}</a> '
-    "ți-a refuzat cererea de prietenie!"
+        '<a class="notification-profile" title="Vizualizați profilul utilizatorului" href="{profile_url}">{user_in_notification}</a> '
+        "ți-a refuzat cererea de prietenie!"
     ),
     "follow": (
-    '<a class="notification-profile" title="Vizualizați profilul utilizatorului" href="{profile_url}">{follower_profile_name}</a> '
+        '<a class="notification-profile" title="Vizualizați profilul utilizatorului" href="{profile_url}">{follower_profile_name}</a> '
         "a început să te urmărească!"
     ),
     "review": (

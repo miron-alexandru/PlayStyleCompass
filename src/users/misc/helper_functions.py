@@ -160,16 +160,30 @@ def create_notification(user, message, notification_type, **kwargs):
         message = message.replace("/ro", "/en")
 
     updated_kwargs = {
-        key: (value.replace("/en", "/ro") if isinstance(value, str) and "/en" in value else value)
+        key: (
+            value.replace("/en", "/ro")
+            if isinstance(value, str) and "/en" in value
+            else value
+        )
         for key, value in kwargs.items()
     }
 
-    if notification_type == "friend_request" and updated_kwargs.get('friend_request_acc', False):
-        message_ro = NOTIFICATION_TEMPLATES_RO.get("friend_request_accepted", "").format(**updated_kwargs)
-    elif notification_type == "friend_request" and updated_kwargs.get('friend_request_decline', False):
-        message_ro = NOTIFICATION_TEMPLATES_RO.get("friend_request_declined", "").format(**updated_kwargs)
+    if notification_type == "friend_request" and updated_kwargs.get(
+        "friend_request_acc", False
+    ):
+        message_ro = NOTIFICATION_TEMPLATES_RO.get(
+            "friend_request_accepted", ""
+        ).format(**updated_kwargs)
+    elif notification_type == "friend_request" and updated_kwargs.get(
+        "friend_request_decline", False
+    ):
+        message_ro = NOTIFICATION_TEMPLATES_RO.get(
+            "friend_request_declined", ""
+        ).format(**updated_kwargs)
     else:
-        message_ro = NOTIFICATION_TEMPLATES_RO.get(notification_type, "").format(**updated_kwargs)
+        message_ro = NOTIFICATION_TEMPLATES_RO.get(notification_type, "").format(
+            **updated_kwargs
+        )
 
     notification = Notification(
         user=user,
@@ -208,7 +222,7 @@ def process_chat_notification(sender, recipient):
             notification_type="chat_message",
             profile_url=profile_url,
             user_in_notification=user_in_notification,
-            navigation_url=navigation_url
+            navigation_url=navigation_url,
         )
 
         recipient.userprofile.last_chat_notification = now

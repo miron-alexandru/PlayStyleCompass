@@ -70,7 +70,9 @@ class NotificationConsumer(AsyncWebsocketConsumer):
 
             for notification in past_notifications:
                 notification_message = (
-                    notification.message_ro if self.current_language == "ro" else notification.message
+                    notification.message_ro
+                    if self.current_language == "ro"
+                    else notification.message
                 )
 
                 await self.send_notification(

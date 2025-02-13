@@ -300,4 +300,6 @@ def filter_non_zero_options(options):
     if not non_zero_options:
         return []
     max_percentage = max(option["percentage"] for option in non_zero_options)
-    return [option for option in non_zero_options if option["percentage"] == max_percentage]
+    return [
+        option for option in non_zero_options if option["percentage"] == max_percentage
+    ]

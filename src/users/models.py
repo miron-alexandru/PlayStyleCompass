@@ -66,8 +66,8 @@ class UserProfile(models.Model):
     receive_shared_game_list_notifications = models.BooleanField(default=True)
     language = models.CharField(
         max_length=5,
-        choices=[('en', _('English')), ('ro', _('Romanian'))],
-        default='en',
+        choices=[("en", _("English")), ("ro", _("Romanian"))],
+        default="en",
     )
 
     def clean(self):
