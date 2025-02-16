@@ -128,14 +128,19 @@ Websites for .env configuration: [GiantBomb](https://www.giantbomb.com/) / [Send
 
 ## Project Preview
 ![Home](project-preview/home.PNG)
-![Dark-home](project-preview/dark-theme.PNG)
+![Dark-Theme](project-preview/dark-theme.PNG)
 ![Account Actions](project-preview/acc-actions.PNG)
 ![Game Details](project-preview/view-game.PNG)
+![News](project-preview/news.PNG)
 ## All images can be found [here](https://github.com/miron-alexandru/PlayStyleCompass/tree/main/project-preview)
 
 
 <details>
 <summary><h2>PlayStyle Compass Changelog</h2></summary>
+
+### Version v2.4:
+* Added Completed Polls page: Users are able to browse through polls that are completed (ended).
+* Polls now have a duration of 1 to 7 days.
 
 ### Version v2.3:
 * Language preferences stored for each user when changing the language.
