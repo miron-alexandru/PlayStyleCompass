@@ -26,3 +26,5 @@ google-cloud-storage
 social-auth-app-django
 social-auth-core
 youtube-search-python
+rest_framework
+rest_framework_simplejwt
