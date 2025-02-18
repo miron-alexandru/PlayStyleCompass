@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load static %}
+
+{% block page_header %}
+<div class="header">
+  <h3>{% trans "ACCESS TOKEN MANAGEMENT" %}</h3>
+</div>
+{% endblock page_header %}
+
+{% block description %}
+{% blocktrans %}Manage and generate your access tokens to access the PlayStyle Compass services securely. Keep your tokens safe and use them for personalized interactions with the platform.{% endblocktrans %}
+{% endblock description %}
+
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/users/access_token.css' %}">
+
+  <div class="access-token-management">
+    <div class="token-section">
+      <p class="token-title">{% trans "Access Token" %}</p>
+      <textarea id="access-token" readonly rows="4" cols="60">{{ token_data.access }}</textarea>
+      <button onclick="copyToClipboard('access-token')">{% trans "Copy" %}</button>
+
+      <button id="refresh-token" style="display: None" onclick="refreshToken()">{% trans "Refresh Access Token" %}</button>
+
+      <p id="token-status"></p>
+    </div>
+  </div>
+
+  <script>
+    function copyToClipboard(elementId) {
+        let textarea = document.getElementById(elementId);
+        textarea.select();
+        document.execCommand("copy");
+        alert("{% trans 'Token copied to clipboard!' %}");
+    }
+
+    function isTokenExpired(token) {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      const expirationTime = payload.exp * 1000;
+      return expirationTime < Date.now();
+    }
+
+    window.onload = function() {
+      const accessToken = document.getElementById("access-token").textContent;
+
+      if (isTokenExpired(accessToken)) {
+        document.getElementById("refresh-token").style.display = "inline-block";
+        document.getElementById("token-status").textContent = "{% trans 'Your access token has expired.' %}";
+      } else {
+        document.getElementById("token-status").textContent = "{% trans 'Your access token is valid.' %}";
+      }
+    }
+
+    function refreshToken() {
+      fetch("{% url 'users:access_token_manage' %}", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRFToken": csrfToken,
+          "Authorization": "Bearer " + document.getElementById("access-token").textContent
+        },
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.access) {
+          document.getElementById("access-token").textContent = data.access;
+          document.getElementById("token-status").textContent = "{% trans 'Your access token has been refreshed.' %}";
+          document.getElementById("refresh-token").style.display = "none";
+        } else {
+          document.getElementById("token-status").textContent = "{% trans 'Failed to refresh access token.' %}";
+        }
+      })
+      .catch(error => {
+        console.error("Error refreshing access token:", error);
+        document.getElementById("token-status").textContent = "{% trans 'An error occurred while refreshing the access token.' %}";
+      });
+    }
+  </script>
+{% endblock %}

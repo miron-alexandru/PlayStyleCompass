@@ -69,6 +69,8 @@ class UserProfile(models.Model):
         choices=[("en", _("English")), ("ro", _("Romanian"))],
         default="en",
     )
+    api_access_token = models.TextField(blank=True, null=True)
+    api_refresh_token = models.TextField(blank=True, null=True)
 
     def clean(self):
         profile_name = self.profile_name

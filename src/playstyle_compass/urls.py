@@ -1,7 +1,6 @@
 """Defines URL patterns."""
 
 from django.urls import path
-from rest_framework_simplejwt import views as jwt_views
 
 from . import views
 from . import api_views
@@ -195,6 +194,4 @@ urlpatterns = [
     path("polls/completed-polls/", views.completed_polls, name="completed_polls"),
     path('games/', api_views.GameListCreateView.as_view(), name='game-list'),
     path('games/<int:pk>/', api_views.GameDetailView.as_view(), name='game-detail'),
-    path('api/token/', jwt_views.TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('api/token/refresh/', jwt_views.TokenRefreshView.as_view(), name='token_refresh'),
 ]
