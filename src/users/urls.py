@@ -160,7 +160,7 @@ urlpatterns = [
         name="get_private_chat_messages",
     ),
     path("change-language/", views.change_language, name="change_language"),
-    path('api/token/manage/', api_views.access_token_view, name='access_token_manage'),
-    path('api/token/', jwt_views.TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('api/token/refresh/', jwt_views.TokenRefreshView.as_view(), name='access_token_refresh'),
+    path("api-key/", api_views.manage_api_key, name="manage_api_key"),
+    path("api-key/generate/", api_views.generate_api_key, name="generate_api_key"),
+    path("api-key/revoke/", api_views.revoke_api_key, name="revoke_api_key"),
 ]

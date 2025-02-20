@@ -192,6 +192,6 @@ urlpatterns = [
     path("polls/share-poll/<int:poll_id>", views.share_poll, name="share_poll"),
     path("polls/shared-polls/", views.shared_polls, name="shared_polls"),
     path("polls/completed-polls/", views.completed_polls, name="completed_polls"),
-    path('games/', api_views.GameListCreateView.as_view(), name='game-list'),
+    path('games/', api_views.GameListView.as_view(), name='game-list'),
     path('games/<int:pk>/', api_views.GameDetailView.as_view(), name='game-detail'),
 ]

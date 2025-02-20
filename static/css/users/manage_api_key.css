@@ -1,10 +1,10 @@
-.access-token-management {
+.api-key-management {
   max-width: 800px;
   margin: 0 auto;
   padding: 20px;
 }
 
-.token-section {
+.key-section {
   background-color: #f9f9f9;
   padding: 20px;
   border-radius: 8px;
@@ -12,7 +12,7 @@
   margin-bottom: 20px;
 }
 
-.token-title {
+.key-title {
   text-align: center;
   font-size: 16px;
   font-weight: 600;
@@ -48,7 +48,7 @@ button:disabled {
   cursor: not-allowed;
 }
 
-#token-status {
+#key-status {
   margin-top: 15px;
   font-size: 16px;
   font-weight: 600;

@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load static %}
+
+{% block page_header %}
+<div class="header">
+  <h3>{% trans "API KEY MANAGEMENT" %}</h3>
+</div>
+{% endblock page_header %}
+
+{% block description %}
+{% blocktrans %}Manage and generate your API key to securely access the PlayStyle Compass services. Keep your API key safe and use it for authentication when interacting with the platform.{% endblocktrans %}
+{% endblock description %}
+
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/users/manage_api_key.css' %}">
+
+<div class="api-key-management">
+  <div class="key-section">
+    <p class="key-title">{% trans "Your API Key is..." %}</p>
+    
+    {% if api_key %}
+      <textarea id="api-key" readonly rows="2" cols="60">{{ api_key }}</textarea>
+      <button onclick="copyToClipboard('api-key')">{% trans "Copy" %}</button>
+      <button onclick="revokeApiKey()">{% trans "Revoke API Key" %}</button>
+    {% else %}
+      <p>{% trans "You do not have an API key yet." %}</p>
+      <button onclick="generateApiKey()">{% trans "Generate API Key" %}</button>
+    {% endif %}
+
+    <p id="key-status"></p>
+  </div>
+</div>
+
+<script>
+  function copyToClipboard(elementId) {
+    let textarea = document.getElementById(elementId);
+    textarea.select();
+    document.execCommand("copy");
+    alert("{% trans 'API Key copied to clipboard!' %}");
+  }
+
+  function generateApiKey() {
+    fetch("{% url 'users:generate_api_key' %}", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRFToken": csrfToken,
+      },
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.api_key) {
+        document.querySelector(".key-section").innerHTML = `
+          <p class="key-title">{% trans "API Key" %}</p>
+          <textarea id="api-key" readonly rows="2" cols="60">${data.api_key}</textarea>
+          <button onclick="copyToClipboard('api-key')">{% trans "Copy" %}</button>
+          <button onclick="revokeApiKey()">{% trans "Revoke API Key" %}</button>
+          <p id="key-status">{% trans "API key successfully generated." %}</p>
+        `;
+      } else {
+        document.getElementById("key-status").textContent = "{% trans 'Failed to generate API key.' %}";
+      }
+    })
+    .catch(error => {
+      console.error("Error generating API key:", error);
+      document.getElementById("key-status").textContent = "{% trans 'An error occurred while generating the API key.' %}";
+    });
+  }
+
+  function revokeApiKey() {
+    fetch("{% url 'users:revoke_api_key' %}", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRFToken": csrfToken,
+      },
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        document.querySelector(".key-section").innerHTML = `
+          <p>{% trans "Your API key has been revoked." %}</p>
+          <button onclick="generateApiKey()">{% trans "Generate New API Key" %}</button>
+        `;
+      } else {
+        document.getElementById("key-status").textContent = "{% trans 'Failed to revoke API key.' %}";
+      }
+    })
+    .catch(error => {
+      console.error("Error revoking API key:", error);
+      document.getElementById("key-status").textContent = "{% trans 'An error occurred while revoking the API key.' %}";
+    });
+  }
+</script>
+
+{% endblock %}
