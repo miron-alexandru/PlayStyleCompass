@@ -36,7 +36,8 @@ INSTALLED_APPS = [
     "storages",
     "rest_framework",
     "rest_framework_simplejwt",
-    'rest_framework_api_key',
+    "rest_framework_api_key",
+    "django_filters",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -127,7 +128,13 @@ REST_FRAMEWORK = {
         'user': '1500/hour',
         'anon': '500/hour',
         'login': '10/minute',
-    }
+    },
+    'DEFAULT_FILTER_BACKENDS': [
+    'django_filters.rest_framework.DjangoFilterBackend',
+    'rest_framework.filters.OrderingFilter',
+    ],
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 100,
 }
 
 

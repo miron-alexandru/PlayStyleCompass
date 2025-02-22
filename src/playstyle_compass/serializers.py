@@ -7,6 +7,20 @@ class GameSerializer(serializers.ModelSerializer):
         fields = '__all__'
         read_only_fields = tuple(fields)
 
+    def __init__(self, *args, **kwargs):
+        # Get the fields parameter passed to the serializer
+        fields = kwargs.pop('fields', None)
+        
+        # If specific fields are passed, limit the serializer to those fields
+        if fields:
+            # Only include the fields provided in the 'fields' list
+            allowed = set(fields)
+            existing = set(self.fields)
+            for field_name in existing - allowed:
+                self.fields.pop(field_name)
+
+        super().__init__(*args, **kwargs)
+
 class FranchiseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Franchise
