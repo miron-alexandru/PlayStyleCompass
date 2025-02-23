@@ -3,7 +3,7 @@ from rest_framework import generics
 from .models import Game, Franchise, Character, Review, News
 from .serializers import GameSerializer, FranchiseSerializer, CharacterSerializer, GameReviewSerializer, NewsSerializer
 from .permissions import HasValidAPIKey
-from .api_filters import GameFilter
+from .api_filters import GameFilter, FranchiseFilter, CharacterFilter
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import OrderingFilter
 from rest_framework.pagination import LimitOffsetPagination

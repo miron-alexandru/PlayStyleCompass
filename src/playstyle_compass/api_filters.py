@@ -1,5 +1,5 @@
 from django_filters import rest_framework as filters
-from .models import Game, Franchise, Characrer
+from .models import Game, Franchise, Character
 
 class GameFilter(filters.FilterSet):
     platforms = filters.CharFilter(field_name="platforms", lookup_expr="icontains")
