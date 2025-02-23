@@ -1,5 +1,5 @@
 from django_filters import rest_framework as filters
-from .models import Game
+from .models import Game, Franchise, Characrer
 
 class GameFilter(filters.FilterSet):
     platforms = filters.CharFilter(field_name="platforms", lookup_expr="icontains")
@@ -16,3 +16,27 @@ class GameFilter(filters.FilterSet):
     class Meta:
         model = Game
         fields = ['platforms', 'themes', 'concepts', 'genres', 'release_date', 'developers', 'is_casual', 'is_popular', 'average_score', 'franchises']
+
+
+class FranchiseFilter(filters.FilterSet):
+    title = filters.CharFilter(field_name="title", lookup_expr="icontains")
+    games = filters.CharFilter(field_name="games", lookup_expr="icontains")
+    games_count = filters.NumberFilter(field_name="games_count", lookup_expr="gte")
+
+    class Meta:
+        model = Franchise
+        fields = ['title', 'games', 'games_count']
+
+
+class CharacterFilter(filters.FilterSet):
+    name = filters.CharFilter(field_name="name", lookup_expr="icontains")
+    birthday = filters.CharFilter(field_name="birthday", lookup_expr="icontains")
+    friends = filters.CharFilter(field_name="friends", lookup_expr="icontains")
+    enemies = filters.CharFilter(field_name="enemies", lookup_expr="icontains")
+    games = filters.CharFilter(field_name="games", lookup_expr="icontains")
+    first_game = filters.CharFilter(field_name="first_game", lookup_expr="icontains")
+    franchises = filters.CharFilter(field_name="franchises", lookup_expr="icontains")
+
+    class Meta:
+        model = Character
+        fields = ['name', 'birthday', 'friends', 'enemies', 'games', 'first_game', 'franchises']

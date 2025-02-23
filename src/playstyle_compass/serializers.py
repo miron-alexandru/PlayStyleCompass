@@ -27,11 +27,29 @@ class FranchiseSerializer(serializers.ModelSerializer):
         fields = '__all__'
         read_only_fields = tuple(fields)
 
+    def __init__(self, *args, **kwargs):
+        fields = kwargs.pop('fields', None)
+        if fields:
+            allowed = set(fields)
+            existing = set(self.fields)
+            for field_name in existing - allowed:
+                self.fields.pop(field_name)
+        super().__init__(*args, **kwargs)
+
 class CharacterSerializer(serializers.ModelSerializer):
     class Meta:
         model = Character
         fields = '__all__'
         read_only_fields = tuple(fields)
+
+    def __init__(self, *args, **kwargs):
+        fields = kwargs.pop('fields', None)
+        if fields:
+            allowed = set(fields)
+            existing = set(self.fields)
+            for field_name in existing - allowed:
+                self.fields.pop(field_name)
+        super().__init__(*args, **kwargs)
 
 class GameReviewSerializer(serializers.ModelSerializer):
     class Meta:

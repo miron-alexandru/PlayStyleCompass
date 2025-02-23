@@ -48,22 +48,51 @@ class FranchiseListView(generics.ListAPIView):
     queryset = Franchise.objects.all()
     serializer_class = FranchiseSerializer
     permission_classes = [HasValidAPIKey]
+    filter_backends = [DjangoFilterBackend, OrderingFilter]
+    filterset_class = FranchiseFilter
+    ordering_fields = ['title', 'games_count']
+    ordering = ['name']
+    pagination_class = LimitOffsetPagination
+    limit = 100
 
 class FranchiseDetailView(generics.RetrieveAPIView):
     queryset = Franchise.objects.all()
     serializer_class = FranchiseSerializer
     permission_classes = [HasValidAPIKey]
 
+    def get_serializer(self, *args, **kwargs):
+        fields = self.request.query_params.get('fields', None)
+        if fields:
+            fields = fields.split(',')
+            serializer_class = self.get_serializer_class()
+            kwargs['fields'] = fields
+            return serializer_class(*args, **kwargs)
+        return super().get_serializer(*args, **kwargs)
+
 class CharacterListView(generics.ListAPIView):
     queryset = Character.objects.all()
     serializer_class = CharacterSerializer
     permission_classes = [HasValidAPIKey]
+    filter_backends = [DjangoFilterBackend, OrderingFilter]
+    filterset_class = CharacterFilter
+    ordering_fields = ['name']
+    ordering = ['name']
+    pagination_class = LimitOffsetPagination
+    limit = 100
 
 class CharacterDetailView(generics.RetrieveAPIView):
     queryset = Character.objects.all()
     serializer_class = CharacterSerializer
     permission_classes = [HasValidAPIKey]
 
+    def get_serializer(self, *args, **kwargs):
+        fields = self.request.query_params.get('fields', None)
+        if fields:
+            fields = fields.split(',')
+            serializer_class = self.get_serializer_class()
+            kwargs['fields'] = fields
+            return serializer_class(*args, **kwargs)
+        return super().get_serializer(*args, **kwargs)
 
 class GameReviewsListView(generics.ListAPIView):
     queryset = Review.objects.all()
