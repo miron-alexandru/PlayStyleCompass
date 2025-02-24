@@ -2,15 +2,18 @@ from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.permissions import BasePermission
 from users.models import UserProfile
 
+
 class HasValidAPIKey(BasePermission):
     def has_permission(self, request, view):
-        api_key = request.GET.get('API-KEY')
+        api_key = request.GET.get("API-KEY")
 
         if not api_key:
-            api_key = request.headers.get('Authorization')
+            api_key = request.headers.get("Authorization")
 
         if not api_key:
-            raise AuthenticationFailed("API key missing from both query parameters and header")
+            raise AuthenticationFailed(
+                "API key missing from both query parameters and header"
+            )
 
         try:
             user_profile = UserProfile.objects.get(api_key=api_key)

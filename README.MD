@@ -139,6 +139,8 @@ Websites for .env configuration: [GiantBomb](https://www.giantbomb.com/) / [Send
 <summary><h2>PlayStyle Compass Changelog</h2></summary>
 
 ### Version v2.4:
+* Implemented Ordering and Filtering for the Games, Characters and Franchises APIs.
+* Created APIs for: Characters, Games and Franchises
 * Implemented API key functionality: Users can now generate an API key to access the PlayStyle Compass API.
 * Added Completed Polls page: Users are able to browse through polls that are completed (ended).
 * Polls now have a duration of 1 to 7 days.

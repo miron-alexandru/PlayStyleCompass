@@ -1,125 +1,107 @@
 from rest_framework_api_key.permissions import HasAPIKey
 from rest_framework import generics
 from .models import Game, Franchise, Character, Review, News
-from .serializers import GameSerializer, FranchiseSerializer, CharacterSerializer, GameReviewSerializer, NewsSerializer
+from .serializers import (
+    GameSerializer,
+    FranchiseSerializer,
+    CharacterSerializer,
+    GameReviewSerializer,
+    NewsSerializer,
+)
 from .permissions import HasValidAPIKey
-from .api_filters import GameFilter, FranchiseFilter, CharacterFilter
+from .api_filters import (
+    GameFilter,
+    FranchiseFilter,
+    CharacterFilter,
+    GameReviewFilter,
+    NewsFilter,
+)
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import OrderingFilter
 from rest_framework.pagination import LimitOffsetPagination
 
 
-class GameListView(generics.ListAPIView):
-    queryset = Game.objects.all()
-    serializer_class = GameSerializer
+class BaseListView(generics.ListAPIView):
+    """Base class for list views with filtering, ordering, and pagination."""
+
     permission_classes = [HasValidAPIKey]
     filter_backends = [DjangoFilterBackend, OrderingFilter]
+    pagination_class = LimitOffsetPagination
+    limit = 100
+
+
+class BaseDetailView(generics.RetrieveAPIView):
+    """Base class for detail views with dynamic field filtering."""
+
+    permission_classes = [HasValidAPIKey]
+
+    def get_serializer(self, *args, **kwargs):
+        fields = self.request.query_params.get("fields", None)
+        if fields:
+            kwargs["fields"] = fields.split(",")
+        return super().get_serializer(*args, **kwargs)
+
+
+class GameListView(BaseListView):
+    queryset = Game.objects.all()
+    serializer_class = GameSerializer
     filterset_class = GameFilter
-    ordering_fields = ['title', 'release_date', 'average_score']
-    ordering = ['title']
-    pagination_class = LimitOffsetPagination
-    limit = 100
+    ordering_fields = ["title", "release_date", "average_score"]
+    ordering = ["title"]
 
-class GameDetailView(generics.RetrieveAPIView):
+
+class GameDetailView(BaseDetailView):
     queryset = Game.objects.all()
     serializer_class = GameSerializer
-    permission_classes = [HasValidAPIKey]
 
-    def get_serializer(self, *args, **kwargs):
-        """
-        Override the get_serializer method to allow the 'fields' query parameter
-        to filter the returned fields dynamically.
-        """
-        # Get the 'fields' query parameter if it exists
-        fields = self.request.query_params.get('fields', None)
-        
-        # If 'fields' is provided, filter the fields in the serializer
-        if fields:
-            fields = fields.split(',')
-            # Get the original serializer
-            serializer_class = self.get_serializer_class()
-            # Create a new serializer with only the requested fields
-            kwargs['fields'] = fields
-            return serializer_class(*args, **kwargs)
-        
-        return super().get_serializer(*args, **kwargs)
 
-class FranchiseListView(generics.ListAPIView):
+class FranchiseListView(BaseListView):
     queryset = Franchise.objects.all()
     serializer_class = FranchiseSerializer
-    permission_classes = [HasValidAPIKey]
-    filter_backends = [DjangoFilterBackend, OrderingFilter]
     filterset_class = FranchiseFilter
-    ordering_fields = ['title', 'games_count']
-    ordering = ['name']
-    pagination_class = LimitOffsetPagination
-    limit = 100
+    ordering_fields = ["title", "games_count"]
+    ordering = ["title"]
 
-class FranchiseDetailView(generics.RetrieveAPIView):
+
+class FranchiseDetailView(BaseDetailView):
     queryset = Franchise.objects.all()
     serializer_class = FranchiseSerializer
-    permission_classes = [HasValidAPIKey]
 
-    def get_serializer(self, *args, **kwargs):
-        fields = self.request.query_params.get('fields', None)
-        if fields:
-            fields = fields.split(',')
-            serializer_class = self.get_serializer_class()
-            kwargs['fields'] = fields
-            return serializer_class(*args, **kwargs)
-        return super().get_serializer(*args, **kwargs)
 
-class CharacterListView(generics.ListAPIView):
+class CharacterListView(BaseListView):
     queryset = Character.objects.all()
     serializer_class = CharacterSerializer
-    permission_classes = [HasValidAPIKey]
-    filter_backends = [DjangoFilterBackend, OrderingFilter]
     filterset_class = CharacterFilter
-    ordering_fields = ['name']
-    ordering = ['name']
-    pagination_class = LimitOffsetPagination
-    limit = 100
+    ordering_fields = ["name"]
+    ordering = ["name"]
 
-class CharacterDetailView(generics.RetrieveAPIView):
+
+class CharacterDetailView(BaseDetailView):
     queryset = Character.objects.all()
     serializer_class = CharacterSerializer
-    permission_classes = [HasValidAPIKey]
 
-    def get_serializer(self, *args, **kwargs):
-        fields = self.request.query_params.get('fields', None)
-        if fields:
-            fields = fields.split(',')
-            serializer_class = self.get_serializer_class()
-            kwargs['fields'] = fields
-            return serializer_class(*args, **kwargs)
-        return super().get_serializer(*args, **kwargs)
 
-class GameReviewsListView(generics.ListAPIView):
+class GameReviewsListView(BaseListView):
     queryset = Review.objects.all()
     serializer_class = GameReviewSerializer
-    permission_classes = [HasValidAPIKey]
+    filterset_class = GameReviewFilter
+    ordering_fields = ["score", "likes", "dislikes", "review_deck", "date_added"]
+    ordering = ["date_added"]
 
-class GameReviewsDetailView(generics.RetrieveAPIView):
+
+class GameReviewsDetailView(BaseDetailView):
     queryset = Review.objects.all()
     serializer_class = GameReviewSerializer
-    permission_classes = [HasValidAPIKey]
 
-class NewsListView(generics.ListAPIView):
+
+class NewsListView(BaseListView):
     queryset = News.objects.all()
     serializer_class = NewsSerializer
-    permission_classes = [HasValidAPIKey]
+    filterset_class = NewsFilter
+    ordering_fields = ["title", "publish_date"]
+    ordering = ["title"]
 
-class NewsDetailView(generics.RetrieveAPIView):
+
+class NewsDetailView(BaseDetailView):
     queryset = News.objects.all()
     serializer_class = NewsSerializer
-    permission_classes = [HasValidAPIKey]
-
-
-
-
-
-
-
-
-
-
