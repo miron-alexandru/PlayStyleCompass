@@ -1,0 +1,71 @@
+.api-wrapper {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 30px;
+  background: #fafafa;
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  color: #333;
+}
+
+.api-title {
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 1.50rem;
+  font-weight: bold;
+  color: #333;
+  text-transform: uppercase;
+}
+
+.api-section {
+  background: #ffffff;
+  padding: 25px;
+  border-radius: 12px;
+  margin-bottom: 30px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.api-heading {
+  color: #4caf50;
+  margin-bottom: 15px;
+  font-size: 1.3rem;
+  text-transform: capitalize;
+}
+
+.http-method {
+  font-weight: bold;
+  color: #ff9800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-size: 1rem;
+}
+
+.api-endpoint {
+  background: #f2f2f2;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-family: "Courier New", monospace;
+  color: #333;
+  margin: 10px 0;
+  display: inline-block;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  font-size: 0.95rem;
+}
+
+.api-filters {
+  list-style-type: none;
+  padding: 0;
+}
+
+.api-filters li {
+  background: rgba(0, 0, 0, 0.05);
+  padding: 10px;
+  margin: 8px 0;
+  border-radius: 8px;
+  transition: background 0.3s ease;
+  font-size: 0.95rem;
+}
+
+.api-filters li:hover {
+  background: rgba(0, 0, 0, 0.1);
+}

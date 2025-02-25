@@ -195,6 +195,7 @@ urlpatterns = [
 ]
 
 api_urlpatterns = [
+    path("api/documentation/", api_views.api_documentation, name="api-documentation"),
     path("api/games/", api_views.GameListView.as_view(), name="game-list"),
     path("api/games/<int:pk>/", api_views.GameDetailView.as_view(), name="game-detail"),
     path(

@@ -17,8 +17,18 @@ from .api_filters import (
     NewsFilter,
 )
 from django_filters.rest_framework import DjangoFilterBackend
+from django.shortcuts import render
+from django.utils.translation import gettext as _
 from rest_framework.filters import OrderingFilter
 from rest_framework.pagination import LimitOffsetPagination
+
+
+def api_documentation(request):
+    context = {
+        'page_title': _('PlayStyle Compass :: API Documentation'),
+    }
+
+    return render(request, 'base/api_documentation.html', context)
 
 
 class BaseListView(generics.ListAPIView):
