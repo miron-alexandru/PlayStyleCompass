@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-02-13 10:27+0200\n"
-"PO-Revision-Date: 2025-02-13 10:29+0144\n"
+"POT-Creation-Date: 2025-02-26 15:20+0200\n"
+"PO-Revision-Date: 2025-02-26 15:34+0144\n"
 "Last-Translator:   <quality_xqs@yahoo.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -18,6 +18,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1?0:(((n%100>19)||((n%100==0)&&(n!=0)))?2:1));\n"
 "X-Translated-Using: django-rosetta 0.10.1\n"
+
+#: .\src\playstyle_compass\api_views.py:28
+#| msgid "The PlayStyle Compass Team"
+msgid "PlayStyle Compass :: API Documentation"
+msgstr "PlayStyle Compass :: Documentație API"
 
 #: .\src\playstyle_compass\forms.py:26
 #: .\src\playstyle_compass\templates\game_list\game_list_detail.html:157
@@ -91,6 +96,279 @@ msgstr "Comentariu listă"
 msgid "List Comments"
 msgstr "Comentarii listă"
 
+#: .\src\playstyle_compass\templates\base\api_documentation.html:8
+msgid "API Documentation"
+msgstr "Documentație API"
+
+#: .\src\playstyle_compass\templates\base\api_documentation.html:11
+#| msgid "List Comments"
+msgid "Get List of Games"
+msgstr "Obține lista de jocuri"
+
+#: .\src\playstyle_compass\templates\base\api_documentation.html:13
+#: .\src\playstyle_compass\templates\base\api_documentation.html:45
+#: .\src\playstyle_compass\templates\characters\game_character_template.html:22
+#: .\src\playstyle_compass\templates\franchises\franchise_template.html:22
+#: .\src\playstyle_compass\templates\game_list\explore_game_lists.html:47
+#: .\src\playstyle_compass\templates\game_list\favorite_game_lists.html:55
+#: .\src\playstyle_compass\templates\game_list\reviewed_game_lists.html:30
+#: .\src\playstyle_compass\templates\game_list\shared_game_lists.html:52
+#: .\src\playstyle_compass\templates\game_list\user_game_lists.html:56
+#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:80
+#: .\src\playstyle_compass\templates\polls\shared_polls.html:51
+msgid "Description:"
+msgstr "Descriere:"
+
+#: .\src\playstyle_compass\templates\base\api_documentation.html:13
+msgid "Retrieves a paginated list of games."
+msgstr "Recuperează o listă paginată de jocuri."
+
+#: .\src\playstyle_compass\templates\base\api_documentation.html:14
+#| msgid "Filter by:"
+msgid "Filters:"
+msgstr "Filtre:"
+
+#: .\src\playstyle_compass\templates\base\api_documentation.html:14
+msgid "Use query parameters to filter results."
+msgstr "Utilizează parametrii de interogare pentru a filtra rezultatele."
+
+#: .\src\playstyle_compass\templates\base\api_documentation.html:16
+msgid "Filter by platform (e.g., PC, PS5)."
+msgstr "Filtrează după platformă (de ex., PC, PS5)."
+
+#: .\src\playstyle_compass\templates\base\api_documentation.html:17
+msgid "Filter by game themes."
+msgstr "Filtrează după temele jocului."
+
+#: .\src\playstyle_compass\templates\base\api_documentation.html:18
+#| msgid "Filter by:"
+msgid "Filter by concepts."
+msgstr "Filtrează după concepte."
+
+#: .\src\playstyle_compass\templates\base\api_documentation.html:19
+msgid "Filter by game genres."
+msgstr "Filtrează după genurile jocului."
+
+#: .\src\playstyle_compass\templates\base\api_documentation.html:20
+#| msgid "Release date:"
+msgid "Filter by release date."
+msgstr "Filtrează după data lansării."
+
+#: .\src\playstyle_compass\templates\base\api_documentation.html:21
+msgid "Filter by developers."
+msgstr "Filtrează după dezvoltatori."
+
+#: .\src\playstyle_compass\templates\base\api_documentation.html:22
+msgid "Filter by casual games."
+msgstr "Filtrează după jocuri casual."
+
+#: .\src\playstyle_compass\templates\base\api_documentation.html:23
+msgid "Filter by popular games."
+msgstr "Filtrează după jocuri populare."
+
+#: .\src\playstyle_compass\templates\base\api_documentation.html:24
+msgid "Filter by minimum score."
+msgstr "Filtrează după scorul minim."
+
+#: .\src\playstyle_compass\templates\base\api_documentation.html:25
+#| msgid "Enter your favorite franchise..."
+msgid "Filter by game franchises."
+msgstr "Filtrează după francize de jocuri."
+
+#: .\src\playstyle_compass\templates\base\api_documentation.html:27
+msgid "Ordering:"
+msgstr "Sortare:"
+
+#: .\src\playstyle_compass\templates\base\api_documentation.html:27
+msgid "You can order the games by the following fields:"
+msgstr "Poți ordona jocurile după următoarele câmpuri:"
+
+#: .\src\playstyle_compass\templates\base\api_documentation.html:29
+msgid "Order by game title."
+msgstr "Ordonează după titlul jocului."
+
+#: .\src\playstyle_compass\templates\base\api_documentation.html:30
+#| msgid "Release date:"
+msgid "Order by release date."
+msgstr "Ordonează după data lansării."
+
+#: .\src\playstyle_compass\templates\base\api_documentation.html:31
+msgid "Order by average score."
+msgstr "Ordonează după scorul mediu."
+
+#: .\src\playstyle_compass\templates\base\api_documentation.html:33
+msgid "Pagination:"
+msgstr "Paginare:"
+
+#: .\src\playstyle_compass\templates\base\api_documentation.html:33
+msgid "Use the following parameters to control the pagination:"
+msgstr "Folosește următorii parametri pentru a controla paginarea:"
+
+#: .\src\playstyle_compass\templates\base\api_documentation.html:35
+msgid "Number of results per page (default: 100, max: 100)."
+msgstr "Numărul de rezultate pe pagină (implicit: 100, maxim: 100)."
+
+#: .\src\playstyle_compass\templates\base\api_documentation.html:36
+msgid "Skip the first N results (useful for pagination)."
+msgstr "Sari peste primele N rezultate (util pentru paginare)."
+
+#: .\src\playstyle_compass\templates\base\api_documentation.html:38
+#: .\src\playstyle_compass\templates\base\api_documentation.html:78
+msgid "Example:"
+msgstr "Exemplu:"
+
+#: .\src\playstyle_compass\templates\base\api_documentation.html:39
+#| msgid "Options:"
+msgid "Explanation:"
+msgstr "Explicație:"
+
+#: .\src\playstyle_compass\templates\base\api_documentation.html:39
+msgid ""
+"This request will retrieve a paginated list of popular action games "
+"available on PC, ordered by release date, with 10 results per page, starting"
+" from the first result."
+msgstr ""
+"Această cerere va returna o listă paginată de jocuri de acțiune populare "
+"disponibile pe PC, ordonată după data lansării, cu 10 rezultate pe pagină, "
+"începând de la primul rezultat."
+
+#: .\src\playstyle_compass\templates\base\api_documentation.html:43
+#| msgid "Create Game List"
+msgid "Get Game Details"
+msgstr "Obține detalii despre joc"
+
+#: .\src\playstyle_compass\templates\base\api_documentation.html:45
+msgid "Retrieves details of a specific game by ID."
+msgstr "Recuperează detaliile unui joc specific după ID."
+
+#: .\src\playstyle_compass\templates\base\api_documentation.html:46
+msgid "Query Parameters:"
+msgstr "Parametri de interogare:"
+
+#: .\src\playstyle_compass\templates\base\api_documentation.html:48
+msgid "Unique global identifier."
+msgstr "Identificator global unic."
+
+#: .\src\playstyle_compass\templates\base\api_documentation.html:49
+msgid "Title of the game."
+msgstr "Titlul jocului."
+
+#: .\src\playstyle_compass\templates\base\api_documentation.html:50
+#| msgid "Description"
+msgid "Detailed description."
+msgstr "Descriere detaliată."
+
+#: .\src\playstyle_compass\templates\base\api_documentation.html:51
+msgid "Short game overview."
+msgstr "Prezentare generală scurtă a jocului."
+
+#: .\src\playstyle_compass\templates\base\api_documentation.html:52
+#| msgid "favorite genres"
+msgid "Game genres."
+msgstr "Genuri de jocuri."
+
+#: .\src\playstyle_compass\templates\base\api_documentation.html:53
+#| msgid "No games available."
+msgid "Platforms the game is available on."
+msgstr "Platformele pe care este disponibil jocul."
+
+#: .\src\playstyle_compass\templates\base\api_documentation.html:54
+#| msgid "Game Styles"
+msgid "Game themes."
+msgstr "Teme de joc."
+
+#: .\src\playstyle_compass\templates\base\api_documentation.html:55
+msgid "Main game image URL."
+msgstr "URL-ul imaginii principale a jocului."
+
+#: .\src\playstyle_compass\templates\base\api_documentation.html:56
+#| msgid "Release date:"
+msgid "Release date of the game."
+msgstr "Data lansării jocului."
+
+#: .\src\playstyle_compass\templates\base\api_documentation.html:57
+msgid "Developers of the game."
+msgstr "Dezvoltatorii jocului."
+
+#: .\src\playstyle_compass\templates\base\api_documentation.html:58
+#| msgid "Additional Games"
+msgid "Additional game images."
+msgstr "Imagini suplimentare ale jocului."
+
+#: .\src\playstyle_compass\templates\base\api_documentation.html:59
+#| msgid "Similar games:"
+msgid "Similar games."
+msgstr "Jocuri similare."
+
+#: .\src\playstyle_compass\templates\base\api_documentation.html:60
+msgid "List of downloadable content (DLCs)."
+msgstr "Lista de conținut descărcabil (DLC-uri)."
+
+#: .\src\playstyle_compass\templates\base\api_documentation.html:61
+#| msgid "Franchises"
+msgid "Game franchises."
+msgstr "Francize de jocuri."
+
+#: .\src\playstyle_compass\templates\base\api_documentation.html:62
+msgid "Links to game videos."
+msgstr "Linkuri către videoclipuri despre joc."
+
+#: .\src\playstyle_compass\templates\base\api_documentation.html:63
+msgid "Game concepts."
+msgstr "Concepte ale jocului."
+
+#: .\src\playstyle_compass\templates\base\api_documentation.html:64
+msgid "Boolean flag for casual games."
+msgstr "Indicator boolean pentru jocuri casual."
+
+#: .\src\playstyle_compass\templates\base\api_documentation.html:65
+msgid "Boolean flag for popular games."
+msgstr "Indicator boolean pentru jocuri populare."
+
+#: .\src\playstyle_compass\templates\base\api_documentation.html:66
+msgid "Estimated playtime."
+msgstr "Timp de joc estimat."
+
+#: .\src\playstyle_compass\templates\base\api_documentation.html:67
+msgid "Minimum PC requirements."
+msgstr "Cerințe minime pentru PC."
+
+#: .\src\playstyle_compass\templates\base\api_documentation.html:68
+msgid "Recommended PC requirements."
+msgstr "Cerințe recomandate pentru PC."
+
+#: .\src\playstyle_compass\templates\base\api_documentation.html:69
+msgid "Minimum macOS requirements."
+msgstr "Cerințe minime pentru macOS."
+
+#: .\src\playstyle_compass\templates\base\api_documentation.html:70
+msgid "Recommended macOS requirements."
+msgstr "Cerințe recomandate pentru macOS."
+
+#: .\src\playstyle_compass\templates\base\api_documentation.html:71
+msgid "Minimum Linux requirements."
+msgstr "Cerințe minime pentru Linux."
+
+#: .\src\playstyle_compass\templates\base\api_documentation.html:72
+msgid "Recommended Linux requirements."
+msgstr "Cerințe recomandate pentru Linux."
+
+#: .\src\playstyle_compass\templates\base\api_documentation.html:73
+msgid "Average game rating."
+msgstr "Scor mediu al jocului."
+
+#: .\src\playstyle_compass\templates\base\api_documentation.html:74
+msgid "Total number of reviews."
+msgstr "Numărul total de recenzii."
+
+#: .\src\playstyle_compass\templates\base\api_documentation.html:75
+msgid "Translated description (Romanian)."
+msgstr "Descriere tradusă (română)."
+
+#: .\src\playstyle_compass\templates\base\api_documentation.html:76
+msgid "Translated overview (Romanian)."
+msgstr "Prezentare generală tradusă (română)."
+
 #: .\src\playstyle_compass\templates\base\index.html:10
 msgid "Find Your Ideal Games"
 msgstr "Găsește-ți Jocurile Ideale"
@@ -109,7 +387,7 @@ msgstr ""
 "Bine ai venit la PlayStyle Compass - portalul personalizat care îți deschide drumul către descoperirea jocurilor video perfect adaptate preferințelor tale unice, istoricului tău în gaming și inclinațiilor de gen. Indiferent dacă ești un entuziast casual sau un pasionat dedicat al jocurilor, aplicația noastră analizează cu meticulozitate profilul tău individual în gaming, oferind recomandări care se potrivesc gusturilor tale distincte. Începe o călătorie palpitantă prin lumea posibilităților de gaming, creând un cont cu noi!"
 
 #: .\src\playstyle_compass\templates\base\index.html:21
-#: .\src\templates\base.html:313
+#: .\src\templates\base.html:314
 #: .\src\users\templates\registration\register.html:104
 msgid "Register"
 msgstr "Înregistrare"
@@ -372,18 +650,6 @@ msgstr "Îmi pare rău, nu există date disponibile pentru acest caracter."
 #: .\src\playstyle_compass\templates\games\game_recommendations_section.html:23
 msgid "Image not available"
 msgstr "Imagine indisponibilă"
-
-#: .\src\playstyle_compass\templates\characters\game_character_template.html:22
-#: .\src\playstyle_compass\templates\franchises\franchise_template.html:22
-#: .\src\playstyle_compass\templates\game_list\explore_game_lists.html:47
-#: .\src\playstyle_compass\templates\game_list\favorite_game_lists.html:55
-#: .\src\playstyle_compass\templates\game_list\reviewed_game_lists.html:30
-#: .\src\playstyle_compass\templates\game_list\shared_game_lists.html:52
-#: .\src\playstyle_compass\templates\game_list\user_game_lists.html:56
-#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:80
-#: .\src\playstyle_compass\templates\polls\shared_polls.html:51
-msgid "Description:"
-msgstr "Descriere:"
 
 #: .\src\playstyle_compass\templates\characters\game_character_template.html:25
 #: .\src\playstyle_compass\templates\characters\game_character_template.html:46
@@ -1794,7 +2060,6 @@ msgid "No polls available at the moment."
 msgstr "Nu există sondaje disponibile momentan."
 
 #: .\src\playstyle_compass\templates\polls\completed_polls.html:8
-#| msgid "COMMUNITY POLLS"
 msgid "COMPLETED POLLS"
 msgstr "SONDAJE FINALIZATE"
 
@@ -2405,7 +2670,6 @@ msgid "Popular Games :: PlayStyle Compass"
 msgstr "Jocuri Populare :: PlayStyle Compass"
 
 #: .\src\playstyle_compass\views.py:2154
-#| msgid "Poll successfully shared!"
 msgid "Poll successfully created!"
 msgstr "Sondaj creat cu succes!"
 
@@ -2446,16 +2710,15 @@ msgid "Polls Shared With You"
 msgstr "Sondaje Distribuite Cu Tine"
 
 #: .\src\playstyle_compass\views.py:2506
-#| msgid "Voted Polls:: PlayStyle Compass"
 msgid "Completed Polls :: PlayStyle Compass"
 msgstr "Sondaje Finalizate :: PlayStyle Compass"
 
-#: .\src\playstyle_manager\settings.py:233 .\src\templates\base.html:403
+#: .\src\playstyle_manager\settings.py:261 .\src\templates\base.html:404
 #: .\src\users\models.py:69
 msgid "English"
 msgstr "Engleză"
 
-#: .\src\playstyle_manager\settings.py:233 .\src\templates\base.html:413
+#: .\src\playstyle_manager\settings.py:261 .\src\templates\base.html:414
 #: .\src\users\models.py:69
 msgid "Romanian"
 msgstr "Română"
@@ -2598,12 +2861,10 @@ msgid "Game Lists"
 msgstr "Liste de jocuri"
 
 #: .\src\templates\base.html:174
-#| msgid "Voted Polls"
 msgid "Community Polls"
 msgstr "Sondajele  Comunității"
 
 #: .\src\templates\base.html:177
-#| msgid "Voted Polls"
 msgid "Completed Polls"
 msgstr "Sondaje Finalizate"
 
@@ -2619,7 +2880,7 @@ msgstr "Altele"
 msgid "Preference Quiz"
 msgstr "Chestionarul de Preferințe"
 
-#: .\src\templates\base.html:262 .\src\templates\base.html:290
+#: .\src\templates\base.html:262 .\src\templates\base.html:291
 msgid "Account"
 msgstr "Cont"
 
@@ -2672,83 +2933,88 @@ msgid "Manage Privacy"
 msgstr "Gestionează Confidențialitatea"
 
 #: .\src\templates\base.html:285
+#| msgid "Manage Privacy"
+msgid "Manage API Key"
+msgstr "Gestionare cheie API"
+
+#: .\src\templates\base.html:286
 msgid "Update Password"
 msgstr "Actualizează parola"
 
-#: .\src\templates\base.html:286
+#: .\src\templates\base.html:287
 msgid "Update Email Address"
 msgstr "Actualizează adresa de email"
 
-#: .\src\templates\base.html:291
+#: .\src\templates\base.html:292
 msgid "Deactivate Account"
 msgstr "Dezactivează contul"
 
-#: .\src\templates\base.html:292
+#: .\src\templates\base.html:293
 msgid "Sign Out"
 msgstr "Deconectează-te"
 
-#: .\src\templates\base.html:299
+#: .\src\templates\base.html:300
 msgid "Social"
 msgstr "Social"
 
-#: .\src\templates\base.html:302
+#: .\src\templates\base.html:303
 msgid "Messages"
 msgstr "Mesaje"
 
-#: .\src\templates\base.html:303
+#: .\src\templates\base.html:304
 msgid "Following List"
 msgstr "Lista Urmăriților"
 
-#: .\src\templates\base.html:304
+#: .\src\templates\base.html:305
 msgid "Followers List"
 msgstr "Lista Urmăritorilor"
 
-#: .\src\templates\base.html:305
+#: .\src\templates\base.html:306
 msgid "Your Friends"
 msgstr "Prieteni"
 
-#: .\src\templates\base.html:306
+#: .\src\templates\base.html:307
 msgid "Friend Requests"
 msgstr "Cereri de Prietenie"
 
-#: .\src\templates\base.html:307
+#: .\src\templates\base.html:308
 msgid "Chat Rooms"
 msgstr "Camere de chat"
 
-#: .\src\templates\base.html:308
+#: .\src\templates\base.html:309
 msgid "Blocked Users"
 msgstr "Utilizatori blocați"
 
-#: .\src\templates\base.html:316
+#: .\src\templates\base.html:317
 #: .\src\users\templates\registration\login.html:61
 #: .\src\users\templates\registration\login.html:66
 #: .\src\users\templates\registration\register.html:107
 msgid "Log in"
 msgstr "Autentificare"
 
-#: .\src\templates\base.html:330 .\src\templates\base.html:336
+#: .\src\templates\base.html:331 .\src\templates\base.html:337
 #: .\src\users\templates\general\contact.html:19
 msgid "Contact"
 msgstr "Contact"
 
-#: .\src\templates\base.html:362
+#: .\src\templates\base.html:363
 msgid "Please confirm your email address to unlock all features."
 msgstr ""
 "Te rugăm să confirmi adresa de email pentru a debloca toate funcțiile."
 
-#: .\src\templates\base.html:364
+#: .\src\templates\base.html:365
 msgid "Resend verification link"
 msgstr "Retrimite link-ul de verificare"
 
-#: .\src\templates\base.html:425
+#: .\src\templates\base.html:426
 msgid "Global Chat"
 msgstr "Chat Global"
 
-#: .\src\templates\base.html:430
+#: .\src\templates\base.html:431
 msgid "GLOBAL CHAT"
 msgstr "CHAT GLOBAL"
 
-#: .\src\templates\base.html:433
+#: .\src\templates\base.html:434
 msgid ""
 "Connect with players from around the world and share your gaming "
 "experiences!"
@@ -2756,22 +3022,26 @@ msgstr ""
 "Conectează-te cu jucători din întreaga lume și împărtășește-ți experiențele "
 "de gaming!"
 
-#: .\src\templates\base.html:435 .\src\users\templates\messaging\chat.html:56
+#: .\src\templates\base.html:436 .\src\users\templates\messaging\chat.html:56
 msgid "Show More"
 msgstr "Arată mai mult"
 
-#: .\src\templates\base.html:441 .\src\users\templates\messaging\chat.html:30
+#: .\src\templates\base.html:442 .\src\users\templates\messaging\chat.html:30
 #: .\src\users\templates\messaging\chat.html:69
 msgid "Message..."
 msgstr "Mesaj..."
 
-#: .\src\templates\base.html:454
+#: .\src\templates\base.html:455
 msgid "PlayStyle Compass. All rights reserved."
 msgstr "PlayStyle Compass. Toate drepturile rezervate."
 
-#: .\src\templates\base.html:459
+#: .\src\templates\base.html:460
 msgid "Go top"
 msgstr "Mergi sus"
+
+#: .\src\users\api_views.py:21
+msgid "Playstyle Compass :: Manage API Key"
+msgstr "Playstyle Compass :: Gestionare cheie API"
 
 #: .\src\users\forms.py:38
 msgid ""
@@ -3041,6 +3311,80 @@ msgstr "Șterge cu Confirmare prin Email"
 #: .\src\users\templates\account_actions\delete_account.html:44
 msgid "Confirm your email address to unlock this!"
 msgstr "Confirmă adresa ta de email pentru a debloca acest lucru!"
+
+#: .\src\users\templates\account_actions\manage_api_key.html:7
+msgid "API KEY MANAGEMENT"
+msgstr "GESTIONARE CHEIE API"
+
+#: .\src\users\templates\account_actions\manage_api_key.html:12
+msgid ""
+"Manage and generate your API key to securely access the PlayStyle Compass "
+"services. Keep your API key safe and use it for authentication when "
+"interacting with the platform."
+msgstr ""
+"Gestionează și generează cheia ta API pentru a accesa în siguranță "
+"serviciile PlayStyle Compass. Păstrează-ți cheia API în siguranță și "
+"folosește-o pentru autentificare atunci când interacționezi cu platforma."
+
+#: .\src\users\templates\account_actions\manage_api_key.html:20
+msgid "Your API Key is..."
+msgstr "Cheia ta API este..."
+
+#: .\src\users\templates\account_actions\manage_api_key.html:24
+#: .\src\users\templates\account_actions\manage_api_key.html:57
+msgid "Copy"
+msgstr "Copiază"
+
+#: .\src\users\templates\account_actions\manage_api_key.html:25
+#: .\src\users\templates\account_actions\manage_api_key.html:58
+msgid "Revoke API Key"
+msgstr "Revocă cheia API"
+
+#: .\src\users\templates\account_actions\manage_api_key.html:27
+msgid "You do not have an API key yet."
+msgstr "Nu ai încă o cheie API."
+
+#: .\src\users\templates\account_actions\manage_api_key.html:28
+msgid "Generate API Key"
+msgstr "Generează cheie API"
+
+#: .\src\users\templates\account_actions\manage_api_key.html:40
+msgid "API Key copied to clipboard!"
+msgstr "Cheia API a fost copiată în clipboard!"
+
+#: .\src\users\templates\account_actions\manage_api_key.html:55
+msgid "API Key"
+msgstr "Cheie API"
+
+#: .\src\users\templates\account_actions\manage_api_key.html:59
+#| msgid "Poll successfully created!"
+msgid "API key successfully generated."
+msgstr "Cheia API a fost generată cu succes."
+
+#: .\src\users\templates\account_actions\manage_api_key.html:62
+msgid "Failed to generate API key."
+msgstr "Nu s-a putut genera cheia API."
+
+#: .\src\users\templates\account_actions\manage_api_key.html:67
+msgid "An error occurred while generating the API key."
+msgstr "A apărut o eroare în timpul generării cheii API."
+
+#: .\src\users\templates\account_actions\manage_api_key.html:83
+#| msgid "User has been blocked."
+msgid "Your API key has been revoked."
+msgstr "Cheia API a fost revocată."
+
+#: .\src\users\templates\account_actions\manage_api_key.html:84
+msgid "Generate New API Key"
+msgstr "Generează o nouă cheie API"
+
+#: .\src\users\templates\account_actions\manage_api_key.html:87
+msgid "Failed to revoke API key."
+msgstr "Nu s-a putut revoca cheia API."
+
+#: .\src\users\templates\account_actions\manage_api_key.html:92
+msgid "An error occurred while revoking the API key."
+msgstr "A apărut o eroare în timpul revocării cheii API."
 
 #: .\src\users\templates\account_actions\password_change_form.html:7
 msgid "CHANGE PASSWORD"

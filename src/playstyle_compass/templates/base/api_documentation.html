@@ -5,77 +5,77 @@
 {% block content %}
 <link rel="stylesheet" href="{% static 'css/playstyle_compass/api_documentation.css' %}">
 <div class="api-wrapper">
-    <h1 class="api-title">API Documentation</h1>
+    <h1 class="api-title">{% trans "API Documentation" %}</h1>
 
     <div class="api-section">
-        <h2 class="api-heading">Get List of Games</h2>
+        <h2 class="api-heading">{% trans "Get List of Games" %}</h2>
         <p><span class="http-method">GET</span> <code class="api-endpoint">/api/games/</code></p>
-        <p><strong>Description:</strong> Retrieves a paginated list of games.</p>
-        <p><strong>Filters:</strong> Use query parameters to filter results.</p>
+        <p><strong>{% trans "Description:" %}</strong> {% trans "Retrieves a paginated list of games." %}</p>
+        <p><strong>{% trans "Filters:" %}</strong> {% trans "Use query parameters to filter results." %}</p>
         <ul class="api-filters">
-            <li><code>platforms</code> - Filter by platform (e.g., PC, PS5).</li>
-            <li><code>themes</code> - Filter by game themes.</li>
-            <li><code>concepts</code> - Filter by concepts.</li>
-            <li><code>genres</code> - Filter by game genres.</li>
-            <li><code>release_date</code> - Filter by release date.</li>
-            <li><code>developers</code> - Filter by developers.</li>
-            <li><code>is_casual</code> - Filter by casual games.</li>
-            <li><code>is_popular</code> - Filter by popular games.</li>
-            <li><code>average_score</code> - Filter by minimum score.</li>
-            <li><code>franchises</code> - Filter by game franchises.</li>
+            <li><code>platforms</code> - {% trans "Filter by platform (e.g., PC, PS5)." %}</li>
+            <li><code>themes</code> - {% trans "Filter by game themes." %}</li>
+            <li><code>concepts</code> - {% trans "Filter by concepts." %}</li>
+            <li><code>genres</code> - {% trans "Filter by game genres." %}</li>
+            <li><code>release_date</code> - {% trans "Filter by release date." %}</li>
+            <li><code>developers</code> - {% trans "Filter by developers." %}</li>
+            <li><code>is_casual</code> - {% trans "Filter by casual games." %}</li>
+            <li><code>is_popular</code> - {% trans "Filter by popular games." %}</li>
+            <li><code>average_score</code> - {% trans "Filter by minimum score." %}</li>
+            <li><code>franchises</code> - {% trans "Filter by game franchises." %}</li>
         </ul>
-        <p><strong>Ordering:</strong> You can order the games by the following fields:</p>
+        <p><strong>{% trans "Ordering:" %}</strong> {% trans "You can order the games by the following fields:" %}</p>
         <ul class="api-filters">
-            <li><code>title</code> - Order by game title.</li>
-            <li><code>release_date</code> - Order by release date.</li>
-            <li><code>average_score</code> - Order by average score.</li>
+            <li><code>title</code> - {% trans "Order by game title." %}</li>
+            <li><code>release_date</code> - {% trans "Order by release date." %}</li>
+            <li><code>average_score</code> - {% trans "Order by average score." %}</li>
         </ul>
-        <p><strong>Pagination:</strong> Use the following parameters to control the pagination:</p>
+        <p><strong>{% trans "Pagination:" %}</strong> {% trans "Use the following parameters to control the pagination:" %}</p>
         <ul class="api-filters">
-            <li><code>limit</code> - Number of results per page (default: 100, max: 100).</li>
-            <li><code>offset</code> - Skip the first N results (useful for pagination).</li>
+            <li><code>limit</code> - {% trans "Number of results per page (default: 100, max: 100)." %}</li>
+            <li><code>offset</code> - {% trans "Skip the first N results (useful for pagination)." %}</li>
         </ul>
-        <p><strong>Example:</strong> <code class="api-endpoint">/api/games/?platforms=PC&genres=Action&is_popular=true&ordering=release_date&limit=10&offset=0</code></p>
-        <p><strong>Explanation:</strong> This request will retrieve a paginated list of popular action games available on PC, ordered by release date, with 10 results per page, starting from the first result.</p>
+        <p><strong>{% trans "Example:" %}</strong> <code class="api-endpoint">/api/games/?platforms=PC&genres=Action&is_popular=true&ordering=release_date&limit=10&offset=0</code></p>
+        <p><strong>{% trans "Explanation:" %}</strong> {% trans "This request will retrieve a paginated list of popular action games available on PC, ordered by release date, with 10 results per page, starting from the first result." %}</p>
     </div>
 
     <div class="api-section">
-        <h2 class="api-heading">Get Game Details</h2>
+        <h2 class="api-heading">{% trans "Get Game Details" %}</h2>
         <p><span class="http-method">GET</span> <code class="api-endpoint">/api/games/&lt;id&gt;/</code></p>
-        <p><strong>Description:</strong> Retrieves details of a specific game by ID.</p>
-        <p><strong>Query Parameters:</strong></p>
+        <p><strong>{% trans "Description:" %}</strong> {% trans "Retrieves details of a specific game by ID." %}</p>
+        <p><strong>{% trans "Query Parameters:" %}</strong></p>
         <ul class="api-filters">
-            <li><code>guid</code> - Unique global identifier.</li>
-            <li><code>title</code> - Title of the game.</li>
-            <li><code>description</code> - Detailed description.</li>
-            <li><code>overview</code> - Short game overview.</li>
-            <li><code>genres</code> - Game genres.</li>
-            <li><code>platforms</code> - Platforms the game is available on.</li>
-            <li><code>themes</code> - Game themes.</li>
-            <li><code>image</code> - Main game image URL.</li>
-            <li><code>release_date</code> - Release date of the game.</li>
-            <li><code>developers</code> - Developers of the game.</li>
-            <li><code>game_images</code> - Additional game images.</li>
-            <li><code>similar_games</code> - Similar games.</li>
-            <li><code>dlcs</code> - List of downloadable content (DLCs).</li>
-            <li><code>franchises</code> - Game franchises.</li>
-            <li><code>videos</code> - Links to game videos.</li>
-            <li><code>concepts</code> - Game concepts.</li>
-            <li><code>is_casual</code> - Boolean flag for casual games.</li>
-            <li><code>is_popular</code> - Boolean flag for popular games.</li>
-            <li><code>playtime</code> - Estimated playtime.</li>
-            <li><code>pc_req_min</code> - Minimum PC requirements.</li>
-            <li><code>pc_req_rec</code> - Recommended PC requirements.</li>
-            <li><code>mac_req_min</code> - Minimum macOS requirements.</li>
-            <li><code>mac_req_rec</code> - Recommended macOS requirements.</li>
-            <li><code>linux_req_min</code> - Minimum Linux requirements.</li>
-            <li><code>linux_req_rec</code> - Recommended Linux requirements.</li>
-            <li><code>average_score</code> - Average game rating.</li>
-            <li><code>total_reviews</code> - Total number of reviews.</li>
-            <li><code>translated_description_ro</code> - Translated description (Romanian).</li>
-            <li><code>translated_overview_ro</code> - Translated overview (Romanian).</li>
+            <li><code>guid</code> - {% trans "Unique global identifier." %}</li>
+            <li><code>title</code> - {% trans "Title of the game." %}</li>
+            <li><code>description</code> - {% trans "Detailed description." %}</li>
+            <li><code>overview</code> - {% trans "Short game overview." %}</li>
+            <li><code>genres</code> - {% trans "Game genres." %}</li>
+            <li><code>platforms</code> - {% trans "Platforms the game is available on." %}</li>
+            <li><code>themes</code> - {% trans "Game themes." %}</li>
+            <li><code>image</code> - {% trans "Main game image URL." %}</li>
+            <li><code>release_date</code> - {% trans "Release date of the game." %}</li>
+            <li><code>developers</code> - {% trans "Developers of the game." %}</li>
+            <li><code>game_images</code> - {% trans "Additional game images." %}</li>
+            <li><code>similar_games</code> - {% trans "Similar games." %}</li>
+            <li><code>dlcs</code> - {% trans "List of downloadable content (DLCs)." %}</li>
+            <li><code>franchises</code> - {% trans "Game franchises." %}</li>
+            <li><code>videos</code> - {% trans "Links to game videos." %}</li>
+            <li><code>concepts</code> - {% trans "Game concepts." %}</li>
+            <li><code>is_casual</code> - {% trans "Boolean flag for casual games." %}</li>
+            <li><code>is_popular</code> - {% trans "Boolean flag for popular games." %}</li>
+            <li><code>playtime</code> - {% trans "Estimated playtime." %}</li>
+            <li><code>pc_req_min</code> - {% trans "Minimum PC requirements." %}</li>
+            <li><code>pc_req_rec</code> - {% trans "Recommended PC requirements." %}</li>
+            <li><code>mac_req_min</code> - {% trans "Minimum macOS requirements." %}</li>
+            <li><code>mac_req_rec</code> - {% trans "Recommended macOS requirements." %}</li>
+            <li><code>linux_req_min</code> - {% trans "Minimum Linux requirements." %}</li>
+            <li><code>linux_req_rec</code> - {% trans "Recommended Linux requirements." %}</li>
+            <li><code>average_score</code> - {% trans "Average game rating." %}</li>
+            <li><code>total_reviews</code> - {% trans "Total number of reviews." %}</li>
+            <li><code>translated_description_ro</code> - {% trans "Translated description (Romanian)." %}</li>
+            <li><code>translated_overview_ro</code> - {% trans "Translated overview (Romanian)." %}</li>
         </ul>
-        <p><strong>Example:</strong> <code class="api-endpoint">/api/games/12/?fields=title,genres,release_date</code></p>
+        <p><strong>{% trans "Example:" %}</strong> <code class="api-endpoint">/api/games/12/?fields=title,genres,release_date</code></p>
     </div>
 </div>
 {% endblock %}
