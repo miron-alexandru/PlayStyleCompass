@@ -55,6 +55,7 @@
   --list-review-text: #0056b3;
   --global-chat-header: #4e8cff;
   --global-chat-description: #e0f0ff;
+  --api-filters-background: rgba(0, 0, 0, 0.05);
 }
 
 /* Dark Theme  */
@@ -113,5 +114,6 @@
   --separator-border: #0f0f0f;
   --list-review-text: #f9f9f9;
   --global-chat-header: #333333;
-  --global-chat-description: #4d4d4d;      
+  --global-chat-description: #4d4d4d;
+  --api-filters-background: #202020;    
 }

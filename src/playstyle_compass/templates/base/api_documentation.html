@@ -7,7 +7,23 @@
 <div class="api-wrapper">
     <h1 class="api-title">{% trans "API Documentation" %}</h1>
 
-    <div class="api-section">
+    <div class="api-navigation">
+        <h3 class=navigation-title>List of Resources</h3>
+      <ul>
+        <li><a href="#games">Games</a></li>
+        <li><a href="#game-details">Game Details</a></li>
+        <li><a href="#franchises">Franchises</a></li>
+        <li><a href="#franchise-details">Franchise Details</a></li>
+        <li><a href="#characters">Characters</a></li>
+        <li><a href="#character-details">Character Details</a></li>
+        <li><a href="#reviews">Game Reviews</a></li>
+        <li><a href="#review-details">Game Review Details</a></li>
+        <li><a href="#news">News</a></li>
+        <li><a href="#news-details">News Details</a></li>
+      </ul>
+    </div>
+
+    <div class="api-section" id="games">
         <h2 class="api-heading">{% trans "Get List of Games" %}</h2>
         <p><span class="http-method">GET</span> <code class="api-endpoint">/api/games/</code></p>
         <p><strong>{% trans "Description:" %}</strong> {% trans "Retrieves a paginated list of games." %}</p>
@@ -39,7 +55,7 @@
         <p><strong>{% trans "Explanation:" %}</strong> {% trans "This request will retrieve a paginated list of popular action games available on PC, ordered by release date, with 10 results per page, starting from the first result." %}</p>
     </div>
 
-    <div class="api-section">
+    <div class="api-section" id="game-details">
         <h2 class="api-heading">{% trans "Get Game Details" %}</h2>
         <p><span class="http-method">GET</span> <code class="api-endpoint">/api/games/&lt;id&gt;/</code></p>
         <p><strong>{% trans "Description:" %}</strong> {% trans "Retrieves details of a specific game by ID." %}</p>
@@ -76,6 +92,190 @@
             <li><code>translated_overview_ro</code> - {% trans "Translated overview (Romanian)." %}</li>
         </ul>
         <p><strong>{% trans "Example:" %}</strong> <code class="api-endpoint">/api/games/12/?fields=title,genres,release_date</code></p>
+
+    <div class="api-section" id="franchises">
+        <h2 class="api-heading">{% trans "Get List of Franchises" %}</h2>
+        <p><span class="http-method">GET</span><code class="api-endpoint">api/franchises</code></p>
+        <p><strong>{% trans "Description:" %}</strong> {% trans "Retrieve a paginated list of franchises." %}</p>
+        <p><strong>{% trans "Filters:" %}</strong> {% trans "Use query parameters to filter results." %}</p>
+        <ul class="api-filters">
+            <li><code>title</code> - {% trans "Filter by title." %}</li>
+            <li><code>games</code> - {% trans "Filter by games." %}</li>
+            <li><code>games_count</code> - {% trans "Filter by number of games." %}</li>
+        </ul>
+        <p><strong>{% trans "Ordering:" %}</strong> {% trans "You can order the franchises by the following fields:" %}</p>
+        <ul class="api-filters">
+            <li><code>title</code> - {% trans "Order by game title." %}</li>
+            <li><code>games_count</code> - {% trans "Order by number of games." %}</li>
+        </ul>
+        <p><strong>{% trans "Pagination:" %}</strong> {% trans "Use the following parameters to control the pagination:" %}</p>
+        <ul class="api-filters">
+            <li><code>limit</code> - {% trans "Number of results per page (default: 100, max: 100)." %}</li>
+            <li><code>offset</code> - {% trans "Skip the first N results (useful for pagination)." %}</li>
+        </ul>
+        <p><strong>{% trans "Example:" %}</strong> <code class="api-endpoint">/api/franchises/?games=Assassin's Creed&ordering=title&limit=5&offset=0</code></p>
+        <p><strong>{% trans "Explanation:" %}</strong> {% blocktrans %} "This request retrieves a paginated list of franchises that include the game Assassins Creed. The results are ordered alphabetically by title, with a maximum of 5 franchises per page. {% endblocktrans %}</p>
+    </div>
+
+    <div class="api-section" id="franchise-details">
+        <h2 class="api-heading">{% trans "Get Franchise Details" %}</h2>
+        <p><span class="http-method">GET</span> <code class="api-endpoint">/api/franchises/&lt;id&gt;/</code></p>
+        <p><strong>{% trans "Description:" %}</strong> {% trans "Retrieves details of a specific franachise by ID." %}</p>
+        <p><strong>{% trans "Query Parameters:" %}</strong></p>
+        <ul class="api-filters">
+            <li><code>id</code> - {% trans "Unique identifier for the franchise." %}</li>
+            <li><code>title</code> - {% trans "Title of the franchise." %}</li>
+            <li><code>description</code> - {% trans "Detailed description of the franchise." %}</li>
+            <li><code>overview</code> - {% trans "General overview of the franchise." %}</li>
+            <li><code>games</code> - {% trans "List of games associated with the franchise." %}</li>
+            <li><code>image</code> - {% trans "URL of the main image representing the franchise." %}</li>
+            <li><code>images</code> - {% trans "URLs of additional images related to the franchise." %}</li>
+            <li><code>games_count</code> - {% trans "Total number of games in the franchise." %}</li>
+        </ul>
+        <p><strong>{% trans "Example:" %}</strong> <code class="api-endpoint">/api/franchises/5/?fields=title,overview,games</code></p>
+    </div>
+
+    <div class="api-section" id="characters">
+        <h2 class="api-heading">{% trans "Get List of Characters" %}</h2>
+        <p><span class="http-method">GET</span> <code class="api-endpoint">/api/characters</code></p>
+        <p><strong>{% trans "Description:" %}</strong> {% trans "Retrieve a paginated list of characters." %}</p>
+        <p><strong>{% trans "Filters:" %}</strong> {% trans "Use query parameters to filter results." %}</p>
+        <ul class="api-filters">
+            <li><code>name</code> - {% trans "Filter by character name." %}</li>
+            <li><code>birthday</code> - {% trans "Filter by birthday." %}</li>
+            <li><code>friends</code> - {% trans "Filter by friends of the character." %}</li>
+            <li><code>enemies</code> - {% trans "Filter by enemies of the character." %}</li>
+            <li><code>games</code> - {% trans "Filter by games the character appears in." %}</li>
+            <li><code>first_game</code> - {% trans "Filter by the first game the character appeared in." %}</li>
+            <li><code>franchises</code> - {% trans "Filter by franchises associated with the character." %}</li>
+        </ul>
+        <p><strong>{% trans "Ordering:" %}</strong> {% trans "You can order the characters by the following fields:" %}</p>
+        <ul class="api-filters">
+            <li><code>name</code> - {% trans "Order by character name." %}</li>
+        </ul>
+        <p><strong>{% trans "Pagination:" %}</strong> {% trans "Use the following parameters to control pagination:" %}</p>
+        <ul class="api-filters">
+            <li><code>limit</code> - {% trans "Number of results per page (default: 100, max: 100)." %}</li>
+            <li><code>offset</code> - {% trans "Skip the first N results (useful for pagination)." %}</li>
+        </ul>
+        <p><strong>{% trans "Example:" %}</strong> <code class="api-endpoint">/api/characters/?games=The Witcher&ordering=name&limit=5&offset=0</code></p>
+        <p><strong>{% trans "Explanation:" %}</strong> {% trans "This request retrieves a paginated list of characters that appear in 'The Witcher'. The results are ordered alphabetically by name, with a maximum of 5 characters per page." %}</p>
+    </div>
+
+    <div class="api-section" id="character-details">
+        <h2 class="api-heading">{% trans "Get Character Details" %}</h2>
+        <p><span class="http-method">GET</span> <code class="api-endpoint">/api/characters/&lt;id&gt;/</code></p>
+        <p><strong>{% trans "Description:" %}</strong> {% trans "Retrieve details of a specific character by ID." %}</p>
+        <p><strong>{% trans "Query Parameters:" %}</strong></p>
+        <ul class="api-filters">
+            <li><code>id</code> - {% trans "Unique identifier for the character." %}</li>
+            <li><code>name</code> - {% trans "Name of the character." %}</li>
+            <li><code>deck</code> - {% trans "Brief summary of the character." %}</li>
+            <li><code>description</code> - {% trans "Detailed description of the character." %}</li>
+            <li><code>birthday</code> - {% trans "Character's birthday." %}</li>
+            <li><code>friends</code> - {% trans "List of the character's friends." %}</li>
+            <li><code>enemies</code> - {% trans "List of the character's enemies." %}</li>
+            <li><code>games</code> - {% trans "List of games the character appears in." %}</li>
+            <li><code>first_game</code> - {% trans "The first game the character appeared in." %}</li>
+            <li><code>franchises</code> - {% trans "Franchises associated with the character." %}</li>
+            <li><code>image</code> - {% trans "URL of the main image representing the character." %}</li>
+            <li><code>images</code> - {% trans "URLs of additional images related to the character." %}</li>
+            <li><code>character_id</code> - {% trans "Unique identifier assigned to the character." %}</li>
+        </ul>
+        <p><strong>{% trans "Example:" %}</strong> <code class="api-endpoint">/api/characters/10/?fields=name,description,games</code></p>
+    </div>
+
+    <div class="api-section" id="reviews">
+        <h2 class="api-heading">{% trans "Get List of Game Reviews" %}</h2>
+        <p><span class="http-method">GET</span> <code class="api-endpoint">/api/game-reviews</code></p>
+        <p><strong>{% trans "Description:" %}</strong> {% trans "Retrieve a paginated list of game reviews." %}</p>
+        <p><strong>{% trans "Filters:" %}</strong> {% trans "Use query parameters to filter results." %}</p>
+        <ul class="api-filters">
+            <li><code>game</code> - {% trans "Filter by game GUID." %}</li>
+            <li><code>reviewers</code> - {% trans "Filter by reviewer name (case-insensitive search)." %}</li>
+            <li><code>score</code> - {% trans "Filter by exact review score." %}</li>
+            <li><code>min_score</code> - {% trans "Filter reviews with a score greater than or equal to this value." %}</li>
+            <li><code>max_score</code> - {% trans "Filter reviews with a score less than or equal to this value." %}</li>
+            <li><code>date_added</code> - {% trans "Filter by the exact date the review was added." %}</li>
+        </ul>
+        <p><strong>{% trans "Ordering:" %}</strong> {% trans "You can order the reviews by the following fields:" %}</p>
+        <ul class="api-filters">
+            <li><code>score</code> - {% trans "Order by review score." %}</li>
+            <li><code>likes</code> - {% trans "Order by number of likes." %}</li>
+            <li><code>dislikes</code> - {% trans "Order by number of dislikes." %}</li>
+            <li><code>review_deck</code> - {% trans "Order by review deck." %}</li>
+            <li><code>date_added</code> - {% trans "Order by review date." %}</li>
+        </ul>
+        <p><strong>{% trans "Pagination:" %}</strong> {% trans "Use the following parameters to control pagination:" %}</p>
+        <ul class="api-filters">
+            <li><code>limit</code> - {% trans "Number of results per page (default: 100, max: 100)." %}</li>
+            <li><code>offset</code> - {% trans "Skip the first N results (useful for pagination)." %}</li>
+        </ul>
+        <p><strong>{% trans "Example:" %}</strong> <code class="api-endpoint">/api/game-reviews/?game=12345&ordering=score&limit=10&offset=0</code></p>
+        <p><strong>{% trans "Explanation:" %}</strong> {% trans "This request retrieves a paginated list of reviews for the game with GUID '12345'. The results are ordered by score, with a maximum of 10 reviews per page." %}</p>
+    </div>
+
+    <div class="api-section" id="review-details">
+        <h2 class="api-heading">{% trans "Get Game Review Details" %}</h2>
+        <p><span class="http-method">GET</span> <code class="api-endpoint">/api/game-reviews/&lt;id&gt;/</code></p>
+        <p><strong>{% trans "Description:" %}</strong> {% trans "Retrieve details of a specific review by ID." %}</p>
+        <p><strong>{% trans "Query Parameters:" %}</strong></p>
+        <ul class="api-filters">
+            <li><code>id</code> - {% trans "Unique identifier for the review." %}</li>
+            <li><code>game</code> - {% trans "GUID of the game being reviewed." %}</li>
+            <li><code>reviewers</code> - {% trans "Name of the reviewer." %}</li>
+            <li><code>review_deck</code> - {% trans "Short summary of the review." %}</li>
+            <li><code>review_description</code> - {% trans "Full review text." %}</li>
+            <li><code>score</code> - {% trans "Review score." %}</li>
+            <li><code>likes</code> - {% trans "Number of likes the review has received." %}</li>
+            <li><code>dislikes</code> - {% trans "Number of dislikes the review has received." %}</li>
+            <li><code>liked_by</code> - {% trans "List of users who liked the review." %}</li>
+            <li><code>disliked_by</code> - {% trans "List of users who disliked the review." %}</li>
+            <li><code>date_added</code> - {% trans "Date and time when the review was added." %}</li>
+        </ul>
+        <p><strong>{% trans "Example:" %}</strong> <code class="api-endpoint">/api/game-reviews/42/?fields=game,review_deck,score,likes</code></p>
+    </div>
+
+    <div class="api-section" id="news">
+        <h2 class="api-heading">{% trans "Get List of News Articles" %}</h2>
+        <p><span class="http-method">GET</span> <code class="api-endpoint">/api/news</code></p>
+        <p><strong>{% trans "Description:" %}</strong> {% trans "Retrieve a paginated list of news articles." %}</p>
+        <p><strong>{% trans "Filters:" %}</strong> {% trans "Use query parameters to filter results." %}</p>
+        <ul class="api-filters">
+            <li><code>title</code> - {% trans "Filter by news title (case-insensitive search)." %}</li>
+            <li><code>publish_date</code> - {% trans "Filter by publication date (partial match allowed)." %}</li>
+            <li><code>platforms</code> - {% trans "Filter by platforms mentioned in the news article (case-insensitive search)." %}</li>
+        </ul>
+        <p><strong>{% trans "Ordering:" %}</strong> {% trans "You can order the news articles by the following fields:" %}</p>
+        <ul class="api-filters">
+            <li><code>title</code> - {% trans "Order by article title." %}</li>
+            <li><code>publish_date</code> - {% trans "Order by publication date." %}</li>
+        </ul>
+        <p><strong>{% trans "Pagination:" %}</strong> {% trans "Use the following parameters to control pagination:" %}</p>
+        <ul class="api-filters">
+            <li><code>limit</code> - {% trans "Number of results per page (default: 100, max: 100)." %}</li>
+            <li><code>offset</code> - {% trans "Skip the first N results (useful for pagination)." %}</li>
+        </ul>
+        <p><strong>{% trans "Example:" %}</strong> <code class="api-endpoint">/api/news/?title=Cyberpunk&ordering=publish_date&limit=10&offset=0</code></p>
+        <p><strong>{% trans "Explanation:" %}</strong> {% trans "This request retrieves a paginated list of news articles with 'Cyberpunk' in the title, ordered by publish date, with a maximum of 10 articles per page." %}</p>
+    </div>
+
+    <div class="api-section" id="news-details">
+        <h2 class="api-heading">{% trans "Get News Article Details" %}</h2>
+        <p><span class="http-method">GET</span> <code class="api-endpoint">/api/news/&lt;id&gt;/</code></p>
+        <p><strong>{% trans "Description:" %}</strong> {% trans "Retrieve details of a specific news article by ID." %}</p>
+        <p><strong>{% trans "Query Parameters:" %}</strong></p>
+        <ul class="api-filters">
+            <li><code>id</code> - {% trans "Unique identifier for the news article." %}</li>
+            <li><code>article_id</code> - {% trans "External article ID." %}</li>
+            <li><code>title</code> - {% trans "Title of the news article." %}</li>
+            <li><code>summary</code> - {% trans "Brief summary of the article." %}</li>
+            <li><code>url</code> - {% trans "Link to the full article." %}</li>
+            <li><code>image</code> - {% trans "URL of the article's featured image." %}</li>
+            <li><code>publish_date</code> - {% trans "Publication date of the article." %}</li>
+            <li><code>platforms</code> - {% trans "Platforms mentioned in the article." %}</li>
+        </ul>
+        <p><strong>{% trans "Example:" %}</strong> <code class="api-endpoint">/api/news/42/?fields=title,summary,publish_date</code></p>
     </div>
 </div>
-{% endblock %}
+{% endblock content %}
