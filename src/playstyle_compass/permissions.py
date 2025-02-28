@@ -5,7 +5,7 @@ from users.models import UserProfile
 
 class HasValidAPIKey(BasePermission):
     def has_permission(self, request, view):
-        api_key = request.GET.get("API-KEY")
+        api_key = request.GET.get("api_key")
 
         if not api_key:
             api_key = request.headers.get("Authorization")

@@ -2,29 +2,61 @@
 {% load static %}
 {% load i18n %}
 
+{% block page_header %}
+<div class="header">
+  <h3>{% trans "API DOCUMENTATION" %}</h3>
+</div>
+{% endblock page_header %}
+
+{% block description %}
+{% blocktrans %}Explore the PlayStyle Compass API to seamlessly integrate gaming data into your applications.{% endblocktrans %}
+{% endblock description %}
+
 {% block content %}
 <link rel="stylesheet" href="{% static 'css/playstyle_compass/api_documentation.css' %}">
+
+
+
 <div class="api-wrapper">
     <h1 class="api-title">{% trans "API Documentation" %}</h1>
 
+    <div class="api-section" id="authentication">
+        <h2 class="api-heading">{% trans "Authentication" %}</h2>
+        <p><strong>{% trans "To access the API, you must provide an API key." %}</strong></p>
+        <p>{% trans "There are two ways to authenticate:" %}</p>
+
+        <p class="api-authentication">{% trans "1. Using the API Key in the URL" %}</p>
+        <p>{% trans "You can pass the API key as a query parameter like this:" %}</p>
+        <code class="api-endpoint">/api/games/?api_key=YOUR_API_KEY</code>
+
+        <p class="api-authentication">{% trans "2. Using the Authorization Header" %}</p>
+        <p>{% trans "You can also include the API key in the request headers:" %}</p>
+        <code class="api-endpoint">Authorization: YOUR_API_KEY</code>
+
+        <p><strong>{% trans "Example cURL request:" %}</strong></p>
+        <pre class="curl-example"><code>curl -H "Authorization: YOUR_API_KEY" https://localhost/api/games/</code></pre>
+
+        <p>{% trans "Replace 'YOUR_API_KEY' with your actual API key." %}</p>
+    </div>
+
     <div class="api-navigation">
         <h3 class=navigation-title>List of Resources</h3>
-      <ul>
-        <li><a href="#games">Games</a></li>
-        <li><a href="#game-details">Game Details</a></li>
-        <li><a href="#franchises">Franchises</a></li>
-        <li><a href="#franchise-details">Franchise Details</a></li>
-        <li><a href="#characters">Characters</a></li>
-        <li><a href="#character-details">Character Details</a></li>
-        <li><a href="#reviews">Game Reviews</a></li>
-        <li><a href="#review-details">Game Review Details</a></li>
-        <li><a href="#news">News</a></li>
-        <li><a href="#news-details">News Details</a></li>
-      </ul>
+        <ul>
+            <li><a href="#games">Games</a></li>
+            <li><a href="#game-details">Game Details</a></li>
+            <li><a href="#franchises">Franchises</a></li>
+            <li><a href="#franchise-details">Franchise Details</a></li>
+            <li><a href="#characters">Characters</a></li>
+            <li><a href="#character-details">Character Details</a></li>
+            <li><a href="#reviews">Game Reviews</a></li>
+            <li><a href="#review-details">Game Review Details</a></li>
+            <li><a href="#news">News</a></li>
+            <li><a href="#news-details">News Details</a></li>
+        </ul>
     </div>
 
     <div class="api-section" id="games">
-        <h2 class="api-heading">{% trans "Get List of Games" %}</h2>
+        <h2 class="api-heading">{% trans "Get List Of Games" %}</h2>
         <p><span class="http-method">GET</span> <code class="api-endpoint">/api/games/</code></p>
         <p><strong>{% trans "Description:" %}</strong> {% trans "Retrieves a paginated list of games." %}</p>
         <p><strong>{% trans "Filters:" %}</strong> {% trans "Use query parameters to filter results." %}</p>
@@ -278,4 +310,18 @@
         <p><strong>{% trans "Example:" %}</strong> <code class="api-endpoint">/api/news/42/?fields=title,summary,publish_date</code></p>
     </div>
 </div>
+
+<script>
+const apiNavigation = document.querySelector('.api-navigation');
+const scrollOffset = 155;
+
+window.addEventListener('scroll', function() {
+  if (window.scrollY >= scrollOffset) {
+    apiNavigation.classList.add('fixed');
+  } else {
+    apiNavigation.classList.remove('fixed');
+  }
+});
+</script>
+
 {% endblock content %}
