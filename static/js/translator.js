@@ -71,8 +71,17 @@ const translate = (key) => {
             'Click to mark as read': 'Click pentru a marca drept citit',
             'Delete this notification': 'Ștergeți această notificare',
             'Nothing to report': 'Nimic de raportat',
-
-
+            'API Key copied to clipboard!': 'Cheia API a fost copiată în clipboard!',
+            'Your API Key is...': 'Cheia ta API este...',
+            'Copy': 'Copiază',
+            'Revoke API Key': 'Revocă cheia API',
+            'API key successfully generated': 'Cheia API a fost generată cu succes',
+            'Failed to generate API key.': 'Eroare la generarea cheii API.',
+            'An error occurred while generating the API key.': 'A apărut o eroare la generarea cheii API.',
+            'Your API key has been revoked.': 'Cheia ta API a fost revocată.',
+            'Generate New API Key': 'Generează o nouă cheie API',
+            'Failed to revoke API key.': 'Eroare la revocarea cheii API.',
+            'An error occurred while revoking the API key.': 'A apărut o eroare la revocarea cheii API.'
         },
     };
 
