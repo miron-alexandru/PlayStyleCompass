@@ -317,6 +317,9 @@
           </li>
           {% else %}
           <li class="nav-item">
+            <a class="nav-link" href="{% url 'playstyle_compass:api-documentation' %}">{% trans "API Documentation" %}</a>
+          </li>
+          <li class="nav-item">
             <a class="nav-link" href="{% url 'users:register' %}">{% trans "Register" %}</a>
           </li>
           <li class="nav-item">

@@ -61,7 +61,7 @@
             <button name="submit" class="btn btn-primary login-btn">{% trans "Log in" %}</button>
         </div>
 
-        <input type="hidden" name="next" value="{% url 'playstyle_compass:index' %}" />
+        <input type="hidden" name="next" value="{{ request.GET.next }}">
         <p class="text-center">or</p>
         <p class="text-center"><a href="{% url 'social:begin' 'google-oauth2' %}">{% trans "Log in" %}</a> {% trans "with your Google Account" %}
     </form>

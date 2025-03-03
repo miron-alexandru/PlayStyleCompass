@@ -151,6 +151,7 @@ input[type="email"]:focus,
   display: flex;
   align-items: center;
   margin: 3px;
+  white-space: nowrap;
 }
 
 .nav-link {

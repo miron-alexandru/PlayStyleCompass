@@ -19,6 +19,18 @@
 
     <div class="api-section" id="authentication">
         <h2 class="api-heading">{% trans "Authentication" %}</h2>
+
+        <p style="margin-bottom: 5px!important; color:#4caf50;">
+            {% if user.is_authenticated %}
+                <strong>{% trans "You can get your API key" %} 
+                <a href="{% url 'users:manage_api_key' %}">{% trans "here" %}</a>.</strong>
+            {% else %}
+                <strong>{% trans "To use the API, you must log in and obtain an API key." %}</strong>
+                {% trans "You can log in" %} <a href="{% url 'users:login' %}">{% trans "here" %}</a>.
+            {% endif %}
+        </p>
+
+
         <p>
             <strong>{% trans "To access the API, you must provide an API key." %}</strong>
         </p>

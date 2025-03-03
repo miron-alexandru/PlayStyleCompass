@@ -31,6 +31,13 @@
 
     <p id="key-status"></p>
   </div>
+
+  <div class="api-doc-link">
+    <p>
+      {% trans "You can find the API resources and usage details on the" %}
+      <a href="{% url 'playstyle_compass:api-documentation' %}">{% trans "API Documentation page" %}</a>.
+    </p>
+  </div>
 </div>
 
 <script src="{% static 'js/users/manage_api_key.js' %}" defer></script>
