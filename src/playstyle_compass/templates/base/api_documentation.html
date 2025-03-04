@@ -14,8 +14,9 @@
 {% block content %}
 <link rel="stylesheet" href="{% static 'css/playstyle_compass/api_documentation.css' %}" />
 
-<div class="api-wrapper">
+
     <h1 class="api-title">{% trans "API Documentation" %}</h1>
+<div class="api-wrapper">
 
     <div class="api-section" id="authentication">
         <h2 class="api-heading">{% trans "Authentication" %}</h2>
@@ -110,6 +111,51 @@
             <code class="api-endpoint">/api/games/?platforms=PC&genres=Action&is_popular=true&ordering=release_date&limit=10&offset=0</code>
         </p>
         <p><strong>{% trans "Explanation:" %}</strong> {% trans "This request will retrieve a paginated list of popular action games available on PC, ordered by release date, with 10 results per page, starting from the first result." %}</p>
+
+        <div class="response-container game-list">
+        <h3 class="response-example">Response Example</h3>
+        <pre class="api-response">
+            {
+            "count": 4,
+            "next": "https://localhost/en/api/games/?genres=Action&is_popular=true&limit=1&offset=1&ordering=release_date&platforms=PC",
+            "previous": null,
+            "results": [
+                {
+                    "id": 197,
+                    "guid": "19732",
+                    "title": "Volfied",
+                    "description": "The third game in Taito's QIX series, Volfied loses the geometric abstraction of previous games in favor of a more sci-fi look.",
+                    "overview": "Volfied is an Arcade title released by  Taito in 1989 as the sequel to QIX II. As well as ports for the PC Engine, Genesis and the home computers Atari ST, Amiga and PC, Volfied was also released on the 2005 PS2 compilation Taito Legends and as a Java mobile game in Europe in 2007.\nOn home consoles in North America, it was marketed under the more familiar QIX brand. It was known as The Jintori ~Volfied 1500 (Japan) and Neo QIX (US) for its PlayStation port, which was part of the Simple budget series. For its North American Sega Genesis release, it was known as Ultimate QIX.",
+                    "genres": "Action",
+                    "platforms": "Amiga, Genesis, Atari ST, Commodore 64, PlayStation, TurboGrafx-16, Arcade, Wii Shop, PC, PlayStation 4, Nintendo Switch",
+                    "themes": "Sci-Fi",
+                    "image": "https://www.giantbomb.com/a/uploads/scale_small/9/97089/2246230-volfied_cover.jpg",
+                    "release_date": "1989-12-27",
+                    "developers": "Taito Corporation, ITL Co., Ltd.",
+                    "game_images": "https://www.giantbomb.com/a/uploads/scale_medium/16/164924/3096252-4545772566-61488.jpg, https://www.giantbomb.com/a/uploads/scale_medium/2/23093/3080336-4606480536-48346.jpg, https://www.giantbomb.com/a/uploads/scale_medium/32/320697/2901264-volfied_1.jpg, https://www.giantbomb.com/a/uploads/scale_medium/32/320697/2901263-volfied.jpg, https://www.giantbomb.com/a/uploads/scale_medium/2/23093/2803413-volfied001.jpg, https://www.giantbomb.com/a/uploads/scale_medium/2/23093/2803412-volfied_%28j%29-005.jpg, https://www.giantbomb.com/a/uploads/scale_medium/2/23093/2803411-volfied_%28j%29-004.jpg, https://www.giantbomb.com/a/uploads/scale_medium/2/23093/2803410-volfied_%28j%29-003.jpg, https://www.giantbomb.com/a/uploads/scale_medium/2/23093/2803409-volfied_%28j%29-002.jpg, https://www.giantbomb.com/a/uploads/scale_medium/2/23093/2803408-volfied_%28j%29-001.jpg, https://www.giantbomb.com/a/uploads/scale_medium/2/23093/2803407-6392156923-30596.jpg, https://www.giantbomb.com/a/uploads/scale_medium/9/97089/2246230-volfied_cover.jpg, https://www.giantbomb.com/a/uploads/scale_medium/1/11512/1213985-qix_neo.jpg, https://www.giantbomb.com/a/uploads/scale_medium/1/11512/1213984-ultimate_qix.jpg, https://www.giantbomb.com/a/uploads/scale_medium/1/11512/1213982-volfied.jpg",
+                    "similar_games": "Dr. Awesome, MicroSurgeon M.D., Gals Panic, Dancing Eyes, QIX",
+                    "dlcs": null,
+                    "franchises": "QIX, Simple 1500, Simple, Arcade Archives",
+                    "videos": "https://www.youtube.com/embed/JNvCj_Clrs4, https://www.youtube.com/embed/RxuMVqkLD7o",
+                    "concepts": "",
+                    "is_casual": false,
+                    "is_popular": true,
+                    "playtime": "0",
+                    "pc_req_min": null,
+                    "pc_req_rec": null,
+                    "mac_req_min": null,
+                    "mac_req_rec": null,
+                    "linux_req_min": null,
+                    "linux_req_rec": null,
+                    "average_score": 0.0,
+                    "total_reviews": 0,
+                    "translated_description_ro": null,
+                    "translated_overview_ro": null
+                }
+            ]
+        }
+        </pre>
+      </div>
     </div>
 
     <div class="api-section" id="game-details">
@@ -155,6 +201,17 @@
             <strong>{% trans "Example:" %}</strong>
             <code class="api-endpoint">/api/games/12/?fields=title,genres,release_date</code>
         </p>
+
+        <div class="response-container game-details">
+            <h3 class="response-example">Response Example</h3>
+            <pre class="api-response">
+                {
+                "title": "Moonlight Peaks",
+                "genres": "Simulation",
+                "release_date": "2026"
+            }
+            </pre>
+        </div>
     </div>
 
     <div class="api-section" id="franchises">
@@ -185,6 +242,29 @@
             <strong>{% trans "Explanation:" %}</strong> {% blocktrans %} "This request retrieves a paginated list of franchises that include the game Assassins Creed. The results are ordered alphabetically by title, with a maximum of 5
             franchises per page. {% endblocktrans %}
         </p>
+
+        <div class="response-container franchises-list">
+            <h3 class="response-example">Response Example</h3>
+            <pre class="api-response">
+                {
+                "count": 1,
+                "next": null,
+                "previous": null,
+                "results": [
+                    {
+                        "id": 28,
+                        "title": "Assassin's Creed",
+                        "description": "Assassin's Creed is a franchise of action-adventure games from Ubisoft, heavily influenced by games like Prince of Persia: The Sands of Time (another Ubisoft franchise, also featuring parkour). Assassin's Creed originally began as a spin-off to the Prince of Persia series, with the original game being an early draft for Prince of Persia: The Two Thrones, before the team decided to make it a new IP with a similarly Middle-Eastern setting, based on the historical Islamic Assassins cult active during the Crusades (see Official Xbox Magazine).\nThe original Assassin's Creed was set mainly during the Crusades, with Altaïr Ibn-La'Ahad as the original Assassin, though it was framed from a near-future point of view in the character of a bartender, Desmond Miles, extracting his \"genetic\" memories with a device called an Animus. Due to these juxtaposed time periods, the direction and eras that new sequels will take is unknown. The first major sequel, Assassin's Creed II, skipped over five centuries to take place during the Italian Renaissance, and the narrative's focus was on the character development of new assassin Ezio Auditore di Firenze. Assassin's Creed: Brotherhood then acted as a direct continuation of the events of II. The last of the Ezio games, Assassin's Creed: Revelations took place late in this life and was set in Constantinople. Spin-offs for portable platforms have expanded the existing characters' story lines. Assassin's Creed III ends Desmond's journey by reliving Connor Kenway's memories during the American Revolution.\nAssassin's Creed's narrative density, its use of historical buildings and the ability to climb them freely, and the Hidden Blade, have become increasingly popular traits in modern gaming culture. Since the release of the first game, the franchise has spawned sequels, prequels, graphic novels, comic books, animated films, figurines, weapon replicas, clothing and other merchandise. It was also referenced in the Grand Theft Auto IV achievement \" Assassin's Greed\".",
+                        "overview": "The Assassin's Creed franchise follows the never-ending, secret war between the Assassin Brotherhood and the Templar Order, in various historical settings, told from the perspective of the modern day.",
+                        "games": "Assassin's Creed: Altaïr's Chronicles, Assassin's Creed II, Assassin's Creed: Bloodlines, Assassin's Creed II: Discovery, Assassin's Creed: Lost Legacy, Assassin's Creed II Multiplayer, Assassin's Creed: Project Legacy, Assassin's Creed Recollection, Assassin's Creed III: Liberation, Assassin's Creed IV: Black Flag, Assassin's Creed: Pirates, Assassin's Creed: Freedom Cry, Assassin's Creed Rearmed, Assassin's Creed Unity, Assassin's Creed III, Assassin's Creed, Assassin's Creed: Revelations, Assassin's Creed: Rogue, Assassin's Creed: Utopia, Assassin's Creed Syndicate, Assassin's Creed: Brotherhood, Assassin's Creed Chronicles: China, Assassin's Creed Chronicles: Russia, Assassin's Creed Chronicles: India, Assassin's Creed Identity, Assassin's Creed: The Ezio Collection, Assassin's Creed Chronicles, Assassin's Creed Origins, Assassin's Creed: Rebellion, The Tower Assassin's Creed, Assassin's Creed Odyssey, Assassin's Creed: Heritage Collection, Assassin's Creed: The Americas Collection, Assassin's Creed: Rebel Collection, Assassin's Creed Valhalla, Assassin's Creed Nexus VR, Assassin's Creed Infinity, Assassin's Creed Mirage, Assassin's Creed (working title), Assassin's Creed: Codename Jade, Assassin's Creed: Codename Red, Assassin's Creed: Codename Hexe, Assassin's Creed: Rising Phoenix, Assassin's Creed: Codename Invictus, Assassin's Creed III: Remastered",
+                        "image": "https://www.giantbomb.com/a/uploads/scale_small/0/8169/965239-assassins_creed_logo.jpg",
+                        "images": "https://www.giantbomb.com/a/uploads/scale_medium/23/231990/2707232-2646854066-assas.jpg, https://www.giantbomb.com/a/uploads/scale_medium/23/231990/2707231-5071287471-assas.jpg, https://www.giantbomb.com/a/uploads/scale_medium/23/231990/2707229-8306193510-52960.jpg, https://www.giantbomb.com/a/uploads/scale_medium/23/231990/2707228-0906673482-assas.jpg, https://www.giantbomb.com/a/uploads/scale_medium/23/231990/2707227-6375776782-c968e.jpg, https://www.giantbomb.com/a/uploads/scale_medium/15/155745/2550540-195cff9a176e36827406e39ed79b3d82.jpg, https://www.giantbomb.com/a/uploads/scale_medium/15/155745/2260712-original.jpg, https://www.giantbomb.com/a/uploads/scale_medium/10/106662/1731060-assassin_s_creed_ii__85_.jpg, https://www.giantbomb.com/a/uploads/scale_medium/10/106662/1731059-assassin_s_creed_ii__84_.jpg, https://www.giantbomb.com/a/uploads/scale_medium/10/106662/1731058-assassin_s_creed_ii__83_.jpg, https://www.giantbomb.com/a/uploads/scale_medium/10/106662/1731057-assassin_s_creed_ii__82_.jpg, https://www.giantbomb.com/a/uploads/scale_medium/10/106662/1731056-assassin_s_creed_ii__81_.jpg, https://www.giantbomb.com/a/uploads/scale_medium/10/106662/1731055-assassin_s_creed_ii__80_.jpg, https://www.giantbomb.com/a/uploads/scale_medium/10/106662/1731054-assassin_s_creed_ii__79_.jpg, https://www.giantbomb.com/a/uploads/scale_medium/10/106662/1731053-assassin_s_creed_ii__78_.jpg",
+                        "games_count": 45
+                    }
+                ]
+            }
+            </pre>
+        </div>
     </div>
 
     <div class="api-section" id="franchise-details">
@@ -209,6 +289,17 @@
             <strong>{% trans "Example:" %}</strong>
             <code class="api-endpoint">/api/franchises/5/?fields=title,overview,games</code>
         </p>
+
+        <div class="response-container franchise-details">
+            <h3 class="response-example">Response Example</h3>
+            <pre class="api-response">
+                {
+                "title": "Metal Gear",
+                "overview": "Tactical, Espionage, Action. A revered and long-running series directed by Hideo Kojima.",
+                "games": "Metal Gear 2: Solid Snake, Metal Gear Solid: Digital Graphic Novel, Metal Gear, Metal Gear Ac!d 2, Metal Gear Solid: VR Missions, Metal Gear Ac!d, Metal Gear Solid 3: Subsistence, Metal Gear Solid: Portable Ops, Metal Gear Solid 3: Snake Eater, Metal Gear Solid: Portable Ops Plus, Metal Gear Solid 4: Guns of the Patriots, Metal Gear Solid: The Twin Snakes, Metal Gear Solid, Metal Gear Online, Metal Gear Solid 2: Substance, Snake's Revenge, The Document of Metal Gear Solid 2, Metal Gear Solid Touch, Metal Gear Solid: Peace Walker, Metal Gear Arcade, Metal Gear Solid Mobile, Metal Gear Solid: Snake Eater 3D, Metal Gear Solid 4 Database, Metal Gear Solid V: The Phantom Pain, Metal Gear Rising: Revengeance, Metal Gear Solid: The Legacy Collection 1987-2012, Metal Gear Solid, Metal Gear Solid 2: Sons of Liberty, Metal Gear Solid HD Collection, Metal Gear Solid V: Ground Zeroes, Metal Gear Survive, Metal Gear Solid V: The Definitive Experience, Metal Gear Solid Δ: Snake Eater, Metal Gear Solid: Master Collection Vol. 1"
+            }
+            </pre>
+        </div>
     </div>
 
     <div class="api-section" id="characters">
@@ -239,12 +330,40 @@
         </ul>
         <p>
             <strong>{% trans "Example:" %}</strong>
-            <code class="api-endpoint">/api/characters/?games=The Witcher&ordering=name&limit=5&offset=0</code>
+            <code class="api-endpoint">/api/characters/?ordering=name&limit=5&offset=0</code>
         </p>
         <p>
             <strong>{% trans "Explanation:" %}</strong> {% trans "This request retrieves a paginated list of characters that appear in 'The Witcher'. The results are ordered alphabetically by name, with a maximum of 5 characters per page."
             %}
         </p>
+
+        <div class="response-container characters-list">
+            <h3 class="response-example">Response Example</h3>
+            <pre class="api-response">
+                {
+                "count": 350,
+                "next": "https://localhost/en/api/characters/?limit=1&offset=1&ordering=name",
+                "previous": null,
+                "results": [
+                    {
+                        "id": 16,
+                        "name": "Abigail",
+                        "deck": "Abigail is a boss in the game Final Fight. He likes bananas.",
+                        "description": null,
+                        "birthday": null,
+                        "friends": "Axl, Bill Bull, Bred, Damnd, Dug, Edi E., El Gado, G. Oriber, Holly Wood, Horace Belger, Hugo Andore, J, Jake, Poison, Rolento, Roxy, Simons, Slash, Sodom, Two.P, Wong Who",
+                        "enemies": "Cody Travers, Guy, Jessica Haggar, Mike Haggar",
+                        "games": "The Capcom Collection, Capcom Arcade Stadium, Teppen, Capcom Beat 'Em Up Bundle, Street Fighter V, Capcom Digital Collection, Final Fight: Double Impact, Capcom Classics Mini Mix, Capcom Classics Collection Remixed, Final Fight One, Mighty Final Fight, Adventure Quiz: Capcom World 2, Final Fight",
+                        "first_game": "Final Fight",
+                        "franchises": "Capcom World, Final Fight",
+                        "image": "https://www.giantbomb.com/a/uploads/scale_small/16/164924/3144185-2795205785-abiga.jpg",
+                        "images": "https://www.giantbomb.com/a/uploads/scale_medium/16/164924/3144186-3355251685-abiga.jpg, https://www.giantbomb.com/a/uploads/scale_medium/16/164924/3144185-2795205785-abiga.jpg, https://www.giantbomb.com/a/uploads/scale_medium/11/110168/1853562-mightyffabigail.png, https://www.giantbomb.com/a/uploads/scale_medium/11/110168/1853560-ffcdabigail.png, https://www.giantbomb.com/a/uploads/scale_medium/11/110168/1853558-abigail.png, https://www.giantbomb.com/a/uploads/scale_medium/0/26/11408-abigail.jpg",
+                        "character_id": 29
+                    }
+                ]
+            }
+            </pre>
+        </div>
     </div>
 
     <div class="api-section" id="character-details">
@@ -274,6 +393,17 @@
             <strong>{% trans "Example:" %}</strong>
             <code class="api-endpoint">/api/characters/10/?fields=name,description,games</code>
         </p>
+
+        <div class="response-container character-details">
+            <h3 class="response-example">Response Example</h3>
+            <pre class="api-response">
+                {
+                "name": "Super Joe",
+                "description": "Super Joe is a super soldier and the protagonist of the following series:",
+                "games": "The Capcom Collection, Capcom Arcade 2nd Stadium, Capcom Arcade Stadium, Capcom Super League Online, Capcom Arcade Cabinet, Bionic Commando Rearmed 2, Bionic Commando, Bionic Commando Rearmed, Capcom Classics Collection Reloaded, Capcom Classics Mini Mix, Capcom Classics Collection Remixed, Capcom Classics Collection, Capcom Arcade Hits Volume 3, Activision Anthology, Capcom Generations, Capcom Generations 4: Blazing Guns, Bionic Commando, Mercs, Bionic Commando, Bionic Commando, Speed Rumbler, Commando"
+            }
+            </pre>
+        </div>
     </div>
 
     <div class="api-section" id="reviews">
@@ -307,9 +437,35 @@
         </ul>
         <p>
             <strong>{% trans "Example:" %}</strong>
-            <code class="api-endpoint">/api/game-reviews/?game=12345&ordering=score&limit=10&offset=0</code>
+            <code class="api-endpoint">/api/game-reviews/?ordering=score&limit=10&offset=0</code>
         </p>
         <p><strong>{% trans "Explanation:" %}</strong> {% trans "This request retrieves a paginated list of reviews for the game with GUID '12345'. The results are ordered by score, with a maximum of 10 reviews per page." %}</p>
+
+        <div class="response-container reviews-list">
+            <h3 class="response-example">Response Example</h3>
+            <pre class="api-response">
+                {
+                "count": 303,
+                "next": "https://localhost/en/api/game-reviews/?limit=1&offset=1&ordering=score",
+                "previous": null,
+                "results": [
+                    {
+                        "id": 8,
+                        "game": 37030,
+                        "reviewers": "jim_dayle",
+                        "review_deck": "Very money hungry",
+                        "review_description": "The said they will release save the world late 2018 it's mid-2019 and they still haven't released it and they still make you pay $40 for a supposed \"free\" game mode, they are almost as money hungry as EA, that's saying something big to fortnite is running off of microtransactions witch no game should rely on children begging their mom to buy them the latest \"hip\" fortnite skins.",
+                        "score": 1,
+                        "likes": 0,
+                        "dislikes": 0,
+                        "liked_by": "",
+                        "disliked_by": "",
+                        "date_added": "2019-05-28T16:27:35+03:00"
+                    }
+                ]
+            }   
+            </pre>
+        </div>
     </div>
 
     <div class="api-section" id="review-details">
@@ -337,6 +493,18 @@
             <strong>{% trans "Example:" %}</strong>
             <code class="api-endpoint">/api/game-reviews/42/?fields=game,review_deck,score,likes</code>
         </p>
+
+        <div class="response-container review-details">
+            <h3 class="response-example">Response Example</h3>
+            <pre class="api-response">
+                {
+                "game": 49998,
+                "review_deck": "A lot to offer, and a lot of confusion",
+                "score": 3,
+                "likes": 0
+            }
+            </pre>
+        </div>
     </div>
 
     <div class="api-section" id="news">
@@ -367,6 +535,29 @@
             <code class="api-endpoint">/api/news/?title=Cyberpunk&ordering=publish_date&limit=10&offset=0</code>
         </p>
         <p><strong>{% trans "Explanation:" %}</strong> {% trans "This request retrieves a paginated list of news articles with 'Cyberpunk' in the title, ordered by publish date, with a maximum of 10 articles per page." %}</p>
+
+        <div class="response-container news-list">
+            <h3 class="response-example">Response Example</h3>
+            <pre class="api-response">
+                {
+                    "count": 2,
+                    "next": "https://localhost/en/api/news/?limit=1&offset=1&ordering=publish_date&title=Cyberpunk",
+                    "previous": null,
+                    "results": [
+                        {
+                            "id": 477,
+                            "article_id": "6528977",
+                            "title": "New Cyberpunk 2077 Patch Unlocks The Power Of DLSS 4 On PC And Improves Photo Mode",
+                            "summary": "PC users equipped with an RTX 50-series Nvidia GPU can expect to see some impressive graphical gains in Cyberpunk 2077 thanks to the new patch adding DLSS 4 support.",
+                            "url": "https://www.gamespot.com/articles/new-cyberpunk-2077-patch-unlocks-the-power-of-dlss-4-on-pc-and-improves-photo-mode/1100-6528977/",
+                            "image": "https://www.gamespot.com/a/uploads/original/1601/16018044/4432496-cyberpunk-2077.jpg",
+                            "publish_date": "2025-01-23 07:41:00",
+                            "platforms": "PC, PlayStation 5, Xbox Series X"
+                        }
+                    ]
+                }
+            </pre>
+        </div>
     </div>
 
     <div class="api-section" id="news-details">
@@ -391,6 +582,17 @@
             <strong>{% trans "Example:" %}</strong>
             <code class="api-endpoint">/api/news/42/?fields=title,summary,publish_date</code>
         </p>
+
+        <div class="response-container news-details">
+            <h3 class="response-example">Response Example</h3>
+            <pre class="api-response">
+                {
+                "title": "Avowed - Guides Hub",
+                "summary": "If you're jumping into Obsidian's newest fantasy RPG, don't go it alone. Find all of our Avowed guides here in one place.",
+                "publish_date": "2025-02-13 10:00:00"
+            }
+            </pre>
+        </div>
     </div>
 </div>
 
