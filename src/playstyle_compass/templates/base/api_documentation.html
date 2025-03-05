@@ -60,18 +60,18 @@
     </div>
 
     <div class="api-navigation">
-        <h3 class="navigation-title">List of Resources</h3>
+        <h3 class="navigation-title">{% trans "List of Resources" %}</h3>
         <ul>
-            <li><a href="#games">Games</a></li>
-            <li><a href="#game-details">Game Details</a></li>
-            <li><a href="#franchises">Franchises</a></li>
-            <li><a href="#franchise-details">Franchise Details</a></li>
-            <li><a href="#characters">Characters</a></li>
-            <li><a href="#character-details">Character Details</a></li>
-            <li><a href="#reviews">Game Reviews</a></li>
-            <li><a href="#review-details">Game Review Details</a></li>
-            <li><a href="#news">News</a></li>
-            <li><a href="#news-details">News Details</a></li>
+            <li><a href="#games">{% trans "Games" %}</a></li>
+            <li><a href="#game-details">{% trans "Game Details" %}</a></li>
+            <li><a href="#franchises">{% trans "Franchises" %}</a></li>
+            <li><a href="#franchise-details">{% trans "Franchise Details" %}</a></li>
+            <li><a href="#characters">{% trans "Characters" }</a></li>
+            <li><a href="#character-details">{% trans "Character Details" %}</a></li>
+            <li><a href="#reviews">{% trans "Game Reviews" %}</a></li>
+            <li><a href="#review-details">{% trans "Game Review Details" %}</a></li>
+            <li><a href="#news">{% trans "News" %}</a></li>
+            <li><a href="#news-details">{% trans "News Details" %}</a></li>
         </ul>
     </div>
 
@@ -113,7 +113,7 @@
         <p><strong>{% trans "Explanation:" %}</strong> {% trans "This request will retrieve a paginated list of popular action games available on PC, ordered by release date, with 10 results per page, starting from the first result." %}</p>
 
         <div class="response-container game-list">
-        <h3 class="response-example">Response Example</h3>
+        <h3 class="response-example">{% trans "Response Example" %}</h3>
         <pre class="api-response">
             {
             "count": 4,
@@ -203,7 +203,7 @@
         </p>
 
         <div class="response-container game-details">
-            <h3 class="response-example">Response Example</h3>
+            <h3 class="response-example">{% trans "Response Example" %}</h3>
             <pre class="api-response">
                 {
                 "title": "Moonlight Peaks",
@@ -239,12 +239,12 @@
             <code class="api-endpoint">/api/franchises/?games=Assassin's Creed&ordering=title&limit=5&offset=0</code>
         </p>
         <p>
-            <strong>{% trans "Explanation:" %}</strong> {% blocktrans %} "This request retrieves a paginated list of franchises that include the game Assassins Creed. The results are ordered alphabetically by title, with a maximum of 5
+            <strong>{% trans "Explanation:" %}</strong> {% blocktrans %}This request retrieves a paginated list of franchises that include the game Assassins Creed. The results are ordered alphabetically by title, with a maximum of 5
             franchises per page. {% endblocktrans %}
         </p>
 
         <div class="response-container franchises-list">
-            <h3 class="response-example">Response Example</h3>
+            <h3 class="response-example">{% trans "Response Example" %}</h3>
             <pre class="api-response">
                 {
                 "count": 1,
@@ -291,7 +291,7 @@
         </p>
 
         <div class="response-container franchise-details">
-            <h3 class="response-example">Response Example</h3>
+            <h3 class="response-example">{% trans "Response Example" %}</h3>
             <pre class="api-response">
                 {
                 "title": "Metal Gear",
@@ -333,12 +333,11 @@
             <code class="api-endpoint">/api/characters/?ordering=name&limit=5&offset=0</code>
         </p>
         <p>
-            <strong>{% trans "Explanation:" %}</strong> {% trans "This request retrieves a paginated list of characters that appear in 'The Witcher'. The results are ordered alphabetically by name, with a maximum of 5 characters per page."
-            %}
+            <strong>{% trans "Explanation:" %}</strong> {% trans "This request retrieves a paginated list of characters that appear in The Witcher. The results are ordered alphabetically by name, with a maximum of 5 characters per page." %}
         </p>
 
         <div class="response-container characters-list">
-            <h3 class="response-example">Response Example</h3>
+            <h3 class="response-example">{% trans "Response Example" %}</h3>
             <pre class="api-response">
                 {
                 "count": 350,
@@ -395,7 +394,7 @@
         </p>
 
         <div class="response-container character-details">
-            <h3 class="response-example">Response Example</h3>
+            <h3 class="response-example">{% trans "Response Example" %}</h3>
             <pre class="api-response">
                 {
                 "name": "Super Joe",
@@ -442,7 +441,7 @@
         <p><strong>{% trans "Explanation:" %}</strong> {% trans "This request retrieves a paginated list of reviews for the game with GUID '12345'. The results are ordered by score, with a maximum of 10 reviews per page." %}</p>
 
         <div class="response-container reviews-list">
-            <h3 class="response-example">Response Example</h3>
+            <h3 class="response-example">{% trans "Response Example" %}</h3>
             <pre class="api-response">
                 {
                 "count": 303,
@@ -495,7 +494,7 @@
         </p>
 
         <div class="response-container review-details">
-            <h3 class="response-example">Response Example</h3>
+            <h3 class="response-example">{% trans "Response Example" %}</h3>
             <pre class="api-response">
                 {
                 "game": 49998,
@@ -537,7 +536,7 @@
         <p><strong>{% trans "Explanation:" %}</strong> {% trans "This request retrieves a paginated list of news articles with 'Cyberpunk' in the title, ordered by publish date, with a maximum of 10 articles per page." %}</p>
 
         <div class="response-container news-list">
-            <h3 class="response-example">Response Example</h3>
+            <h3 class="response-example">{% trans "Response Example" %}</h3>
             <pre class="api-response">
                 {
                     "count": 2,
@@ -584,7 +583,7 @@
         </p>
 
         <div class="response-container news-details">
-            <h3 class="response-example">Response Example</h3>
+            <h3 class="response-example">{% trans "Response Example" %}</h3>
             <pre class="api-response">
                 {
                 "title": "Avowed - Guides Hub",

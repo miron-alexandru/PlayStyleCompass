@@ -25,10 +25,10 @@ from rest_framework.pagination import LimitOffsetPagination
 
 def api_documentation(request):
     context = {
-        'page_title': _('PlayStyle Compass :: API Documentation'),
+        "page_title": _("PlayStyle Compass :: API Documentation"),
     }
 
-    return render(request, 'base/api_documentation.html', context)
+    return render(request, "base/api_documentation.html", context)
 
 
 class BaseListView(generics.ListAPIView):
