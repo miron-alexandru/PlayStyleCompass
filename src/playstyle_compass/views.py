@@ -83,8 +83,8 @@ def index(request):
         "Death Stranding 2: On the Beach",
         "Earthblade",
         "Vampire: The Masquerade - Bloodlines 2",
-        "Monster Hunter Wilds",
-        "S.T.A.L.K.E.R. 2: Heart of Chornobyl",
+        "Subnautica 2",
+        "Grand Theft Auto VI",
         "Wuchang: Fallen Feathers",
         "The Relic: First Guardian",
     ]
@@ -118,6 +118,8 @@ def index(request):
     popular_games = Game.objects.filter(title__in=popular_titles)
     popular_franchises = Franchise.objects.filter(title__in=popular_franchise_titles)
     articles = News.objects.order_by("-publish_date")[:6]
+    top_rated_games = Game.objects.order_by("-average_score")[:10]
+
 
     context = {
         "page_title": _("Home :: PlayStyle Compass"),
@@ -125,6 +127,7 @@ def index(request):
         "popular_games": popular_games,
         "popular_franchises": popular_franchises,
         "articles": articles,
+        "top_rated_games": top_rated_games,
         "search_bar_type": "search_games",
     }
 

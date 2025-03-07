@@ -71,6 +71,18 @@
 </div>
 
 <div class="games">
+  <h3>{% trans "TOP RATED GAMES" %}</h3>
+  <p class="games-description">{% trans "Explore the highest-rated games on PlayStyle Compass, chosen by our community. Find the top titles that players love!" %}</p>
+  <div class="game-container">
+    <ul>
+      {% for game in top_rated_games %}
+      {% include "games/games_list.html" %}
+      {% endfor %}
+    </ul>
+  </div>
+</div>
+
+<div class="games">
   <h3>{% trans "UPCOMING GAMES" %}</h3>
 <p class="games-description">{% trans "Explore the latest and most anticipated games coming soon. Don't miss out on the gaming excitement!" %}</p>
   <div class="game-container">
