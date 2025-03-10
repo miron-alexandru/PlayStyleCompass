@@ -115,6 +115,24 @@ CREATE TABLE IF NOT EXISTS News (
 );
 """
 
+create_deals_table = """
+CREATE TABLE IF NOT EXISTS Deals (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    deal_id TEXT,
+    game_name TEXT,
+    sale_price TEXT,
+    retail_price TEXT,
+    thumb_url TEXT,
+    store_name TEXT,
+    store_icon_url TEXT
+);
+"""
+
+insert_deals_sql = """
+INSERT INTO Deals (deal_id, game_name, sale_price, retail_price, thumb_url, store_name, store_icon_url)
+VALUES (?, ?, ?, ?, ?, ?, ?);
+"""
+
 insert_game_stores_sql = """
 INSERT INTO GameStores (guid, title, store_name, store_url)
 VALUES (?, ?, ?, ?);
@@ -206,6 +224,15 @@ DELETE FROM News
     SELECT MIN(rowid)
     FROM News
     GROUP BY article_id
+);
+"""
+
+remove_duplicate_deals = """
+DELETE FROM Deals
+    WHERE rowid NOT IN (
+    SELECT MIN(rowid)
+    FROM Deals
+    GROUP BY game_name, store_name
 );
 """
 

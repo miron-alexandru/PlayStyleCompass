@@ -530,3 +530,20 @@ class Vote(models.Model):
 
     def __str__(self):
         return f"Vote: User {self.user} voted for '{self.option.text}' in poll '{self.poll.title}'"
+
+
+class Deal(models.Model):
+    deal_id = models.CharField(max_length=255, unique=True)
+    game_name = models.CharField(max_length=255)
+    sale_price = models.CharField(max_length=255)
+    retail_price = models.CharField(max_length=255)
+    thumb_url = models.CharField(max_length=255)
+    store_name = models.CharField(max_length=255)
+    store_icon_url = models.CharField(max_length=255)
+
+
+    class Meta:
+        db_table = "Deals"
+
+    def __str__(self):
+        return f"{self.game_name} - ${self.sale_price}"

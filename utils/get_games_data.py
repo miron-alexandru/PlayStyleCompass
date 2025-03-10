@@ -26,6 +26,7 @@ from data_processing import (
     create_game_modes_data,
     create_quiz_data,
     create_news_data,
+    create_deals_data,
 )
 
 # Obtain franchises data
@@ -65,3 +66,4 @@ from data_processing import (
 # Obtain popular games data
 # popular_game_ids = fetch_popular_game_ids(page_size=40, page=1)
 # create_games_data_db(popular_game_ids, rawg_popular=True)
+create_deals_data(offset=0, limit=5, latest=True, AAA=False)

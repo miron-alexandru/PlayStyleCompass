@@ -363,6 +363,7 @@ GAMESPOT_API_KEY = str(os.getenv("GAMESPOT_API_KEY"))
 RAWG_API_KEY = str(os.getenv("RAWG_API_KEY"))
 
 BASE_URL = "https://www.giantbomb.com/api/"
+CHEAPSHARK_BASE_URL = "https://www.cheapshark.com"
 
 headers = {
     "User-Agent": "PlayStyleCompass/1.0",

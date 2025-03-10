@@ -16,6 +16,7 @@ from .models import (
     Poll,
     PollOption,
     Vote,
+    Deal,
 )
 
 admin.site.register(UserPreferences)
@@ -33,3 +34,4 @@ admin.site.register(ListComment)
 admin.site.register(Poll)
 admin.site.register(PollOption)
 admin.site.register(Vote)
+admin.site.register(Deal)

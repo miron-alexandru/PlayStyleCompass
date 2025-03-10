@@ -20,6 +20,9 @@ from API_functions import (
     get_all_articles_from_last_7_days,
     get_game_store_info,
     get_game_playtime,
+    get_latest_deals,
+    fetch_store_data,
+
 )
 
 from data_extraction import (
@@ -65,6 +68,9 @@ from sql_queries import (
     create_stores_table_sql,
     insert_game_stores_sql,
     remove_duplicate_stores,
+    create_deals_table,
+    insert_deals_sql,
+    remove_duplicate_deals,
 )
 
 
@@ -790,4 +796,35 @@ def create_news_data(num_articles, year, latest_week=True):
             db_connection.commit()
 
         cursor.execute(remove_duplicate_news)
+        db_connection.commit()
+
+
+def create_deals_data(offset=0, limit=10, latest=False, AAA=False):
+    """Fetch and store game deals data in the SQLite database."""
+    with sqlite3.connect("playstyle_db.sqlite3") as db_connection:
+        cursor = db_connection.cursor()
+        cursor.execute(create_deals_table)
+        db_connection.commit()
+
+        # Fetch deals and store data
+        store_data = fetch_store_data()
+        deals = get_latest_deals(offset=offset, limit=limit, latest=latest, AAA=AAA)
+
+        for deal in deals:
+            store_info = store_data.get(deal["storeID"], {"store_name": "Unknown", "icon_url": ""})
+            print(deal)
+            deal_values = (
+                str(deal["dealID"]),
+                str(deal["name"]),
+                str(deal["salePrice"]),
+                str(deal["retailPrice"]),
+                str(deal["thumb"]),
+                str(store_data.get(deal["storeID"], {}).get("store_name", "")),
+                str(store_data.get(deal["storeID"], {}).get("icon_url", "")),
+            )
+
+            cursor.execute(insert_deals_sql, deal_values)
+
+        db_connection.commit()
+        cursor.execute(remove_duplicate_deals)
         db_connection.commit()

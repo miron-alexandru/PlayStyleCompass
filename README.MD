@@ -139,6 +139,8 @@ Websites for .env configuration: [GiantBomb](https://www.giantbomb.com/) / [Send
 <summary><h2>PlayStyle Compass Changelog</h2></summary>
 
 ### Version v2.4:
+* Added top rated games on the Index Page.
+* Created API Documentation.
 * Implemented Ordering and Filtering for the Games, Characters and Franchises APIs.
 * Created APIs for: Characters, Games and Franchises
 * Implemented API key functionality: Users can now generate an API key to access the PlayStyle Compass API.
