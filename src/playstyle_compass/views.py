@@ -45,6 +45,7 @@ from .models import (
     Poll,
     PollOption,
     Vote,
+    Deal,
 )
 from .forms import (
     ReviewForm,
@@ -119,6 +120,7 @@ def index(request):
     popular_franchises = Franchise.objects.filter(title__in=popular_franchise_titles)
     articles = News.objects.order_by("-publish_date")[:6]
     top_rated_games = Game.objects.order_by("-average_score")[:10]
+    game_deals = Deal.objects.all()
 
 
     context = {
@@ -129,6 +131,7 @@ def index(request):
         "articles": articles,
         "top_rated_games": top_rated_games,
         "search_bar_type": "search_games",
+        "game_deals": game_deals,
     }
 
     return render(request, "base/index.html", context)
@@ -2511,3 +2514,14 @@ def completed_polls(request):
         "user_votes": user_votes,
     }
     return render(request, "polls/completed_polls.html", context)
+
+
+def deals_list(request):
+    deals = Deal.objects.all()
+
+    context = {
+        "page_title": _("Game Deals :: PlayStyle Compass"),
+        "deals": deals,
+    }
+
+    return render(request, "games/deals.html", context)

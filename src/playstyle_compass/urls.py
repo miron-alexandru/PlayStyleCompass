@@ -192,6 +192,7 @@ urlpatterns = [
     path("polls/share-poll/<int:poll_id>", views.share_poll, name="share_poll"),
     path("polls/shared-polls/", views.shared_polls, name="shared_polls"),
     path("polls/completed-polls/", views.completed_polls, name="completed_polls"),
+    path("deals/", views.deals_list, name="deals_list"),
 ]
 
 api_urlpatterns = [

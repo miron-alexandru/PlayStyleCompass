@@ -94,6 +94,18 @@
   </div>
 </div>
 
+<div class="deals">
+  <h3>{% trans "Latest Game Deals" %}</h3>
+  <p class="deals-description">{% trans "Grab the best discounts on your favorite games before they're gone!" %}</p>
+  <div class="deal-container">
+    <ul>
+      {% for deal in game_deals %}
+      {% include "base/deals_list.html" %}
+      {% endfor %}
+    </ul>
+  </div>
+</div>
+
 <div class="franchises">
   <h3>{% trans "POPULAR FRANCHISES" %}</h3>
 <p class="franchises-description">{% trans "Discover some of the most iconic and beloved franchises across gaming history!" %}</p>

@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+
+{% block page_header %}
+<div class="header">
+  <h3>{% trans "GAME DEALS" %}</h3>
+</div>
+{% endblock page_header %}
+
+{% block description %}
+{% blocktrans %}Discover the best game deals available right now! Find great discounts and grab your favorite games at unbeatable prices.{% endblocktrans %}
+{% endblock description %}
+
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/playstyle_compass/deals.css' %}">
+<div class="deals-container">
+    {% for deal in deals %}
+        <div class="deal-card">
+            <img src="{{ deal.thumb_url }}" alt="{{ deal.game_name }}">
+            <p class="game-title">{{ deal.game_name }}</p>
+            <p>
+                <span class="sale-price">${{ deal.sale_price }}</span> 
+                <span class="retail-price">${{ deal.retail_price }}</span>
+            </p>
+            <p>
+                {% trans "Store:" %} 
+                <img src="{{ deal.store_icon_url }}" alt="{{ deal.store_name }}" class="store-icon"> 
+                {{ deal.store_name }}
+            </p>
+        </div>
+    {% empty %}
+        <p>{% trans "No deals available at the moment." %}</p>
+    {% endfor %}
+</div>
+{% endblock content %}

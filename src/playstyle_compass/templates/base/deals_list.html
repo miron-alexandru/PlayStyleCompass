@@ -1,0 +1,24 @@
+{% load i18n %}
+{% load static %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'css/playstyle_compass/deal_listing.css' %}">
+
+<li class="deal-item">
+    <div class="deal-image">
+        {% if deal.thumb_url %}
+            <img src="{{ deal.thumb_url }}" alt="{{ deal.game_name }}">
+            <div class="deal-title">{{ deal.game_name }}</div>
+        {% else %}
+            <p>{% trans "Deal image not available." %}</p>
+        {% endif %}
+    </div>
+    <div class="deal-info">
+        <p class="sale-price">${{ deal.sale_price }}</p>
+        <p class="retail-price"><del>${{ deal.retail_price }}</del></p>
+        <p class="deal-store">
+            {% trans "Store:" %} 
+            <img src="{{ deal.store_icon_url }}" alt="{{ deal.store_name }}" class="store-icon"> 
+            {{ deal.store_name }}
+        </p>
+    </div>
+</li>
