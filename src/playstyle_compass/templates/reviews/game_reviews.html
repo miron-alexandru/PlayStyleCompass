@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+
+{% block page_header %}
+  <div class="header">
+    <h3>{% block header_desc %}GAME REVIEWS{% endblock header_desc %}</h3>
+  </div>
+{% endblock page_header %}
+
+{% block description %}{% trans "Discover in-depth game reviews from our community, covering gameplay mechanics, storylines, graphics, and overall experience. Find honest opinions and ratings to help you choose your next game." %}{% endblock description %}
+
+{% block content %}
+  <link rel="stylesheet" href="{% static 'css/playstyle_compass/reviews.css' %}">
+
+  {% if reviews %}
+    {% for review in reviews %}
+      <div class="reviews-collection">
+        <div class="review" data-review-id="{{ review.id }}">
+          <div class="review-header">
+            <div class="like-dislike">
+              <i class="fa-solid fa-thumbs-up thumbs-up" title="I like this"></i>
+              <span class="like-count">{{ review.likes }}</span>
+              <span class="like-dislike-divider">|</span>
+              <i class="fa-solid fa-thumbs-down thumbs-down" title="I dislike this"></i>
+              <span class="dislike-count">{{ review.dislikes }}</span>
+            </div>
+            <div class="review-score">
+              <span class="star-rating" data-score="{{ review.score }}"></span>
+            </div>
+            <p class="review-title">{{ review.title }}</p>
+            <div class="game-review-details">
+              <p>
+                Written by
+                <span class="author-container">
+                  <span class="author-name" title="Open user profile in a new tab.">
+                    {{ review.reviewers }}
+                  </span>
+                  <a href="#" class="author-link" data-user-id="{{ review.user_id }}">
+                    <span class="friend-request-text" style="display: none;">Friend Request</span>
+                  </a>
+                </span>
+                on {{ review.date_added }}
+              </p>
+            </div>
+          </div>
+          <div class="review-body">
+            <div class="review-description-container">
+              <span class="review-description" data-full-description="{{ review.description }}">
+                {{ review.review_description }}
+              </span>
+              <span class="review-description-full" style="display: none;">
+                {{ review.description }}
+              </span>
+            </div>
+            <button class="read-button-review" data-toggle="read-more">[Read more...]</button>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  {% else %}
+    <p class="text-center">{% trans "Empty for now." %}</p>
+  {% endif %}
+
+  {% if pagination %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/playstyle_compass/pagination.css' %}">
+    <div class="pagination">
+      <span class="step-links">
+        {% if reviews.has_previous %}
+          <a href="?page=1">&laquo; {% trans "First" %}</a>
+          <a href="?page={{ reviews.previous_page_number }}">{% trans "Previous" %}</a>
+        {% endif %}
+
+        <span class="current-page">
+          {% trans "Page" %} {{ reviews.number }} {% trans "of" %} {{ reviews.paginator.num_pages }}
+        </span>
+
+        {% if reviews.has_next %}
+          <a href="?page={{ reviews.next_page_number }}">{% trans "Next" %}</a>
+          <a href="?page={{ reviews.paginator.num_pages }}">{% trans "Last" %} &raquo;</a>
+        {% endif %}
+      </span>
+    </div>
+  {% endif %}
+
+  <script src="{% static 'js/playstyle_compass/game_reviews.js' %}" defer></script>
+{% endblock content %}

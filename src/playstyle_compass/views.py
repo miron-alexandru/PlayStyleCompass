@@ -2525,3 +2525,20 @@ def deals_list(request):
     }
 
     return render(request, "games/deals.html", context)
+
+
+@login_required
+def game_reviews(request):
+    """View used to display game reviews."""
+    user = request.user
+
+    all_reviews = Review.objects.all()
+    reviews = paginate_objects(request, all_reviews)
+
+    context = {
+        "page_title": _("Game Reviews :: PlayStyle Compass"),
+        "reviews": reviews,
+        "pagination": True,
+    }
+
+    return render(request, "reviews/game_reviews.html", context)
