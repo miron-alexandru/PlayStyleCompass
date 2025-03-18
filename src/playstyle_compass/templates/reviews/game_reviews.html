@@ -4,11 +4,12 @@
 
 {% block page_header %}
   <div class="header">
-    <h3>{% block header_desc %}GAME REVIEWS{% endblock header_desc %}</h3>
+    <h3>{% trans "GAME REVIEWS" %}</h3>
   </div>
 {% endblock page_header %}
 
-{% block description %}{% trans "Discover in-depth game reviews from our community, covering gameplay mechanics, storylines, graphics, and overall experience. Find honest opinions and ratings to help you choose your next game." %}{% endblock description %}
+{% block description %}{% blocktrans %}Discover in-depth game reviews from our community, covering gameplay mechanics, storylines, graphics, and overall experience. Find honest opinions and ratings to help you choose your next game.{% endblocktrans %}
+{% endblock description %}
 
 {% block content %}
   <link rel="stylesheet" href="{% static 'css/playstyle_compass/reviews.css' %}">
@@ -31,7 +32,7 @@
             <p class="review-title">{{ review.title }}</p>
             <div class="game-review-details">
               <p>
-                Written by
+                {% trans "Written by" %}
                 <span class="author-container">
                   <span class="author-name" title="Open user profile in a new tab.">
                     {{ review.reviewers }}
@@ -40,7 +41,7 @@
                     <span class="friend-request-text" style="display: none;">Friend Request</span>
                   </a>
                 </span>
-                on {{ review.date_added }}
+                {% trans "on" %} {{ review.date_added }}
               </p>
             </div>
           </div>
@@ -53,7 +54,7 @@
                 {{ review.description }}
               </span>
             </div>
-            <button class="read-button-review" data-toggle="read-more">[Read more...]</button>
+            <button class="read-button-review" data-toggle="read-more">{% trans "[Read more...]" %}</button>
           </div>
         </div>
       </div>
