@@ -19,13 +19,16 @@
       <div class="reviews-collection">
         <div class="review" data-review-id="{{ review.id }}">
           <div class="review-header">
-            <div class="like-dislike">
-              <i class="fa-solid fa-thumbs-up thumbs-up" title="I like this"></i>
-              <span class="like-count">{{ review.likes }}</span>
-              <span class="like-dislike-divider">|</span>
-              <i class="fa-solid fa-thumbs-down thumbs-down" title="I dislike this"></i>
-              <span class="dislike-count">{{ review.dislikes }}</span>
-            </div>
+          <div class="like-dislike"
+              data-review-id="{{ review.id }}"
+              data-like-url="{% url 'playstyle_compass:like' %}" 
+              data-dislike-url="{% url 'playstyle_compass:dislike' %}">
+            <i class="fa-solid fa-thumbs-up thumbs-up" title="I like this"></i>
+            <span class="like-count">{{ review.likes }}</span>
+            <span class="like-dislike-divider">|</span>
+            <i class="fa-solid fa-thumbs-down thumbs-down" title="I dislike this"></i>
+            <span class="dislike-count">{{ review.dislikes }}</span>
+          </div>
             <div class="review-score">
               <span class="star-rating" data-score="{{ review.score }}"></span>
             </div>
