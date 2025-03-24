@@ -541,7 +541,6 @@ class Deal(models.Model):
     store_name = models.CharField(max_length=255)
     store_icon_url = models.CharField(max_length=255)
 
-
     class Meta:
         db_table = "Deals"
 

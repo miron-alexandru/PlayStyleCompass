@@ -122,7 +122,6 @@ def index(request):
     top_rated_games = Game.objects.order_by("-average_score")[:10]
     game_deals = Deal.objects.all()
 
-
     context = {
         "page_title": _("Home :: PlayStyle Compass"),
         "upcoming_games": upcoming_games,

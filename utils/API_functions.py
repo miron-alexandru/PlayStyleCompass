@@ -9,7 +9,14 @@ from datetime import datetime, timedelta
 import requests
 from youtubesearchpython import VideosSearch
 
-from constants import BASE_URL, headers, API_KEY, GAMESPOT_API_KEY, RAWG_API_KEY, CHEAPSHARK_BASE_URL
+from constants import (
+    BASE_URL,
+    headers,
+    API_KEY,
+    GAMESPOT_API_KEY,
+    RAWG_API_KEY,
+    CHEAPSHARK_BASE_URL,
+)
 from data_extraction import get_requirements
 
 steam_app_list = None
@@ -526,7 +533,7 @@ def get_game_playtime(game_name):
 def fetch_store_data():
     """Fetch all store information once and return a dictionary mapping store IDs to their names and icons."""
     url = "https://www.cheapshark.com/api/1.0/stores"
-    
+
     try:
         response = requests.get(url)
         response.raise_for_status()
@@ -535,23 +542,24 @@ def fetch_store_data():
         store_dict = {
             store["storeID"]: {
                 "store_name": store["storeName"],
-                "icon_url": f"{CHEAPSHARK_BASE_URL}{store['images']['icon']}"
+                "icon_url": f"{CHEAPSHARK_BASE_URL}{store['images']['icon']}",
             }
             for store in stores
         }
-        
+
         return store_dict
 
     except requests.RequestException as e:
         print(f"Error fetching store data: {e}")
         return {}
 
+
 def get_latest_deals(offset=0, limit=10, latest=False, AAA=False):
     """Fetches the latest game deals from CheapShark API and returns detailed data in one go."""
     sort_by = "Recent" if latest else "DealRating"
     AAA_games = 1 if AAA else 0
     url = f"https://www.cheapshark.com/api/1.0/deals?offset={offset}&pageSize={limit}&AAA={AAA_games}&sortBy={sort_by}&desc=1"
-    
+
     try:
         response = requests.get(url)
         response.raise_for_status()
@@ -570,7 +578,7 @@ def get_latest_deals(offset=0, limit=10, latest=False, AAA=False):
         ]
 
         return deal_list
-    
+
     except requests.RequestException as e:
         print(f"Error fetching deals: {e}")
         return []

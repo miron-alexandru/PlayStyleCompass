@@ -22,7 +22,6 @@ from API_functions import (
     get_game_playtime,
     get_latest_deals,
     fetch_store_data,
-
 )
 
 from data_extraction import (
@@ -811,7 +810,9 @@ def create_deals_data(offset=0, limit=10, latest=False, AAA=False):
         deals = get_latest_deals(offset=offset, limit=limit, latest=latest, AAA=AAA)
 
         for deal in deals:
-            store_info = store_data.get(deal["storeID"], {"store_name": "Unknown", "icon_url": ""})
+            store_info = store_data.get(
+                deal["storeID"], {"store_name": "Unknown", "icon_url": ""}
+            )
             print(deal)
             deal_values = (
                 str(deal["dealID"]),

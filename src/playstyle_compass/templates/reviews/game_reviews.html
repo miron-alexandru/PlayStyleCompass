@@ -37,11 +37,10 @@
               <p>
                 {% trans "Written by" %}
                 <span class="author-container">
-                  <span class="author-name" title="Open user profile in a new tab.">
-                    {{ review.reviewers }}
-                  </span>
+                  <a class="author-name" href="{% url 'users:view_profile' review.reviewers %}" target="_blank" title="Open user profile in a new tab.">
+                  {{ review.reviewers }}</a>
                   <a href="#" class="author-link" data-user-id="{{ review.user_id }}">
-                    <span class="friend-request-text" style="display: none;">Friend Request</span>
+                    <span class="friend-request-text" style="display: none;">{% trans "Friend Request" %}</span>
                   </a>
                 </span>
                 {% trans "on" %} {{ review.date_added }}
