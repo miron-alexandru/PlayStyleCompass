@@ -49,15 +49,14 @@
           </div>
           <div class="review-body">
             <div class="review-description-container">
-              <span class="review-description" data-full-description="{{ review.description }}">
-                {{ review.review_description }}
+              <span class="review-description">
+                {{ review.review_description|truncatewords_html:"100" }}
               </span>
               <span class="review-description-full" style="display: none;">
-                {{ review.description }}
+                {{ review.review_description }}
               </span>
+              <button class="read-button-review">{% trans "[Read more...]" %}</button>
             </div>
-            <button class="read-button-review" data-toggle="read-more">{% trans "[Read more...]" %}</button>
-          </div>
         </div>
       </div>
     {% endfor %}

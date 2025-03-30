@@ -141,3 +141,30 @@
   display: flex;
   align-items: center;
 }
+
+.read-button,
+.read-button-review {
+  background: none;
+  border: none;
+  padding: 0;
+  color: #007bff;
+  cursor: pointer;
+  font-size: 14px;
+  text-decoration: underline;
+}
+
+.read-button:hover,
+.read-button-review:hover {
+  text-decoration: none;
+}
+
+.error-message {
+  color: #d9534f;
+  font-size: 13px;
+  display: inline-block;
+}
+
+.fade-out {
+  opacity: 0;
+  transition: opacity 1s ease-out;
+}
