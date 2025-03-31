@@ -36,7 +36,7 @@
             <div class="game-review-details">
               <p>
                 {% trans "Written by" %}
-                <span class="author-container">
+                <span class="author-container" data-friend-req="{% url 'users:friend_request' 0 %}">
                   <a class="author-name" href="{% url 'users:view_profile' review.reviewers %}" target="_blank" title="Open user profile in a new tab.">
                   {{ review.reviewers }}</a>
                   <a href="#" class="author-link" data-user-id="{{ review.user_id }}">

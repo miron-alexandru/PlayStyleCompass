@@ -65,6 +65,17 @@ const showUserMessage = (container, message) => {
   }, 3000);
 };
 
+const showMessage = (container, message) => {
+    let customMessage = $(`<div class="success-message">${message}</div>`);
+    container.append(customMessage);
+
+    setTimeout(() => {
+      customMessage.fadeOut("slow", function () {
+        customMessage.remove();
+      });
+    }, 3000);
+  };
+
 document.querySelectorAll(".author-name").forEach((link) => {
   link.addEventListener("click", function (event) {
     event.preventDefault();
@@ -87,17 +98,6 @@ document.querySelectorAll(".author-name").forEach((link) => {
 });
 
 document.addEventListener("DOMContentLoaded", function () {
-  const showMessage = (container, message) => {
-    let customMessage = $(`<div class="success-message">${message}</div>`);
-    container.append(customMessage);
-
-    setTimeout(() => {
-      customMessage.fadeOut("slow", function () {
-        customMessage.remove();
-      });
-    }, 3000);
-  };
-
   const sendRatingAction = (actionType, event) => {
     event.preventDefault();
 
@@ -136,3 +136,65 @@ document.addEventListener("DOMContentLoaded", function () {
     sendRatingAction("dislike", event);
   });
 });
+
+
+$(document).ready(function () {
+  $(document).on("mouseenter", ".author-container", function () {
+    $(this).find(".friend-request-text").show();
+  });
+
+  $(document).on("mouseleave", ".author-container", function () {
+    $(this).find(".friend-request-text").hide();
+  });
+
+  $(document).on("click", ".friend-request-text", function (e) {
+    e.preventDefault();
+
+    if (!isLoggedIn()) {
+      showMessage(
+        $(this).closest(".author-container"),
+        "Please log in to send friend requests."
+      );
+      return;
+    }
+
+    let friendReqUrl = $(this).closest(".author-container").data("friend-req");
+    let user_id = $(this).closest(".author-link").data("user-id");
+    let this_container = $(this).closest(".author-container");
+
+    $.ajax({
+      type: "POST",
+      url: friendReqUrl,
+      headers: {
+        "X-CSRFToken": csrfToken,
+      },
+      data: {
+        user_id: user_id,
+      },
+      success: function (data) {
+        showMessage(this_container, data.message);
+      },
+      error: function (xhr) {
+        console.error("Error sending friend request:", xhr);
+        showMessage(this_container, "An error occurred. Please try again.");
+      },
+    });
+  });
+});
+
+
+function isLoggedIn() {
+  let authenticated = false;
+  $.ajax({
+    type: "GET",
+    url: authCheckUrl,
+    async: false,
+    success: function (response) {
+      authenticated = response.authenticated;
+    },
+    error: function (xhr, status, error) {
+      console.error("Error checking authentication:", error);
+    },
+  });
+  return authenticated;
+}
