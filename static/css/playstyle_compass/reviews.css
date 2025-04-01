@@ -76,17 +76,18 @@
 
 .friend-request-text {
   display: inline-block;
-  padding: 5px 10px;
-  background-color: green;
+  padding: 4px 8px;
+  background-color: #388E3C;
   color: #ffffff;
-  border-radius: 4px;
+  border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s ease;
   font-size: 9px;
+  font-weight: 600;
 }
 
 .friend-request-text:hover {
-  background-color: darkgreen;
+  background-color: #2E7D32;
 }
 
 .author-link {
@@ -167,4 +168,30 @@
 .fade-out {
   opacity: 0;
   transition: opacity 1s ease-out;
+}
+
+.game-review-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-color);
+  padding: 8px 12px;
+  border-radius: 6px;
+  background-color: var(--game-container-color);
+  margin-bottom: 12px;
+  border: 2px solid #ddd;
+  text-align: center;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.game-review-title a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.game-review-title a:hover {
+  color: #0056b3;
+}
+
+.game-review-title:hover {
+  background-color: #e9e9e9;
 }

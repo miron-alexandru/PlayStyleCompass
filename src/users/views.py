@@ -728,7 +728,7 @@ def send_friend_request(request, *args, **kwargs):
     if request.method == "POST" and user.is_authenticated:
         user_id = request.POST.get("user_id", "invalid_user")
 
-        if user_id and user_id != "invalid_user":
+        if user_id and user_id != "invalid_user" and user_id.isdigit():
             # Get the receiver user object based on the provided user ID
             receiver_queryset = User.objects.filter(pk=user_id)
 

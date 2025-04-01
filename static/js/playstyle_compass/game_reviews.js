@@ -159,7 +159,7 @@ $(document).ready(function () {
     }
 
     let friendReqUrl = $(this).closest(".author-container").data("friend-req");
-    let user_id = $(this).closest(".author-link").data("user-id");
+    let user_id = $(this).closest(".author-container").find(".author-link").data("user-id");
     let this_container = $(this).closest(".author-container");
 
     $.ajax({
@@ -175,7 +175,7 @@ $(document).ready(function () {
         showMessage(this_container, data.message);
       },
       error: function (xhr) {
-        console.error("Error sending friend request:", xhr);
+        console.error("Error sending friend request:");
         showMessage(this_container, "An error occurred. Please try again.");
       },
     });

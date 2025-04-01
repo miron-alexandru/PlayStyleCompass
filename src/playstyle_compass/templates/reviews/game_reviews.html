@@ -17,6 +17,12 @@
   {% if reviews %}
     {% for review in reviews %}
       <div class="reviews-collection">
+          <p class="game-review-title">
+            {% trans "Game review for" %}
+            <a href="{% url 'playstyle_compass:view_game' review.game.guid %}" target="_blank" title="View game details">
+              {{ review.game.title }}
+            </a>
+          </p>
         <div class="review" data-review-id="{{ review.id }}">
           <div class="review-header">
           <div class="like-dislike"
@@ -39,9 +45,8 @@
                 <span class="author-container" data-friend-req="{% url 'users:friend_request' 0 %}">
                   <a class="author-name" href="{% url 'users:view_profile' review.reviewers %}" target="_blank" title="Open user profile in a new tab.">
                   {{ review.reviewers }}</a>
-                  <a href="#" class="author-link" data-user-id="{{ review.user_id }}">
-                    <span class="friend-request-text" style="display: none;">{% trans "Friend Request" %}</span>
-                  </a>
+                  <a href="#" class="author-link" data-user-id="{{ review.user_id }}"></a>
+                  <span class="friend-request-text" style="display: none;">{% trans "Friend Request" %}</span>
                 </span>
                 {% trans "on" %} {{ review.date_added }}
               </p>
