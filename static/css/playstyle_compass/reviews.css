@@ -169,29 +169,3 @@
   opacity: 0;
   transition: opacity 1s ease-out;
 }
-
-.game-review-title {
-  font-size: 1rem;
-  font-weight: 700;
-  color: var(--text-color);
-  padding: 8px 12px;
-  border-radius: 6px;
-  background-color: var(--game-container-color);
-  margin-bottom: 12px;
-  border: 2px solid #ddd;
-  text-align: center;
-  transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-.game-review-title a {
-  color: #007bff;
-  text-decoration: none;
-}
-
-.game-review-title a:hover {
-  color: #0056b3;
-}
-
-.game-review-title:hover {
-  background-color: #e9e9e9;
-}

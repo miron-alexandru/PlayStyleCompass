@@ -1,0 +1,175 @@
+.reviews-collection {
+  background-color: var(--game-container);
+  border-radius: 5px;
+  padding: 5px;
+}
+
+.review {
+  position: relative;
+  border: 1px solid var(--game-container-border);
+  padding: 10px;
+  margin: 10px;
+  border-radius: 5px;
+}
+
+.review-header {
+  padding-bottom: 5px;
+  border-bottom: 1px solid var(--game-container-border);
+}
+
+.review-header p {
+  margin: 0 auto;
+}
+
+.review-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-color);
+}
+
+.game-review-details {
+  font-size: 14px;
+  font-weight: 500;
+  transform: skew(-7deg);
+}
+
+.review-body {
+  margin: 10px 0;
+}
+
+.review-description-container {
+  max-width: 100%;
+}
+
+.review-description,
+.review-description-full {
+  margin: 10px 0;
+  word-break: break-word;
+}
+
+.gold-star {
+  color: gold;
+  font-size: 17px;
+}
+
+.empty-star {
+  font-size: 17px;
+  color: lightgrey;
+}
+
+.friend-request-text {
+  display: inline-block;
+  padding: 4px 8px;
+  background-color: #388E3C;
+  color: #ffffff;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-size: 9px;
+  font-weight: 600;
+}
+
+.friend-request-text:hover {
+  background-color: #2E7D32;
+}
+
+.author-link {
+  font-weight: bold;
+}
+
+.author-name {
+  font-weight: bolder;
+  color: var(--text-color);
+  cursor: pointer;
+}
+
+.author-name:hover {
+  color: #666;
+}
+
+.thumbs-up,
+.thumbs-down {
+  cursor: pointer;
+  transition: color 0.3s ease;
+  padding-right: 5px;
+}
+
+.thumbs-up:hover {
+  color: #007bff;
+}
+
+.thumbs-down:hover {
+  color: #dc3545;
+}
+
+.thumbs-up:active,
+.thumbs-down:active {
+  transform: scale(1.2);
+}
+
+.like-dislike-divider {
+  margin-right: 2px;
+  color: #ccc;
+}
+
+.like-dislike {
+  position: absolute;
+  user-select: none;
+  margin-left: 2px;
+  text-align: right;
+  top: 8px;
+  right: 8px;
+}
+
+
+.read-button-review {
+  background: none;
+  border: none;
+  padding: 0;
+  color: #007bff;
+  cursor: pointer;
+  font-size: 14px;
+  text-decoration: underline;
+}
+
+.read-button-review:hover {
+  text-decoration: none;
+}
+
+.error-message {
+  color: #d9534f;
+  font-size: 13px;
+  display: inline-block;
+}
+
+.fade-out {
+  opacity: 0;
+  transition: opacity 1s ease-out;
+}
+
+.game-review-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-color);
+  padding: 8px 12px;
+  margin: 10px;
+  border-radius: 6px;
+  background-color: var(--game-container-color);
+  margin-bottom: 12px;
+  border: 2px solid var(--game-container-border);
+  text-align: center;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.game-review-title a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.game-review-title a:hover {
+  color: #0056b3;
+}
+
+.game-review-title:hover {
+  background-color: var(--game-list-hover);
+}
