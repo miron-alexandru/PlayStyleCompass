@@ -13,10 +13,23 @@
 
 {% block content %}
   <link rel="stylesheet" href="{% static 'css/playstyle_compass/game_reviews.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'css/playstyle_compass/pagination.css' %}">
 
   {% if reviews %}
+  <form method="get" action="{% url 'playstyle_compass:game_reviews' %}">
+    <label for="sort-order">{% trans "Sort by:" %}</label>
+    <select name="sort_order" id="sort-order" onchange="this.form.submit()">
+      <option value="date_desc" {% if sort_order == 'date_desc' %}selected{% endif %}>{% trans "Newest First" %}</option>
+      <option value="date_asc" {% if sort_order == 'date_asc' %}selected{% endif %}>{% trans "Oldest First" %}</option>
+      <option value="score_desc" {% if sort_order == 'score_desc' %}selected{% endif %}>{% trans "Score (High to Low)" %}</option>
+      <option value="score_asc" {% if sort_order == 'score_asc' %}selected{% endif %}>{% trans "Score (Low to High)" %}</option>
+      <option value="likes_desc" {% if sort_order == 'likes_desc' %}selected{% endif %}>{% trans "Most Liked" %}</option>
+      <option value="likes_asc" {% if sort_order == 'likes_asc' %}selected{% endif %}>{% trans "Least Liked" %}</option>
+    </select>
+  </form>
+
+    <div class="reviews-collection">
     {% for review in reviews %}
-      <div class="reviews-collection">
           <p class="game-review-title">
             {% trans "Game review for" %}
             <a href="{% url 'playstyle_compass:view_game' review.game.guid %}" target="_blank" title="View game details">
@@ -68,6 +81,7 @@
   {% else %}
     <p class="text-center">{% trans "Empty for now." %}</p>
   {% endif %}
+</div>
 
   {% if pagination %}
     <link rel="stylesheet" type="text/css" href="{% static 'css/playstyle_compass/pagination.css' %}">

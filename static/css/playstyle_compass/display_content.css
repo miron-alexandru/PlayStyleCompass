@@ -43,14 +43,14 @@
 }
 
 label[for="sort-order"] {
-  font-size: 16px;
+  font-size: 15px;
   font-weight: bold;
   color: var(--text-color);
 }
 
 #sort-order {
   padding: 5px;
-  font-size: 14px;
+  font-size: 13px;
   border: 1px solid var(--list-sorting);
   border-radius: 5px;
   background-color: var(--dropdown-menu);
@@ -59,7 +59,7 @@ label[for="sort-order"] {
 }
 
 #sort-order option {
-  font-size: 14px;
+  font-size: 13px;
   background-color: var(--dropown-menu);
   color: var(--text-color);
 }

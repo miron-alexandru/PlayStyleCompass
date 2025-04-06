@@ -139,6 +139,7 @@ Websites for .env configuration: [GiantBomb](https://www.giantbomb.com/) / [Send
 <summary><h2>PlayStyle Compass Changelog</h2></summary>
 
 ### Version v2.4:
+* Game reviews can now be sorted.
 * Created Game Reviews page.
 * Created Game Deals page and added Game Deals on the index page.
 * Added top rated games on the Index Page.

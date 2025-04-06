@@ -1,7 +1,9 @@
 .reviews-collection {
   background-color: var(--game-container);
   border-radius: 5px;
+  border: 1px solid var(--game-container-border);
   padding: 5px;
+  margin: 10px;
 }
 
 .review {
@@ -172,4 +174,40 @@
 
 .game-review-title:hover {
   background-color: var(--game-list-hover);
+}
+
+label[for="sort-order"] {
+  font-size: 15px;
+  font-weight: bold;
+  color: var(--text-color);
+  margin-left: 10px;
+}
+
+#sort-order {
+  padding: 5px;
+  font-size: 13px;
+  border: 1px solid var(--list-sorting);
+  border-radius: 5px;
+  background-color: var(--dropdown-menu);
+  color: var(--text-color);
+  outline: none;
+}
+
+#sort-order option {
+  font-size: 13px;
+  background-color: var(--dropown-menu);
+  color: var(--text-color);
+}
+
+#sort-order:hover,
+#sort-order:focus {
+  border: 1px solid #333;
+}
+
+strong {
+  font-weight: bold;
+}
+
+small {
+  font-size: 0.7em;
 }

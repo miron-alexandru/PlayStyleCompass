@@ -2530,14 +2530,31 @@ def deals_list(request):
 def game_reviews(request):
     """View used to display game reviews."""
     user = request.user
+    sort_order = request.GET.get("sort_order", "date_desc")
 
     all_reviews = Review.objects.all()
+
+    if sort_order == "date_desc":
+        all_reviews = all_reviews.order_by("-date_added")
+    elif sort_order == "date_asc":
+        all_reviews = all_reviews.order_by("date_added")
+    elif sort_order == "score_desc":
+        all_reviews = all_reviews.order_by("-score")
+    elif sort_order == "score_asc":
+        all_reviews = all_reviews.order_by("score")
+    elif sort_order == "likes_desc":
+        all_reviews = all_reviews.order_by("-likes")
+    elif sort_order == "likes_asc":
+        all_reviews = all_reviews.order_by("likes")
+
     reviews = paginate_objects(request, all_reviews)
 
     context = {
         "page_title": _("Game Reviews :: PlayStyle Compass"),
         "reviews": reviews,
         "pagination": True,
+        "sort_order": sort_order,
     }
 
     return render(request, "reviews/game_reviews.html", context)
+
