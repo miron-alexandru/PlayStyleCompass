@@ -57,7 +57,7 @@ from data_processing import (
 # create_quiz_data(concepts, num_games=5, offset=0)
 
 # Obtain News data
-# create_news_data(num_articles=50, year=2025, latest_week=False)
+#create_news_data(num_articles=50, year=2025, latest_week=False)
 
 # Obtain casual games data
 # casual_game_ids = fetch_game_ids_by_genre(genre_id=40, page_size=40, page=2)
@@ -66,4 +66,6 @@ from data_processing import (
 # Obtain popular games data
 # popular_game_ids = fetch_popular_game_ids(page_size=40, page=1)
 # create_games_data_db(popular_game_ids, rawg_popular=True)
-create_deals_data(offset=0, limit=5, latest=True, AAA=False)
+
+# Obtain deals data
+create_deals_data(offset=0, limit=100, latest=True, AAA=False)

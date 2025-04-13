@@ -356,6 +356,44 @@ GAME_MODES_CHOICES = [
     ("Story Mode", "Story Mode"),
 ]
 
+STORE_URLS = {
+    "Steam": "https://store.steampowered.com/",
+    "GamersGate": "https://www.gamersgate.com/",
+    "GreenManGaming": "https://www.greenmangaming.com/",
+    "Amazon": "https://www.amazon.com/",
+    "GameStop": "https://www.gamestop.com/",
+    "Direct2Drive": "https://www.direct2drive.com/",
+    "GOG": "https://www.gog.com/",
+    "Origin": "https://www.origin.com/",
+    "Get Games": "https://get.games/",
+    "Shiny Loot": "https://www.shinyloot.com/",
+    "Humble Store": "https://www.humblebundle.com/store",
+    "Desura": "https://www.desura.com/",
+    "Uplay": "https://store.ubi.com/",
+    "IndieGameStand": "https://indiegamestand.com/",
+    "Fanatical": "https://www.fanatical.com/",
+    "Gamesrocket": "https://www.gamesrocket.com/",
+    "Games Republic": "https://gamesrepublic.com/",
+    "SilaGames": "https://www.silagames.com/",
+    "Playfield": "https://www.playfield.io/",
+    "ImperialGames": "https://www.imperialgames.com/",
+    "WinGameStore": "https://www.wingamestore.com/",
+    "FunStockDigital": "https://www.funstockdigital.co.uk/",
+    "GameBillet": "https://www.gamebillet.com/",
+    "Voidu": "https://www.voidu.com/",
+    "Epic Games Store": "https://store.epicgames.com/",
+    "Razer Game Store": "https://www.razer.com/game-store",
+    "Gamesplanet": "https://us.gamesplanet.com/",
+    "Gamesload": "https://www.gamesload.com/",
+    "2Game": "https://2game.com/",
+    "IndieGala": "https://www.indiegala.com/",
+    "Blizzard Shop": "https://shop.battle.net/",
+    "AllYouPlay": "https://www.allyouplay.com/",
+    "DLGamer": "https://www.dlgamer.com/",
+    "Noctre": "https://noctre.com/",
+    "DreamGame": "https://dreamgame.com/"
+}
+
 
 API_KEY = str(os.getenv("GBAPI_KEY"))
 GOOGLE_API_KEY = str(os.getenv("GOOGLE_API_KEY"))

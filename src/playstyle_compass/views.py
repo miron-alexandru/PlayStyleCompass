@@ -120,7 +120,7 @@ def index(request):
     popular_franchises = Franchise.objects.filter(title__in=popular_franchise_titles)
     articles = News.objects.order_by("-publish_date")[:6]
     top_rated_games = Game.objects.order_by("-average_score")[:10]
-    game_deals = Deal.objects.all()
+    game_deals = Deal.objects.all()[:8]
 
     context = {
         "page_title": _("Home :: PlayStyle Compass"),

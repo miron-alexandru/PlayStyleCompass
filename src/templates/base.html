@@ -71,6 +71,9 @@
             <a class="dropdown-item" href="{% url 'playstyle_compass:get_recommendations'%}">
               {% trans "Game Recommendations" %}
             </a>
+            <a class="dropdown-item" href="{% url 'users:gaming_quiz'%}">
+              {% trans "Preference Quiz" %}
+            </a>
             <a class="dropdown-item" href="{% url 'users:quiz_recommendations'%}">
               {% trans "Quiz Recommendations" %}
             </a>
@@ -162,7 +165,7 @@
           </a>
           <div class="dropdown-menu navbar-dropdown">
             <a class="dropdown-item" href="{% url 'playstyle_compass:latest_news'%}">
-              {% trans "News" %}
+              {% trans "Gaming News" %}
             </a>
             <a class="dropdown-item" href="{% url 'playstyle_compass:deals_list'%}">
               {% trans "Game Deals" %}
@@ -190,16 +193,6 @@
             </a>
             <a class="dropdown-item" href="{% url 'playstyle_compass:characters'%}">
               {% trans "Characters" %}
-            </a>
-          </div>
-        </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navItemDropdown" role="button" data-toggle="dropdown">
-              {% trans "Other" %}
-          </a>
-          <div class="dropdown-menu navbar-dropdown">
-            <a class="dropdown-item" href="{% url 'users:gaming_quiz'%}">
-              {% trans "Preference Quiz" %}
             </a>
           </div>
         </li>

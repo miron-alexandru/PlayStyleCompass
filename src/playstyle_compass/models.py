@@ -9,6 +9,7 @@ from django.db.models import Avg, Count
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.utils.translation import gettext_lazy as _
 from django.utils.timezone import now, timedelta
+from utils.constants import STORE_URLS
 
 
 class Game(models.Model):
@@ -546,3 +547,7 @@ class Deal(models.Model):
 
     def __str__(self):
         return f"{self.game_name} - ${self.sale_price}"
+
+    @property
+    def store_url(self):
+        return STORE_URLS.get(self.store_name, "#")

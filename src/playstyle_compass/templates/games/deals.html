@@ -24,10 +24,12 @@
                 <span class="sale-price">${{ deal.sale_price }}</span> 
                 <span class="retail-price">${{ deal.retail_price }}</span>
             </p>
-            <p>
+            <p class="store-name">
                 {% trans "Store:" %} 
-                <img src="{{ deal.store_icon_url }}" alt="{{ deal.store_name }}" class="store-icon"> 
-                {{ deal.store_name }}
+                <a href="{{ deal.store_url }}" target="_blank">
+                    <img src="{{ deal.store_icon_url }}" alt="{{ deal.store_name }}" class="store-icon"> 
+                    {{ deal.store_name }}
+                </a>
             </p>
         </div>
     {% empty %}
