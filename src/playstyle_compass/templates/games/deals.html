@@ -36,4 +36,25 @@
         <p>{% trans "No deals available at the moment." %}</p>
     {% endfor %}
 </div>
+
+{% if pagination %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/playstyle_compass/pagination.css' %}">
+    <div class="pagination">
+        <span class="step-links">
+        {% if deals.has_previous %}
+            <a href="?page=1">&laquo; {% trans "First" %}</a>
+            <a href="?page={{ deals.previous_page_number }}">{% trans "Previous" %}</a>
+        {% endif %}
+
+        <span class="current-page">
+            {% trans "Page" %} {{ deals.number }} {% trans "of" %} {{ deals.paginator.num_pages }}
+        </span>
+
+        {% if deals.has_next %}
+            <a href="?page={{ deals.next_page_number }}">{% trans "Next" %}</a>
+            <a href="?page={{ deals.paginator.num_pages }}">{% trans "Last" %} &raquo;</a>
+        {% endif %}
+        </span>
+    </div>
+{% endif %}
 {% endblock content %}

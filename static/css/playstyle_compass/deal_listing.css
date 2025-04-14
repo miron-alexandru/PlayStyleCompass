@@ -39,7 +39,7 @@
 .deal-image {
   position: relative;
   width: 100%;
-  height: 100px;
+  height: 160px;
   display: flex;
   margin-bottom: 0px;
   align-items: flex-end;
@@ -98,13 +98,25 @@
   margin: 2px 0;
 }
 
-.deal-store {
+.deal-storee {
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 11px;
   margin-top: 3px;
 }
+
+.deal-store {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  margin-top: 3px;
+  flex-wrap: wrap;
+  text-align: center;
+  word-break: break-word;
+}
+
 
 .store-icon {
   width: 16px;

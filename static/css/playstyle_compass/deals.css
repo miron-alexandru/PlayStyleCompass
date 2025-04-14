@@ -13,16 +13,41 @@
     padding: 15px;
     text-align: center;
     box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+}
+
+.deal-card:hover {
+    transform: scale(1.03);
+    box-shadow: 0px 6px 16px rgba(0, 0, 0, 0.4);
+}
+
+.deal-card img {
+    max-width: 100%;
+    max-height: 240px;
+    object-fit: cover;
+    border-radius: 5px;
+    transition: transform 0.3s ease;
+}
+
+.deal-card:hover img {
+    transform: scale(1.02);
 }
 
 .game-title {
-    font-size: 17px;
+    font-size: clamp(16px, 2vw, 18px);
     color: #d4e6f1;
+    margin: 10px 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .sale-price {
     color: #4caf50;
     font-weight: bold;
+    font-size: 1.1em;
+    transition: color 0.3s ease;
 }
 
 .retail-price {
@@ -37,11 +62,6 @@
     vertical-align: middle;
 }
 
-.deal-card img {
-    max-width: 100%;
-    border-radius: 5px;
-}
-
 .deal-card:hover .game-title {
     color: #ecf0f1;
 }
@@ -52,4 +72,21 @@
 
 .store-name {
     color: #fafafa;
+    font-size: 0.9em;
+}
+
+/* Optional: Make container slightly more responsive on small screens */
+@media (max-width: 600px) {
+    .deals-container {
+        padding: 10px;
+        gap: 15px;
+    }
+
+    .deal-card {
+        padding: 10px;
+    }
+
+    .game-title {
+        font-size: 16px;
+    }
 }

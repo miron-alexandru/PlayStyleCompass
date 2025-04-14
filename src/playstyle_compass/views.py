@@ -2516,11 +2516,13 @@ def completed_polls(request):
 
 
 def deals_list(request):
-    deals = Deal.objects.all()
+    all_deals = Deal.objects.all()
+    deals = paginate_objects(request, all_deals, objects_per_page=28)
 
     context = {
         "page_title": _("Game Deals :: PlayStyle Compass"),
         "deals": deals,
+        "pagination": True,
     }
 
     return render(request, "games/deals.html", context)

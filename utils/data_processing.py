@@ -813,7 +813,7 @@ def create_deals_data(offset=0, limit=10, latest=False, AAA=False):
             store_info = store_data.get(
                 deal["storeID"], {"store_name": "Unknown", "icon_url": ""}
             )
-            print(deal)
+
             deal_values = (
                 str(deal["dealID"]),
                 str(deal["name"]),

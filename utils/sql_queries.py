@@ -129,7 +129,7 @@ CREATE TABLE IF NOT EXISTS Deals (
 """
 
 insert_deals_sql = """
-INSERT INTO Deals (deal_id, game_name, sale_price, retail_price, thumb_url, store_name, store_icon_url)
+INSERT OR IGNORE INTO Deals (deal_id, game_name, sale_price, retail_price, thumb_url, store_name, store_icon_url)
 VALUES (?, ?, ?, ?, ?, ?, ?);
 """
 

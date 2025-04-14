@@ -68,4 +68,4 @@ from data_processing import (
 # create_games_data_db(popular_game_ids, rawg_popular=True)
 
 # Obtain deals data
-create_deals_data(offset=0, limit=100, latest=True, AAA=False)
+create_deals_data(offset=100, limit=100, latest=True, AAA=False)
