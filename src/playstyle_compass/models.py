@@ -536,8 +536,8 @@ class Vote(models.Model):
 class Deal(models.Model):
     deal_id = models.CharField(max_length=255, unique=True)
     game_name = models.CharField(max_length=255)
-    sale_price = models.CharField(max_length=255)
-    retail_price = models.CharField(max_length=255)
+    sale_price = models.DecimalField(max_digits=6, decimal_places=2)
+    retail_price = models.DecimalField(max_digits=6, decimal_places=2)
     thumb_url = models.CharField(max_length=255)
     store_name = models.CharField(max_length=255)
     store_icon_url = models.CharField(max_length=255)

@@ -75,18 +75,38 @@
     font-size: 0.9em;
 }
 
-/* Optional: Make container slightly more responsive on small screens */
-@media (max-width: 600px) {
-    .deals-container {
-        padding: 10px;
-        gap: 15px;
-    }
+label[for="sort-order"] {
+  font-size: 15px;
+  font-weight: bold;
+  color: var(--text-color);
+  margin-left: 10px;
+}
 
-    .deal-card {
-        padding: 10px;
-    }
+#sort-order {
+  padding: 5px;
+  font-size: 13px;
+  border: 1px solid var(--list-sorting);
+  border-radius: 5px;
+  background-color: var(--dropdown-menu);
+  color: var(--text-color);
+  outline: none;
+}
 
-    .game-title {
-        font-size: 16px;
-    }
+#sort-order option {
+  font-size: 13px;
+  background-color: var(--dropown-menu);
+  color: var(--text-color);
+}
+
+#sort-order:hover,
+#sort-order:focus {
+  border: 1px solid #333;
+}
+
+strong {
+  font-weight: bold;
+}
+
+small {
+  font-size: 0.7em;
 }

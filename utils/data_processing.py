@@ -817,8 +817,8 @@ def create_deals_data(offset=0, limit=10, latest=False, AAA=False):
             deal_values = (
                 str(deal["dealID"]),
                 str(deal["name"]),
-                str(deal["salePrice"]),
-                str(deal["retailPrice"]),
+                deal["salePrice"],
+                deal["retailPrice"],
                 str(deal["thumb"]),
                 str(store_data.get(deal["storeID"], {}).get("store_name", "")),
                 str(store_data.get(deal["storeID"], {}).get("icon_url", "")),

@@ -2516,12 +2516,24 @@ def completed_polls(request):
 
 
 def deals_list(request):
+    sort_order = request.GET.get("sort_order", "game_name_asc")
     all_deals = Deal.objects.all()
+
+    if sort_order == "sale_desc":
+        all_deals = all_deals.order_by("-sale_price")
+    elif sort_order == "sale_asc":
+        all_deals = all_deals.order_by("sale_price")
+    elif sort_order == "game_name_desc":
+        all_deals = all_deals.order_by("-game_name")
+    elif sort_order == "game_name_asc":
+        all_deals = all_deals.order_by("game_name")
+
     deals = paginate_objects(request, all_deals, objects_per_page=28)
 
     context = {
         "page_title": _("Game Deals :: PlayStyle Compass"),
         "deals": deals,
+        "sort_order": sort_order,
         "pagination": True,
     }
 

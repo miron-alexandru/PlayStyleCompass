@@ -15,6 +15,25 @@
 
 {% block content %}
 <link rel="stylesheet" href="{% static 'css/playstyle_compass/deals.css' %}">
+
+    <form method="get" action="{% url 'playstyle_compass:deals_list' %}">
+    <label for="sort-order">{% trans "Sort by:" %}</label>
+    <select name="sort_order" id="sort-order" onchange="this.form.submit()">
+        <option value="sale_asc" {% if sort_order == 'sale_asc' %}selected{% endif %}>
+            {% trans "Sale Price ↑" %}
+        </option>
+        <option value="sale_desc" {% if sort_order == 'sale_desc' %}selected{% endif %}>
+            {% trans "Sale Price ↓" %}
+        </option>
+        <option value="game_name_asc" {% if sort_order == 'game_name_asc' %}selected{% endif %}>
+            {% trans "Game Name (A–Z)" %}
+        </option>
+        <option value="game_name_desc" {% if sort_order == 'game_name_desc' %}selected{% endif %}>
+            {% trans "Game Name (Z–A)" %}
+        </option>
+    </select>
+  </form>
+
 <div class="deals-container">
     {% for deal in deals %}
         <div class="deal-card">

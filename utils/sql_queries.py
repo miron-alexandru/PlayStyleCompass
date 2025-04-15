@@ -120,8 +120,8 @@ CREATE TABLE IF NOT EXISTS Deals (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     deal_id TEXT,
     game_name TEXT,
-    sale_price TEXT,
-    retail_price TEXT,
+    sale_price NUMERIC,
+    retail_price NUMERIC,
     thumb_url TEXT,
     store_name TEXT,
     store_icon_url TEXT
