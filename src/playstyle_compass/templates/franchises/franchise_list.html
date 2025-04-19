@@ -36,8 +36,8 @@
 <div class="pagination">
   <span class="step-links">
     {% if franchises.has_previous %}
-    <a href="?page=1">&laquo; {% trans "First" %}</a>
-    <a href="?page={{ franchises.previous_page_number }}">{% trans "Previous" %}</a>
+    <a href="?page=1&sort_order={{ sort_order }}">&laquo; {% trans "First" %}</a>
+    <a href="?page={{ franchises.previous_page_number }}&sort_order={{ sort_order }}">{% trans "Previous" %}</a>
     {% endif %}
 
     <span class="current-page">
@@ -45,8 +45,8 @@
     </span>
 
     {% if franchises.has_next %}
-    <a href="?page={{ franchises.next_page_number }}">{% trans "Next" %}</a>
-    <a href="?page={{ franchises.paginator.num_pages }}">{% trans "Last" %} &raquo;</a>
+    <a href="?page={{ franchises.next_page_number }}&sort_order={{ sort_order }}">{% trans "Next" %}</a>
+    <a href="?page={{ franchises.paginator.num_pages }}&sort_order={{ sort_order }}">{% trans "Last" %} &raquo;</a>
     {% endif %}
   </span>
 </div>
