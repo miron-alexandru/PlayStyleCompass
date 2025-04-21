@@ -391,7 +391,7 @@ STORE_URLS = {
     "AllYouPlay": "https://www.allyouplay.com/",
     "DLGamer": "https://www.dlgamer.com/",
     "Noctre": "https://noctre.com/",
-    "DreamGame": "https://dreamgame.com/"
+    "DreamGame": "https://dreamgame.com/",
 }
 
 

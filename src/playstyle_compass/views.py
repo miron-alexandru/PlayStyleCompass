@@ -2211,6 +2211,7 @@ def vote(request, id):
 def community_polls(request):
     """View used to display polls."""
     polls = Poll.objects.filter(is_public=True).order_by("-created_at")
+    polls = paginate_objects(request, polls)
     user_votes = {}
 
     polls_with_data = []
@@ -2234,7 +2235,9 @@ def community_polls(request):
     context = {
         "page_title": _("Community Polls :: PlayStyle Compass"),
         "polls_with_data": polls_with_data,
+        "polls": polls,
         "user_votes": user_votes,
+        "pagination": True,
     }
     return render(request, "polls/community_polls.html", context)
 
@@ -2487,6 +2490,7 @@ def shared_polls(request):
 def completed_polls(request):
     """View to display all completed polls."""
     all_polls = Poll.objects.all().order_by("-created_at")
+    all_polls = paginate_objects(request, all_polls)
 
     completed_polls = [poll for poll in all_polls if poll.has_ended()]
 
@@ -2510,7 +2514,9 @@ def completed_polls(request):
     context = {
         "page_title": _("Completed Polls :: PlayStyle Compass"),
         "polls_with_data": polls_with_data,
+        "polls": all_polls,
         "user_votes": user_votes,
+        "pagination": True,
     }
     return render(request, "polls/completed_polls.html", context)
 
@@ -2571,4 +2577,3 @@ def game_reviews(request):
     }
 
     return render(request, "reviews/game_reviews.html", context)
-

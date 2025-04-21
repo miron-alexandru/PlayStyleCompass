@@ -95,6 +95,28 @@
   {% endif %}
 </div>
 
+{% if pagination %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/playstyle_compass/pagination.css' %}">
+    
+    <div class="pagination">
+      <span class="step-links">
+        {% if polls.has_previous %}
+          <a href="?page=1">&laquo; {% trans "First" %}</a>
+          <a href="?page={{ polls.previous_page_number }}">{% trans "Previous" %}</a>
+        {% endif %}
+
+        <span class="current-page">
+          {% trans "Page" %} {{ polls.number }} {% trans "of" %} {{ polls.paginator.num_pages }}
+        </span>
+
+        {% if polls.has_next %}
+          <a href="?page={{ polls.next_page_number }}">{% trans "Next" %}</a>
+          <a href="?page={{ polls.paginator.num_pages }}">{% trans "Last" %} &raquo;</a>
+        {% endif %}
+      </span>
+    </div>
+{% endif %}
+
 <script src="{% static 'js/playstyle_compass/polls.js' %}"></script>
 
 {% endblock content %}
