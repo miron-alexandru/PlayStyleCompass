@@ -32,7 +32,18 @@
             {% trans "Game Name (Z–A)" %}
         </option>
     </select>
-  </form>
+
+    <label for="store-name">{% trans "Filter by store:" %}</label>
+    <select name="store_name" id="store-name" onchange="this.form.submit()">
+        <option value="">{% trans "All Stores" %}</option>
+        {% for store in available_stores %}
+            <option value="{{ store }}" {% if store == current_store_name %}selected{% endif %}>
+                {{ store }}
+            </option>
+        {% endfor %}
+    </select>
+    </form>
+
 
 <div class="deals-container">
     {% for deal in deals %}
@@ -61,8 +72,8 @@
     <div class="pagination">
         <span class="step-links">
         {% if deals.has_previous %}
-            <a href="?page=1&sort_order={{ sort_order }}">&laquo; {% trans "First" %}</a>
-            <a href="?page={{ deals.previous_page_number }}&sort_order={{ sort_order }}">{% trans "Previous" %}</a>
+            <a href="?page=1&sort_order={{ sort_order }}&store_name={{ current_store_name }}">&laquo; {% trans "First" %}</a>
+            <a href="?page={{ deals.previous_page_number }}&sort_order={{ sort_order }}&store_name={{ current_store_name }}">{% trans "Previous" %}</a>
         {% endif %}
 
         <span class="current-page">
@@ -70,8 +81,8 @@
         </span>
 
         {% if deals.has_next %}
-            <a href="?page={{ deals.next_page_number }}&sort_order={{ sort_order }}">{% trans "Next" %}</a>
-            <a href="?page={{ deals.paginator.num_pages }}&sort_order={{ sort_order }}">{% trans "Last" %} &raquo;</a>
+            <a href="?page={{ deals.next_page_number }}&sort_order={{ sort_order }}&store_name={{ current_store_name }}">{% trans "Next" %}</a>
+            <a href="?page={{ deals.paginator.num_pages }}&sort_order={{ sort_order }}&store_name={{ current_store_name }}">{% trans "Last" %} &raquo;</a>
         {% endif %}
         </span>
     </div>

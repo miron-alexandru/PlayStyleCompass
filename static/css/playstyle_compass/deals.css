@@ -75,14 +75,14 @@
     font-size: 0.9em;
 }
 
-label[for="sort-order"] {
+label[for="sort-order"], label[for="store-name"] {
   font-size: 15px;
   font-weight: bold;
   color: var(--text-color);
   margin-left: 10px;
 }
 
-#sort-order {
+#sort-order, #store-name {
   padding: 5px;
   font-size: 13px;
   border: 1px solid var(--list-sorting);
@@ -92,21 +92,15 @@ label[for="sort-order"] {
   outline: none;
 }
 
-#sort-order option {
+#sort-order option, #store-name option {
   font-size: 13px;
   background-color: var(--dropown-menu);
   color: var(--text-color);
 }
 
 #sort-order:hover,
-#sort-order:focus {
+#sort-order:focus,
+#store-name:hover,
+#store-name:focus {
   border: 1px solid #333;
-}
-
-strong {
-  font-weight: bold;
-}
-
-small {
-  font-size: 0.7em;
 }

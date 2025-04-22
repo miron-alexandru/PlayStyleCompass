@@ -2523,7 +2523,12 @@ def completed_polls(request):
 
 def deals_list(request):
     sort_order = request.GET.get("sort_order", "game_name_asc")
+    store_name = request.GET.get("store_name", "")
+
     all_deals = Deal.objects.all()
+
+    if store_name:
+        all_deals = all_deals.filter(store_name=store_name)
 
     if sort_order == "sale_desc":
         all_deals = all_deals.order_by("-sale_price")
@@ -2536,10 +2541,15 @@ def deals_list(request):
 
     deals = paginate_objects(request, all_deals, objects_per_page=28)
 
+    # Get distinct store names for filter dropdown
+    available_stores = Deal.objects.values_list("store_name", flat=True).distinct()
+
     context = {
         "page_title": _("Game Deals :: PlayStyle Compass"),
         "deals": deals,
         "sort_order": sort_order,
+        "current_store_name": store_name,
+        "available_stores": available_stores,
         "pagination": True,
     }
 
