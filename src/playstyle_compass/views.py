@@ -2587,3 +2587,14 @@ def game_reviews(request):
     }
 
     return render(request, "reviews/game_reviews.html", context)
+
+
+def game_deal(request, deal_id):
+    deal = Deal.objects.get(deal_id=deal_id)
+
+    context = {
+        "page_title": _("Deal Details :: PlayStyle Compass"),
+        "deal": deal,
+    }
+
+    return render(request, "games/game_deal.html", context)

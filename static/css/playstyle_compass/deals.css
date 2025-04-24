@@ -104,3 +104,14 @@ label[for="sort-order"], label[for="store-name"] {
 #store-name:focus {
   border: 1px solid #333;
 }
+
+.single-deal-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.single-deal {
+  width: 350px;
+}

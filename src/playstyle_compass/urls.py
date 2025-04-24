@@ -194,6 +194,7 @@ urlpatterns = [
     path("polls/completed-polls/", views.completed_polls, name="completed_polls"),
     path("deals/", views.deals_list, name="deals_list"),
     path("game-reviews", views.game_reviews, name="game_reviews"),
+    path("game-deal/<str:deal_id>", views.game_deal, name="game_deal"),
 ]
 
 api_urlpatterns = [

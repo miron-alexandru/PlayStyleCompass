@@ -5,13 +5,17 @@
 
 <li class="deal-item">
     <div class="deal-image">
-        {% if deal.thumb_url %}
+    <a href="{% url 'playstyle_compass:game_deal' deal.deal_id %}" class="deal-link" target="_blank">
+    {% if deal.thumb_url %}
+        <div class="image-wrapper">
             <img src="{{ deal.thumb_url }}" alt="{{ deal.game_name }}">
             <div class="deal-title">{{ deal.game_name }}</div>
-        {% else %}
-            <p>{% trans "Deal image not available." %}</p>
-        {% endif %}
-    </div>
+        </div>
+    {% else %}
+        <p>{% trans "Deal image not available." %}</p>
+    {% endif %}
+    </a>
+</div>
     <div class="deal-info">
         <p class="sale-price">${{ deal.sale_price }}</p>
         <p class="retail-price"><del>${{ deal.retail_price }}</del></p>

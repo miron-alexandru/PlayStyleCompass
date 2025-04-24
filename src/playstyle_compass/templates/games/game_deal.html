@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+
+{% block page_header %}
+<div class="header">
+  <h3>{% trans "DEAL DETAILS" %} - {{ deal.game_name }}</h3>
+</div>
+{% endblock page_header %}
+
+
+{% block description %}
+{% blocktrans trimmed %}
+Explore this limited-time offer. Find out where to buy it at the best price and start playing today!
+{% endblocktrans %}
+{% endblock description %}
+
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/playstyle_compass/deals.css' %}">
+
+<div class="deals-container single-deal-container">
+    <div class="deal-card single-deal">
+        <img src="{{ deal.thumb_url }}" alt="{{ deal.game_name }}">
+        <p class="game-title">{{ deal.game_name }}</p>
+        <p>
+            <span class="sale-price">${{ deal.sale_price }}</span> 
+            <span class="retail-price">${{ deal.retail_price }}</span>
+        </p>
+        <p class="store-name">
+            {% trans "Store:" %} 
+            <a href="{{ deal.store_url }}" target="_blank">
+                <img src="{{ deal.store_icon_url }}" alt="{{ deal.store_name }}" class="store-icon"> 
+                {{ deal.store_name }}
+            </a>
+        </p>
+    </div>
+</div>
+
+{% endblock content %}
