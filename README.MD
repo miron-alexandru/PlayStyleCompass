@@ -139,6 +139,7 @@ Websites for .env configuration: [GiantBomb](https://www.giantbomb.com/) / [Send
 <summary><h2>PlayStyle Compass Changelog</h2></summary>
 
 ### Version v2.4:
+* Created Deal details page.
 * Deals can now be filtered by Stores.
 * Paginated Community and Completed Polls.
 * Solved bugs which caused the sorting on some pages to not carry over on pagination.

@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-04-19 16:08+0300\n"
-"PO-Revision-Date: 2025-04-19 16:11+0144\n"
+"POT-Creation-Date: 2025-04-26 10:17+0300\n"
+"PO-Revision-Date: 2025-04-26 10:18+0144\n"
 "Last-Translator:   <quality_xqs@yahoo.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -189,6 +189,12 @@ msgstr "Francize"
 #: .\src\playstyle_compass\templates\base\api_documentation.html:68
 msgid "Franchise Details"
 msgstr "Detalii franciză"
+
+#: .\src\playstyle_compass\templates\base\api_documentation.html:69
+#: .\src\playstyle_compass\templates\base\search_bar_only.html:28
+#: .\src\templates\base.html:195 .\src\templates\base.html:227
+msgid "Characters"
+msgstr "Caractere"
 
 #: .\src\playstyle_compass\templates\base\api_documentation.html:70
 msgid "Character Details"
@@ -930,12 +936,13 @@ msgstr "Data publicării articolului."
 msgid "Platforms mentioned in the article."
 msgstr "Plarformele menționate în articol."
 
-#: .\src\playstyle_compass\templates\base\deals_list.html:12
+#: .\src\playstyle_compass\templates\base\deals_list.html:15
 msgid "Deal image not available."
 msgstr "Imaginea ofertelor nu este disponibilă."
 
-#: .\src\playstyle_compass\templates\base\deals_list.html:19
-#: .\src\playstyle_compass\templates\games\deals.html:47
+#: .\src\playstyle_compass\templates\base\deals_list.html:23
+#: .\src\playstyle_compass\templates\games\deals.html:58
+#: .\src\playstyle_compass\templates\games\game_deal.html:31
 msgid "Store:"
 msgstr "Magazin:"
 
@@ -1128,11 +1135,13 @@ msgstr "Resetează Filtre"
 #: .\src\playstyle_compass\templates\characters\characters.html:37
 #: .\src\playstyle_compass\templates\franchises\franchise_list.html:39
 #: .\src\playstyle_compass\templates\game_list\game_list_detail.html:211
-#: .\src\playstyle_compass\templates\games\deals.html:64
+#: .\src\playstyle_compass\templates\games\deals.html:75
 #: .\src\playstyle_compass\templates\games\game_library.html:106
 #: .\src\playstyle_compass\templates\games\games_collection.html:28
 #: .\src\playstyle_compass\templates\games\recommendations.html:79
 #: .\src\playstyle_compass\templates\games\similar_games.html:44
+#: .\src\playstyle_compass\templates\polls\community_polls.html:130
+#: .\src\playstyle_compass\templates\polls\completed_polls.html:104
 #: .\src\playstyle_compass\templates\reviews\game_reviews.html:91
 msgid "First"
 msgstr "Prima"
@@ -1141,13 +1150,15 @@ msgstr "Prima"
 #: .\src\playstyle_compass\templates\characters\characters.html:38
 #: .\src\playstyle_compass\templates\franchises\franchise_list.html:40
 #: .\src\playstyle_compass\templates\game_list\game_list_detail.html:212
-#: .\src\playstyle_compass\templates\games\deals.html:65
+#: .\src\playstyle_compass\templates\games\deals.html:76
 #: .\src\playstyle_compass\templates\games\game_library.html:107
 #: .\src\playstyle_compass\templates\games\games_collection.html:29
 #: .\src\playstyle_compass\templates\games\recommendations.html:81
 #: .\src\playstyle_compass\templates\games\search_games.html:38
 #: .\src\playstyle_compass\templates\games\similar_games.html:45
 #: .\src\playstyle_compass\templates\games\upcoming_games.html:33
+#: .\src\playstyle_compass\templates\polls\community_polls.html:131
+#: .\src\playstyle_compass\templates\polls\completed_polls.html:105
 #: .\src\playstyle_compass\templates\reviews\game_reviews.html:92
 msgid "Previous"
 msgstr "Anterioară"
@@ -1156,13 +1167,15 @@ msgstr "Anterioară"
 #: .\src\playstyle_compass\templates\characters\characters.html:42
 #: .\src\playstyle_compass\templates\franchises\franchise_list.html:44
 #: .\src\playstyle_compass\templates\game_list\game_list_detail.html:216
-#: .\src\playstyle_compass\templates\games\deals.html:69
+#: .\src\playstyle_compass\templates\games\deals.html:80
 #: .\src\playstyle_compass\templates\games\game_library.html:111
 #: .\src\playstyle_compass\templates\games\games_collection.html:33
 #: .\src\playstyle_compass\templates\games\recommendations.html:85
 #: .\src\playstyle_compass\templates\games\search_games.html:42
 #: .\src\playstyle_compass\templates\games\similar_games.html:49
 #: .\src\playstyle_compass\templates\games\upcoming_games.html:37
+#: .\src\playstyle_compass\templates\polls\community_polls.html:135
+#: .\src\playstyle_compass\templates\polls\completed_polls.html:109
 #: .\src\playstyle_compass\templates\reviews\game_reviews.html:96
 msgid "Page"
 msgstr "Pagina"
@@ -1171,13 +1184,15 @@ msgstr "Pagina"
 #: .\src\playstyle_compass\templates\characters\characters.html:42
 #: .\src\playstyle_compass\templates\franchises\franchise_list.html:44
 #: .\src\playstyle_compass\templates\game_list\game_list_detail.html:216
-#: .\src\playstyle_compass\templates\games\deals.html:69
+#: .\src\playstyle_compass\templates\games\deals.html:80
 #: .\src\playstyle_compass\templates\games\game_library.html:111
 #: .\src\playstyle_compass\templates\games\games_collection.html:33
 #: .\src\playstyle_compass\templates\games\recommendations.html:85
 #: .\src\playstyle_compass\templates\games\search_games.html:42
 #: .\src\playstyle_compass\templates\games\similar_games.html:49
 #: .\src\playstyle_compass\templates\games\upcoming_games.html:37
+#: .\src\playstyle_compass\templates\polls\community_polls.html:135
+#: .\src\playstyle_compass\templates\polls\completed_polls.html:109
 #: .\src\playstyle_compass\templates\reviews\game_reviews.html:96
 msgid "of"
 msgstr "din"
@@ -1186,13 +1201,15 @@ msgstr "din"
 #: .\src\playstyle_compass\templates\characters\characters.html:46
 #: .\src\playstyle_compass\templates\franchises\franchise_list.html:48
 #: .\src\playstyle_compass\templates\game_list\game_list_detail.html:220
-#: .\src\playstyle_compass\templates\games\deals.html:73
+#: .\src\playstyle_compass\templates\games\deals.html:84
 #: .\src\playstyle_compass\templates\games\game_library.html:115
 #: .\src\playstyle_compass\templates\games\games_collection.html:37
 #: .\src\playstyle_compass\templates\games\recommendations.html:90
 #: .\src\playstyle_compass\templates\games\search_games.html:46
 #: .\src\playstyle_compass\templates\games\similar_games.html:53
 #: .\src\playstyle_compass\templates\games\upcoming_games.html:41
+#: .\src\playstyle_compass\templates\polls\community_polls.html:139
+#: .\src\playstyle_compass\templates\polls\completed_polls.html:113
 #: .\src\playstyle_compass\templates\reviews\game_reviews.html:100
 msgid "Next"
 msgstr "Următoarea"
@@ -1201,13 +1218,15 @@ msgstr "Următoarea"
 #: .\src\playstyle_compass\templates\characters\characters.html:47
 #: .\src\playstyle_compass\templates\franchises\franchise_list.html:49
 #: .\src\playstyle_compass\templates\game_list\game_list_detail.html:221
-#: .\src\playstyle_compass\templates\games\deals.html:74
+#: .\src\playstyle_compass\templates\games\deals.html:85
 #: .\src\playstyle_compass\templates\games\game_library.html:116
 #: .\src\playstyle_compass\templates\games\games_collection.html:38
 #: .\src\playstyle_compass\templates\games\recommendations.html:92
 #: .\src\playstyle_compass\templates\games\search_games.html:47
 #: .\src\playstyle_compass\templates\games\similar_games.html:54
 #: .\src\playstyle_compass\templates\games\upcoming_games.html:42
+#: .\src\playstyle_compass\templates\polls\community_polls.html:140
+#: .\src\playstyle_compass\templates\polls\completed_polls.html:114
 #: .\src\playstyle_compass\templates\reviews\game_reviews.html:101
 msgid "Last"
 msgstr "Ultima"
@@ -1215,11 +1234,6 @@ msgstr "Ultima"
 #: .\src\playstyle_compass\templates\base\search_bar_only.html:11
 msgid "Search..."
 msgstr "Caută..."
-
-#: .\src\playstyle_compass\templates\base\search_bar_only.html:28
-#: .\src\templates\base.html:195 .\src\templates\base.html:227
-msgid "Characters"
-msgstr "Caractere"
 
 #: .\src\playstyle_compass\templates\characters\characters.html:7
 msgid "CHARACTERS"
@@ -1931,16 +1945,24 @@ msgid "Sale Price ↓"
 msgstr "Preț redus ↓"
 
 #: .\src\playstyle_compass\templates\games\deals.html:29
-#| msgid "Games num. (Asc)"
 msgid "Game Name (A–Z)"
 msgstr "Nume joc (A–Z)"
 
 #: .\src\playstyle_compass\templates\games\deals.html:32
-#| msgid "Games num. (Asc)"
 msgid "Game Name (Z–A)"
 msgstr "Nume joc (Z–A)"
 
-#: .\src\playstyle_compass\templates\games\deals.html:55
+#: .\src\playstyle_compass\templates\games\deals.html:36
+#| msgid "Filter by:"
+msgid "Filter by store:"
+msgstr "Filtrează după magazin:"
+
+#: .\src\playstyle_compass\templates\games\deals.html:38
+#| msgid "Stores:"
+msgid "All Stores"
+msgstr "Toate magazinele"
+
+#: .\src\playstyle_compass\templates\games\deals.html:66
 msgid "No deals available at the moment."
 msgstr "Momentan nu sunt disponibile oferte."
 
@@ -1986,6 +2008,22 @@ msgid ""
 msgstr ""
 "Bucură-te de o colecție de jocuri free-to-play unde poți experimenta "
 "gameplay-uri captivante fără costuri inițiale."
+
+#: .\src\playstyle_compass\templates\games\game_deal.html:7
+#| msgid "POLL DETAIL"
+msgid "DEAL DETAILS"
+msgstr "DETALIILE OFERTEI"
+
+#: .\src\playstyle_compass\templates\games\game_deal.html:13
+#| msgid ""
+#| "Explore a vast collection of games. Find your next favorite game and start "
+#| "playing today!"
+msgid ""
+"Explore this limited-time offer. Find out where to buy it at the best price "
+"and start playing today!"
+msgstr ""
+"Explorează această ofertă valabilă pentru o perioadă limitată. Află de unde "
+"o poți cumpăra la cel mai bun preț și începe să te joci chiar azi!"
 
 #: .\src\playstyle_compass\templates\games\game_library.html:8
 msgid "GAMES LIBRARY"
@@ -3017,12 +3055,10 @@ msgstr ""
 "joc."
 
 #: .\src\playstyle_compass\templates\reviews\game_reviews.html:22
-#| msgid "Reset Filters"
 msgid "Newest First"
 msgstr "Noi întâi"
 
 #: .\src\playstyle_compass\templates\reviews\game_reviews.html:23
-#| msgid "Reset Filters"
 msgid "Oldest First"
 msgstr "Vechi întâi"
 
@@ -3035,12 +3071,10 @@ msgid "Score (Low to High)"
 msgstr " Scor (de la mic la mare)"
 
 #: .\src\playstyle_compass\templates\reviews\game_reviews.html:26
-#| msgid "Most Voted:"
 msgid "Most Liked"
 msgstr "Apreciate"
 
 #: .\src\playstyle_compass\templates\reviews\game_reviews.html:27
-#| msgid "Last Updated"
 msgid "Least Liked"
 msgstr "Neapreciate"
 
@@ -3363,49 +3397,54 @@ msgstr "Sondaj creat cu succes!"
 msgid "Create Poll :: PlayStyle Compass"
 msgstr "Creează sondaj :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:2235
+#: .\src\playstyle_compass\views.py:2236
 msgid "Community Polls :: PlayStyle Compass"
 msgstr "Sondaje Comunitate :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:2266
+#: .\src\playstyle_compass\views.py:2269
 msgid "User Polls :: PlayStyle Compass"
 msgstr "Sondaje Utilizator :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:2315
+#: .\src\playstyle_compass\views.py:2318
 msgid "Voted Polls:: PlayStyle Compass"
 msgstr "Sondaje Votate :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:2356
+#: .\src\playstyle_compass\views.py:2359
 msgid "Poll Detail :: PlayStyle Compass"
 msgstr "Detalii Sondaj :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:2418
+#: .\src\playstyle_compass\views.py:2421
 msgid "Poll successfully shared!"
 msgstr "Sondajul a fost distribuit cu succes!"
 
-#: .\src\playstyle_compass\views.py:2424
+#: .\src\playstyle_compass\views.py:2427
 msgid "Share Poll :: PlayStyle Compass"
 msgstr "Distribuie Sondajul :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:2447
+#: .\src\playstyle_compass\views.py:2450
 msgid "Polls You Shared with Others"
 msgstr "Sondaje Pe Care Le-ai Distribuit Altora"
 
-#: .\src\playstyle_compass\views.py:2451
+#: .\src\playstyle_compass\views.py:2454
 msgid "Polls Shared With You"
 msgstr "Sondaje Distribuite Cu Tine"
 
-#: .\src\playstyle_compass\views.py:2511
+#: .\src\playstyle_compass\views.py:2515
 msgid "Completed Polls :: PlayStyle Compass"
 msgstr "Sondaje Finalizate :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:2534
+#: .\src\playstyle_compass\views.py:2548
 msgid "Game Deals :: PlayStyle Compass"
 msgstr "Oferte la jocuri :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:2567
+#: .\src\playstyle_compass\views.py:2583
 msgid "Game Reviews :: PlayStyle Compass"
 msgstr "Recenzii Joc :: PlayStyle Compass"
+
+#: .\src\playstyle_compass\views.py:2596
+#| msgid "Poll Detail :: PlayStyle Compass"
+msgid "Deal Details :: PlayStyle Compass"
+msgstr "Detalii Ofertă :: PlayStyle Compass"
 
 #: .\src\playstyle_manager\settings.py:261 .\src\templates\base.html:412
 #: .\src\users\models.py:69
@@ -3542,7 +3581,6 @@ msgid "Explore"
 msgstr "Explorează"
 
 #: .\src\templates\base.html:168
-#| msgid "Gaming Alias"
 msgid "Gaming News"
 msgstr " Știri din Gaming"
 
@@ -5363,6 +5401,3 @@ msgstr "Urmăriți :: PlayStyle Compass"
 #: .\src\users\views.py:1902
 msgid "Notification Settings :: PlayStyle Compass"
 msgstr "Setări de Notificare :: PlayStyle Compass"
-
-#~ msgid "Other"
-#~ msgstr "Altele"
