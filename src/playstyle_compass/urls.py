@@ -229,6 +229,8 @@ api_urlpatterns = [
     ),
     path("api/news/", api_views.NewsListView.as_view(), name="news-list"),
     path("api/news/<int:pk>/", api_views.NewsDetailView.as_view(), name="news-detail"),
+    path("api/deals/", api_views.DealsListView.as_view(), name="deals-list"),
+    path("api/deals/<int:pk>/", api_views.DealDetailView.as_view(), name="deal-detail"),
 ]
 
 urlpatterns += api_urlpatterns

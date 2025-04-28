@@ -155,43 +155,51 @@ html {
 }
 
 .game-list {
-  top: 7%;
+  top: 5%;
 }
 
 .game-details {
-  top: 18%;
+  top: 16%;
 }
 
 .franchises-list {
-  top: 35%;
+  top: 30%;
 }
 
 .franchise-details {
-  top: 43%;
+  top: 37%;
 }
 
 .characters-list {
-  top: 50%;
+  top: 43%;
 }
 
 .character-details {
-  top: 59%;
+  top: 50%;
 }
 
 .reviews-list {
-  top: 68%;
+  top: 58%;
 }
 
 .review-details {
-  top: 78%;
+  top: 67%;
 }
 
 .news-list {
-  top: 86%;
+  top: 74%;
 
 }
 
 .news-details {
+  top: 81%;
+}
+
+.deals-list {
+  top: 86%;
+}
+
+.deal-details {
   top: 94%;
 }
 

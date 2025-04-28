@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Game, Franchise, Character, Review, News
+from .models import Game, Franchise, Character, Review, News, Deal
 
 
 class DynamicFieldsModelSerializer(serializers.ModelSerializer):
@@ -46,4 +46,9 @@ class GameReviewSerializer(DynamicFieldsModelSerializer):
 class NewsSerializer(DynamicFieldsModelSerializer):
     class Meta:
         model = News
+        fields = "__all__"
+
+class DealsSerializer(DynamicFieldsModelSerializer):
+    class Meta:
+        model = Deal
         fields = "__all__"

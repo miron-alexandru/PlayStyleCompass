@@ -1,5 +1,5 @@
 from django_filters import rest_framework as filters
-from .models import Game, Franchise, Character, Review, News
+from .models import Game, Franchise, Character, Review, News, Deal
 
 
 class GameFilter(filters.FilterSet):
@@ -87,3 +87,21 @@ class NewsFilter(filters.FilterSet):
     class Meta:
         model = News
         fields = ["title", "publish_date", "platforms"]
+
+
+class DealFilter(filters.FilterSet):
+    deal_id = filters.CharFilter(field_name="deal_id", lookup_expr="icontains")
+    game_name = filters.CharFilter(field_name="game_name", lookup_expr="icontains")
+    sale_price_min = filters.NumberFilter(field_name="sale_price", lookup_expr="gte")
+    sale_price_max = filters.NumberFilter(field_name="sale_price", lookup_expr="lte")
+    store_name = filters.CharFilter(field_name="store_name", lookup_expr="icontains")
+
+    class Meta:
+        model = Deal
+        fields = [
+            "deal_id",
+            "game_name",
+            "sale_price_min",
+            "sale_price_max",
+            "store_name",
+        ]

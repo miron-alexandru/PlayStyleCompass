@@ -72,6 +72,8 @@
             <li><a href="#review-details">{% trans "Game Review Details" %}</a></li>
             <li><a href="#news">{% trans "News" %}</a></li>
             <li><a href="#news-details">{% trans "News Details" %}</a></li>
+            <li><a href="#deals">{% trans "Deals" %}</a></li>
+            <li><a href="#deal-details">{% trans "Deal Details" %}</a></li>
         </ul>
     </div>
 
@@ -590,6 +592,97 @@
                 "summary": "If you're jumping into Obsidian's newest fantasy RPG, don't go it alone. Find all of our Avowed guides here in one place.",
                 "publish_date": "2025-02-13 10:00:00"
             }
+            </pre>
+        </div>
+    </div>
+
+    <div class="api-section" id="deals">
+        <h2 class="api-heading">{% trans "Get List of Deals" %}</h2>
+        <p>
+            <span class="http-method">GET</span>
+            <code class="api-endpoint">/api/deals</code>
+        </p>
+        <p><strong>{% trans "Description:" %}</strong> {% trans "Retrieve a paginated list of game deals." %}</p>
+        <p><strong>{% trans "Filters:" %}</strong> {% trans "Use query parameters to filter results." %}</p>
+        <ul class="api-filters">
+            <li><code>deal_id</code> - {% trans "Filter by deal ID (partial match allowed)." %}</li>
+            <li><code>game_name</code> - {% trans "Filter by game name." %}</li>
+            <li><code>sale_price_min</code> - {% trans "Filter deals with sale price greater than or equal to a value." %}</li>
+            <li><code>sale_price_max</code> - {% trans "Filter deals with sale price less than or equal to a value." %}</li>
+            <li><code>store_name</code> - {% trans "Filter by store name." %}</li>
+        </ul>
+        <p><strong>{% trans "Ordering:" %}</strong> {% trans "You can order the deals by the following fields:" %}</p>
+        <ul class="api-filters">
+            <li><code>sale_price</code> - {% trans "Order by sale price." %}</li>
+            <li><code>game_name</code> - {% trans "Order by game name." %}</li>
+        </ul>
+        <p><strong>{% trans "Pagination:" %}</strong> {% trans "Use the following parameters to control pagination:" %}</p>
+        <ul class="api-filters">
+            <li><code>limit</code> - {% trans "Number of results per page (default: 100, max: 100)." %}</li>
+            <li><code>offset</code> - {% trans "Skip the first N results (useful for pagination)." %}</li>
+        </ul>
+        <p>
+            <strong>{% trans "Example:" %}</strong>
+            <code class="api-endpoint">/api/deals/?sale_price_min=5&sale_price_max=20&ordering=sale_price&limit=10&offset=0</code>
+        </p>
+        <p><strong>{% trans "Explanation:" %}</strong> {% trans "This request retrieves a paginated list of deals where the sale price is between 5 and 20, ordered by sale price, with a maximum of 10 deals per page." %}</p>
+
+        <div class="response-container deals-list">
+            <h3 class="response-example">{% trans "Response Example" %}</h3>
+            <pre class="api-response">
+    {
+        "count": 27,
+        "next": "https://localhost/en/api/deals/?limit=1&offset=1&ordering=sale_price&sale_price_max=20&sale_price_min=5",
+        "previous": null,
+        "results": [
+            {
+                "id": 46,
+                "deal_id": "5EKln0NBuLBfO%2B3%2FHTIX29kw3Uo3zWpsKgSIuIUSsC8%3D",
+                "game_name": "Sid Meier's Ace Patrol Bundle",
+                "sale_price": "5.87",
+                "retail_price": "6.99",
+                "thumb_url": "https://images.greenmangaming.com/aa40a241af0d493a901b599e931045e7/41970485d7c5402c86c90473d39a5a8b.jpg",
+                "store_name": "GameBillet",
+                "store_icon_url": "https://www.cheapshark.com/img/stores/icons/22.png"
+            }
+        ]
+    }
+            </pre>
+        </div>
+    </div>
+
+    <div class="api-section" id="deal-details">
+        <h2 class="api-heading">{% trans "Get Deal Details" %}</h2>
+        <p>
+            <span class="http-method">GET</span>
+            <code class="api-endpoint">/api/deals/&lt;id&gt;/</code>
+        </p>
+        <p><strong>{% trans "Description:" %}</strong> {% trans "Retrieve details of a specific deal by ID." %}</p>
+        <p><strong>{% trans "Query Parameters:" %}</strong></p>
+        <ul class="api-filters">
+            <li><code>id</code> - {% trans "Unique internal identifier for the deal." %}</li>
+            <li><code>deal_id</code> - {% trans "External deal identifier." %}</li>
+            <li><code>game_name</code> - {% trans "Name of the game associated with the deal." %}</li>
+            <li><code>sale_price</code> - {% trans "Current sale price of the game." %}</li>
+            <li><code>retail_price</code> - {% trans "Original retail price of the game." %}</li>
+            <li><code>thumb_url</code> - {% trans "Thumbnail image URL of the game." %}</li>
+            <li><code>store_name</code> - {% trans "Name of the store offering the deal." %}</li>
+            <li><code>store_icon_url</code> - {% trans "URL to the store's icon image." %}</li>
+            <li><code>store_url</code> - {% trans "Direct URL to the deal on the store website." %}</li>
+        </ul>
+        <p>
+            <strong>{% trans "Example:" %}</strong>
+            <code class="api-endpoint">/api/deals/123/?fields=game_name,sale_price,store_name</code>
+        </p>
+
+        <div class="response-container deal-details">
+            <h3 class="response-example">{% trans "Response Example" %}</h3>
+            <pre class="api-response">
+    {
+        "game_name": "AereA",
+        "sale_price": "21.99",
+        "store_name": "WinGameStore"
+    }
             </pre>
         </div>
     </div>

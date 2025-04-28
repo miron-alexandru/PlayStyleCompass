@@ -1,12 +1,13 @@
 from rest_framework_api_key.permissions import HasAPIKey
 from rest_framework import generics
-from .models import Game, Franchise, Character, Review, News
+from .models import Game, Franchise, Character, Review, News, Deal
 from .serializers import (
     GameSerializer,
     FranchiseSerializer,
     CharacterSerializer,
     GameReviewSerializer,
     NewsSerializer,
+    DealsSerializer,
 )
 from .permissions import HasValidAPIKey
 from .api_filters import (
@@ -15,6 +16,7 @@ from .api_filters import (
     CharacterFilter,
     GameReviewFilter,
     NewsFilter,
+    DealFilter,
 )
 from django_filters.rest_framework import DjangoFilterBackend
 from django.shortcuts import render
@@ -115,3 +117,16 @@ class NewsListView(BaseListView):
 class NewsDetailView(BaseDetailView):
     queryset = News.objects.all()
     serializer_class = NewsSerializer
+
+class DealsListView(BaseListView):
+    queryset = Deal.objects.all()
+    serializer_class = DealsSerializer
+    filterset_class = DealFilter
+    ordering_fields = ["game_name", "sale_price"]
+    ordering = ["game_name"]
+
+
+class DealDetailView(BaseDetailView):
+    queryset = Deal.objects.all()
+    serializer_class = DealsSerializer
+
