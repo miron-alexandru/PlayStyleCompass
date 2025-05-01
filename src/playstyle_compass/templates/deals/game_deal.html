@@ -34,6 +34,9 @@ Explore this limited-time offer. Find out where to buy it at the best price and 
                 {{ deal.store_name }}
             </a>
         </p>
+        <div class="deal-actions">
+            <a href="{% url 'playstyle_compass:share_deal' deal.id %}" class="share-button">{% trans "Share" %}</a>
+        </div>
     </div>
 </div>
 

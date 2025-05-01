@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block page_header %}
+<div class="header">
+  <h3>{% trans "SHARE DEAL" %}</h3>
+</div>
+{% endblock page_header %}
+
+{% block description %}
+{% trans "Share a great game deal with friends so they don't miss out!" %}
+{% endblock description %}
+
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/playstyle_compass/share_poll.css' %}">
+<div class="share-poll-container">
+    <form method="POST" class="share-form">
+        {% csrf_token %}
+        <label for="shared_with" class="form-label">{% trans "Share with friends" %}</label>
+        {% if user_friends %}
+        <div class="friends-checkbox-list">
+            {% for user in user_friends %}
+                <div class="friend-checkbox">
+                    <input type="checkbox" name="shared_with" value="{{ user.id }}" id="friend_{{ user.id }}">
+                    <label for="friend_{{ user.id }}">{{ user.userprofile.profile_name }}</label>
+                </div>
+            {% endfor %}
+        </div>
+        <button type="submit" class="btn-submit" disabled>{% trans "Share" %}</button>
+        {% else %}
+        <p>{% trans "Your friends list is currently empty." %}</p>
+        {% endif %}
+    </form>
+</div>
+
+<script src="{% static 'js/playstyle_compass/share_poll.js' %}"></script>
+{% endblock content %}

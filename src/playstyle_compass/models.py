@@ -551,3 +551,20 @@ class Deal(models.Model):
     @property
     def store_url(self):
         return STORE_URLS.get(self.store_name, "#")
+
+
+class SharedDeal(models.Model):
+    sender = models.ForeignKey(
+        settings.AUTH_USER_MODEL, related_name="sent_deals", on_delete=models.CASCADE
+    )
+    recipient = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        related_name="received_deals",
+        on_delete=models.CASCADE,
+    )
+    deal = models.ForeignKey(Deal, on_delete=models.CASCADE)
+    shared_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        db_table = "SharedDeals"
+        unique_together = ("sender", "recipient", "deal")

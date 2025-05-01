@@ -61,6 +61,9 @@
                     {{ deal.store_name }}
                 </a>
             </p>
+            <div class="deal-actions">
+                <a href="{% url 'playstyle_compass:share_deal' deal.id %}" class="share-button">{% trans "Share" %}</a>
+            </div>
         </div>
     {% empty %}
         <p>{% trans "No deals available at the moment." %}</p>

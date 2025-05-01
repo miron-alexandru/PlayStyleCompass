@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-04-26 10:17+0300\n"
-"PO-Revision-Date: 2025-04-26 10:18+0144\n"
+"POT-Creation-Date: 2025-05-01 11:23+0300\n"
+"PO-Revision-Date: 2025-05-01 11:27+0144\n"
 "Last-Translator:   <quality_xqs@yahoo.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -19,7 +19,7 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n==1?0:(((n%100>19)||((n%100==0)&&(n!=0)))?2:1));\n"
 "X-Translated-Using: django-rosetta 0.10.1\n"
 
-#: .\src\playstyle_compass\api_views.py:28
+#: .\src\playstyle_compass\api_views.py:30
 msgid "PlayStyle Compass :: API Documentation"
 msgstr "PlayStyle Compass :: Documentație API"
 
@@ -108,7 +108,7 @@ msgstr ""
 "aplicațiile dumneavoastră."
 
 #: .\src\playstyle_compass\templates\base\api_documentation.html:18
-#: .\src\templates\base.html:292 .\src\templates\base.html:319
+#: .\src\templates\base.html:293 .\src\templates\base.html:320
 msgid "API Documentation"
 msgstr "Documentație API"
 
@@ -217,20 +217,30 @@ msgstr "Știri"
 msgid "News Details"
 msgstr "Detalii știri"
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:79
+#: .\src\playstyle_compass\templates\base\api_documentation.html:75
+msgid "Deals"
+msgstr "Oferte"
+
+#: .\src\playstyle_compass\templates\base\api_documentation.html:76
+msgid "Deal Details"
+msgstr "Detalii ofertă"
+
+#: .\src\playstyle_compass\templates\base\api_documentation.html:81
 msgid "Get List Of Games"
 msgstr "Obține lista de jocuri"
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:84
-#: .\src\playstyle_compass\templates\base\api_documentation.html:167
-#: .\src\playstyle_compass\templates\base\api_documentation.html:220
-#: .\src\playstyle_compass\templates\base\api_documentation.html:276
-#: .\src\playstyle_compass\templates\base\api_documentation.html:311
-#: .\src\playstyle_compass\templates\base\api_documentation.html:374
-#: .\src\playstyle_compass\templates\base\api_documentation.html:414
-#: .\src\playstyle_compass\templates\base\api_documentation.html:476
-#: .\src\playstyle_compass\templates\base\api_documentation.html:515
-#: .\src\playstyle_compass\templates\base\api_documentation.html:568
+#: .\src\playstyle_compass\templates\base\api_documentation.html:86
+#: .\src\playstyle_compass\templates\base\api_documentation.html:169
+#: .\src\playstyle_compass\templates\base\api_documentation.html:222
+#: .\src\playstyle_compass\templates\base\api_documentation.html:278
+#: .\src\playstyle_compass\templates\base\api_documentation.html:313
+#: .\src\playstyle_compass\templates\base\api_documentation.html:376
+#: .\src\playstyle_compass\templates\base\api_documentation.html:416
+#: .\src\playstyle_compass\templates\base\api_documentation.html:478
+#: .\src\playstyle_compass\templates\base\api_documentation.html:517
+#: .\src\playstyle_compass\templates\base\api_documentation.html:570
+#: .\src\playstyle_compass\templates\base\api_documentation.html:605
+#: .\src\playstyle_compass\templates\base\api_documentation.html:660
 #: .\src\playstyle_compass\templates\characters\game_character_template.html:22
 #: .\src\playstyle_compass\templates\franchises\franchise_template.html:22
 #: .\src\playstyle_compass\templates\game_list\explore_game_lists.html:47
@@ -243,142 +253,151 @@ msgstr "Obține lista de jocuri"
 msgid "Description:"
 msgstr "Descriere:"
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:84
+#: .\src\playstyle_compass\templates\base\api_documentation.html:86
 msgid "Retrieves a paginated list of games."
 msgstr "Recuperează o listă paginată de jocuri."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:85
-#: .\src\playstyle_compass\templates\base\api_documentation.html:221
-#: .\src\playstyle_compass\templates\base\api_documentation.html:312
-#: .\src\playstyle_compass\templates\base\api_documentation.html:415
-#: .\src\playstyle_compass\templates\base\api_documentation.html:516
+#: .\src\playstyle_compass\templates\base\api_documentation.html:87
+#: .\src\playstyle_compass\templates\base\api_documentation.html:223
+#: .\src\playstyle_compass\templates\base\api_documentation.html:314
+#: .\src\playstyle_compass\templates\base\api_documentation.html:417
+#: .\src\playstyle_compass\templates\base\api_documentation.html:518
+#: .\src\playstyle_compass\templates\base\api_documentation.html:606
 msgid "Filters:"
 msgstr "Filtre:"
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:85
-#: .\src\playstyle_compass\templates\base\api_documentation.html:221
-#: .\src\playstyle_compass\templates\base\api_documentation.html:312
-#: .\src\playstyle_compass\templates\base\api_documentation.html:415
-#: .\src\playstyle_compass\templates\base\api_documentation.html:516
+#: .\src\playstyle_compass\templates\base\api_documentation.html:87
+#: .\src\playstyle_compass\templates\base\api_documentation.html:223
+#: .\src\playstyle_compass\templates\base\api_documentation.html:314
+#: .\src\playstyle_compass\templates\base\api_documentation.html:417
+#: .\src\playstyle_compass\templates\base\api_documentation.html:518
+#: .\src\playstyle_compass\templates\base\api_documentation.html:606
 msgid "Use query parameters to filter results."
 msgstr "Utilizează parametrii de interogare pentru a filtra rezultatele."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:87
+#: .\src\playstyle_compass\templates\base\api_documentation.html:89
 msgid "Filter by platform (e.g., PC, PS5)."
 msgstr "Filtrează după platformă (de ex., PC, PS5)."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:88
+#: .\src\playstyle_compass\templates\base\api_documentation.html:90
 msgid "Filter by game themes."
 msgstr "Filtrează după temele jocului."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:89
+#: .\src\playstyle_compass\templates\base\api_documentation.html:91
 msgid "Filter by concepts."
 msgstr "Filtrează după concepte."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:90
+#: .\src\playstyle_compass\templates\base\api_documentation.html:92
 msgid "Filter by game genres."
 msgstr "Filtrează după genurile jocului."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:91
+#: .\src\playstyle_compass\templates\base\api_documentation.html:93
 msgid "Filter by release date."
 msgstr "Filtrează după data lansării."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:92
+#: .\src\playstyle_compass\templates\base\api_documentation.html:94
 msgid "Filter by developers."
 msgstr "Filtrează după dezvoltatori."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:93
+#: .\src\playstyle_compass\templates\base\api_documentation.html:95
 msgid "Filter by casual games."
 msgstr "Filtrează după jocuri casual."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:94
+#: .\src\playstyle_compass\templates\base\api_documentation.html:96
 msgid "Filter by popular games."
 msgstr "Filtrează după jocuri populare."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:95
+#: .\src\playstyle_compass\templates\base\api_documentation.html:97
 msgid "Filter by minimum score."
 msgstr "Filtrează după scorul minim."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:96
+#: .\src\playstyle_compass\templates\base\api_documentation.html:98
 msgid "Filter by game franchises."
 msgstr "Filtrează după francize de jocuri."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:98
-#: .\src\playstyle_compass\templates\base\api_documentation.html:227
-#: .\src\playstyle_compass\templates\base\api_documentation.html:322
-#: .\src\playstyle_compass\templates\base\api_documentation.html:424
-#: .\src\playstyle_compass\templates\base\api_documentation.html:522
+#: .\src\playstyle_compass\templates\base\api_documentation.html:100
+#: .\src\playstyle_compass\templates\base\api_documentation.html:229
+#: .\src\playstyle_compass\templates\base\api_documentation.html:324
+#: .\src\playstyle_compass\templates\base\api_documentation.html:426
+#: .\src\playstyle_compass\templates\base\api_documentation.html:524
+#: .\src\playstyle_compass\templates\base\api_documentation.html:614
 msgid "Ordering:"
 msgstr "Sortare:"
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:98
+#: .\src\playstyle_compass\templates\base\api_documentation.html:100
 msgid "You can order the games by the following fields:"
 msgstr "Poți ordona jocurile după următoarele câmpuri:"
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:100
-#: .\src\playstyle_compass\templates\base\api_documentation.html:229
+#: .\src\playstyle_compass\templates\base\api_documentation.html:102
+#: .\src\playstyle_compass\templates\base\api_documentation.html:231
 msgid "Order by game title."
 msgstr "Ordonează după titlul jocului."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:101
+#: .\src\playstyle_compass\templates\base\api_documentation.html:103
 msgid "Order by release date."
 msgstr "Ordonează după data lansării."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:102
+#: .\src\playstyle_compass\templates\base\api_documentation.html:104
 msgid "Order by average score."
 msgstr "Ordonează după scorul mediu."
-
-#: .\src\playstyle_compass\templates\base\api_documentation.html:104
-#: .\src\playstyle_compass\templates\base\api_documentation.html:232
-#: .\src\playstyle_compass\templates\base\api_documentation.html:326
-#: .\src\playstyle_compass\templates\base\api_documentation.html:432
-#: .\src\playstyle_compass\templates\base\api_documentation.html:527
-msgid "Pagination:"
-msgstr "Paginare:"
-
-#: .\src\playstyle_compass\templates\base\api_documentation.html:104
-#: .\src\playstyle_compass\templates\base\api_documentation.html:232
-msgid "Use the following parameters to control the pagination:"
-msgstr "Folosește următorii parametri pentru a controla paginarea:"
 
 #: .\src\playstyle_compass\templates\base\api_documentation.html:106
 #: .\src\playstyle_compass\templates\base\api_documentation.html:234
 #: .\src\playstyle_compass\templates\base\api_documentation.html:328
 #: .\src\playstyle_compass\templates\base\api_documentation.html:434
 #: .\src\playstyle_compass\templates\base\api_documentation.html:529
+#: .\src\playstyle_compass\templates\base\api_documentation.html:619
+msgid "Pagination:"
+msgstr "Paginare:"
+
+#: .\src\playstyle_compass\templates\base\api_documentation.html:106
+#: .\src\playstyle_compass\templates\base\api_documentation.html:234
+msgid "Use the following parameters to control the pagination:"
+msgstr "Folosește următorii parametri pentru a controla paginarea:"
+
+#: .\src\playstyle_compass\templates\base\api_documentation.html:108
+#: .\src\playstyle_compass\templates\base\api_documentation.html:236
+#: .\src\playstyle_compass\templates\base\api_documentation.html:330
+#: .\src\playstyle_compass\templates\base\api_documentation.html:436
+#: .\src\playstyle_compass\templates\base\api_documentation.html:531
+#: .\src\playstyle_compass\templates\base\api_documentation.html:621
 msgid "Number of results per page (default: 100, max: 100)."
 msgstr "Numărul de rezultate pe pagină (implicit: 100, maxim: 100)."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:107
-#: .\src\playstyle_compass\templates\base\api_documentation.html:235
-#: .\src\playstyle_compass\templates\base\api_documentation.html:329
-#: .\src\playstyle_compass\templates\base\api_documentation.html:435
-#: .\src\playstyle_compass\templates\base\api_documentation.html:530
+#: .\src\playstyle_compass\templates\base\api_documentation.html:109
+#: .\src\playstyle_compass\templates\base\api_documentation.html:237
+#: .\src\playstyle_compass\templates\base\api_documentation.html:331
+#: .\src\playstyle_compass\templates\base\api_documentation.html:437
+#: .\src\playstyle_compass\templates\base\api_documentation.html:532
+#: .\src\playstyle_compass\templates\base\api_documentation.html:622
 msgid "Skip the first N results (useful for pagination)."
 msgstr "Sari peste primele N rezultate (util pentru paginare)."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:110
-#: .\src\playstyle_compass\templates\base\api_documentation.html:201
-#: .\src\playstyle_compass\templates\base\api_documentation.html:238
-#: .\src\playstyle_compass\templates\base\api_documentation.html:289
-#: .\src\playstyle_compass\templates\base\api_documentation.html:332
-#: .\src\playstyle_compass\templates\base\api_documentation.html:392
-#: .\src\playstyle_compass\templates\base\api_documentation.html:438
-#: .\src\playstyle_compass\templates\base\api_documentation.html:492
-#: .\src\playstyle_compass\templates\base\api_documentation.html:533
-#: .\src\playstyle_compass\templates\base\api_documentation.html:581
+#: .\src\playstyle_compass\templates\base\api_documentation.html:112
+#: .\src\playstyle_compass\templates\base\api_documentation.html:203
+#: .\src\playstyle_compass\templates\base\api_documentation.html:240
+#: .\src\playstyle_compass\templates\base\api_documentation.html:291
+#: .\src\playstyle_compass\templates\base\api_documentation.html:334
+#: .\src\playstyle_compass\templates\base\api_documentation.html:394
+#: .\src\playstyle_compass\templates\base\api_documentation.html:440
+#: .\src\playstyle_compass\templates\base\api_documentation.html:494
+#: .\src\playstyle_compass\templates\base\api_documentation.html:535
+#: .\src\playstyle_compass\templates\base\api_documentation.html:583
+#: .\src\playstyle_compass\templates\base\api_documentation.html:625
+#: .\src\playstyle_compass\templates\base\api_documentation.html:674
 msgid "Example:"
 msgstr "Exemplu:"
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:113
-#: .\src\playstyle_compass\templates\base\api_documentation.html:242
-#: .\src\playstyle_compass\templates\base\api_documentation.html:336
-#: .\src\playstyle_compass\templates\base\api_documentation.html:441
-#: .\src\playstyle_compass\templates\base\api_documentation.html:536
+#: .\src\playstyle_compass\templates\base\api_documentation.html:115
+#: .\src\playstyle_compass\templates\base\api_documentation.html:244
+#: .\src\playstyle_compass\templates\base\api_documentation.html:338
+#: .\src\playstyle_compass\templates\base\api_documentation.html:443
+#: .\src\playstyle_compass\templates\base\api_documentation.html:538
+#: .\src\playstyle_compass\templates\base\api_documentation.html:628
 msgid "Explanation:"
 msgstr "Explicație:"
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:113
+#: .\src\playstyle_compass\templates\base\api_documentation.html:115
 msgid ""
 "This request will retrieve a paginated list of popular action games "
 "available on PC, ordered by release date, with 10 results per page, starting"
@@ -388,180 +407,183 @@ msgstr ""
 "disponibile pe PC, ordonată după data lansării, cu 10 rezultate pe pagină, "
 "începând de la primul rezultat."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:116
-#: .\src\playstyle_compass\templates\base\api_documentation.html:206
-#: .\src\playstyle_compass\templates\base\api_documentation.html:247
-#: .\src\playstyle_compass\templates\base\api_documentation.html:294
-#: .\src\playstyle_compass\templates\base\api_documentation.html:340
-#: .\src\playstyle_compass\templates\base\api_documentation.html:397
-#: .\src\playstyle_compass\templates\base\api_documentation.html:444
-#: .\src\playstyle_compass\templates\base\api_documentation.html:497
-#: .\src\playstyle_compass\templates\base\api_documentation.html:539
-#: .\src\playstyle_compass\templates\base\api_documentation.html:586
+#: .\src\playstyle_compass\templates\base\api_documentation.html:118
+#: .\src\playstyle_compass\templates\base\api_documentation.html:208
+#: .\src\playstyle_compass\templates\base\api_documentation.html:249
+#: .\src\playstyle_compass\templates\base\api_documentation.html:296
+#: .\src\playstyle_compass\templates\base\api_documentation.html:342
+#: .\src\playstyle_compass\templates\base\api_documentation.html:399
+#: .\src\playstyle_compass\templates\base\api_documentation.html:446
+#: .\src\playstyle_compass\templates\base\api_documentation.html:499
+#: .\src\playstyle_compass\templates\base\api_documentation.html:541
+#: .\src\playstyle_compass\templates\base\api_documentation.html:588
+#: .\src\playstyle_compass\templates\base\api_documentation.html:631
+#: .\src\playstyle_compass\templates\base\api_documentation.html:679
 msgid "Response Example"
 msgstr "Exemplu de răspuns"
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:162
+#: .\src\playstyle_compass\templates\base\api_documentation.html:164
 msgid "Get Game Details"
 msgstr "Obține detalii despre joc"
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:167
+#: .\src\playstyle_compass\templates\base\api_documentation.html:169
 msgid "Retrieves details of a specific game by ID."
 msgstr "Recuperează detaliile unui joc specific după ID."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:168
-#: .\src\playstyle_compass\templates\base\api_documentation.html:277
-#: .\src\playstyle_compass\templates\base\api_documentation.html:375
-#: .\src\playstyle_compass\templates\base\api_documentation.html:477
-#: .\src\playstyle_compass\templates\base\api_documentation.html:569
+#: .\src\playstyle_compass\templates\base\api_documentation.html:170
+#: .\src\playstyle_compass\templates\base\api_documentation.html:279
+#: .\src\playstyle_compass\templates\base\api_documentation.html:377
+#: .\src\playstyle_compass\templates\base\api_documentation.html:479
+#: .\src\playstyle_compass\templates\base\api_documentation.html:571
+#: .\src\playstyle_compass\templates\base\api_documentation.html:661
 msgid "Query Parameters:"
 msgstr "Parametri de interogare:"
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:170
+#: .\src\playstyle_compass\templates\base\api_documentation.html:172
 msgid "Unique global identifier."
 msgstr "Identificator global unic."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:171
+#: .\src\playstyle_compass\templates\base\api_documentation.html:173
 msgid "Title of the game."
 msgstr "Titlul jocului."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:172
+#: .\src\playstyle_compass\templates\base\api_documentation.html:174
 msgid "Detailed description."
 msgstr "Descriere detaliată."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:173
+#: .\src\playstyle_compass\templates\base\api_documentation.html:175
 msgid "Short game overview."
 msgstr "Prezentare generală scurtă a jocului."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:174
+#: .\src\playstyle_compass\templates\base\api_documentation.html:176
 msgid "Game genres."
 msgstr "Genuri de jocuri."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:175
+#: .\src\playstyle_compass\templates\base\api_documentation.html:177
 msgid "Platforms the game is available on."
 msgstr "Platformele pe care este disponibil jocul."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:176
+#: .\src\playstyle_compass\templates\base\api_documentation.html:178
 msgid "Game themes."
 msgstr "Teme de joc."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:177
+#: .\src\playstyle_compass\templates\base\api_documentation.html:179
 msgid "Main game image URL."
 msgstr "URL-ul imaginii principale a jocului."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:178
+#: .\src\playstyle_compass\templates\base\api_documentation.html:180
 msgid "Release date of the game."
 msgstr "Data lansării jocului."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:179
+#: .\src\playstyle_compass\templates\base\api_documentation.html:181
 msgid "Developers of the game."
 msgstr "Dezvoltatorii jocului."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:180
+#: .\src\playstyle_compass\templates\base\api_documentation.html:182
 msgid "Additional game images."
 msgstr "Imagini suplimentare ale jocului."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:181
+#: .\src\playstyle_compass\templates\base\api_documentation.html:183
 msgid "Similar games."
 msgstr "Jocuri similare."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:182
+#: .\src\playstyle_compass\templates\base\api_documentation.html:184
 msgid "List of downloadable content (DLCs)."
 msgstr "Lista de conținut descărcabil (DLC-uri)."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:183
+#: .\src\playstyle_compass\templates\base\api_documentation.html:185
 msgid "Game franchises."
 msgstr "Francize de jocuri."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:184
+#: .\src\playstyle_compass\templates\base\api_documentation.html:186
 msgid "Links to game videos."
 msgstr "Linkuri către videoclipuri despre joc."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:185
+#: .\src\playstyle_compass\templates\base\api_documentation.html:187
 msgid "Game concepts."
 msgstr "Concepte ale jocului."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:186
+#: .\src\playstyle_compass\templates\base\api_documentation.html:188
 msgid "Boolean flag for casual games."
 msgstr "Indicator boolean pentru jocuri casual."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:187
+#: .\src\playstyle_compass\templates\base\api_documentation.html:189
 msgid "Boolean flag for popular games."
 msgstr "Indicator boolean pentru jocuri populare."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:188
+#: .\src\playstyle_compass\templates\base\api_documentation.html:190
 msgid "Estimated playtime."
 msgstr "Timp de joc estimat."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:189
+#: .\src\playstyle_compass\templates\base\api_documentation.html:191
 msgid "Minimum PC requirements."
 msgstr "Cerințe minime pentru PC."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:190
+#: .\src\playstyle_compass\templates\base\api_documentation.html:192
 msgid "Recommended PC requirements."
 msgstr "Cerințe recomandate pentru PC."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:191
+#: .\src\playstyle_compass\templates\base\api_documentation.html:193
 msgid "Minimum macOS requirements."
 msgstr "Cerințe minime pentru macOS."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:192
+#: .\src\playstyle_compass\templates\base\api_documentation.html:194
 msgid "Recommended macOS requirements."
 msgstr "Cerințe recomandate pentru macOS."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:193
+#: .\src\playstyle_compass\templates\base\api_documentation.html:195
 msgid "Minimum Linux requirements."
 msgstr "Cerințe minime pentru Linux."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:194
+#: .\src\playstyle_compass\templates\base\api_documentation.html:196
 msgid "Recommended Linux requirements."
 msgstr "Cerințe recomandate pentru Linux."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:195
+#: .\src\playstyle_compass\templates\base\api_documentation.html:197
 msgid "Average game rating."
 msgstr "Scor mediu al jocului."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:196
+#: .\src\playstyle_compass\templates\base\api_documentation.html:198
 msgid "Total number of reviews."
 msgstr "Numărul total de recenzii."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:197
+#: .\src\playstyle_compass\templates\base\api_documentation.html:199
 msgid "Translated description (Romanian)."
 msgstr "Descriere tradusă (română)."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:198
+#: .\src\playstyle_compass\templates\base\api_documentation.html:200
 msgid "Translated overview (Romanian)."
 msgstr "Prezentare generală tradusă (română)."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:218
+#: .\src\playstyle_compass\templates\base\api_documentation.html:220
 msgid "Get List of Franchises"
 msgstr "Obține lista de francize"
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:220
+#: .\src\playstyle_compass\templates\base\api_documentation.html:222
 msgid "Retrieve a paginated list of franchises."
 msgstr "Recuperează o listă paginată de francize."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:223
+#: .\src\playstyle_compass\templates\base\api_documentation.html:225
 msgid "Filter by title."
 msgstr "Filtrare după titlu."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:224
+#: .\src\playstyle_compass\templates\base\api_documentation.html:226
 msgid "Filter by games."
 msgstr "Filtrare după jocuri."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:225
+#: .\src\playstyle_compass\templates\base\api_documentation.html:227
 msgid "Filter by number of games."
 msgstr "Filtrare după numărul de jocuri."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:227
+#: .\src\playstyle_compass\templates\base\api_documentation.html:229
 msgid "You can order the franchises by the following fields:"
 msgstr "Poți ordona francizele după următoarele câmpuri:"
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:230
+#: .\src\playstyle_compass\templates\base\api_documentation.html:232
 msgid "Order by number of games."
 msgstr "Ordonează după numărul de jocuri."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:242
+#: .\src\playstyle_compass\templates\base\api_documentation.html:244
 msgid ""
 "This request retrieves a paginated list of franchises that include the game Assassins Creed. The results are ordered alphabetically by title, with a maximum of 5\n"
 "            franchises per page. "
@@ -570,97 +592,98 @@ msgstr ""
 "Assassin's Creed. Rezultatele sunt ordonate alfabetic după titlu, cu un "
 "maxim de 5 francize pe pagină."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:271
+#: .\src\playstyle_compass\templates\base\api_documentation.html:273
 msgid "Get Franchise Details"
 msgstr "Obține detalii despre franciză"
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:276
+#: .\src\playstyle_compass\templates\base\api_documentation.html:278
 msgid "Retrieves details of a specific franachise by ID."
 msgstr "Recuperează detalii ale unei francize specifice după ID."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:279
+#: .\src\playstyle_compass\templates\base\api_documentation.html:281
 msgid "Unique identifier for the franchise."
 msgstr "Identificatorul unic al francizei."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:280
+#: .\src\playstyle_compass\templates\base\api_documentation.html:282
 msgid "Title of the franchise."
 msgstr "Titlul francizei."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:281
+#: .\src\playstyle_compass\templates\base\api_documentation.html:283
 msgid "Detailed description of the franchise."
 msgstr "Descriere detaliată a francizei."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:282
+#: .\src\playstyle_compass\templates\base\api_documentation.html:284
 msgid "General overview of the franchise."
 msgstr "Prezentare generală a francizei."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:283
+#: .\src\playstyle_compass\templates\base\api_documentation.html:285
 msgid "List of games associated with the franchise."
 msgstr "Lista jocurilor asociate cu franciza."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:284
+#: .\src\playstyle_compass\templates\base\api_documentation.html:286
 msgid "URL of the main image representing the franchise."
 msgstr "URL-ul imaginii principale care reprezintă franciza."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:285
+#: .\src\playstyle_compass\templates\base\api_documentation.html:287
 msgid "URLs of additional images related to the franchise."
 msgstr "URL-urile altor imagini legate de franciză."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:286
+#: .\src\playstyle_compass\templates\base\api_documentation.html:288
 msgid "Total number of games in the franchise."
 msgstr "Numărul total de jocuri din franciză."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:306
+#: .\src\playstyle_compass\templates\base\api_documentation.html:308
 msgid "Get List of Characters"
 msgstr "Obține lista personajelor"
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:311
+#: .\src\playstyle_compass\templates\base\api_documentation.html:313
 msgid "Retrieve a paginated list of characters."
 msgstr "Recuperează o listă paginată de personaje."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:314
+#: .\src\playstyle_compass\templates\base\api_documentation.html:316
 msgid "Filter by character name."
 msgstr "Filtrează după numele personajului."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:315
+#: .\src\playstyle_compass\templates\base\api_documentation.html:317
 msgid "Filter by birthday."
 msgstr "Filtrează după ziua de naștere."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:316
+#: .\src\playstyle_compass\templates\base\api_documentation.html:318
 msgid "Filter by friends of the character."
 msgstr "Filtrare după prietenii personajului."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:317
+#: .\src\playstyle_compass\templates\base\api_documentation.html:319
 msgid "Filter by enemies of the character."
 msgstr "Filtrare după dușmanii personajului."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:318
+#: .\src\playstyle_compass\templates\base\api_documentation.html:320
 msgid "Filter by games the character appears in."
 msgstr "Filtrare după jocurile în care apare personajul."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:319
+#: .\src\playstyle_compass\templates\base\api_documentation.html:321
 msgid "Filter by the first game the character appeared in."
 msgstr "Filtrare după primul joc în care a apărut personajul."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:320
+#: .\src\playstyle_compass\templates\base\api_documentation.html:322
 msgid "Filter by franchises associated with the character."
 msgstr "Filtrare după francizele asociate cu personajul."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:322
+#: .\src\playstyle_compass\templates\base\api_documentation.html:324
 msgid "You can order the characters by the following fields:"
 msgstr "Poți ordona personajele după următoarele câmpuri:"
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:324
+#: .\src\playstyle_compass\templates\base\api_documentation.html:326
 msgid "Order by character name."
 msgstr "Ordonează după numele personajului."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:326
-#: .\src\playstyle_compass\templates\base\api_documentation.html:432
-#: .\src\playstyle_compass\templates\base\api_documentation.html:527
+#: .\src\playstyle_compass\templates\base\api_documentation.html:328
+#: .\src\playstyle_compass\templates\base\api_documentation.html:434
+#: .\src\playstyle_compass\templates\base\api_documentation.html:529
+#: .\src\playstyle_compass\templates\base\api_documentation.html:619
 msgid "Use the following parameters to control pagination:"
 msgstr "Folosește următorii parametri pentru a controla paginarea:"
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:336
+#: .\src\playstyle_compass\templates\base\api_documentation.html:338
 msgid ""
 "This request retrieves a paginated list of characters that appear in The "
 "Witcher. The results are ordered alphabetically by name, with a maximum of 5"
@@ -670,125 +693,125 @@ msgstr ""
 "Witcher. Rezultatele sunt ordonate alfabetically după nume, cu un maximum de"
 " 5 personaje pe pagină."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:369
+#: .\src\playstyle_compass\templates\base\api_documentation.html:371
 msgid "Get Character Details"
 msgstr "Obține detalii despre personaj"
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:374
+#: .\src\playstyle_compass\templates\base\api_documentation.html:376
 msgid "Retrieve details of a specific character by ID."
 msgstr "Recuperează detalii ale unui anumit personaj după ID."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:377
+#: .\src\playstyle_compass\templates\base\api_documentation.html:379
 msgid "Unique identifier for the character."
 msgstr "Identificatorul unic al personajului."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:378
+#: .\src\playstyle_compass\templates\base\api_documentation.html:380
 msgid "Name of the character."
 msgstr "Numele personajului."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:379
+#: .\src\playstyle_compass\templates\base\api_documentation.html:381
 msgid "Brief summary of the character."
 msgstr "Sumar scurt al personajului."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:380
+#: .\src\playstyle_compass\templates\base\api_documentation.html:382
 msgid "Detailed description of the character."
 msgstr "Descriere detaliată a personajului."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:381
+#: .\src\playstyle_compass\templates\base\api_documentation.html:383
 msgid "Character's birthday."
 msgstr "Ziua de naștere a personajului"
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:382
+#: .\src\playstyle_compass\templates\base\api_documentation.html:384
 msgid "List of the character's friends."
 msgstr "Lista prietenilor personajului."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:383
+#: .\src\playstyle_compass\templates\base\api_documentation.html:385
 msgid "List of the character's enemies."
 msgstr "Lista dușmanilor personajului."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:384
+#: .\src\playstyle_compass\templates\base\api_documentation.html:386
 msgid "List of games the character appears in."
 msgstr "Lista jocurilor în care apare personajul."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:385
+#: .\src\playstyle_compass\templates\base\api_documentation.html:387
 msgid "The first game the character appeared in."
 msgstr "Primul joc în care a apărut personajul."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:386
+#: .\src\playstyle_compass\templates\base\api_documentation.html:388
 msgid "Franchises associated with the character."
 msgstr "Francizele asociate cu personajul."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:387
+#: .\src\playstyle_compass\templates\base\api_documentation.html:389
 msgid "URL of the main image representing the character."
 msgstr "URL-ul imaginii principale care reprezintă personajul."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:388
+#: .\src\playstyle_compass\templates\base\api_documentation.html:390
 msgid "URLs of additional images related to the character."
 msgstr "URL-urile imaginilor suplimentare legate de personaj."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:389
+#: .\src\playstyle_compass\templates\base\api_documentation.html:391
 msgid "Unique identifier assigned to the character."
 msgstr "Identificatorul unic atribuit personajului."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:409
+#: .\src\playstyle_compass\templates\base\api_documentation.html:411
 msgid "Get List of Game Reviews"
 msgstr "Obține lista recenziilor jocurilor"
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:414
+#: .\src\playstyle_compass\templates\base\api_documentation.html:416
 msgid "Retrieve a paginated list of game reviews."
 msgstr "Recuperează o listă paginată de recenzii ale jocurilor."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:417
+#: .\src\playstyle_compass\templates\base\api_documentation.html:419
 msgid "Filter by game GUID."
 msgstr "Filtrează după GUID-ul jocului."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:418
+#: .\src\playstyle_compass\templates\base\api_documentation.html:420
 msgid "Filter by reviewer name (case-insensitive search)."
 msgstr ""
 "Filtrează după numele recenzorului (căutare insensibilă la "
 "majuscule/minuscule)."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:419
+#: .\src\playstyle_compass\templates\base\api_documentation.html:421
 msgid "Filter by exact review score."
 msgstr "Filtrează după scorul exact al recenziei."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:420
+#: .\src\playstyle_compass\templates\base\api_documentation.html:422
 msgid "Filter reviews with a score greater than or equal to this value."
 msgstr "Filtrează recenziile cu un scor mai mare sau egal cu această valoare."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:421
+#: .\src\playstyle_compass\templates\base\api_documentation.html:423
 msgid "Filter reviews with a score less than or equal to this value."
 msgstr "Filtrează recenziile cu un scor mai mic sau egal cu această valoare."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:422
+#: .\src\playstyle_compass\templates\base\api_documentation.html:424
 msgid "Filter by the exact date the review was added."
 msgstr "Filtrează după data exactă în care recenzia a fost adăugată."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:424
+#: .\src\playstyle_compass\templates\base\api_documentation.html:426
 msgid "You can order the reviews by the following fields:"
 msgstr "Poți ordona recenziile după următoarele câmpuri:"
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:426
+#: .\src\playstyle_compass\templates\base\api_documentation.html:428
 msgid "Order by review score."
 msgstr "Ordonează după scorul recenziei."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:427
+#: .\src\playstyle_compass\templates\base\api_documentation.html:429
 msgid "Order by number of likes."
 msgstr "Ordonează după numărul de aprecieri."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:428
+#: .\src\playstyle_compass\templates\base\api_documentation.html:430
 msgid "Order by number of dislikes."
 msgstr "Ordonează după numărul de dislike-uri."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:429
+#: .\src\playstyle_compass\templates\base\api_documentation.html:431
 msgid "Order by review deck."
 msgstr "Ordonează după pachetul de recenzie."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:430
+#: .\src\playstyle_compass\templates\base\api_documentation.html:432
 msgid "Order by review date."
 msgstr "Ordonează după data recenziei."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:441
+#: .\src\playstyle_compass\templates\base\api_documentation.html:443
 msgid ""
 "This request retrieves a paginated list of reviews for the game with GUID "
 "'12345'. The results are ordered by score, with a maximum of 10 reviews per "
@@ -798,96 +821,96 @@ msgstr ""
 "ul '12345'. Rezultatele sunt ordonate după scor, cu un maxim de 10 recenzii "
 "pe pagină."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:471
+#: .\src\playstyle_compass\templates\base\api_documentation.html:473
 msgid "Get Game Review Details"
 msgstr "Obține detalii despre recenzia jocului"
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:476
+#: .\src\playstyle_compass\templates\base\api_documentation.html:478
 msgid "Retrieve details of a specific review by ID."
 msgstr "Recuperează detalii ale unei recenzii specifice după ID."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:479
+#: .\src\playstyle_compass\templates\base\api_documentation.html:481
 msgid "Unique identifier for the review."
 msgstr "Identificatorul unic al recenziei."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:480
+#: .\src\playstyle_compass\templates\base\api_documentation.html:482
 msgid "GUID of the game being reviewed."
 msgstr "GUID-ul jocului recenzat."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:481
+#: .\src\playstyle_compass\templates\base\api_documentation.html:483
 msgid "Name of the reviewer."
 msgstr "Numele recenzorului."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:482
+#: .\src\playstyle_compass\templates\base\api_documentation.html:484
 msgid "Short summary of the review."
 msgstr "Rezumat scurt al recenziei."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:483
+#: .\src\playstyle_compass\templates\base\api_documentation.html:485
 msgid "Full review text."
 msgstr "Textul complet al recenziei."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:484
+#: .\src\playstyle_compass\templates\base\api_documentation.html:486
 msgid "Review score."
 msgstr "Scorul recenziei."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:485
+#: .\src\playstyle_compass\templates\base\api_documentation.html:487
 msgid "Number of likes the review has received."
 msgstr "Numărul de aprecieri primite de recenzie."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:486
+#: .\src\playstyle_compass\templates\base\api_documentation.html:488
 msgid "Number of dislikes the review has received."
 msgstr "Numărul de dezaprobări primite de recenzie."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:487
+#: .\src\playstyle_compass\templates\base\api_documentation.html:489
 msgid "List of users who liked the review."
 msgstr "Lista utilizatorilor care au apreciat recenzia."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:488
+#: .\src\playstyle_compass\templates\base\api_documentation.html:490
 msgid "List of users who disliked the review."
 msgstr "Lista utilizatorilor care au dezaprobat recenzia."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:489
+#: .\src\playstyle_compass\templates\base\api_documentation.html:491
 msgid "Date and time when the review was added."
 msgstr "Data și ora în care a fost adăugată recenzia."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:510
+#: .\src\playstyle_compass\templates\base\api_documentation.html:512
 msgid "Get List of News Articles"
 msgstr "Obține lista de articole de știri"
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:515
+#: .\src\playstyle_compass\templates\base\api_documentation.html:517
 msgid "Retrieve a paginated list of news articles."
 msgstr "Recuperează o listă paginată de articole de știri."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:518
+#: .\src\playstyle_compass\templates\base\api_documentation.html:520
 msgid "Filter by news title (case-insensitive search)."
 msgstr ""
 "Filtrare după titlul articolului de știri (căutare insensibilă la "
 "majuscule/minuscule)."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:519
+#: .\src\playstyle_compass\templates\base\api_documentation.html:521
 msgid "Filter by publication date (partial match allowed)."
 msgstr "Filtrare după data publicării (se permite potrivirea parțială)."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:520
+#: .\src\playstyle_compass\templates\base\api_documentation.html:522
 msgid ""
 "Filter by platforms mentioned in the news article (case-insensitive search)."
 msgstr ""
 "Filtrare după platformele menționate în articolul de știri (căutare "
 "insensibilă la majuscule/minuscule)."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:522
+#: .\src\playstyle_compass\templates\base\api_documentation.html:524
 msgid "You can order the news articles by the following fields:"
 msgstr "Poți ordona articolele de știri după următoarele câmpuri:"
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:524
+#: .\src\playstyle_compass\templates\base\api_documentation.html:526
 msgid "Order by article title."
 msgstr "Ordonează după titlul articolului."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:525
+#: .\src\playstyle_compass\templates\base\api_documentation.html:527
 msgid "Order by publication date."
 msgstr "Ordonează după data publicării."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:536
+#: .\src\playstyle_compass\templates\base\api_documentation.html:538
 msgid ""
 "This request retrieves a paginated list of news articles with 'Cyberpunk' in"
 " the title, ordered by publish date, with a maximum of 10 articles per page."
@@ -896,53 +919,147 @@ msgstr ""
 "„Cyberpunk” în titlu, ordonată după data publicării, cu un maximum de 10 "
 "articole pe pagină."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:563
+#: .\src\playstyle_compass\templates\base\api_documentation.html:565
 msgid "Get News Article Details"
 msgstr "Obține detalii ale articolului de știri"
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:568
+#: .\src\playstyle_compass\templates\base\api_documentation.html:570
 msgid "Retrieve details of a specific news article by ID."
 msgstr "Recuperează detalii despre un articol de știri specific după ID."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:571
+#: .\src\playstyle_compass\templates\base\api_documentation.html:573
 msgid "Unique identifier for the news article."
 msgstr "Identificator unic al articolului de știri."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:572
+#: .\src\playstyle_compass\templates\base\api_documentation.html:574
 msgid "External article ID."
 msgstr "ID-ul extern al articolului."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:573
+#: .\src\playstyle_compass\templates\base\api_documentation.html:575
 msgid "Title of the news article."
 msgstr "Titlul articolului de știri."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:574
+#: .\src\playstyle_compass\templates\base\api_documentation.html:576
 msgid "Brief summary of the article."
 msgstr "Sumar scurt al articolului."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:575
+#: .\src\playstyle_compass\templates\base\api_documentation.html:577
 msgid "Link to the full article."
 msgstr "Link către articolul complet."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:576
+#: .\src\playstyle_compass\templates\base\api_documentation.html:578
 msgid "URL of the article's featured image."
 msgstr "URL-ul imaginii principale a articolului."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:577
+#: .\src\playstyle_compass\templates\base\api_documentation.html:579
 msgid "Publication date of the article."
 msgstr "Data publicării articolului."
 
-#: .\src\playstyle_compass\templates\base\api_documentation.html:578
+#: .\src\playstyle_compass\templates\base\api_documentation.html:580
 msgid "Platforms mentioned in the article."
 msgstr "Plarformele menționate în articol."
+
+#: .\src\playstyle_compass\templates\base\api_documentation.html:600
+msgid "Get List of Deals"
+msgstr "Obține lista de oferte"
+
+#: .\src\playstyle_compass\templates\base\api_documentation.html:605
+msgid "Retrieve a paginated list of game deals."
+msgstr "Recuperează o listă paginată de oferte pentru jocuri."
+
+#: .\src\playstyle_compass\templates\base\api_documentation.html:608
+msgid "Filter by deal ID (partial match allowed)."
+msgstr "Filtrare după ID-ul ofertei (potrivire parțială permisă)."
+
+#: .\src\playstyle_compass\templates\base\api_documentation.html:609
+msgid "Filter by game name."
+msgstr "Filtrare după numele jocului."
+
+#: .\src\playstyle_compass\templates\base\api_documentation.html:610
+msgid "Filter deals with sale price greater than or equal to a value."
+msgstr "Filtrare a ofertelor cu un preț redus mai mare sau egal cu o valoare."
+
+#: .\src\playstyle_compass\templates\base\api_documentation.html:611
+msgid "Filter deals with sale price less than or equal to a value."
+msgstr "Filtrare a ofertelor cu un preț redus mai mic sau egal cu o valoare."
+
+#: .\src\playstyle_compass\templates\base\api_documentation.html:612
+msgid "Filter by store name."
+msgstr "Filtrare după numele magazinului."
+
+#: .\src\playstyle_compass\templates\base\api_documentation.html:614
+msgid "You can order the deals by the following fields:"
+msgstr "Poți ordona ofertele după următoarele câmpuri:"
+
+#: .\src\playstyle_compass\templates\base\api_documentation.html:616
+msgid "Order by sale price."
+msgstr "Ordonează după prețul redus."
+
+#: .\src\playstyle_compass\templates\base\api_documentation.html:617
+msgid "Order by game name."
+msgstr "Ordonează după numele jocului."
+
+#: .\src\playstyle_compass\templates\base\api_documentation.html:628
+msgid ""
+"This request retrieves a paginated list of deals where the sale price is "
+"between 5 and 20, ordered by sale price, with a maximum of 10 deals per "
+"page."
+msgstr ""
+"Această cerere recuperează o listă paginată de oferte în care prețul redus "
+"este între 5 și 20, ordonată după prețul redus, cu un maxim de 10 oferte pe "
+"pagină."
+
+#: .\src\playstyle_compass\templates\base\api_documentation.html:655
+msgid "Get Deal Details"
+msgstr "Obține detalii despre ofertă"
+
+#: .\src\playstyle_compass\templates\base\api_documentation.html:660
+msgid "Retrieve details of a specific deal by ID."
+msgstr "Recuperează detalii despre o ofertă specifică după ID."
+
+#: .\src\playstyle_compass\templates\base\api_documentation.html:663
+msgid "Unique internal identifier for the deal."
+msgstr "Identificator intern unic pentru ofertă."
+
+#: .\src\playstyle_compass\templates\base\api_documentation.html:664
+msgid "External deal identifier."
+msgstr "Identificator extern al ofertei."
+
+#: .\src\playstyle_compass\templates\base\api_documentation.html:665
+msgid "Name of the game associated with the deal."
+msgstr "Numele jocului asociat cu oferta."
+
+#: .\src\playstyle_compass\templates\base\api_documentation.html:666
+msgid "Current sale price of the game."
+msgstr "Prețul redus actual al jocului."
+
+#: .\src\playstyle_compass\templates\base\api_documentation.html:667
+msgid "Original retail price of the game."
+msgstr "Prețul original de vânzare al jocului."
+
+#: .\src\playstyle_compass\templates\base\api_documentation.html:668
+msgid "Thumbnail image URL of the game."
+msgstr "URL-ul imaginii miniatură al jocului."
+
+#: .\src\playstyle_compass\templates\base\api_documentation.html:669
+msgid "Name of the store offering the deal."
+msgstr "Numele magazinului care oferă oferta."
+
+#: .\src\playstyle_compass\templates\base\api_documentation.html:670
+msgid "URL to the store's icon image."
+msgstr "URL-ul imaginii pictogramei magazinului."
+
+#: .\src\playstyle_compass\templates\base\api_documentation.html:671
+msgid "Direct URL to the deal on the store website."
+msgstr "URL direct către oferta de pe site-ul magazinului."
 
 #: .\src\playstyle_compass\templates\base\deals_list.html:15
 msgid "Deal image not available."
 msgstr "Imaginea ofertelor nu este disponibilă."
 
 #: .\src\playstyle_compass\templates\base\deals_list.html:23
-#: .\src\playstyle_compass\templates\games\deals.html:58
-#: .\src\playstyle_compass\templates\games\game_deal.html:31
+#: .\src\playstyle_compass\templates\deals\deals.html:58
+#: .\src\playstyle_compass\templates\deals\game_deal.html:31
 msgid "Store:"
 msgstr "Magazin:"
 
@@ -964,7 +1081,7 @@ msgstr ""
 "Bine ai venit la PlayStyle Compass - portalul personalizat care îți deschide drumul către descoperirea jocurilor video perfect adaptate preferințelor tale unice, istoricului tău în gaming și inclinațiilor de gen. Indiferent dacă ești un entuziast casual sau un pasionat dedicat al jocurilor, aplicația noastră analizează cu meticulozitate profilul tău individual în gaming, oferind recomandări care se potrivesc gusturilor tale distincte. Începe o călătorie palpitantă prin lumea posibilităților de gaming, creând un cont cu noi!"
 
 #: .\src\playstyle_compass\templates\base\index.html:21
-#: .\src\templates\base.html:322
+#: .\src\templates\base.html:323
 #: .\src\users\templates\registration\register.html:104
 msgid "Register"
 msgstr "Înregistrare"
@@ -1078,12 +1195,12 @@ msgstr "Selectează Platformă"
 
 #: .\src\playstyle_compass\templates\base\latest_news.html:39
 #: .\src\playstyle_compass\templates\characters\characters.html:19
+#: .\src\playstyle_compass\templates\deals\deals.html:20
 #: .\src\playstyle_compass\templates\franchises\franchise_list.html:19
 #: .\src\playstyle_compass\templates\game_list\explore_game_lists.html:23
 #: .\src\playstyle_compass\templates\game_list\favorite_game_lists.html:31
 #: .\src\playstyle_compass\templates\game_list\shared_game_lists.html:31
 #: .\src\playstyle_compass\templates\game_list\user_game_lists.html:27
-#: .\src\playstyle_compass\templates\games\deals.html:20
 #: .\src\playstyle_compass\templates\games\game_library.html:72
 #: .\src\playstyle_compass\templates\games\games_shared.html:26
 #: .\src\playstyle_compass\templates\games\recommendations.html:34
@@ -1133,9 +1250,9 @@ msgstr "Resetează Filtre"
 
 #: .\src\playstyle_compass\templates\base\latest_news.html:73
 #: .\src\playstyle_compass\templates\characters\characters.html:37
+#: .\src\playstyle_compass\templates\deals\deals.html:78
 #: .\src\playstyle_compass\templates\franchises\franchise_list.html:39
 #: .\src\playstyle_compass\templates\game_list\game_list_detail.html:211
-#: .\src\playstyle_compass\templates\games\deals.html:75
 #: .\src\playstyle_compass\templates\games\game_library.html:106
 #: .\src\playstyle_compass\templates\games\games_collection.html:28
 #: .\src\playstyle_compass\templates\games\recommendations.html:79
@@ -1148,9 +1265,9 @@ msgstr "Prima"
 
 #: .\src\playstyle_compass\templates\base\latest_news.html:74
 #: .\src\playstyle_compass\templates\characters\characters.html:38
+#: .\src\playstyle_compass\templates\deals\deals.html:79
 #: .\src\playstyle_compass\templates\franchises\franchise_list.html:40
 #: .\src\playstyle_compass\templates\game_list\game_list_detail.html:212
-#: .\src\playstyle_compass\templates\games\deals.html:76
 #: .\src\playstyle_compass\templates\games\game_library.html:107
 #: .\src\playstyle_compass\templates\games\games_collection.html:29
 #: .\src\playstyle_compass\templates\games\recommendations.html:81
@@ -1165,9 +1282,9 @@ msgstr "Anterioară"
 
 #: .\src\playstyle_compass\templates\base\latest_news.html:78
 #: .\src\playstyle_compass\templates\characters\characters.html:42
+#: .\src\playstyle_compass\templates\deals\deals.html:83
 #: .\src\playstyle_compass\templates\franchises\franchise_list.html:44
 #: .\src\playstyle_compass\templates\game_list\game_list_detail.html:216
-#: .\src\playstyle_compass\templates\games\deals.html:80
 #: .\src\playstyle_compass\templates\games\game_library.html:111
 #: .\src\playstyle_compass\templates\games\games_collection.html:33
 #: .\src\playstyle_compass\templates\games\recommendations.html:85
@@ -1182,9 +1299,9 @@ msgstr "Pagina"
 
 #: .\src\playstyle_compass\templates\base\latest_news.html:78
 #: .\src\playstyle_compass\templates\characters\characters.html:42
+#: .\src\playstyle_compass\templates\deals\deals.html:83
 #: .\src\playstyle_compass\templates\franchises\franchise_list.html:44
 #: .\src\playstyle_compass\templates\game_list\game_list_detail.html:216
-#: .\src\playstyle_compass\templates\games\deals.html:80
 #: .\src\playstyle_compass\templates\games\game_library.html:111
 #: .\src\playstyle_compass\templates\games\games_collection.html:33
 #: .\src\playstyle_compass\templates\games\recommendations.html:85
@@ -1199,9 +1316,9 @@ msgstr "din"
 
 #: .\src\playstyle_compass\templates\base\latest_news.html:82
 #: .\src\playstyle_compass\templates\characters\characters.html:46
+#: .\src\playstyle_compass\templates\deals\deals.html:87
 #: .\src\playstyle_compass\templates\franchises\franchise_list.html:48
 #: .\src\playstyle_compass\templates\game_list\game_list_detail.html:220
-#: .\src\playstyle_compass\templates\games\deals.html:84
 #: .\src\playstyle_compass\templates\games\game_library.html:115
 #: .\src\playstyle_compass\templates\games\games_collection.html:37
 #: .\src\playstyle_compass\templates\games\recommendations.html:90
@@ -1216,9 +1333,9 @@ msgstr "Următoarea"
 
 #: .\src\playstyle_compass\templates\base\latest_news.html:83
 #: .\src\playstyle_compass\templates\characters\characters.html:47
+#: .\src\playstyle_compass\templates\deals\deals.html:88
 #: .\src\playstyle_compass\templates\franchises\franchise_list.html:49
 #: .\src\playstyle_compass\templates\game_list\game_list_detail.html:221
-#: .\src\playstyle_compass\templates\games\deals.html:85
 #: .\src\playstyle_compass\templates\games\game_library.html:116
 #: .\src\playstyle_compass\templates\games\games_collection.html:38
 #: .\src\playstyle_compass\templates\games\recommendations.html:92
@@ -1324,6 +1441,166 @@ msgstr "CAUTĂ CARACTER:"
 #: .\src\playstyle_compass\templates\games\search_games.html:29
 msgid "Sorry, there are no results for your search."
 msgstr "Ne pare rău, nu există rezultate pentru căutarea dvs."
+
+#: .\src\playstyle_compass\templates\deals\deals.html:7
+msgid "GAME DEALS"
+msgstr "OFERTE LA JOCURI"
+
+#: .\src\playstyle_compass\templates\deals\deals.html:12
+msgid ""
+"Discover the best game deals available right now! Find great discounts and "
+"grab your favorite games at unbeatable prices."
+msgstr ""
+"Descoperă cele mai bune oferte la jocuri disponibile chiar acum! Găsește "
+"reduceri excelente și cumpără-ți jocurile preferate la prețuri imbatabile."
+
+#: .\src\playstyle_compass\templates\deals\deals.html:23
+msgid "Sale Price ↑"
+msgstr "Preț redus ↑"
+
+#: .\src\playstyle_compass\templates\deals\deals.html:26
+msgid "Sale Price ↓"
+msgstr "Preț redus ↓"
+
+#: .\src\playstyle_compass\templates\deals\deals.html:29
+msgid "Game Name (A–Z)"
+msgstr "Nume joc (A–Z)"
+
+#: .\src\playstyle_compass\templates\deals\deals.html:32
+msgid "Game Name (Z–A)"
+msgstr "Nume joc (Z–A)"
+
+#: .\src\playstyle_compass\templates\deals\deals.html:36
+msgid "Filter by store:"
+msgstr "Filtrează după magazin:"
+
+#: .\src\playstyle_compass\templates\deals\deals.html:38
+msgid "All Stores"
+msgstr "Toate magazinele"
+
+#: .\src\playstyle_compass\templates\deals\deals.html:65
+#: .\src\playstyle_compass\templates\deals\game_deal.html:38
+#: .\src\playstyle_compass\templates\deals\share_deal.html:30
+#: .\src\playstyle_compass\templates\game_list\share_game_list.html:30
+#: .\src\playstyle_compass\templates\polls\community_polls.html:113
+#: .\src\playstyle_compass\templates\polls\completed_polls.html:89
+#: .\src\playstyle_compass\templates\polls\poll_detail.html:105
+#: .\src\playstyle_compass\templates\polls\share_poll.html:30
+#: .\src\playstyle_compass\templates\polls\user_polls.html:120
+#: .\src\playstyle_compass\templates\polls\voted_polls.html:96
+msgid "Share"
+msgstr "Distribuie"
+
+#: .\src\playstyle_compass\templates\deals\deals.html:69
+msgid "No deals available at the moment."
+msgstr "Momentan nu sunt disponibile oferte."
+
+#: .\src\playstyle_compass\templates\deals\game_deal.html:7
+msgid "DEAL DETAILS"
+msgstr "DETALIILE OFERTEI"
+
+#: .\src\playstyle_compass\templates\deals\game_deal.html:13
+msgid ""
+"Explore this limited-time offer. Find out where to buy it at the best price "
+"and start playing today!"
+msgstr ""
+"Explorează această ofertă valabilă pentru o perioadă limitată. Află de unde "
+"o poți cumpăra la cel mai bun preț și începe să te joci chiar azi!"
+
+#: .\src\playstyle_compass\templates\deals\share_deal.html:7
+#| msgid "GAME DEALS"
+msgid "SHARE DEAL"
+msgstr "ÎMPĂRTĂȘEȘTE OFERTA"
+
+#: .\src\playstyle_compass\templates\deals\share_deal.html:12
+msgid "Share a great game deal with friends so they don't miss out!"
+msgstr "Împărtășește o ofertă grozavă de joc cu prietenii, ca să nu o rateze!"
+
+#: .\src\playstyle_compass\templates\deals\share_deal.html:20
+#: .\src\playstyle_compass\templates\game_list\share_game_list.html:20
+#: .\src\playstyle_compass\templates\polls\share_poll.html:20
+msgid "Share with friends"
+msgstr "Distribuie cu prietenii"
+
+#: .\src\playstyle_compass\templates\deals\share_deal.html:32
+#: .\src\playstyle_compass\templates\game_list\share_game_list.html:32
+#: .\src\playstyle_compass\templates\polls\share_poll.html:32
+msgid "Your friends list is currently empty."
+msgstr "Lista ta de prieteni este momentan goală."
+
+#: .\src\playstyle_compass\templates\deals\shared_deals.html:7
+#| msgid "SHARED GAMES"
+msgid "SHARED DEALS"
+msgstr "OFERTE IMPĂRTĂȘITE"
+
+#: .\src\playstyle_compass\templates\deals\shared_deals.html:12
+#| msgid ""
+#| "Get ready for some shared gaming fun! Check out the games you've swapped "
+#| "with others and dive into the ones they've shared with you."
+msgid ""
+"Browse game deals you've shared with friends or discover what others have "
+"shared with you."
+msgstr ""
+"Răsfoiește ofertele de jocuri pe care le-ai împărtășit cu prietenii sau "
+"descoperă ce au împărtășit alții cu tine."
+
+#: .\src\playstyle_compass\templates\deals\shared_deals.html:20
+#| msgid "Polls Received"
+msgid "Deals Received"
+msgstr "Oferte Primite"
+
+#: .\src\playstyle_compass\templates\deals\shared_deals.html:23
+#| msgid "Polls Shared"
+msgid "Deals Shared"
+msgstr "Oferte Împărtășite"
+
+#: .\src\playstyle_compass\templates\deals\shared_deals.html:32
+#| msgid "Games:"
+msgid "Game:"
+msgstr "Joc:"
+
+#: .\src\playstyle_compass\templates\deals\shared_deals.html:33
+#| msgid "Sale Price ↑"
+msgid "Sale Price:"
+msgstr "Preț Reducere:"
+
+#: .\src\playstyle_compass\templates\deals\shared_deals.html:33
+msgid "from"
+msgstr "de la"
+
+#: .\src\playstyle_compass\templates\deals\shared_deals.html:34
+msgid "Retail Price:"
+msgstr "Prețul de retail:"
+
+#: .\src\playstyle_compass\templates\deals\shared_deals.html:37
+#: .\src\playstyle_compass\templates\game_list\explore_game_lists.html:48
+#: .\src\playstyle_compass\templates\game_list\favorite_game_lists.html:56
+#: .\src\playstyle_compass\templates\game_list\reviewed_game_lists.html:31
+#: .\src\playstyle_compass\templates\game_list\shared_game_lists.html:57
+#: .\src\playstyle_compass\templates\game_list\user_game_lists.html:57
+#: .\src\playstyle_compass\templates\polls\shared_polls.html:55
+msgid "Shared with:"
+msgstr "Împărtășit cu:"
+
+#: .\src\playstyle_compass\templates\deals\shared_deals.html:43
+#| msgid "Shared By:"
+msgid "Shared by:"
+msgstr "Împărtășit de:"
+
+#: .\src\playstyle_compass\templates\deals\shared_deals.html:50
+#| msgid "View Poll"
+msgid "View Deal"
+msgstr "Vezi Oferta"
+
+#: .\src\playstyle_compass\templates\deals\shared_deals.html:57
+#| msgid "You have not shared any polls with others."
+msgid "You have not shared any deals with others."
+msgstr "Nu ai împărtășit nicio ofertă cu alții."
+
+#: .\src\playstyle_compass\templates\deals\shared_deals.html:59
+#| msgid "No polls have been shared with you."
+msgid "No deals have been shared with you."
+msgstr "Nu ți-au fost împărtășite oferte."
 
 #: .\src\playstyle_compass\templates\franchises\franchise_list.html:7
 msgid "FRANCHISES"
@@ -1533,15 +1810,6 @@ msgstr "Sortează"
 #: .\src\playstyle_compass\templates\polls\shared_polls.html:50
 msgid "Title:"
 msgstr "Titlu:"
-
-#: .\src\playstyle_compass\templates\game_list\explore_game_lists.html:48
-#: .\src\playstyle_compass\templates\game_list\favorite_game_lists.html:56
-#: .\src\playstyle_compass\templates\game_list\reviewed_game_lists.html:31
-#: .\src\playstyle_compass\templates\game_list\shared_game_lists.html:57
-#: .\src\playstyle_compass\templates\game_list\user_game_lists.html:57
-#: .\src\playstyle_compass\templates\polls\shared_polls.html:55
-msgid "Shared with:"
-msgstr "Împărtășit cu:"
 
 #: .\src\playstyle_compass\templates\game_list\explore_game_lists.html:49
 #: .\src\playstyle_compass\templates\game_list\favorite_game_lists.html:57
@@ -1800,26 +2068,6 @@ msgstr ""
 "împreună jocuri noi. Permite altora să exploreze alegerile tale preferate și"
 " să își creeze propriile liste."
 
-#: .\src\playstyle_compass\templates\game_list\share_game_list.html:20
-#: .\src\playstyle_compass\templates\polls\share_poll.html:20
-msgid "Share with friends"
-msgstr "Distribuie cu prietenii"
-
-#: .\src\playstyle_compass\templates\game_list\share_game_list.html:30
-#: .\src\playstyle_compass\templates\polls\community_polls.html:113
-#: .\src\playstyle_compass\templates\polls\completed_polls.html:89
-#: .\src\playstyle_compass\templates\polls\poll_detail.html:105
-#: .\src\playstyle_compass\templates\polls\share_poll.html:30
-#: .\src\playstyle_compass\templates\polls\user_polls.html:120
-#: .\src\playstyle_compass\templates\polls\voted_polls.html:96
-msgid "Share"
-msgstr "Distribuie"
-
-#: .\src\playstyle_compass\templates\game_list\share_game_list.html:32
-#: .\src\playstyle_compass\templates\polls\share_poll.html:32
-msgid "Your friends list is currently empty."
-msgstr "Lista ta de prieteni este momentan goală."
-
 #: .\src\playstyle_compass\templates\game_list\shared_game_lists.html:8
 msgid "SHARED GAME LISTS"
 msgstr "LISTE DE JOCURI ÎMPĂRTĂȘITE"
@@ -1924,48 +2172,6 @@ msgstr ""
 msgid "Empty for now, come back later!"
 msgstr "Gol pentru moment, reveniți mai târziu!"
 
-#: .\src\playstyle_compass\templates\games\deals.html:7
-msgid "GAME DEALS"
-msgstr "OFERTE LA JOCURI"
-
-#: .\src\playstyle_compass\templates\games\deals.html:12
-msgid ""
-"Discover the best game deals available right now! Find great discounts and "
-"grab your favorite games at unbeatable prices."
-msgstr ""
-"Descoperă cele mai bune oferte la jocuri disponibile chiar acum! Găsește "
-"reduceri excelente și cumpără-ți jocurile preferate la prețuri imbatabile."
-
-#: .\src\playstyle_compass\templates\games\deals.html:23
-msgid "Sale Price ↑"
-msgstr "Preț redus ↑"
-
-#: .\src\playstyle_compass\templates\games\deals.html:26
-msgid "Sale Price ↓"
-msgstr "Preț redus ↓"
-
-#: .\src\playstyle_compass\templates\games\deals.html:29
-msgid "Game Name (A–Z)"
-msgstr "Nume joc (A–Z)"
-
-#: .\src\playstyle_compass\templates\games\deals.html:32
-msgid "Game Name (Z–A)"
-msgstr "Nume joc (Z–A)"
-
-#: .\src\playstyle_compass\templates\games\deals.html:36
-#| msgid "Filter by:"
-msgid "Filter by store:"
-msgstr "Filtrează după magazin:"
-
-#: .\src\playstyle_compass\templates\games\deals.html:38
-#| msgid "Stores:"
-msgid "All Stores"
-msgstr "Toate magazinele"
-
-#: .\src\playstyle_compass\templates\games\deals.html:66
-msgid "No deals available at the moment."
-msgstr "Momentan nu sunt disponibile oferte."
-
 #: .\src\playstyle_compass\templates\games\favorite_games.html:6
 #, python-format
 msgid ""
@@ -2008,22 +2214,6 @@ msgid ""
 msgstr ""
 "Bucură-te de o colecție de jocuri free-to-play unde poți experimenta "
 "gameplay-uri captivante fără costuri inițiale."
-
-#: .\src\playstyle_compass\templates\games\game_deal.html:7
-#| msgid "POLL DETAIL"
-msgid "DEAL DETAILS"
-msgstr "DETALIILE OFERTEI"
-
-#: .\src\playstyle_compass\templates\games\game_deal.html:13
-#| msgid ""
-#| "Explore a vast collection of games. Find your next favorite game and start "
-#| "playing today!"
-msgid ""
-"Explore this limited-time offer. Find out where to buy it at the best price "
-"and start playing today!"
-msgstr ""
-"Explorează această ofertă valabilă pentru o perioadă limitată. Află de unde "
-"o poți cumpăra la cel mai bun preț și începe să te joci chiar azi!"
 
 #: .\src\playstyle_compass\templates\games\game_library.html:8
 msgid "GAMES LIBRARY"
@@ -3141,317 +3331,331 @@ msgstr "platformele preferate"
 msgid "common preferences"
 msgstr "preferintele comune"
 
-#: .\src\playstyle_compass\views.py:126
+#: .\src\playstyle_compass\views.py:127
 msgid "Home :: PlayStyle Compass"
 msgstr "Acasă :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:143
+#: .\src\playstyle_compass\views.py:144
 msgid "Define PlayStyle :: PlayStyle Compass"
 msgstr "Definește Stilul de Joc :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:177
+#: .\src\playstyle_compass\views.py:178
 msgid "Your PlayStyle :: PlayStyle Compass"
 msgstr "Stilul tău de joc :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:308
+#: .\src\playstyle_compass\views.py:309
 msgid "Recommendations :: PlayStyle Compass"
 msgstr "Recomandări :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:334 .\src\playstyle_compass\views.py:360
-#: .\src\playstyle_compass\views.py:1135
+#: .\src\playstyle_compass\views.py:335 .\src\playstyle_compass\views.py:361
+#: .\src\playstyle_compass\views.py:1136
 msgid "Search Results :: PlayStyle Compass"
 msgstr "Rezultate Căutare :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:445 .\src\playstyle_compass\views.py:519
-#: .\src\playstyle_compass\views.py:525
+#: .\src\playstyle_compass\views.py:446 .\src\playstyle_compass\views.py:520
+#: .\src\playstyle_compass\views.py:526
 msgid "You don't have permission to view this content."
 msgstr "Nu ai permisiunea să vezi acest conținut."
 
-#: .\src\playstyle_compass\views.py:458
+#: .\src\playstyle_compass\views.py:459
 msgid "Games Reviewed :: PlayStyle Compass"
 msgstr "Jocuri Evaluate :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:475
+#: .\src\playstyle_compass\views.py:476
 msgid "Favorites :: PlayStyle Compass"
 msgstr "Favorite :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:487
+#: .\src\playstyle_compass\views.py:488
 msgid "Game Queue :: PlayStyle Compass"
 msgstr "Jocuri Programate :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:558
+#: .\src\playstyle_compass\views.py:559
 msgid "Top Rated Games :: PlayStyle Compass"
 msgstr "Top Jocuri :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:581
+#: .\src\playstyle_compass\views.py:582
 msgid "Upcoming Games :: PlayStyle Compass"
 msgstr "Jocuri în Dezvoltare :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:599
+#: .\src\playstyle_compass\views.py:600
 msgid "You have already reviewed this game!"
 msgstr "Ai evaluat deja acest joc!"
 
-#: .\src\playstyle_compass\views.py:641
+#: .\src\playstyle_compass\views.py:642
 msgid "Your review has been successfully submitted."
 msgstr "Recenzia ta a fost trimisă cu succes."
 
-#: .\src\playstyle_compass\views.py:650
+#: .\src\playstyle_compass\views.py:651
 msgid "Add Review :: PlayStyle Compass"
 msgstr "Adaugă Recenzie :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:670 .\src\playstyle_compass\views.py:812
+#: .\src\playstyle_compass\views.py:671 .\src\playstyle_compass\views.py:813
 msgid "You haven't written any reviews for this game!"
 msgstr "Nu ai scris nicio recenzie pentru acest joc!"
 
-#: .\src\playstyle_compass\views.py:686
+#: .\src\playstyle_compass\views.py:687
 msgid "Your review has been successfully updated."
 msgstr "Recenzia ta a fost actualizată cu succes."
 
-#: .\src\playstyle_compass\views.py:692
+#: .\src\playstyle_compass\views.py:693
 msgid "Edit Review :: PlayStyle Compass"
 msgstr "Editează Recenzia :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:740
+#: .\src\playstyle_compass\views.py:741
 msgid "You cannot like your own review."
 msgstr "Nu poți aprecia propria recenzie."
 
-#: .\src\playstyle_compass\views.py:757 .\src\playstyle_compass\views.py:793
+#: .\src\playstyle_compass\views.py:758 .\src\playstyle_compass\views.py:794
 msgid "Review ID invalid."
 msgstr "ID recenzie invalid."
 
-#: .\src\playstyle_compass\views.py:760 .\src\playstyle_compass\views.py:796
+#: .\src\playstyle_compass\views.py:761 .\src\playstyle_compass\views.py:797
 msgid "You must be logged in to like or dislike a review."
 msgstr "Trebuie să fii autentificat pentru a aprecia sau critica o recenzie."
 
-#: .\src\playstyle_compass\views.py:775
+#: .\src\playstyle_compass\views.py:776
 msgid "You cannot dislike your own review."
 msgstr "Nu poți critica propria recenzie."
 
-#: .\src\playstyle_compass\views.py:810
+#: .\src\playstyle_compass\views.py:811
 msgid "Your review has been successfully deleted!"
 msgstr "Recenzia ta a fost ștearsă cu succes!"
 
-#: .\src\playstyle_compass\views.py:853
+#: .\src\playstyle_compass\views.py:854
 #, python-format
 msgid "You have already shared %(game_title)s with %(profile_name)s."
 msgstr "Ai distribuit deja jocul \"%(game_title)s\" către %(profile_name)s."
 
-#: .\src\playstyle_compass\views.py:901
+#: .\src\playstyle_compass\views.py:902
 #, python-format
 msgid "You have successfully shared %(game_title)s with %(profile_name)s."
 msgstr "Ai distribuit cu succes jocul %(game_title)s către %(profile_name)s."
 
-#: .\src\playstyle_compass\views.py:912
+#: .\src\playstyle_compass\views.py:913
 msgid "Receiver ID not provided"
 msgstr "ID destinatar lipsă"
 
-#: .\src\playstyle_compass\views.py:915
+#: .\src\playstyle_compass\views.py:916
 msgid "Invalid request method"
 msgstr "Metodă de cerere invalidă"
 
-#: .\src\playstyle_compass\views.py:941
+#: .\src\playstyle_compass\views.py:942
 msgid "Shared Games :: PlayStyle Compass"
 msgstr "Jocuri Distribuite :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:1013
+#: .\src\playstyle_compass\views.py:1014
 msgid "Similar PlayStyles :: PlayStyle Compass"
 msgstr "Stiluri de Joc Similare :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:1041
+#: .\src\playstyle_compass\views.py:1042
 msgid "Kinded Play Histories :: PlayStyle Compass"
 msgstr "Istorii de Joc Similare :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:1066
+#: .\src\playstyle_compass\views.py:1067
 msgid "Franchises :: PlayStyle Compass"
 msgstr "Francize :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:1100
+#: .\src\playstyle_compass\views.py:1101
 msgid "Characters :: PlayStyle Compass"
 msgstr "Caractere :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:1234
+#: .\src\playstyle_compass\views.py:1235
 msgid "Game Library :: PlayStyle Compass"
 msgstr "Biblioteca de Jocuri :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:1273
+#: .\src\playstyle_compass\views.py:1274
 msgid "News :: PlayStyle Compass"
 msgstr "Știri :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:1309
+#: .\src\playstyle_compass\views.py:1310
 msgid "Similar Games Directory :: PlayStyle Compass"
 msgstr "Catalog Jocuri Similare :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:1322
+#: .\src\playstyle_compass\views.py:1323
 msgid "Games like"
 msgstr "Jocuri ca"
 
-#: .\src\playstyle_compass\views.py:1354
+#: .\src\playstyle_compass\views.py:1355
 msgid "Open World Games :: PlayStyle Compass"
 msgstr "Jocuri Open-World :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:1371
+#: .\src\playstyle_compass\views.py:1372
 msgid "Linear Gameplay Games :: PlayStyle Compass"
 msgstr "Jocuri cu Gameplay Liniar :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:1386
+#: .\src\playstyle_compass\views.py:1387
 msgid "Indie Games :: PlayStyle Compass"
 msgstr "Jocuri Indie :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:1401
+#: .\src\playstyle_compass\views.py:1402
 msgid "Steam Games :: PlayStyle Compass"
 msgstr "Jocuri Steam :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:1416
+#: .\src\playstyle_compass\views.py:1417
 msgid "Free to Play Games :: PlayStyle Compass"
 msgstr "Jocuri Free to Play :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:1433
+#: .\src\playstyle_compass\views.py:1434
 msgid "VR Games :: PlayStyle Compass"
 msgstr "Jocuri VR :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:1450
+#: .\src\playstyle_compass\views.py:1451
 msgid "Beginner Games :: PlayStyle Compass"
 msgstr "Jocuri pentru începători :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:1475
+#: .\src\playstyle_compass\views.py:1476
 msgid "Create Game List :: PlayStyle Compass"
 msgstr "Creează listă de jocuri :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:1499
+#: .\src\playstyle_compass\views.py:1500
 msgid "Edit Game List :: PlayStyle Compass"
 msgstr "Editează lista de jocuri :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:1559
+#: .\src\playstyle_compass\views.py:1560
 msgid "View Game List :: PlayStyle Compass"
 msgstr "Vizualizează lista de jocuri :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:1631
+#: .\src\playstyle_compass\views.py:1632
 msgid "Game list successfully shared!"
 msgstr "Lista de jocuri a fost împărtășită cu succes!"
 
-#: .\src\playstyle_compass\views.py:1637
+#: .\src\playstyle_compass\views.py:1638
 msgid "Share Game List :: PlayStyle Compass"
 msgstr "Distribuie lista de jocuri :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:1677
+#: .\src\playstyle_compass\views.py:1678
 msgid "Game Lists :: PlayStyle Compass"
 msgstr "Liste de jocuri :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:1702
+#: .\src\playstyle_compass\views.py:1703
 msgid "Game Lists You Shared with Others"
 msgstr "Liste de jocuri împărtășite cu alții"
 
-#: .\src\playstyle_compass\views.py:1706
+#: .\src\playstyle_compass\views.py:1707
 msgid "Game Lists Shared With You"
 msgstr "Liste de jocuri împărtășite cu tine"
 
-#: .\src\playstyle_compass\views.py:1778
+#: .\src\playstyle_compass\views.py:1779
 msgid "Review submitted successfully!"
 msgstr "Recenzia a fost trimisă cu succes!"
 
-#: .\src\playstyle_compass\views.py:1803
+#: .\src\playstyle_compass\views.py:1804
 msgid "Review updated successfully!"
 msgstr "Recenzia a fost actualizată cu succes!"
 
-#: .\src\playstyle_compass\views.py:1823
+#: .\src\playstyle_compass\views.py:1824
 msgid "Review deleted successfully!"
 msgstr "Recenzia a fost ștearsă cu succes!"
 
-#: .\src\playstyle_compass\views.py:1867
+#: .\src\playstyle_compass\views.py:1868
 msgid "Reviewed Game Lists :: PlayStyle Compass"
 msgstr "Liste de jocuri recenzate :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:1892
+#: .\src\playstyle_compass\views.py:1893
 msgid "Privacy Settings :: PlayStyle Compass"
 msgstr "Setări de Confidențialitate :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:1930
+#: .\src\playstyle_compass\views.py:1931
 msgid "Explore Game Lists :: PlayStyle Compass"
 msgstr "Explorează Listele de Jocuri :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:1955
+#: .\src\playstyle_compass\views.py:1956
 msgid "You can no longer edit this comment."
 msgstr "Nu mai poți edita acest comentariu."
 
-#: .\src\playstyle_compass\views.py:1964
+#: .\src\playstyle_compass\views.py:1965
 msgid "Comment text cannot be empty."
 msgstr "Textul comentariului nu poate fi gol"
 
-#: .\src\playstyle_compass\views.py:1979
+#: .\src\playstyle_compass\views.py:1980
 msgid "Comment updated successfully."
 msgstr "Comentariul a fost actualizat cu succes."
 
-#: .\src\playstyle_compass\views.py:2110
+#: .\src\playstyle_compass\views.py:2111
 msgid "Favorite Game Lists :: PlayStyle Compass"
 msgstr "Liste favorite de jocuri :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:2129
+#: .\src\playstyle_compass\views.py:2130
 msgid "Popular Games :: PlayStyle Compass"
 msgstr "Jocuri Populare :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:2159
+#: .\src\playstyle_compass\views.py:2160
 msgid "Poll successfully created!"
 msgstr "Sondaj creat cu succes!"
 
-#: .\src\playstyle_compass\views.py:2167
+#: .\src\playstyle_compass\views.py:2168
 msgid "Create Poll :: PlayStyle Compass"
 msgstr "Creează sondaj :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:2236
+#: .\src\playstyle_compass\views.py:2237
 msgid "Community Polls :: PlayStyle Compass"
 msgstr "Sondaje Comunitate :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:2269
+#: .\src\playstyle_compass\views.py:2270
 msgid "User Polls :: PlayStyle Compass"
 msgstr "Sondaje Utilizator :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:2318
+#: .\src\playstyle_compass\views.py:2319
 msgid "Voted Polls:: PlayStyle Compass"
 msgstr "Sondaje Votate :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:2359
+#: .\src\playstyle_compass\views.py:2360
 msgid "Poll Detail :: PlayStyle Compass"
 msgstr "Detalii Sondaj :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:2421
+#: .\src\playstyle_compass\views.py:2422
 msgid "Poll successfully shared!"
 msgstr "Sondajul a fost distribuit cu succes!"
 
-#: .\src\playstyle_compass\views.py:2427
+#: .\src\playstyle_compass\views.py:2428
 msgid "Share Poll :: PlayStyle Compass"
 msgstr "Distribuie Sondajul :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:2450
+#: .\src\playstyle_compass\views.py:2451
 msgid "Polls You Shared with Others"
 msgstr "Sondaje Pe Care Le-ai Distribuit Altora"
 
-#: .\src\playstyle_compass\views.py:2454
+#: .\src\playstyle_compass\views.py:2455
 msgid "Polls Shared With You"
 msgstr "Sondaje Distribuite Cu Tine"
 
-#: .\src\playstyle_compass\views.py:2515
+#: .\src\playstyle_compass\views.py:2516
 msgid "Completed Polls :: PlayStyle Compass"
 msgstr "Sondaje Finalizate :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:2548
+#: .\src\playstyle_compass\views.py:2549
 msgid "Game Deals :: PlayStyle Compass"
 msgstr "Oferte la jocuri :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:2583
+#: .\src\playstyle_compass\views.py:2584
 msgid "Game Reviews :: PlayStyle Compass"
 msgstr "Recenzii Joc :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:2596
-#| msgid "Poll Detail :: PlayStyle Compass"
+#: .\src\playstyle_compass\views.py:2597
 msgid "Deal Details :: PlayStyle Compass"
 msgstr "Detalii Ofertă :: PlayStyle Compass"
 
-#: .\src\playstyle_manager\settings.py:261 .\src\templates\base.html:412
+#: .\src\playstyle_compass\views.py:2615
+#| msgid "Message sent successfully!"
+msgid "Deal shared successfully."
+msgstr "Oferta a fost împărtășită cu succes."
+
+#: .\src\playstyle_compass\views.py:2618
+#| msgid "Share Poll :: PlayStyle Compass"
+msgid "Share Deal :: PlayStyle Compass"
+msgstr "Împărtășește Oferta :: PlayStyle Compass"
+
+#: .\src\playstyle_compass\views.py:2636
+#| msgid "Shared Games :: PlayStyle Compass"
+msgid "Shared Deals :: PlayStyle Compass"
+msgstr "Oferte Împărtășite :: PlayStyle Compass"
+
+#: .\src\playstyle_manager\settings.py:261 .\src\templates\base.html:413
 #: .\src\users\models.py:69
 msgid "English"
 msgstr "Engleză"
 
-#: .\src\playstyle_manager\settings.py:261 .\src\templates\base.html:422
+#: .\src\playstyle_manager\settings.py:261 .\src\templates\base.html:423
 #: .\src\users\models.py:69
 msgid "Romanian"
 msgstr "Română"
@@ -3609,7 +3813,7 @@ msgstr "Sondaje Finalizate"
 msgid "Similar Games Directory"
 msgstr "Catalog Jocuri Similare"
 
-#: .\src\templates\base.html:261 .\src\templates\base.html:296
+#: .\src\templates\base.html:261 .\src\templates\base.html:297
 msgid "Account"
 msgstr "Cont"
 
@@ -3649,104 +3853,109 @@ msgstr "Liste de jocuri împărtășite"
 msgid "Shared Polls"
 msgstr "Sondaje Distribuite"
 
-#: .\src\templates\base.html:281
+#: .\src\templates\base.html:277
+#| msgid "Shared Games"
+msgid "Shared Deals"
+msgstr "Oferte Împărtășite"
+
+#: .\src\templates\base.html:282
 msgid "Settings"
 msgstr "Setări"
 
-#: .\src\templates\base.html:282
+#: .\src\templates\base.html:283
 msgid "Manage Notifications"
 msgstr "Gestionează notificările"
 
-#: .\src\templates\base.html:283
+#: .\src\templates\base.html:284
 msgid "Manage Privacy"
 msgstr "Gestionează Confidențialitatea"
 
-#: .\src\templates\base.html:284
+#: .\src\templates\base.html:285
 msgid "Update Password"
 msgstr "Actualizează parola"
 
-#: .\src\templates\base.html:285
+#: .\src\templates\base.html:286
 msgid "Update Email Address"
 msgstr "Actualizează adresa de email"
 
-#: .\src\templates\base.html:290
+#: .\src\templates\base.html:291
 msgid "API"
 msgstr "API"
 
-#: .\src\templates\base.html:291
+#: .\src\templates\base.html:292
 msgid "Manage API Key"
 msgstr "Gestionare cheie API"
 
-#: .\src\templates\base.html:297
+#: .\src\templates\base.html:298
 msgid "Deactivate Account"
 msgstr "Dezactivează contul"
 
-#: .\src\templates\base.html:298
+#: .\src\templates\base.html:299
 msgid "Sign Out"
 msgstr "Deconectează-te"
 
-#: .\src\templates\base.html:305
+#: .\src\templates\base.html:306
 msgid "Social"
 msgstr "Social"
 
-#: .\src\templates\base.html:308
+#: .\src\templates\base.html:309
 msgid "Messages"
 msgstr "Mesaje"
 
-#: .\src\templates\base.html:309
+#: .\src\templates\base.html:310
 msgid "Following List"
 msgstr "Lista Urmăriților"
 
-#: .\src\templates\base.html:310
+#: .\src\templates\base.html:311
 msgid "Followers List"
 msgstr "Lista Urmăritorilor"
 
-#: .\src\templates\base.html:311
+#: .\src\templates\base.html:312
 msgid "Your Friends"
 msgstr "Prieteni"
 
-#: .\src\templates\base.html:312
+#: .\src\templates\base.html:313
 msgid "Friend Requests"
 msgstr "Cereri de Prietenie"
 
-#: .\src\templates\base.html:313
+#: .\src\templates\base.html:314
 msgid "Chat Rooms"
 msgstr "Camere de chat"
 
-#: .\src\templates\base.html:314
+#: .\src\templates\base.html:315
 msgid "Blocked Users"
 msgstr "Utilizatori blocați"
 
-#: .\src\templates\base.html:325
+#: .\src\templates\base.html:326
 #: .\src\users\templates\registration\login.html:61
 #: .\src\users\templates\registration\login.html:66
 #: .\src\users\templates\registration\register.html:107
 msgid "Log in"
 msgstr "Autentificare"
 
-#: .\src\templates\base.html:339 .\src\templates\base.html:345
+#: .\src\templates\base.html:340 .\src\templates\base.html:346
 #: .\src\users\templates\general\contact.html:19
 msgid "Contact"
 msgstr "Contact"
 
-#: .\src\templates\base.html:371
+#: .\src\templates\base.html:372
 msgid "Please confirm your email address to unlock all features."
 msgstr ""
 "Te rugăm să confirmi adresa de email pentru a debloca toate funcțiile."
 
-#: .\src\templates\base.html:373
+#: .\src\templates\base.html:374
 msgid "Resend verification link"
 msgstr "Retrimite link-ul de verificare"
 
-#: .\src\templates\base.html:434
+#: .\src\templates\base.html:435
 msgid "Global Chat"
 msgstr "Chat Global"
 
-#: .\src\templates\base.html:439
+#: .\src\templates\base.html:440
 msgid "GLOBAL CHAT"
 msgstr "CHAT GLOBAL"
 
-#: .\src\templates\base.html:442
+#: .\src\templates\base.html:443
 msgid ""
 "Connect with players from around the world and share your gaming "
 "experiences!"
@@ -3754,20 +3963,20 @@ msgstr ""
 "Conectează-te cu jucători din întreaga lume și împărtășește-ți experiențele "
 "de gaming!"
 
-#: .\src\templates\base.html:444 .\src\users\templates\messaging\chat.html:56
+#: .\src\templates\base.html:445 .\src\users\templates\messaging\chat.html:56
 msgid "Show More"
 msgstr "Arată mai mult"
 
-#: .\src\templates\base.html:450 .\src\users\templates\messaging\chat.html:30
+#: .\src\templates\base.html:451 .\src\users\templates\messaging\chat.html:30
 #: .\src\users\templates\messaging\chat.html:69
 msgid "Message..."
 msgstr "Mesaj..."
 
-#: .\src\templates\base.html:463
+#: .\src\templates\base.html:464
 msgid "PlayStyle Compass. All rights reserved."
 msgstr "PlayStyle Compass. Toate drepturile rezervate."
 
-#: .\src\templates\base.html:468
+#: .\src\templates\base.html:469
 msgid "Go top"
 msgstr "Mergi sus"
 

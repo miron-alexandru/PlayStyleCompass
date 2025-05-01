@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+
+{% block page_header %}
+<div class="header">
+    <h3>{% trans "SHARED DEALS" %}</h3>
+</div>
+{% endblock page_header %}
+
+{% block description %}
+{% trans "Browse game deals you've shared with friends or discover what others have shared with you." %}
+{% endblock description %}
+
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/playstyle_compass/polls.css' %}">
+
+<div class="polls-toggle-buttons">
+    <a href="?view=received" class="toggle-button {% if view_type == 'received' %}active{% endif %}">
+        {% trans "Deals Received" %}
+    </a>
+    <a href="?view=shared" class="toggle-button {% if view_type == 'shared' %}active{% endif %}">
+        {% trans "Deals Shared" %}
+    </a>
+</div>
+
+<div class="polls-section">
+    {% if deals %}
+    <div class="polls">
+        {% for shared in deals %}
+        <div class="poll-item">
+            <p><strong>{% trans "Game:" %}</strong> {{ shared.deal.game_name }}</p>
+            <p><strong>{% trans "Sale Price:" %}</strong> ${{ shared.deal.sale_price }} {% trans "from" %} {{ shared.deal.store_name }}</p>
+            <p><strong>{% trans "Retail Price:" %}</strong> ${{ shared.deal.retail_price }}</p>
+
+            {% if view_type == 'shared' %}
+            <p><strong>{% trans "Shared with:" %}</strong>
+                <a href="{% url 'users:view_profile' shared.recipient.userprofile.profile_name %}">
+                    {{ shared.recipient.userprofile.profile_name }}
+                </a>
+            </p>
+            {% else %}
+            <p><strong>{% trans "Shared by:" %}</strong>
+                <a href="{% url 'users:view_profile' shared.sender.userprofile.profile_name %}">
+                    {{ shared.sender.userprofile.profile_name }}
+                </a>
+            </p>
+            {% endif %}
+
+            <a href="{% url 'playstyle_compass:game_deal' shared.deal.deal_id %}" class="view-button" target="_blank">{% trans "View Deal" %}</a>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p class="empty-message">
+        {% if view_type == 'shared' %}
+        {% trans "You have not shared any deals with others." %}
+        {% else %}
+        {% trans "No deals have been shared with you." %}
+        {% endif %}
+    </p>
+    {% endif %}
+</div>
+{% endblock content %}

@@ -118,6 +118,7 @@ class NewsDetailView(BaseDetailView):
     queryset = News.objects.all()
     serializer_class = NewsSerializer
 
+
 class DealsListView(BaseListView):
     queryset = Deal.objects.all()
     serializer_class = DealsSerializer
@@ -129,4 +130,3 @@ class DealsListView(BaseListView):
 class DealDetailView(BaseDetailView):
     queryset = Deal.objects.all()
     serializer_class = DealsSerializer
-

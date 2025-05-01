@@ -48,6 +48,7 @@ class NewsSerializer(DynamicFieldsModelSerializer):
         model = News
         fields = "__all__"
 
+
 class DealsSerializer(DynamicFieldsModelSerializer):
     class Meta:
         model = Deal

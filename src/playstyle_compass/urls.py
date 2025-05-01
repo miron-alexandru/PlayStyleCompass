@@ -195,6 +195,8 @@ urlpatterns = [
     path("deals/", views.deals_list, name="deals_list"),
     path("game-reviews", views.game_reviews, name="game_reviews"),
     path("game-deal/<str:deal_id>", views.game_deal, name="game_deal"),
+    path("share-deal/<int:deal_id>/", views.share_deal, name="share_deal"),
+    path("shared-deals/", views.shared_deals_view, name="shared_deals"),
 ]
 
 api_urlpatterns = [

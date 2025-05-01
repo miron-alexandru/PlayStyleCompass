@@ -46,6 +46,7 @@ from .models import (
     PollOption,
     Vote,
     Deal,
+    SharedDeal,
 )
 from .forms import (
     ReviewForm,
@@ -2553,7 +2554,7 @@ def deals_list(request):
         "pagination": True,
     }
 
-    return render(request, "games/deals.html", context)
+    return render(request, "deals/deals.html", context)
 
 
 @login_required
@@ -2597,4 +2598,49 @@ def game_deal(request, deal_id):
         "deal": deal,
     }
 
-    return render(request, "games/game_deal.html", context)
+    return render(request, "deals/game_deal.html", context)
+
+
+@login_required
+def share_deal(request, deal_id):
+    deal = get_object_or_404(Deal, pk=deal_id)
+    user_friends = get_friend_list(request.user)
+
+    if request.method == "POST":
+        selected_ids = request.POST.getlist("shared_with")
+        for friend_id in selected_ids:
+            recipient = get_object_or_404(User, pk=friend_id)
+            if recipient != request.user:
+                SharedDeal.objects.get_or_create(
+                    sender=request.user, recipient=recipient, deal=deal
+                )
+        messages.success(request, _("Deal shared successfully."))
+
+    context = {
+        "page_title": _("Share Deal :: PlayStyle Compass"),
+        "deal_id": deal_id,
+        "user_friends": user_friends,
+    }
+
+    return render(request, "deals/share_deal.html", context)
+
+
+@login_required
+def shared_deals_view(request):
+    view_type = request.GET.get("view", "received")
+    if view_type == "shared":
+        deals = SharedDeal.objects.filter(sender=request.user).select_related(
+            "deal", "recipient"
+        )
+    else:
+        deals = SharedDeal.objects.filter(recipient=request.user).select_related(
+            "deal", "sender"
+        )
+
+    context = {
+        "page_title": _("Shared Deals :: PlayStyle Compass"),
+        "view_type": view_type,
+        "deals": deals,
+    }
+
+    return render(request, "deals/shared_deals.html", context)
