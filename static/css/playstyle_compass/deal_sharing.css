@@ -1,0 +1,201 @@
+.share-deal-container {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 30px;
+  background-color: var(--user-container);
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.share-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-label {
+  font-size: 1.1rem;
+  color: var(--text-color);
+  font-weight: 600;
+}
+
+.btn-submit {
+  background-color: #3498db;
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn-submit:hover {
+  background-color: #2980b9;
+}
+
+.btn-submit:disabled {
+  background-color: #ccc;
+  color: #999;
+  border: 1px solid #ddd;
+  cursor: not-allowed;
+}
+
+.btn-submit:disabled:hover {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.friends-checkbox-list {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 10px;
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--input-border);
+  background-color: var(--background-color);
+}
+
+.friend-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.friend-checkbox input {
+  margin: 0;
+  cursor: pointer;
+  width: 15px;
+  height: 15px;
+  border: 2px solid var(--input-border);
+  border-radius: 4px;
+  background-color: #fff;
+  transition: border-color 0.3s ease, background-color 0.3s ease;
+}
+
+.friend-checkbox input:checked {
+  background-color: #3498db;
+  border-color: #3498db;
+}
+
+.friend-checkbox label {
+  font-size: 0.95rem;
+  color: var(--text-color);
+  cursor: pointer;
+  transition: color 0.3s ease;
+  margin-top: 5px;
+}
+
+.friend-checkbox:hover label {
+  color: #3498db;
+  font-weight: 600;
+}
+
+.friend-checkbox input:focus {
+  outline: none;
+  border-color: #2980b9;
+  box-shadow: 0 0 5px rgba(0, 0, 255, 0.2);
+}
+
+.deals-toggle-buttons {
+  display: flex;
+  justify-content: flex-start;
+  gap: 6px;
+  margin: 10px 0;
+}
+
+.deals-section {
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 0 10px;
+}
+
+.deals {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: flex-start;
+}
+
+.deal-item {
+  background-color: var(--user-container);
+  padding: 12px;
+  border-radius: 6px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  width: calc(33.33% - 8px);
+  box-sizing: border-box; 
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.deal-item:hover {
+  transform: scale(1.02);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+}
+
+.deal-item p {
+  font-size: 15px;
+  margin: 1px 0;
+}
+
+.deal-item strong {
+  font-weight: bold;
+}
+
+.deal-item a:hover {
+  text-decoration: underline;
+}
+
+.toggle-button {
+  display: inline-block;
+  margin: 3px;
+  font-size: 13px;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  padding: 7px 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+  border-radius: 5px;
+  text-decoration: none;
+}
+
+.toggle-button.active {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.toggle-button:hover {
+  background-color: #0056b3;
+  color: #fff;
+  text-decoration: none;
+}
+
+.empty-message {
+  text-align: center;
+  color: var(--text-color);
+  font-size: 0.9rem;
+  padding: 12px;
+}
+
+.view-button {
+  display: inline-block;
+  background-color: #007bff;
+  color: white;
+  font-size: 13px;
+  padding: 5px 10px;
+  border-radius: 4px;
+  text-decoration: none;
+  margin-top: 4px;
+}
+
+.view-button:hover {
+  background-color: #0056b3;
+  color: white;
+}

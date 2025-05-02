@@ -13,9 +13,9 @@
 {% endblock description %}
 
 {% block content %}
-<link rel="stylesheet" type="text/css" href="{% static 'css/playstyle_compass/polls.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/playstyle_compass/deal_sharing.css' %}">
 
-<div class="polls-toggle-buttons">
+<div class="deals-toggle-buttons">
     <a href="?view=received" class="toggle-button {% if view_type == 'received' %}active{% endif %}">
         {% trans "Deals Received" %}
     </a>
@@ -24,13 +24,13 @@
     </a>
 </div>
 
-<div class="polls-section">
+<div class="deals-section">
     {% if deals %}
-    <div class="polls">
+    <div class="deals">
         {% for shared in deals %}
-        <div class="poll-item">
+        <div class="deal-item">
             <p><strong>{% trans "Game:" %}</strong> {{ shared.deal.game_name }}</p>
-            <p><strong>{% trans "Sale Price:" %}</strong> ${{ shared.deal.sale_price }} {% trans "from" %} {{ shared.deal.store_name }}</p>
+            <p><strong>{% trans "Sale Price:" %}</strong> ${{ shared.deal.sale_price }}</p>
             <p><strong>{% trans "Retail Price:" %}</strong> ${{ shared.deal.retail_price }}</p>
 
             {% if view_type == 'shared' %}
