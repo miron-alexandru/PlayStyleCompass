@@ -43,4 +43,9 @@ NOTIFICATION_TEMPLATES_RO = {
         "ți-a trimis un mesaj nou în Chat!<br>"
         '<a class="notification-link" title="Deschide Chatul" href="{navigation_url}">Deschide Chatul</a>'
     ),
+    "shared_deal": (
+        '<a class="notification-profile" href="{profile_url}">{profile_name}</a> ți-a distribuit o ofertă pentru jocul '
+        '<a href="{deal_url}">{deal_title}.</a>'
+    )
+
 }

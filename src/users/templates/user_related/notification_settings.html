@@ -111,6 +111,18 @@
             </div>
         </div>
 
+        <div class="floating-card">
+            <div class="form-group">
+                <div class="label-description-container">
+                    <label for="receive_shared_deal_notifications">{% trans "Shared Game Deal Notifications" %}</label>
+                    <p class="description">{% trans "Receive notifications when someone shares a game deal with you." %}</p>
+                </div>
+                <label class="switch">
+                    <input type="checkbox" id="receive_shared_deal_notifications" name="receive_shared_deal_notifications" {% if form.receive_shared_deal_notifications.value %}checked{% endif %}>
+                    <span class="slider round"></span>
+                </label>
+            </div>
+        </div>
 
         <button type="submit" class="btn-submit">{% trans "Save" %}</button>
     </form>

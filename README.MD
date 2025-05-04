@@ -139,6 +139,7 @@ Websites for .env configuration: [GiantBomb](https://www.giantbomb.com/) / [Send
 <summary><h2>PlayStyle Compass Changelog</h2></summary>
 
 ### Version v2.4:
+* Notification received when a Deal is shared.
 * Users are able to share Deals with their friends.
 * Updated API for Deals.
 * Created Deal details page.

@@ -2611,10 +2611,35 @@ def share_deal(request, deal_id):
         for friend_id in selected_ids:
             recipient = get_object_or_404(User, pk=friend_id)
             if recipient != request.user:
+                # Share the deal
                 SharedDeal.objects.get_or_create(
                     sender=request.user, recipient=recipient, deal=deal
                 )
+
+                # Create notification for the recipient
+                profile_url = reverse(
+                    "users:view_profile", args=[request.user.userprofile.profile_name]
+                )
+                deal_url = reverse("playstyle_compass:game_deal", args=[deal.deal_id])
+                message = format_html(
+                    '<a class="notification-profile" href="{}">{}</a> has shared a deal with you for the game <a href="{}">{}.</a>',
+                    profile_url,
+                    request.user.userprofile.profile_name,
+                    deal_url,
+                    deal.game_name,
+                )
+                create_notification(
+                    recipient,
+                    message=message,
+                    notification_type="shared_deal",
+                    profile_url=profile_url,
+                    profile_name=request.user.userprofile.profile_name,
+                    deal_url=deal_url,
+                    deal_title=deal.game_name,
+                )
+
         messages.success(request, _("Deal shared successfully."))
+        return redirect("playstyle_compass:game_deal", deal_id=deal.deal_id)
 
     context = {
         "page_title": _("Share Deal :: PlayStyle Compass"),

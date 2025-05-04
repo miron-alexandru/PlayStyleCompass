@@ -64,6 +64,7 @@ class UserProfile(models.Model):
     receive_chat_message_notifications = models.BooleanField(default=True)
     receive_shared_game_notifications = models.BooleanField(default=True)
     receive_shared_game_list_notifications = models.BooleanField(default=True)
+    receive_shared_deal_notifications = models.BooleanField(default=True)
     language = models.CharField(
         max_length=5,
         choices=[("en", _("English")), ("ro", _("Romanian"))],
@@ -221,6 +222,7 @@ class Notification(models.Model):
         ("chat_message", "Chat Message"),
         ("shared_game", "Shared Game"),
         ("shared_game_list", "Shared Game List"),
+        ("shared_deal", "Shared Game Deal"),
     ]
 
     id = models.AutoField(primary_key=True)
