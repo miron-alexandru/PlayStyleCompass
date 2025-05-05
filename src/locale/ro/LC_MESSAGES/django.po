@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-01 11:23+0300\n"
-"PO-Revision-Date: 2025-05-01 11:27+0144\n"
+"POT-Creation-Date: 2025-05-05 17:56+0300\n"
+"PO-Revision-Date: 2025-05-05 17:58+0144\n"
 "Last-Translator:   <quality_xqs@yahoo.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -1508,7 +1508,6 @@ msgstr ""
 "o poți cumpăra la cel mai bun preț și începe să te joci chiar azi!"
 
 #: .\src\playstyle_compass\templates\deals\share_deal.html:7
-#| msgid "GAME DEALS"
 msgid "SHARE DEAL"
 msgstr "ÎMPĂRTĂȘEȘTE OFERTA"
 
@@ -1529,14 +1528,10 @@ msgid "Your friends list is currently empty."
 msgstr "Lista ta de prieteni este momentan goală."
 
 #: .\src\playstyle_compass\templates\deals\shared_deals.html:7
-#| msgid "SHARED GAMES"
 msgid "SHARED DEALS"
 msgstr "OFERTE IMPĂRTĂȘITE"
 
 #: .\src\playstyle_compass\templates\deals\shared_deals.html:12
-#| msgid ""
-#| "Get ready for some shared gaming fun! Check out the games you've swapped "
-#| "with others and dive into the ones they've shared with you."
 msgid ""
 "Browse game deals you've shared with friends or discover what others have "
 "shared with you."
@@ -1545,28 +1540,20 @@ msgstr ""
 "descoperă ce au împărtășit alții cu tine."
 
 #: .\src\playstyle_compass\templates\deals\shared_deals.html:20
-#| msgid "Polls Received"
 msgid "Deals Received"
 msgstr "Oferte Primite"
 
 #: .\src\playstyle_compass\templates\deals\shared_deals.html:23
-#| msgid "Polls Shared"
 msgid "Deals Shared"
 msgstr "Oferte Împărtășite"
 
 #: .\src\playstyle_compass\templates\deals\shared_deals.html:32
-#| msgid "Games:"
 msgid "Game:"
 msgstr "Joc:"
 
 #: .\src\playstyle_compass\templates\deals\shared_deals.html:33
-#| msgid "Sale Price ↑"
 msgid "Sale Price:"
 msgstr "Preț Reducere:"
-
-#: .\src\playstyle_compass\templates\deals\shared_deals.html:33
-msgid "from"
-msgstr "de la"
 
 #: .\src\playstyle_compass\templates\deals\shared_deals.html:34
 msgid "Retail Price:"
@@ -1583,22 +1570,18 @@ msgid "Shared with:"
 msgstr "Împărtășit cu:"
 
 #: .\src\playstyle_compass\templates\deals\shared_deals.html:43
-#| msgid "Shared By:"
 msgid "Shared by:"
 msgstr "Împărtășit de:"
 
 #: .\src\playstyle_compass\templates\deals\shared_deals.html:50
-#| msgid "View Poll"
 msgid "View Deal"
 msgstr "Vezi Oferta"
 
 #: .\src\playstyle_compass\templates\deals\shared_deals.html:57
-#| msgid "You have not shared any polls with others."
 msgid "You have not shared any deals with others."
 msgstr "Nu ai împărtășit nicio ofertă cu alții."
 
 #: .\src\playstyle_compass\templates\deals\shared_deals.html:59
-#| msgid "No polls have been shared with you."
 msgid "No deals have been shared with you."
 msgstr "Nu ți-au fost împărtășite oferte."
 
@@ -1690,7 +1673,7 @@ msgstr "Salvează Lista"
 #: .\src\playstyle_compass\templates\preferences\update_gaming_preferences.html:106
 #: .\src\playstyle_compass\templates\preferences\update_gaming_preferences.html:129
 #: .\src\playstyle_compass\templates\preferences\update_gaming_preferences.html:151
-#: .\src\users\templates\user_related\notification_settings.html:115
+#: .\src\users\templates\user_related\notification_settings.html:127
 msgid "Save"
 msgstr "Salvează"
 
@@ -3635,28 +3618,25 @@ msgstr "Recenzii Joc :: PlayStyle Compass"
 msgid "Deal Details :: PlayStyle Compass"
 msgstr "Detalii Ofertă :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:2615
-#| msgid "Message sent successfully!"
+#: .\src\playstyle_compass\views.py:2641
 msgid "Deal shared successfully."
 msgstr "Oferta a fost împărtășită cu succes."
 
-#: .\src\playstyle_compass\views.py:2618
-#| msgid "Share Poll :: PlayStyle Compass"
+#: .\src\playstyle_compass\views.py:2645
 msgid "Share Deal :: PlayStyle Compass"
 msgstr "Împărtășește Oferta :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:2636
-#| msgid "Shared Games :: PlayStyle Compass"
+#: .\src\playstyle_compass\views.py:2666
 msgid "Shared Deals :: PlayStyle Compass"
 msgstr "Oferte Împărtășite :: PlayStyle Compass"
 
 #: .\src\playstyle_manager\settings.py:261 .\src\templates\base.html:413
-#: .\src\users\models.py:69
+#: .\src\users\models.py:70
 msgid "English"
 msgstr "Engleză"
 
 #: .\src\playstyle_manager\settings.py:261 .\src\templates\base.html:423
-#: .\src\users\models.py:69
+#: .\src\users\models.py:70
 msgid "Romanian"
 msgstr "Română"
 
@@ -3854,7 +3834,6 @@ msgid "Shared Polls"
 msgstr "Sondaje Distribuite"
 
 #: .\src\templates\base.html:277
-#| msgid "Shared Games"
 msgid "Shared Deals"
 msgstr "Oferte Împărtășite"
 
@@ -5007,6 +4986,17 @@ msgstr "Notificări pentru liste de jocuri împărtășite"
 msgid "Receive notifications when someone shares a game list with you."
 msgstr "Primește notificări când cineva îți distribuie o listă de jocuri."
 
+#: .\src\users\templates\user_related\notification_settings.html:117
+#| msgid "Shared Game Notifications"
+msgid "Shared Game Deal Notifications"
+msgstr "Notificări pentru Oferte de Joc Partajate"
+
+#: .\src\users\templates\user_related\notification_settings.html:118
+#| msgid "Receive notifications when someone shares a game with you."
+msgid "Receive notifications when someone shares a game deal with you."
+msgstr ""
+"Primește notificări atunci când cineva îți partajează o ofertă de joc."
+
 #: .\src\users\templates\user_related\profile_details.html:7
 msgid "PROFILE DETAILS"
 msgstr "DETALII PROFIL"
@@ -5610,3 +5600,4 @@ msgstr "Urmăriți :: PlayStyle Compass"
 #: .\src\users\views.py:1902
 msgid "Notification Settings :: PlayStyle Compass"
 msgstr "Setări de Notificare :: PlayStyle Compass"
+
