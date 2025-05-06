@@ -154,55 +154,6 @@ html {
   overflow: auto;
 }
 
-.game-list {
-  top: 5%;
-}
-
-.game-details {
-  top: 16%;
-}
-
-.franchises-list {
-  top: 30%;
-}
-
-.franchise-details {
-  top: 37%;
-}
-
-.characters-list {
-  top: 43%;
-}
-
-.character-details {
-  top: 50%;
-}
-
-.reviews-list {
-  top: 58%;
-}
-
-.review-details {
-  top: 67%;
-}
-
-.news-list {
-  top: 74%;
-
-}
-
-.news-details {
-  top: 81%;
-}
-
-.deals-list {
-  top: 86%;
-}
-
-.deal-details {
-  top: 94%;
-}
-
 .response-example {
   color: var(--text-color);
   font-size: 14px;
