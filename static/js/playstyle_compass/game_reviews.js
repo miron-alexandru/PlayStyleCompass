@@ -102,7 +102,7 @@ document.addEventListener("DOMContentLoaded", function () {
     event.preventDefault();
 
     let thisContainer = $(event.target).closest(".like-dislike");
-    let reviewId = thisContainer.closest(".review").data("review-id");
+    let reviewId = thisContainer.data("review-id");
     let ratingUrl = thisContainer.data(`${actionType}-url`);
 
     $.ajax({

@@ -2669,3 +2669,16 @@ def shared_deals_view(request):
     }
 
     return render(request, "deals/shared_deals.html", context)
+
+
+@login_required
+def single_review(request, review_id):
+    """View used to display a single game review."""
+    review = get_object_or_404(Review, id=review_id)
+
+    context = {
+        "page_title": _("Game Review :: PlayStyle Compass"),
+        "review": review,
+    }
+
+    return render(request, "reviews/single_review.html", context)

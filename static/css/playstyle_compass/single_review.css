@@ -1,0 +1,129 @@
+.review-detail {
+  background: #e6e9ef;
+  border-radius: 20px;
+  padding: 32px;
+  margin: 32px auto;
+  max-width: 800px;
+  box-shadow: 
+    10px 10px 30px #c5c8ce,
+    -10px -10px 30px #ffffff;
+  color: #2f2f2f;
+}
+
+.written-by, .reviewed-game {
+  font-size: 15px;
+}
+
+.review-body {
+  font-size: 16px;
+  line-height: 26px;
+  color: #444;
+}
+
+.review-score {
+  color: #5c7080;
+  margin-top: 10px;
+  font-weight: 600;
+  margin-left: 0px;
+}
+
+.like-dislike {
+  margin-left: 0px;
+  display: flex;
+  gap: 5px;
+  color: #6c757d;
+  align-items: center;
+}
+
+.like-dislike i {
+  color: #6c757d;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.like-dislike .thumbs-up:hover {
+  color: #2ecc71;
+}
+
+.like-dislike .thumbs-down:hover {
+  color: #e74c3c;
+}
+
+.like-dislike-divider {
+  font-size: 19px;
+  color: #bdc3c7;
+}
+
+
+.btn-secondary {
+  font-size: 15px;
+  background: #e6e9ef;
+  padding: 10px 20px;
+  border-radius: 12px;
+  box-shadow: 
+    5px 5px 15px #c5c8ce,
+    -5px -5px 15px #ffffff;
+  border: none;
+  color: #2f2f2f;
+  text-decoration: none;
+  margin-top: 32px;
+  font-weight: 500;
+  transition: all 0.2s ease-in-out;
+}
+
+.btn-secondary:hover {
+  box-shadow: 
+    inset 5px 5px 10px #c5c8ce,
+    inset -5px -5px 10px #ffffff;
+}
+
+.gold-star {
+  color: gold;
+  font-size: 17px;
+}
+
+.empty-star {
+  font-size: 17px;
+  color: lightgrey;
+}
+
+.friend-request-text {
+  display: inline-block;
+  padding: 4px 8px;
+  background-color: #388E3C;
+  color: #ffffff;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-size: 9px;
+  font-weight: 600;
+}
+
+.friend-request-text:hover {
+  background-color: #2E7D32;
+}
+
+.author-link {
+  font-weight: bold;
+}
+
+.author-name {
+  cursor: pointer;
+}
+
+.review-title {
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--text-color);
+}
+
+.error-message {
+  color: #d9534f;
+  font-size: 14px;
+  display: inline-block;
+}
+
+.fade-out {
+  opacity: 0;
+  transition: opacity 1s ease-out;
+}

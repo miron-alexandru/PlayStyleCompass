@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+
+{% block page_header %}
+  <div class="header">
+    <h3>{% trans "GAME REVIEW" %}</h3>
+  </div>
+{% endblock page_header %}
+
+{% block description %}
+  {% blocktrans %}
+    Read a detailed review of the selected game written by a community member. Get insights into the gameplay, graphics, story, and overall experience to help you decide if this game is your next play.
+  {% endblocktrans %}
+{% endblock description %}
+
+{% block content %}
+  <link rel="stylesheet" href="{% static 'css/playstyle_compass/single_review.css' %}">
+
+  <div class="review-detail">
+    <p class="review-title">{{ review.review_deck }}</p>
+    <p class="reviewed-game">
+      {% trans "Game:" %} 
+      <a href="{% url 'playstyle_compass:view_game' review.game.guid %}" target="_blank">{{ review.game.title }}</a>
+    </p>
+    <p class="written-by">
+      {% trans "Written by" %}
+      <span class="author-container" data-friend-req="{% url 'users:friend_request' 0 %}">
+        <a class="author-name" href="{% url 'users:view_profile' review.reviewers %}" target="_blank" title="Open user profile in a new tab.">
+          {{ review.reviewers }}
+        </a>
+        <a href="#" class="author-link" data-user-id="{{ review.user_id }}"></a>
+        <span class="friend-request-text" style="display: none;">{% trans "Friend Request" %}</span>
+      </span>
+      {% trans "on" %} {{ review.date_added }}
+    </p>
+    
+    <div class="review-header">
+      <div class="review-score">
+        <span class="star-rating" data-score="{{ review.score }}"></span>
+      </div>
+
+      <div class="like-dislike"
+        data-review-id="{{ review.id }}"
+        data-like-url="{% url 'playstyle_compass:like' %}" 
+        data-dislike-url="{% url 'playstyle_compass:dislike' %}">
+        <i class="fa-solid fa-thumbs-up thumbs-up" title="I like this"></i>
+        <span class="like-count">{{ review.likes }}</span>
+        <span class="like-dislike-divider">|</span>
+        <i class="fa-solid fa-thumbs-down thumbs-down" title="I dislike this"></i>
+        <span class="dislike-count">{{ review.dislikes }}</span>
+      </div>
+    </div>
+
+    <hr>
+
+    <div class="review-body">
+      {{ review.review_description|safe }}
+    </div>
+  </div>
+
+  <a href="{% url 'playstyle_compass:game_reviews' %}" class="btn btn-secondary">{% trans "Back to Reviews" %}</a>
+
+<script src="{% static 'js/playstyle_compass/game_reviews.js' %}" defer></script>
+{% endblock content %}
