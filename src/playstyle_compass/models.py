@@ -568,3 +568,13 @@ class SharedDeal(models.Model):
     class Meta:
         db_table = "SharedDeals"
         unique_together = ("sender", "recipient", "deal")
+
+
+class SharedReview(models.Model):
+    sender = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='sent_review_shares', on_delete=models.CASCADE)
+    recipient = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='received_review_shares', on_delete=models.CASCADE)
+    review = models.ForeignKey(Review, on_delete=models.CASCADE)
+    shared_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('sender', 'recipient', 'review')

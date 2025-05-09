@@ -47,6 +47,7 @@ from .models import (
     Vote,
     Deal,
     SharedDeal,
+    SharedReview,
 )
 from .forms import (
     ReviewForm,
@@ -2682,3 +2683,73 @@ def single_review(request, review_id):
     }
 
     return render(request, "reviews/single_review.html", context)
+
+
+@login_required
+def share_review(request, review_id):
+    review = get_object_or_404(Review, pk=review_id)
+    user_friends = get_friend_list(request.user)
+
+    if request.method == "POST":
+        selected_ids = request.POST.getlist("shared_with")
+        for friend_id in selected_ids:
+            recipient = get_object_or_404(User, pk=friend_id)
+            if recipient != request.user:
+                SharedReview.objects.get_or_create(
+                    sender=request.user, recipient=recipient, review=review
+                )
+
+                # Create notification
+                profile_url = reverse(
+                    "users:view_profile", args=[request.user.userprofile.profile_name]
+                )
+                review_url = reverse("playstyle_compass:single_review", args=[review.id])
+                message = format_html(
+                    '<a class="notification-profile" href="{}">{}</a> has shared a review with you for the game <a href="{}">{}.</a>',
+                    profile_url,
+                    request.user.userprofile.profile_name,
+                    review_url,
+                    review.game.title,
+                )
+
+                create_notification(
+                    recipient,
+                    message=message,
+                    notification_type="shared_review",
+                    profile_url=profile_url,
+                    profile_name=request.user.userprofile.profile_name,
+                    review_url=review_url,
+                    review_title=review.game.title,
+                )
+
+        messages.success(request, _("Review shared successfully."))
+        return redirect("playstyle_compass:single_review", review_id=review.id)
+
+    context = {
+        "page_title": _("Share Review :: PlayStyle Compass"),
+        "review_id": review_id,
+        "user_friends": user_friends,
+    }
+
+    return render(request, "reviews/share_review.html", context)
+
+
+@login_required
+def shared_reviews_view(request):
+    view_type = request.GET.get("view", "received")
+    if view_type == "shared":
+        reviews = SharedReview.objects.filter(sender=request.user).select_related(
+            "review", "recipient"
+        )
+    else:
+        reviews = SharedReview.objects.filter(recipient=request.user).select_related(
+            "review", "sender"
+        )
+
+    context = {
+        "page_title": _("Shared Reviews :: PlayStyle Compass"),
+        "view_type": view_type,
+        "reviews": reviews,
+    }
+
+    return render(request, "reviews/shared_reviews.html", context)

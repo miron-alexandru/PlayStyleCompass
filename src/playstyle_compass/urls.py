@@ -198,6 +198,8 @@ urlpatterns = [
     path("share-deal/<int:deal_id>/", views.share_deal, name="share_deal"),
     path("shared-deals/", views.shared_deals_view, name="shared_deals"),
     path("game_review/<int:review_id>/", views.single_review, name="single_review"),
+    path("share-review/<int:review_id>/", views.share_review, name="share_review"),
+    path("shared-reviews/", views.shared_reviews_view, name="shared_reviews"),
 
 ]
 

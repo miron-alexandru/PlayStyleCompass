@@ -47,4 +47,9 @@ NOTIFICATION_TEMPLATES_RO = {
         '<a class="notification-profile" href="{profile_url}">{profile_name}</a> ți-a distribuit o ofertă pentru jocul '
         '<a href="{deal_url}">{deal_title}.</a>'
     ),
+    "shared_review": (
+    '<a class="notification-profile" href="{profile_url}">{profile_name}</a> ți-a distribuit o recenzie pentru jocul '
+    '<a href="{review_url}">{review_title}.</a>'
+)
+
 }

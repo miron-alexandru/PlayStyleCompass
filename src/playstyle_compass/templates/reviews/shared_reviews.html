@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+
+{% block page_header %}
+<div class="header">
+    <h3>{% trans "SHARED REVIEWS" %}</h3>
+</div>
+{% endblock page_header %}
+
+{% block description %}
+{% trans "Read reviews you've shared with others or reviews that your friends have shared with you." %}
+{% endblock description %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/playstyle_compass/deal_sharing.css' %}">
+
+<div class="deals-toggle-buttons">
+    <a href="?view=received" class="toggle-button {% if view_type == 'received' %}active{% endif %}">
+        {% trans "Reviews Received" %}
+    </a>
+    <a href="?view=shared" class="toggle-button {% if view_type == 'shared' %}active{% endif %}">
+        {% trans "Reviews Shared" %}
+    </a>
+</div>
+
+<div class="deals-section">
+    {% if reviews %}
+    <div class="deals">
+        {% for shared in reviews %}
+        <div class="deal-item">
+            <p><strong>{% trans "Game:" %}</strong> {{ shared.review.game.title }}</p>
+            <p><strong>{% trans "Score:" %}</strong> {{ shared.review.score }}/5</p>
+            <p><strong>{% trans "Review Summary:" %}</strong> {{ shared.review.review_deck }}</p>
+
+            {% if view_type == 'shared' %}
+            <p><strong>{% trans "Shared with:" %}</strong>
+                <a href="{% url 'users:view_profile' shared.recipient.userprofile.profile_name %}">
+                    {{ shared.recipient.userprofile.profile_name }}
+                </a>
+            </p>
+            {% else %}
+            <p><strong>{% trans "Shared by:" %}</strong>
+                <a href="{% url 'users:view_profile' shared.sender.userprofile.profile_name %}">
+                    {{ shared.sender.userprofile.profile_name }}
+                </a>
+            </p>
+            {% endif %}
+
+            <a href="{% url 'playstyle_compass:single_review' shared.review.id %}" class="view-button" target="_blank">
+                {% trans "View Review" %}
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p class="empty-message">
+        {% if view_type == 'shared' %}
+        {% trans "You have not shared any reviews yet." %}
+        {% else %}
+        {% trans "No reviews have been shared with you yet." %}
+        {% endif %}
+    </p>
+    {% endif %}
+</div>
+{% endblock content %}
