@@ -200,7 +200,6 @@ urlpatterns = [
     path("game_review/<int:review_id>/", views.single_review, name="single_review"),
     path("share-review/<int:review_id>/", views.share_review, name="share_review"),
     path("shared-reviews/", views.shared_reviews_view, name="shared_reviews"),
-
 ]
 
 api_urlpatterns = [

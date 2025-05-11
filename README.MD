@@ -139,6 +139,7 @@ Websites for .env configuration: [GiantBomb](https://www.giantbomb.com/) / [Send
 <summary><h2>PlayStyle Compass Changelog</h2></summary>
 
 ### Version v2.5:
+* Implemented game review sharing.
 * Created single review page where users are able to view a single game review.
 
 ### Version v2.4:

@@ -2703,7 +2703,9 @@ def share_review(request, review_id):
                 profile_url = reverse(
                     "users:view_profile", args=[request.user.userprofile.profile_name]
                 )
-                review_url = reverse("playstyle_compass:single_review", args=[review.id])
+                review_url = reverse(
+                    "playstyle_compass:single_review", args=[review.id]
+                )
                 message = format_html(
                     '<a class="notification-profile" href="{}">{}</a> has shared a review with you for the game <a href="{}">{}.</a>',
                     profile_url,
