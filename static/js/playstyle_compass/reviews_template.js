@@ -25,6 +25,10 @@ const reviewTemplate = (
                 <i class="fa-solid fa-thumbs-down thumbs-down" title="${translate(
                   "I dislike this"
                 )}"></i><span class="dislike-count">${review.dislikes}</span>
+                  <span class="like-dislike-divider">|</span>
+                <a href="/share-review/${review.id}/" class="share-button" title="${translate('Share with friends')}" target="_blank" rel="noopener noreferrer">
+                  <i class="fa-solid fa-share"></i>
+                </a>
             </div>
             <div class="review-score">
             <p><span>${getStarRating(review.score)}</span></p>

@@ -47,6 +47,10 @@
             <span class="like-dislike-divider">|</span>
             <i class="fa-solid fa-thumbs-down thumbs-down" title="I dislike this"></i>
             <span class="dislike-count">{{ review.dislikes }}</span>
+            <span class="like-dislike-divider">|</span>
+            <a href="{% url 'playstyle_compass:share_review' review.id %}" class="share-button" title="Share with friends" target="_blank" rel="noopener noreferrer">
+                <i class="fa-solid fa-share"></i>
+          </a>
           </div>
             <div class="review-score">
               <span class="star-rating" data-score="{{ review.score }}"></span>
