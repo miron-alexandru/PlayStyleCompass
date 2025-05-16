@@ -14,6 +14,22 @@
 
 {% block content %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/playstyle_compass/share_game_list.css' %}">
+<div class="shared-content-summary">
+    <p>
+        {% trans "You are sharing" %} 
+        <strong>
+            <a href="{% url 'playstyle_compass:game_list_detail' game_list.id %}" target="_blank">
+                "{{ game_list.title }}"
+            </a>
+        </strong> 
+        {% trans "—a game list created by" %} 
+        <strong>
+            <a href="{% url 'users:view_profile' game_list.owner.userprofile.profile_name %}" target="_blank">
+                {{ game_list.owner.userprofile.profile_name }}
+            </a>
+        </strong>.
+    </p>
+</div>
 <div class="share-game-list-container">
     <form method="POST" class="share-form">
         {% csrf_token %}

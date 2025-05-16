@@ -100,3 +100,27 @@
   border-color: #2980b9;
   box-shadow: 0 0 5px rgba(0, 0, 255, 0.2);
 }
+
+.shared-content-summary {
+  backdrop-filter: blur(8px);
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  padding: 15px;
+  margin: 30px auto;
+  max-width: 600px;
+  border-radius: 16px;
+  text-align: center;
+  font-size: 16px;
+  color: #1f2937;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.shared-content-summary a {
+  color: #6366f1;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.shared-content-summary a:hover {
+  text-decoration: underline;
+}

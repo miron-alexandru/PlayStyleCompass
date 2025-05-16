@@ -2646,6 +2646,7 @@ def share_deal(request, deal_id):
         "page_title": _("Share Deal :: PlayStyle Compass"),
         "deal_id": deal_id,
         "user_friends": user_friends,
+        "deal": deal,
     }
 
     return render(request, "deals/share_deal.html", context)
@@ -2731,6 +2732,7 @@ def share_review(request, review_id):
         "page_title": _("Share Review :: PlayStyle Compass"),
         "review_id": review_id,
         "user_friends": user_friends,
+        "review": review,
     }
 
     return render(request, "reviews/share_review.html", context)

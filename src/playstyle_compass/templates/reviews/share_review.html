@@ -14,6 +14,24 @@
 
 {% block content %}
 <link rel="stylesheet" href="{% static 'css/playstyle_compass/deal_sharing.css' %}">
+<div class="shared-content-summary">
+    <p>
+        {% trans "You are sharing" %} 
+        <strong>
+            <a href="{% url 'playstyle_compass:single_review' review.id %}" target="_blank">
+                "{{ review.review_deck }}"
+            </a>
+        </strong> 
+        {% trans "—a review for the game" %} 
+        <strong>
+            <a href="{% url 'playstyle_compass:view_game' review.game.guid %}" target="_blank">
+                {{ review.game.title }}
+            </a>
+        </strong> 
+        {% trans "written by" %} <strong>{{ review.reviewers }}</strong>.
+    </p>
+</div>
+
 <div class="share-deal-container">
     <form method="POST" class="share-form">
         {% csrf_token %}

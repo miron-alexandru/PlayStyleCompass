@@ -14,6 +14,22 @@
 
 {% block content %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/playstyle_compass/share_poll.css' %}">
+<div class="shared-content-summary">
+    <p>
+        {% trans "You are sharing" %} 
+        <strong>
+            <a href="{% url 'playstyle_compass:poll_detail' poll.id %}" target="_blank">
+                "{{ poll.title }}"
+            </a>
+        </strong> 
+        {% trans "—a poll created by" %}
+        <strong>
+            <a href="{% url 'users:view_profile' poll.created_by.userprofile.profile_name %}" target="_blank">
+                {{ poll.created_by.userprofile.profile_name }}
+            </a>
+        </strong>.
+    </p>
+</div>
 <div class="share-poll-container">
     <form method="POST" class="share-form">
         {% csrf_token %}

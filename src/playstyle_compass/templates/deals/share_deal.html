@@ -14,6 +14,18 @@
 
 {% block content %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/playstyle_compass/deal_sharing.css' %}">
+<div class="shared-content-summary">
+    <p>
+        {% trans "You are sharing a" %} 
+        <strong>
+            <a href="{% url 'playstyle_compass:game_deal' deal.deal_id %}" target="_blank">deal</a>
+        </strong> 
+        {% trans "for the game" %} 
+        <strong>
+            {{ deal.game_name }}
+        </strong>.
+    </p>
+</div>
 <div class="share-deal-container">
     <form method="POST" class="share-form">
         {% csrf_token %}
