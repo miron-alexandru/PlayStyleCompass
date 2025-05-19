@@ -32,6 +32,17 @@
     </p>
 </div>
 
+<div class="share-link-container">
+    <button type="button" class="btn-toggle-link" onclick="toggleShareLink()">
+        {% trans "Get Review URL" %}
+    </button>
+    <div id="linkBox" class="link-box" style="display: none;">
+        <input type="text" id="shareableLink" value="{{ request.build_absolute_uri|cut:request.path }}{% url 'playstyle_compass:single_review' review.id %}" readonly>
+        <button type="button" onclick="copyToClipboard()" class="btn-copy">{% trans "Copy" %}</button>
+        <span id="copyMessage" class="copy-message" style="display: none;">{% trans "Copied!" %}</span>
+    </div>
+</div>
+
 <div class="share-deal-container">
     <form method="POST" class="share-form">
         {% csrf_token %}
@@ -51,6 +62,25 @@
         {% endif %}
     </form>
 </div>
+
+<script>
+function toggleShareLink() {
+    const box = document.getElementById('linkBox');
+    const isVisible = box.style.display === 'flex' || window.getComputedStyle(box).display === 'flex';
+    box.style.display = isVisible ? 'none' : 'flex';
+}
+
+function copyToClipboard() {
+    const linkInput = document.getElementById('shareableLink');
+    linkInput.select();
+    linkInput.setSelectionRange(0, 99999);
+    document.execCommand("copy");
+
+    const message = document.getElementById('copyMessage');
+    message.style.display = 'inline';
+    setTimeout(() => { message.style.display = 'none'; }, 1500);
+}
+</script>
 
 <script src="{% static 'js/playstyle_compass/share_poll.js' %}"></script>
 {% endblock content %}
