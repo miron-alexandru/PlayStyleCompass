@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-11 10:18+0300\n"
-"PO-Revision-Date: 2025-05-11 10:21+0144\n"
+"POT-Creation-Date: 2025-05-21 09:24+0300\n"
+"PO-Revision-Date: 2025-05-21 09:27+0144\n"
 "Last-Translator:   <quality_xqs@yahoo.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -1259,7 +1259,7 @@ msgstr "Resetează Filtre"
 #: .\src\playstyle_compass\templates\games\similar_games.html:44
 #: .\src\playstyle_compass\templates\polls\community_polls.html:130
 #: .\src\playstyle_compass\templates\polls\completed_polls.html:104
-#: .\src\playstyle_compass\templates\reviews\game_reviews.html:91
+#: .\src\playstyle_compass\templates\reviews\game_reviews.html:95
 msgid "First"
 msgstr "Prima"
 
@@ -1276,7 +1276,7 @@ msgstr "Prima"
 #: .\src\playstyle_compass\templates\games\upcoming_games.html:33
 #: .\src\playstyle_compass\templates\polls\community_polls.html:131
 #: .\src\playstyle_compass\templates\polls\completed_polls.html:105
-#: .\src\playstyle_compass\templates\reviews\game_reviews.html:92
+#: .\src\playstyle_compass\templates\reviews\game_reviews.html:96
 msgid "Previous"
 msgstr "Anterioară"
 
@@ -1293,7 +1293,7 @@ msgstr "Anterioară"
 #: .\src\playstyle_compass\templates\games\upcoming_games.html:37
 #: .\src\playstyle_compass\templates\polls\community_polls.html:135
 #: .\src\playstyle_compass\templates\polls\completed_polls.html:109
-#: .\src\playstyle_compass\templates\reviews\game_reviews.html:96
+#: .\src\playstyle_compass\templates\reviews\game_reviews.html:100
 msgid "Page"
 msgstr "Pagina"
 
@@ -1310,7 +1310,7 @@ msgstr "Pagina"
 #: .\src\playstyle_compass\templates\games\upcoming_games.html:37
 #: .\src\playstyle_compass\templates\polls\community_polls.html:135
 #: .\src\playstyle_compass\templates\polls\completed_polls.html:109
-#: .\src\playstyle_compass\templates\reviews\game_reviews.html:96
+#: .\src\playstyle_compass\templates\reviews\game_reviews.html:100
 msgid "of"
 msgstr "din"
 
@@ -1327,7 +1327,7 @@ msgstr "din"
 #: .\src\playstyle_compass\templates\games\upcoming_games.html:41
 #: .\src\playstyle_compass\templates\polls\community_polls.html:139
 #: .\src\playstyle_compass\templates\polls\completed_polls.html:113
-#: .\src\playstyle_compass\templates\reviews\game_reviews.html:100
+#: .\src\playstyle_compass\templates\reviews\game_reviews.html:104
 msgid "Next"
 msgstr "Următoarea"
 
@@ -1344,7 +1344,7 @@ msgstr "Următoarea"
 #: .\src\playstyle_compass\templates\games\upcoming_games.html:42
 #: .\src\playstyle_compass\templates\polls\community_polls.html:140
 #: .\src\playstyle_compass\templates\polls\completed_polls.html:114
-#: .\src\playstyle_compass\templates\reviews\game_reviews.html:101
+#: .\src\playstyle_compass\templates\reviews\game_reviews.html:105
 msgid "Last"
 msgstr "Ultima"
 
@@ -1384,7 +1384,7 @@ msgstr "Imagine indisponibilă"
 #: .\src\playstyle_compass\templates\franchises\franchise_template.html:25
 #: .\src\playstyle_compass\templates\franchises\franchise_template.html:34
 #: .\src\playstyle_compass\templates\games\game_recommendations_section.html:83
-#: .\src\playstyle_compass\templates\reviews\game_reviews.html:76
+#: .\src\playstyle_compass\templates\reviews\game_reviews.html:80
 msgid "[Read more...]"
 msgstr "[Citește mai mult...]"
 
@@ -1480,15 +1480,15 @@ msgstr "Toate magazinele"
 
 #: .\src\playstyle_compass\templates\deals\deals.html:65
 #: .\src\playstyle_compass\templates\deals\game_deal.html:38
-#: .\src\playstyle_compass\templates\deals\share_deal.html:30
-#: .\src\playstyle_compass\templates\game_list\share_game_list.html:30
+#: .\src\playstyle_compass\templates\deals\share_deal.html:54
+#: .\src\playstyle_compass\templates\game_list\share_game_list.html:58
 #: .\src\playstyle_compass\templates\polls\community_polls.html:113
 #: .\src\playstyle_compass\templates\polls\completed_polls.html:89
 #: .\src\playstyle_compass\templates\polls\poll_detail.html:105
-#: .\src\playstyle_compass\templates\polls\share_poll.html:30
+#: .\src\playstyle_compass\templates\polls\share_poll.html:58
 #: .\src\playstyle_compass\templates\polls\user_polls.html:120
 #: .\src\playstyle_compass\templates\polls\voted_polls.html:96
-#: .\src\playstyle_compass\templates\reviews\share_review.html:30
+#: .\src\playstyle_compass\templates\reviews\share_review.html:59
 msgid "Share"
 msgstr "Distribuie"
 
@@ -1516,17 +1516,47 @@ msgstr "ÎMPĂRTĂȘEȘTE OFERTA"
 msgid "Share a great game deal with friends so they don't miss out!"
 msgstr "Împărtășește o ofertă grozavă de joc cu prietenii, ca să nu o rateze!"
 
-#: .\src\playstyle_compass\templates\deals\share_deal.html:20
-#: .\src\playstyle_compass\templates\game_list\share_game_list.html:20
-#: .\src\playstyle_compass\templates\polls\share_poll.html:20
-#: .\src\playstyle_compass\templates\reviews\share_review.html:20
+#: .\src\playstyle_compass\templates\deals\share_deal.html:19
+#| msgid "You are already following %s."
+msgid "You are sharing a"
+msgstr "Partajezi un/o"
+
+#: .\src\playstyle_compass\templates\deals\share_deal.html:23
+#| msgid "Title of the game."
+msgid "for the game"
+msgstr "pentru jocul"
+
+#: .\src\playstyle_compass\templates\deals\share_deal.html:32
+#| msgid "Get Deal Details"
+msgid "Get Deal URL"
+msgstr "Obține linkul ofertei"
+
+#: .\src\playstyle_compass\templates\deals\share_deal.html:36
+#: .\src\playstyle_compass\templates\game_list\share_game_list.html:40
+#: .\src\playstyle_compass\templates\polls\share_poll.html:40
+#: .\src\playstyle_compass\templates\reviews\share_review.html:41
+#: .\src\users\templates\account_actions\manage_api_key.html:25
+msgid "Copy"
+msgstr "Copiază"
+
+#: .\src\playstyle_compass\templates\deals\share_deal.html:37
+#: .\src\playstyle_compass\templates\game_list\share_game_list.html:41
+#: .\src\playstyle_compass\templates\polls\share_poll.html:41
+#: .\src\playstyle_compass\templates\reviews\share_review.html:42
+msgid "Copied!"
+msgstr "Copiat!"
+
+#: .\src\playstyle_compass\templates\deals\share_deal.html:44
+#: .\src\playstyle_compass\templates\game_list\share_game_list.html:48
+#: .\src\playstyle_compass\templates\polls\share_poll.html:48
+#: .\src\playstyle_compass\templates\reviews\share_review.html:49
 msgid "Share with friends"
 msgstr "Distribuie cu prietenii"
 
-#: .\src\playstyle_compass\templates\deals\share_deal.html:32
-#: .\src\playstyle_compass\templates\game_list\share_game_list.html:32
-#: .\src\playstyle_compass\templates\polls\share_poll.html:32
-#: .\src\playstyle_compass\templates\reviews\share_review.html:32
+#: .\src\playstyle_compass\templates\deals\share_deal.html:56
+#: .\src\playstyle_compass\templates\game_list\share_game_list.html:60
+#: .\src\playstyle_compass\templates\polls\share_poll.html:60
+#: .\src\playstyle_compass\templates\reviews\share_review.html:61
 msgid "Your friends list is currently empty."
 msgstr "Lista ta de prieteni este momentan goală."
 
@@ -2015,7 +2045,7 @@ msgid "You need to be logged in to submit a review."
 msgstr "Trebuie să fii autentificat pentru a trimite o recenzie."
 
 #: .\src\playstyle_compass\templates\game_list\game_list_detail.html:184
-#: .\src\playstyle_compass\templates\reviews\game_reviews.html:57
+#: .\src\playstyle_compass\templates\reviews\game_reviews.html:61
 #: .\src\playstyle_compass\templates\reviews\single_review.html:27
 msgid "Written by"
 msgstr "Scris de"
@@ -2058,6 +2088,21 @@ msgstr ""
 "Distribuie o listă personalizată de jocuri cu prietenii și descoperiți "
 "împreună jocuri noi. Permite altora să exploreze alegerile tale preferate și"
 " să își creeze propriile liste."
+
+#: .\src\playstyle_compass\templates\game_list\share_game_list.html:19
+#: .\src\playstyle_compass\templates\polls\share_poll.html:19
+#: .\src\playstyle_compass\templates\reviews\share_review.html:19
+msgid "You are sharing"
+msgstr "Partajezi"
+
+#: .\src\playstyle_compass\templates\game_list\share_game_list.html:25
+msgid "—a game list created by"
+msgstr " —o listă de jocuri creată de"
+
+#: .\src\playstyle_compass\templates\game_list\share_game_list.html:36
+#| msgid "Create Game List"
+msgid "Get Game List URL"
+msgstr "Obține linkul listei de jocuri"
 
 #: .\src\playstyle_compass\templates\game_list\shared_game_lists.html:8
 msgid "SHARED GAME LISTS"
@@ -2806,7 +2851,7 @@ msgstr ""
 #: .\src\playstyle_compass\templates\polls\poll_detail.html:28
 #: .\src\playstyle_compass\templates\polls\user_polls.html:45
 #: .\src\playstyle_compass\templates\polls\voted_polls.html:31
-#: .\src\playstyle_compass\templates\reviews\game_reviews.html:64
+#: .\src\playstyle_compass\templates\reviews\game_reviews.html:68
 #: .\src\playstyle_compass\templates\reviews\single_review.html:35
 msgid "on"
 msgstr "pe"
@@ -2990,6 +3035,16 @@ msgid ""
 msgstr ""
 "Distribuie un sondaj cu prietenii și adună-le opiniile. Permite altora să "
 "participe și să-ți exploreze sondajele."
+
+#: .\src\playstyle_compass\templates\polls\share_poll.html:25
+#| msgid "No polls created by this user."
+msgid "—a poll created by"
+msgstr "—un sondaj creat de"
+
+#: .\src\playstyle_compass\templates\polls\share_poll.html:36
+#| msgid "Create Poll"
+msgid "Get Poll URL"
+msgstr "Obține linkul sondajului"
 
 #: .\src\playstyle_compass\templates\polls\shared_polls.html:7
 msgid "SHARED POLLS"
@@ -3264,18 +3319,17 @@ msgstr "Neapreciate"
 msgid "Game review for"
 msgstr "Recenzia jocului pentru"
 
-#: .\src\playstyle_compass\templates\reviews\game_reviews.html:62
+#: .\src\playstyle_compass\templates\reviews\game_reviews.html:66
 #: .\src\playstyle_compass\templates\reviews\single_review.html:33
 #: .\src\users\templates\user_related\user_profile.html:102
 msgid "Friend Request"
 msgstr "Cerere de prietenie"
 
-#: .\src\playstyle_compass\templates\reviews\game_reviews.html:82
+#: .\src\playstyle_compass\templates\reviews\game_reviews.html:86
 msgid "Empty for now."
 msgstr "Gol momentan."
 
 #: .\src\playstyle_compass\templates\reviews\share_review.html:7
-#| msgid "GAME REVIEW"
 msgid "SHARE REVIEW"
 msgstr "PARTAJEAZĂ RECENZIA"
 
@@ -3283,15 +3337,26 @@ msgstr "PARTAJEAZĂ RECENZIA"
 msgid "Share your review with friends who might be interested!"
 msgstr "Împărtășește-ți recenzia cu prietenii care ar putea fi interesați!"
 
+#: .\src\playstyle_compass\templates\reviews\share_review.html:25
+#| msgid "Title of the game."
+msgid "—a review for the game"
+msgstr "—o recenzie pentru jocul"
+
+#: .\src\playstyle_compass\templates\reviews\share_review.html:31
+#| msgid "Written by"
+msgid "written by"
+msgstr "scrisă de"
+
+#: .\src\playstyle_compass\templates\reviews\share_review.html:37
+#| msgid "Game Reviews"
+msgid "Get Review URL"
+msgstr "Obține linkul recenziei"
+
 #: .\src\playstyle_compass\templates\reviews\shared_reviews.html:7
-#| msgid "GAME REVIEWS"
 msgid "SHARED REVIEWS"
 msgstr "RECENZII PARTAJATE"
 
 #: .\src\playstyle_compass\templates\reviews\shared_reviews.html:12
-#| msgid ""
-#| "Browse game deals you've shared with friends or discover what others have "
-#| "shared with you."
 msgid ""
 "Read reviews you've shared with others or reviews that your friends have "
 "shared with you."
@@ -3300,37 +3365,30 @@ msgstr ""
 "prietenii tăi le-au partajat cu tine."
 
 #: .\src\playstyle_compass\templates\reviews\shared_reviews.html:20
-#| msgid "Deals Received"
 msgid "Reviews Received"
 msgstr "Recenzii primite"
 
 #: .\src\playstyle_compass\templates\reviews\shared_reviews.html:23
-#| msgid "Deals Shared"
 msgid "Reviews Shared"
 msgstr "Recenzii partajate"
 
 #: .\src\playstyle_compass\templates\reviews\shared_reviews.html:33
-#| msgid "Store:"
 msgid "Score:"
 msgstr "Scor:"
 
 #: .\src\playstyle_compass\templates\reviews\shared_reviews.html:34
-#| msgid "Review:"
 msgid "Review Summary:"
 msgstr "Rezumat recenzie:"
 
 #: .\src\playstyle_compass\templates\reviews\shared_reviews.html:51
-#| msgid "Like Review"
 msgid "View Review"
 msgstr "Vezi recenzia"
 
 #: .\src\playstyle_compass\templates\reviews\shared_reviews.html:59
-#| msgid "You have not shared any deals with others."
 msgid "You have not shared any reviews yet."
 msgstr "Nu ai partajat încă nicio recenzie."
 
 #: .\src\playstyle_compass\templates\reviews\shared_reviews.html:61
-#| msgid "No deals have been shared with you."
 msgid "No reviews have been shared with you yet."
 msgstr "Nu ți-a fost partajată nicio recenzie până acum."
 
@@ -3347,7 +3405,7 @@ msgstr ""
 "\n"
 "Citește o recenzie detaliată a jocului selectat scrisă de un membru al comunității. Află mai multe despre gameplay, grafică, poveste și experiența generală pentru a te ajuta să decizi dacă acesta este următorul joc pe care vrei să-l încerci."
 
-#: .\src\playstyle_compass\templates\reviews\single_review.html:62
+#: .\src\playstyle_compass\templates\reviews\single_review.html:66
 msgid "Back to Reviews"
 msgstr "Înapoi la Recenzii"
 
@@ -3713,26 +3771,23 @@ msgstr "Oferta a fost împărtășită cu succes."
 msgid "Share Deal :: PlayStyle Compass"
 msgstr "Împărtășește Oferta :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:2667
+#: .\src\playstyle_compass\views.py:2668
 msgid "Shared Deals :: PlayStyle Compass"
 msgstr "Oferte Împărtășite :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:2681
+#: .\src\playstyle_compass\views.py:2682
 msgid "Game Review :: PlayStyle Compass"
 msgstr "Recenzie Joc :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:2725
-#| msgid "Deal shared successfully."
+#: .\src\playstyle_compass\views.py:2728
 msgid "Review shared successfully."
 msgstr "Recenzia a fost partajată cu succes."
 
-#: .\src\playstyle_compass\views.py:2729
-#| msgid "Game Review :: PlayStyle Compass"
+#: .\src\playstyle_compass\views.py:2732
 msgid "Share Review :: PlayStyle Compass"
 msgstr "Partajează Recenzie :: PlayStyle Compass"
 
-#: .\src\playstyle_compass\views.py:2750
-#| msgid "Game Reviews :: PlayStyle Compass"
+#: .\src\playstyle_compass\views.py:2754
 msgid "Shared Reviews :: PlayStyle Compass"
 msgstr "Recenzii Partajate :: PlayStyle Compass"
 
@@ -3944,7 +3999,6 @@ msgid "Shared Deals"
 msgstr "Oferte Împărtășite"
 
 #: .\src\templates\base.html:278
-#| msgid "Game Reviews"
 msgid "Shared Reviews"
 msgstr "Recenzii Partajate"
 
@@ -4360,10 +4414,6 @@ msgstr ""
 #: .\src\users\templates\account_actions\manage_api_key.html:21
 msgid "Your API Key is..."
 msgstr "Cheia ta API este..."
-
-#: .\src\users\templates\account_actions\manage_api_key.html:25
-msgid "Copy"
-msgstr "Copiază"
 
 #: .\src\users\templates\account_actions\manage_api_key.html:26
 msgid "Revoke API Key"
@@ -5107,12 +5157,10 @@ msgstr ""
 "Primește notificări atunci când cineva îți partajează o ofertă de joc."
 
 #: .\src\users\templates\user_related\notification_settings.html:130
-#| msgid "Shared Game Notifications"
 msgid "Shared Review Notifications"
 msgstr "Notificări pentru recenzii partajate"
 
 #: .\src\users\templates\user_related\notification_settings.html:131
-#| msgid "Receive notifications when someone shares a game with you."
 msgid "Receive notifications when someone shares a review with you."
 msgstr "Primește notificări când cineva îți partajează o recenzie."
 
