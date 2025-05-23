@@ -63,3 +63,22 @@ $(document).ready(function () {
     }
   });
 });
+
+document.addEventListener('DOMContentLoaded', function () {
+  const shareContainers = document.querySelectorAll('.share-link-container');
+  shareContainers.forEach(container => {
+    const toggleIcon = container.querySelector('.btn-toggle-icon');
+    const copyMessage = container.querySelector('.copy-message');
+    const gameUrl = container.dataset.gameUrl;
+
+    toggleIcon.addEventListener('click', () => {
+      navigator.clipboard.writeText(gameUrl).then(() => {
+        copyMessage.style.display = 'inline';
+        setTimeout(() => { copyMessage.style.display = 'none'; }, 1500);
+      }).catch(() => {
+        alert('Copy failed, please copy manually.');
+      });
+    });
+  });
+});
+

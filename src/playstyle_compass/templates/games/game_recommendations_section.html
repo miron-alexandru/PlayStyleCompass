@@ -73,6 +73,15 @@
               {% endfor %}
             </div>
           </div>
+
+          <span class="icon-divider">|</span>
+
+          <div class="share-link-container"
+             data-game-url="{{ request.build_absolute_uri|cut:request.path }}{% url 'playstyle_compass:view_game' game.guid %}">
+          <i class="fa-solid fa-link btn-toggle-icon" title="{% trans 'Copy Game URL' %}"></i>
+          <span class="copy-message" style="display: none;">{% trans "Copied!" %}</span>
+        </div>
+
         </div>
         {% endif %}
       </div>

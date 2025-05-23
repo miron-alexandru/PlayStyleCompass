@@ -301,3 +301,29 @@ span.stars span {
   background-size: contain;
   margin-right: 4px;
 }
+
+.share-link-container {
+  position: relative;
+  display: inline-block;
+}
+
+.copy-message {
+  font-size: 11px;
+  color: #28a745;
+  font-weight: bold;
+  animation: fadeInOut 2s ease-in-out;
+}
+
+.btn-toggle-icon {
+  cursor: pointer;
+  font-size: 15px;
+  margin-right: 0.2em;
+  color: #145214;
+}
+
+.btn-toggle-icon:hover {
+  color: #0e3a0f;
+  transform: scale(1.1);
+}
+
+
