@@ -23,6 +23,11 @@
 
 ### This guide will walk you through the steps to set up the PlayStyleCompass website locally, including setting up the Nginx server and generating SSL certificates.
 
+#### Running the Website Locally Without Nginx
+1. Configure your .env file as usual.
+2. Set the environment variable SECURE_CONNECTION to 'False' to disable HTTPS enforcement during local development.
+3. Open your browser and go to http://127.0.0.1:8000/en/ — do not use https://localhost/.
+
 ### Prerequisites
 - Python 3.x installed
 - Git installed
