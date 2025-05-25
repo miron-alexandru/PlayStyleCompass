@@ -1,27 +1,28 @@
 .review-detail {
-  background: #e6e9ef;
+  background: var(--review-header);
   border-radius: 20px;
+  border: 1px solid var(--game-container-border);
   padding: 32px;
   margin: 32px auto;
   max-width: 800px;
-  box-shadow: 
-    10px 10px 30px #c5c8ce,
-    -10px -10px 30px #ffffff;
-  color: #2f2f2f;
+  color: var(--text-color);
 }
 
 .written-by, .reviewed-game {
   font-size: 15px;
 }
 
+.custom-hr {
+  background-color: var(--game-container-border);
+}
+
 .review-body {
   font-size: 16px;
   line-height: 26px;
-  color: #444;
+  color: var(--text-color);
 }
 
 .review-score {
-  color: #5c7080;
   margin-top: 10px;
   font-weight: 600;
   margin-left: 0px;
@@ -31,12 +32,12 @@
   margin-left: 0px;
   display: flex;
   gap: 5px;
-  color: #6c757d;
+  color: var(--text-color);
   align-items: center;
 }
 
 .like-dislike i {
-  color: #6c757d;
+  color: var(--text-color);
   font-size: 16px;
   cursor: pointer;
 }
@@ -54,17 +55,12 @@
   color: #bdc3c7;
 }
 
-
 .btn-secondary {
   font-size: 15px;
-  background: #e6e9ef;
-  padding: 10px 20px;
+  background: var(--buttons-color);
+  padding: 8px 16px;
   border-radius: 12px;
-  box-shadow: 
-    5px 5px 15px #c5c8ce,
-    -5px -5px 15px #ffffff;
   border: none;
-  color: #2f2f2f;
   text-decoration: none;
   margin-top: 32px;
   font-weight: 500;
@@ -72,9 +68,7 @@
 }
 
 .btn-secondary:hover {
-  box-shadow: 
-    inset 5px 5px 10px #c5c8ce,
-    inset -5px -5px 10px #ffffff;
+  background-color: #0069d9;
 }
 
 .gold-star {
@@ -126,4 +120,8 @@
 .fade-out {
   opacity: 0;
   transition: opacity 1s ease-out;
+}
+
+.share-button .fa-share:hover {
+  color: lightblue;
 }

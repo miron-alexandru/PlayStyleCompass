@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-21 09:24+0300\n"
-"PO-Revision-Date: 2025-05-21 09:27+0144\n"
+"POT-Creation-Date: 2025-05-25 12:35+0300\n"
+"PO-Revision-Date: 2025-05-25 12:36+0144\n"
 "Last-Translator:   <quality_xqs@yahoo.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -263,7 +263,7 @@ msgstr "Obține lista de jocuri"
 #: .\src\playstyle_compass\templates\game_list\reviewed_game_lists.html:30
 #: .\src\playstyle_compass\templates\game_list\shared_game_lists.html:52
 #: .\src\playstyle_compass\templates\game_list\user_game_lists.html:56
-#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:80
+#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:89
 #: .\src\playstyle_compass\templates\polls\shared_polls.html:51
 msgid "Description:"
 msgstr "Descriere:"
@@ -1383,7 +1383,7 @@ msgstr "Imagine indisponibilă"
 #: .\src\playstyle_compass\templates\characters\game_character_template.html:46
 #: .\src\playstyle_compass\templates\franchises\franchise_template.html:25
 #: .\src\playstyle_compass\templates\franchises\franchise_template.html:34
-#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:83
+#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:92
 #: .\src\playstyle_compass\templates\reviews\game_reviews.html:80
 msgid "[Read more...]"
 msgstr "[Citește mai mult...]"
@@ -1410,25 +1410,25 @@ msgid "Games:"
 msgstr "Jocuri:"
 
 #: .\src\playstyle_compass\templates\characters\game_character_template.html:48
-#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:97
+#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:106
 msgid "Franchises:"
 msgstr "Francize:"
 
 #: .\src\playstyle_compass\templates\characters\game_character_template.html:52
 #: .\src\playstyle_compass\templates\franchises\franchise_template.html:36
-#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:152
+#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:161
 msgid "Images:"
 msgstr "Imagini:"
 
 #: .\src\playstyle_compass\templates\characters\game_character_template.html:53
 #: .\src\playstyle_compass\templates\franchises\franchise_template.html:37
-#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:153
+#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:162
 msgid "(Click on the image to open gallery)"
 msgstr "(Click pe imagine pentru a deschide galeria)"
 
 #: .\src\playstyle_compass\templates\characters\game_character_template.html:72
 #: .\src\playstyle_compass\templates\franchises\franchise_template.html:56
-#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:172
+#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:181
 msgid "Images not available"
 msgstr "Imagini indisponibile"
 
@@ -1517,17 +1517,14 @@ msgid "Share a great game deal with friends so they don't miss out!"
 msgstr "Împărtășește o ofertă grozavă de joc cu prietenii, ca să nu o rateze!"
 
 #: .\src\playstyle_compass\templates\deals\share_deal.html:19
-#| msgid "You are already following %s."
 msgid "You are sharing a"
 msgstr "Partajezi un/o"
 
 #: .\src\playstyle_compass\templates\deals\share_deal.html:23
-#| msgid "Title of the game."
 msgid "for the game"
 msgstr "pentru jocul"
 
 #: .\src\playstyle_compass\templates\deals\share_deal.html:32
-#| msgid "Get Deal Details"
 msgid "Get Deal URL"
 msgstr "Obține linkul ofertei"
 
@@ -1541,6 +1538,7 @@ msgstr "Copiază"
 
 #: .\src\playstyle_compass\templates\deals\share_deal.html:37
 #: .\src\playstyle_compass\templates\game_list\share_game_list.html:41
+#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:82
 #: .\src\playstyle_compass\templates\polls\share_poll.html:41
 #: .\src\playstyle_compass\templates\reviews\share_review.html:42
 msgid "Copied!"
@@ -1849,7 +1847,7 @@ msgstr "Like-uri:"
 #: .\src\playstyle_compass\templates\game_list\favorite_game_lists.html:59
 #: .\src\playstyle_compass\templates\game_list\reviewed_game_lists.html:34
 #: .\src\playstyle_compass\templates\game_list\user_game_lists.html:60
-#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:216
+#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:225
 msgid "Reviews:"
 msgstr "Recenzii:"
 
@@ -2100,7 +2098,6 @@ msgid "—a game list created by"
 msgstr " —o listă de jocuri creată de"
 
 #: .\src\playstyle_compass\templates\game_list\share_game_list.html:36
-#| msgid "Create Game List"
 msgid "Get Game List URL"
 msgstr "Obține linkul listei de jocuri"
 
@@ -2330,48 +2327,53 @@ msgstr "nu a adăugat nici un joc în Jocurile Programate"
 msgid "You haven't added any games to your Game Queue yet."
 msgstr "Nu ai adăugat nici un joc în Jocurile Programate"
 
-#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:85
+#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:81
+#| msgid "My Game Lists"
+msgid "Copy Game URL"
+msgstr "Copiază URL-ul jocului"
+
+#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:94
 msgid "Release date:"
 msgstr "Data lansării:"
 
-#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:86
+#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:95
 msgid "Average Playtime:"
 msgstr "Timp mediu de joc:"
 
-#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:88
+#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:97
 msgid "hours"
 msgstr "ore"
 
-#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:93
+#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:102
 msgid "Developer:"
 msgstr "Dezvoltator:"
 
-#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:94
+#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:103
 msgid "Genre:"
 msgstr "Gen:"
 
-#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:95
+#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:104
 msgid "Platform:"
 msgstr "Platformă:"
 
-#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:96
+#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:105
 msgid "Theme:"
 msgstr "Tematică:"
 
-#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:100
+#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:109
 msgid "DLC:"
 msgstr "Conținut descărcabil (DLC):"
 
-#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:101
+#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:110
 msgid "Similar games:"
 msgstr "Jocuri similare:"
 
-#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:104
+#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:113
 msgid "Requirements:"
 msgstr "Cerințe:"
 
-#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:105
-#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:175
+#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:114
+#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:184
 #: .\src\users\templates\account_actions\password_change_form.html:40
 #: .\src\users\templates\account_actions\password_change_form.html:58
 #: .\src\users\templates\account_actions\password_reset_confirm.html:23
@@ -2383,52 +2385,52 @@ msgstr "Cerințe:"
 msgid "Show"
 msgstr "Afișează"
 
-#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:112
+#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:121
 msgid "PC Minimum"
 msgstr "PC Minime"
 
-#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:118
+#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:127
 msgid "PC Recommended"
 msgstr "PC Recomandate"
 
-#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:124
+#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:133
 msgid "MAC Minimum"
 msgstr "MAC Minime"
 
-#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:130
+#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:139
 msgid "MAC Recommended"
 msgstr "MAC Recomandate"
 
-#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:136
+#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:145
 msgid "Linux Minimum"
 msgstr "Linux Minime"
 
-#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:142
+#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:151
 msgid "Linux Recommended"
 msgstr "Linux Recomandate"
 
-#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:174
+#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:183
 msgid "Gameplay videos:"
 msgstr "Videoclipuri cu gameplay:"
 
-#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:182
+#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:191
 msgid "Stores:"
 msgstr "Magazine:"
 
-#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:218
+#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:227
 #: .\src\playstyle_compass\templates\preferences\privacy_settings.html:52
 msgid "Show Reviews"
 msgstr "Afișează Recenzii"
 
-#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:221
+#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:230
 msgid "Write a Review"
 msgstr "Scrie o Recenzie"
 
-#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:226
+#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:235
 msgid "Delete your Review"
 msgstr "Ștergeți Recenzia"
 
-#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:229
+#: .\src\playstyle_compass\templates\games\game_recommendations_section.html:238
 msgid "Edit your Review"
 msgstr "Editați Recenzia"
 
@@ -3037,12 +3039,10 @@ msgstr ""
 "participe și să-ți exploreze sondajele."
 
 #: .\src\playstyle_compass\templates\polls\share_poll.html:25
-#| msgid "No polls created by this user."
 msgid "—a poll created by"
 msgstr "—un sondaj creat de"
 
 #: .\src\playstyle_compass\templates\polls\share_poll.html:36
-#| msgid "Create Poll"
 msgid "Get Poll URL"
 msgstr "Obține linkul sondajului"
 
@@ -3338,17 +3338,14 @@ msgid "Share your review with friends who might be interested!"
 msgstr "Împărtășește-ți recenzia cu prietenii care ar putea fi interesați!"
 
 #: .\src\playstyle_compass\templates\reviews\share_review.html:25
-#| msgid "Title of the game."
 msgid "—a review for the game"
 msgstr "—o recenzie pentru jocul"
 
 #: .\src\playstyle_compass\templates\reviews\share_review.html:31
-#| msgid "Written by"
 msgid "written by"
 msgstr "scrisă de"
 
 #: .\src\playstyle_compass\templates\reviews\share_review.html:37
-#| msgid "Game Reviews"
 msgid "Get Review URL"
 msgstr "Obține linkul recenziei"
 
