@@ -35,9 +35,9 @@ from data_processing import (
 # create_franchises_data(franchises_ids)
 
 # Obtain characters data
-# characters = fetch_data(API_KEY, resource_type="characters", offset=0, limit=1)
-# characters_ids = extract_character_guids(characters)
-# create_characters_data(characters_ids)
+characters = fetch_data(API_KEY, resource_type="characters", offset=0, limit=1)
+characters_ids = extract_character_guids(characters)
+create_characters_data(characters_ids)
 
 # Obtain games data
 # game_ids = fetch_game_ids_by_platforms(platform_ids, API_KEY, offset=5, limit=2, game_ids_to_add=None)

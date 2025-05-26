@@ -1,6 +1,5 @@
 """The "data_processing" module contains functions for parsing and creating/managing the database. """
 
-import uuid
 import sys
 import sqlite3
 
@@ -265,7 +264,7 @@ def create_games_data_db(game_ids, rawg_casual=False, rawg_popular=False):
                     score = str(review["score"])
                     date_added = review["date_added"]
 
-                    user_id = str(uuid.uuid4())
+                    user_id = None
 
                     review_values = (
                         reviewers,
@@ -585,7 +584,7 @@ def create_game_modes_data(guids, mode_strings, num_games=10, offset=0):
                         score = str(review["score"])
                         date_added = review["date_added"]
 
-                        user_id = str(uuid.uuid4())
+                        user_id = None
 
                         review_values = (
                             reviewers,
@@ -709,7 +708,7 @@ def create_quiz_data(guids, num_games=1, offset=0):
                         score = str(review["score"])
                         date_added = review["date_added"]
 
-                        user_id = str(uuid.uuid4())
+                        user_id = None
 
                         review_values = (
                             reviewers,

@@ -80,7 +80,7 @@ CREATE TABLE IF NOT EXISTS Characters (
     id INTEGER PRIMARY KEY,
     name TEXT,
     deck TEXT,
-    description TEXT,
+    description TEXT default '',
     birthday TEXT,
     friends TEXT,
     enemies TEXT,
@@ -139,7 +139,7 @@ VALUES (?, ?, ?, ?);
 """
 
 insert_games_sql = """
-INSERT INTO Games 
+INSERT or IGNORE INTO Games 
 (guid, title, description, overview, genres, platforms, themes, image, release_date, developers, game_images, similar_games, dlcs, franchises, videos, concepts, is_casual, is_popular, playtime, pc_req_min, pc_req_rec, mac_req_min, mac_req_rec, linux_req_min, linux_req_rec) 
 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
 """
@@ -168,7 +168,7 @@ VALUES (?, ?, ?);
 """
 
 insert_news_sql = """
-INSERT INTO News
+INSERT or IGNORE INTO News
 (article_id, title, summary, url, image, publish_date, platforms)
 VALUES (?, ?, ?, ?, ?, ?, ?);
 """
