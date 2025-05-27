@@ -20,7 +20,7 @@
       <h4>{{ character.name|default:"N/A" }}</h4>
       <p>{{ character.deck|default:"N/A" }}</p>
       <p><strong>{% trans "Description:" %}</strong>
-        <span class="overview">{{ character.description|default:"N/A"|truncatewords_html:"50" }}</span>
+        <span class="overview">{{ character.description|default:"N/A"|truncatewords:"50" }}</span>
         <span class="full-text" style="display: none;">{{ character.description|default:"N/A" }}</span>
         <button class="read-button" style="display: none;" onclick="readMore(this);">{% trans "[Read more...]" %}</button>
       </p>
@@ -37,7 +37,7 @@
       <span>{% include 'base/display_items.html' with items=character.first_game model_name='Game' view_name='playstyle_compass:view_game' %}</span>
       </p>
       <p><strong>{% trans "Games:" %}</strong>
-        <span class="games-list">{% with truncated_games=character.games|default:"N/A"|truncatewords_html:"60" %}
+        <span class="games-list">{% with truncated_games=character.games|default:"N/A"|truncatewords:"60" %}
           {% include 'base/display_items.html' with items=truncated_games model_name='Game' view_name='playstyle_compass:view_game' %}
           {% endwith %}</span>
         <span class="full-games" style="display: none;">
