@@ -214,9 +214,10 @@ document.addEventListener("DOMContentLoaded", function () {
           recipientId = Number(recipientMeta.getAttribute("content"));
         }
 
+        const protocol = window.location.protocol === "https:" ? "wss" : "ws";
         const wsUrl = recipientId
-          ? `wss://${window.location.host}/ws/online-status/${recipientId}/`
-          : `wss://${window.location.host}/ws/online-status/`;
+          ? `${protocol}://${window.location.host}/ws/online-status/${recipientId}/`
+          : `${protocol}://${window.location.host}/ws/online-status/`;
 
         const ws = new WebSocket(wsUrl);
 

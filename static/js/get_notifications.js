@@ -9,8 +9,9 @@ fetch(authCheckUrl)
       const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
       document.cookie = "django_timezone=" + timezone;
 
+      const protocol = window.location.protocol === "https:" ? "wss" : "ws";
       const notifySocket = new WebSocket(
-        `wss://${window.location.host}/ws/notify/`
+        `${protocol}://${window.location.host}/ws/notify/`
       );
 
       notifySocket.onmessage = function (e) {

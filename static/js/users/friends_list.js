@@ -14,10 +14,11 @@ document.addEventListener("DOMContentLoaded", function () {
     const recipientId = Number(
       friend.querySelector(".recipient-id").getAttribute("content")
     );
-    const wsUrl = recipientId
-      ? `wss://${window.location.host}/ws/online-status/${recipientId}/`
-      : `wss://${window.location.host}/ws/online-status/`;
 
+    const protocol = window.location.protocol === "https:" ? "wss" : "ws";
+    const wsUrl = recipientId
+      ? `${protocol}://${window.location.host}/ws/online-status/${recipientId}/`
+      : `${protocol}://${window.location.host}/ws/online-status/`;
     const ws = new WebSocket(wsUrl);
 
     statusMap.set(recipientId, {

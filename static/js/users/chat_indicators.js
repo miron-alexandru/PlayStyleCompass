@@ -2,8 +2,9 @@ const chatContainer = document.getElementById("chat-container");
 const recipientId = Number(chatContainer.dataset.recipientId);
 const userId = Number(chatContainer.dataset.userId);
 
+const protocol = window.location.protocol === "https:" ? "wss" : "ws";
 const chatSocket = new WebSocket(
-  `wss://${window.location.host}/ws/chat/${recipientId}/`
+  `${protocol}://${window.location.host}/ws/chat/${recipientId}/`
 );
 
 const chatInput = document.getElementById("chat-message-input");

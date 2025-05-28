@@ -501,7 +501,8 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function startWebSocket() {
-    const chatSocketUrl = `wss://${window.location.host}/ws/private_chat/${recipientId}/`;
+    const protocol = window.location.protocol === "https:" ? "wss" : "ws";
+    const chatSocketUrl = `${protocol}://${window.location.host}/ws/private_chat/${recipientId}/`;
     socket = new WebSocket(chatSocketUrl);
 
     socket.onmessage = (event) => {
