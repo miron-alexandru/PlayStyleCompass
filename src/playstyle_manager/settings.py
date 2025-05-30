@@ -176,7 +176,7 @@ CSRF_TRUSTED_ORIGINS = [
     "https://playstylecompass.onrender.com",
 ]
 
-SECURE_CONNECTION = os.getenv("SECURE_CONNECTION", "True" ) == "True"
+SECURE_CONNECTION = os.getenv("SECURE_CONNECTION", "True") == "True"
 
 if SECURE_CONNECTION:
     SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")

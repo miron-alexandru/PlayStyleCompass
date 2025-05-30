@@ -21,7 +21,7 @@
   border-radius: 12px;
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  background-color: #fff;
+  background-color: var(--game-container);
 }
 
 .article img {
@@ -34,7 +34,7 @@
 
 .article-content {
   padding: 15px;
-  background: #fff;
+  background-color: var(--game-container);
   text-align: left;
   border-radius: 0 0 12px 12px;
   transition: background 0.3s ease;
@@ -43,14 +43,14 @@
 .article-title {
   font-size: 1.1em;
   margin: 0;
-  color: #333;
+  color: var(--text-color);
   transition: color 0.3s ease;
 }
 
 .article-summary {
   font-size: 0.9em;
   margin: 10px 0 0;
-  color: #666;
+  color: var(--text-color);
   max-height: 60px;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -67,7 +67,7 @@
 }
 
 .article:hover .article-content {
-  background: #f8f8f8;
+  background: var(--news-container-hover);
 }
 
 .article:hover .article-title {
@@ -75,7 +75,7 @@
 }
 
 .article:hover .article-summary {
-  color: #333;
+  color: var(--text-color);
   max-height: 200px;
 }
 
