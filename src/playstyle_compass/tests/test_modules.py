@@ -314,6 +314,102 @@ class ReviewModelTest(TestCase):
         self.assertTrue(called)
 
 
+class FranchiseModelTest(TestCase):
+    def setUp(self):
+        self.franchise = Franchise.objects.create(
+            title="Legend Series",
+            description="Epic adventure games",
+            overview="All games in the Legend franchise",
+            games="1,2,3",
+            image="http://example.com/legend.jpg",
+            images="http://example.com/legend1.jpg,http://example.com/legend2.jpg"
+        )
+
+    def test_str_representation(self):
+        self.assertEqual(str(self.franchise), "Franchise: Legend Series")
+
+    def test_update_games_count(self):
+        self.franchise.update_games_count()
+        self.assertEqual(self.franchise.games_count, 3)
+
+class CharacterModelTest(TestCase):
+    def setUp(self):
+        self.character = Character.objects.create(
+            name="Arthas",
+            deck="A brave warrior",
+            description="Once a noble prince",
+            birthday="1995-06-01",
+            friends="Jaina",
+            enemies="Illidan",
+            games="Warcraft III, WoW",
+            first_game="Warcraft III",
+            franchises="Warcraft",
+            image="http://example.com/arthas.jpg",
+            images="http://example.com/arthas1.jpg,http://example.com/arthas2.jpg",
+            character_id=101
+        )
+
+    def test_str_representation(self):
+        self.assertEqual(str(self.character), "Character: Arthas")
+
+    def test_fields_saved_correctly(self):
+        self.assertEqual(self.character.name, "Arthas")
+        self.assertIn("WoW", self.character.games)
+        self.assertEqual(self.character.first_game, "Warcraft III")
+
+class GameModesModelTest(TestCase):
+    def setUp(self):
+        self.game_mode = GameModes.objects.create(
+            game_id="gm123",
+            game_name="BattleZone",
+            game_mode="Multiplayer"
+        )
+
+    def test_str_representation(self):
+        self.assertEqual(str(self.game_mode), "BattleZone - Multiplayer")
+
+    def test_fields(self):
+        self.assertEqual(self.game_mode.game_id, "gm123")
+        self.assertEqual(self.game_mode.game_mode, "Multiplayer")
+
+
+class NewsModelTest(TestCase):
+    def setUp(self):
+        self.news = News.objects.create(
+            article_id="ART123",
+            title="New RPG Game Announced",
+            summary="A new RPG title has been revealed for next-gen consoles.",
+            url="https://example.com/news/rpg-game",
+            image="https://example.com/images/rpg.jpg",
+            publish_date="2025-06-01",
+            platforms="PC, PS5"
+        )
+
+    def test_str_representation(self):
+        self.assertEqual(str(self.news), "Article: New RPG Game Announced")
+
+    def test_fields_are_stored_correctly(self):
+        self.assertEqual(self.news.article_id, "ART123")
+        self.assertEqual(self.news.title, "New RPG Game Announced")
+        self.assertEqual(self.news.summary, "A new RPG title has been revealed for next-gen consoles.")
+        self.assertEqual(self.news.url, "https://example.com/news/rpg-game")
+        self.assertEqual(self.news.image, "https://example.com/images/rpg.jpg")
+        self.assertEqual(self.news.publish_date, "2025-06-01")
+        self.assertEqual(self.news.platforms, "PC, PS5")
+
+    def test_optional_fields_can_be_blank(self):
+        news_blank = News.objects.create(
+            title="Indie Showcase Event Announced"
+        )
+        self.assertIsNone(news_blank.article_id)
+        self.assertEqual(news_blank.title, "Indie Showcase Event Announced")
+        self.assertIsNone(news_blank.summary)
+        self.assertIsNone(news_blank.url)
+        self.assertIsNone(news_blank.image)
+        self.assertIsNone(news_blank.publish_date)
+        self.assertIsNone(news_blank.platforms)
+
+
 if __name__ == "__main__":
     import django
     import os
