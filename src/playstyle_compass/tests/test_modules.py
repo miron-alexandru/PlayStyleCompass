@@ -1,5 +1,6 @@
 import os
 import sys
+from decimal import Decimal
 
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
 PROJECT_ROOT = os.path.abspath(os.path.join(CURRENT_DIR, '..', '..', '..'))
@@ -580,6 +581,247 @@ class ListCommentModelTest(TestCase):
         comment.save(update_fields=["created_at"])
         self.assertFalse(comment.is_editable())
 
+
+class PollModelTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username="testuser", password="testpass")
+        self.other_user = User.objects.create_user(username="otheruser", password="testpass")
+        self.poll = Poll.objects.create(
+            title="Test Title",
+            description="Nice description",
+            created_by=self.user,
+        )
+
+        self.option1 = PollOption.objects.create(poll=self.poll, text="Option 1")
+        self.option2 = PollOption.objects.create(poll=self.poll, text="Option 2")
+
+    def test_poll_creation(self):
+        self.assertEqual(self.poll.title, "Test Title")
+        self.assertEqual(self.poll.description, "Nice description")
+        self.assertEqual(self.poll.created_by, self.user)
+        self.assertIsNotNone(self.poll.created_at)
+        self.assertEqual(self.poll.liked_by.count(), 0)
+        self.assertEqual(self.poll.shared_with.count(), 0)
+        self.assertEqual(self.poll.shared_by, {})
+        self.assertEqual(self.poll.duration, timedelta(days=7))
+        self.assertTrue(self.poll.is_public)
+
+    def test_str_representation(self):
+        expected_str = f"Poll: Test Title (Created by {self.user})"
+        self.assertEqual(str(self.poll), expected_str)
+
+    def test_end_time_property(self):
+        expected_end = self.poll.created_at + self.poll.duration
+        self.assertEqual(self.poll.end_time, expected_end)
+
+    def test_has_ended_false(self):
+        self.assertFalse(self.poll.has_ended())
+
+    def test_has_ended_true(self):
+        self.poll.created_at = now() - timedelta(days=8)
+        self.poll.save(update_fields=["created_at"])
+        self.assertTrue(self.poll.has_ended())
+
+    def test_like_count_property(self):
+        self.poll.liked_by.add(self.user)
+        self.assertEqual(self.poll.like_count, 1)
+
+    def test_total_votes_and_options_with_percentages(self):
+        # Cast votes
+        Vote.objects.create(user=self.user, poll=self.poll, option=self.option1)
+        Vote.objects.create(user=self.other_user, poll=self.poll, option=self.option1)
+
+        total_votes = self.poll.total_votes()
+        self.assertEqual(total_votes, 2)
+
+        options_with_percentages = self.poll.options_with_percentages()
+        self.assertEqual(len(options_with_percentages), 2)
+
+        option1_percentage = next(
+            (opt["percentage"] for opt in options_with_percentages if opt["option"] == self.option1),
+            None,
+        )
+        self.assertEqual(option1_percentage, 100.0)
+
+        option2_percentage = next(
+            (opt["percentage"] for opt in options_with_percentages if opt["option"] == self.option2),
+            None,
+        )
+        self.assertEqual(option2_percentage, 0.0)
+
+    def test_user_vote(self):
+        vote = Vote.objects.create(user=self.user, poll=self.poll, option=self.option1)
+        self.assertEqual(self.poll.user_vote(self.user), self.option1)
+
+    def test_user_vote_none(self):
+        self.assertIsNone(self.poll.user_vote(self.other_user))
+
+
+class PollOptionModelTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username="testuser", password="testpass")
+        self.poll = Poll.objects.create(
+            title="Test Title",
+            description="Nice description",
+            created_by=self.user,
+        )
+
+        self.option = PollOption.objects.create(poll=self.poll, text="Option 1")
+
+    def test_creation_and_str(self):
+        self.assertEqual(self.option.poll, self.poll)
+        self.assertEqual(self.option.text, "Option 1")
+        expected_str = f"Poll option 'Option 1' for the poll {self.poll}"
+        self.assertEqual(str(self.option), expected_str)
+
+    def test_multiple_options(self):
+        opt2 = PollOption.objects.create(poll=self.poll, text="Option 2")
+        self.assertEqual(self.poll.options.count(), 2)
+
+
+class VoteModelTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username="testuser", password="testpass")
+        self.poll = Poll.objects.create(
+            title="Test Title",
+            description="Nice description",
+            created_by=self.user,
+        )
+
+        self.option = PollOption.objects.create(poll=self.poll, text="Option 1")
+
+        self.vote = Vote.objects.create(
+            poll=self.poll,
+            option=self.option,
+            user=self.user
+        )
+
+    def test_str_representation(self):
+        expected_str = f"Vote: User {self.user} voted for 'Option 1' in poll 'Test Title'"
+        self.assertEqual(str(self.vote), expected_str)
+
+    def test_vote_creation(self):
+        self.assertEqual(self.vote.poll, self.poll)
+        self.assertEqual(self.vote.option, self.option)
+        self.assertEqual(self.vote.user, self.user)
+        self.assertIsNotNone(self.vote.voted_at)
+
+    def test_duplicate_vote_raises_error(self):
+        with self.assertRaises(IntegrityError):
+            Vote.objects.create(poll=self.poll, option=self.option, user=self.user)
+
+
+class DealModelTest(TestCase):
+    def setUp(self):
+        self.deal = Deal.objects.create(
+            deal_id="12345",
+            game_name="Hades",
+            sale_price=Decimal("14.99"),
+            retail_price=Decimal("24.99"),
+            thumb_url="http://example.com/thumb.jpg",
+            store_name="Steam",
+            store_icon_url="http://example.com/icon.jpg"
+        )
+
+    def test_deal_creation(self):
+        self.assertEqual(self.deal.game_name, "Hades")
+        self.assertEqual(self.deal.sale_price, Decimal("14.99"))
+
+    def test_str_representation(self):
+        self.assertEqual(str(self.deal), "Hades - $14.99")
+
+    def test_store_url_property(self):
+        self.assertIn(self.deal.store_url, ["https://store.steampowered.com/", "#"])
+
+
+class SharedDealModelTest(TestCase):
+    def setUp(self):
+        self.sender = User.objects.create_user(username="sender", password="pass")
+        self.recipient = User.objects.create_user(username="recipient", password="pass")
+        self.deal = Deal.objects.create(
+            deal_id="deal123",
+            game_name="Celeste",
+            sale_price=Decimal("9.99"),
+            retail_price=Decimal("19.99"),
+            thumb_url="http://example.com/thumb.jpg",
+            store_name="Epic",
+            store_icon_url="http://example.com/icon.jpg"
+        )
+        self.shared_deal = SharedDeal.objects.create(
+            sender=self.sender,
+            recipient=self.recipient,
+            deal=self.deal
+        )
+
+    def test_shared_deal_creation(self):
+        self.assertEqual(self.shared_deal.sender, self.sender)
+        self.assertEqual(self.shared_deal.recipient, self.recipient)
+        self.assertEqual(self.shared_deal.deal, self.deal)
+
+    def test_str_representation(self):
+        expected = f"{self.sender} shared deal 'Celeste' with {self.recipient}"
+        self.assertEqual(str(self.shared_deal), expected)
+
+    def test_unique_together_constraint(self):
+        with self.assertRaises(IntegrityError):
+            SharedDeal.objects.create(
+                sender=self.sender,
+                recipient=self.recipient,
+                deal=self.deal
+            )
+
+
+class SharedReviewModelTest(TestCase):
+    def setUp(self):
+        self.sender = User.objects.create_user(username="sender", password="pass")
+        self.recipient = User.objects.create_user(username="recipient", password="pass")
+        self.game = Game.objects.create(
+            guid="game-1",
+            title="Hollow Knight",
+            description="A test game",
+            genres="Action",
+            platforms="PC",
+            themes="Theme1",
+            image="http://example.com/image.jpg",
+            videos="",
+            concepts="Concept1",
+        )
+        self.review = Review.objects.create(
+            game=self.game,
+            user=self.sender,
+            reviewers="Reviewer1",
+            review_deck="Short deck",
+            review_description="This is a detailed review description.",
+            score=4,
+            likes=0,
+            dislikes=0,
+            liked_by="",
+            disliked_by="",
+            date_added=now(),
+        )
+
+        self.shared_review = SharedReview.objects.create(
+            sender=self.sender,
+            recipient=self.recipient,
+            review=self.review
+        )
+
+    def test_shared_review_creation(self):
+        self.assertEqual(self.shared_review.sender, self.sender)
+        self.assertEqual(self.shared_review.recipient, self.recipient)
+        self.assertEqual(self.shared_review.review, self.review)
+
+    def test_str_representation(self):
+        expected = f"{self.sender} shared a review of 'Hollow Knight' with {self.recipient}"
+        self.assertEqual(str(self.shared_review), expected)
+
+    def test_unique_together_constraint(self):
+        with self.assertRaises(IntegrityError):
+            SharedReview.objects.create(
+                sender=self.sender,
+                recipient=self.recipient,
+                review=self.review
+            )
 
 if __name__ == "__main__":
     import django

@@ -516,7 +516,7 @@ class PollOption(models.Model):
     text = models.CharField(max_length=120)
 
     def __str__(self):
-        return self.text
+        return f"Poll option '{self.text}' for the poll {self.poll}"
 
 
 class Vote(models.Model):
@@ -572,6 +572,9 @@ class SharedDeal(models.Model):
         db_table = "SharedDeals"
         unique_together = ("sender", "recipient", "deal")
 
+    def __str__(self):
+        return f"{self.sender} shared deal '{self.deal.game_name}' with {self.recipient}"
+
 
 class SharedReview(models.Model):
     sender = models.ForeignKey(
@@ -589,3 +592,7 @@ class SharedReview(models.Model):
 
     class Meta:
         unique_together = ("sender", "recipient", "review")
+
+    def __str__(self):
+        return f"{self.sender} shared a review of '{self.review.game.title}' with {self.recipient}"
+
