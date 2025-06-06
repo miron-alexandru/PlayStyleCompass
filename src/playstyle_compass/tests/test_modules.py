@@ -12,6 +12,9 @@ django.setup()
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.db.models import Avg
+from django.core.exceptions import ValidationError
+from django.db import IntegrityError
+from django.utils.timezone import now, timedelta
 from playstyle_compass.models import *
 
 User = get_user_model()
@@ -408,6 +411,174 @@ class NewsModelTest(TestCase):
         self.assertIsNone(news_blank.image)
         self.assertIsNone(news_blank.publish_date)
         self.assertIsNone(news_blank.platforms)
+
+class GameListModelTest(TestCase):
+    def setUp(self):
+        self.owner = User.objects.create_user(username='owner', password='testpass')
+        self.user1 = User.objects.create_user(username='user1', password='testpass')
+        self.user2 = User.objects.create_user(username='user2', password='testpass')
+
+        self.game_list = GameList.objects.create(
+            owner=self.owner,
+            title='Top RPG Games',
+            description='A list of great RPGs.',
+            game_guids=["game-1", "game-2", "game-3"],
+            additional_games="game-4,game-5",
+            shared_by={"via": "link"}
+        )
+
+    def test_str_representation(self):
+        expected = "Top RPG Games (Owner: owner, Games: 5)"
+        self.assertEqual(str(self.game_list), expected)
+
+    def test_total_games_property(self):
+        self.assertEqual(self.game_list.total_games, 5)
+
+    def test_like_and_like_count(self):
+        self.game_list.liked_by.add(self.user1, self.user2)
+        self.assertEqual(self.game_list.like_count, 2)
+
+    def test_share_and_share_count(self):
+        self.game_list.shared_with.add(self.user1)
+        self.assertEqual(self.game_list.share_count, 1)
+
+    def test_favorite_and_favorite_count(self):
+        self.game_list.favorites.add(self.user1)
+        self.assertEqual(self.game_list.favorite_count, 1)
+
+    def test_toggle_favorite_add(self):
+        result = self.game_list.toggle_favorite(self.user2)
+        self.assertTrue(result)
+        self.assertIn(self.user2, self.game_list.favorites.all())
+
+    def test_toggle_favorite_remove(self):
+        self.game_list.favorites.add(self.user1)
+        result = self.game_list.toggle_favorite(self.user1)
+        self.assertFalse(result)
+        self.assertNotIn(self.user1, self.game_list.favorites.all())
+
+    def test_updated_fields(self):
+        self.game_list.title = 'Updated List Title'
+        self.game_list.save()
+        self.assertEqual(self.game_list.title, 'Updated List Title')
+
+
+class ListReviewModelTest(TestCase):
+    def setUp(self):
+        self.owner = User.objects.create_user(username='owner', password='testpass')
+        self.reviewer = User.objects.create_user(username='reviewer', password='testpass')
+        self.user1 = User.objects.create_user(username='user1', password='testpass')
+
+        self.game_list = GameList.objects.create(
+            owner=self.owner,
+            title='Top Action Games',
+            game_guids=["game-1", "game-2"]
+        )
+
+        self.review = ListReview.objects.create(
+            game_list=self.game_list,
+            user=self.reviewer,
+            title="Solid picks!",
+            rating=4,
+            review_text="Enjoyed every game on this list."
+        )
+
+    def test_str_representation(self):
+        expected = f"Review by {self.reviewer} on {self.game_list}"
+        self.assertEqual(str(self.review), expected)
+
+    def test_like_count_initial(self):
+        self.assertEqual(self.review.like_count, 0)
+
+    def test_add_like_and_count(self):
+        self.review.liked_by.add(self.user1)
+        self.assertEqual(self.review.like_count, 1)
+        self.assertIn(self.user1, self.review.liked_by.all())
+
+    def test_rating_boundaries_valid(self):
+        self.review.rating = 5
+        self.review.full_clean()
+
+        self.review.rating = 1
+        self.review.full_clean()
+
+    def test_rating_out_of_bounds_invalid(self):
+        self.review.rating = 0
+        with self.assertRaises(ValidationError):
+            self.review.full_clean()
+
+        self.review.rating = 6
+        with self.assertRaises(ValidationError):
+            self.review.full_clean()
+
+    def test_unique_review_per_user_and_game_list(self):
+        with self.assertRaises(IntegrityError):
+            ListReview.objects.create(
+                game_list=self.game_list,
+                user=self.reviewer,
+                title="Another review",
+                rating=3
+            )
+
+class ListCommentModelTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username="testuser", password="testpass")
+        self.game_list = GameList.objects.create(
+            owner=self.user,
+            title='Top Action Games',
+            game_guids=["game-1", "game-2"]
+        )
+
+        self.list_comment = ListComment.objects.create(
+            game_list=self.game_list,
+            user=self.user,
+            text="Test Comment",
+            )
+
+    def test_comment_creation(self):
+        self.assertEqual(self.list_comment.text, "Test Comment")
+        self.assertEqual(self.list_comment.user, self.user)
+        self.assertIsNotNone(self.list_comment.created_at)
+        self.assertIsNotNone(self.list_comment.updated_at)
+
+    def test_str_representation(self):
+        expected = f"List Comment by {self.user} on {self.game_list}"
+        self.assertEqual(str(self.list_comment), expected)
+
+    def test_comment_like(self):
+        self.list_comment.liked_by.add(self.user)
+        self.assertEqual(self.list_comment.like_count, 1)
+        self.assertIn(self.user, self.list_comment.liked_by.all())
+
+    def test_like_count_default(self):
+        self.assertEqual(self.list_comment.like_count, 0)
+
+    def test_comments_ordering(self):
+        ListComment.objects.create(game_list=self.game_list, user=self.user, text="Second")
+        ListComment.objects.create(game_list=self.game_list, user=self.user, text="Third")
+        comments = ListComment.objects.filter(game_list=self.game_list)
+        dates = [comment.created_at for comment in comments]
+        self.assertEqual(dates, sorted(dates, reverse=True))
+
+
+    def test_is_editable_within_10_minutes(self):
+        comment = ListComment.objects.create(
+            game_list=self.game_list,
+            user=self.user,
+            text="Test Comment",
+            )
+        self.assertTrue(comment.is_editable())
+
+    def test_is_not_editable_after_10_minutes(self):
+        comment = ListComment.objects.create(
+            game_list=self.game_list,
+            user=self.user,
+            text="Test Comment",
+            )
+        # Simulate a creation time more than 10 minutes ago
+        comment.created_at = now() - timedelta(minutes=11)
+        comment.save(update_fields=["created_at"])
+        self.assertFalse(comment.is_editable())
 
 
 if __name__ == "__main__":

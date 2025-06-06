@@ -438,6 +438,9 @@ class ListComment(models.Model):
         verbose_name = _("List Comment")
         verbose_name_plural = _("List Comments")
 
+    def __str__(self):
+        return f"List Comment by {self.user} on {self.game_list}"
+
     def is_editable(self):
         return now() <= self.created_at + timedelta(minutes=10)
 
