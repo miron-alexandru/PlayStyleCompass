@@ -144,6 +144,7 @@ Websites for .env configuration: [GiantBomb](https://www.giantbomb.com/) / [Send
 <summary><h2>PlayStyle Compass Changelog</h2></summary>
 
 ### Version v2.5:
+* Created tests for the playstyle_compass app modules.
 * Users are able to copy the direct link to a game page with a single click.
 * Added the option to share content via Link.
 * Information about what is being shared added to the sharing pages for Polls, Deals, Game Lists and Game Reviews.

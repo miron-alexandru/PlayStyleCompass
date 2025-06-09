@@ -3,11 +3,12 @@ import sys
 from decimal import Decimal
 
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
-PROJECT_ROOT = os.path.abspath(os.path.join(CURRENT_DIR, '..', '..', '..'))
+PROJECT_ROOT = os.path.abspath(os.path.join(CURRENT_DIR, "..", "..", ".."))
 sys.path.insert(0, PROJECT_ROOT)
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'src.playstyle_manager.settings')
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "src.playstyle_manager.settings")
 import django
+
 django.setup()
 
 from django.contrib.auth import get_user_model
@@ -19,6 +20,7 @@ from django.utils.timezone import now, timedelta
 from playstyle_compass.models import *
 
 User = get_user_model()
+
 
 class GameModelTest(TestCase):
     def setUp(self):
@@ -51,7 +53,7 @@ class GameModelTest(TestCase):
             average_score=None,
             total_reviews=None,
             translated_description_ro="Descriere test",
-            translated_overview_ro="Prezentare generală test"
+            translated_overview_ro="Prezentare generală test",
         )
 
     def test_str_representation(self):
@@ -85,7 +87,9 @@ class GameModelTest(TestCase):
 
     def test_stores_property(self):
         """Test stores property returns correct related stores."""
-        GameStores.objects.create(guid="game-123", store_name="Steam", title="The Witcher")
+        GameStores.objects.create(
+            guid="game-123", store_name="Steam", title="The Witcher"
+        )
         GameStores.objects.create(guid="game-123", store_name="Epic", title="FIFA")
         stores = self.game.stores
         self.assertEqual(stores.count(), 2)
@@ -94,14 +98,13 @@ class GameModelTest(TestCase):
         self.assertIn("Epic", store_names)
 
 
-
 class GameStoresModelTest(TestCase):
     def setUp(self):
         self.store = GameStores.objects.create(
             guid="game-123",
             title="Test Game",
             store_name="Steam",
-            store_url="https://store.steampowered.com/app/123"
+            store_url="https://store.steampowered.com/app/123",
         )
 
     def test_str_representation(self):
@@ -142,7 +145,9 @@ class UserPreferencesModelTest(TestCase):
             concepts="Concept2",
         )
         # Create UserPreferences for the user (or get existing)
-        self.preferences, created = UserPreferences.objects.get_or_create(user=self.user)
+        self.preferences, created = UserPreferences.objects.get_or_create(
+            user=self.user
+        )
 
     def test_str_representation(self):
         expected_str = f"{self.user}'s user preferences"
@@ -183,14 +188,19 @@ class UserPreferencesModelTest(TestCase):
 
 class SharedGameTestModel(TestCase):
     def setUp(self):
-        self.sender = User.objects.create_user(username="testuser1", password="testpass1")
-        self.receiver = User.objects.create_user(username="testuser2", password="testpass2")
+        self.sender = User.objects.create_user(
+            username="testuser1", password="testpass1"
+        )
+        self.receiver = User.objects.create_user(
+            username="testuser2", password="testpass2"
+        )
 
         self.shared_game = SharedGame.objects.create(
             sender=self.sender,
             receiver=self.receiver,
             content="Testing content",
-            game_id=1234)
+            game_id=1234,
+        )
 
     def test_str_representation(self):
         """Test the string representation of the Shared Game model."""
@@ -206,6 +216,7 @@ class SharedGameTestModel(TestCase):
         self.assertFalse(self.shared_game.is_deleted_by_sender)
         self.assertFalse(self.shared_game.is_deleted_by_receiver)
         self.assertIsNotNone(self.shared_game.timestamp)
+
 
 class ReviewModelTest(TestCase):
     def setUp(self):
@@ -243,7 +254,7 @@ class ReviewModelTest(TestCase):
 
     def test_like_unlike_review(self):
         user_id = self.user.id
-        
+
         # Initially no likes
         self.assertEqual(self.review.likes, 0)
         self.assertFalse(self.review.user_has_liked(user_id))
@@ -268,7 +279,7 @@ class ReviewModelTest(TestCase):
 
     def test_dislike_undislike_review(self):
         user_id = self.user.id
-        
+
         # Initially no dislikes
         self.assertEqual(self.review.dislikes, 0)
         self.assertFalse(self.review.user_has_disliked(user_id))
@@ -326,7 +337,7 @@ class FranchiseModelTest(TestCase):
             overview="All games in the Legend franchise",
             games="1,2,3",
             image="http://example.com/legend.jpg",
-            images="http://example.com/legend1.jpg,http://example.com/legend2.jpg"
+            images="http://example.com/legend1.jpg,http://example.com/legend2.jpg",
         )
 
     def test_str_representation(self):
@@ -335,6 +346,7 @@ class FranchiseModelTest(TestCase):
     def test_update_games_count(self):
         self.franchise.update_games_count()
         self.assertEqual(self.franchise.games_count, 3)
+
 
 class CharacterModelTest(TestCase):
     def setUp(self):
@@ -350,7 +362,7 @@ class CharacterModelTest(TestCase):
             franchises="Warcraft",
             image="http://example.com/arthas.jpg",
             images="http://example.com/arthas1.jpg,http://example.com/arthas2.jpg",
-            character_id=101
+            character_id=101,
         )
 
     def test_str_representation(self):
@@ -361,12 +373,11 @@ class CharacterModelTest(TestCase):
         self.assertIn("WoW", self.character.games)
         self.assertEqual(self.character.first_game, "Warcraft III")
 
+
 class GameModesModelTest(TestCase):
     def setUp(self):
         self.game_mode = GameModes.objects.create(
-            game_id="gm123",
-            game_name="BattleZone",
-            game_mode="Multiplayer"
+            game_id="gm123", game_name="BattleZone", game_mode="Multiplayer"
         )
 
     def test_str_representation(self):
@@ -386,7 +397,7 @@ class NewsModelTest(TestCase):
             url="https://example.com/news/rpg-game",
             image="https://example.com/images/rpg.jpg",
             publish_date="2025-06-01",
-            platforms="PC, PS5"
+            platforms="PC, PS5",
         )
 
     def test_str_representation(self):
@@ -395,16 +406,17 @@ class NewsModelTest(TestCase):
     def test_fields_are_stored_correctly(self):
         self.assertEqual(self.news.article_id, "ART123")
         self.assertEqual(self.news.title, "New RPG Game Announced")
-        self.assertEqual(self.news.summary, "A new RPG title has been revealed for next-gen consoles.")
+        self.assertEqual(
+            self.news.summary,
+            "A new RPG title has been revealed for next-gen consoles.",
+        )
         self.assertEqual(self.news.url, "https://example.com/news/rpg-game")
         self.assertEqual(self.news.image, "https://example.com/images/rpg.jpg")
         self.assertEqual(self.news.publish_date, "2025-06-01")
         self.assertEqual(self.news.platforms, "PC, PS5")
 
     def test_optional_fields_can_be_blank(self):
-        news_blank = News.objects.create(
-            title="Indie Showcase Event Announced"
-        )
+        news_blank = News.objects.create(title="Indie Showcase Event Announced")
         self.assertIsNone(news_blank.article_id)
         self.assertEqual(news_blank.title, "Indie Showcase Event Announced")
         self.assertIsNone(news_blank.summary)
@@ -413,19 +425,20 @@ class NewsModelTest(TestCase):
         self.assertIsNone(news_blank.publish_date)
         self.assertIsNone(news_blank.platforms)
 
+
 class GameListModelTest(TestCase):
     def setUp(self):
-        self.owner = User.objects.create_user(username='owner', password='testpass')
-        self.user1 = User.objects.create_user(username='user1', password='testpass')
-        self.user2 = User.objects.create_user(username='user2', password='testpass')
+        self.owner = User.objects.create_user(username="owner", password="testpass")
+        self.user1 = User.objects.create_user(username="user1", password="testpass")
+        self.user2 = User.objects.create_user(username="user2", password="testpass")
 
         self.game_list = GameList.objects.create(
             owner=self.owner,
-            title='Top RPG Games',
-            description='A list of great RPGs.',
+            title="Top RPG Games",
+            description="A list of great RPGs.",
             game_guids=["game-1", "game-2", "game-3"],
             additional_games="game-4,game-5",
-            shared_by={"via": "link"}
+            shared_by={"via": "link"},
         )
 
     def test_str_representation(self):
@@ -459,21 +472,21 @@ class GameListModelTest(TestCase):
         self.assertNotIn(self.user1, self.game_list.favorites.all())
 
     def test_updated_fields(self):
-        self.game_list.title = 'Updated List Title'
+        self.game_list.title = "Updated List Title"
         self.game_list.save()
-        self.assertEqual(self.game_list.title, 'Updated List Title')
+        self.assertEqual(self.game_list.title, "Updated List Title")
 
 
 class ListReviewModelTest(TestCase):
     def setUp(self):
-        self.owner = User.objects.create_user(username='owner', password='testpass')
-        self.reviewer = User.objects.create_user(username='reviewer', password='testpass')
-        self.user1 = User.objects.create_user(username='user1', password='testpass')
+        self.owner = User.objects.create_user(username="owner", password="testpass")
+        self.reviewer = User.objects.create_user(
+            username="reviewer", password="testpass"
+        )
+        self.user1 = User.objects.create_user(username="user1", password="testpass")
 
         self.game_list = GameList.objects.create(
-            owner=self.owner,
-            title='Top Action Games',
-            game_guids=["game-1", "game-2"]
+            owner=self.owner, title="Top Action Games", game_guids=["game-1", "game-2"]
         )
 
         self.review = ListReview.objects.create(
@@ -481,7 +494,7 @@ class ListReviewModelTest(TestCase):
             user=self.reviewer,
             title="Solid picks!",
             rating=4,
-            review_text="Enjoyed every game on this list."
+            review_text="Enjoyed every game on this list.",
         )
 
     def test_str_representation(self):
@@ -518,23 +531,22 @@ class ListReviewModelTest(TestCase):
                 game_list=self.game_list,
                 user=self.reviewer,
                 title="Another review",
-                rating=3
+                rating=3,
             )
+
 
 class ListCommentModelTest(TestCase):
     def setUp(self):
         self.user = User.objects.create_user(username="testuser", password="testpass")
         self.game_list = GameList.objects.create(
-            owner=self.user,
-            title='Top Action Games',
-            game_guids=["game-1", "game-2"]
+            owner=self.user, title="Top Action Games", game_guids=["game-1", "game-2"]
         )
 
         self.list_comment = ListComment.objects.create(
             game_list=self.game_list,
             user=self.user,
             text="Test Comment",
-            )
+        )
 
     def test_comment_creation(self):
         self.assertEqual(self.list_comment.text, "Test Comment")
@@ -555,19 +567,22 @@ class ListCommentModelTest(TestCase):
         self.assertEqual(self.list_comment.like_count, 0)
 
     def test_comments_ordering(self):
-        ListComment.objects.create(game_list=self.game_list, user=self.user, text="Second")
-        ListComment.objects.create(game_list=self.game_list, user=self.user, text="Third")
+        ListComment.objects.create(
+            game_list=self.game_list, user=self.user, text="Second"
+        )
+        ListComment.objects.create(
+            game_list=self.game_list, user=self.user, text="Third"
+        )
         comments = ListComment.objects.filter(game_list=self.game_list)
         dates = [comment.created_at for comment in comments]
         self.assertEqual(dates, sorted(dates, reverse=True))
-
 
     def test_is_editable_within_10_minutes(self):
         comment = ListComment.objects.create(
             game_list=self.game_list,
             user=self.user,
             text="Test Comment",
-            )
+        )
         self.assertTrue(comment.is_editable())
 
     def test_is_not_editable_after_10_minutes(self):
@@ -575,7 +590,7 @@ class ListCommentModelTest(TestCase):
             game_list=self.game_list,
             user=self.user,
             text="Test Comment",
-            )
+        )
         # Simulate a creation time more than 10 minutes ago
         comment.created_at = now() - timedelta(minutes=11)
         comment.save(update_fields=["created_at"])
@@ -585,7 +600,9 @@ class ListCommentModelTest(TestCase):
 class PollModelTest(TestCase):
     def setUp(self):
         self.user = User.objects.create_user(username="testuser", password="testpass")
-        self.other_user = User.objects.create_user(username="otheruser", password="testpass")
+        self.other_user = User.objects.create_user(
+            username="otheruser", password="testpass"
+        )
         self.poll = Poll.objects.create(
             title="Test Title",
             description="Nice description",
@@ -638,13 +655,21 @@ class PollModelTest(TestCase):
         self.assertEqual(len(options_with_percentages), 2)
 
         option1_percentage = next(
-            (opt["percentage"] for opt in options_with_percentages if opt["option"] == self.option1),
+            (
+                opt["percentage"]
+                for opt in options_with_percentages
+                if opt["option"] == self.option1
+            ),
             None,
         )
         self.assertEqual(option1_percentage, 100.0)
 
         option2_percentage = next(
-            (opt["percentage"] for opt in options_with_percentages if opt["option"] == self.option2),
+            (
+                opt["percentage"]
+                for opt in options_with_percentages
+                if opt["option"] == self.option2
+            ),
             None,
         )
         self.assertEqual(option2_percentage, 0.0)
@@ -691,13 +716,13 @@ class VoteModelTest(TestCase):
         self.option = PollOption.objects.create(poll=self.poll, text="Option 1")
 
         self.vote = Vote.objects.create(
-            poll=self.poll,
-            option=self.option,
-            user=self.user
+            poll=self.poll, option=self.option, user=self.user
         )
 
     def test_str_representation(self):
-        expected_str = f"Vote: User {self.user} voted for 'Option 1' in poll 'Test Title'"
+        expected_str = (
+            f"Vote: User {self.user} voted for 'Option 1' in poll 'Test Title'"
+        )
         self.assertEqual(str(self.vote), expected_str)
 
     def test_vote_creation(self):
@@ -720,7 +745,7 @@ class DealModelTest(TestCase):
             retail_price=Decimal("24.99"),
             thumb_url="http://example.com/thumb.jpg",
             store_name="Steam",
-            store_icon_url="http://example.com/icon.jpg"
+            store_icon_url="http://example.com/icon.jpg",
         )
 
     def test_deal_creation(self):
@@ -745,12 +770,10 @@ class SharedDealModelTest(TestCase):
             retail_price=Decimal("19.99"),
             thumb_url="http://example.com/thumb.jpg",
             store_name="Epic",
-            store_icon_url="http://example.com/icon.jpg"
+            store_icon_url="http://example.com/icon.jpg",
         )
         self.shared_deal = SharedDeal.objects.create(
-            sender=self.sender,
-            recipient=self.recipient,
-            deal=self.deal
+            sender=self.sender, recipient=self.recipient, deal=self.deal
         )
 
     def test_shared_deal_creation(self):
@@ -765,9 +788,7 @@ class SharedDealModelTest(TestCase):
     def test_unique_together_constraint(self):
         with self.assertRaises(IntegrityError):
             SharedDeal.objects.create(
-                sender=self.sender,
-                recipient=self.recipient,
-                deal=self.deal
+                sender=self.sender, recipient=self.recipient, deal=self.deal
             )
 
 
@@ -801,9 +822,7 @@ class SharedReviewModelTest(TestCase):
         )
 
         self.shared_review = SharedReview.objects.create(
-            sender=self.sender,
-            recipient=self.recipient,
-            review=self.review
+            sender=self.sender, recipient=self.recipient, review=self.review
         )
 
     def test_shared_review_creation(self):
@@ -812,16 +831,17 @@ class SharedReviewModelTest(TestCase):
         self.assertEqual(self.shared_review.review, self.review)
 
     def test_str_representation(self):
-        expected = f"{self.sender} shared a review of 'Hollow Knight' with {self.recipient}"
+        expected = (
+            f"{self.sender} shared a review of 'Hollow Knight' with {self.recipient}"
+        )
         self.assertEqual(str(self.shared_review), expected)
 
     def test_unique_together_constraint(self):
         with self.assertRaises(IntegrityError):
             SharedReview.objects.create(
-                sender=self.sender,
-                recipient=self.recipient,
-                review=self.review
+                sender=self.sender, recipient=self.recipient, review=self.review
             )
+
 
 if __name__ == "__main__":
     import django

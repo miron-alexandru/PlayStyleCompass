@@ -573,7 +573,9 @@ class SharedDeal(models.Model):
         unique_together = ("sender", "recipient", "deal")
 
     def __str__(self):
-        return f"{self.sender} shared deal '{self.deal.game_name}' with {self.recipient}"
+        return (
+            f"{self.sender} shared deal '{self.deal.game_name}' with {self.recipient}"
+        )
 
 
 class SharedReview(models.Model):
@@ -595,4 +597,3 @@ class SharedReview(models.Model):
 
     def __str__(self):
         return f"{self.sender} shared a review of '{self.review.game.title}' with {self.recipient}"
-
