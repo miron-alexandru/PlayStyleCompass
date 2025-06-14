@@ -258,7 +258,7 @@ class QuizQuestion(models.Model):
     option4 = models.CharField(max_length=150, default="")
 
     def __str__(self):
-        return f"{self.name}"
+        return f"Quiz question: {self.name}"
 
 
 class QuizUserResponse(models.Model):
@@ -267,7 +267,7 @@ class QuizUserResponse(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     question = models.ForeignKey(QuizQuestion, on_delete=models.CASCADE)
     response_text = models.CharField(max_length=200, default="")
-    updated_at = models.DateTimeField(auto_now=True)
+    updated_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f"Response from {self.user} for the question {self.question.name}"

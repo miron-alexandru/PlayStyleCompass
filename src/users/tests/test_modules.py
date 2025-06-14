@@ -12,6 +12,8 @@ django.setup()
 
 from django.contrib.auth import get_user_model
 from django.test import TestCase
+from django.utils import timezone
+from datetime import timedelta
 from users.models import *
 
 User = get_user_model()
@@ -136,6 +138,69 @@ class MessageModelTest(TestCase):
     def test_str_representation(self):
         expected = f"Message from {self.sender} to {self.receiver}"
         self.assertEqual(str(self.message), expected)
+
+
+class QuizQuestionModelTest(TestCase):
+    def setUp(self):
+        self.question = QuizQuestion.objects.create(
+            name="Visual Novel",
+            question_text="How do you feel about visual novels?",
+            option1="I'm okay with them if they have engaging narratives and choices.",
+            option2="I'm not particularly interested in visual novels."
+        )
+
+    def test_str_representation(self):
+        expected = f"Quiz question: Visual Novel"
+        self.assertEqual(str(self.question), expected)
+
+    def test_question_creation(self):
+        self.assertEqual(self.question.name, "Visual Novel")
+        self.assertEqual(self.question.question_text, "How do you feel about visual novels?")
+        self.assertEqual(self.question.option1, "I'm okay with them if they have engaging narratives and choices.")
+        self.assertIsNotNone(self.question.option3)
+
+class QuizUserResponseModelTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username="testuser", password="testpass")
+        self.question = QuizQuestion.objects.create(
+            name="Visual Novel",
+            question_text="How do you feel about visual novels?",
+            option1="I'm okay with them if they have engaging narratives and choices.",
+            option2="I'm not particularly interested in visual novels."
+        )
+
+        self.quiz_response = QuizUserResponse.objects.create(
+            user=self.user,
+            question=self.question,
+            response_text="I'm not particularly interested in visual novels.",
+            )
+
+    def test_str_representation(self):
+        expected = f"Response from {self.user} for the question Visual Novel"
+        self.assertEqual(str(self.quiz_response), expected)
+
+    def test_question_response_creation(self):
+        self.assertEqual(self.quiz_response.user, self.user)
+        self.assertEqual(self.quiz_response.question, self.question)
+        self.assertEqual(self.quiz_response.response_text, self.question.option2)
+        self.assertIsNotNone(self.quiz_response.updated_at)
+
+    def test_updated_at_auto_updates_on_save(self):
+        response = QuizUserResponse.objects.create(
+            user=self.user,
+            question=self.question,
+            response_text="Initial"
+        )
+        old_timestamp = response.updated_at
+
+        response.response_text = "Updated"
+        response.save()
+
+        self.assertGreater(response.updated_at, old_timestamp)
+        self.assertAlmostEqual(
+            (timezone.now() - response.updated_at).total_seconds(), 0, delta=5
+        )
+
 
 
 if __name__ == "__main__":
