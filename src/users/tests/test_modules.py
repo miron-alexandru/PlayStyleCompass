@@ -202,6 +202,71 @@ class QuizUserResponseModelTest(TestCase):
         )
 
 
+class ChatMessageModelTest(TestCase):
+    def setUp(self):
+        self.sender = User.objects.create_user(username="sender", password="pass123")
+        self.recipient = User.objects.create_user(username="recipient", password="pass123")
+        self.message = ChatMessage.objects.create(
+            sender=self.sender,
+            recipient=self.recipient,
+            content="Hello, test chat message.",
+            file="https://example.com/file.pdf",
+            file_size=1024
+        )
+
+    def test_chat_message_creation(self):
+        self.assertEqual(self.message.sender, self.sender)
+        self.assertEqual(self.message.recipient, self.recipient)
+        self.assertEqual(self.message.content, "Hello, test chat message.")
+        self.assertEqual(self.message.file, "https://example.com/file.pdf")
+        self.assertEqual(self.message.file_size, 1024)
+        self.assertFalse(self.message.sender_hidden)
+        self.assertFalse(self.message.recipient_hidden)
+        self.assertFalse(self.message.edited)
+
+    def test_str_representation(self):
+        expected = f"{self.sender.username} to {self.recipient.username}: Hello, test chat mes"
+        self.assertEqual(str(self.message), expected)
+
+    def test_pinning_message(self):
+        self.message.pinned_by.add(self.sender)
+        self.assertIn(self.sender, self.message.pinned_by.all())
+
+
+class FollowModelTest(TestCase):
+    def setUp(self):
+        self.user1 = User.objects.create_user(username="user1", password="pass123")
+        self.user2 = User.objects.create_user(username="user2", password="pass123")
+        self.follow = Follow.objects.create(follower=self.user1, followed=self.user2)
+
+    def test_follow_creation(self):
+        self.assertEqual(self.follow.follower, self.user1)
+        self.assertEqual(self.follow.followed, self.user2)
+
+    def test_str_representation(self):
+        self.assertEqual(str(self.follow), f"{self.user1} follows {self.user2}")
+
+    def test_follow_unique_constraint(self):
+        with self.assertRaises(Exception):
+            Follow.objects.create(follower=self.user1, followed=self.user2)
+
+
+class GlobalChatMessageModelTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username="globaluser", password="pass123")
+        self.global_msg = GlobalChatMessage.objects.create(
+            sender=self.user,
+            content="This is a global chat message."
+        )
+
+    def test_global_chat_message_creation(self):
+        self.assertEqual(self.global_msg.sender, self.user)
+        self.assertEqual(self.global_msg.content, "This is a global chat message.")
+        self.assertIsNotNone(self.global_msg.created_at)
+
+    def test_str_representation(self):
+        self.assertEqual(str(self.global_msg), "globaluser: This is a global chat message.")
+
 
 if __name__ == "__main__":
     import django
