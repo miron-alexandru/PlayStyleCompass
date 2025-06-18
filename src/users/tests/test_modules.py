@@ -268,6 +268,54 @@ class GlobalChatMessageModelTest(TestCase):
         self.assertEqual(str(self.global_msg), "globaluser: This is a global chat message.")
 
 
+class UserProfileModelTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username="testuser1", password="testpass")
+        self.profile = UserProfile.objects.get(user=self.user)
+
+    def test_profile_created_automatically(self):
+        self.assertIsNotNone(self.profile)
+        self.assertEqual(self.profile.user, self.user)
+
+    def test_str_representation(self):
+        self.assertEqual(str(self.profile), self.user.username)
+
+    def test_profile_picture_url(self):
+        self.assertEqual(self.profile.profile_picture_url, '/media/profile_pictures/default_pfp/default_profile_picture.png')
+
+    def test_profile_picture_url_present(self):
+        class DummyImage:
+            url = "/media/profile_pictures/test.jpg"
+        
+        self.profile.profile_picture = DummyImage()
+        self.assertEqual(self.profile.profile_picture_url, "/media/profile_pictures/test.jpg")
+
+    def test_clean_method_allows_unique_name(self):
+        self.profile.profile_name = "unique_name"
+        self.profile.clean()
+
+    def test_clean_method_raises_for_duplicate_profile_name(self):
+        other_user = User.objects.create_user(username="anotheruser", password="testpass2")
+        other_profile = UserProfile.objects.get(user=other_user)
+        other_profile.profile_name = "duplicate_name"
+        other_profile.save()
+
+        self.profile.profile_name = "duplicate_name"
+        with self.assertRaises(ValidationError):
+            self.profile.clean()
+
+    def test_default_values(self):
+        self.assertEqual(self.profile.bio, "")
+        self.assertTrue(self.profile.receive_review_notifications)
+        self.assertEqual(self.profile.language, "en")
+        self.assertFalse(self.profile.is_online)
+
+    def test_last_online_autoset_on_create(self):
+        self.assertIsNotNone(self.profile.last_online)
+        self.assertLessEqual(self.profile.last_online, timezone.now())
+
+
+
 if __name__ == "__main__":
     import django
     import os
