@@ -18,13 +18,14 @@ from users.models import *
 
 User = get_user_model()
 
+
 class ContactMessageModelTest(TestCase):
     def setUp(self):
         self.message = ContactMessage.objects.create(
             name="Test User",
             email="testemail@example.com",
             subject="Test Subject",
-            message="This is a test message."
+            message="This is a test message.",
         )
 
     def test_contact_message_creation(self):
@@ -38,6 +39,7 @@ class ContactMessageModelTest(TestCase):
         formatted = self.message.formatted_timestamp()
         self.assertIsInstance(formatted, str)
         self.assertIn(",", formatted)
+
 
 class FriendListModelTest(TestCase):
     def setUp(self):
@@ -84,10 +86,14 @@ class FriendListModelTest(TestCase):
 class FriendRequestModelTest(TestCase):
     def setUp(self):
         self.sender = User.objects.create_user(username="sender", password="pass123")
-        self.receiver = User.objects.create_user(username="receiver", password="pass123")
+        self.receiver = User.objects.create_user(
+            username="receiver", password="pass123"
+        )
         self.sender_friend_list = FriendList.objects.create(user=self.sender)
         self.receiver_friend_list = FriendList.objects.create(user=self.receiver)
-        self.request = FriendRequest.objects.create(sender=self.sender, receiver=self.receiver)
+        self.request = FriendRequest.objects.create(
+            sender=self.sender, receiver=self.receiver
+        )
 
     def test_str_representation(self):
         self.assertEqual(str(self.request), self.sender.username)
@@ -118,7 +124,9 @@ class FriendRequestModelTest(TestCase):
 class MessageModelTest(TestCase):
     def setUp(self):
         self.sender = User.objects.create_user(username="sender", password="pass123")
-        self.receiver = User.objects.create_user(username="receiver", password="pass123")
+        self.receiver = User.objects.create_user(
+            username="receiver", password="pass123"
+        )
         self.message = Message.objects.create(
             sender=self.sender,
             receiver=self.receiver,
@@ -146,7 +154,7 @@ class QuizQuestionModelTest(TestCase):
             name="Visual Novel",
             question_text="How do you feel about visual novels?",
             option1="I'm okay with them if they have engaging narratives and choices.",
-            option2="I'm not particularly interested in visual novels."
+            option2="I'm not particularly interested in visual novels.",
         )
 
     def test_str_representation(self):
@@ -155,9 +163,15 @@ class QuizQuestionModelTest(TestCase):
 
     def test_question_creation(self):
         self.assertEqual(self.question.name, "Visual Novel")
-        self.assertEqual(self.question.question_text, "How do you feel about visual novels?")
-        self.assertEqual(self.question.option1, "I'm okay with them if they have engaging narratives and choices.")
+        self.assertEqual(
+            self.question.question_text, "How do you feel about visual novels?"
+        )
+        self.assertEqual(
+            self.question.option1,
+            "I'm okay with them if they have engaging narratives and choices.",
+        )
         self.assertIsNotNone(self.question.option3)
+
 
 class QuizUserResponseModelTest(TestCase):
     def setUp(self):
@@ -166,14 +180,14 @@ class QuizUserResponseModelTest(TestCase):
             name="Visual Novel",
             question_text="How do you feel about visual novels?",
             option1="I'm okay with them if they have engaging narratives and choices.",
-            option2="I'm not particularly interested in visual novels."
+            option2="I'm not particularly interested in visual novels.",
         )
 
         self.quiz_response = QuizUserResponse.objects.create(
             user=self.user,
             question=self.question,
             response_text="I'm not particularly interested in visual novels.",
-            )
+        )
 
     def test_str_representation(self):
         expected = f"Response from {self.user} for the question Visual Novel"
@@ -187,9 +201,7 @@ class QuizUserResponseModelTest(TestCase):
 
     def test_updated_at_auto_updates_on_save(self):
         response = QuizUserResponse.objects.create(
-            user=self.user,
-            question=self.question,
-            response_text="Initial"
+            user=self.user, question=self.question, response_text="Initial"
         )
         old_timestamp = response.updated_at
 
@@ -205,13 +217,15 @@ class QuizUserResponseModelTest(TestCase):
 class ChatMessageModelTest(TestCase):
     def setUp(self):
         self.sender = User.objects.create_user(username="sender", password="pass123")
-        self.recipient = User.objects.create_user(username="recipient", password="pass123")
+        self.recipient = User.objects.create_user(
+            username="recipient", password="pass123"
+        )
         self.message = ChatMessage.objects.create(
             sender=self.sender,
             recipient=self.recipient,
             content="Hello, test chat message.",
             file="https://example.com/file.pdf",
-            file_size=1024
+            file_size=1024,
         )
 
     def test_chat_message_creation(self):
@@ -225,7 +239,9 @@ class ChatMessageModelTest(TestCase):
         self.assertFalse(self.message.edited)
 
     def test_str_representation(self):
-        expected = f"{self.sender.username} to {self.recipient.username}: Hello, test chat mes"
+        expected = (
+            f"{self.sender.username} to {self.recipient.username}: Hello, test chat mes"
+        )
         self.assertEqual(str(self.message), expected)
 
     def test_pinning_message(self):
@@ -255,8 +271,7 @@ class GlobalChatMessageModelTest(TestCase):
     def setUp(self):
         self.user = User.objects.create_user(username="globaluser", password="pass123")
         self.global_msg = GlobalChatMessage.objects.create(
-            sender=self.user,
-            content="This is a global chat message."
+            sender=self.user, content="This is a global chat message."
         )
 
     def test_global_chat_message_creation(self):
@@ -265,7 +280,9 @@ class GlobalChatMessageModelTest(TestCase):
         self.assertIsNotNone(self.global_msg.created_at)
 
     def test_str_representation(self):
-        self.assertEqual(str(self.global_msg), "globaluser: This is a global chat message.")
+        self.assertEqual(
+            str(self.global_msg), "globaluser: This is a global chat message."
+        )
 
 
 class UserProfileModelTest(TestCase):
@@ -281,21 +298,28 @@ class UserProfileModelTest(TestCase):
         self.assertEqual(str(self.profile), self.user.username)
 
     def test_profile_picture_url(self):
-        self.assertEqual(self.profile.profile_picture_url, '/media/profile_pictures/default_pfp/default_profile_picture.png')
+        self.assertEqual(
+            self.profile.profile_picture_url,
+            "/media/profile_pictures/default_pfp/default_profile_picture.png",
+        )
 
     def test_profile_picture_url_present(self):
         class DummyImage:
             url = "/media/profile_pictures/test.jpg"
-        
+
         self.profile.profile_picture = DummyImage()
-        self.assertEqual(self.profile.profile_picture_url, "/media/profile_pictures/test.jpg")
+        self.assertEqual(
+            self.profile.profile_picture_url, "/media/profile_pictures/test.jpg"
+        )
 
     def test_clean_method_allows_unique_name(self):
         self.profile.profile_name = "unique_name"
         self.profile.clean()
 
     def test_clean_method_raises_for_duplicate_profile_name(self):
-        other_user = User.objects.create_user(username="anotheruser", password="testpass2")
+        other_user = User.objects.create_user(
+            username="anotheruser", password="testpass2"
+        )
         other_profile = UserProfile.objects.get(user=other_user)
         other_profile.profile_name = "duplicate_name"
         other_profile.save()
@@ -313,7 +337,6 @@ class UserProfileModelTest(TestCase):
     def test_last_online_autoset_on_create(self):
         self.assertIsNotNone(self.profile.last_online)
         self.assertLessEqual(self.profile.last_online, timezone.now())
-
 
 
 if __name__ == "__main__":
