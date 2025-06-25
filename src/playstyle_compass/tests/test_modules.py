@@ -856,5 +856,5 @@ if __name__ == "__main__":
 
     TestRunner = get_runner(settings)
     test_runner = TestRunner()
-    failures = test_runner.run_tests(["playstyle_compass"])
+    failures = test_runner.run_tests(["playstyle_compass.tests.test_modules"])
     sys.exit(bool(failures))
