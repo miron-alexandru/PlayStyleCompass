@@ -16,8 +16,11 @@ from django.test import TestCase
 from playstyle_compass.models import *
 from playstyle_compass.forms import *
 from django.utils.translation import gettext_lazy as _
+from django.utils import timezone
+from datetime import timedelta
 
 User = get_user_model()
+
 
 class ReviewFormTest(TestCase):
     def setUp(self):
@@ -157,7 +160,11 @@ class GameListFormTest(TestCase):
         game_list = form.save(commit=False)
         game_list.owner = self.owner
         game_list.save()
-        expected_guids = list(Game.objects.filter(id__in=[self.game1.id, self.game2.id]).values_list("guid", flat=True))
+        expected_guids = list(
+            Game.objects.filter(id__in=[self.game1.id, self.game2.id]).values_list(
+                "guid", flat=True
+            )
+        )
         self.assertEqual(game_list.game_guids, expected_guids)
 
 
@@ -191,8 +198,13 @@ class ListReviewFormTest(TestCase):
 
     def test_widget_attributes(self):
         form = ListReviewForm()
-        self.assertEqual(form.fields["title"].widget.attrs["placeholder"], "Review Title")
-        self.assertEqual(form.fields["review_text"].widget.attrs["placeholder"], "Write your review here...")
+        self.assertEqual(
+            form.fields["title"].widget.attrs["placeholder"], "Review Title"
+        )
+        self.assertEqual(
+            form.fields["review_text"].widget.attrs["placeholder"],
+            "Write your review here...",
+        )
         self.assertIsInstance(form.fields["rating"].widget.choices, list)
 
 
@@ -202,11 +214,14 @@ class PrivacySettingsFormTest(TestCase):
         self.prefs = self.user.userpreferences
 
     def test_valid_data(self):
-        form = PrivacySettingsForm(data={
-            "show_in_queue": True,
-            "show_reviews": False,
-            "show_favorites": True,
-        }, instance=self.prefs)
+        form = PrivacySettingsForm(
+            data={
+                "show_in_queue": True,
+                "show_reviews": False,
+                "show_favorites": True,
+            },
+            instance=self.prefs,
+        )
         self.assertTrue(form.is_valid())
         prefs = form.save()
         self.assertTrue(prefs.show_in_queue)
@@ -216,9 +231,7 @@ class PrivacySettingsFormTest(TestCase):
 
 class ListCommentFormTest(TestCase):
     def setUp(self):
-        self.valid_data = {
-            "text": "This is a comment about the list."
-        }
+        self.valid_data = {"text": "This is a comment about the list."}
 
     def test_valid_comment(self):
         form = ListCommentForm(data=self.valid_data)
@@ -231,8 +244,86 @@ class ListCommentFormTest(TestCase):
 
     def test_widget_attributes(self):
         form = ListCommentForm()
-        self.assertEqual(form.fields["text"].widget.attrs["placeholder"], "Write your comment here...")
+        self.assertEqual(
+            form.fields["text"].widget.attrs["placeholder"],
+            "Write your comment here...",
+        )
         self.assertEqual(form.fields["text"].widget.attrs["rows"], 4)
+
+
+class PollFormTest(TestCase):
+    def setUp(self):
+        self.valid_data = {
+            "title": "Favorite Game Genre?",
+            "description": "Choose your favorite genre.",
+            "options": "Action\nAdventure\nRPG",
+            "duration": 3,
+            "is_public": True,
+        }
+
+    def test_poll_form_valid(self):
+        form = PollForm(data=self.valid_data)
+        self.assertTrue(form.is_valid())
+        poll = form.save(commit=False)
+        self.assertIsInstance(poll, Poll)
+        self.assertEqual(poll.duration, timedelta(days=3))
+
+    def test_poll_form_invalid_too_many_options(self):
+        data = self.valid_data.copy()
+        data["options"] = "\n".join([f"Option {i}" for i in range(1, 7)])
+        form = PollForm(data=data)
+        self.assertFalse(form.is_valid())
+        self.assertIn("options", form.errors)
+
+    def test_poll_form_missing_required_fields(self):
+        form = PollForm(data={})
+        self.assertFalse(form.is_valid())
+        self.assertIn("title", form.errors)
+        self.assertIn("description", form.errors)
+        self.assertIn("options", form.errors)
+        self.assertIn("duration", form.errors)
+
+    def test_poll_form_invalid_duration(self):
+        data = self.valid_data.copy()
+        data["duration"] = 10
+        form = PollForm(data=data)
+        self.assertFalse(form.is_valid())
+        self.assertIn("duration", form.errors)
+
+
+class VoteFormTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username="voter", password="testpass")
+
+        self.poll = Poll.objects.create(
+            title="Test Poll",
+            description="Test Desc",
+            duration=timedelta(days=3),
+            is_public=True,
+            created_by=self.user,
+        )
+
+        self.option1 = PollOption.objects.create(poll=self.poll, text="Option A")
+        self.option2 = PollOption.objects.create(poll=self.poll, text="Option B")
+
+    def test_vote_form_valid(self):
+        form_data = {"option": self.option1.id}
+        form = VoteForm(self.poll, data=form_data)
+        self.assertTrue(form.is_valid())
+
+    def test_vote_form_invalid_option(self):
+        form = VoteForm(poll=self.poll, data={"option": 9999})
+        self.assertFalse(form.is_valid())
+        self.assertIn("option", form.errors)
+
+    def test_vote_form_shows_correct_options(self):
+        form = VoteForm(poll=self.poll)
+        self.assertQuerySetEqual(
+            form.fields["option"].queryset.order_by("id"),
+            self.poll.options.all().order_by("id"),
+            transform=lambda x: x,
+        )
+
 
 if __name__ == "__main__":
     import django
@@ -249,4 +340,3 @@ if __name__ == "__main__":
     test_runner = TestRunner()
     failures = test_runner.run_tests(["playstyle_compass.tests.test_forms"])
     sys.exit(bool(failures))
-
