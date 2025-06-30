@@ -844,14 +844,6 @@ class SharedReviewModelTest(TestCase):
 
 
 if __name__ == "__main__":
-    import django
-    import os
-    import sys
-    from django.conf import settings
-
-    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "playstyle_manager.settings")
-    django.setup()
-
     from django.test.utils import get_runner
 
     TestRunner = get_runner(settings)
