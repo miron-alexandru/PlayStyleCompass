@@ -126,6 +126,152 @@ class CustomRegistrationFormTest(TestCase):
         self.assertIn("profile_name", form.errors)
 
 
+class DeleteAccountFormTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username='tester', password='testpass123')
+
+    def test_valid_password(self):
+        form = DeleteAccountForm(data={"password": "testpass123"})
+        self.assertTrue(form.is_valid())
+
+    def test_empty_password(self):
+        form = DeleteAccountForm(data={"password": ""})
+        self.assertFalse(form.is_valid())
+        self.assertIn("password", form.errors)
+
+    def test_invalid_password_format(self):
+        # Since the form doesn't validate password correctness because that happens elsewhere this still passes
+        form = DeleteAccountForm(data={"password": "wrongpass"})
+        self.assertTrue(form.is_valid())
+
+
+class EmailChangeFormTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(
+            username="tester", email="tester@example.com", password="testpass123"
+        )
+        self.other_user = User.objects.create_user(
+            username="otheruser", email="other@example.com", password="otherpass456"
+        )
+
+    def test_valid_email_change(self):
+        form = EmailChangeForm(
+            data={
+                "current_password": "testpass123",
+                "new_email": "new@example.com",
+                "confirm_email": "new@example.com",
+            },
+            user=self.user,
+        )
+        self.assertTrue(form.is_valid())
+
+    def test_invalid_current_password(self):
+        form = EmailChangeForm(
+            data={
+                "current_password": "wrongpass",
+                "new_email": "new@example.com",
+                "confirm_email": "new@example.com",
+            },
+            user=self.user,
+        )
+        self.assertFalse(form.is_valid())
+        self.assertIn("current_password", form.errors)
+
+    def test_duplicate_email(self):
+        form = EmailChangeForm(
+            data={
+                "current_password": "testpass123",
+                "new_email": "other@example.com",
+                "confirm_email": "other@example.com",
+            },
+            user=self.user,
+        )
+        self.assertFalse(form.is_valid())
+        self.assertIn("new_email", form.errors)
+
+    def test_same_as_current_email(self):
+        form = EmailChangeForm(
+            data={
+                "current_password": "testpass123",
+                "new_email": "tester@example.com",
+                "confirm_email": "tester@example.com",
+            },
+            user=self.user,
+        )
+        self.assertFalse(form.is_valid())
+        self.assertIn("new_email", form.errors)
+
+    def test_mismatched_emails(self):
+        form = EmailChangeForm(
+            data={
+                "current_password": "testpass123",
+                "new_email": "new@example.com",
+                "confirm_email": "different@example.com",
+            },
+            user=self.user,
+        )
+        self.assertFalse(form.is_valid())
+        self.assertIn("confirm_email", form.errors)
+
+
+class CustomPasswordChangeFormTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username="testuser", password="TestPassword1!")
+
+    def test_valid_password_change(self):
+        form = CustomPasswordChangeForm(
+            data={
+                "old_password": "TestPassword1!",
+                "new_password1": "Newtestpassword12!",
+                "new_password2": "Newtestpassword12!",
+            },
+            user=self.user,
+        )
+        self.assertTrue(form.is_valid())
+
+    def test_invalid_password_change(self):
+        form = CustomPasswordChangeForm(
+            data={
+                "old_password": "TestPassword1!Wrong",
+                "new_password1": "Newtestpassword12!",
+                "new_password2": "Newtestpassword12!",
+            },
+            user=self.user,
+        )
+        self.assertFalse(form.is_valid())
+        self.assertIn("old_password", form.errors)
+
+    def test_mismatched_passwords(self):
+        form = CustomPasswordChangeForm(
+            data={
+                "old_password": "TestPassword1!",
+                "new_password1": "Newtestpassword12!",
+                "new_password2": "Newtestpassword12!Different",
+            },
+            user=self.user,
+        )
+        self.assertFalse(form.is_valid())
+        self.assertIn("new_password2", form.errors)
+
+    def test_weak_new_password(self):
+        form = CustomPasswordChangeForm(
+            data={
+                "old_password": "TestPassword1!",
+                "new_password1": "123",
+                "new_password2": "123",
+            },
+            user=self.user,
+        )
+        self.assertFalse(form.is_valid())
+        self.assertIn("new_password1", form.errors)
+
+    def test_empty_fields(self):
+        form = CustomPasswordChangeForm(data={}, user=self.user)
+        self.assertFalse(form.is_valid())
+        self.assertIn("old_password", form.errors)
+        self.assertIn("new_password1", form.errors)
+        self.assertIn("new_password2", form.errors)
+
 if __name__ == "__main__":
     from django.test.utils import get_runner
 
