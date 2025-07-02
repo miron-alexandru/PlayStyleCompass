@@ -11,28 +11,34 @@ import django
 django.setup()
 
 
-from django.test import TestCase
+from django.test import TestCase, override_settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.hashers import make_password
 from django.urls import reverse
-from unittest.mock import patch, Mock
-from django_recaptcha.fields import ReCaptchaField
+from unittest.mock import patch
 
 from users.forms import *
 from users.models import *
 
+import tempfile
+from io import BytesIO
+from PIL import Image
+from django.core.files.uploadedfile import SimpleUploadedFile
+from django.conf import settings
+from django.core.files.storage import default_storage
+import shutil
+from django.utils.translation import gettext as _
+
 
 User = get_user_model()
-
+MEDIA_ROOT = tempfile.mkdtemp()
 
 
 class CustomAuthenticationFormTest(TestCase):
     def setUp(self):
         self.user = User.objects.create_user(
-            username="testuser",
-            email="test@example.com",
-            password="strongpassword123"
+            username="testuser", email="test@example.com", password="strongpassword123"
         )
 
     def test_valid_authentication(self):
@@ -47,9 +53,7 @@ class CustomAuthenticationFormTest(TestCase):
         )
         self.assertFalse(form.is_valid())
         self.assertIn("__all__", form.errors)
-        self.assertIn(
-            "Incorrect username or password", form.errors["__all__"][0]
-        )
+        self.assertIn("Incorrect username or password", form.errors["__all__"][0])
 
 
 class CustomRegistrationFormTest(TestCase):
@@ -102,7 +106,9 @@ class CustomRegistrationFormTest(TestCase):
     @patch("django_recaptcha.fields.ReCaptchaField.validate")
     def test_duplicate_email(self, mock_validate):
         mock_validate.return_value = None
-        User.objects.create_user(username="user1", email="user@example.com", password="test1234")
+        User.objects.create_user(
+            username="user1", email="user@example.com", password="test1234"
+        )
         form = CustomRegistrationForm(data=self.valid_data)
         self.assertFalse(form.is_valid())
         self.assertIn("email", form.errors)
@@ -110,7 +116,9 @@ class CustomRegistrationFormTest(TestCase):
     @patch("django_recaptcha.fields.ReCaptchaField.validate")
     def test_duplicate_username(self, mock_validate):
         mock_validate.return_value = None
-        User.objects.create_user(username="user123", email="another@example.com", password="test1234")
+        User.objects.create_user(
+            username="user123", email="another@example.com", password="test1234"
+        )
         form = CustomRegistrationForm(data=self.valid_data)
         self.assertFalse(form.is_valid())
         self.assertIn("username", form.errors)
@@ -128,7 +136,7 @@ class CustomRegistrationFormTest(TestCase):
 
 class DeleteAccountFormTest(TestCase):
     def setUp(self):
-        self.user = User.objects.create_user(username='tester', password='testpass123')
+        self.user = User.objects.create_user(username="tester", password="testpass123")
 
     def test_valid_password(self):
         form = DeleteAccountForm(data={"password": "testpass123"})
@@ -216,7 +224,9 @@ class EmailChangeFormTest(TestCase):
 
 class CustomPasswordChangeFormTest(TestCase):
     def setUp(self):
-        self.user = User.objects.create_user(username="testuser", password="TestPassword1!")
+        self.user = User.objects.create_user(
+            username="testuser", password="TestPassword1!"
+        )
 
     def test_valid_password_change(self):
         form = CustomPasswordChangeForm(
@@ -271,6 +281,159 @@ class CustomPasswordChangeFormTest(TestCase):
         self.assertIn("old_password", form.errors)
         self.assertIn("new_password1", form.errors)
         self.assertIn("new_password2", form.errors)
+
+
+@override_settings(MEDIA_ROOT=MEDIA_ROOT)
+class ProfilePictureFormTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username="testuser", password="testpass")
+        self.profile = self.user.userprofile
+
+    def tearDown(self):
+        shutil.rmtree(MEDIA_ROOT, ignore_errors=True)
+
+    def generate_test_image(self, name="test.png", size=(500, 500), color=(255, 0, 0)):
+        """Generate a dummy image."""
+        image = Image.new("RGB", size, color)
+        buffer = BytesIO()
+        image.save(buffer, format="PNG")
+        buffer.seek(0)
+        return SimpleUploadedFile(name, buffer.read(), content_type="image/png")
+
+    def test_profile_picture_upload_and_resize(self):
+        image = self.generate_test_image()
+        form = ProfilePictureForm(
+            data={}, files={"profile_picture": image}, instance=self.profile
+        )
+        self.assertTrue(form.is_valid())
+        instance = form.save()
+
+        self.assertTrue(instance.profile_picture)
+        self.assertTrue(os.path.exists(instance.profile_picture.path))
+
+        with Image.open(instance.profile_picture.path) as img:
+            self.assertLessEqual(img.width, 250)
+            self.assertLessEqual(img.height, 250)
+
+        # Filename check
+        expected_prefix = f"profile_picture_{timezone.now().strftime('%Y.%m.%d.%H')}"
+        self.assertIn(expected_prefix, instance.profile_picture.name)
+
+    def test_old_profile_picture_is_deleted(self):
+        old_image = self.generate_test_image(name="old.png")
+        self.profile.profile_picture.save("old.png", old_image, save=True)
+
+        old_path = self.profile.profile_picture.path
+        self.assertTrue(os.path.exists(old_path))
+
+        new_image = self.generate_test_image(name="new.png")
+        form = ProfilePictureForm(
+            data={}, files={"profile_picture": new_image}, instance=self.profile
+        )
+        self.assertTrue(form.is_valid())
+        form.save()
+
+        self.assertFalse(os.path.exists(old_path))
+        self.assertTrue(self.profile.profile_picture)
+
+    @patch("users.forms.ProfilePictureForm.resize_image")
+    def test_no_image_uploaded_does_not_change_picture(self, mock_resize):
+        old_image = self.generate_test_image(name="original.png")
+        self.profile.profile_picture.save("original.png", old_image, save=True)
+
+        form = ProfilePictureForm(data={}, files={}, instance=self.profile)
+        self.assertTrue(form.is_valid())
+        instance = form.save()
+
+        mock_resize.assert_called_once()
+        self.assertEqual(instance.profile_picture.name, "profile_pictures/original.png")
+
+
+class ContactFormTest(TestCase):
+    def test_valid_data(self):
+        form = ContactForm(
+            data={
+                "name": "Test Name",
+                "email": "Test@example.com",
+                "subject": "Hello",
+                "message": "This is a test message.",
+            }
+        )
+        self.assertTrue(form.is_valid())
+
+    def test_missing_required_fields(self):
+        form = ContactForm(data={})
+        self.assertFalse(form.is_valid())
+        self.assertIn("name", form.errors)
+        self.assertIn("email", form.errors)
+        self.assertIn("subject", form.errors)
+        self.assertIn("message", form.errors)
+
+
+class ProfileUpdateFormTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username="testuser", password="pass1234")
+        self.profile = self.user.userprofile
+        self.profile.profile_name = "OldName"
+
+        self.other_user = User.objects.create_user(
+            username="otheruser", password="pass1234"
+        )
+        self.other_profile = self.other_user.userprofile
+        self.other_profile.profile_name = "OtherName"
+        self.other_profile.save()
+
+    def test_valid_profile_name(self):
+        form = ProfileUpdateForm(
+            data={"profile_name": "NewName"},
+            instance=self.profile,
+        )
+        self.assertTrue(form.is_valid())
+
+    def test_profile_name_invalid_characters(self):
+        form = ProfileUpdateForm(
+            data={"profile_name": "Invalid*Name!"},
+            instance=self.profile,
+        )
+        self.assertFalse(form.is_valid())
+        self.assertIn(
+            _("Profile name should only contain letters and numbers."),
+            form.errors["profile_name"],
+        )
+
+    def test_profile_name_too_short(self):
+        form = ProfileUpdateForm(
+            data={"profile_name": "ab"},
+            instance=self.profile,
+        )
+        self.assertFalse(form.is_valid())
+        self.assertIn(
+            _("Profile name should be at least three characters long."),
+            form.errors["profile_name"],
+        )
+
+    def test_profile_name_same_as_existing(self):
+        form = ProfileUpdateForm(
+            data={"profile_name": "OldName"},
+            instance=self.profile,
+        )
+        self.assertFalse(form.is_valid())
+        self.assertIn(
+            _("The new profile name is the same as the existing one."),
+            form.errors["profile_name"],
+        )
+
+    def test_profile_name_duplicate(self):
+        form = ProfileUpdateForm(
+            data={"profile_name": "OtherName"},
+            instance=self.profile,
+        )
+        self.assertFalse(form.is_valid())
+        self.assertIn(
+            _("This profile name is already in use."),
+            form.errors["profile_name"],
+        )
+
 
 if __name__ == "__main__":
     from django.test.utils import get_runner
