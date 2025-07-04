@@ -3,7 +3,6 @@
 import os
 import re
 from io import BytesIO
-import uuid
 from PIL import Image
 from django.contrib.auth.password_validation import validate_password
 from django import forms

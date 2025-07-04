@@ -435,6 +435,78 @@ class ProfileUpdateFormTest(TestCase):
         )
 
 
+class MessageFormTest(TestCase):
+    def setUp(self):
+        self.sender = User.objects.create_user(username="sender", password="pass123")
+        self.receiver = User.objects.create_user(username="receiver", password="pass123")
+
+    def test_valid_message_form(self):
+        form_data = {
+            "title": "Hello",
+            "message": "Just checking in!",
+        }
+        form = MessageForm(data=form_data)
+        self.assertTrue(form.is_valid())
+
+        message = form.save(commit=False)
+        message.sender = self.sender
+        message.receiver = self.receiver
+        message.save()
+
+        self.assertEqual(message.title, "Hello")
+        self.assertEqual(message.message, "Just checking in!")
+        self.assertEqual(message.sender, self.sender)
+        self.assertEqual(message.receiver, self.receiver)
+
+    def test_invalid_message_form_empty_fields(self):
+        form = MessageForm(data={"title": "", "message": ""})
+        self.assertFalse(form.is_valid())
+        self.assertIn("title", form.errors)
+        self.assertIn("message", form.errors)
+
+
+class QuizFormTest(TestCase):
+    def setUp(self):
+        self.question1 = QuizQuestion.objects.create(
+            name="Q1",
+            question_text="What is 2 + 2?",
+            option1="3",
+            option2="4",
+            option3="5",
+            option4="6",
+        )
+        self.question2 = QuizQuestion.objects.create(
+            name="Q2",
+            question_text="What is the capital of France?",
+            option1="Berlin",
+            option2="Madrid",
+            option3="Paris",
+            option4="Rome",
+        )
+
+    def test_valid_quiz_submission(self):
+        form_data = {
+            f"question_{self.question1.id}": "option2",
+            f"question_{self.question2.id}": "option3",
+        }
+        form = QuizForm(data=form_data, questions=[self.question1, self.question2])
+        self.assertTrue(form.is_valid())
+        self.assertEqual(
+            form.cleaned_data[f"question_{self.question1.id}"], "option2"
+        )
+        self.assertEqual(
+            form.cleaned_data[f"question_{self.question2.id}"], "option3"
+        )
+
+    def test_invalid_quiz_submission_missing_answer(self):
+        form_data = {
+            f"question_{self.question1.id}": "option2",
+        }
+        form = QuizForm(data=form_data, questions=[self.question1, self.question2])
+        self.assertFalse(form.is_valid())
+        self.assertIn(f"question_{self.question2.id}", form.errors)
+
+
 if __name__ == "__main__":
     from django.test.utils import get_runner
 
