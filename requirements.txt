@@ -28,3 +28,4 @@ social-auth-core
 youtube-search-python
 djangorestframework
 djangorestframework-simplejwt
+djangorestframework-api-key
