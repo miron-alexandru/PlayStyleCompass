@@ -27,4 +27,4 @@ social-auth-app-django
 social-auth-core
 youtube-search-python
 djangorestframework
-rest_framework_simplejwt
+djangorestframework-simplejwt
