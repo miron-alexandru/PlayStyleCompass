@@ -507,6 +507,144 @@ class QuizFormTest(TestCase):
         self.assertIn(f"question_{self.question2.id}", form.errors)
 
 
+class NotificationSettingsFormTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username="testuser", password="testpass")
+        self.profile = self.user.userprofile
+
+    def test_all_notifications_enabled(self):
+        form_data = {
+            "receive_review_notifications": True,
+            "receive_follow_notifications": True,
+            "receive_friend_request_notifications": True,
+            "receive_message_notifications": True,
+            "receive_chat_message_notifications": True,
+            "receive_shared_game_notifications": True,
+            "receive_shared_game_list_notifications": True,
+            "receive_shared_deal_notifications": True,
+            "receive_shared_review_notifications": True,
+        }
+        form = NotificationSettingsForm(data=form_data, instance=self.profile)
+        self.assertTrue(form.is_valid())
+
+        updated_profile = form.save()
+        for field in form_data:
+            self.assertTrue(getattr(updated_profile, field))
+
+    def test_all_notifications_disabled(self):
+        form_data = {
+            "receive_review_notifications": False,
+            "receive_follow_notifications": False,
+            "receive_friend_request_notifications": False,
+            "receive_message_notifications": False,
+            "receive_chat_message_notifications": False,
+            "receive_shared_game_notifications": False,
+            "receive_shared_game_list_notifications": False,
+            "receive_shared_deal_notifications": False,
+            "receive_shared_review_notifications": False,
+        }
+        form = NotificationSettingsForm(data=form_data, instance=self.profile)
+        self.assertTrue(form.is_valid())
+
+        updated_profile = form.save()
+        for field in form_data:
+            self.assertFalse(getattr(updated_profile, field))
+
+    def test_partial_update_some_checked(self):
+        form_data = {
+            "receive_review_notifications": True,
+            "receive_follow_notifications": False,
+            "receive_friend_request_notifications": True,
+            "receive_message_notifications": False,
+            "receive_chat_message_notifications": True,
+            "receive_shared_game_notifications": False,
+            "receive_shared_game_list_notifications": True,
+            "receive_shared_deal_notifications": False,
+            "receive_shared_review_notifications": True,
+        }
+        form = NotificationSettingsForm(data=form_data, instance=self.profile)
+        self.assertTrue(form.is_valid())
+
+        updated_profile = form.save()
+        for field, expected_value in form_data.items():
+            self.assertEqual(getattr(updated_profile, field), expected_value)
+
+    def test_form_renders_all_fields(self):
+        form = NotificationSettingsForm(instance=self.profile)
+        rendered = form.as_p()
+        for field_name in NotificationSettingsForm.Meta.fields:
+            self.assertIn(field_name, rendered)
+
+
+class UserProfileFormTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username="tester", password="testpass")
+        self.profile = self.user.userprofile  # auto-created
+
+        self.valid_data = {
+            "bio": "I love gaming!",
+            "favorite_game": "The Witcher 3",
+            "favorite_character": "Geralt",
+            "gaming_commitment": GAMING_COMMITMENT_CHOICES[0][0],
+            "main_gaming_platform": PLATFORM_CHOICES[0][0],
+            "social_media": "https://x.com/testgamer",
+            "gaming_setup": "RTX 4090, Dual monitors, etc.",
+            "favorite_franchise": "Elder Scrolls",
+            "last_finished_game": "Skyrim",
+            "streaming_preferences": "Twitch",
+            "current_game": "Starfield",
+            "favorite_soundtrack": "Skyrim OST",
+            "gaming_alias": "Dragonborn",
+            "gaming_genres": [GENRE_CHOICES[0][0], GENRE_CHOICES[1][0]],
+            "favorite_game_modes": [GAME_MODES_CHOICES[0][0]],
+        }
+
+    def test_valid_form_submission(self):
+        form = UserProfileForm(data=self.valid_data, instance=self.profile)
+        self.assertTrue(form.is_valid())
+        instance = form.save()
+        self.assertEqual(instance.favorite_game, "The Witcher 3")
+        self.assertIn(GENRE_CHOICES[0][0], instance.gaming_genres)
+        self.assertIn(GAME_MODES_CHOICES[0][0], instance.favorite_game_modes)
+
+    def test_invalid_too_many_genres(self):
+        form_data = self.valid_data.copy()
+        form_data["gaming_genres"] = [g[0] for g in GENRE_CHOICES[:4]]  # 4 genres
+        form = UserProfileForm(data=form_data, instance=self.profile)
+        self.assertFalse(form.is_valid())
+        self.assertIn("gaming_genres", form.errors)
+        self.assertEqual(
+            form.errors["gaming_genres"][0], "You can only select up to 3 genres."
+        )
+
+    def test_invalid_too_many_game_modes(self):
+        form_data = self.valid_data.copy()
+        form_data["favorite_game_modes"] = [g[0] for g in GAME_MODES_CHOICES[:4]]
+        form = UserProfileForm(data=form_data, instance=self.profile)
+        self.assertFalse(form.is_valid())
+        self.assertIn("favorite_game_modes", form.errors)
+        self.assertEqual(
+            form.errors["favorite_game_modes"][0],
+            "You can only select up to 3 game modes.",
+        )
+
+    def test_invalid_social_media_url(self):
+        form_data = self.valid_data.copy()
+        form_data["social_media"] = "https://unknownsite.com/profile"
+        form = UserProfileForm(data=form_data, instance=self.profile)
+        self.assertFalse(form.is_valid())
+        self.assertIn("social_media", form.errors)
+        self.assertEqual(
+            form.errors["social_media"][0], "Please enter a valid social media link."
+        )
+
+    def test_empty_social_media_is_valid(self):
+        form_data = self.valid_data.copy()
+        form_data["social_media"] = ""
+        form = UserProfileForm(data=form_data, instance=self.profile)
+        self.assertTrue(form.is_valid())
+
+
 if __name__ == "__main__":
     from django.test.utils import get_runner
 
