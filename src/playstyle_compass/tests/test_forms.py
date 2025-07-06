@@ -293,36 +293,53 @@ class PollFormTest(TestCase):
 
 class VoteFormTest(TestCase):
     def setUp(self):
-        self.user = User.objects.create_user(username="voter", password="testpass")
+        self.user = User.objects.create_user(username="testuser", password="testpass")
 
         self.poll = Poll.objects.create(
-            title="Test Poll",
+            title="Favorite color?",
             description="Test Desc",
             duration=timedelta(days=3),
             is_public=True,
             created_by=self.user,
         )
 
-        self.option1 = PollOption.objects.create(poll=self.poll, text="Option A")
-        self.option2 = PollOption.objects.create(poll=self.poll, text="Option B")
+        self.option1 = PollOption.objects.create(poll=self.poll, text="Red")
+        self.option2 = PollOption.objects.create(poll=self.poll, text="Blue")
+        self.option3 = PollOption.objects.create(poll=self.poll, text="Green")
 
-    def test_vote_form_valid(self):
-        form_data = {"option": self.option1.id}
-        form = VoteForm(self.poll, data=form_data)
-        self.assertTrue(form.is_valid())
-
-    def test_vote_form_invalid_option(self):
-        form = VoteForm(poll=self.poll, data={"option": 9999})
-        self.assertFalse(form.is_valid())
-        self.assertIn("option", form.errors)
-
-    def test_vote_form_shows_correct_options(self):
+    def test_form_queryset_is_set_correctly(self):
         form = VoteForm(poll=self.poll)
         self.assertQuerySetEqual(
             form.fields["option"].queryset.order_by("id"),
             self.poll.options.all().order_by("id"),
             transform=lambda x: x,
         )
+
+    def test_form_valid_with_valid_option(self):
+        form_data = {"option": self.option2.pk}
+        form = VoteForm(poll=self.poll, data=form_data)
+        self.assertTrue(form.is_valid())
+        self.assertEqual(form.cleaned_data["option"], self.option2)
+
+    def test_form_invalid_with_option_not_in_poll(self):
+        other_poll = Poll.objects.create(title="Another question?", created_by=self.user)
+        other_option = PollOption.objects.create(poll=other_poll, text="Other option")
+
+        form_data = {"option": other_option.pk}
+        form = VoteForm(poll=self.poll, data=form_data)
+        self.assertFalse(form.is_valid())
+        self.assertIn("option", form.errors)
+
+    def test_form_invalid_when_no_option_selected(self):
+        form_data = {}
+        form = VoteForm(poll=self.poll, data=form_data)
+        self.assertFalse(form.is_valid())
+        self.assertIn("option", form.errors)
+
+    def test_form_queryset_empty_for_poll_with_no_options(self):
+        empty_poll = Poll.objects.create(title="Empty poll", created_by=self.user)
+        form = VoteForm(poll=empty_poll)
+        self.assertEqual(form.fields["option"].queryset.count(), 0)
 
 
 if __name__ == "__main__":
