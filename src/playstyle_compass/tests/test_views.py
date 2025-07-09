@@ -16,13 +16,22 @@ import random
 from django.test import TestCase
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
+from django.contrib.auth.models import User
 from playstyle_compass.models import *
+from playstyle_compass.views import (
+    genres,
+    all_platforms,
+    all_themes,
+    game_style,
+    connection_type,
+)
 
 
 class IndexViewTest(TestCase):
     def setUp(self):
         """Set up test data for all tests"""
         used_guids = set()
+
         def unique_guid():
             while True:
                 guid = str(random.randint(10000, 99999))
@@ -31,19 +40,40 @@ class IndexViewTest(TestCase):
                     return guid
 
         upcoming_titles = [
-            "Little Nightmares III", "Assassin's Creed Shadows", "Astrobotanica",
-            "Death Stranding 2: On the Beach", "Earthblade",
-            "Vampire: The Masquerade - Bloodlines 2", "Subnautica 2",
-            "Grand Theft Auto VI", "Wuchang: Fallen Feathers", "The Relic: First Guardian",
+            "Little Nightmares III",
+            "Assassin's Creed Shadows",
+            "Astrobotanica",
+            "Death Stranding 2: On the Beach",
+            "Earthblade",
+            "Vampire: The Masquerade - Bloodlines 2",
+            "Subnautica 2",
+            "Grand Theft Auto VI",
+            "Wuchang: Fallen Feathers",
+            "The Relic: First Guardian",
         ]
         popular_titles = [
-            "Honkai: Star Rail", "Diablo IV", "Fortnite", "Overwatch",
-            "The Witcher 3: Wild Hunt", "Baldur's Gate 3", "League of Legends",
-            "Hogwarts Legacy", "NieR:Automata", "Palworld",
+            "Honkai: Star Rail",
+            "Diablo IV",
+            "Fortnite",
+            "Overwatch",
+            "The Witcher 3: Wild Hunt",
+            "Baldur's Gate 3",
+            "League of Legends",
+            "Hogwarts Legacy",
+            "NieR:Automata",
+            "Palworld",
         ]
         franchise_titles = [
-            "Assassin's Creed", "Tomb Raider", "Grand Theft Auto", "Mortal Kombat",
-            "Halo", "Battlefiled", "God of War", "The Witcher", "The Sims", "FIFA",
+            "Assassin's Creed",
+            "Tomb Raider",
+            "Grand Theft Auto",
+            "Mortal Kombat",
+            "Halo",
+            "Battlefiled",
+            "God of War",
+            "The Witcher",
+            "The Sims",
+            "FIFA",
         ]
 
         for title in upcoming_titles + popular_titles:
@@ -60,14 +90,12 @@ class IndexViewTest(TestCase):
                 url=f"https://example.com/news/{i}",
                 image=f"https://example.com/image{i}.jpg",
                 publish_date=f"2025-07-0{i+1}",
-                platforms="PC, PS5"
+                platforms="PC, PS5",
             )
 
         for i in range(10):
             Game.objects.create(
-                title=f"Top Rated Game {i}",
-                average_score=10 - i,
-                guid=unique_guid()
+                title=f"Top Rated Game {i}", average_score=10 - i, guid=unique_guid()
             )
 
         for i in range(8):
@@ -78,7 +106,7 @@ class IndexViewTest(TestCase):
                 retail_price=39.99,
                 thumb_url=f"https://example.com/thumb{i}.jpg",
                 store_name="Steam",
-                store_icon_url="https://example.com/steam-icon.png"
+                store_icon_url="https://example.com/steam-icon.png",
             )
 
     def test_index_view_returns_200(self):
@@ -117,6 +145,38 @@ class IndexViewTest(TestCase):
         self.assertIn("game_deals", context)
         self.assertEqual(context["game_deals"].count(), 8)
 
+
+class GamingPreferencesViewTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(
+            username="testuser", password="password123"
+        )
+
+    def test_view_renders_for_authenticated_user(self):
+        """Authenticated user gets 200 OK and correct context"""
+        self.client.login(username="testuser", password="password123")
+        response = self.client.get(
+            reverse("playstyle_compass:gaming_preferences"), follow=True
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "preferences/create_gaming_preferences.html")
+        self.assertEqual(
+            response.context["page_title"], _("Define PlayStyle :: PlayStyle Compass")
+        )
+        self.assertEqual(response.context["genres"], genres)
+        self.assertEqual(response.context["platforms"], all_platforms)
+        self.assertEqual(response.context["themes"], all_themes)
+        self.assertEqual(response.context["game_styles"], game_style)
+        self.assertEqual(response.context["connection_types"], connection_type)
+
+    def test_redirect_if_not_logged_in(self):
+        """Unauthenticated users should be redirected to login page"""
+        response = self.client.get(
+            reverse("playstyle_compass:gaming_preferences"), follow=True
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "registration/login.html")
+        self.assertContains(response, "Log in")
 
 
 if __name__ == "__main__":

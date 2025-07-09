@@ -438,7 +438,9 @@ class ProfileUpdateFormTest(TestCase):
 class MessageFormTest(TestCase):
     def setUp(self):
         self.sender = User.objects.create_user(username="sender", password="pass123")
-        self.receiver = User.objects.create_user(username="receiver", password="pass123")
+        self.receiver = User.objects.create_user(
+            username="receiver", password="pass123"
+        )
 
     def test_valid_message_form(self):
         form_data = {
@@ -491,12 +493,8 @@ class QuizFormTest(TestCase):
         }
         form = QuizForm(data=form_data, questions=[self.question1, self.question2])
         self.assertTrue(form.is_valid())
-        self.assertEqual(
-            form.cleaned_data[f"question_{self.question1.id}"], "option2"
-        )
-        self.assertEqual(
-            form.cleaned_data[f"question_{self.question2.id}"], "option3"
-        )
+        self.assertEqual(form.cleaned_data[f"question_{self.question1.id}"], "option2")
+        self.assertEqual(form.cleaned_data[f"question_{self.question2.id}"], "option3")
 
     def test_invalid_quiz_submission_missing_answer(self):
         form_data = {

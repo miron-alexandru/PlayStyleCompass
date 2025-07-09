@@ -322,7 +322,9 @@ class VoteFormTest(TestCase):
         self.assertEqual(form.cleaned_data["option"], self.option2)
 
     def test_form_invalid_with_option_not_in_poll(self):
-        other_poll = Poll.objects.create(title="Another question?", created_by=self.user)
+        other_poll = Poll.objects.create(
+            title="Another question?", created_by=self.user
+        )
         other_option = PollOption.objects.create(poll=other_poll, text="Other option")
 
         form_data = {"option": other_option.pk}
