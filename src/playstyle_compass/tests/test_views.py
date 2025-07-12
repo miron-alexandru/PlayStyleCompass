@@ -564,6 +564,119 @@ class AutocompleteFranchisesViewTest(TestCase):
         self.assertEqual(data["results"], [])
 
 
+class ToggleFavoriteViewTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username='testuser', password='testpass')
+        self.game = Game.objects.create(title='Stardew Valley', guid='g001')
+        self.preferences = self.user.userpreferences
+        self.url = reverse('playstyle_compass:toggle_favorite')
+
+    def test_add_game_to_favorites(self):
+        self.client.login(username='testuser', password='testpass')
+        response = self.client.post(self.url, {'game_id': self.game.guid}, secure=True)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertJSONEqual(response.content, {"is_favorite": True})
+        self.assertIn(self.game, self.preferences.favorite_games.all())
+
+    def test_remove_game_from_favorites(self):
+        self.preferences.favorite_games.add(self.game)
+        self.client.login(username='testuser', password='testpass')
+        response = self.client.post(self.url, {'game_id': self.game.guid}, secure=True)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertJSONEqual(response.content, {"is_favorite": False})
+        self.assertNotIn(self.game, self.preferences.favorite_games.all())
+
+    def test_unauthenticated_user_redirected(self):
+        response = self.client.post(self.url, {'game_id': self.game.guid}, secure=True)
+        self.assertEqual(response.status_code, 302)
+        self.assertIn("/users/login/", response.url)
+
+    def test_invalid_game_returns_404(self):
+        self.client.login(username='testuser', password='testpass')
+        response = self.client.post(self.url, {'game_id': 'invalid-guid'}, secure=True)
+        self.assertEqual(response.status_code, 404)
+
+    def test_get_request_returns_405(self):
+        self.client.login(username='testuser', password='testpass')
+        response = self.client.get(self.url, {'game_id': self.game.guid}, secure=True)
+        self.assertEqual(response.status_code, 405)
+
+
+class ToggleGameQueueViewTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username="testuser", password="testpass")
+        self.game = Game.objects.create(title="Test Game", guid="game-123")
+        self.url = reverse("playstyle_compass:toggle_game_queue")
+
+    def test_toggle_adds_game_to_queue(self):
+        self.client.login(username="testuser", password="testpass")
+        response = self.client.post(self.url, {"game_id": self.game.guid}, secure=True)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertJSONEqual(response.content, {"in_queue": True})
+        self.assertIn(self.game, self.user.userpreferences.game_queue.all())
+
+    def test_toggle_removes_game_from_queue(self):
+        self.client.login(username="testuser", password="testpass")
+        self.user.userpreferences.game_queue.add(self.game)
+
+        response = self.client.post(self.url, {"game_id": self.game.guid}, secure=True)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertJSONEqual(response.content, {"in_queue": False})
+        self.assertNotIn(self.game, self.user.userpreferences.game_queue.all())
+
+    def test_unauthenticated_redirects_to_login(self):
+        response = self.client.post(self.url, {"game_id": self.game.guid}, secure=True)
+
+        self.assertEqual(response.status_code, 302)
+        self.assertIn("/users/login/", response.url)
+
+    def test_get_request_returns_405(self):
+        self.client.login(username="testuser", password="testpass")
+        response = self.client.get(self.url, {"game_id": self.game.guid}, secure=True)
+
+        self.assertEqual(response.status_code, 405)
+
+
+class ToggleGameQueueViewTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username="testuser", password="testpass")
+        self.game = Game.objects.create(title="Test Game", guid="game-123")
+        self.url = reverse("playstyle_compass:toggle_game_queue")
+
+    def test_toggle_adds_game_to_queue(self):
+        self.client.login(username="testuser", password="testpass")
+        response = self.client.post(self.url, {"game_id": self.game.guid}, secure=True)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertJSONEqual(response.content, {"in_queue": True})
+        self.assertIn(self.game, self.user.userpreferences.game_queue.all())
+
+    def test_toggle_removes_game_from_queue(self):
+        self.client.login(username="testuser", password="testpass")
+        self.user.userpreferences.game_queue.add(self.game)
+
+        response = self.client.post(self.url, {"game_id": self.game.guid}, secure=True)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertJSONEqual(response.content, {"in_queue": False})
+        self.assertNotIn(self.game, self.user.userpreferences.game_queue.all())
+
+    def test_unauthenticated_redirects_to_login(self):
+        response = self.client.post(self.url, {"game_id": self.game.guid}, secure=True)
+
+        self.assertEqual(response.status_code, 302)
+        self.assertIn("/users/login/", response.url)
+
+    def test_get_request_returns_405(self):
+        self.client.login(username="testuser", password="testpass")
+        response = self.client.get(self.url, {"game_id": self.game.guid}, secure=True)
+
+        self.assertEqual(response.status_code, 405)
+
 
 if __name__ == "__main__":
     from django.test.utils import get_runner

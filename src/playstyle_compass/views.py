@@ -11,6 +11,7 @@ from django.http import (
     HttpResponseRedirect,
     HttpResponseBadRequest,
     Http404,
+    HttpResponseNotAllowed,
 )
 from django.urls import reverse
 from django.db.models import Avg, Q
@@ -395,6 +396,8 @@ def autocomplete_franchises(request):
 @login_required
 def toggle_favorite(request):
     """View for toggling a game's favorite status for the current user."""
+    if request.method != "POST":
+        return HttpResponseNotAllowed(["POST"])
 
     if request.method == "POST":
         game_id = request.POST.get("game_id")
@@ -415,6 +418,9 @@ def toggle_favorite(request):
 @login_required
 def toggle_game_queue(request):
     """View for toggling a game's queued status for the current user."""
+    if request.method != "POST":
+        return HttpResponseNotAllowed(["POST"])
+
     if request.method == "POST":
         game_id = request.POST.get("game_id")
         game = get_object_or_404(Game, guid=game_id)
