@@ -13,12 +13,14 @@ django.setup()
 
 import random
 import json
+from datetime import date, timedelta
 from unittest.mock import patch
 
 from django.test import TestCase
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import User
+from django.contrib.messages import get_messages
 from playstyle_compass.models import *
 from playstyle_compass.views import (
     genres,
@@ -676,6 +678,210 @@ class ToggleGameQueueViewTest(TestCase):
         response = self.client.get(self.url, {"game_id": self.game.guid}, secure=True)
 
         self.assertEqual(response.status_code, 405)
+
+
+class UserReviewsViewTest(TestCase):
+    def setUp(self):
+        self.user1 = User.objects.create_user(username="user1", password="testpass")
+        self.user1.userprofile.profile_name = "User One"
+        self.user1.userprofile.save()
+        self.user1.userpreferences.show_reviews = True
+        self.user1.userpreferences.save()
+
+        self.user2 = User.objects.create_user(username="user2", password="testpass")
+        self.user2.userprofile.profile_name = "User Two"
+        self.user2.userprofile.save()
+        self.user2.userpreferences.show_reviews = True
+        self.user2.userpreferences.save()
+
+        self.game = Game.objects.create(title="Test Game", guid="001")
+        self.review = Review.objects.create(
+            game=self.game,
+            user=self.user1,
+            reviewers="Reviewer A",
+            review_deck="Deck A",
+            review_description="A solid review.",
+            score=4,
+            date_added=now()
+        )
+
+        self.url = reverse("playstyle_compass:user_reviews")
+        self.other_url = reverse("playstyle_compass:user_reviews_with_id", kwargs={"user_id": self.user2.id})
+
+    def test_view_own_reviews(self):
+        self.client.login(username="user1", password="testpass")
+        response = self.client.get(self.url, secure=True)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "reviews/user_reviews.html")
+        self.assertIn(self.game, response.context["games"])
+        self.assertFalse(response.context["other_user"])
+        self.assertEqual(response.context["user_name"], "User One")
+
+    def test_view_other_user_reviews_allowed(self):
+        self.client.login(username="user1", password="testpass")
+        response = self.client.get(self.other_url, secure=True)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "reviews/user_reviews.html")
+        self.assertTrue(response.context["other_user"])
+        self.assertEqual(response.context["user_name"], "User Two")
+
+    def test_view_other_user_reviews_disallowed(self):
+        self.client.login(username="user1", password="testpass")
+        self.user2.userpreferences.show_reviews = False
+        self.user2.userpreferences.save()
+
+        response = self.client.get(self.other_url, follow=True)
+        self.assertRedirects(
+            response,
+            "https://testserver" + reverse("playstyle_compass:index"),
+            status_code=301,
+             target_status_code=200,
+        )
+
+        messages = list(get_messages(response.wsgi_request))
+        self.assertTrue(any(_("You don't have permission to view this content.") in str(message) for message in messages))
+
+    def test_login_required(self):
+        response = self.client.get(self.url, secure=True)
+        self.assertEqual(response.status_code, 302)
+        self.assertIn("/users/login/", response.url)
+
+
+class UserGamesViewsTest(TestCase):
+    def setUp(self):
+        self.user1 = User.objects.create_user(username="user1", password="testpass")
+        self.user2 = User.objects.create_user(username="user2", password="testpass")
+
+        self.client.login(username="user1", password="testpass")
+
+    def test_view_own_favorite_games(self):
+        response = self.client.get(reverse("playstyle_compass:favorite_games"), secure=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Favorites")
+        self.assertFalse(response.context["other_user"])
+
+    def test_view_other_user_favorite_games_disallowed(self):
+        self.user2.userpreferences.show_favorites = False
+        self.user2.userpreferences.save()
+
+        url = reverse("playstyle_compass:favorite_games_with_id", kwargs={"user_id": self.user2.id})
+        response = self.client.get(url, secure=True)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, reverse("playstyle_compass:index"))
+        response_follow = self.client.get(response.url, secure=True)
+        messages = list(get_messages(response_follow.wsgi_request))
+        self.assertTrue(any("don't have permission" in str(message) for message in messages))
+
+    def test_view_other_user_favorite_games_allowed(self):
+        self.user2.userpreferences.show_favorites = True
+        self.user2.userpreferences.save()
+
+        url = reverse("playstyle_compass:favorite_games_with_id", kwargs={"user_id": self.user2.id})
+        response = self.client.get(url, secure=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Favorites")
+        self.assertTrue(response.context["other_user"])
+
+    def test_view_other_user_game_queue_disallowed(self):
+        self.user2.userpreferences.show_in_queue = False
+        self.user2.userpreferences.save()
+
+        url = reverse("playstyle_compass:game_queue_with_id", kwargs={"user_id": self.user2.id})
+        response = self.client.get(url, secure=True)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, reverse("playstyle_compass:index"))
+        response_follow = self.client.get(response.url, secure=True)
+        messages = list(get_messages(response_follow.wsgi_request))
+        self.assertTrue(any("don't have permission" in str(message) for message in messages))
+
+    def test_view_other_user_game_queue_allowed(self):
+        self.user2.userpreferences.show_in_queue = True
+        self.user2.userpreferences.save()
+
+        url = reverse("playstyle_compass:game_queue_with_id", kwargs={"user_id": self.user2.id})
+        response = self.client.get(url, secure=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Game Queue")
+        self.assertTrue(response.context["other_user"])
+
+
+class TopRatedGamesViewTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username="testuser", password="testpass")
+        self.client.login(username="testuser", password="testpass")
+
+        self.game1 = Game.objects.create(title="Game One", guid="1234")
+        self.game2 = Game.objects.create(title="Game Two", guid="2423")
+        self.game3 = Game.objects.create(title="Game Three", guid="2928")
+
+        # Create reviews for each game to set average_score properly
+        Review.objects.create(
+            game=self.game1,
+            user=self.user,
+            reviewers="Reviewer1",
+            review_deck="Great game",
+            review_description="Really enjoyed it",
+            score=5,
+        )
+        Review.objects.create(
+            game=self.game2,
+            user=self.user,
+            reviewers="Reviewer2",
+            review_deck="Amazing!",
+            review_description="One of the best",
+            score=5,
+        )
+        Review.objects.create(
+            game=self.game3,
+            user=self.user,
+            reviewers="Reviewer3",
+            review_deck="Not so good",
+            review_description="Could be better",
+            score=3,
+        )
+
+
+    def test_top_rated_games_view(self):
+        url = reverse("playstyle_compass:top_rated_games")
+        response = self.client.get(url, secure=True)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "games/top_rated_games.html")
+
+        games_in_context = list(response.context["games"])
+        self.assertIn(self.game1, games_in_context)
+        self.assertIn(self.game2, games_in_context)
+        self.assertNotIn(self.game3, games_in_context)
+
+        self.assertLessEqual(games_in_context[0].average_score, games_in_context[-1].average_score)
+
+
+class UpcomingGamesViewTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username="testuser", password="testpass")
+        self.client.login(username="testuser", password="testpass")
+
+        future_date = date.today() + timedelta(days=10)
+        current_year_str = str(date.today().year)
+
+        self.upcoming1 = Game.objects.create(title="Upcoming 1", release_date=future_date, guid="231")
+        self.upcoming2 = Game.objects.create(title="Upcoming 2", release_date=current_year_str, guid="2312")
+        self.past_game = Game.objects.create(title="Past Game", release_date=date.today() - timedelta(days=5), guid="493")
+
+    def test_upcoming_games_view(self):
+        url = reverse("playstyle_compass:upcoming_games")
+        response = self.client.get(url, secure=True)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "games/upcoming_games.html")
+
+        paginated_games = response.context["upcoming_games"]
+
+        self.assertIn(self.upcoming1, paginated_games)
+        self.assertIn(self.upcoming2, paginated_games)
+        self.assertNotIn(self.past_game, paginated_games)
 
 
 if __name__ == "__main__":
