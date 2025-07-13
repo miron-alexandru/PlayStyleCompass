@@ -741,7 +741,7 @@ class UserReviewsViewTest(TestCase):
         )
 
         messages = list(get_messages(response.wsgi_request))
-        self.assertTrue(any(_("You don't have permission to view this content.") in str(message) for message in messages))
+        self.assertTrue(any(str(_("You don't have permission to view this content.")) in str(message) for message in messages))
 
     def test_login_required(self):
         response = self.client.get(self.url, secure=True)
