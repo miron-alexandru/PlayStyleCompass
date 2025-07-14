@@ -14,14 +14,17 @@ django.setup()
 import random
 import json
 from datetime import date, timedelta
-from unittest.mock import patch
+from unittest.mock import patch, MagicMock
 
 from django.test import TestCase
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
+from django.utils.html import escape
+from django.utils.timezone import now
 from django.contrib.auth.models import User
 from django.contrib.messages import get_messages
 from playstyle_compass.models import *
+from users.models import *
 from playstyle_compass.views import (
     genres,
     all_platforms,
@@ -569,7 +572,7 @@ class AutocompleteFranchisesViewTest(TestCase):
 class ToggleFavoriteViewTest(TestCase):
     def setUp(self):
         self.user = User.objects.create_user(username='testuser', password='testpass')
-        self.game = Game.objects.create(title='Stardew Valley', guid='g001')
+        self.game = Game.objects.create(title='Stardew Valley', guid='343')
         self.preferences = self.user.userpreferences
         self.url = reverse('playstyle_compass:toggle_favorite')
 
@@ -609,7 +612,7 @@ class ToggleFavoriteViewTest(TestCase):
 class ToggleGameQueueViewTest(TestCase):
     def setUp(self):
         self.user = User.objects.create_user(username="testuser", password="testpass")
-        self.game = Game.objects.create(title="Test Game", guid="game-123")
+        self.game = Game.objects.create(title="Test Game", guid="34123")
         self.url = reverse("playstyle_compass:toggle_game_queue")
 
     def test_toggle_adds_game_to_queue(self):
@@ -646,7 +649,7 @@ class ToggleGameQueueViewTest(TestCase):
 class ToggleGameQueueViewTest(TestCase):
     def setUp(self):
         self.user = User.objects.create_user(username="testuser", password="testpass")
-        self.game = Game.objects.create(title="Test Game", guid="game-123")
+        self.game = Game.objects.create(title="Test Game", guid="54123")
         self.url = reverse("playstyle_compass:toggle_game_queue")
 
     def test_toggle_adds_game_to_queue(self):
@@ -694,7 +697,7 @@ class UserReviewsViewTest(TestCase):
         self.user2.userpreferences.show_reviews = True
         self.user2.userpreferences.save()
 
-        self.game = Game.objects.create(title="Test Game", guid="001")
+        self.game = Game.objects.create(title="Test Game", guid="64341")
         self.review = Review.objects.create(
             game=self.game,
             user=self.user1,
@@ -882,6 +885,282 @@ class UpcomingGamesViewTest(TestCase):
         self.assertIn(self.upcoming1, paginated_games)
         self.assertIn(self.upcoming2, paginated_games)
         self.assertNotIn(self.past_game, paginated_games)
+
+
+class AddReviewViewTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username="testuser", password="testpass")
+        self.user_profile = self.user.userprofile
+        self.user_profile.profile_name = "testprofile"
+        self.user_profile.save()
+
+        self.follower_user = User.objects.create_user(username="follower", password="testpass")
+        self.follower_profile = self.follower_user.userprofile
+        Follow.objects.create(follower=self.follower_user, followed=self.user)
+
+        self.client.login(username="testuser", password="testpass")
+
+        self.game = Game.objects.create(
+            guid="1234",
+            title="Test Game",
+            description="desc",
+            genres="Action",
+            platforms="PC",
+            image="img.png",
+            videos="none",
+            concepts="Concept",
+        )
+
+        self.url = reverse("playstyle_compass:add_review", args=[self.game.guid])
+        self.index_url = reverse("playstyle_compass:index")
+
+    def test_can_get_form(self):
+        response = self.client.get(self.url, secure=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "reviews/add_review.html")
+        self.assertIsInstance(response.context["form"], ReviewForm)
+        self.assertEqual(response.context["game"], self.game)
+
+    def test_can_add_review(self):
+        data = {
+            "review_deck": "Great game!",
+            "review_description": "Really enjoyed it.",
+            "score": 5,
+        }
+        response = self.client.post(self.url, data, secure=True)
+
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response["Location"], self.index_url)
+
+        review = Review.objects.get(game=self.game.guid, user=self.user)
+        self.assertEqual(review.reviewers, "testprofile")
+        self.assertEqual(review.review_deck, "Great game!")
+        self.assertEqual(review.score, 5)
+
+    def test_duplicate_review_blocked(self):
+        Review.objects.create(
+            game=self.game,
+            user=self.user,
+            reviewers="testprofile",
+            review_deck="Great",
+            review_description="desc",
+            score=5,
+        )
+
+        response = self.client.post(self.url, {
+            "review_deck": "Another",
+            "review_description": "Another desc",
+            "score": 4,
+        }, secure=True)
+
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response["Location"], self.index_url)
+
+        self.assertEqual(Review.objects.filter(game=self.game.guid, user=self.user).count(), 1)
+
+        messages_list = list(get_messages(response.wsgi_request))
+        self.assertIn("You have already reviewed this game!", [m.message for m in messages_list])
+
+    def test_followers_get_notifications(self):
+        response = self.client.post(self.url, {
+            "review_deck": "Deck",
+            "review_description": "Description",
+            "score": 5,
+        }, secure=True)
+
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response["Location"], self.index_url)
+
+        review = Review.objects.filter(game=self.game.guid, user=self.user).first()
+        self.assertIsNotNone(review)
+
+        notifications = Notification.objects.filter(notification_type="review", user=self.follower_user)
+        self.assertEqual(notifications.count(), 1)
+        notification = notifications.first()
+        self.assertIn(self.user_profile.profile_name, notification.message)
+        self.assertIn(self.game.title, notification.message)
+
+    def test_redirects_to_next(self):
+        next_url = reverse("playstyle_compass:view_game", args=[self.game.guid])
+        response = self.client.post(
+            f"{self.url}?next={next_url}",
+            {
+                "review_deck": "Deck",
+                "review_description": "Description",
+                "score": 5,
+            },
+            secure=True,
+        )
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response["Location"], next_url)
+
+    def test_redirects_if_not_logged_in(self):
+        self.client.logout()
+        response = self.client.get(self.url, secure=True)
+        self.assertEqual(response.status_code, 302)
+
+        expected_url = f"/en/users/login/?next={self.url}"
+        self.assertEqual(response["Location"], expected_url)
+
+
+class EditReviewViewTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username="testuser", password="testpass")
+        self.user_profile = self.user.userprofile
+        self.user_profile.profile_name = "testprofile"
+        self.user_profile.save()
+
+        self.client.login(username="testuser", password="testpass")
+
+        self.game = Game.objects.create(
+            guid="1234",
+            title="Test Game",
+            description="desc",
+            genres="Action",
+            platforms="PC",
+            image="img.png",
+            videos="none",
+            concepts="Concept",
+        )
+
+        self.url = reverse("playstyle_compass:edit_review", args=[self.game.guid])
+        self.index_url = reverse("playstyle_compass:index")
+
+        self.review = Review.objects.create(
+            game=self.game,
+            user=self.user,
+            reviewers=self.user_profile.profile_name,
+            review_deck="Original deck",
+            review_description="Original description",
+            score=3,
+        )
+
+    def test_can_view_edit_form(self):
+        response = self.client.get(self.url, secure=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "reviews/edit_review.html")
+        self.assertIsInstance(response.context["form"], ReviewForm)
+        self.assertEqual(response.context["game"], self.game)
+
+    def test_can_update_review(self):
+        data = {
+            "review_deck": "Updated deck <script>",
+            "review_description": "Updated description <b>bold</b>",
+            "score": 4,
+        }
+        response = self.client.post(self.url, data, secure=True)
+
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response["Location"], self.index_url)
+
+        review = Review.objects.get(pk=self.review.pk)
+        self.assertEqual(review.review_deck, escape(data["review_deck"]))
+        self.assertEqual(review.review_description, escape(data["review_description"]))
+        self.assertEqual(review.score, 4)
+
+        messages_list = list(get_messages(response.wsgi_request))
+        self.assertIn("successfully updated", messages_list[0].message.lower())
+
+    def test_redirect_if_no_review(self):
+        self.review.delete()
+
+        response = self.client.get(self.url, secure=True)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response["Location"], self.index_url)
+
+        messages_list = list(get_messages(response.wsgi_request))
+        self.assertIn("You haven't written any reviews for this game!", [m.message for m in messages_list])
+
+    def test_redirects_if_not_logged_in(self):
+        self.client.logout()
+        response = self.client.get(self.url, secure=True)
+        self.assertEqual(response.status_code, 302)
+
+        login_url = f"/en/users/login/?next={self.url}"
+        self.assertEqual(response["Location"], login_url)
+
+
+class GameReviewsViewTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username="testuser", password="testpass")
+        self.game = Game.objects.create(
+            guid="453123",
+            title="Test Game",
+            description="desc",
+            genres="Action",
+            platforms="PC",
+            image="img.png",
+            videos="none",
+            concepts="Concept",
+        )
+
+        self.url = reverse("playstyle_compass:get_game_reviews", args=[self.game.guid])
+
+        Review.objects.create(
+            game=self.game,
+            user=self.user,
+            reviewers="testprofile",
+            review_deck="Good game",
+            review_description="Really liked it",
+            score=4,
+            likes=10,
+            dislikes=1,
+        )
+
+        Review.objects.create(
+            game=self.game,
+            user=self.user,
+            reviewers="deactivated-123",
+            review_deck="Not bad",
+            review_description="It was okay",
+            score=3,
+            likes=2,
+            dislikes=3,
+        )
+
+    def test_can_get_reviews(self):
+        response = self.client.get(self.url, secure=True)
+        self.assertEqual(response.status_code, 200)
+
+        data = response.json()
+        self.assertIn("reviews", data)
+        self.assertEqual(len(data["reviews"]), 2)
+
+    def test_hides_deactivated_users(self):
+        response = self.client.get(self.url, secure=True)
+        data = response.json()
+
+        deactivated_reviews = [r for r in data["reviews"] if r["reviewer"] == "inactive-user"]
+        self.assertTrue(len(deactivated_reviews) > 0)
+
+    def test_shows_dates_in_dd_mm_yyyy(self):
+        response = self.client.get(self.url, secure=True)
+        data = response.json()
+
+        for review in data["reviews"]:
+            self.assertRegex(review["date_added"], r"\d{2}/\d{2}/\d{4}")
+
+    @patch("playstyle_compass.views.Review.objects.filter")
+    def test_masks_invalid_user_id(self, mock_filter):
+        mock_review = MagicMock()
+        mock_review.id = 1
+        mock_review.reviewers = "tester"
+        mock_review.review_deck = "Test deck"
+        mock_review.review_description = "Test desc"
+        mock_review.score = 5
+        mock_review.likes = 0
+        mock_review.dislikes = 0
+        mock_review.date_added = now()
+        mock_review.user_id = "-65123"
+
+        mock_filter.return_value = [mock_review]
+
+        response = self.client.get(self.url, secure=True)
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+
+        invalid_user_reviews = [r for r in data["reviews"] if r["user_id"] == "invalid_user"]
+        self.assertTrue(len(invalid_user_reviews) > 0)
 
 
 if __name__ == "__main__":
