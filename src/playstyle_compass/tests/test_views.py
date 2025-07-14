@@ -24,6 +24,7 @@ from django.utils.timezone import now
 from django.contrib.auth.models import User
 from django.contrib.messages import get_messages
 from playstyle_compass.models import *
+from playstyle_compass.forms import *
 from users.models import *
 from playstyle_compass.views import (
     genres,
