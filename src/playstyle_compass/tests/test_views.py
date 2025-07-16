@@ -1164,6 +1164,204 @@ class GameReviewsViewTest(TestCase):
         self.assertTrue(len(invalid_user_reviews) > 0)
 
 
+class LikeReviewViewTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username="testuser", password="testpass")
+        self.other_user = User.objects.create_user(username="otheruser", password="testpass")
+        self.client.login(username="testuser", password="testpass")
+
+        self.game = Game.objects.create(
+            guid="1234", title="Game", description="desc",
+            genres="Action", platforms="PC", image="img.png",
+            videos="none", concepts="Concept"
+        )
+
+        self.review = Review.objects.create(
+            game=self.game,
+            user=self.other_user,
+            reviewers="someone",
+            review_deck="Deck",
+            review_description="Desc",
+            score=3,
+            likes=0,
+            dislikes=0,
+        )
+
+        self.url = reverse("playstyle_compass:like")
+
+    def test_can_like_review(self):
+        self.review.liked_by = ""
+        self.review.save()
+        
+        response = self.client.post(self.url, {"review_id": self.review.id}, secure=True)
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        self.assertIn("likes", data)
+        self.assertEqual(data["likes"], 1)
+
+    def test_can_unlike_review(self):
+        self.review.liked_by = ""
+        self.review.save()
+        
+        self.review.add_like(self.user.id)
+        response = self.client.post(self.url, {"review_id": self.review.id}, secure=True)
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        self.assertEqual(data["likes"], 0)
+
+    def test_cannot_like_own_review(self):
+        own_review = Review.objects.create(
+            game=self.game,
+            user=self.user,
+            reviewers="me",
+            review_deck="Deck",
+            review_description="Desc",
+            score=5,
+        )
+        response = self.client.post(self.url, {"review_id": own_review.id}, secure=True)
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        self.assertIn("cannot like your own review", data["message"].lower())
+
+    def test_invalid_review_id(self):
+        response = self.client.post(self.url, {"review_id": 9999}, secure=True)
+        self.assertEqual(response.status_code, 404)
+
+    def test_redirects_if_not_logged_in(self):
+        self.client.logout()
+        response = self.client.post(self.url, {"review_id": self.review.id}, secure=True)
+        self.assertEqual(response.status_code, 302)
+        self.assertIn("/users/login/", response.url)
+
+
+class DislikeReviewViewTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username="testuser", password="testpass")
+        self.other_user = User.objects.create_user(username="otheruser", password="testpass")
+        self.client.login(username="testuser", password="testpass")
+
+        self.game = Game.objects.create(
+            guid="1234", title="Game", description="desc",
+            genres="Action", platforms="PC", image="img.png",
+            videos="none", concepts="Concept"
+        )
+
+        self.review = Review.objects.create(
+            game=self.game,
+            user=self.other_user,
+            reviewers="someone",
+            review_deck="Deck",
+            review_description="Desc",
+            score=3,
+            likes=0,
+            dislikes=0,
+        )
+
+        self.url = reverse("playstyle_compass:dislike")
+
+    def test_can_dislike_review(self):
+        self.review.disliked_by = ""
+        self.review.save()
+
+        response = self.client.post(self.url, {"review_id": self.review.id}, secure=True)
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        self.assertIn("dislikes", data)
+        self.assertEqual(data["dislikes"], 1)
+
+    def test_can_undislike_review(self):
+        self.review.disliked_by = ""
+        self.review.save()
+
+        self.review.add_dislike(self.user.id)
+        response = self.client.post(self.url, {"review_id": self.review.id}, secure=True)
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        self.assertEqual(data["dislikes"], 0)
+
+    def test_cannot_dislike_own_review(self):
+        own_review = Review.objects.create(
+            game=self.game,
+            user=self.user,
+            reviewers="me",
+            review_deck="Deck",
+            review_description="Desc",
+            score=5,
+        )
+        response = self.client.post(self.url, {"review_id": own_review.id}, secure=True)
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        self.assertIn("cannot dislike your own review", data["message"].lower())
+
+    def test_invalid_review_id(self):
+        response = self.client.post(self.url, {"review_id": 9999}, secure=True)
+        self.assertEqual(response.status_code, 404)
+
+    def test_redirects_if_not_logged_in(self):
+        self.client.logout()
+        response = self.client.post(self.url, {"review_id": self.review.id}, secure=True)
+        self.assertEqual(response.status_code, 302)
+        self.assertIn("/users/login/", response.url)
+
+
+class DeleteReviewsViewTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username="testuser", password="testpass")
+        self.other_user = User.objects.create_user(username="otheruser", password="testpass")
+        self.client.login(username="testuser", password="testpass")
+
+        self.game = Game.objects.create(
+            guid="1234",
+            title="Test Game",
+            description="desc",
+            genres="Action",
+            platforms="PC",
+            image="img.png",
+            videos="none",
+            concepts="Concept"
+        )
+
+        self.review = Review.objects.create(
+            game=self.game,
+            user=self.user,
+            reviewers="someone",
+            review_deck="Deck",
+            review_description="Desc",
+            score=3,
+        )
+
+        self.url = reverse("playstyle_compass:delete_reviews", args=[self.game.guid])
+
+    def test_can_delete_review(self):
+        response = self.client.post(self.url, {"next": "/"}, secure=True)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.headers["Location"], "/")
+        self.assertFalse(Review.objects.filter(id=self.review.id).exists())
+        messages_list = list(get_messages(response.wsgi_request))
+        self.assertEqual(len(messages_list), 1)
+        self.assertIn("successfully deleted", str(messages_list[0].message).lower())
+
+    def test_cannot_delete_nonexistent_review(self):
+        self.review.delete()
+        response = self.client.post(self.url, {"next": "/"}, secure=True)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.headers["Location"], "/")
+        messages_list = list(get_messages(response.wsgi_request))
+        self.assertEqual(len(messages_list), 1)
+        self.assertIn("haven't written any reviews", str(messages_list[0].message).lower())
+
+    def test_redirects_if_not_logged_in(self):
+        self.client.logout()
+        response = self.client.post(self.url, {"next": "/"}, secure=True)
+        self.assertEqual(response.status_code, 302)
+        self.assertIn("/users/login/", response.headers["Location"])
+
+    def test_redirects_to_index_if_no_next(self):
+        response = self.client.post(self.url, secure=True)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.headers["Location"], reverse("playstyle_compass:index"))
+
+
 if __name__ == "__main__":
     from django.test.utils import get_runner
 
