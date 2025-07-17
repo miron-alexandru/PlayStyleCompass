@@ -1362,6 +1362,35 @@ class DeleteReviewsViewTest(TestCase):
         self.assertEqual(response.headers["Location"], reverse("playstyle_compass:index"))
 
 
+class ViewGameViewTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username="testuser", password="testpass")
+        self.client.login(username="testuser", password="testpass")
+
+        self.game = Game.objects.create(
+            guid="1234",
+            title="Test Game",
+            description="desc",
+            genres="Action",
+            platforms="PC",
+            image="img.png",
+            videos="none",
+            concepts="Concept"
+        )
+        self.url = reverse("playstyle_compass:view_game", args=[self.game.guid])
+
+    def test_can_view_game(self):
+        response = self.client.get(self.url, secure=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "games/view_game.html")
+        self.assertContains(response, "Test Game")
+
+    def test_game_does_not_exist(self):
+        invalid_url = reverse("playstyle_compass:view_game", args=[9999])
+        response = self.client.get(invalid_url, secure=True)
+        self.assertEqual(response.status_code, 404)
+
+
 if __name__ == "__main__":
     from django.test.utils import get_runner
 
