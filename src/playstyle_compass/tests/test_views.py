@@ -1391,6 +1391,141 @@ class ViewGameViewTest(TestCase):
         self.assertEqual(response.status_code, 404)
 
 
+class ShareGameViewTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username="testuser", password="testpass")
+        self.receiver = User.objects.create_user(username="receiveruser", password="testpass")
+
+        self.user.userprofile.profile_name = "TestUser"
+        self.user.userprofile.save()
+        self.receiver.userprofile.profile_name = "ReceiverUser"
+        self.receiver.userprofile.save()
+
+        self.client.login(username="testuser", password="testpass")
+
+        self.game = Game.objects.create(
+            guid="1234",
+            title="Test Game",
+            description="desc",
+            genres="Action",
+            platforms="PC",
+            image="img.png",
+            videos="none",
+            concepts="Concept"
+        )
+
+        self.url = reverse("playstyle_compass:share_game", args=[self.game.guid])
+
+    def test_can_share_game(self):
+        response = self.client.post(self.url, {"receiver_id": self.receiver.id}, secure=True)
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        self.assertEqual(data["status"], "success")
+        self.assertIn("successfully shared", data["message"].lower())
+        self.assertTrue(SharedGame.objects.filter(sender=self.user, receiver=self.receiver, game_id=self.game.guid).exists())
+
+    def test_cannot_share_game_twice(self):
+        SharedGame.objects.create(sender=self.user, receiver=self.receiver, game_id=self.game.guid)
+        response = self.client.post(self.url, {"receiver_id": self.receiver.id}, secure=True)
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        self.assertEqual(data["status"], "error")
+        self.assertIn("already shared", data["message"].lower())
+
+    def test_missing_receiver_id(self):
+        response = self.client.post(self.url, secure=True)
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        self.assertEqual(data["status"], "error")
+        self.assertIn("receiver id not provided", data["message"].lower())
+
+    def test_invalid_request_method(self):
+        response = self.client.get(self.url, secure=True)
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        self.assertEqual(data["status"], "error")
+        self.assertIn("invalid request method", data["message"].lower())
+
+    def test_redirects_if_not_logged_in(self):
+        self.client.logout()
+        response = self.client.post(self.url, {"receiver_id": self.receiver.id}, secure=True)
+        self.assertEqual(response.status_code, 302)
+        self.assertIn("/users/login/", response.url)
+
+
+class ViewGamesSharedViewTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username="testuser", password="testpass")
+        self.other_user = User.objects.create_user(username="otheruser", password="testpass")
+        self.user.userprofile.timezone = "UTC"
+        self.user.userprofile.save()
+        self.client.login(username="testuser", password="testpass")
+
+        self.game1 = Game.objects.create(
+            guid="1111",
+            title="First Game",
+            description="desc",
+            genres="Action",
+            platforms="PC",
+            image="img.png",
+            videos="none",
+            concepts="Concept"
+        )
+        self.game2 = Game.objects.create(
+            guid="2222",
+            title="Second Game",
+            description="desc",
+            genres="Action",
+            platforms="PC",
+            image="img.png",
+            videos="none",
+            concepts="Concept"
+        )
+
+        SharedGame.objects.create(sender=self.other_user, receiver=self.user, game_id=self.game1.guid)
+        SharedGame.objects.create(sender=self.user, receiver=self.other_user, game_id=self.game2.guid)
+
+        self.url = reverse("playstyle_compass:games_shared")
+
+    def test_view_received_games(self):
+        response = self.client.get(self.url + "?category=received", secure=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "games/games_shared.html")
+        games = response.context["games"]
+        self.assertEqual(games.count(), 1)
+        self.assertEqual(str(games.first().game_id), self.game1.guid)
+
+    def test_view_sent_games(self):
+        response = self.client.get(self.url + "?category=sent", secure=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "games/games_shared.html")
+        games = response.context["games"]
+        self.assertEqual(games.count(), 1)
+        self.assertEqual(str(games.first().game_id), self.game2.guid)
+
+    def test_sorting_descending(self):
+        SharedGame.objects.create(sender=self.other_user, receiver=self.user, game_id="3333")
+        SharedGame.objects.create(sender=self.other_user, receiver=self.user, game_id="4444")
+        response = self.client.get(self.url + "?category=received&sort_order=desc", secure=True)
+        self.assertEqual(response.status_code, 200)
+        games = list(response.context["games"])
+        timestamps = [game.timestamp for game in games]
+        self.assertEqual(timestamps, sorted(timestamps, reverse=True))
+
+    def test_invalid_category_returns_empty(self):
+        response = self.client.get(self.url + "?category=invalid", secure=True)
+        self.assertEqual(response.status_code, 200)
+        games = response.context["games"]
+        self.assertEqual(len(games), 0)
+
+    def test_redirects_if_not_logged_in(self):
+        self.client.logout()
+        response = self.client.get(self.url, secure=True)
+        self.assertEqual(response.status_code, 302)
+        self.assertIn("/users/login/", response.url)
+
+
+
 if __name__ == "__main__":
     from django.test.utils import get_runner
 

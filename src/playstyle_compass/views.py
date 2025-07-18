@@ -938,7 +938,7 @@ def view_games_shared(request):
             sender=request.user, is_deleted_by_sender=False
         )
     else:
-        games = []
+        games = SharedGame.objects.none()
 
     if sort_order == "asc":
         games = games.order_by("timestamp")
