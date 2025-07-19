@@ -15,6 +15,7 @@ import random
 import json
 from datetime import date, timedelta
 from unittest.mock import patch, MagicMock
+from urllib.parse import urlencode
 
 from django.test import TestCase
 from django.urls import reverse
@@ -1517,6 +1518,205 @@ class ViewGamesSharedViewTest(TestCase):
         self.assertEqual(response.status_code, 200)
         games = response.context["games"]
         self.assertEqual(len(games), 0)
+
+    def test_redirects_if_not_logged_in(self):
+        self.client.logout()
+        response = self.client.get(self.url, secure=True)
+        self.assertEqual(response.status_code, 302)
+        self.assertIn("/users/login/", response.url)
+
+
+class DeleteSharedGamesViewTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username="testuser", password="testpass")
+        self.other_user = User.objects.create_user(username="otheruser", password="testpass")
+        self.client.login(username="testuser", password="testpass")
+
+        self.game1 = Game.objects.create(
+            guid="1111",
+            title="First Game",
+            description="desc",
+            genres="Action",
+            platforms="PC",
+            image="img.png",
+            videos="none",
+            concepts="Concept"
+        )
+        self.game2 = Game.objects.create(
+            guid="2222",
+            title="Second Game",
+            description="desc",
+            genres="Action",
+            platforms="PC",
+            image="img.png",
+            videos="none",
+            concepts="Concept"
+        )
+
+        self.received_game = SharedGame.objects.create(
+            sender=self.other_user, receiver=self.user, game_id=self.game1.guid
+        )
+        self.sent_game = SharedGame.objects.create(
+            sender=self.user, receiver=self.other_user, game_id=self.game2.guid
+        )
+        self.both_deleted_game = SharedGame.objects.create(
+            sender=self.user,
+            receiver=self.other_user,
+            game_id="3333",
+            is_deleted_by_receiver=True,
+            is_deleted_by_sender=True,
+        )
+
+        self.url = reverse("playstyle_compass:delete_shared_games")
+
+    def test_delete_received(self):
+        params = urlencode({"category": "received", "sort_order": "asc"})
+        response = self.client.post(
+            f"{self.url}?{params}",
+            {"received_games[]": [self.received_game.id]},
+            secure=True,
+        )
+        self.received_game.refresh_from_db()
+        self.assertTrue(self.received_game.is_deleted_by_receiver)
+        expected_url = reverse("playstyle_compass:games_shared") + f"?{params}"
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, expected_url)
+
+    def test_delete_sent(self):
+        params = urlencode({"category": "sent", "sort_order": "desc"})
+        response = self.client.post(
+            f"{self.url}?{params}",
+            {"shared_games[]": [self.sent_game.id]},
+            secure=True,
+        )
+        self.sent_game.refresh_from_db()
+        self.assertTrue(self.sent_game.is_deleted_by_sender)
+        expected_url = reverse("playstyle_compass:games_shared") + f"?{params}"
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, expected_url)
+
+    def test_delete_both(self):
+        params = urlencode({"category": "both", "sort_order": "desc"})
+        response = self.client.post(
+            f"{self.url}?{params}",
+            {
+                "received_games[]": [self.received_game.id],
+                "shared_games[]": [self.sent_game.id],
+            },
+            secure=True,
+        )
+        self.received_game.refresh_from_db()
+        self.sent_game.refresh_from_db()
+        self.assertTrue(self.received_game.is_deleted_by_receiver)
+        self.assertTrue(self.sent_game.is_deleted_by_sender)
+        expected_url = reverse("playstyle_compass:games_shared") + f"?{params}"
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, expected_url)
+
+    def test_removes_deleted_games(self):
+        response = self.client.post(self.url, {}, secure=True)
+        exists = SharedGame.objects.filter(id=self.both_deleted_game.id).exists()
+        self.assertFalse(exists)
+        expected_url = reverse("playstyle_compass:games_shared") + "?category=&sort_order="
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, expected_url)
+
+    def test_needs_login(self):
+        self.client.logout()
+        response = self.client.post(self.url, secure=True)
+        self.assertEqual(response.status_code, 302)
+        self.assertIn("/users/login/", response.url)
+
+
+class SimilarPlaystylesViewTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username="testuser", password="testpass")
+        self.other_user = User.objects.create_user(username="otheruser", password="testpass")
+        self.different_user = User.objects.create_user(username="diffuser", password="testpass")
+
+        self.user.userpreferences.gaming_history = "Long"
+        self.user.userpreferences.favorite_genres = "Action, Adventure"
+        self.user.userpreferences.themes = "Fantasy"
+        self.user.userpreferences.platforms = "PC"
+        self.user.userpreferences.save()
+
+        self.other_user.userpreferences.gaming_history = "Long"
+        self.other_user.userpreferences.favorite_genres = "Action, Adventure"
+        self.other_user.userpreferences.themes = "Fantasy"
+        self.other_user.userpreferences.platforms = "PC"
+        self.other_user.userpreferences.save()
+
+        self.different_user.userpreferences.gaming_history = "Short"
+        self.different_user.userpreferences.favorite_genres = "Puzzle"
+        self.different_user.userpreferences.themes = "Sci-fi"
+        self.different_user.userpreferences.platforms = "Mobile"
+        self.different_user.userpreferences.save()
+
+        self.client.login(username="testuser", password="testpass")
+        self.url = reverse("playstyle_compass:similar_playstyles")
+
+    def test_view_loads(self):
+        response = self.client.get(self.url, secure=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "misc/similar_playstyles.html")
+
+    def test_shows_similar_users(self):
+        response = self.client.get(self.url, secure=True)
+        users = response.context["similar_user_playstyles"]
+        self.assertIn(self.other_user.userpreferences, users)
+
+    def test_hides_different_users(self):
+        response = self.client.get(self.url, secure=True)
+        users = response.context["similar_user_playstyles"]
+        self.assertNotIn(self.different_user.userpreferences, users)
+
+    def test_gives_user_preferences(self):
+        response = self.client.get(self.url, secure=True)
+        self.assertEqual(response.context["user_preferences"], self.user.userpreferences)
+
+    def test_redirects_if_not_logged_in(self):
+        self.client.logout()
+        response = self.client.get(self.url, secure=True)
+        self.assertEqual(response.status_code, 302)
+        self.assertIn("/users/login/", response.url)
+
+
+class PlayHistoriesViewTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username="testuser", password="testpass")
+        self.other_user = User.objects.create_user(username="otheruser", password="testpass")
+        self.different_user = User.objects.create_user(username="diffuser", password="testpass")
+
+        self.user.userpreferences.gaming_history = "Long"
+        self.user.userpreferences.save()
+
+        self.other_user.userpreferences.gaming_history = "Long"
+        self.other_user.userpreferences.save()
+
+        self.different_user.userpreferences.gaming_history = "Short"
+        self.different_user.userpreferences.save()
+
+        self.client.login(username="testuser", password="testpass")
+        self.url = reverse("playstyle_compass:play_histories")
+
+    def test_view_loads(self):
+        response = self.client.get(self.url, secure=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "misc/play_histories.html")
+
+    def test_shows_similar_gaming_history(self):
+        response = self.client.get(self.url, secure=True)
+        users = response.context["similar_user_gaming_history"]
+        self.assertIn(self.other_user.userpreferences, users)
+
+    def test_hides_different_gaming_history(self):
+        response = self.client.get(self.url, secure=True)
+        users = response.context["similar_user_gaming_history"]
+        self.assertNotIn(self.different_user.userpreferences, users)
+
+    def test_gives_user_preferences(self):
+        response = self.client.get(self.url, secure=True)
+        self.assertEqual(response.context["user_preferences"], self.user.userpreferences)
 
     def test_redirects_if_not_logged_in(self):
         self.client.logout()
