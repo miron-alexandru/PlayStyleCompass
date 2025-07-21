@@ -1894,6 +1894,105 @@ class AutocompleteCharactersViewTest(TestCase):
         self.assertEqual(data["results"], [])
 
 
+class ViewSingleplayerGamesTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username="user", password="pass")
+        self.client.login(username="user", password="pass")
+
+        self.game = Game.objects.create(
+            guid="1111",
+            title="Solo Adventure",
+            description="desc",
+            genres="RPG",
+            platforms="PC",
+            image="img.png",
+            videos="none",
+            concepts="Single-Player Only",
+        )
+        GameModes.objects.create(game_id=self.game.guid, game_mode="Singleplayer")
+        self.url = reverse("playstyle_compass:singleplayer_games")
+
+    def test_shows_singleplayer_games(self):
+        response = self.client.get(self.url, secure=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "games/singleplayer_games.html")
+        self.assertIn("Solo Adventure", response.content.decode())
+
+class ViewMultiplayerGamesTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username="user", password="pass")
+        self.client.login(username="user", password="pass")
+
+        self.game = Game.objects.create(
+            guid="2222",
+            title="Party Brawler",
+            description="desc",
+            genres="Fighting",
+            platforms="PC",
+            image="img.png",
+            videos="none",
+            concepts="Split-Screen Multiplayer",
+        )
+        GameModes.objects.create(game_id=self.game.guid, game_mode="Multiplayer")
+        self.url = reverse("playstyle_compass:multiplayer_games")
+
+    def test_shows_multiplayer_games(self):
+        response = self.client.get(self.url, secure=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "games/multiplayer_games.html")
+        self.assertIn("Party Brawler", response.content.decode())
+
+
+class GameLibraryViewTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username="user", password="pass")
+        self.client.force_login(self.user)
+        self.url = reverse("playstyle_compass:game_library")
+
+        self.game1 = Game.objects.create(
+            guid="1",
+            title="Space Odyssey",
+            genres="Sci-Fi",
+            concepts="Exploration",
+            themes="Space",
+            platforms="PC",
+            franchises="Odyssey"
+        )
+        self.game2 = Game.objects.create(
+            guid="2",
+            title="Fantasy Quest",
+            genres="Fantasy",
+            concepts="Adventure",
+            themes="Magic",
+            platforms="PS5",
+            franchises="Quest"
+        )
+
+    @patch("playstyle_compass.views.gather_game_attributes", return_value=(["Sci-Fi", "Fantasy"], ["Exploration", "Adventure"], ["Space", "Magic"], ["PC", "PS5"], ["Odyssey", "Quest"]))
+    def test_can_show_games(self, mock_gather):
+        response = self.client.get(self.url, secure=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Space Odyssey")
+        self.assertContains(response, "Fantasy Quest")
+
+    @patch("playstyle_compass.views.gather_game_attributes", return_value=(["Sci-Fi", "Fantasy"], ["Exploration", "Adventure"], ["Space", "Magic"], ["PC", "PS5"], ["Odyssey", "Quest"]))
+    def test_can_filter_by_genre(self, mock_gather):
+        query = urlencode({"genres": "Fantasy"})
+        response = self.client.get(f"{self.url}?{query}", secure=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Fantasy Quest")
+        self.assertNotContains(response, "Space Odyssey")
+
+    @patch("playstyle_compass.views.gather_game_attributes", return_value=(["Sci-Fi", "Fantasy"], ["Exploration", "Adventure"], ["Space", "Magic"], ["PC", "PS5"], ["Odyssey", "Quest"]))
+    def test_can_sort_games(self, mock_gather):
+        query = urlencode({"sort_by": "title_asc"})
+        response = self.client.get(f"{self.url}?{query}", secure=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Space Odyssey")
+        self.assertContains(response, "Fantasy Quest")
+
+
+
 
 if __name__ == "__main__":
     from django.test.utils import get_runner
