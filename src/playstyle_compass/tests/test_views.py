@@ -17,7 +17,7 @@ from datetime import date, timedelta
 from unittest.mock import patch, MagicMock
 from urllib.parse import urlencode
 
-from django.test import TestCase
+from django.test import TestCase, RequestFactory
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from django.utils.html import escape
@@ -470,7 +470,7 @@ class SearchResultsViewTest(TestCase):
 class SearchFranchisesViewTest(TestCase):
     def setUp(self):
         self.user = User.objects.create_user(username='testuser', password='testpass')
-        self.url = reverse('playstyle_compass:search_franchises')  # Update if your URL name differs
+        self.url = reverse('playstyle_compass:search_franchises')
 
         self.franchise = Franchise.objects.create(title="The Legend of Zelda")
 
@@ -510,7 +510,7 @@ class SearchFranchisesViewTest(TestCase):
 class AutocompleteGamesViewTest(TestCase):
     def setUp(self):
         self.user = User.objects.create_user(username='testuser', password='testpass')
-        self.url = reverse('playstyle_compass:autocomplete')  # Update if needed
+        self.url = reverse('playstyle_compass:autocomplete')
         Game.objects.create(title="Hollow Knight", guid="001")
         Game.objects.create(title="Hogwarts Legacy", guid="002")
 
@@ -821,7 +821,6 @@ class TopRatedGamesViewTest(TestCase):
         self.game2 = Game.objects.create(title="Game Two", guid="2423")
         self.game3 = Game.objects.create(title="Game Three", guid="2928")
 
-        # Create reviews for each game to set average_score properly
         Review.objects.create(
             game=self.game1,
             user=self.user,
@@ -1991,6 +1990,237 @@ class GameLibraryViewTest(TestCase):
         self.assertContains(response, "Space Odyssey")
         self.assertContains(response, "Fantasy Quest")
 
+
+class LatestNewsViewTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username="user", password="pass")
+        self.client.force_login(self.user)
+        self.url = reverse("playstyle_compass:latest_news")
+
+        self.article1 = News.objects.create(
+            title="PC Gaming Rising",
+            platforms="PC",
+            publish_date="2024-01-01"
+        )
+        self.article2 = News.objects.create(
+            title="Console Wars Continue",
+            platforms="PS5",
+            publish_date="2024-02-01"
+        )
+        self.article3 = News.objects.create(
+            title="VR Gets Bigger",
+            platforms="VR",
+            publish_date="2024-03-01"
+        )
+
+    @patch("playstyle_compass.views.get_associated_platforms", return_value=["PC", "PS5", "VR"])
+    def test_shows_all_articles(self, mock_platforms):
+        response = self.client.get(self.url, secure=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "PC Gaming Rising")
+        self.assertContains(response, "Console Wars Continue")
+        self.assertContains(response, "VR Gets Bigger")
+
+    @patch("playstyle_compass.views.get_associated_platforms", return_value=["PC", "PS5", "VR"])
+    def test_filters_by_platform(self, mock_platforms):
+        response = self.client.get(self.url + "?platforms=PC", secure=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "PC Gaming Rising")
+        self.assertNotContains(response, "Console Wars Continue")
+        self.assertNotContains(response, "VR Gets Bigger")
+
+    @patch("playstyle_compass.views.get_associated_platforms", return_value=["PC", "PS5", "VR"])
+    @patch("playstyle_compass.views.sort_articles", side_effect=lambda qs, sort_by: qs.order_by("-publish_date"))
+    def test_sorts_articles(self, mock_sort, mock_platforms):
+        response = self.client.get(self.url + "?sort_by=publish_date_desc", secure=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "PC Gaming Rising")
+        self.assertContains(response, "Console Wars Continue")
+        self.assertContains(response, "VR Gets Bigger")
+
+
+class SimilarGamesDirectoryViewTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username="user", password="pass")
+        self.client.force_login(self.user)
+        self.url = reverse("playstyle_compass:similar_games_directory")
+
+        Game.objects.create(title="Apex Legends", guid=1234)
+        Game.objects.create(title="Zelda", guid=3293)
+        Game.objects.create(title="123 Racing", guid=2392)
+        Game.objects.create(title="Among Us", guid=2932)
+
+    def test_shows_games_by_letter(self):
+        response = self.client.get(self.url, secure=True)
+        self.assertEqual(response.status_code, 200)
+        context = response.context["games_by_letter"]
+
+        self.assertIn("A", context)
+        self.assertIn("Z", context)
+        self.assertIn("R", context)
+
+        self.assertTrue(any(game.title == "Apex Legends" for game in context["A"]))
+        self.assertTrue(any(game.title == "Among Us" for game in context["A"]))
+        self.assertTrue(any(game.title == "Zelda" for game in context["Z"]))
+        self.assertTrue(any(game.title == "123 Racing" for game in context["R"]))
+
+    def test_uses_right_template(self):
+        response = self.client.get(self.url, secure=True)
+        self.assertTemplateUsed(response, "games/similar_games_directory.html")
+
+
+class SimilarGamesViewTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username="user", password="pass")
+        self.client.force_login(self.user)
+
+        self.main_game = Game.objects.create(title="Dark Souls", guid=1111)
+        self.similar_game1 = Game.objects.create(title="Elden Ring", guid=2222)
+        self.similar_game2 = Game.objects.create(title="Bloodborne", guid=3333)
+
+        self.url = reverse("playstyle_compass:similar_games", args=[self.main_game.guid])
+
+    @patch("playstyle_compass.views.get_similar_games")
+    def test_shows_similar_games(self, mock_get_similar_games):
+        mock_get_similar_games.return_value = Game.objects.filter(
+            pk__in=[self.similar_game1.pk, self.similar_game2.pk]
+        )
+
+        response = self.client.get(self.url, secure=True)
+        self.assertEqual(response.status_code, 200)
+
+        context = response.context
+        self.assertEqual(context["main_game"], self.main_game)
+        self.assertIn(self.similar_game1, context["similar_games"])
+        self.assertIn(self.similar_game2, context["similar_games"])
+
+    def test_uses_right_template(self):
+        with patch("playstyle_compass.views.get_similar_games") as mock_get_similar_games:
+            mock_get_similar_games.return_value = Game.objects.none()
+            response = self.client.get(self.url, secure=True)
+            self.assertTemplateUsed(response, "games/similar_games.html")
+
+
+class GetFilteredGamesTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username="user", password="pass")
+        self.factory = RequestFactory()
+
+        Game.objects.create(title="Singleplayer Game", concepts="Singleplayer", guid=123)
+        Game.objects.create(title="Multiplayer Game", concepts="Multiplayer", guid=456)
+        Game.objects.create(title="Hybrid Game", concepts="Singleplayer, Multiplayer", guid=789)
+
+    def test_can_filter_games_by_keyword(self):
+        request = self.factory.get("/", secure=True)
+        request.user = self.user
+        
+        games, prefs, friends = get_filtered_games(request, "Singleplayer")
+        titles = [game.title for game in games]
+
+        self.assertIn("Singleplayer Game", titles)
+        self.assertIn("Hybrid Game", titles)
+        self.assertNotIn("Multiplayer Game", titles)
+
+    def test_returns_empty_if_no_match(self):
+        request = self.factory.get("/", secure=True)
+        request.user = self.user
+        
+        games, prefs, friends = get_filtered_games(request, "Nonexistent")
+        self.assertEqual(list(games), [])
+
+
+class GameCategoryViewsTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username="user", password="pass")
+        self.client.force_login(self.user)
+
+        Game.objects.create(title="Open World Game", concepts="Open World", guid=1)
+        Game.objects.create(title="Linear Game", concepts="Linear Gameplay", guid=2)
+        Game.objects.create(title="Indie Darling", concepts="Indie", guid=3)
+        Game.objects.create(title="Steam Hit", concepts="Steam", guid=4)
+        Game.objects.create(title="F2P Blast", concepts="Free to Play", guid=5)
+        Game.objects.create(title="VR Madness", concepts="Virtual Reality", guid=6)
+        Game.objects.create(title="Beginner's Luck", is_casual=True, guid=7)
+
+    def test_open_world_page(self):
+        response = self.client.get(reverse("playstyle_compass:open_world_games"), secure=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "games/open_world_games.html")
+
+    def test_linear_gameplay_page(self):
+        response = self.client.get(reverse("playstyle_compass:linear_gameplay_games"), secure=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "games/linear_gameplay_games.html")
+
+    def test_indie_page(self):
+        response = self.client.get(reverse("playstyle_compass:indie_games"), secure=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "games/indie_games.html")
+
+    def test_steam_page(self):
+        response = self.client.get(reverse("playstyle_compass:steam_games"), secure=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "games/steam_games.html")
+
+    def test_free_to_play_page(self):
+        response = self.client.get(reverse("playstyle_compass:free_to_play_games"), secure=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "games/free_to_play_games.html")
+
+    def test_vr_page(self):
+        response = self.client.get(reverse("playstyle_compass:vr_games"), secure=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "games/vr_games.html")
+
+    def test_beginner_page(self):
+        response = self.client.get(reverse("playstyle_compass:beginner_games"), secure=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "games/beginner_games.html")
+
+
+class CreateGameListViewTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username="user", password="pass")
+        self.client.force_login(self.user)
+        self.url = reverse("playstyle_compass:create_game_list")
+
+        self.game1 = Game.objects.create(title="Game One", guid="1111")
+        self.game2 = Game.objects.create(title="Game Two", guid="2222")
+
+    def test_shows_form(self):
+        response = self.client.get(self.url, secure=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "game_list/create_game_list.html")
+        self.assertIn("form", response.context)
+
+    def test_can_create_list(self):
+        post_data = {
+            "title": "My New Game List",
+            "description": "A cool list of games.",
+            "games": [self.game1.pk, self.game2.pk],
+            "additional_games": "Extra Game 1, Extra Game 2",
+            "is_public": True,
+        }
+        response = self.client.post(self.url, post_data, secure=True)
+        self.assertEqual(response.status_code, 302)
+
+        game_list = GameList.objects.get(title="My New Game List")
+        self.assertEqual(game_list.owner, self.user)
+        self.assertEqual(game_list.description, "A cool list of games.")
+        self.assertListEqual(game_list.game_guids, [self.game1.guid, self.game2.guid])
+        self.assertTrue(game_list.is_public)
+
+    def test_invalid_form_shows_errors(self):
+        response = self.client.post(self.url, {"title": ""}, secure=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "game_list/create_game_list.html")
+        self.assertTrue(response.context["form"].errors)
+
+    def test_redirects_if_not_logged_in(self):
+        self.client.logout()
+        response = self.client.get(self.url, secure=True)
+        self.assertEqual(response.status_code, 302)
+        self.assertIn("/users/login/", response.url)
 
 
 
