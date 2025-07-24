@@ -2224,6 +2224,199 @@ class CreateGameListViewTest(TestCase):
         self.assertIn("/users/login/", response.url)
 
 
+class EditGameListViewTest(TestCase):
+    def setUp(self):
+        self.owner = User.objects.create_user(username="owner", password="pass")
+        self.other_user = User.objects.create_user(username="other", password="pass")
+        self.game1 = Game.objects.create(title="Game One", guid="1111")
+        self.game2 = Game.objects.create(title="Game Two", guid="2222")
+        self.client.force_login(self.owner)
+
+        self.game_list = GameList.objects.create(
+            title="Original List",
+            description="Original Description",
+            owner=self.owner,
+            game_guids=[self.game1.guid],
+            additional_games="Extra Game",
+            is_public=False,
+        )
+        self.url = reverse("playstyle_compass:edit_game_list", args=[self.game_list.pk])
+
+    def test_can_load_form(self):
+        self.client.force_login(self.owner)
+        response = self.client.get(self.url, secure=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "game_list/edit_game_list.html")
+        self.assertIn("form", response.context)
+        self.assertEqual(response.context["game_list"], self.game_list)
+
+    def test_can_update_game_list(self):
+        self.client.force_login(self.owner)
+        post_data = {
+            "title": "Updated List",
+            "description": "Updated description",
+            "games": [self.game1.pk, self.game2.pk],
+            "additional_games": "Another Extra Game",
+            "is_public": True,
+        }
+        response = self.client.post(self.url, post_data, secure=True)
+        self.assertEqual(response.status_code, 302)
+
+        self.game_list.refresh_from_db()
+        self.assertEqual(self.game_list.title, "Updated List")
+        self.assertEqual(self.game_list.description, "Updated description")
+        self.assertListEqual(self.game_list.game_guids, [self.game1.guid, self.game2.guid])
+        self.assertEqual(self.game_list.additional_games, "Another Extra Game")
+        self.assertTrue(self.game_list.is_public)
+
+    def test_cant_edit_other_users_list(self):
+        self.client.force_login(self.other_user)
+        response = self.client.get(self.url, secure=True)
+        self.assertEqual(response.status_code, 302)
+        self.assertIn(reverse("playstyle_compass:game_list_detail", args=[self.game_list.pk]), response.url)
+
+    def test_redirects_if_not_logged_in(self):
+        self.client.logout()
+        response = self.client.get(self.url, secure=True)
+        self.assertEqual(response.status_code, 302)
+        self.assertIn("/users/login/", response.url)
+
+
+class DeleteGameListViewTest(TestCase):
+    def setUp(self):
+        self.owner = User.objects.create_user(username="owner", password="pass")
+        self.other_user = User.objects.create_user(username="other", password="pass")
+        self.game = Game.objects.create(title="Game One", guid="g1")
+        self.game_list = GameList.objects.create(
+            title="My List",
+            description="A sample list",
+            owner=self.owner,
+            game_guids=[self.game.guid],
+            additional_games="Extra",
+            is_public=True,
+        )
+        self.url = reverse("playstyle_compass:delete_game_list", args=[self.game_list.pk])
+        self.redirect_url = reverse("playstyle_compass:user_game_lists", args=[self.owner.id])
+
+    def test_can_delete_own_list(self):
+        self.client.force_login(self.owner)
+        response = self.client.post(self.url, secure=True)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, self.redirect_url)
+        self.assertFalse(GameList.objects.filter(pk=self.game_list.pk).exists())
+
+    def test_cant_delete_others_list(self):
+        self.client.force_login(self.other_user)
+        response = self.client.post(self.url, secure=True)
+        self.assertEqual(response.status_code, 302)
+        self.assertIn(reverse("playstyle_compass:game_list_detail", args=[self.game_list.pk]), response.url)
+        self.assertTrue(GameList.objects.filter(pk=self.game_list.pk).exists())
+
+    def test_redirects_if_not_logged_in(self):
+        self.client.force_login(self.owner)
+        self.client.logout()
+        response = self.client.post(self.url, secure=True)
+        self.assertEqual(response.status_code, 302)
+        self.assertIn("/users/login/", response.url)
+
+
+class DeleteAllGameListsViewTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username="user", password="pass")
+        self.other = User.objects.create_user(username="other", password="pass")
+
+        self.list1 = GameList.objects.create(title="List 1", owner=self.user)
+        self.list2 = GameList.objects.create(title="List 2", owner=self.user)
+        GameList.objects.create(title="Other List", owner=self.other)
+
+        self.url = reverse("playstyle_compass:delete_all_game_lists")
+        self.redirect_url = reverse("playstyle_compass:user_game_lists", args=[self.user.id])
+
+    def test_deletes_all_lists(self):
+        self.client.force_login(self.user)
+        response = self.client.post(self.url, secure=True)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, self.redirect_url)
+
+        self.assertFalse(GameList.objects.filter(owner=self.user).exists())
+        self.assertTrue(GameList.objects.filter(owner=self.other).exists())
+
+    def test_does_nothing_if_no_lists(self):
+        self.client.force_login(self.user)
+        GameList.objects.filter(owner=self.user).delete()
+
+        response = self.client.post(self.url, secure=True)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, self.redirect_url)
+        self.assertFalse(GameList.objects.filter(owner=self.user).exists())
+
+    def test_redirects_if_not_logged_in(self):
+        self.client.force_login(self.user)
+        self.client.logout()
+        response = self.client.post(self.url, secure=True)
+        self.assertEqual(response.status_code, 302)
+        self.assertIn("/users/login/", response.url)
+
+
+class GameListDetailViewTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username="user", password="pass")
+        self.game = Game.objects.create(title="Sample Game", guid=1234)
+        self.game_list = GameList.objects.create(
+            title="My List",
+            owner=self.user,
+            game_guids=[self.game.guid],
+            additional_games="Extra1,Extra2"
+        )
+        self.url = reverse("playstyle_compass:game_list_detail", args=[self.game_list.pk])
+
+    def test_loads_list_detail(self):
+        self.client.force_login(self.user)
+
+        response = self.client.get(self.url, secure=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "game_list/game_list_detail.html")
+
+        context = response.context
+        self.assertEqual(context["game_list"], self.game_list)
+        self.assertEqual(context["additional_games"], ["Extra1", "Extra2"])
+        games_page = context["games"]
+        self.assertEqual(games_page.paginator.count, 1)
+        self.assertEqual(context["user_preferences"], self.user.userpreferences)
+        self.assertTrue("form" in context)
+        self.assertTrue("review" in context)
+        self.assertTrue("comment_form" in context)
+        self.assertTrue("comments" in context)
+
+    def test_returns_404_for_invalid_id(self):
+        invalid_url = reverse("playstyle_compass:game_list_detail", args=[999])
+        response = self.client.get(invalid_url, secure=True)
+        self.assertEqual(response.status_code, 404)
+
+    def test_shows_reviews_and_comments(self):
+        self.client.force_login(self.user)
+
+        ListReview.objects.create(
+            game_list=self.game_list,
+            user=self.user,
+            review_text="Great list!",
+            rating=5
+        )
+        ListComment.objects.create(
+            game_list=self.game_list,
+            user=self.user,
+            text="Nice!"
+        )
+
+        response = self.client.get(self.url, secure=True)
+        self.assertEqual(response.status_code, 200)
+
+        context = response.context
+        self.assertEqual(len(context["reviews"]), 1)
+        self.assertEqual(len(context["comments"]), 1)
+
+
+
 
 if __name__ == "__main__":
     from django.test.utils import get_runner
