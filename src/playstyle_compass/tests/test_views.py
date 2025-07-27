@@ -2468,6 +2468,7 @@ class ShareGameListViewTest(TestCase):
 class UserGameListsViewTest(TestCase):
     def setUp(self):
         self.user = User.objects.create_user(username="testuser", password="testpass")
+        now = timezone.now()
 
         self.list1 = GameList.objects.create(
             title="Alpha",
@@ -2670,6 +2671,304 @@ class LikeGameListViewTest(TestCase):
         response = self.client.post(self.url, secure=True)
         self.assertEqual(response.status_code, 302)
         self.assertIn("/users/login/", response.url)
+
+class ReviewGameListViewTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username="reviewer", password="testpass")
+        self.user.userprofile.profile_name = "CoolReviewer"
+        self.user.userprofile.save()
+
+        self.game_list = GameList.objects.create(
+            owner=self.user,
+            title="My Favorite Games",
+            game_guids=["12421", "43232"]
+        )
+
+        self.url = reverse("playstyle_compass:review_game_list", args=[self.game_list.id])
+        self.valid_data = {
+            "title": "Amazing List",
+            "rating": 5,
+            "review_text": "This list has excellent choices!"
+        }
+
+    def test_can_create_review(self):
+        self.client.force_login(self.user)
+        response = self.client.post(self.url, data=self.valid_data, secure=True)
+        self.assertEqual(response.status_code, 200)
+
+        data = response.json()
+        self.assertEqual(data["title"], self.valid_data["title"])
+        self.assertEqual(data["rating"], self.valid_data["rating"])
+        self.assertEqual(data["review_text"], self.valid_data["review_text"])
+        self.assertEqual(data["author"], self.user.userprofile.profile_name)
+
+        self.assertEqual(ListReview.objects.count(), 1)
+        review = ListReview.objects.first()
+        self.assertEqual(review.user, self.user)
+        self.assertEqual(review.game_list, self.game_list)
+
+    def test_can_update_review(self):
+        old_review = ListReview.objects.create(
+            user=self.user,
+            game_list=self.game_list,
+            title="Old Title",
+            rating=2,
+            review_text="Old review."
+        )
+
+        self.client.force_login(self.user)
+        response = self.client.post(self.url, data=self.valid_data, secure=True)
+        self.assertEqual(response.status_code, 200)
+
+        data = response.json()
+        updated_review = ListReview.objects.get(pk=old_review.pk)
+
+        self.assertEqual(updated_review.title, self.valid_data["title"])
+        self.assertEqual(updated_review.rating, self.valid_data["rating"])
+        self.assertEqual(updated_review.review_text, self.valid_data["review_text"])
+        self.assertEqual(data["review_id"], updated_review.id)
+
+    def test_returns_form_errors(self):
+        self.client.force_login(self.user)
+        invalid_data = {
+            "title": "",
+            "rating": "",
+            "review_text": ""
+        }
+        response = self.client.post(self.url, data=invalid_data, secure=True)
+        self.assertEqual(response.status_code, 400)
+
+        data = response.json()
+        self.assertIn("errors", data)
+        self.assertIn("title", data["errors"])
+        self.assertIn("rating", data["errors"])
+
+    def test_redirects_if_not_logged_in(self):
+        response = self.client.post(self.url, data=self.valid_data, secure=True)
+        self.assertEqual(response.status_code, 302)
+        self.assertIn("/users/login/", response.url)
+
+
+class EditGameListReviewViewTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username="author", password="testpass")
+        self.user.userprofile.profile_name = "AuthorUser"
+        self.user.userprofile.save()
+
+        self.other_user = User.objects.create_user(username="not_author", password="testpass")
+
+        self.game_list = GameList.objects.create(
+            owner=self.user,
+            title="Best RPGs",
+            game_guids=["g1", "g2"]
+        )
+
+        self.review = ListReview.objects.create(
+            user=self.user,
+            game_list=self.game_list,
+            title="Original Title",
+            rating=4,
+            review_text="Original content"
+        )
+
+        self.url = reverse("playstyle_compass:edit_game_list_review", args=[self.review.id])
+
+    def test_can_edit_own_review(self):
+        self.client.force_login(self.user)
+        data = {
+            "title": "Updated Title",
+            "rating": 5,
+            "review_text": "Much improved review"
+        }
+        response = self.client.post(self.url, data=data, secure=True)
+        self.assertEqual(response.status_code, 200)
+
+        self.review.refresh_from_db()
+        self.assertEqual(self.review.title, data["title"])
+        self.assertEqual(self.review.rating, data["rating"])
+        self.assertEqual(self.review.review_text, data["review_text"])
+
+        response_data = response.json()
+        self.assertEqual(response_data["title"], data["title"])
+        self.assertEqual(response_data["author"], self.user.userprofile.profile_name)
+
+    def test_returns_form_errors_on_invalid_input(self):
+        self.client.force_login(self.user)
+        data = {"title": "", "rating": "", "review_text": ""}
+        response = self.client.post(self.url, data=data, secure=True)
+        self.assertEqual(response.status_code, 400)
+        self.assertIn("errors", response.json())
+        self.assertIn("title", response.json()["errors"])
+
+    def test_cannot_edit_review_of_other_user(self):
+        self.client.force_login(self.other_user)
+        response = self.client.post(self.url, data={
+            "title": "Hacked!",
+            "rating": 1,
+            "review_text": "This shouldn't work"
+        }, secure=True)
+        self.assertEqual(response.status_code, 404)
+
+    def test_redirects_if_not_logged_in(self):
+        response = self.client.post(self.url, data={
+            "title": "Unauth",
+            "rating": 2,
+            "review_text": "Anonymous edit"
+        }, secure=True)
+        self.assertEqual(response.status_code, 302)
+        self.assertIn("/users/login/", response.url)
+
+
+class DeleteGameListReviewViewTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username="author", password="testpass")
+        self.other_user = User.objects.create_user(username="not_author", password="testpass")
+
+        self.game_list = GameList.objects.create(
+            owner=self.user,
+            title="My Game List",
+            game_guids=["abc123"]
+        )
+
+        self.review = ListReview.objects.create(
+            user=self.user,
+            game_list=self.game_list,
+            title="Solid List",
+            rating=4,
+            review_text="Nice mix of games."
+        )
+
+        self.url = reverse("playstyle_compass:delete_game_list_review", args=[self.review.id])
+
+    def test_can_delete_own_review(self):
+        self.client.force_login(self.user)
+        response = self.client.post(self.url, secure=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()["message"], "Review deleted successfully!")
+        self.assertFalse(ListReview.objects.filter(id=self.review.id).exists())
+
+    def test_cannot_delete_someone_elses_review(self):
+        self.client.force_login(self.other_user)
+        response = self.client.post(self.url, secure=True)
+        self.assertEqual(response.status_code, 404)
+        self.assertTrue(ListReview.objects.filter(id=self.review.id).exists())
+
+    def test_redirects_if_not_logged_in(self):
+        response = self.client.post(self.url, secure=True)
+        self.assertEqual(response.status_code, 302)
+        self.assertIn("/users/login/", response.url)
+
+    def test_only_allows_post_requests(self):
+        self.client.force_login(self.user)
+        response = self.client.get(self.url, secure=True)
+        self.assertEqual(response.status_code, 405)
+
+
+class LikeGameListReviewViewTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username="user", password="testpass")
+        self.author = User.objects.create_user(username="author", password="testpass")
+
+        self.game_list = GameList.objects.create(
+            owner=self.author,
+            title="List to Review",
+            game_guids=["game1"]
+        )
+
+        self.review = ListReview.objects.create(
+            user=self.author,
+            game_list=self.game_list,
+            title="Cool List",
+            rating=4,
+            review_text="Really enjoyed these games."
+        )
+
+        self.url = reverse("playstyle_compass:like_list_review", args=[self.review.id])
+
+    def test_can_like_review(self):
+        self.client.force_login(self.user)
+        response = self.client.post(self.url, secure=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(self.user in self.review.liked_by.all())
+
+        data = response.json()
+        self.assertTrue(data["liked"])
+        self.assertEqual(data["like_count"], 1)
+        self.assertEqual(str(data["review_id"]), str(self.review.id))
+
+    def test_can_unlike_review(self):
+        self.review.liked_by.add(self.user)
+
+        self.client.force_login(self.user)
+        response = self.client.post(self.url, secure=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertFalse(self.user in self.review.liked_by.all())
+
+        data = response.json()
+        self.assertFalse(data["liked"])
+        self.assertEqual(data["like_count"], 0)
+
+    def test_redirects_if_not_logged_in(self):
+        response = self.client.post(self.url, secure=True)
+        self.assertEqual(response.status_code, 302)
+        self.assertIn("/users/login/", response.url)
+
+
+class ReviewedGameListsViewTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username="user1", password="testpass")
+        self.other_user = User.objects.create_user(username="user2", password="testpass")
+
+        self.game_list1 = GameList.objects.create(owner=self.user, title="User1 List", game_guids=["g1", "g2"])
+        self.game_list2 = GameList.objects.create(owner=self.other_user, title="User2 List", game_guids=["g3"])
+
+        self.review1 = ListReview.objects.create(
+            user=self.user,
+            game_list=self.game_list1,
+            title="Nice list",
+            rating=4,
+            review_text="Good games."
+        )
+        self.review2 = ListReview.objects.create(
+            user=self.other_user,
+            game_list=self.game_list2,
+            title="Other list review",
+            rating=5,
+            review_text="Great picks."
+        )
+
+    def test_can_view_own_reviewed_lists(self):
+        self.client.force_login(self.user)
+        url = reverse("playstyle_compass:reviewed_game_lists")
+        response = self.client.get(url, secure=True)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "User1 List")
+        self.assertNotContains(response, "User2 List")
+
+        context = response.context
+        self.assertEqual(context["list_user"], self.user)
+        self.assertFalse(context["other_user"])
+
+    def test_can_view_another_users_reviews(self):
+        self.client.force_login(self.user)
+        url = reverse("playstyle_compass:reviewed_game_lists_with_id", args=[self.other_user.id])
+        response = self.client.get(url, secure=True)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "User2 List")
+        self.assertNotContains(response, "User1 List")
+
+        context = response.context
+        self.assertEqual(context["list_user"], self.other_user)
+        self.assertTrue(context["other_user"])
+
+    def test_redirects_if_not_logged_in(self):
+        url = reverse("playstyle_compass:reviewed_game_lists")
+        response = self.client.get(url, secure=True)
+        self.assertEqual(response.status_code, 302)
+        self.assertIn("/users/login/", response.url)
+
 
 if __name__ == "__main__":
     from django.test.utils import get_runner
