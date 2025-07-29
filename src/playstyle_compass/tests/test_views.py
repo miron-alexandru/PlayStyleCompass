@@ -2970,6 +2970,129 @@ class ReviewedGameListsViewTest(TestCase):
         self.assertIn("/users/login/", response.url)
 
 
+class PrivacySettingsViewTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username="testuser", password="password")
+        self.url = reverse("playstyle_compass:privacy_settings")
+
+    def test_redirects_if_not_logged_in(self):
+        response = self.client.get(self.url, secure=True)
+        self.assertEqual(response.status_code, 302)
+        self.assertIn("/users/login/", response.url)
+
+
+    def test_page_loads_for_logged_in_user(self):
+        self.client.login(username="testuser", password="password")
+        response = self.client.get(self.url, secure=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "preferences/privacy_settings.html")
+        self.assertContains(response, "Privacy Settings")
+
+    def test_can_update_settings(self):
+        self.client.login(username="testuser", password="password")
+        prefs = UserPreferences.objects.get(user=self.user)
+
+        data = {
+            "show_in_queue": False,
+            "show_reviews": False,
+            "show_favorites": True,
+        }
+
+        response = self.client.post(self.url, data, secure=True)
+
+        self.assertEqual(response.status_code, 302)
+        self.assertIn(self.url, response.url)
+
+        prefs.refresh_from_db()
+        self.assertFalse(prefs.show_in_queue)
+        self.assertFalse(prefs.show_reviews)
+        self.assertTrue(prefs.show_favorites)
+
+
+class ExploreGameListsViewTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username="testuser", password="password")
+        self.url = reverse("playstyle_compass:explore_game_lists")
+
+        self.list1 = GameList.objects.create(
+            owner=self.user, title="First", game_guids=[], is_public=True
+        )
+        self.list2 = GameList.objects.create(
+            owner=self.user, title="Second", game_guids=["4341", "124124"], is_public=True
+        )
+        self.list3 = GameList.objects.create(
+            owner=self.user, title="Third", game_guids=["4322"], is_public=False
+        )
+
+    def test_shows_only_public_lists(self):
+        response = self.client.get(self.url, secure=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "First")
+        self.assertContains(response, "Second")
+        self.assertNotContains(response, "Third")
+
+    def test_sorts_by_title_asc(self):
+        response = self.client.get(self.url + "?sort_by=title&order=asc", secure=True)
+        self.assertEqual(response.status_code, 200)
+        game_lists = response.context["game_lists"]
+        self.assertEqual([g.title for g in game_lists], ["First", "Second"])
+
+    def test_sorts_by_total_games_desc(self):
+        response = self.client.get(self.url + "?sort_by=total_games&order=desc", secure=True)
+        self.assertEqual(response.status_code, 200)
+        game_lists = response.context["game_lists"]
+        self.assertEqual([g.title for g in game_lists], ["Second", "First"])
+
+    def test_default_sort_is_created_at_desc(self):
+        response = self.client.get(self.url, secure=True)
+        self.assertEqual(response.status_code, 200)
+        game_lists = response.context["game_lists"]
+        self.assertEqual([g.title for g in game_lists], ["Second", "First"])
+
+    def test_handles_invalid_sort_field(self):
+        response = self.client.get(self.url + "?sort_by=invalid&order=desc", secure=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "First")
+
+class DeleteListCommentViewTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username="testuser", password="password")
+        self.other_user = User.objects.create_user(username="otheruser", password="password")
+        self.game_list = GameList.objects.create(
+            owner=self.user, title="Sample List", is_public=True
+        )
+        self.comment = ListComment.objects.create(
+            user=self.user,
+            game_list=self.game_list,
+            text="Nice list!",
+            created_at=timezone.now()
+        )
+        self.url = reverse("playstyle_compass:delete_list_comment", args=[self.comment.id])
+
+    def test_redirects_if_not_logged_in(self):
+        response = self.client.post(self.url, secure=True)
+        self.assertEqual(response.status_code, 302)
+        self.assertIn("/users/login/", response.url)
+
+    def test_deletes_comment_if_owner(self):
+        self.client.login(username="testuser", password="password")
+        response = self.client.post(self.url, secure=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertJSONEqual(response.content, {"success": True})
+        self.assertFalse(ListComment.objects.filter(id=self.comment.id).exists())
+
+    def test_does_not_delete_if_not_owner(self):
+        self.client.login(username="otheruser", password="password")
+        response = self.client.post(self.url, secure=True)
+        self.assertEqual(response.status_code, 404)
+        self.assertTrue(ListComment.objects.filter(id=self.comment.id).exists())
+
+    def test_rejects_get_request(self):
+        self.client.login(username="testuser", password="password")
+        response = self.client.get(self.url, secure=True)
+        self.assertEqual(response.status_code, 400)
+        self.assertJSONEqual(response.content, {"success": False})
+
 if __name__ == "__main__":
     from django.test.utils import get_runner
 
