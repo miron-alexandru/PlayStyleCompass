@@ -3395,6 +3395,92 @@ class FavoriteGameListsViewTest(TestCase):
         self.assertIn("/users/login/", response.url)
 
 
+class PopularGamesViewTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username="testuser", password="password")
+        self.url = reverse("playstyle_compass:popular_games")
+
+    def test_can_view_popular_games(self):
+        self.client.login(username="testuser", password="password")
+
+        game1 = Game.objects.create(title="Popular Game 1", guid="123", is_popular=True)
+        game2 = Game.objects.create(title="Popular Game 2", guid="3231", is_popular=True)
+        game3 = Game.objects.create(title="Not Popular", guid="12343", is_popular=False)
+
+        response = self.client.get(self.url, secure=True)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "games/popular_games.html")
+        self.assertIn("games", response.context)
+        self.assertEqual(list(response.context["games"]), [game1, game2])
+        self.assertEqual(response.context["pagination"], True)
+
+
+class CreatePollViewTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username="testuser", password="password")
+        self.url = reverse("playstyle_compass:create_poll")
+
+    def test_can_create_poll(self):
+        self.client.login(username="testuser", password="password")
+        options_list = ["RPG", "Action", "Strategy"]
+        data = {
+            "title": "Favorite Genre?",
+            "description": "Choose your favorite genre.",
+            "options": options_list,
+            "duration": 3,
+            "is_public": True,
+        }
+
+        response = self.client.post(self.url, {
+            "title": data["title"],
+            "options": data["options"],
+            "description": data["description"],
+            "duration": data["duration"],
+            "is_public": data["is_public"],
+        }, secure=True)
+
+        self.assertEqual(response.status_code, 302)
+
+        poll = Poll.objects.first()
+        self.assertIsNotNone(poll)
+        self.assertEqual(poll.title, data["title"])
+        options = PollOption.objects.filter(poll=poll).values_list("text", flat=True)
+        self.assertCountEqual(options, data["options"])
+        self.assertEqual(poll.description, data["description"])
+        self.assertEqual(poll.duration, timedelta(days=data["duration"]))
+        self.assertEqual(poll.is_public, data["is_public"])
+        self.assertEqual(poll.created_by, self.user)
+
+    def test_does_not_create_with_empty_fields(self):
+        self.client.login(username="testuser", password="password")
+
+        response = self.client.post(self.url, {
+            "question": "",
+            "options": ["", "   ", "\n"],
+        }, secure=True)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "polls/create_poll.html")
+        self.assertContains(response, "This field is required")
+
+        self.assertEqual(Poll.objects.count(), 0)
+        self.assertEqual(PollOption.objects.count(), 0)
+
+    def test_shows_create_poll_form(self):
+        self.client.login(username="testuser", password="password")
+
+        response = self.client.get(self.url, secure=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "polls/create_poll.html")
+        self.assertIn("form", response.context)
+
+    def test_redirects_if_not_logged_in(self):
+        response = self.client.get(self.url, secure=True)
+        self.assertEqual(response.status_code, 302)
+        self.assertIn("/users/login/", response.url)
+
+
 if __name__ == "__main__":
     from django.test.utils import get_runner
 
