@@ -2226,9 +2226,11 @@ def community_polls(request):
     for poll in polls:
         poll.vote_form = VoteForm(poll=poll)
 
-        user_vote = poll.user_vote(request.user)
-        if user_vote:
-            user_votes[poll.id] = user_vote.id
+        if request.user.is_authenticated:
+            user_vote = poll.user_vote(request.user)
+
+            if user_vote:
+                user_votes[poll.id] = user_vote.id
 
         options_with_percentages = poll.options_with_percentages()
 
