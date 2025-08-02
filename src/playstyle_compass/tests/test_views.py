@@ -3861,6 +3861,213 @@ class PollDetailTest(TestCase):
         self.assertIn(self.poll.id, user_votes)
         self.assertEqual(user_votes[self.poll.id], self.option1.id)
 
+
+class SharePollTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username="owner", password="pass")
+        self.friend = User.objects.create_user(username="friend", password="pass")
+        self.poll = Poll.objects.create(
+            title="Favorite Game?",
+            description="A test poll",
+            created_by=self.user,
+            duration=timedelta(days=1),
+            is_public=True,
+            created_at=timezone.now()
+        )
+        self.url = reverse("playstyle_compass:share_poll", args=[self.poll.id])
+
+    def test_redirect_if_not_logged_in(self):
+        response = self.client.get(self.url, secure=True)
+        self.assertEqual(response.status_code, 302)
+        self.assertIn("/users/login/", response.url)
+
+    @patch("playstyle_compass.views.get_user_context")
+    def test_page_loads(self, mock_context):
+        mock_context.return_value = (self.user, None, [self.friend])
+        self.client.login(username="owner", password="pass")
+
+        response = self.client.get(self.url, secure=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "polls/share_poll.html")
+        self.assertEqual(response.context["poll"], self.poll)
+        self.assertEqual(response.context["user_friends"], [self.friend])
+
+    def test_post_with_no_users_returns_400(self):
+        self.client.login(username="owner", password="pass")
+        response = self.client.post(self.url, data={}, secure=True)
+        self.assertEqual(response.status_code, 400)
+        self.assertIn(b"At least one friend must be selected", response.content)
+
+    @patch("playstyle_compass.views.create_notification")
+    def test_poll_sharing_success(self, mock_notify):
+        self.client.login(username="owner", password="pass")
+        response = self.client.post(
+            self.url, data={"shared_with": [str(self.friend.id)]}, secure=True
+        )
+
+        self.poll.refresh_from_db()
+        self.assertIn(self.friend, self.poll.shared_with.all())
+        self.assertIn(str(self.user.id), self.poll.shared_by)
+        self.assertIn(str(self.friend.id), self.poll.shared_by[str(self.user.id)])
+
+        self.assertEqual(response.status_code, 302)
+        self.assertIn(
+            reverse("playstyle_compass:poll_detail", args=[self.poll.id]),
+            response.url
+        )
+
+        mock_notify.assert_called_once()
+
+
+
+class SharedPollsViewTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username="user", password="pass")
+        self.friend = User.objects.create_user(username="friend", password="pass")
+
+        self.poll1 = Poll.objects.create(
+            title="Poll A",
+            description="Test poll A",
+            created_by=self.friend,
+            duration=timedelta(days=2),
+            is_public=True,
+            created_at=timezone.now() - timedelta(days=1)
+        )
+        self.poll2 = Poll.objects.create(
+            title="Poll B",
+            description="Test poll B",
+            created_by=self.user,
+            duration=timedelta(days=2),
+            is_public=True,
+            created_at=timezone.now()
+        )
+
+        self.poll1.shared_with.add(self.user)
+        self.poll1.shared_by = {str(self.friend.id): [str(self.user.id)]}
+        self.poll1.save()
+
+        self.poll2.shared_with.add(self.friend)
+        self.poll2.shared_by = {str(self.user.id): [str(self.friend.id)]}
+        self.poll2.save()
+
+        self.url = reverse("playstyle_compass:shared_polls")
+
+    def test_redirect_if_not_logged_in(self):
+        response = self.client.get(self.url, secure=True)
+        self.assertEqual(response.status_code, 302)
+        self.assertIn("/users/login/", response.url)
+
+    def test_view_shared_with_me(self):
+        self.client.login(username="user", password="pass")
+        response = self.client.get(self.url, secure=True)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "polls/shared_polls.html")
+
+        polls = response.context["polls"]
+        self.assertEqual(len(polls), 1)
+        self.assertEqual(polls[0], self.poll1)
+        self.assertEqual(response.context["view_type"], "received")
+        self.assertTrue(hasattr(polls[0], "shared_by_users"))
+        self.assertIn(self.friend, polls[0].shared_by_users)
+
+    def test_view_shared_by_me(self):
+        self.client.login(username="user", password="pass")
+        response = self.client.get(self.url + "?view=shared", secure=True)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "polls/shared_polls.html")
+
+        polls = response.context["polls"]
+        self.assertEqual(len(polls), 1)
+        self.assertEqual(polls[0], self.poll2)
+        self.assertEqual(response.context["view_type"], "shared")
+
+    def test_sorting_by_title(self):
+        self.client.login(username="user", password="pass")
+        self.poll1.title = "Zebra"
+        self.poll1.save()
+
+        response = self.client.get(self.url + "?sort_by=title&order=asc", secure=True)
+        polls = response.context["polls"]
+
+        self.assertEqual(polls[0].title, "Zebra")
+
+    def test_sorting_by_created_at(self):
+        self.client.login(username="user", password="pass")
+        response = self.client.get(self.url + "?sort_by=created_at&order=asc", secure=True)
+        polls = response.context["polls"]
+
+        self.assertTrue(polls[0].created_at <= polls[-1].created_at)
+
+
+class CompletedPollsViewTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username="testuser", password="pass")
+        self.url = reverse("playstyle_compass:completed_polls")
+
+        self.completed_poll = Poll.objects.create(
+            title="Finished Poll",
+            description="Done",
+            created_by=self.user,
+            is_public=True,
+            duration=timedelta(days=7)
+        )
+        self.completed_poll.created_at = timezone.now() - timedelta(days=8)
+        self.completed_poll.save()
+
+        self.completed_poll_option = PollOption.objects.create(
+            poll=self.completed_poll, text="Option A"
+        )
+
+        self.active_poll = Poll.objects.create(
+            title="Active Poll",
+            description="Still running",
+            created_by=self.user,
+            duration=timedelta(days=10),
+            is_public=True,
+            created_at=timezone.now()
+        )
+        PollOption.objects.create(poll=self.active_poll, text="Option B")
+
+    def test_redirects_if_not_logged_in(self):
+        response = self.client.get(self.url, secure=True)
+        self.assertEqual(response.status_code, 302)
+        self.assertIn("/users/login/", response.url)
+
+    @patch("playstyle_compass.views.paginate_objects")
+    def test_completed_poll_is_listed(self, mock_paginate):
+        self.client.login(username="testuser", password="pass")
+
+        mock_paginate.return_value = [self.completed_poll, self.active_poll]
+
+        response = self.client.get(self.url, secure=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "polls/completed_polls.html")
+
+        context = response.context
+        self.assertIn("polls_with_data", context)
+        self.assertEqual(len(context["polls_with_data"]), 1)
+
+        data = context["polls_with_data"][0]
+        self.assertEqual(data["poll"], self.completed_poll)
+        self.assertIn("total_votes", data)
+        self.assertIn("options_with_percentages", data)
+        self.assertEqual(context["polls"][0], self.completed_poll)
+        self.assertTrue(context["pagination"])
+
+    @patch("playstyle_compass.views.paginate_objects")
+    def test_user_vote_shown_if_exists(self, mock_paginate):
+        self.client.login(username="testuser", password="pass")
+
+        Vote.objects.create(user=self.user, poll=self.completed_poll, option=self.completed_poll_option)
+        mock_paginate.return_value = [self.completed_poll]
+
+        response = self.client.get(self.url, secure=True)
+        user_votes = response.context["user_votes"]
+        self.assertIn(self.completed_poll.id, user_votes)
+        self.assertEqual(user_votes[self.completed_poll.id], self.completed_poll_option.id)
+
 if __name__ == "__main__":
     from django.test.utils import get_runner
 
