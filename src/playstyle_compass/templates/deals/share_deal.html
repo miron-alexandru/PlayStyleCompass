@@ -32,7 +32,7 @@
         {% trans "Get Deal URL" %}
     </button>
     <div id="linkBox" class="link-box" style="display: none;">
-        <input type="text" id="shareableLink" value="{{ request.build_absolute_uri|cut:request.path }}{% url 'playstyle_compass:game_deal' deal.deal_id %}" readonly>
+        <input type="text"id="shareableLink" value="{{ request.scheme }}://{{ request.get_host }}{% url 'playstyle_compass:game_deal' deal.deal_id %}"readonly>
         <button type="button" onclick="copyToClipboard()" class="btn-copy">{% trans "Copy" %}</button>
         <span id="copyMessage" class="copy-message" style="display: none;">{% trans "Copied!" %}</span>
     </div>

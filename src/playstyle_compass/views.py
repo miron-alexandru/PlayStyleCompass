@@ -2600,7 +2600,7 @@ def game_reviews(request):
 
 
 def game_deal(request, deal_id):
-    deal = Deal.objects.get(deal_id=deal_id)
+    deal = get_object_or_404(Deal, deal_id=deal_id)
 
     context = {
         "page_title": _("Deal Details :: PlayStyle Compass"),
@@ -2612,7 +2612,7 @@ def game_deal(request, deal_id):
 
 @login_required
 def share_deal(request, deal_id):
-    deal = get_object_or_404(Deal, pk=deal_id)
+    deal = get_object_or_404(Deal, deal_id=deal_id)
     user_friends = get_friend_list(request.user)
 
     if request.method == "POST":

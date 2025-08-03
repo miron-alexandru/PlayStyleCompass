@@ -4068,6 +4068,552 @@ class CompletedPollsViewTest(TestCase):
         self.assertIn(self.completed_poll.id, user_votes)
         self.assertEqual(user_votes[self.completed_poll.id], self.completed_poll_option.id)
 
+
+class DealsListViewTest(TestCase):
+    def setUp(self):
+        self.url = reverse("playstyle_compass:deals_list")
+        now = timezone.now()
+
+        self.deal1 = Deal.objects.create(
+            deal_id="d1",
+            game_name="Alpha",
+            sale_price=5.99,
+            retail_price=19.99,
+            thumb_url="alpha.jpg",
+            store_name="Steam",
+            store_icon_url="steam_icon.png",
+        )
+        self.deal2 = Deal.objects.create(
+            deal_id="d2",
+            game_name="Bravo",
+            sale_price=2.99,
+            retail_price=14.99,
+            thumb_url="bravo.jpg",
+            store_name="Epic",
+            store_icon_url="epic_icon.png",
+        )
+        self.deal3 = Deal.objects.create(
+            deal_id="d3",
+            game_name="Charlie",
+            sale_price=8.99,
+            retail_price=29.99,
+            thumb_url="charlie.jpg",
+            store_name="Steam",
+            store_icon_url="steam_icon.png",
+        )
+
+    def test_page_loads(self):
+        response = self.client.get(self.url, secure=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "deals/deals.html")
+
+    def test_sort_game_name_asc(self):
+        response = self.client.get(self.url + "?sort_order=game_name_asc", secure=True)
+        deals = list(response.context["deals"])
+        names = [d.game_name for d in deals]
+        self.assertEqual(names, sorted(names))
+
+    def test_sort_game_name_desc(self):
+        response = self.client.get(self.url + "?sort_order=game_name_desc", secure=True)
+        deals = list(response.context["deals"])
+        names = [d.game_name for d in deals]
+        self.assertEqual(names, sorted(names, reverse=True))
+
+    def test_sort_sale_price_asc(self):
+        response = self.client.get(self.url + "?sort_order=sale_asc", secure=True)
+        deals = list(response.context["deals"])
+        prices = [d.sale_price for d in deals]
+        self.assertEqual(prices, sorted(prices))
+
+    def test_sort_sale_price_desc(self):
+        response = self.client.get(self.url + "?sort_order=sale_desc", secure=True)
+        deals = list(response.context["deals"])
+        prices = [d.sale_price for d in deals]
+        self.assertEqual(prices, sorted(prices, reverse=True))
+
+    def test_filter_by_store(self):
+        response = self.client.get(self.url + "?store_name=Steam", secure=True)
+        deals = response.context["deals"]
+        for d in deals:
+            self.assertEqual(d.store_name, "Steam")
+        self.assertEqual(response.context["current_store_name"], "Steam")
+
+    def test_filter_and_sort(self):
+        response = self.client.get(self.url + "?store_name=Steam&sort_order=sale_asc", secure=True)
+        deals = response.context["deals"]
+        prices = [d.sale_price for d in deals]
+        self.assertEqual(prices, sorted(prices))
+        for d in deals:
+            self.assertEqual(d.store_name, "Steam")
+
+    def test_available_stores_context(self):
+        response = self.client.get(self.url, secure=True)
+        stores = list(response.context["available_stores"])
+        self.assertIn("Steam", stores)
+        self.assertIn("Epic", stores)
+
+
+class GameReviewsViewTest(TestCase):
+    def setUp(self):
+        self.url = reverse("playstyle_compass:game_reviews")
+        self.user = User.objects.create_user(username="user", password="pass")
+
+        self.game = Game.objects.create(guid="33421", title="Game 1")
+
+        self.r1 = Review.objects.create(
+            game=self.game,
+            user=self.user,
+            reviewers="User A",
+            review_deck="Deck A",
+            review_description="Description A",
+            score=4,
+            likes=3,
+            dislikes=1,
+            liked_by="1,2",
+            disliked_by="3",
+            date_added=now() - timedelta(days=3),
+        )
+
+        self.r2 = Review.objects.create(
+            game=self.game,
+            user=self.user,
+            reviewers="User B",
+            review_deck="Deck B",
+            review_description="Description B",
+            score=2,
+            likes=8,
+            dislikes=0,
+            liked_by="1,2,3,4",
+            disliked_by="",
+            date_added=now() - timedelta(days=1),
+        )
+
+        self.r3 = Review.objects.create(
+            game=self.game,
+            user=self.user,
+            reviewers="User C",
+            review_deck="Deck C",
+            review_description="Description C",
+            score=5,
+            likes=1,
+            dislikes=2,
+            liked_by="5",
+            disliked_by="6,7",
+            date_added=now(),
+        )
+
+    def test_redirect_if_not_logged_in(self):
+        response = self.client.get(self.url, secure=True)
+        self.assertEqual(response.status_code, 302)
+        self.assertIn("/users/login/", response.url)
+
+    def test_page_loads(self):
+        self.client.login(username="user", password="pass")
+        response = self.client.get(self.url, secure=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "reviews/game_reviews.html")
+        self.assertIn("reviews", response.context)
+        self.assertTrue(response.context["pagination"])
+        self.assertEqual(response.context["sort_order"], "date_desc")
+
+    def test_sort_date_asc(self):
+        self.client.login(username="user", password="pass")
+        response = self.client.get(self.url + "?sort_order=date_asc", secure=True)
+        reviews = list(response.context["reviews"])
+        dates = [r.date_added for r in reviews]
+        self.assertEqual(dates, sorted(dates))
+
+    def test_sort_date_desc(self):
+        self.client.login(username="user", password="pass")
+        response = self.client.get(self.url + "?sort_order=date_desc", secure=True)
+        reviews = list(response.context["reviews"])
+        dates = [r.date_added for r in reviews]
+        self.assertEqual(dates, sorted(dates, reverse=True))
+
+    def test_sort_score_asc(self):
+        self.client.login(username="user", password="pass")
+        response = self.client.get(self.url + "?sort_order=score_asc", secure=True)
+        scores = [r.score for r in response.context["reviews"]]
+        self.assertEqual(scores, sorted(scores))
+
+    def test_sort_score_desc(self):
+        self.client.login(username="user", password="pass")
+        response = self.client.get(self.url + "?sort_order=score_desc", secure=True)
+        scores = [r.score for r in response.context["reviews"]]
+        self.assertEqual(scores, sorted(scores, reverse=True))
+
+    def test_sort_likes_asc(self):
+        self.client.login(username="user", password="pass")
+        response = self.client.get(self.url + "?sort_order=likes_asc", secure=True)
+        likes = [r.likes for r in response.context["reviews"]]
+        self.assertEqual(likes, sorted(likes))
+
+    def test_sort_likes_desc(self):
+        self.client.login(username="user", password="pass")
+        response = self.client.get(self.url + "?sort_order=likes_desc", secure=True)
+        likes = [r.likes for r in response.context["reviews"]]
+        self.assertEqual(likes, sorted(likes, reverse=True))
+
+
+class GameDealViewTest(TestCase):
+    def setUp(self):
+        self.deal = Deal.objects.create(
+            deal_id="deal123",
+            game_name="Test Game",
+            sale_price=9.99,
+            retail_price=19.99,
+            thumb_url="thumb.jpg",
+            store_name="Steam",
+            store_icon_url="steam_icon.png",
+        )
+        self.url = reverse("playstyle_compass:game_deal", args=[self.deal.deal_id])
+
+    def test_page_loads(self):
+        response = self.client.get(self.url, secure=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "deals/game_deal.html")
+        self.assertEqual(response.context["deal"], self.deal)
+        self.assertEqual(response.context["page_title"], "Deal Details :: PlayStyle Compass")
+
+    def test_deal_not_found(self):
+        bad_url = reverse("playstyle_compass:game_deal", args=["invalid_id"])
+        response = self.client.get(bad_url, secure=True)
+        self.assertEqual(response.status_code, 404)
+
+
+class ShareDealViewTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username="user", password="pass")
+        self.friend1 = User.objects.create_user(username="friend1", password="pass")
+        self.friend2 = User.objects.create_user(username="friend2", password="pass")
+
+        self.deal = Deal.objects.create(
+            deal_id="3324123",
+            game_name="Test Game",
+            sale_price=5.99,
+            retail_price=9.99,
+            thumb_url="thumb.jpg",
+            store_name="Steam",
+            store_icon_url="steam_icon.png",
+        )
+
+        self.url = reverse("playstyle_compass:share_deal", args=[self.deal.deal_id])
+
+    def test_redirect_if_not_logged_in(self):
+        response = self.client.get(self.url, secure=True)
+        self.assertEqual(response.status_code, 302)
+        self.assertIn("/users/login/", response.url)
+
+    @patch("playstyle_compass.views.get_friend_list")
+    def test_get_share_deal_page(self, mock_get_friend_list):
+        mock_get_friend_list.return_value = [self.friend1, self.friend2]
+        self.client.login(username="user", password="pass")
+
+        response = self.client.get(self.url, secure=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "deals/share_deal.html")
+        self.assertEqual(response.context["deal"], self.deal)
+        self.assertEqual(response.context["deal_id"], str(self.deal.deal_id))
+        self.assertIn(self.friend1, response.context["user_friends"])
+        self.assertIn(self.friend2, response.context["user_friends"])
+
+    @patch("playstyle_compass.views.get_friend_list")
+    def test_post_share_deal_with_friends(self, mock_get_friend_list):
+        mock_get_friend_list.return_value = [self.friend1, self.friend2]
+        self.client.login(username="user", password="pass")
+
+        data = {
+            "shared_with": [str(self.friend1.id), str(self.friend2.id)]
+        }
+        response = self.client.post(self.url, data, secure=True)
+
+        self.assertEqual(response.status_code, 302)
+        expected_redirect = reverse("playstyle_compass:game_deal", args=[self.deal.deal_id])
+        self.assertEqual(response.url, expected_redirect)
+
+        self.assertTrue(SharedDeal.objects.filter(sender=self.user, recipient=self.friend1, deal=self.deal).exists())
+        self.assertTrue(SharedDeal.objects.filter(sender=self.user, recipient=self.friend2, deal=self.deal).exists())
+
+    @patch("playstyle_compass.views.get_friend_list")
+    def test_post_does_not_share_with_self(self, mock_get_friend_list):
+        mock_get_friend_list.return_value = [self.friend1, self.friend2]
+        self.client.login(username="user", password="pass")
+
+        data = {
+            "shared_with": [str(self.user.id), str(self.friend1.id)]
+        }
+        response = self.client.post(self.url, data, secure=True)
+
+        self.assertEqual(response.status_code, 302)
+        self.assertTrue(SharedDeal.objects.filter(sender=self.user, recipient=self.friend1, deal=self.deal).exists())
+        self.assertFalse(SharedDeal.objects.filter(sender=self.user, recipient=self.user, deal=self.deal).exists())
+
+    @patch("playstyle_compass.views.get_friend_list")
+    def test_post_invalid_friend_id_raises_404(self, mock_get_friend_list):
+        mock_get_friend_list.return_value = [self.friend1, self.friend2]
+        self.client.login(username="user", password="pass")
+
+        data = {
+            "shared_with": ["999999"]
+        }
+        response = self.client.post(self.url, data, secure=True)
+        self.assertEqual(response.status_code, 404)
+
+
+class SharedDealsViewTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username="user", password="pass")
+        self.friend = User.objects.create_user(username="friend", password="pass")
+        self.deal = Deal.objects.create(
+            deal_id="12345",
+            game_name="Sample Game",
+            sale_price=10.0,
+            retail_price=20.0,
+            thumb_url="thumb.jpg",
+            store_name="Steam",
+            store_icon_url="steam_icon.png",
+        )
+        self.url = reverse("playstyle_compass:shared_deals")
+
+    def test_redirect_if_not_logged_in(self):
+        response = self.client.get(self.url, secure=True)
+        self.assertEqual(response.status_code, 302)
+        self.assertIn("/users/login/", response.url)
+
+    def test_default_view_receives_deals(self):
+        SharedDeal.objects.create(sender=self.friend, recipient=self.user, deal=self.deal)
+        self.client.login(username="user", password="pass")
+
+        response = self.client.get(self.url, secure=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context["view_type"], "received")
+        deals = response.context["deals"]
+        self.assertTrue(all(d.recipient == self.user for d in deals))
+        self.assertIn("Shared Deals :: PlayStyle Compass", response.context["page_title"])
+
+    def test_view_shared_deals_sent(self):
+        SharedDeal.objects.create(sender=self.user, recipient=self.friend, deal=self.deal)
+        self.client.login(username="user", password="pass")
+
+        response = self.client.get(f"{self.url}?view=shared", secure=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context["view_type"], "shared")
+        deals = response.context["deals"]
+        self.assertTrue(all(d.sender == self.user for d in deals))
+        self.assertIn("Shared Deals :: PlayStyle Compass", response.context["page_title"])
+
+    def test_no_deals_for_user(self):
+        self.client.login(username="user", password="pass")
+        response = self.client.get(self.url, secure=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(response.context["deals"]), 0)
+
+
+class SingleReviewViewTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username="user", password="pass")
+
+        self.game = Game.objects.create(
+            guid="1234",
+            title="Test Game",
+        )
+
+        self.review = Review.objects.create(
+            game=self.game,
+            user=self.user,
+            reviewers="Test Reviewer",
+            review_deck="Brief summary of review",
+            review_description="Detailed review content goes here.",
+            score=4,
+            likes=0,
+            dislikes=0,
+            liked_by="",
+            disliked_by="",
+        )
+
+        self.url = reverse("playstyle_compass:single_review", args=[self.review.id])
+
+    def test_redirect_if_not_logged_in(self):
+        response = self.client.get(self.url, secure=True)
+        self.assertEqual(response.status_code, 302)
+        self.assertIn("/users/login/", response.url)
+
+    def test_get_review_page(self):
+        self.client.login(username="user", password="pass")
+
+        response = self.client.get(self.url, secure=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "reviews/single_review.html")
+        self.assertEqual(response.context["review"], self.review)
+        self.assertIn("Game Review :: PlayStyle Compass", response.context["page_title"])
+
+    def test_404_for_invalid_review_id(self):
+        self.client.login(username="user", password="pass")
+        invalid_url = reverse("playstyle_compass:single_review", args=[9999])
+        response = self.client.get(invalid_url, secure=True)
+        self.assertEqual(response.status_code, 404)
+
+
+class ShareReviewViewTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username="user", password="pass")
+        self.friend1 = User.objects.create_user(username="friend1", password="pass")
+        self.friend2 = User.objects.create_user(username="friend2", password="pass")
+
+        self.game = Game.objects.create(
+            guid="123432",
+            title="Test Game",
+        )
+
+        self.review = Review.objects.create(
+            game=self.game,
+            user=self.user,
+            reviewers="Reviewer Name",
+            review_deck="Short summary",
+            review_description="Detailed review text",
+            score=4,
+            likes=0,
+            dislikes=0,
+            liked_by="",
+            disliked_by="",
+        )
+
+        self.url = reverse("playstyle_compass:share_review", args=[self.review.id])
+
+    def test_redirect_if_not_logged_in(self):
+        response = self.client.get(self.url, secure=True)
+        self.assertEqual(response.status_code, 302)
+        self.assertIn("/users/login/", response.url)
+
+    @patch("playstyle_compass.views.get_friend_list")
+    def test_get_share_review_page(self, mock_get_friend_list):
+        mock_get_friend_list.return_value = [self.friend1, self.friend2]
+
+        self.client.login(username="user", password="pass")
+        response = self.client.get(self.url, secure=True)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "reviews/share_review.html")
+        self.assertEqual(response.context["review"], self.review)
+        self.assertEqual(response.context["review_id"], self.review.id)
+        self.assertIn(self.friend1, response.context["user_friends"])
+        self.assertIn(self.friend2, response.context["user_friends"])
+
+    @patch("playstyle_compass.views.get_friend_list")
+    @patch("playstyle_compass.views.create_notification")
+    def test_post_share_review_with_friends(self, mock_create_notification, mock_get_friend_list):
+        mock_get_friend_list.return_value = [self.friend1, self.friend2]
+
+        self.client.login(username="user", password="pass")
+        data = {
+            "shared_with": [str(self.friend1.id), str(self.friend2.id)]
+        }
+        response = self.client.post(self.url, data, secure=True)
+
+        self.assertEqual(response.status_code, 302)
+        expected_redirect = reverse("playstyle_compass:single_review", args=[self.review.id])
+        self.assertEqual(response.url, expected_redirect)
+
+        self.assertTrue(SharedReview.objects.filter(sender=self.user, recipient=self.friend1, review=self.review).exists())
+        self.assertTrue(SharedReview.objects.filter(sender=self.user, recipient=self.friend2, review=self.review).exists())
+
+        self.assertEqual(mock_create_notification.call_count, 2)
+
+        messages = list(get_messages(response.wsgi_request))
+        self.assertTrue(any("Review shared successfully." in str(m) for m in messages))
+
+    @patch("playstyle_compass.views.get_friend_list")
+    @patch("playstyle_compass.views.create_notification")
+    def test_post_does_not_share_with_self(self, mock_create_notification, mock_get_friend_list):
+        mock_get_friend_list.return_value = [self.friend1, self.friend2, self.user]
+
+        self.client.login(username="user", password="pass")
+        data = {
+            "shared_with": [str(self.user.id), str(self.friend1.id)]
+        }
+        response = self.client.post(self.url, data, secure=True)
+
+        self.assertEqual(response.status_code, 302)
+        self.assertTrue(SharedReview.objects.filter(sender=self.user, recipient=self.friend1, review=self.review).exists())
+        self.assertFalse(SharedReview.objects.filter(sender=self.user, recipient=self.user, review=self.review).exists())
+
+        self.assertEqual(mock_create_notification.call_count, 1)
+
+    @patch("playstyle_compass.views.get_friend_list")
+    def test_post_invalid_friend_id_raises_404(self, mock_get_friend_list):
+        mock_get_friend_list.return_value = [self.friend1, self.friend2]
+
+        self.client.login(username="user", password="pass")
+        data = {
+            "shared_with": ["999999"]
+        }
+        response = self.client.post(self.url, data, secure=True)
+        self.assertEqual(response.status_code, 404)
+
+
+class SharedReviewsViewTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username="user", password="pass")
+        self.friend = User.objects.create_user(username="friend", password="pass")
+
+        self.game = Game.objects.create(
+            guid="1234",
+            title="Test Game",
+        )
+
+        self.review = Review.objects.create(
+            game=self.game,
+            user=self.friend,
+            reviewers="Reviewer Name",
+            review_deck="Short summary",
+            review_description="Detailed review text",
+            score=4,
+            likes=0,
+            dislikes=0,
+        )
+
+        self.shared_received = SharedReview.objects.create(
+            sender=self.friend,
+            recipient=self.user,
+            review=self.review,
+        )
+
+        self.shared_sent = SharedReview.objects.create(
+            sender=self.user,
+            recipient=self.friend,
+            review=self.review,
+        )
+
+        self.url = reverse("playstyle_compass:shared_reviews")
+
+    def test_redirect_if_not_logged_in(self):
+        response = self.client.get(self.url, secure=True)
+        self.assertEqual(response.status_code, 302)
+        self.assertIn("/users/login/", response.url)
+
+    def test_view_received_shared_reviews(self):
+        self.client.login(username="user", password="pass")
+        response = self.client.get(self.url, secure=True)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "reviews/shared_reviews.html")
+        self.assertEqual(response.context["view_type"], "received")
+        reviews = response.context["reviews"]
+        self.assertIn(self.shared_received, reviews)
+        self.assertNotIn(self.shared_sent, reviews)
+
+    def test_view_shared_shared_reviews(self):
+        self.client.login(username="user", password="pass")
+        response = self.client.get(self.url + "?view=shared", secure=True)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "reviews/shared_reviews.html")
+        self.assertEqual(response.context["view_type"], "shared")
+        reviews = response.context["reviews"]
+        self.assertIn(self.shared_sent, reviews)
+        self.assertNotIn(self.shared_received, reviews)
+
+
 if __name__ == "__main__":
     from django.test.utils import get_runner
 
