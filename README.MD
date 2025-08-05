@@ -144,6 +144,8 @@ Websites for .env configuration: [GiantBomb](https://www.giantbomb.com/) / [Send
 <summary><h2>PlayStyle Compass Changelog</h2></summary>
 
 ### Version v2.5:
+* Refactored tests in multiple files for better maintainability.
+* Completed testing for the 'playstyle_compass' app views.
 * Created tests for the 'users' app forms.
 * Created tests for the 'playstyle_compass' app forms.
 * Created tests for the 'users' app models.

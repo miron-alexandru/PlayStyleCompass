@@ -51,7 +51,7 @@ urlpatterns = [
         name="confirm_email_change",
     ),
     path("friends/<user_id>", views.friends_list_view, name="friends_list"),
-    path("friend_remove ", views.remove_friend, name="remove_friend"),
+    path("friend_remove/", views.remove_friend, name="remove_friend"),
     path(
         "send_friend_request/<int:user_id>/",
         views.send_friend_request,
