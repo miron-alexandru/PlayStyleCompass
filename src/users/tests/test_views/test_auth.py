@@ -197,6 +197,236 @@ class ChangePasswordTest(TestCase):
         self.assertEqual(response.status_code, 302)
         self.assertIn(reverse("users:login"), response.url)
 
+
+class ChangePasswordDoneTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(
+            username="testuser", email="test@example.com", password="StrongPass123!"
+        )
+        translation.activate("en")
+        self.url = reverse("users:change_password_done")
+
+    def test_redirects_if_not_logged_in(self):
+        response = self.client.get(self.url, secure=True)
+        self.assertEqual(response.status_code, 302)
+        self.assertIn("/users/login/", response.url)
+
+    def test_view_loads_for_authenticated_user(self):
+        self.client.login(username="testuser", password="StrongPass123!")
+        response = self.client.get(self.url, secure=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "account_actions/change_succeeded.html")
+
+    def test_context_contains_expected_keys(self):
+        self.client.login(username="testuser", password="StrongPass123!")
+        response = self.client.get(self.url, secure=True)
+        self.assertIn("page_title", response.context)
+        self.assertIn("response", response.context)
+        self.assertIsInstance(response.context["page_title"], str)
+        self.assertIsInstance(response.context["response"], str)
+
+    def test_success_message_displayed(self):
+        self.client.login(username="testuser", password="StrongPass123!")
+        response = self.client.get(self.url, secure=True)
+        messages = list(get_messages(response.wsgi_request))
+        self.assertTrue(any("Password Changed Successfully!" in str(m) for m in messages))
+
+
+class ChangeEmailViewTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(
+            username="testuser", email="old@example.com", password="StrongPass123!"
+        )
+        self.url = reverse("users:change_email")
+
+    def test_redirect_if_not_logged_in(self):
+        response = self.client.get(self.url, secure=True)
+        self.assertEqual(response.status_code, 302)
+        self.assertIn("/users/login/", response.url)
+
+    def test_get_shows_form_with_email(self):
+        self.client.login(username="testuser", password="StrongPass123!")
+        response = self.client.get(self.url, secure=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "account_actions/change_email.html")
+        self.assertContains(response, "old@example.com")
+
+    def test_post_invalid_shows_errors(self):
+        self.client.login(username="testuser", password="StrongPass123!")
+        response = self.client.post(self.url, data={"new_email": ""}, secure=True)
+        self.assertEqual(response.status_code, 200)
+        form = response.context["form"]
+        self.assertTrue(form.errors)
+        self.assertIn("new_email", form.errors)
+
+    @override_settings(DEFAULT_FROM_EMAIL="noreply@example.com")
+    def test_post_valid_sends_email_and_redirects(self):
+        self.client.login(username="testuser", password="StrongPass123!")
+        session = self.client.session
+
+        data = {
+            "current_password": "StrongPass123!",
+            "current_email": self.user.email,
+            "new_email": "newemail@example.com",
+            "confirm_email": "newemail@example.com",
+        }
+        response = self.client.post(self.url, data, secure=True)
+
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, reverse("users:change_email_done"))
+
+        self.assertEqual(len(mail.outbox), 1)
+        email = mail.outbox[0]
+        self.assertIn("Confirm Email Change", email.subject)
+        self.assertIn("newemail@example.com", email.body)
+        self.assertEqual(email.to, ["old@example.com"])
+        self.assertEqual(email.from_email, "noreply@example.com")
+
+        session = self.client.session
+        self.assertEqual(session["email_change_temp"], "newemail@example.com")
+
+        match = re.search(r"/confirm_email_change/\w+/(?P<token>[\w-]+)/", email.body)
+        self.assertIsNotNone(match)
+        token_from_email = match.group("token")
+        self.assertEqual(session["email_change_token"], token_from_email)
+
+        uid = urlsafe_base64_encode(force_bytes(self.user.pk))
+        self.assertIn(uid, email.body)
+        self.assertIn(token_from_email, email.body)
+
+
+class ChangeEmailDoneTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(
+            username="testuser",
+            password="StrongPass123!",
+            email="test@example.com"
+        )
+        self.url = reverse("users:change_email_done")
+
+    def test_redirect_if_not_logged_in(self):
+        response = self.client.get(self.url, secure=True)
+        self.assertEqual(response.status_code, 302)
+        self.assertIn("/users/login/", response.url)
+
+    def test_success_page_shows_message(self):
+        self.client.login(username="testuser", password="StrongPass123!")
+        response = self.client.get(self.url, secure=True)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "account_actions/change_succeeded.html")
+
+        messages = list(get_messages(response.wsgi_request))
+        self.assertTrue(any("Confirmation email successfully sent!" in str(m) for m in messages))
+
+        self.assertIn("page_title", response.context)
+        self.assertIn("response", response.context)
+
+
+class ChangeEmailSuccessTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(
+            username="testuser", email="new@example.com", password="StrongPass123!"
+        )
+        self.url = reverse("users:change_email_success")
+
+    def test_redirect_if_not_logged_in(self):
+        response = self.client.get(self.url, secure=True)
+        self.assertEqual(response.status_code, 302)
+        self.assertIn("/users/login/", response.url)
+
+    def test_get_shows_success_message(self):
+        self.client.login(username="testuser", password="StrongPass123!")
+        response = self.client.get(self.url, secure=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "account_actions/change_succeeded.html")
+        self.assertContains(response, "Email Address successfully changed!")
+        self.assertContains(response, self.user.email)
+
+
+class ConfirmEmailChangeTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(
+            username="testuser", email="old@example.com", password="StrongPass123!"
+        )
+        self.client.login(username="testuser", password="StrongPass123!")
+        self.uidb64 = urlsafe_base64_encode(force_bytes(self.user.pk))
+        self.token = default_token_generator.make_token(self.user)
+        self.url = reverse(
+            "users:confirm_email_change", kwargs={"uidb64": self.uidb64, "token": self.token}
+        )
+
+    def test_invalid_token_returns_error(self):
+        session = self.client.session
+        session["email_change_token"] = "wrongtoken"
+        session["email_change_temp"] = "new@example.com"
+        session.save()
+
+        response = self.client.get(self.url, secure=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Invalid token for email change.")
+
+    def test_valid_token_changes_email_and_redirects(self):
+        session = self.client.session
+        session["email_change_token"] = self.token
+        session["email_change_temp"] = "new@example.com"
+        session.save()
+
+        response = self.client.get(self.url, secure=True)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, reverse("users:change_email_success"))
+
+        self.user.refresh_from_db()
+        self.assertEqual(self.user.email, "new@example.com")
+
+        session = self.client.session
+        self.assertNotIn("email_change_token", session)
+        self.assertNotIn("email_change_temp", session)
+
+
+class ChangeLanguageTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(
+            username="testuser", password="StrongPass123!"
+        )
+        self.url = reverse("users:change_language")
+        self.user_profile = self.user.userprofile
+
+    def test_redirect_if_logged_out(self):
+        response = self.client.post(self.url, content_type="application/json", secure=True)
+        self.assertEqual(response.status_code, 302)
+        self.assertIn("/users/login/", response.url)
+
+    def test_get_fails(self):
+        self.client.login(username="testuser", password="StrongPass123!")
+        response = self.client.get(self.url, secure=True)
+        self.assertEqual(response.status_code, 400)
+        self.assertJSONEqual(response.content, {"status": "error"})
+
+    def test_post_invalid_language_no_change(self):
+        self.client.login(username="testuser", password="StrongPass123!")
+        response = self.client.post(
+            self.url, '{"language":"fr"}', content_type="application/json", secure=True
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertJSONEqual(response.content, {"status": "success"})
+        self.user_profile.refresh_from_db()
+        self.assertNotEqual(self.user_profile.language, "fr")
+
+    def test_post_valid_language_changes(self):
+        self.client.login(username="testuser", password="StrongPass123!")
+        response = self.client.post(
+            self.url, '{"language":"ro"}', content_type="application/json", secure=True
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertJSONEqual(response.content, {"status": "success"})
+        self.user_profile.refresh_from_db()
+        self.assertEqual(self.user_profile.language, "ro")
+        self.assertEqual(self.client.session["django_language"], "ro")
+
+
+
+
 if __name__ == "__main__":
     from django.test.utils import get_runner
 
