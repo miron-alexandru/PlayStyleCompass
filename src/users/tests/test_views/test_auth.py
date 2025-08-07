@@ -425,6 +425,90 @@ class ChangeLanguageTest(TestCase):
         self.assertEqual(self.client.session["django_language"], "ro")
 
 
+@override_settings(DEFAULT_FROM_EMAIL="noreply@example.com")
+class DeleteAccountTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(
+            username="testuser", email="test@example.com", password="StrongPass123!"
+        )
+        self.url = reverse("users:delete_account")
+
+    def login(self):
+        self.client.login(username="testuser", password="StrongPass123!")
+
+    def test_redirect_if_not_logged_in(self):
+        response = self.client.get(self.url, secure=True)
+        self.assertEqual(response.status_code, 302)
+        self.assertIn("/users/login/", response.url)
+
+    def test_get_renders_form(self):
+        self.login()
+        response = self.client.get(self.url, secure=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "account_actions/delete_account.html")
+
+    def test_post_with_correct_password_deletes_account(self):
+        self.login()
+        data = {
+            "password": "StrongPass123!",
+            "delete_with_password": "1",
+        }
+        response = self.client.post(self.url, data, secure=True)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, reverse("playstyle_compass:index"))
+        self.assertFalse(User.objects.filter(username="testuser").exists())
+
+    def test_post_with_wrong_password_shows_error(self):
+        self.login()
+        data = {
+            "password": "WrongPassword!",
+            "delete_with_password": "1",
+        }
+        response = self.client.post(self.url, data, secure=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(User.objects.filter(username="testuser").exists())
+        self.assertContains(response, "Incorrect password")
+
+    def test_email_not_confirmed_shows_error(self):
+        self.user.userprofile.email_confirmed = False
+        self.user.userprofile.save()
+
+        self.login()
+        data = {
+            "delete_with_email": "1",
+            "password": "StrongPass123!"
+        }
+        response = self.client.post(self.url, data, secure=True)
+        messages = list(get_messages(response.wsgi_request))
+        self.assertTrue(any("confirm your email address" in str(m) for m in messages))
+        self.assertEqual(len(mail.outbox), 0)
+
+    def test_email_confirmed_sends_email(self):
+        self.user.userprofile.email_confirmed = True
+        self.user.userprofile.save()
+
+        self.login()
+        data = {
+            "delete_with_email": "1",
+            "password": "StrongPass123!"
+        }
+        response = self.client.post(self.url, data, secure=True)
+        self.assertEqual(response.status_code, 200)
+
+        self.assertEqual(len(mail.outbox), 1)
+        email = mail.outbox[0]
+        self.assertIn("Confirm your account deletion", email.subject)
+        self.assertIn(self.user.email, email.to)
+
+        uid = urlsafe_base64_encode(force_bytes(self.user.pk))
+        token = account_deletion_token.make_token(self.user)
+        self.assertIn(uid, email.body)
+        self.assertIn(token, email.body)
+
+        messages = list(get_messages(response.wsgi_request))
+        self.assertTrue(any("confirmation email has been sent" in str(m) for m in messages))
+
+
 
 
 if __name__ == "__main__":
