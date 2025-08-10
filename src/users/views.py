@@ -968,12 +968,12 @@ def cancel_friend_request(request):
         if receiver_user_id := request.POST.get("receiver_user_id"):
             receiver = get_object_or_404(User, pk=receiver_user_id)
 
-            try:
-                # Attempt to retrieve active friend requests from the current user to the receiver
-                friend_requests = FriendRequest.objects.filter(
-                    sender=user, receiver=receiver, is_active=True
-                )
-            except FriendRequest.DoesNotExist:
+            # Attempt to retrieve active friend requests from the current user to the receiver
+            friend_requests = FriendRequest.objects.filter(
+                sender=user, receiver=receiver, is_active=True
+            )
+
+            if not friend_requests.exists():
                 # Handle the case where no friend request exists
                 result["message"] = _(
                     "Nothing to cancel. Friend request does not exist."
