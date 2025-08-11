@@ -334,6 +334,155 @@ class DeclineFriendRequestTest(TestCase):
         self.assertIn("must be authenticated", data.get("message", "").lower())
 
 
+class FollowUserViewTest(TestCase):
+    def setUp(self):
+        self.user1 = User.objects.create_user(
+            username="user1", email="u1@example.com", password="pass1234"
+        )
+        self.user2 = User.objects.create_user(
+            username="user2", email="u2@example.com", password="pass1234"
+        )
+        self.url = lambda user_id: reverse("users:follow_user", args=[user_id])
+
+    def test_follow_user_success(self):
+        self.client.login(username="user1", password="pass1234")
+        response = self.client.post(self.url(self.user2.id), secure=True)
+
+        self.assertEqual(response.status_code, 200)
+        data = json.loads(response.content)
+        self.assertIn("now following", data["message"].lower())
+        self.assertEqual(Follow.objects.count(), 1)
+
+        follow_instance = Follow.objects.first()
+        self.assertEqual(follow_instance.follower, self.user1)
+        self.assertEqual(follow_instance.followed, self.user2)
+
+    def test_follow_user_already_following(self):
+        Follow.objects.create(follower=self.user1, followed=self.user2)
+
+        self.client.login(username="user1", password="pass1234")
+        response = self.client.post(self.url(self.user2.id), secure=True)
+
+        self.assertEqual(response.status_code, 200)
+        data = json.loads(response.content)
+        self.assertIn("already following", data["message"].lower())
+        self.assertEqual(Follow.objects.count(), 1)  # still only one follow
+
+    def test_follow_user_invalid_method(self):
+        self.client.login(username="user1", password="pass1234")
+        response = self.client.get(self.url(self.user2.id), secure=True)
+        self.assertEqual(response.status_code, 400)
+        data = json.loads(response.content)
+        self.assertIn("invalid request", data["error"].lower())
+
+    def test_follow_non_existent_user(self):
+        self.client.login(username="user1", password="pass1234")
+        non_existent_id = self.user2.id + 999
+        response = self.client.post(self.url(non_existent_id), secure=True)
+        self.assertEqual(response.status_code, 404)
+
+
+class UnfollowUserViewTest(TestCase):
+    def setUp(self):
+        self.user1 = User.objects.create_user(username="user1", password="pass123")
+        self.user2 = User.objects.create_user(username="user2", password="pass123")
+        self.client.login(username="user1", password="pass123")
+
+        self.url = lambda user_id: reverse("users:unfollow_user", args=[user_id])
+
+    def test_unfollow_success(self):
+        Follow.objects.create(follower=self.user1, followed=self.user2)
+        response = self.client.post(self.url(self.user2.id), secure=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response.json()["message"],
+            _("You have unfollowed %s.") % self.user2.userprofile.profile_name
+        )
+        self.assertFalse(
+            Follow.objects.filter(follower=self.user1, followed=self.user2).exists()
+        )
+
+    def test_unfollow_not_following(self):
+        response = self.client.post(self.url(self.user2.id), secure=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response.json()["message"],
+            _("You are not following %s.") % self.user2.userprofile.profile_name
+        )
+
+    def test_unfollow_invalid_user(self):
+        invalid_id = 9999
+        response = self.client.post(self.url(invalid_id), secure=True)
+        self.assertEqual(response.status_code, 404)
+
+    def test_unfollow_wrong_method(self):
+        response = self.client.get(self.url(self.user2.id), secure=True)
+        self.assertEqual(response.status_code, 400)
+        self.assertIn("Invalid request", response.json()["error"])
+
+
+class FollowersListViewTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username="testuser", password="pass")
+        self.follower = User.objects.create_user(username="follower", password="pass")
+        self.follower_profile_name = self.follower.userprofile.profile_name
+        Follow.objects.create(follower=self.follower, followed=self.user)
+        self.url = lambda user_id: reverse("users:followers_list", args=[user_id])
+
+    def test_followers_list_authenticated(self):
+        self.client.login(username="testuser", password="pass")
+        response = self.client.get(self.url(self.user.id), secure=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "user_related/followers_list.html")
+        self.assertContains(response, self.follower_profile_name)
+
+    def test_followers_list_unauthenticated(self):
+        response = self.client.get(self.url(self.user.id), secure=True)
+        self.assertEqual(response.status_code, 302)
+        self.assertIn("/users/login/", response.url)
+
+    def test_followers_passed_in_context(self):
+        self.client.login(username="testuser", password="pass")
+        response = self.client.get(self.url(self.user.id), secure=True)
+        followers_context = response.context["followers"]
+        self.assertEqual(len(followers_context), 1)
+        self.assertEqual(followers_context[0]["user"], self.follower)
+        self.assertEqual(followers_context[0]["profile_name"], self.follower_profile_name)
+        self.assertEqual(response.context["profile_user"], self.user)
+        self.assertEqual(response.context["page_title"], "Followers :: PlayStyle Compass")
+
+
+class FollowingListViewTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username="testuser", password="pass")
+        self.following_user = User.objects.create_user(username="following", password="pass")
+        self.following_profile_name = self.following_user.userprofile.profile_name
+        Follow.objects.create(follower=self.user, followed=self.following_user)
+        self.url = lambda user_id: reverse("users:following_list", args=[user_id])
+
+    def test_following_list_authenticated(self):
+        self.client.login(username="testuser", password="pass")
+        response = self.client.get(self.url(self.user.id), secure=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "user_related/following_list.html")
+        self.assertContains(response, self.following_profile_name)
+
+    def test_following_list_unauthenticated(self):
+        response = self.client.get(self.url(self.user.id), secure=True)
+        self.assertEqual(response.status_code, 302)
+        self.assertIn("/users/login/", response.url)
+
+    def test_following_passed_in_context(self):
+        self.client.login(username="testuser", password="pass")
+        response = self.client.get(self.url(self.user.id), secure=True)
+        following_context = response.context["following"]
+        self.assertEqual(len(following_context), 1)
+        self.assertEqual(following_context[0]["user"], self.following_user)
+        self.assertEqual(following_context[0]["profile_name"], self.following_profile_name)
+        self.assertEqual(response.context["profile_user"], self.user)
+        self.assertEqual(response.context["page_title"], "Following :: PlayStyle Compass")
+
+
 if __name__ == "__main__":
     from django.test.utils import get_runner
 
