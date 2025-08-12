@@ -1,6 +1,6 @@
 """Defines URL patterns."""
 
-from django.urls import path
+from django.urls import path, re_path
 from django.contrib.auth import views as auth_views
 from rest_framework_simplejwt import views as jwt_views
 
@@ -80,25 +80,15 @@ urlpatterns = [
     path("send_message/<int:user_id>", views.send_message, name="send_message"),
     path("inbox/", views.inbox, name="inbox"),
     path("delete_messages/", views.delete_messages, name="delete_messages"),
-    path(
-        "mark_notification_as_read/<int:notification_id>/",
+    re_path(
+        r"^mark_notification_as_read(?:/(?P<notification_id>\d+))?/$",
         views.mark_notification_as_read,
-        name="mark_notification_as_read",
+        name="mark_notification_as_read"
     ),
-    path(
-        "mark_notification_as_read/",
-        views.mark_notification_as_read,
-        name="mark_notification_as_read",
-    ),
-    path(
-        "delete_notification/<int:notification_id>/",
+    re_path(
+        r"^delete_notification(?:/(?P<notification_id>\d+))?/$",
         views.delete_notification,
-        name="delete_notification",
-    ),
-    path(
-        "delete_notification/",
-        views.delete_notification,
-        name="delete_notification",
+        name="delete_notification"
     ),
     path(
         "check_authentication/", views.check_authentication, name="check_authentication"

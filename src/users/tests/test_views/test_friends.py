@@ -1,5 +1,6 @@
 from .base import *
 import json
+from django.utils.translation import gettext as _
 
 
 class FriendsListViewTest(TestCase):

@@ -19,7 +19,7 @@ from playstyle_compass.models import Review, Game
 from django.contrib.auth import SESSION_KEY
 from django.contrib.messages import get_messages
 from django.urls import reverse
-from unittest.mock import patch
+from unittest.mock import patch, MagicMock
 from django.shortcuts import redirect
 from django.core import mail
 from django.contrib.sessions.middleware import SessionMiddleware
