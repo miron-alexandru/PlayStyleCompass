@@ -29,6 +29,7 @@ from django.utils import translation, timezone
 from django.contrib.auth.tokens import default_token_generator
 from django.http import JsonResponse
 from users.tokens import account_deletion_token
+from datetime import timedelta
 
 
 User = get_user_model()
