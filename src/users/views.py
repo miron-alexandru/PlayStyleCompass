@@ -1185,7 +1185,7 @@ def inbox(request):
             sender=request.user, is_deleted_by_sender=False
         )
     else:
-        user_messages = []
+        user_messages = Message.objects.none()
 
     # Sort the messages based on the selected order
     if sort_order == "asc":
