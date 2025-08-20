@@ -16,6 +16,11 @@ class CreateMessageViewTest(TestCase):
         self.url = reverse("users:create_message")
         self.client.login(username="sender", password="pass")
 
+        self.sender.userprofile.profile_name = "SenderProfile"
+        self.sender.userprofile.save()
+        self.recipient.userprofile.profile_name = "RecipientProfile"
+        self.recipient.userprofile.save()
+
         session = self.client.session
         session["user_id"] = self.sender.id
         session["recipient_id"] = self.recipient.id
