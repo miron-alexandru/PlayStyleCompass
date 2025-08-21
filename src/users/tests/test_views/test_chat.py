@@ -280,6 +280,265 @@ class DeleteChatMessagesViewTest(TestCase):
         response = self.client.post(invalid_url, secure=True)
         self.assertEqual(response.status_code, 404)
 
+
+class TogglePinMessageViewTest(TestCase):
+    def setUp(self):
+        self.client = Client()
+        self.user = User.objects.create_user(username="user1", password="pass")
+        self.other = User.objects.create_user(username="user2", password="pass")
+
+        self.message = ChatMessage.objects.create(
+            sender=self.user,
+            recipient=self.other,
+            content="Important message"
+        )
+
+        self.url = reverse("users:toggle_pin_message", args=[self.message.id])
+        self.client.login(username="user1", password="pass")
+
+    def test_pin(self):
+        res = self.client.post(self.url, secure=True)
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(res.json()["status"], "success")
+        self.assertEqual(res.json()["action"], "pinned")
+        self.assertIn(self.user, self.message.pinned_by.all())
+
+    def test_unpin(self):
+        self.message.pinned_by.add(self.user)
+        res = self.client.post(self.url, secure=True)
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(res.json()["status"], "success")
+        self.assertEqual(res.json()["action"], "unpinned")
+        self.assertNotIn(self.user, self.message.pinned_by.all())
+
+    def test_needs_login(self):
+        self.client.logout()
+        res = self.client.post(self.url, secure=True)
+        self.assertEqual(res.status_code, 302)
+        self.assertIn("/users/login/", res.url)
+
+    def test_404_on_missing(self):
+        bad_url = reverse("users:toggle_pin_message", args=[9999])
+        res = self.client.post(bad_url, secure=True)
+        self.assertEqual(res.status_code, 404)
+
+
+class LoadPinnedMessagesViewTest(TestCase):
+    def setUp(self):
+        self.client = Client()
+        self.user = User.objects.create_user(username="user1", password="pass")
+        self.other = User.objects.create_user(username="user2", password="pass")
+
+        self.msg_user = ChatMessage.objects.create(
+            sender=self.user,
+            recipient=self.other,
+            content="From user"
+        )
+        self.msg_other = ChatMessage.objects.create(
+            sender=self.other,
+            recipient=self.user,
+            content="From other"
+        )
+
+        self.url = reverse("users:load_pinned_messages", args=[self.other.id])
+        self.client.login(username="user1", password="pass")
+
+    def test_loads_pinned(self):
+        self.msg_user.pinned_by.add(self.user)
+        self.msg_other.pinned_by.add(self.user)
+
+        response = self.client.get(self.url, secure=True)
+        self.assertEqual(response.status_code, 200)
+
+        data = response.json()
+        self.assertEqual(len(data), 2)
+
+        ids = [m["id"] for m in data]
+        self.assertIn(self.msg_user.id, ids)
+        self.assertIn(self.msg_other.id, ids)
+
+    def test_labels_you(self):
+        self.msg_user.pinned_by.add(self.user)
+
+        response = self.client.get(self.url, secure=True)
+        self.assertEqual(response.status_code, 200)
+
+        data = response.json()
+        self.assertEqual(data[0]["sender__userprofile__profile_name"], "You")
+
+    def test_empty(self):
+        response = self.client.get(self.url, secure=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), [])
+
+    def test_needs_login(self):
+        self.client.logout()
+        response = self.client.get(self.url, secure=True)
+        self.assertEqual(response.status_code, 302)
+        self.assertIn("/users/login/", response.url)
+
+    def test_bad_recipient(self):
+        url = reverse("users:load_pinned_messages", args=[9999])
+        response = self.client.get(url, secure=True)
+        self.assertEqual(response.status_code, 404)
+
+
+class GetChatMessagesViewTest(TestCase):
+    def setUp(self):
+        self.client = Client()
+        self.user = User.objects.create_user(username="user1", password="pass")
+        self.other = User.objects.create_user(username="user2", password="pass")
+
+        self.user.userprofile.profile_name = "User1"
+        self.user.userprofile.profile_picture = "pic1.png"
+        self.user.userprofile.save()
+
+        self.other.userprofile.profile_name = "User2"
+        self.other.userprofile.profile_picture = "pic2.png"
+        self.other.userprofile.save()
+
+        self.m1 = GlobalChatMessage.objects.create(sender=self.user, content="Hello")
+        self.m2 = GlobalChatMessage.objects.create(sender=self.other, content="Hi")
+
+        self.url = reverse("users:get_chat_messages")
+        self.client.login(username="user1", password="pass")
+
+    def test_list(self):
+        res = self.client.get(self.url, {"offset": 0, "limit": 10}, secure=True)
+        self.assertEqual(res.status_code, 200)
+        data = res.json()
+        self.assertEqual(len(data), 2)
+        self.assertEqual(data[0]["message"], "Hi")
+        self.assertEqual(data[1]["message"], "Hello")
+
+    def test_pagination(self):
+        res = self.client.get(self.url, {"offset": 0, "limit": 1}, secure=True)
+        self.assertEqual(res.status_code, 200)
+        data = res.json()
+        self.assertEqual(len(data), 1)
+        self.assertEqual(data[0]["message"], "Hi")
+
+    def test_needs_login(self):
+        self.client.logout()
+        res = self.client.get(self.url, secure=True)
+        self.assertEqual(res.status_code, 302)
+        self.assertIn("/users/login/", res.url)
+
+
+class GetPrivateChatMessagesViewTest(TestCase):
+    def setUp(self):
+        self.client = Client()
+        self.user = User.objects.create_user(username="user1", password="pass")
+        self.other = User.objects.create_user(username="user2", password="pass")
+
+        self.user.userprofile.profile_picture = "pic1.png"
+        self.user.userprofile.save()
+        self.other.userprofile.profile_picture = "pic2.png"
+        self.other.userprofile.save()
+
+        self.m1 = ChatMessage.objects.create(
+            sender=self.user, recipient=self.other, content="Hello"
+        )
+        self.m2 = ChatMessage.objects.create(
+            sender=self.other, recipient=self.user, content="Hi"
+        )
+
+        self.url = lambda rid, **params: reverse(
+            "users:get_private_chat_messages", args=[rid]
+        ) + ("?" + "&".join(f"{k}={v}" for k, v in params.items()) if params else "")
+
+        self.client.login(username="user1", password="pass")
+
+    def test_list(self):
+        res = self.client.get(self.url(self.other.id, offset=0, limit=10), secure=True)
+        self.assertEqual(res.status_code, 200)
+        data = res.json()
+        self.assertEqual(len(data), 2)
+        self.assertEqual(data[0]["message"], "Hi")
+        self.assertEqual(data[1]["message"], "Hello")
+
+    def test_pagination(self):
+        res = self.client.get(self.url(self.other.id, offset=0, limit=1), secure=True)
+        self.assertEqual(res.status_code, 200)
+        data = res.json()
+        self.assertEqual(len(data), 1)
+        self.assertEqual(data[0]["message"], "Hi")
+
+    def test_hidden_sender(self):
+        self.m1.sender_hidden = True
+        self.m1.save()
+        res = self.client.get(self.url(self.other.id), secure=True)
+        data = res.json()
+        self.assertEqual(len(data), 1)
+        self.assertEqual(data[0]["message"], "Hi")
+
+    def test_hidden_recipient(self):
+        self.m2.recipient_hidden = True
+        self.m2.save()
+        res = self.client.get(self.url(self.other.id), secure=True)
+        data = res.json()
+        self.assertEqual(len(data), 1)
+        self.assertEqual(data[0]["message"], "Hello")
+
+    def test_pinned_status(self):
+        self.m1.pinned_by.add(self.user)
+        res = self.client.get(self.url(self.other.id), secure=True)
+        data = res.json()
+        message = [m for m in data if m["id"] == self.m1.id][0]
+        self.assertTrue(message["is_pinned"])
+
+    def test_recipient_not_found(self):
+        res = self.client.get(self.url(9999), secure=True)
+        self.assertEqual(res.status_code, 404)
+        self.assertEqual(res.json()["error"], "Recipient not found.")
+
+    def test_needs_login(self):
+        self.client.logout()
+        res = self.client.get(self.url(self.other.id), secure=True)
+        self.assertEqual(res.status_code, 302)
+        self.assertIn("/users/login/", res.url)
+
+class CreateGlobalChatMessageViewTest(TestCase):
+    def setUp(self):
+        self.client = Client()
+        self.user = User.objects.create_user(username="user1", password="pass")
+        self.url = reverse("users:create_global_chat_message")
+        self.client.login(username="user1", password="pass")
+
+    def test_create_message_ok(self):
+        response = self.client.post(self.url, {"content": "hello"}, secure=True)
+        self.assertEqual(response.status_code, 201)
+        self.assertEqual(response.json()["status"], "Message created")
+        self.assertTrue(GlobalChatMessage.objects.filter(sender=self.user, content="hello").exists())
+
+    def test_missing_content(self):
+        response = self.client.post(self.url, {}, secure=True)
+        self.assertEqual(response.status_code, 400)
+        self.assertIn("error", response.json())
+
+    def test_invalid_method(self):
+        response = self.client.get(self.url, secure=True)
+        self.assertEqual(response.status_code, 405)
+        self.assertIn("Invalid request method", response.json()["error"])
+
+    def test_rate_limit(self):
+        cache_key = f"global_message_count_{self.user.username}"
+        cache.delete(cache_key)  # reset cache before test
+
+        for _ in range(8):
+            self.client.post(self.url, {"content": "spam"}, secure=True)
+
+        response = self.client.post(self.url, {"content": "too fast"}, secure=True)
+        self.assertEqual(response.status_code, 429)
+        self.assertIn("rate_limited", response.json())
+        self.assertTrue(response.json()["rate_limited"])
+
+    def test_redirect_for_anonymous(self):
+        self.client.logout()
+        response = self.client.post(self.url, {"content": "hello"}, secure=True)
+        self.assertEqual(response.status_code, 302)
+        self.assertIn("/users/login/", response.url)
+
 if __name__ == "__main__":
     from django.test.utils import get_runner
 
