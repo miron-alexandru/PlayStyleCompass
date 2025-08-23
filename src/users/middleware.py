@@ -37,7 +37,7 @@ class UserLanguageMiddleware:
 
     def __call__(self, request):
         if request.user.is_authenticated:
-            language = getattr(request.user.userprofile, "language", "en")
+            language = getattr(request.user.userprofile, "language", None) or "en"
             translation.activate(language)
             request.session["django_language"] = language
         response = self.get_response(request)
