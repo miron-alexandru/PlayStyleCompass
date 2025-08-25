@@ -16,7 +16,8 @@ class DynamicFieldsModelSerializer(serializers.ModelSerializer):
                 self.fields.pop(field_name)
 
         # Ensure all fields are read-only
-        self.Meta.read_only_fields = tuple(self.Meta.fields)
+        for field in self.fields.values():
+            field.read_only = True
 
 
 class GameSerializer(DynamicFieldsModelSerializer):
