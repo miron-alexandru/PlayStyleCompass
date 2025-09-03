@@ -307,6 +307,9 @@ def calculate_similarity(set1, set2):
 
 def calculate_average_similarity(user1, user2, preferences):
     """Function used to calculate average similarity across multiple preferences"""
+    if not preferences:
+        return 0.0
+
     total_similarity_score = sum(
         calculate_similarity(
             set(getattr(user1, pref).split(",")),
