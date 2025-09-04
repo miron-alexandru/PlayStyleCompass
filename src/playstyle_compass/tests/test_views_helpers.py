@@ -20,6 +20,7 @@ from django.http import HttpRequest
 from playstyle_compass.helper_functions.views_helpers import *
 from django.contrib.auth.models import User
 from users.models import FriendList
+from playstyle_compass.models import Game, Review, News
 
 
 class PaginateMatchingGamesTest(TestCase):
@@ -458,6 +459,456 @@ class PaginateObjectsTest(TestCase):
         self.assertEqual(list(result)[0], "object_20")
 
 
+class GatherGameAttributesTest(TestCase):
+    
+    def setUp(self):
+        self.game1 = Game.objects.create(
+            title="Game 1",
+            guid="1234",
+            genres="action,adventure",
+            concepts="open world,crafting",
+            themes="fantasy,medieval",
+            platforms="pc,ps5",
+            franchises="elder scrolls",
+            description="Test game 1",
+            image="image1.jpg",
+            videos="video1.mp4"
+        )
+        
+        self.game2 = Game.objects.create(
+            title="Game 2",
+            guid="4329",
+            genres="rpg,action",
+            concepts="crafting,multiplayer",
+            themes="sci-fi,futuristic",
+            platforms="xbox,pc",
+            franchises="mass effect",
+            description="Test game 2",
+            image="image2.jpg",
+            videos="video2.mp4"
+        )
+        
+        self.game3 = Game.objects.create(
+            title="Game 3",
+            genres="",
+            concepts="",
+            themes="horror",
+            platforms="switch",
+            franchises="",
+            description="Test game 3",
+            image="image3.jpg",
+            videos="video3.mp4"
+        )
+    
+    def test_normal_case(self):
+        games = [self.game1, self.game2]
+        result = gather_game_attributes(games)
+        
+        expected_genres = {"action", "adventure", "rpg"}
+        expected_concepts = {"open world", "crafting", "multiplayer"}
+        expected_themes = {"fantasy", "medieval", "sci-fi", "futuristic"}
+        expected_platforms = {"pc", "ps5", "xbox"}
+        expected_franchises = {"elder scrolls", "mass effect"}
+        
+        self.assertEqual(result[0], expected_genres)
+        self.assertEqual(result[1], expected_concepts)
+        self.assertEqual(result[2], expected_themes)
+        self.assertEqual(result[3], expected_platforms)
+        self.assertEqual(result[4], expected_franchises)
+    
+    def test_empty_fields(self):
+        games = [self.game3]
+        result = gather_game_attributes(games)
+        
+        expected_genres = set()
+        expected_concepts = set()
+        expected_themes = {"horror"}
+        expected_platforms = {"switch"}
+        expected_franchises = set()
+        
+        self.assertEqual(result[0], expected_genres)
+        self.assertEqual(result[1], expected_concepts)
+        self.assertEqual(result[2], expected_themes)
+        self.assertEqual(result[3], expected_platforms)
+        self.assertEqual(result[4], expected_franchises)
+    
+    def test_mixed_games(self):
+        games = [self.game1, self.game2, self.game3]
+        result = gather_game_attributes(games)
+        
+        expected_genres = {"action", "adventure", "rpg"}
+        expected_concepts = {"open world", "crafting", "multiplayer"}
+        expected_themes = {"fantasy", "medieval", "sci-fi", "futuristic", "horror"}
+        expected_platforms = {"pc", "ps5", "xbox", "switch"}
+        expected_franchises = {"elder scrolls", "mass effect"}
+        
+        self.assertEqual(result[0], expected_genres)
+        self.assertEqual(result[1], expected_concepts)
+        self.assertEqual(result[2], expected_themes)
+        self.assertEqual(result[3], expected_platforms)
+        self.assertEqual(result[4], expected_franchises)
+    
+    def test_empty_list(self):
+        games = []
+        result = gather_game_attributes(games)
+        
+        self.assertEqual(result[0], set())
+        self.assertEqual(result[1], set())
+        self.assertEqual(result[2], set())
+        self.assertEqual(result[3], set())
+        self.assertEqual(result[4], set())
+    
+    def test_whitespace_handling(self):
+        game = Game.objects.create(
+            title="Game with whitespace",
+            guid="2314",
+            genres=" action , adventure ",
+            concepts="open world, crafting ",
+            themes=" fantasy, medieval ",
+            platforms=" pc , ps5 ",
+            franchises=" elder scrolls ",
+            description="Test game",
+            image="image.jpg",
+            videos="video.mp4"
+        )
+        
+        result = gather_game_attributes([game])
+        
+        expected_genres = {" action ", " adventure "}
+        expected_concepts = {"open world", " crafting "}
+        expected_themes = {" fantasy", " medieval "}
+        expected_platforms = {" pc ", " ps5 "}
+        expected_franchises = {" elder scrolls "}
+        
+        self.assertEqual(result[0], expected_genres)
+        self.assertEqual(result[1], expected_concepts)
+        self.assertEqual(result[2], expected_themes)
+        self.assertEqual(result[3], expected_platforms)
+        self.assertEqual(result[4], expected_franchises)
+    
+    def test_null_fields(self):
+        game = Game.objects.create(
+            title="Game with null fields",
+            guid="2342",
+            genres="strategy",
+            concepts="",
+            themes="",
+            platforms="pc",
+            franchises="",
+            description="Test game",
+            image="image.jpg",
+            videos="video.mp4"
+        )
+        
+        result = gather_game_attributes([game])
+        
+        expected_genres = {"strategy"}
+        expected_concepts = set()
+        expected_themes = set()
+        expected_platforms = {"pc"}
+        expected_franchises = set()
+        
+        self.assertEqual(result[0], expected_genres)
+        self.assertEqual(result[1], expected_concepts)
+        self.assertEqual(result[2], expected_themes)
+        self.assertEqual(result[3], expected_platforms)
+        self.assertEqual(result[4], expected_franchises)
+
+
+class BuildQueryTest(TestCase):
+    
+    def test_build_query_with_filters(self):
+        selected_filters = {
+            "genres": ["action", "rpg"],
+            "platforms": ["pc"],
+            "themes": []
+        }
+        
+        result = build_query(selected_filters)
+        
+        self.assertIsInstance(result, Q)
+        self.assertTrue(result.children)
+    
+    def test_build_query_empty_filters(self):
+        selected_filters = {
+            "genres": [],
+            "platforms": [],
+            "themes": []
+        }
+        
+        result = build_query(selected_filters)
+        
+        self.assertIsInstance(result, Q)
+        self.assertFalse(result.children)
+    
+    def test_build_query_mixed_filters(self):
+        selected_filters = {
+            "genres": ["action"],
+            "platforms": [],
+            "themes": ["fantasy"],
+            "concepts": ["open world"]
+        }
+        
+        result = build_query(selected_filters)
+        
+        self.assertIsInstance(result, Q)
+        self.assertTrue(result.children)
+    
+    def test_build_query_single_filter(self):
+        selected_filters = {
+            "genres": ["action"]
+        }
+        
+        result = build_query(selected_filters)
+        
+        self.assertIsInstance(result, Q)
+        self.assertTrue(result.children)
+
+
+class GetSelectedFiltersTest(TestCase):
+    
+    def setUp(self):
+        self.factory = RequestFactory()
+    
+    def test_get_filters_from_request(self):
+        request = self.factory.get('/?genres=action&genres=rpg&platforms=pc')
+        
+        result = get_selected_filters(request)
+        
+        expected = {
+            "genres": ["action", "rpg"],
+            "concepts": [],
+            "themes": [],
+            "platforms": ["pc"],
+            "franchises": []
+        }
+        self.assertEqual(result, expected)
+    
+    def test_get_filters_empty_request(self):
+        request = self.factory.get('/')
+        
+        result = get_selected_filters(request)
+        
+        expected = {
+            "genres": [],
+            "concepts": [],
+            "themes": [],
+            "platforms": [],
+            "franchises": []
+        }
+        self.assertEqual(result, expected)
+    
+    def test_get_filters_all_types(self):
+        request = self.factory.get('/?genres=action&concepts=crafting&themes=fantasy&platforms=pc&franchises=zelda')
+        
+        result = get_selected_filters(request)
+        
+        expected = {
+            "genres": ["action"],
+            "concepts": ["crafting"],
+            "themes": ["fantasy"],
+            "platforms": ["pc"],
+            "franchises": ["zelda"]
+        }
+        self.assertEqual(result, expected)
+
+
+class SortGameLibraryTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username="tester", password="12345")
+
+        self.game1 = Game.objects.create(
+            title="B Game",
+            guid="314",
+            release_date="2023-01-01",
+            description="Test",
+            image="test.jpg",
+            videos="test.mp4",
+            genres="action",
+            platforms="pc",
+            concepts="test",
+        )
+        self.game2 = Game.objects.create(
+            title="A Game",
+            guid="34122",
+            release_date="2022-01-01",
+            description="Test",
+            image="test.jpg",
+            videos="test.mp4",
+            genres="action",
+            platforms="pc",
+            concepts="test",
+        )
+        self.game3 = Game.objects.create(
+            title="C Game",
+            guid="2314",
+            release_date="2024-01-01",
+            description="Test",
+            image="test.jpg",
+            videos="test.mp4",
+            genres="action",
+            platforms="pc",
+            concepts="test",
+        )
+
+        # attach reviews with scores
+        Review.objects.create(
+            game=self.game1, user=self.user, reviewers="R1",
+            review_deck="Deck1", review_description="desc", score=8
+        )
+        Review.objects.create(
+            game=self.game1, user=self.user, reviewers="R2",
+            review_deck="Deck2", review_description="desc", score=9
+        )
+        Review.objects.create(
+            game=self.game2, user=self.user, reviewers="R3",
+            review_deck="Deck3", review_description="desc", score=9
+        )
+        Review.objects.create(
+            game=self.game3, user=self.user, reviewers="R4",
+            review_deck="Deck4", review_description="desc", score=7
+        )
+        Review.objects.create(
+            game=self.game3, user=self.user, reviewers="R5",
+            review_deck="Deck5", review_description="desc", score=8
+        )
+
+        # update scores
+        for g in [self.game1, self.game2, self.game3]:
+            g.update_score()
+
+        self.games = Game.objects.all()
+    
+    def test_sort_by_title_asc(self):
+        result = sort_game_library(self.games, "title_asc")
+        titles = list(result.values_list('title', flat=True))
+        self.assertEqual(titles, ["A Game", "B Game", "C Game"])
+    
+    def test_sort_by_title_desc(self):
+        result = sort_game_library(self.games, "title_desc")
+        titles = list(result.values_list('title', flat=True))
+        self.assertEqual(titles, ["C Game", "B Game", "A Game"])
+    
+    def test_sort_by_release_date_asc(self):
+        result = sort_game_library(self.games, "release_date_asc")
+        dates = list(result.values_list('release_date', flat=True))
+        self.assertEqual(dates, ["2022-01-01", "2023-01-01", "2024-01-01"])
+    
+    def test_sort_by_release_date_desc(self):
+        result = sort_game_library(self.games, "release_date_desc")
+        dates = list(result.values_list('release_date', flat=True))
+        self.assertEqual(dates, ["2024-01-01", "2023-01-01", "2022-01-01"])
+    
+    def test_sort_by_score_asc(self):
+        result = sort_game_library(self.games, "average_score_asc")
+        scores = list(result.values_list('average_score', flat=True))
+        self.assertEqual(scores, [7.5, 8.5, 9.0])
+    
+    def test_sort_by_score_desc(self):
+        result = sort_game_library(self.games, "average_score_desc")
+        scores = list(result.values_list('average_score', flat=True))
+        self.assertEqual(scores, [9.0, 8.5, 7.5])
+    
+    def test_sort_default(self):
+        result = sort_game_library(self.games, "invalid_sort")
+        self.assertEqual(result.count(), 3)
+
+
+class GetUserContextTests(TestCase):
+    def setUp(self):
+        self.factory = RequestFactory()
+        self.user = User.objects.create_user(username="tester", password="12345")
+        self.friend = User.objects.create_user(username="friend", password="12345")
+        self.preferences = self.user.userpreferences
+
+    def test_anonymous_user(self):
+        request = self.factory.get("/")
+        request.user = type("Anonymous", (), {"is_authenticated": False})()
+        user, prefs, friends = get_user_context(request)
+
+        self.assertIsNone(user)
+        self.assertIsNone(prefs)
+        self.assertEqual(list(friends), [])
+
+    def test_authenticated_user_without_friends(self):
+        request = self.factory.get("/")
+        request.user = self.user
+        user, prefs, friends = get_user_context(request)
+
+        self.assertEqual(user, self.user)
+        self.assertEqual(prefs, self.preferences)
+        self.assertEqual(list(friends), [])
+
+    def test_authenticated_user_with_friends(self):
+        friend_list, _ = FriendList.objects.get_or_create(user=self.user)
+        friend_list.friends.add(self.friend)
+
+        request = self.factory.get("/")
+        request.user = self.user
+        user, prefs, friends = get_user_context(request)
+
+        self.assertEqual(user, self.user)
+        self.assertEqual(prefs, self.preferences)
+        self.assertIn(self.friend, list(friends))
+
+
+class GetAssociatedPlatformsTests(TestCase):
+    def setUp(self):
+        self.n1 = News.objects.create(title="N1", platforms="PC, PS5")
+        self.n2 = News.objects.create(title="N2", platforms="Switch, PC")
+        self.n3 = News.objects.create(title="N3", platforms=None)
+
+    def test_single_news_platforms(self):
+        result = get_associated_platforms([self.n1])
+        self.assertEqual(result, {"PC", "PS5"})
+
+    def test_multiple_news_with_overlap(self):
+        result = get_associated_platforms([self.n1, self.n2])
+        self.assertEqual(result, {"PC", "PS5", "Switch"})
+
+    def test_news_with_no_platforms(self):
+        result = get_associated_platforms([self.n3])
+        self.assertEqual(result, set())
+
+    def test_platforms_strip_whitespace(self):
+        article = News.objects.create(title="N4", platforms=" PC , Xbox ")
+        result = get_associated_platforms([article])
+        self.assertEqual(result, {"PC", "Xbox"})
+
+
+
+class SortArticlesTests(TestCase):
+    def setUp(self):
+        self.n1 = News.objects.create(
+            title="B Article", publish_date="2023-01-01", platforms="PC"
+        )
+        self.n2 = News.objects.create(
+            title="A Article", publish_date="2022-01-01", platforms="PC"
+        )
+        self.n3 = News.objects.create(
+            title="C Article", publish_date="2024-01-01", platforms="PC"
+        )
+        self.articles = News.objects.all()
+
+    def test_sort_by_publish_date_asc(self):
+        result = sort_articles(self.articles, "publish_date_asc")
+        self.assertEqual(list(result), [self.n2, self.n1, self.n3])
+
+    def test_sort_by_publish_date_desc(self):
+        result = sort_articles(self.articles, "publish_date_desc")
+        self.assertEqual(list(result), [self.n3, self.n1, self.n2])
+
+    def test_sort_by_title_asc(self):
+        result = sort_articles(self.articles, "title_asc")
+        self.assertEqual(list(result), [self.n2, self.n1, self.n3])
+
+    def test_sort_by_title_desc(self):
+        result = sort_articles(self.articles, "title_desc")
+        self.assertEqual(list(result), [self.n3, self.n1, self.n2])
+
+    def test_sort_default(self):
+        result = sort_articles(self.articles, "invalid")
+        self.assertEqual(result.count(), 3)
 
 if __name__ == "__main__":
     from django.test.utils import get_runner
