@@ -11,7 +11,7 @@ import django
 django.setup()
 
 from django.conf import settings
-from django.test import TestCase, RequestFactory
+from django.test import TestCase, RequestFactory, SimpleTestCase
 from django.core.paginator import Paginator, Page, EmptyPage, PageNotAnInteger
 from collections import defaultdict
 from unittest.mock import Mock, patch, MagicMock
@@ -92,8 +92,7 @@ class PaginateMatchingGamesTest(TestCase):
         self.assertEqual(result['action'].number, 2)
         self.assertEqual(result['adventure'].number, 1)
         self.assertEqual(result['puzzle'].number, 1)
-        
-        # Check action page 2 has correct items
+
         action_games = list(result['action'])
         self.assertEqual(len(action_games), 5)
         self.assertEqual(action_games[0], "action_game_10")
@@ -122,8 +121,7 @@ class PaginateMatchingGamesTest(TestCase):
             'adventure_page': 100
         })
         result = paginate_matching_games(request, self.sample_dict_games)
-        
-        # Both should fall back to page 1
+
         self.assertEqual(result['action'].number, 1)
         self.assertEqual(result['adventure'].number, 1)
     
@@ -751,7 +749,6 @@ class SortGameLibraryTest(TestCase):
             concepts="test",
         )
 
-        # attach reviews with scores
         Review.objects.create(
             game=self.game1, user=self.user, reviewers="R1",
             review_deck="Deck1", review_description="desc", score=8
@@ -773,7 +770,6 @@ class SortGameLibraryTest(TestCase):
             review_deck="Deck5", review_description="desc", score=8
         )
 
-        # update scores
         for g in [self.game1, self.game2, self.game3]:
             g.update_score()
 
@@ -909,6 +905,204 @@ class SortArticlesTests(TestCase):
     def test_sort_default(self):
         result = sort_articles(self.articles, "invalid")
         self.assertEqual(result.count(), 3)
+
+
+class GetSimilarGamesTests(TestCase):
+    def setUp(self):
+        self.main_game = Game.objects.create(
+            guid="1",
+            title="Main Game",
+            description="Test",
+            genres="action,strategy",
+            themes="sci-fi",
+            concepts="survival",
+            platforms="pc,ps5",
+            developers="dev1",
+            image="test.jpg",
+            videos="test.mp4",
+        )
+
+        self.game1 = Game.objects.create(
+            guid="2",
+            title="Similar Game 1",
+            description="Test",
+            genres="action",
+            themes="fantasy",
+            concepts="puzzle",
+            platforms="pc",
+            developers="dev1",
+            image="test.jpg",
+            videos="test.mp4",
+        )
+
+        self.game2 = Game.objects.create(
+            guid="3",
+            title="Similar Game 2",
+            description="Test",
+            genres="rpg",
+            themes="sci-fi",
+            concepts="survival",
+            platforms="xbox",
+            developers="dev2",
+            image="test.jpg",
+            videos="test.mp4",
+        )
+
+        self.game3 = Game.objects.create(
+            guid="4",
+            title="Similar Game 3",
+            description="Test",
+            genres="action,strategy",
+            themes="sci-fi",
+            concepts="survival",
+            platforms="pc,ps5",
+            developers="dev1",
+            image="test.jpg",
+            videos="test.mp4",
+        )
+
+        self.game4 = Game.objects.create(
+            guid="5",
+            title="Unrelated Game",
+            description="Test",
+            genres="rpg",
+            themes="fantasy",
+            concepts="puzzle",
+            platforms="xbox",
+            developers="dev2",
+            image="test.jpg",
+            videos="test.mp4",
+        )
+
+    def test_default_min_matching_attributes(self):
+        result = get_similar_games(self.main_game)
+        self.assertIn(self.game1, result)
+        self.assertIn(self.game3, result)
+        self.assertNotIn(self.game2, result)
+        self.assertNotIn(self.game4, result)
+
+    def test_lower_min_matching_attributes(self):
+        result = get_similar_games(self.main_game, min_matching_attributes=2)
+        self.assertIn(self.game1, result)
+        self.assertIn(self.game2, result)
+        self.assertIn(self.game3, result)
+        self.assertNotIn(self.game4, result)
+
+    def test_higher_min_matching_attributes(self):
+        result = get_similar_games(self.main_game, min_matching_attributes=4)
+        self.assertIn(self.game3, result)
+        self.assertNotIn(self.game1, result)
+        self.assertNotIn(self.game2, result)
+        self.assertNotIn(self.game4, result)
+
+
+class GetFirstLetterTests(SimpleTestCase):
+    def test_returns_first_alpha_character(self):
+        self.assertEqual(get_first_letter("123Game"), "G")
+        self.assertEqual(get_first_letter("!@#Hello"), "H")
+
+    def test_returns_uppercase_letter(self):
+        self.assertEqual(get_first_letter("apple"), "A")
+
+    def test_returns_hash_if_no_alpha(self):
+        self.assertEqual(get_first_letter("12345"), "#")
+        self.assertEqual(get_first_letter(""), "#")
+        self.assertEqual(get_first_letter("!@#$%"), "#")
+
+
+class RecommendationEngineTests(TestCase):
+    def setUp(self):
+        self.factory = RequestFactory()
+        self.user = User.objects.create_user(username="testuser", password="pass")
+
+        self.preferences = self.user.userpreferences
+
+        self.preferences.gaming_history = "History Game"
+        self.preferences.favorite_genres = "action"
+        self.preferences.themes = "sci-fi"
+        self.preferences.platforms = "pc"
+        self.preferences.game_styles = "Multiplayer"
+        self.preferences.connection_types = "Online"
+        self.preferences.save()
+
+        self.history_game = Game.objects.create(
+            guid="g1",
+            title="History Game",
+            description="",
+            genres="action",
+            themes="sci-fi",
+            concepts="survival",
+            platforms="pc",
+            developers="dev1",
+            release_date="2020-01-01",
+            image="x.jpg",
+            videos="x.mp4",
+        )
+
+        self.future_game = Game.objects.create(
+            guid="g2",
+            title="Future Action Game",
+            description="",
+            genres="action",
+            themes="sci-fi",
+            concepts="survival",
+            platforms="pc",
+            developers="dev1",
+            release_date=str(date.today().year + 1) + "-01-01",
+            image="x.jpg",
+            videos="x.mp4",
+        )
+
+        self.other_game = Game.objects.create(
+            guid="g3",
+            title="Other Game",
+            description="",
+            genres="rpg",
+            themes="fantasy",
+            concepts="puzzle",
+            platforms="xbox",
+            developers="dev2",
+            release_date="2019-01-01",
+            image="x.jpg",
+            videos="x.mp4",
+        )
+
+    def test_process_generates_recommendations(self):
+        request = self.factory.get("/")
+        request.user = self.user
+
+        engine = RecommendationEngine(request, self.preferences)
+        engine.process()
+        results = engine.matching_games
+
+        history_titles = [g.title for g in results["gaming_history"]]
+        self.assertIn("History Game", history_titles)
+        self.assertNotIn("Future Action Game", history_titles)
+
+        genre_titles = [g.title for g in results["favorite_genres"]]
+        self.assertIn("History Game", genre_titles)
+
+        theme_titles = [g.title for g in results["themes"]]
+        self.assertIn("History Game", theme_titles)
+
+        platform_titles = [g.title for g in results["preferred_platforms"]]
+        self.assertIn("History Game", platform_titles)
+
+        playstyle_titles = [g.title for g in results["playstyle_games"]]
+        self.assertIn("History Game", playstyle_titles)
+
+    def test_sorting_changes_order(self):
+        request = self.factory.get("/?sort=title_desc")
+        request.user = self.user
+
+        engine = RecommendationEngine(request, self.preferences)
+        engine.process()
+        results = engine.matching_games
+
+        for category, games in results.items():
+            if games:
+                titles = [g.title for g in games]
+                self.assertEqual(titles, sorted(titles, reverse=True))
 
 if __name__ == "__main__":
     from django.test.utils import get_runner
