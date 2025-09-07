@@ -127,7 +127,7 @@ def save_quiz_responses(user, questions, form):
             attribute_ro = f"{option_selected}_ro"
 
             # Check if both translations exist and get the translated options
-            if all(hasattr(question, attr) for attr in (attribute_en, attribute_ro)):
+            if all(getattr(question, attr, None) for attr in (attribute_en, attribute_ro)):
                 option_en = getattr(question, attribute_en)
                 option_ro = getattr(question, attribute_ro)
 
