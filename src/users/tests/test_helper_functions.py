@@ -13,9 +13,10 @@ django.setup()
 from django.conf import settings
 from django.test import TestCase
 from users.misc.helper_functions import *
+from users.misc.variables import NOTIFICATION_TEMPLATES_RO
 from django.contrib.auth.models import User
 from django.core.cache import cache
-from users.models import FriendList, QuizQuestion, QuizUserResponse
+from users.models import FriendList, QuizQuestion, QuizUserResponse, Notification
 from playstyle_compass.models import Game
 from django.utils import timezone
 from datetime import timedelta
@@ -233,6 +234,120 @@ class SaveQuizResponsesTests(TestCase):
         self.form.cleaned_data = {f"question_{q2.id}": "option1"}
         with self.assertRaises(ValidationError):
             save_quiz_responses(self.user, [q2], self.form)
+
+
+class CreateNotificationTests(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username="tester", password="pass")
+        self.profile = self.user.userprofile
+
+    def test_basic_notification_created(self):
+        create_notification(
+            self.user,
+            "Test message /ro",
+            "message",
+            profile_url="/profile/1",
+            user_in_notification="Alice",
+            navigation_url="/inbox/",
+        )
+        note = Notification.objects.first()
+        self.assertIsNotNone(note)
+        self.assertEqual(note.user, self.user)
+        self.assertEqual(note.message, "Test message /en")
+        self.assertEqual(note.notification_type, "message")
+
+    def test_respects_user_preference(self):
+        self.profile.receive_message_notifications = False
+        self.profile.save()
+        create_notification(
+            self.user,
+            "Disabled msg",
+            "message",
+            profile_url="/profile/1",
+            user_in_notification="Alice",
+            navigation_url="/inbox/",
+        )
+        note = Notification.objects.first()
+        self.assertFalse(note.delivered)
+
+    def test_friend_request_accept(self):
+        create_notification(
+            self.user,
+            "Friend request accepted /ro",
+            "friend_request",
+            friend_request_acc=True,
+            profile_url="/profile/2",
+            user_in_notification="Bob",
+        )
+        note = Notification.objects.first()
+        expected_ro = NOTIFICATION_TEMPLATES_RO["friend_request_accepted"].format(
+            profile_url="/profile/2",
+            user_in_notification="Bob",
+        )
+        self.assertEqual(note.message_ro, expected_ro)
+
+    def test_friend_request_decline(self):
+        create_notification(
+            self.user,
+            "Friend request declined /ro",
+            "friend_request",
+            friend_request_decline=True,
+            profile_url="/profile/3",
+            user_in_notification="Charlie",
+        )
+        note = Notification.objects.first()
+        expected_ro = NOTIFICATION_TEMPLATES_RO["friend_request_declined"].format(
+            profile_url="/profile/3",
+            user_in_notification="Charlie",
+        )
+        self.assertEqual(note.message_ro, expected_ro)
+
+    def test_follow_notification(self):
+        create_notification(
+            self.user,
+            "Followed you /ro",
+            "follow",
+            profile_url="/profile/4",
+            follower_profile_name="Diana",
+        )
+        note = Notification.objects.first()
+        expected_ro = NOTIFICATION_TEMPLATES_RO["follow"].format(
+            profile_url="/profile/4",
+            follower_profile_name="Diana",
+        )
+        self.assertEqual(note.message_ro, expected_ro)
+
+
+class ProcessChatNotificationTests(TestCase):
+    def setUp(self):
+        self.sender = User.objects.create_user(username="sender", password="pass")
+        self.recipient = User.objects.create_user(username="recipient", password="pass")
+        self.sender.userprofile.profile_name = "SenderProfile"
+        self.sender.userprofile.save()
+
+    def test_creates_notification_first_time(self):
+        process_chat_notification(self.sender, self.recipient)
+        note = Notification.objects.first()
+        self.assertIsNotNone(note)
+        self.assertEqual(note.user, self.recipient)
+        self.assertEqual(note.notification_type, "chat_message")
+
+    def test_throttles_if_called_too_soon(self):
+        process_chat_notification(self.sender, self.recipient)
+        Notification.objects.all().delete()
+
+        self.recipient.userprofile.last_chat_notification = timezone.now()
+        self.recipient.userprofile.save()
+
+        process_chat_notification(self.sender, self.recipient)
+        self.assertEqual(Notification.objects.count(), 0)
+
+    def test_creates_again_after_10_minutes(self):
+        self.recipient.userprofile.last_chat_notification = timezone.now() - timedelta(minutes=15)
+        self.recipient.userprofile.save()
+
+        process_chat_notification(self.sender, self.recipient)
+        self.assertEqual(Notification.objects.count(), 1)
 
 if __name__ == "__main__":
     from django.test.utils import get_runner
