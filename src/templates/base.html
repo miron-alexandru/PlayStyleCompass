@@ -229,7 +229,7 @@
         </li>
         {% endif %}
       </ul>
-      <div class="collapse navbar-collapse" id="navbarCollapse">
+      <div class="custom-collapse navbar-collapse" id="navbarCollapse">
         <ul class="navbar-nav ml-auto-custom">
           {% if user.is_authenticated %}
           <li class="nav-item profile-picture">
@@ -330,7 +330,7 @@
           {% if user.is_authenticated %}
           <div class="d-flex dropstart" id="notifications" data-mark-read="{% url 'users:mark_notification_as_read' 0 %}"
           data-mark-inactive="{% url 'users:delete_notification' 0 %}">
-            <div class="collapse navbar-collapse dropstart" id="navbarNavDarkDropdown">
+            <div class="custom-collapse navbar-collapse dropstart" id="navbarNavDarkDropdown">
                 <li class="nav-item dropdown">
                   <a class="nav-link " href="#"  data-bs-toggle="dropdown" aria-expanded="false">
                     <i id="bellCount" class="fa-solid fa-bell notification-bell" data-count="0" ></i>
