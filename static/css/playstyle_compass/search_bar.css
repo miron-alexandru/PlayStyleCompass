@@ -90,6 +90,16 @@
   font-size: 15px;
 }
 
+.radio label {
+  display: inline-flex;
+  align-items: center;
+  margin-right: 1rem;
+}
+
+.radio input[type="radio"] {
+  margin-right: 0.3rem;
+}
+
 #search-results {
   display: none;
   max-height: 250px;
