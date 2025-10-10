@@ -1,29 +1,32 @@
+@charset "UTF-8";
 .game-list-info {
   position: relative;
   background: var(--user-container);
   padding: 1.2rem;
   border-radius: 5px;
   max-width: 600px;
-  margin: 0 auto;
+  margin: 0 auto 2rem;
   text-align: center;
-  margin-bottom: 2rem;
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
   word-wrap: break-word;
 }
-
 .game-list-info h2 {
   font-size: 1.8rem;
   color: var(--text-color);
   margin-bottom: 0.5rem;
-  word-wrap: break-word;
   overflow: hidden;
 }
-
 .game-list-info p {
   font-size: 0.95rem;
   color: var(--text-color);
   margin-bottom: 0.75rem;
-  word-wrap: break-word;
+}
+.game-list-info a:hover {
+  text-decoration: underline;
+  color: #2980b9;
+}
+.game-list-info strong {
+  color: var(--text-color);
 }
 
 .list-creator {
@@ -32,23 +35,12 @@
   font-weight: 600;
   transition: color 0.3s ease, text-shadow 0.3s ease;
 }
-
 .list-creator:hover {
   color: #1d6fa5;
   text-decoration: underline;
 }
-
 .list-creator:active {
   color: #0f4d73;
-}
-
-.game-list-info a:hover {
-  text-decoration: underline;
-  color: #2980b9;
-}
-
-.game-list-info strong {
-  color: var(--text-color);
 }
 
 .share-list-button,
@@ -60,6 +52,8 @@
   text-decoration: none;
   font-size: 13px;
   transition: background-color 0.3s ease;
+  border: none;
+  cursor: pointer;
   position: absolute;
 }
 
@@ -68,7 +62,6 @@
   bottom: 10px;
   right: 10px;
 }
-
 .share-list-button:hover {
   background-color: #006400;
   color: white !important;
@@ -79,7 +72,6 @@
   bottom: 10px;
   right: 95px;
 }
-
 .edit-button:hover {
   background-color: #e6b800;
   color: white !important;
@@ -94,7 +86,6 @@
   overflow: hidden;
   word-wrap: break-word;
 }
-
 .additional-games h3 {
   font-size: 1.5em;
   font-weight: 600;
@@ -103,7 +94,6 @@
   padding-bottom: 10px;
   margin-bottom: 20px;
 }
-
 .additional-games ul {
   list-style-type: none;
   padding: 0;
@@ -111,8 +101,7 @@
   flex-wrap: wrap;
   gap: 15px;
 }
-
-.additional-games li {
+.additional-games ul li {
   background-color: var(--user-container);
   padding: 15px 20px;
   border-radius: 6px;
@@ -120,48 +109,44 @@
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   font-size: 1.1em;
   color: var(--text-color);
-  word-wrap: break-word;
-  overflow: hidden;
   white-space: normal;
   text-overflow: ellipsis;
 }
-
-.additional-games li:hover {
+.additional-games ul li:hover {
   transform: translateY(-5px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
 }
-
-.additional-games li:before {
+.additional-games ul li:before {
   content: "🎮";
   margin-right: 10px;
 }
 
-#like-button {
+#like-button,
+#favorite-button {
   position: absolute;
-  top: 10px;
-  right: 25px;
   background-color: transparent;
   border: none;
-  color: #d4d4d4;
   font-size: 18px;
   cursor: pointer;
   transition: color 0.3s ease, transform 0.2s ease;
   padding: 4px;
-}
-
-#like-button .fa-heart {
-  color: #ff4d4d;
-}
-
-#like-button .fa-regular {
   color: #d4d4d4;
 }
 
+#like-button {
+  top: 10px;
+  right: 25px;
+}
+#like-button .fa-heart {
+  color: #ff4d4d;
+}
+#like-button .fa-regular {
+  color: #d4d4d4;
+}
 #like-button:hover .fa-heart {
   color: #ff6666;
   transform: scale(1.1);
 }
-
 #like-button:hover .fa-regular {
   color: #b3b3b3;
   transform: scale(1.1);
@@ -174,35 +159,22 @@
   font-size: 15px;
   font-weight: 600;
   color: var(--text-color);
-  vertical-align: middle;
 }
 
 #favorite-button {
-  position: absolute;
   top: 9px;
   right: 57px;
-  background-color: transparent;
-  border: none;
-  color: #d4d4d4;
-  font-size: 18px;
-  cursor: pointer;
-  transition: color 0.3s ease, transform 0.2s ease;
-  padding: 4px;
 }
-
 #favorite-button .fa-star {
   color: #ffd700;
 }
-
 #favorite-button .fa-regular {
   color: #d4d4d4;
 }
-
 #favorite-button:hover .fa-star {
-  color: #ffdf00; 
+  color: #ffdf00;
   transform: scale(1.1);
 }
-
 #favorite-button:hover .fa-regular {
   color: #b3b3b3;
   transform: scale(1.1);
@@ -213,7 +185,7 @@
   top: 11px;
   right: 49px;
   color: #d4d4d4;
-  font-size: 18px; 
+  font-size: 18px;
 }
 
 .review-title {
@@ -227,6 +199,10 @@
   color: var(--text-color);
   margin-top: 10px;
 }
+.review-text-container p {
+  margin: 0;
+  color: var(--text-color);
+}
 
 .review-details {
   font-size: 14px;
@@ -237,12 +213,8 @@
   border-bottom: 1px solid var(--game-container-border);
 }
 
-.review-text-container p {
-  margin: 0;
-  color: var(--text-color);
-}
-
-.review-section, .existing-reviews {
+.review-section,
+.existing-reviews {
   margin: 20px auto;
   padding: 20px;
   border-radius: 8px;
@@ -252,7 +224,8 @@
   transition: box-shadow 0.3s;
 }
 
-.review-head, .comment-head {
+.review-head,
+.comment-head {
   font-size: 16px;
   font-weight: 600;
   color: var(--list-review-text);
@@ -261,7 +234,8 @@
   padding-bottom: 4px;
 }
 
-.reviews-head, .comments-head {
+.reviews-head,
+.comments-head {
   font-size: 20px;
   margin-bottom: 18px;
   border-bottom: 2px solid #007bff;
@@ -271,7 +245,6 @@
   letter-spacing: 0.5px;
 }
 
-
 .card {
   background-color: var(--user-container);
   padding: 12px;
@@ -280,7 +253,6 @@
   border-radius: 6px;
   transition: transform 0.2s;
 }
-
 .card:hover {
   transform: scale(1.01);
 }
@@ -295,7 +267,6 @@
   cursor: pointer;
   transition: background-color 0.3s;
 }
-
 .btn:hover {
   background-color: #0056b3;
 }
@@ -303,7 +274,7 @@
 .form-input,
 .form-textarea,
 .form-select select,
-.edit-review-form input[type="text"],
+.edit-review-form input[type=text],
 .edit-review-form select,
 .edit-review-form textarea,
 .comment-form textarea {
@@ -317,8 +288,21 @@
   border-radius: 21px;
   transition: border-color 0.3s, box-shadow 0.3s;
 }
+.form-input:focus,
+.form-textarea:focus,
+.form-select select:focus,
+.edit-review-form input[type=text]:focus,
+.edit-review-form select:focus,
+.edit-review-form textarea:focus,
+.comment-form textarea:focus {
+  background-color: var(--input-color);
+  border-color: var(--input-focus);
+  outline: 0;
+  box-shadow: 0 0 0 0.1rem var(--input-shadow);
+}
 
-.form-input, .form-select select {
+.form-input,
+.form-select select {
   height: 41px;
 }
 
@@ -328,32 +312,19 @@ textarea.form-textarea {
   margin-bottom: 20px;
 }
 
-.edit-review-form textarea {
-  height: 100px !important;
-}
-
-.form-input:focus,
-.form-textarea:focus,
-.form-select select:focus,
-textarea:focus,
-select:focus {
-  background-color: var(--input-color);
-  border-color: var(--input-focus);
-  outline: 0;
-  box-shadow: 0 0 0 0.1rem var(--input-shadow);
-}
-
-label {
-  font-weight: 600;
-  margin-top: 5px;
-  margin-bottom: 5px;
-}
-
 .edit-review-form {
   background-color: var(--game-container-color);
   border: none;
   padding: 0.8rem;
   margin-top: 0.8rem;
+}
+.edit-review-form textarea {
+  height: 100px !important;
+}
+
+label {
+  font-weight: 600;
+  margin: 5px 0;
 }
 
 .review-buttons {
@@ -361,36 +332,41 @@ label {
   gap: 10px;
 }
 
-.edit-review-button, .delete-review-button {
-  font-size: 13px;
+.edit-review-button,
+.delete-review-button {
+  display: inline-block;
   color: white;
-  padding: 5px 10px;
-  border: none;
+  padding: 4px 8px;
   border-radius: 5px;
+  text-decoration: none;
+  font-size: 13px;
+  transition: background-color 0.3s ease;
+  border: none;
   cursor: pointer;
-  display: block;
+  font-size: 13px;
+  padding: 5px 10px;
   width: fit-content;
   margin-top: 7px;
-  transition: background-color 0.3s ease;
 }
-
-.edit-review-button {
+.edit-review-button.edit-review-button,
+.delete-review-button.edit-review-button {
   background-color: #007bff;
 }
-
-.edit-review-button:hover {
+.edit-review-button.edit-review-button:hover,
+.delete-review-button.edit-review-button:hover {
   background-color: #0056b3;
 }
-
-.delete-review-button {
+.edit-review-button.delete-review-button,
+.delete-review-button.delete-review-button {
   background-color: red;
 }
-
-.delete-review-button:hover {
+.edit-review-button.delete-review-button:hover,
+.delete-review-button.delete-review-button:hover {
   background-color: darkred;
 }
 
-.like-review-button, .like-comment-button {
+.like-review-button,
+.like-comment-button {
   position: absolute;
   top: 10px;
   right: 25px;
@@ -402,26 +378,27 @@ label {
   transition: color 0.3s ease, transform 0.2s ease;
   padding: 4px;
 }
-
-.like-review-button .fa-heart, .like-comment-button .fa-heart {
+.like-review-button .fa-heart,
+.like-comment-button .fa-heart {
   color: #ff4d4d;
 }
-
-.like-review-button .fa-regular, .like-comment-button .fa-regular {
+.like-review-button .fa-regular,
+.like-comment-button .fa-regular {
   color: #d4d4d4;
 }
-
-.like-review-button:hover .fa-heart, .like-comment-button:hover .fa-heart {
+.like-review-button:hover .fa-heart,
+.like-comment-button:hover .fa-heart {
   color: #ff6666;
   transform: scale(1.1);
 }
-
-.like-review-button:hover .fa-regular, .like-comment-button:hover .fa-regular {
+.like-review-button:hover .fa-regular,
+.like-comment-button:hover .fa-regular {
   color: #b3b3b3;
   transform: scale(1.1);
 }
 
-.like-review-count, .like-comment-count {
+.like-review-count,
+.like-comment-count {
   position: absolute;
   top: 19px;
   right: 15px;
@@ -440,20 +417,21 @@ label {
 }
 
 .game-list-review-empty-star {
-  color: #e4e5e9; 
+  color: #e4e5e9;
   font-size: 17px;
   margin-right: 2px;
 }
 
-.comment-section {
+.comment-section,
+.comments {
   margin: 20px 0;
   padding: 18px;
   background-color: var(--user-info);
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
-
-.comment-section h3 {
+.comment-section h3,
+.comments h3 {
   font-size: 1.375rem;
   color: var(--text-color);
   margin-bottom: 12px;
@@ -464,7 +442,6 @@ label {
   flex-direction: column;
   gap: 5px;
 }
-
 .comment-form textarea {
   resize: vertical;
   padding: 10px;
@@ -473,8 +450,9 @@ label {
   outline: none;
   transition: border-color 0.3s ease;
 }
-
-.comment-form button, .save-edit-btn, .cancel-edit-btn {
+.comment-form button,
+.comment-form .save-edit-btn,
+.comment-form .cancel-edit-btn {
   align-self: flex-start;
   padding: 5px 10px;
   font-size: 13px;
@@ -486,29 +464,15 @@ label {
   transition: background-color 0.3s ease;
   margin-top: -7px;
 }
-
-.cancel-edit-btn { 
-  background-color: #d3d3d3!important;
-  color: #333;
-  margin-left: 5px;
- }
-
-.comment-form button:hover {
+.comment-form button:hover,
+.comment-form .save-edit-btn:hover,
+.comment-form .cancel-edit-btn:hover {
   background-color: #0056b3;
 }
-
-.comments {
-  margin: 20px 0;
-  padding: 18px;
-  background-color: var(--user-info);
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.comments h3 {
-  font-size: 1.375rem;
-  color: var(--text-color);
-  margin-bottom: 12px;
+.comment-form .cancel-edit-btn {
+  background-color: #d3d3d3 !important;
+  color: #333;
+  margin-left: 5px;
 }
 
 .comments ul {
@@ -516,7 +480,6 @@ label {
   margin: 0;
   padding: 0;
 }
-
 .comments .comment {
   position: relative;
   padding: 12px;
@@ -527,18 +490,53 @@ label {
   transition: background-color 0.3s ease, transform 0.2s ease;
   word-wrap: break-word;
   overflow-wrap: break-word;
-  box-sizing: border-box; 
+  box-sizing: border-box;
 }
-
 .comments .comment:hover {
   transform: scale(1.01);
 }
-
 .comments .comment strong {
   font-size: 1rem;
   color: var(--text-color);
 }
+.comments .comment .comment-meta {
+  font-size: 12px !important;
+  color: var(--text-color);
+  text-align: right;
+}
+.comments .comment .delete-comment-btn,
+.comments .comment .edit-comment-btn {
+  position: absolute;
+  font-size: 12px;
+  background: none;
+  color: var(--text-color);
+  border: none;
+  cursor: pointer;
+  transition: color 0.3s ease, background-color 0.3s ease;
+}
+.comments .comment .delete-comment-btn {
+  bottom: 10px;
+  right: 8px;
+}
+.comments .comment .delete-comment-btn:hover {
+  color: #adb5bd;
+}
+.comments .comment .edit-comment-btn {
+  left: 8px;
+  bottom: 10px;
+}
 
+.comment-author {
+  font-size: 16px !important;
+  color: #3498db;
+  text-decoration: none !important;
+  font-weight: 600;
+  transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+.comment-author:hover {
+  color: #1d6fa5;
+  text-decoration: underline;
+}
 
 .list-comment {
   font-size: 14px;
@@ -546,28 +544,8 @@ label {
   color: var(--text-color);
 }
 
-.comment:has(.delete-comment-btn, .edit-comment-btn) .comment-meta {
-  margin-bottom: 20px; /* Adjust the space as needed */
-}
-
-
-.comment-author-text {
-  font-size: 16px;
-  color: var(--text-color);
-}
-
-.comments .comment-meta {
-  font-size: 12px!important;
-  color: var(--text-color);
-  text-align: right;
-}
-
 .hidden {
   display: none;
-}
-
-.comments-section .btn {
-  margin-bottom: 10px;
 }
 
 .show-comments-btn {
@@ -580,39 +558,4 @@ label {
   padding: 5px;
 }
 
-.delete-comment-btn, .edit-comment-btn {
-  position: absolute;
-  font-size: 12px;
-  background: none;
-  color: var(--text-color);
-  border: none;
-  cursor: pointer;
-  transition: color 0.3s ease, background-color 0.3s ease;
-}
-
-.delete-comment-btn {
-  bottom: 10px;
-  right: 8px;
-}
-
-.delete-comment-btn:hover {
-  color: #adb5bd;
-}
-
-.edit-comment-btn {
-  left: 8px;
-  bottom: 10px;
-}
-
-.comment-author {
-  font-size: 16px!important;
-  color: #3498db;
-  text-decoration: none !important;
-  font-weight: 600;
-  transition: color 0.3s ease, text-shadow 0.3s ease;
-}
-
-.comment-author:hover {
-  color: #1d6fa5;
-  text-decoration: underline;
-}
+/*# sourceMappingURL=game_list_detail.css.map */
