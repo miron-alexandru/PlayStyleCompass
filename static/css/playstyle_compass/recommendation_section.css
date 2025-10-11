@@ -20,7 +20,7 @@ small {
 
 .game-info {
   flex: 1;
-  padding: 5px 10px 5px 10px;
+  padding: 5px 10px;
 }
 
 .game-image img {
@@ -29,7 +29,7 @@ small {
   border: 1px solid var(--game-container-border);
   border-radius: 5px;
   margin-right: 10px;
-  margin-left: 5;
+  margin-left: 5px;
 }
 
 .read-button,
@@ -42,23 +42,39 @@ small {
   font-size: 14px;
   text-decoration: underline;
 }
-
 .read-button:hover,
 .read-button-review:hover {
   text-decoration: none;
 }
 
-.friend-dropdown-content {
-  display: none;
-}
-
-.friend-dropdown-content.show {
-  display: block;
-}
-
 .friend-dropdown {
   position: relative;
   display: inline-block;
+}
+.friend-dropdown.show .friend-dropdown-content {
+  display: block;
+}
+.friend-dropdown .friend-dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  width: auto;
+  min-width: 100px;
+  max-width: 150px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  border-radius: 5px;
+}
+.friend-dropdown .friend-dropdown-content a {
+  font-size: 14px;
+  color: #333;
+  padding: 6px 12px;
+  text-decoration: none;
+  display: block;
+  border-radius: 5px;
+}
+.friend-dropdown .friend-dropdown-content a:hover {
+  background-color: #ddd;
 }
 
 .share-button,
@@ -71,26 +87,22 @@ small {
 .favorite-toggle .fas {
   color: #ffd700;
 }
-
 .favorite-toggle:hover .fas {
-  color: #ffdf00; 
+  color: #ffdf00;
   transform: scale(1.1);
 }
-
 .favorite-toggle:hover .far {
   transform: scale(1.1);
 }
 
 .queue-toggle .fa-solid {
-  color: #1e90ff; 
+  color: #1e90ff;
 }
-
 .queue-toggle:hover .fa-solid {
-  color: #187bcd; 
+  color: #187bcd;
   transform: scale(1.1);
 }
-
-.queue-toggle:hover .fa-regular { 
+.queue-toggle:hover .fa-regular {
   transform: scale(1.1);
 }
 
@@ -98,39 +110,9 @@ small {
   color: #4caf50;
   cursor: pointer;
 }
-
 .share-button:hover {
   color: #388e3c;
   transform: scale(1.1);
-}
-
-.friend-dropdown-content {
-  display: none;
-  position: absolute;
-  background-color: #f9f9f9;
-  width: auto;
-  min-width: 100px;
-  max-width: 150px;
-  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-  z-index: 1;
-  border-radius: 5px;
-}
-
-.friend-dropdown-content a {
-  font-size: 14px;
-  color: #333;
-  padding: 6px 12px;
-  text-decoration: none;
-  display: block;
-  border-radius: 5px;
-}
-
-.friend-dropdown-content a:hover {
-  background-color: #ddd;
-}
-
-.friend-dropdown.show .friend-dropdown-content {
-  display: block;
 }
 
 .shared-failed,
@@ -157,8 +139,7 @@ small {
   flex-direction: row;
   flex-wrap: nowrap;
 }
-
-.lazy-video {
+.gameplay-videos .lazy-video {
   margin-right: 10px;
 }
 
@@ -168,18 +149,17 @@ small {
   margin-top: 1px;
 }
 
-span.stars,
-span.stars span {
+span.stars {
   display: inline-block;
   background: url(https://www.svgrepo.com/show/476479/star.svg) 0 0 repeat-x;
   width: 100px;
   height: 20px;
   background-size: 20px 20px;
 }
-
 span.stars span {
-  background-position: 0 0;
+  display: inline-block;
   background-image: url(https://www.svgrepo.com/show/157842/star.svg);
+  background-position: 0 0;
 }
 
 .requirements {
@@ -191,18 +171,16 @@ span.stars span {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
 }
+.platform-requirements > * {
+  flex: 1;
+  margin-right: 15px;
+}
 
 .requirement-section {
   border: 1px solid #ccc;
   border-radius: 6px;
   padding: 10px;
-  margin-bottom: 10px;
-  margin-top: 7px;
-}
-
-.platform-requirements > * {
-  flex: 1;
-  margin-right: 15px;
+  margin: 7px 0 10px;
 }
 
 .req-title {
@@ -247,21 +225,21 @@ span.stars span {
   margin-left: -10px;
   transition: transform 0.2s ease-in-out;
 }
-
 .store-button:hover {
   transform: scale(1.05);
 }
-
 .store-button:active {
   transform: scale(1);
 }
-
 .store-button i, .store-button img {
   font-size: 16px;
   margin-right: 5px;
 }
 
-.store-icon {
+.store-icon, .store-gog,
+.store-nintendo,
+.store-itchio,
+.store-epicgames {
   display: inline-block;
   width: 20px;
   height: 20px;
@@ -270,44 +248,36 @@ span.stars span {
   vertical-align: middle;
 }
 
+.store-gog,
+.store-nintendo,
+.store-itchio,
+.store-epicgames {
+  margin-right: 4px;
+}
+
 .store-gog {
-  background: url('https://www.svgrepo.com/show/341859/gog-com.svg') no-repeat center center;
+  background: url("https://www.svgrepo.com/show/341859/gog-com.svg") no-repeat center center;
   width: 21px;
   height: 21px;
-  background-size: contain;
-  margin-right: 4px;
 }
 
 .store-nintendo {
-  background: url('https://www.svgrepo.com/show/331503/nintendo.svg') no-repeat center center;
-  width: 20px;
-  height: 20px;
-  background-size: contain;
-  margin-right: 4px;
+  background: url("https://www.svgrepo.com/show/331503/nintendo.svg") no-repeat center center;
 }
 
 .store-itchio {
-  background: url('https://www.svgrepo.com/show/331445/itch.svg') no-repeat center center;
-  width: 20px;
-  height: 20px;
-  background-size: contain;
-  margin-right: 4px;
+  background: url("https://www.svgrepo.com/show/331445/itch.svg") no-repeat center center;
 }
 
 .store-epicgames {
-  background: url('https://www.svgrepo.com/show/341792/epic-games.svg') no-repeat center center;
-  width: 20px;
-  height: 20px;
-  background-size: contain;
-  margin-right: 4px;
+  background: url("https://www.svgrepo.com/show/341792/epic-games.svg") no-repeat center center;
 }
 
 .share-link-container {
   position: relative;
   display: inline-block;
 }
-
-.copy-message {
+.share-link-container .copy-message {
   font-size: 11px;
   color: #28a745;
   font-weight: bold;
@@ -320,10 +290,7 @@ span.stars span {
   margin-right: 0.2em;
   color: #145214;
 }
-
 .btn-toggle-icon:hover {
   color: #0e3a0f;
   transform: scale(1.1);
 }
-
-

@@ -13,8 +13,7 @@
   flex-direction: column;
   gap: 20px;
 }
-
-.form-label {
+.share-form .form-label {
   font-size: 1.1rem;
   color: var(--text-color);
   font-weight: 600;
@@ -31,18 +30,15 @@
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
-
 .btn-submit:hover {
   background-color: #2980b9;
 }
-
 .btn-submit:disabled {
   background-color: #ccc;
   color: #999;
   border: 1px solid #ddd;
   cursor: not-allowed;
 }
-
 .btn-submit:disabled:hover {
   background-color: #ccc;
   cursor: not-allowed;
@@ -60,14 +56,12 @@
   border: 1px solid var(--input-border);
   background-color: var(--background-color);
 }
-
-.friend-checkbox {
+.friends-checkbox-list .friend-checkbox {
   display: flex;
   align-items: center;
   gap: 10px;
 }
-
-.friend-checkbox input {
+.friends-checkbox-list .friend-checkbox input {
   margin: 0;
   cursor: pointer;
   width: 15px;
@@ -77,29 +71,25 @@
   background-color: #fff;
   transition: border-color 0.3s ease, background-color 0.3s ease;
 }
-
-.friend-checkbox input:checked {
+.friends-checkbox-list .friend-checkbox input:checked {
   background-color: #3498db;
   border-color: #3498db;
 }
-
-.friend-checkbox label {
+.friends-checkbox-list .friend-checkbox input:focus {
+  outline: none;
+  border-color: #2980b9;
+  box-shadow: 0 0 5px rgba(0, 0, 255, 0.2);
+}
+.friends-checkbox-list .friend-checkbox label {
   font-size: 0.95rem;
   color: var(--text-color);
   cursor: pointer;
   transition: color 0.3s ease;
   margin-top: 5px;
 }
-
-.friend-checkbox:hover label {
+.friends-checkbox-list .friend-checkbox:hover label {
   color: #3498db;
   font-weight: 600;
-}
-
-.friend-checkbox input:focus {
-  outline: none;
-  border-color: #2980b9;
-  box-shadow: 0 0 5px rgba(0, 0, 255, 0.2);
 }
 
 .deals-toggle-buttons {
@@ -121,34 +111,29 @@
   gap: 12px;
   justify-content: flex-start;
 }
-
-.deal-item {
+.deals .deal-item {
   background-color: var(--user-container);
   padding: 12px;
   border-radius: 6px;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   width: calc(33.33% - 8px);
-  box-sizing: border-box; 
+  box-sizing: border-box;
   word-wrap: break-word;
   overflow-wrap: break-word;
 }
-
-.deal-item:hover {
+.deals .deal-item:hover {
   transform: scale(1.02);
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
 }
-
-.deal-item p {
+.deals .deal-item p {
   font-size: 15px;
   margin: 1px 0;
 }
-
-.deal-item strong {
+.deals .deal-item strong {
   font-weight: bold;
 }
-
-.deal-item a:hover {
+.deals .deal-item a:hover {
   text-decoration: underline;
 }
 
@@ -165,12 +150,10 @@
   border-radius: 5px;
   text-decoration: none;
 }
-
 .toggle-button.active {
   background-color: #007bff;
   color: #fff;
 }
-
 .toggle-button:hover {
   background-color: #0056b3;
   color: #fff;
@@ -194,7 +177,6 @@
   text-decoration: none;
   margin-top: 4px;
 }
-
 .view-button:hover {
   background-color: #0056b3;
   color: white;
@@ -213,24 +195,21 @@
   color: #1f2937;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
 }
-
 .shared-content-summary a {
   color: #6366f1;
   font-weight: 600;
   text-decoration: none;
 }
-
 .shared-content-summary a:hover {
   text-decoration: underline;
 }
 
 .share-link-container {
-    margin-top: 20px;
-    margin-bottom: 20px;
-    text-align: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  text-align: center;
 }
-
-.btn-toggle-link {
+.share-link-container .btn-toggle-link {
   background-color: #4CAF50;
   color: white;
   padding: 8px 16px;
@@ -240,12 +219,10 @@
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
-
-.btn-toggle-link:hover {
+.share-link-container .btn-toggle-link:hover {
   background-color: #45a049;
 }
-
-.link-box {
+.share-link-container .link-box {
   margin-top: 15px;
   display: flex;
   flex-direction: row;
@@ -254,8 +231,7 @@
   gap: 10px;
   flex-wrap: wrap;
 }
-
-#shareableLink {
+.share-link-container .link-box #shareableLink {
   width: 320px;
   max-width: 90%;
   padding: 8px 12px;
@@ -265,9 +241,8 @@
   background-color: #f9f9f9;
   text-align: center;
 }
-
-.btn-copy {
-  background-color: #007BFF;
+.share-link-container .link-box .btn-copy {
+  background-color: #007bff;
   color: white;
   padding: 8px 16px;
   font-size: 14px;
@@ -276,12 +251,10 @@
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
-
-.btn-copy:hover {
+.share-link-container .link-box .btn-copy:hover {
   background-color: #0056b3;
 }
-
-.copy-message {
+.share-link-container .copy-message {
   font-size: 14px;
   color: #28a745;
   font-weight: bold;

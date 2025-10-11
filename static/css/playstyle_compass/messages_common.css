@@ -1,14 +1,12 @@
 .messages-container {
   margin: 0 auto;
 }
-
-.category-buttons {
+.messages-container .category-buttons {
   display: flex;
   justify-content: space-between;
   margin-bottom: 10px;
 }
-
-.category-button {
+.messages-container .category-buttons .category-button {
   width: 100%;
   font-size: 14px;
   background-color: #3498db;
@@ -22,28 +20,23 @@
   margin-right: 10px;
   text-align: center;
 }
-
-.category-button:last-child {
+.messages-container .category-buttons .category-button:last-child {
   margin-right: 0;
 }
-
-.category-button:hover {
-  background-color: #2980b9!important;
+.messages-container .category-buttons .category-button:hover {
+  background-color: #2980b9 !important;
 }
-
-.messages-grid {
+.messages-container .messages-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
   gap: 15px;
 }
-
-.messages-grid-inbox {
+.messages-container .messages-grid-inbox {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
   gap: 15px;
 }
-
-.message-card {
+.messages-container .message-card {
   background-color: var(--messages-container);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
@@ -51,55 +44,46 @@
   transition: box-shadow 0.3s ease-in-out;
   word-break: break-word;
 }
-
-.message-card:hover {
+.messages-container .message-card:hover {
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
 }
-
-
-.message-header {
+.messages-container .message-card .message-header {
   background-color: #3498db;
   color: white;
   padding: 5px;
   text-align: left;
 }
-
-.user-info {
+.messages-container .message-card .user-info {
   display: flex;
   align-items: center;
   font-weight: 600;
   color: black;
 }
-
-.timestamp, .subject {
+.messages-container .message-card .timestamp,
+.messages-container .message-card .subject {
   font-weight: 600;
   color: black;
   margin: 0;
 }
-
-.message-content {
+.messages-container .message-card .message-content {
   padding: 10px;
-} 
-
-.empty-category {
+}
+.messages-container .empty-category {
   text-align: center;
   font-size: 17px;
   padding: 20px;
 }
-
-.user-name {
+.messages-container .user-name {
   text-decoration: none !important;
   font-weight: 600;
   color: darkblue;
   transition: color 0.3s ease-in-out;
   margin-left: 4px;
 }
-
-.user-name:hover {
+.messages-container .user-name:hover {
   color: #000040;
 }
-
-.delete-button {
+.messages-container .delete-button {
   background-color: #e74c3c;
   color: #fff;
   border: none;
@@ -110,18 +94,15 @@
   font-size: 14px;
   margin-top: 15px;
 }
-
-.delete-button:hover {
+.messages-container .delete-button:hover {
   background-color: #c0392b;
 }
-
-.delete-button:disabled {
+.messages-container .delete-button:disabled {
   background-color: #ddd;
   color: #999;
   cursor: not-allowed;
 }
-
-.select-all-button {
+.messages-container .select-all-button {
   font-size: 14px;
   padding: 5px 10px;
   background-color: #f39c12;
@@ -131,17 +112,14 @@
   cursor: pointer;
   transition: background-color 0.3s ease-in-out;
 }
-
-.select-all-button:hover {
+.messages-container .select-all-button:hover {
   background-color: #d35400;
 }
-
-label[for="sort-order"] {
+.messages-container label[for=sort-order] {
   font-size: 15px;
   color: var(--text-color);
 }
-
-#sort-order {
+.messages-container #sort-order {
   padding: 3px;
   font-size: 14px;
   border: 1px solid var(--sorting-border);
@@ -150,23 +128,18 @@ label[for="sort-order"] {
   color: var(--text-color);
   outline: none;
 }
-
-#sort-order option {
+.messages-container #sort-order option {
   font-size: 14px;
   background-color: var(--dropdown-menu);
   color: var(--text-color);
 }
-
-#sort-order:hover,
-#sort-order:focus {
+.messages-container #sort-order:hover, .messages-container #sort-order:focus {
   border: 1px solid #333;
 }
-
-.sort-container form {
+.messages-container .sort-container form {
   display: inline-block;
 }
-
-.apply-button {
+.messages-container .apply-button {
   font-size: 14px;
   padding: 5px 10px;
   background-color: #607d8b;
@@ -176,32 +149,28 @@ label[for="sort-order"] {
   cursor: pointer;
   margin-left: 5px;
 }
-
-.action-buttons {
+.messages-container .action-buttons {
   margin-bottom: 15px;
   margin-top: -5px;
 }
-
-.reply-button {
+.messages-container .reply-button {
   display: inline-block;
   padding: 2px 4px;
   margin-left: 6px;
   font-size: 10px;
   background-color: #444444;
-  color: #F0F0F0;
+  color: #f0f0f0;
   border: none;
   border-radius: 4px;
   cursor: pointer;
   text-decoration: none;
 }
-
-.reply-button:hover {
+.messages-container .reply-button:hover {
   background-color: #333333;
-  text-decoration: none!important;
-  color: #F0F0F0;
+  text-decoration: none !important;
+  color: #f0f0f0;
 }
-
-.arrow {
+.messages-container .arrow {
   top: 50%;
   left: calc(100% + 10px);
   width: 0;
@@ -211,7 +180,6 @@ label[for="sort-order"] {
   border-left: 8px solid white;
   margin-left: 6px;
 }
-
-.message-checkbox {
+.messages-container .message-checkbox {
   margin-right: 0.24rem;
 }

@@ -1,0 +1,219 @@
+.messages-container {
+  margin: 0 auto;
+
+  .category-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+
+    .category-button {
+      width: 100%;
+      font-size: 14px;
+      background-color: #3498db;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      cursor: pointer;
+      transition: background-color 0.3s ease-in-out;
+      border-radius: 5px;
+      flex-grow: 1;
+      margin-right: 10px;
+      text-align: center;
+
+      &:last-child {
+        margin-right: 0;
+      }
+
+      &:hover {
+        background-color: #2980b9 !important;
+      }
+    }
+  }
+
+  .messages-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+    gap: 15px;
+  }
+
+  .messages-grid-inbox {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
+    gap: 15px;
+  }
+
+  .message-card {
+    background-color: var(--messages-container);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+    transition: box-shadow 0.3s ease-in-out;
+    word-break: break-word;
+
+    &:hover {
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .message-header {
+      background-color: #3498db;
+      color: white;
+      padding: 5px;
+      text-align: left;
+    }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+      font-weight: 600;
+      color: black;
+    }
+
+    .timestamp,
+    .subject {
+      font-weight: 600;
+      color: black;
+      margin: 0;
+    }
+
+    .message-content {
+      padding: 10px;
+    }
+  }
+
+  .empty-category {
+    text-align: center;
+    font-size: 17px;
+    padding: 20px;
+  }
+
+  .user-name {
+    text-decoration: none !important;
+    font-weight: 600;
+    color: darkblue;
+    transition: color 0.3s ease-in-out;
+    margin-left: 4px;
+
+    &:hover {
+      color: #000040;
+    }
+  }
+
+  .delete-button {
+    background-color: #e74c3c;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+    border-radius: 5px;
+    font-size: 14px;
+    margin-top: 15px;
+
+    &:hover {
+      background-color: #c0392b;
+    }
+
+    &:disabled {
+      background-color: #ddd;
+      color: #999;
+      cursor: not-allowed;
+    }
+  }
+
+  .select-all-button {
+    font-size: 14px;
+    padding: 5px 10px;
+    background-color: #f39c12;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+
+    &:hover {
+      background-color: #d35400;
+    }
+  }
+
+  label[for="sort-order"] {
+    font-size: 15px;
+    color: var(--text-color);
+  }
+
+  #sort-order {
+    padding: 3px;
+    font-size: 14px;
+    border: 1px solid var(--sorting-border);
+    border-radius: 5px;
+    background-color: var(--dropdown-menu);
+    color: var(--text-color);
+    outline: none;
+
+    option {
+      font-size: 14px;
+      background-color: var(--dropdown-menu);
+      color: var(--text-color);
+    }
+
+    &:hover,
+    &:focus {
+      border: 1px solid #333;
+    }
+  }
+
+  .sort-container {
+    form {
+      display: inline-block;
+    }
+  }
+
+  .apply-button {
+    font-size: 14px;
+    padding: 5px 10px;
+    background-color: #607d8b;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 5px;
+  }
+
+  .action-buttons {
+    margin-bottom: 15px;
+    margin-top: -5px;
+  }
+
+  .reply-button {
+    display: inline-block;
+    padding: 2px 4px;
+    margin-left: 6px;
+    font-size: 10px;
+    background-color: #444444;
+    color: #f0f0f0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
+
+    &:hover {
+      background-color: #333333;
+      text-decoration: none !important;
+      color: #f0f0f0;
+    }
+  }
+
+  .arrow {
+    top: 50%;
+    left: calc(100% + 10px);
+    width: 0;
+    height: 0;
+    border-top: 5px solid transparent;
+    border-bottom: 5px solid transparent;
+    border-left: 8px solid white;
+    margin-left: 6px;
+  }
+
+  .message-checkbox {
+    margin-right: 0.24rem;
+  }
+}

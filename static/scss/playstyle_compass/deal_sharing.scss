@@ -1,0 +1,310 @@
+// Variables
+$primary: #3498db;
+$primary-hover: #2980b9;
+$secondary: #007bff;
+$secondary-hover: #0056b3;
+$success: #4CAF50;
+$success-hover: #45a049;
+$border-color: #ccc;
+$text-color: var(--text-color);
+$container-bg: var(--user-container);
+
+// Share deal container
+.share-deal-container {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 30px;
+  background-color: $container-bg;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+// Share form
+.share-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  .form-label {
+    font-size: 1.1rem;
+    color: $text-color;
+    font-weight: 600;
+  }
+}
+
+// Submit button
+.btn-submit {
+  background-color: $primary;
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: $primary-hover;
+  }
+
+  &:disabled {
+    background-color: #ccc;
+    color: #999;
+    border: 1px solid #ddd;
+    cursor: not-allowed;
+
+    &:hover {
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
+  }
+}
+
+// Friends checkbox list
+.friends-checkbox-list {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 10px;
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--input-border);
+  background-color: var(--background-color);
+
+  .friend-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    input {
+      margin: 0;
+      cursor: pointer;
+      width: 15px;
+      height: 15px;
+      border: 2px solid var(--input-border);
+      border-radius: 4px;
+      background-color: #fff;
+      transition: border-color 0.3s ease, background-color 0.3s ease;
+
+      &:checked {
+        background-color: $primary;
+        border-color: $primary;
+      }
+
+      &:focus {
+        outline: none;
+        border-color: $primary-hover;
+        box-shadow: 0 0 5px rgba(0, 0, 255, 0.2);
+      }
+    }
+
+    label {
+      font-size: 0.95rem;
+      color: $text-color;
+      cursor: pointer;
+      transition: color 0.3s ease;
+      margin-top: 5px;
+    }
+
+    &:hover label {
+      color: $primary;
+      font-weight: 600;
+    }
+  }
+}
+
+// Deals section
+.deals-toggle-buttons {
+  display: flex;
+  justify-content: flex-start;
+  gap: 6px;
+  margin: 10px 0;
+}
+
+.deals-section {
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 0 10px;
+}
+
+.deals {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: flex-start;
+
+  .deal-item {
+    background-color: $container-bg;
+    padding: 12px;
+    border-radius: 6px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    width: calc(33.33% - 8px);
+    box-sizing: border-box;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+
+    &:hover {
+      transform: scale(1.02);
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    p {
+      font-size: 15px;
+      margin: 1px 0;
+    }
+
+    strong {
+      font-weight: bold;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+// Toggle buttons
+.toggle-button {
+  display: inline-block;
+  margin: 3px;
+  font-size: 13px;
+  background-color: $primary;
+  color: white;
+  border: none;
+  padding: 7px 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+  border-radius: 5px;
+  text-decoration: none;
+
+  &.active {
+    background-color: $secondary;
+    color: #fff;
+  }
+
+  &:hover {
+    background-color: $secondary-hover;
+    color: #fff;
+    text-decoration: none;
+  }
+}
+
+// Empty message
+.empty-message {
+  text-align: center;
+  color: $text-color;
+  font-size: 0.9rem;
+  padding: 12px;
+}
+
+// View button
+.view-button {
+  display: inline-block;
+  background-color: $secondary;
+  color: white;
+  font-size: 13px;
+  padding: 5px 10px;
+  border-radius: 4px;
+  text-decoration: none;
+  margin-top: 4px;
+
+  &:hover {
+    background-color: $secondary-hover;
+    color: white;
+  }
+}
+
+// Shared content summary
+.shared-content-summary {
+  backdrop-filter: blur(8px);
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  padding: 15px;
+  margin: 30px auto;
+  max-width: 600px;
+  border-radius: 16px;
+  text-align: center;
+  font-size: 16px;
+  color: #1f2937;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+
+  a {
+    color: #6366f1;
+    font-weight: 600;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+// Share link section
+.share-link-container {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  text-align: center;
+
+  .btn-toggle-link {
+    background-color: $success;
+    color: white;
+    padding: 8px 16px;
+    font-size: 14px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+      background-color: $success-hover;
+    }
+  }
+
+  .link-box {
+    margin-top: 15px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+
+    #shareableLink {
+      width: 320px;
+      max-width: 90%;
+      padding: 8px 12px;
+      font-size: 15px;
+      border: 1px solid $border-color;
+      border-radius: 6px;
+      background-color: #f9f9f9;
+      text-align: center;
+    }
+
+    .btn-copy {
+      background-color: $secondary;
+      color: white;
+      padding: 8px 16px;
+      font-size: 14px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+
+      &:hover {
+        background-color: $secondary-hover;
+      }
+    }
+  }
+
+  .copy-message {
+    font-size: 14px;
+    color: #28a745;
+    font-weight: bold;
+    animation: fadeInOut 2s ease-in-out;
+  }
+}
