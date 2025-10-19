@@ -131,14 +131,9 @@ mkcert localhost 127.0.0.1
 Websites for .env configuration: [GiantBomb](https://www.giantbomb.com/) / [SendGrid](https://sendgrid.com/) / [RECAPTCHA](https://www.google.com/recaptcha/about/)
 
 
-## Project Preview
-![Home](project-preview/home.PNG)
-![Dark-Theme](project-preview/dark-theme.PNG)
-![Account Actions](project-preview/acc-actions.PNG)
-![Game Details](project-preview/view-game.PNG)
-![News](project-preview/news.PNG)
-![Animation](project-preview/Animation.gif)
-## All images can be found [here](https://github.com/miron-alexandru/PlayStyleCompass/tree/main/project-preview)
+### Project Preview
+<video src="https://github.com/miron-alexandru/PlayStyleCompass/blob/main/project-preview/PlayStyle.mp4?raw=true" autoplay loop muted playsinline width="960"></video>
+### All images can be found [here](https://github.com/miron-alexandru/PlayStyleCompass/tree/main/project-preview)
 
 
 <details>
