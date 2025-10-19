@@ -132,7 +132,12 @@ Websites for .env configuration: [GiantBomb](https://www.giantbomb.com/) / [Send
 
 
 ### Project Preview
-<video src="https://github.com/miron-alexandru/PlayStyleCompass/blob/main/project-preview/PlayStyle.mp4?raw=true" autoplay loop muted playsinline width="960"></video>
+![Home](project-preview/home.PNG)
+![Dark-Theme](project-preview/dark-theme.PNG)
+![Account Actions](project-preview/acc-actions.PNG)
+![Game Details](project-preview/view-game.PNG)
+![News](project-preview/news.PNG)
+[Watch Demo](https://miron-alexandru.github.io/PlayStyleCompass/PlayStyle.mp4)
 ### All images can be found [here](https://github.com/miron-alexandru/PlayStyleCompass/tree/main/project-preview)
 
 
