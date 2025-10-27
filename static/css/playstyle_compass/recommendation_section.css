@@ -156,11 +156,15 @@ span.stars {
   height: 20px;
   background-size: 20px 20px;
 }
-span.stars span {
+
+span.stars span.filled {
   display: inline-block;
   background-image: url(https://www.svgrepo.com/show/157842/star.svg);
-  background-position: 0 0;
+  background-repeat: repeat-x;
+  background-size: 20px 20px;
+  height: 20px;
 }
+
 
 .requirements {
   white-space: pre-line;
