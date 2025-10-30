@@ -223,58 +223,75 @@ textarea.is-invalid,
   background-color: var(--secondary-background);
   border: none;
   border-radius: 0;
-  padding: 0;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  max-height: 85px;
+  padding: 10px 5%;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
   width: 100%;
-  opacity: 1;
-  transition: all 0.6s ease;
+  max-height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: background-color 0.4s ease, box-shadow 0.3s ease;
 }
 .navbar.fixed {
   background: var(--fixed-navbar);
   position: fixed;
   top: 0;
   z-index: 1030;
-  opacity: 0.9;
-  transition: all 0.6s ease;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
 }
 .navbar .navbar-brand {
-  margin-left: 5%;
+  margin: 0;
+  font-weight: 600;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
 }
-.navbar .navbar-text {
-  font-size: 14px;
+.navbar .navbar-brand img {
+  width: 45px;
+  height: 45px;
+  margin-right: 10px;
+}
+.navbar .navbar-nav {
+  display: flex;
+  align-items: center;
+  gap: 20px;
 }
 .navbar .navbar-nav .nav-item {
   display: flex;
   align-items: center;
-  max-height: 80px;
-}
-.navbar .navbar-nav .nav-item .contact-us {
-  margin-left: auto;
-  display: flex;
-  align-items: top;
-  padding-left: 10px !important;
-}
-.navbar .navbar-nav .nav-item .contact-us .contact-icon {
-  margin-left: 5px;
-}
-.navbar .navbar-nav .nav-item img {
-  width: 70px;
-  height: 70px;
-  border-radius: 50%;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
-  margin-top: 5px;
-  overflow: hidden;
-  object-fit: cover;
+  position: relative;
 }
 .navbar .navbar-nav .nav-item .nav-link {
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 500;
+  color: var(--dropdown-item) !important;
+  padding: 8px 12px;
+  border-radius: 6px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+.navbar .navbar-nav .nav-item .nav-link:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: var(--primary-text);
+}
+.navbar .navbar-nav .nav-item img {
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.25);
+  object-fit: cover;
+}
+.navbar .navbar-nav .nav-item .contact-us {
+  margin-left: 15px;
   display: flex;
   align-items: center;
-  margin: 3px;
-  white-space: nowrap;
-  color: var(--dropdown-item) !important;
+}
+.navbar .navbar-nav .nav-item .contact-us .contact-icon {
+  margin-left: 6px;
+  transition: transform 0.3s ease;
+}
+.navbar .navbar-nav .nav-item .contact-us .contact-icon:hover {
+  transform: scale(1.1);
 }
 
 .container {

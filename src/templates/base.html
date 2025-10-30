@@ -34,323 +34,171 @@
 <body>
   <script src="{% static 'js/start_theme.js' %}" ></script>
   <nav class="navbar navbar-expand-md navbar-light">
-    <div class="container">
-      <a class="navbar-brand" href="{% url 'playstyle_compass:index' %}">
-          <img id="logo-image" style="visibility: hidden;"
-            src="{% static 'images/playstyle.png' %}" 
-            alt="PlayStyle Compass Logo"
-            data-light-src="{% static 'images/playstyle.png' %}" 
-            data-dark-src="{% static 'images/playstyle-dark.png' %}">
-        </a>
-      <ul class="navbar-nav ml-auto">
+  <div class="container">
+    <a class="navbar-brand" href="{% url 'playstyle_compass:index' %}">
+      <img id="logo-image" style="visibility: hidden;"
+        src="{% static 'images/playstyle.png' %}"
+        alt="PlayStyle Compass Logo"
+        data-light-src="{% static 'images/playstyle.png' %}"
+        data-dark-src="{% static 'images/playstyle-dark.png' %}">
+    </a>
+
+    <div class="custom-collapse navbar-collapse" id="navbarCollapse">
+      <ul class="navbar-nav ml-auto-custom">
+
         {% if user.is_authenticated %}
+
+        <!-- Playstyle -->
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navItemDropdown" role="button" data-toggle="dropdown">
-              {% trans "Playstyle" %}
+          <a class="nav-link dropdown-toggle" href="#" id="playstyleDropdown" role="button" data-toggle="dropdown">
+            {% trans "Playstyle" %}
           </a>
-          <div class="dropdown-menu navbar-dropdown">
-            <a class="dropdown-item" href="{% url 'playstyle_compass:gaming_preferences'%}">
-              {% trans "Create Playstyle" %}
-            </a>
-            <a class="dropdown-item" href="{% url 'playstyle_compass:update_preferences'%}">
-              {% trans "Manage Playstyle" %}
-            </a>
-            <a class="dropdown-item" href="{% url 'playstyle_compass:similar_playstyles'%}">
-              {% trans "Kindred Playstyles" %}
-            </a>
-            <a class="dropdown-item" href="{% url 'playstyle_compass:play_histories'%}">
-              {% trans "Kindred Play Histories" %}
-            </a>
+          <div class="dropdown-menu">
+            <a class="dropdown-item" href="{% url 'playstyle_compass:gaming_preferences'%}">{% trans "Create Playstyle" %}</a>
+            <a class="dropdown-item" href="{% url 'playstyle_compass:update_preferences'%}">{% trans "Manage Playstyle" %}</a>
+            <a class="dropdown-item" href="{% url 'playstyle_compass:similar_playstyles'%}">{% trans "Kindred Playstyles" %}</a>
+            <a class="dropdown-item" href="{% url 'playstyle_compass:play_histories'%}">{% trans "Kindred Play Histories" %}</a>
           </div>
         </li>
+
+        <!-- Games -->
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navItemDropdown" role="button" data-toggle="dropdown">
-              {% trans "Recommendations" %}
+          <a class="nav-link dropdown-toggle" href="#" id="gamesDropdown" role="button" data-toggle="dropdown">
+            {% trans "Games" %}
           </a>
-          <div class="dropdown-menu navbar-dropdown">
-            <a class="dropdown-item" href="{% url 'playstyle_compass:get_recommendations'%}">
-              {% trans "Game Recommendations" %}
-            </a>
-            <a class="dropdown-item" href="{% url 'users:gaming_quiz'%}">
-              {% trans "Preference Quiz" %}
-            </a>
-            <a class="dropdown-item" href="{% url 'users:quiz_recommendations'%}">
-              {% trans "Quiz Recommendations" %}
-            </a>
+          <div class="dropdown-menu">
+            <a class="dropdown-item" href="{% url 'playstyle_compass:game_library'%}">{% trans "Game Library" %}</a>
+            <a class="dropdown-item" href="{% url 'playstyle_compass:similar_games_directory'%}">{% trans "Similar Games Directory" %}</a>
+            <a class="dropdown-item" href="{% url 'playstyle_compass:view_franchises'%}">{% trans "Franchises" %}</a>
+            <a class="dropdown-item" href="{% url 'playstyle_compass:characters'%}">{% trans "Characters" %}</a>
           </div>
         </li>
+
+        <!-- Categories -->
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navItemDropdown" role="button" data-toggle="dropdown">
-              {% trans "Personal Collection" %}
+          <a class="nav-link dropdown-toggle" href="#" id="categoriesDropdown" role="button" data-toggle="dropdown">
+            {% trans "Categories" %}
           </a>
-          <div class="dropdown-menu navbar-dropdown">
-            <a class="dropdown-item" href="{% url 'playstyle_compass:create_game_list'%}">
-              {% trans "Create Game List" %}
-            </a>
-            <a class="dropdown-item" href="{% url 'playstyle_compass:user_game_lists' request.user.id%}">
-              {% trans "My Game Lists" %}
-            </a>
-            <a class="dropdown-item" href="{% url 'playstyle_compass:create_poll'%}">
-              {% trans "Create Poll" %}
-            </a>
-            <a class="dropdown-item" href="{% url 'playstyle_compass:user_polls' request.user.id%}">
-              {% trans "My Polls" %}
-            </a>
-            <a class="dropdown-item" href="{% url 'playstyle_compass:voted_polls'%}">
-              {% trans "Voted Polls" %}
-            </a>
-            <a class="dropdown-item" href="{% url 'playstyle_compass:favorite_game_lists' request.user.id%}">
-              {% trans "Favorite Game Lists" %}
-            </a>
-            <a class="dropdown-item" href="{% url 'playstyle_compass:favorite_games'%}">
-              {% trans "Favorite Games" %}
-            </a>
-            <a class="dropdown-item" href="{% url 'playstyle_compass:game_queue'%}">
-              {% trans "Game Queue" %}
-            </a>
-            <a class="dropdown-item" href="{% url 'playstyle_compass:user_reviews'%}">
-              {% trans "Game Reviews" %}
-            </a>
-            <a class="dropdown-item" href="{% url 'playstyle_compass:reviewed_game_lists'%}">
-              {% trans "Game List Reviews" %}
-            </a>
+          <div class="dropdown-menu">
+            <a class="dropdown-item" href="{% url 'playstyle_compass:beginner_games'%}">{% trans "Beginner-Friendly Games" %}</a>
+            <a class="dropdown-item" href="{% url 'playstyle_compass:popular_games'%}">{% trans "Popular Games" %}</a>
+            <a class="dropdown-item" href="{% url 'playstyle_compass:top_rated_games'%}">{% trans "Top Rated Games" %}</a>
+            <a class="dropdown-item" href="{% url 'playstyle_compass:upcoming_games'%}">{% trans "Upcoming Games" %}</a>
+            <a class="dropdown-item" href="{% url 'playstyle_compass:singleplayer_games'%}">{% trans "Single-player Games" %}</a>
+            <a class="dropdown-item" href="{% url 'playstyle_compass:multiplayer_games'%}">{% trans "Multiplayer Games" %}</a>
+            <a class="dropdown-item" href="{% url 'playstyle_compass:open_world_games'%}">{% trans "Open-World Games" %}</a>
+            <a class="dropdown-item" href="{% url 'playstyle_compass:indie_games'%}">{% trans "Indie Games" %}</a>
+            <a class="dropdown-item" href="{% url 'playstyle_compass:steam_games'%}">{% trans "Steam Games" %}</a>
+            <a class="dropdown-item" href="{% url 'playstyle_compass:free_to_play_games'%}">{% trans "Free to Play Games" %}</a>
+            <a class="dropdown-item" href="{% url 'playstyle_compass:linear_gameplay_games'%}">{% trans "Linear Gameplay Games" %}</a>
+            <a class="dropdown-item" href="{% url 'playstyle_compass:vr_games'%}">{% trans "VR Games" %}</a>
           </div>
         </li>
+
+        <!-- Discover -->
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navItemDropdown" role="button" data-toggle="dropdown">
-              {% trans "Game Categories" %}
+          <a class="nav-link dropdown-toggle" href="#" id="discoverDropdown" role="button" data-toggle="dropdown">
+            {% trans "Discover" %}
           </a>
-          <div class="dropdown-menu navbar-dropdown">
-            <a class="dropdown-item" href="{% url 'playstyle_compass:beginner_games'%}">
-              {% trans "Beginner-Friendly Games" %}
-            </a>
-            <a class="dropdown-item" href="{% url 'playstyle_compass:popular_games'%}">
-              {% trans "Popular Games" %}
-            </a>
-            <a class="dropdown-item" href="{% url 'playstyle_compass:top_rated_games'%}">
-              {% trans "Top Rated Games" %}
-            </a>
-            <a class="dropdown-item" href="{% url 'playstyle_compass:upcoming_games'%}">
-              {% trans "Upcoming Games" %}
-            </a>
-            <a class="dropdown-item" href="{% url 'playstyle_compass:singleplayer_games'%}">
-              {% trans "Single-player Games" %}
-            </a>
-            <a class="dropdown-item" href="{% url 'playstyle_compass:multiplayer_games'%}">
-              {% trans "Multiplayer Games" %}
-            </a>
-            <a class="dropdown-item" href="{% url 'playstyle_compass:open_world_games'%}">
-              {% trans "Open-World Games" %}
-            </a>
-            <a class="dropdown-item" href="{% url 'playstyle_compass:indie_games'%}">
-              {% trans "Indie Games" %}
-            </a>
-            <a class="dropdown-item" href="{% url 'playstyle_compass:steam_games'%}">
-              {% trans "Steam Games" %}
-            </a>
-            <a class="dropdown-item" href="{% url 'playstyle_compass:free_to_play_games'%}">
-              {% trans "Free to Play Games" %}
-            </a>
-            <a class="dropdown-item" href="{% url 'playstyle_compass:linear_gameplay_games'%}">
-              {% trans "Linear Gameplay Games" %}
-            </a>
-            <a class="dropdown-item" href="{% url 'playstyle_compass:vr_games'%}">
-              {% trans "VR Games" %}
-            </a>
+          <div class="dropdown-menu">
+            <a class="dropdown-item" href="{% url 'playstyle_compass:get_recommendations'%}">{% trans "Game Recommendations" %}</a>
+            <a class="dropdown-item" href="{% url 'users:gaming_quiz'%}">{% trans "Preference Quiz" %}</a>
+            <a class="dropdown-item" href="{% url 'users:quiz_recommendations'%}">{% trans "Quiz Recommendations" %}</a>
+            <a class="dropdown-item" href="{% url 'playstyle_compass:latest_news'%}">{% trans "Gaming News" %}</a>
+            <a class="dropdown-item" href="{% url 'playstyle_compass:deals_list'%}">{% trans "Game Deals" %}</a>
           </div>
         </li>
+
+        <!-- Collections -->
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navItemDropdown" role="button" data-toggle="dropdown">
-              {% trans "Explore" %}
+          <a class="nav-link dropdown-toggle" href="#" id="collectionsDropdown" role="button" data-toggle="dropdown">
+            {% trans "Collections" %}
           </a>
-          <div class="dropdown-menu navbar-dropdown">
-            <a class="dropdown-item" href="{% url 'playstyle_compass:latest_news'%}">
-              {% trans "Gaming News" %}
-            </a>
-            <a class="dropdown-item" href="{% url 'playstyle_compass:deals_list'%}">
-              {% trans "Game Deals" %}
-            </a>
-            <a class="dropdown-item" href="{% url 'playstyle_compass:game_library'%}">
-              {% trans "Game Library" %}
-            </a>
-            <a class="dropdown-item" href="{% url 'playstyle_compass:explore_game_lists'%}">
-              {% trans "Game Lists" %}
-            </a>
-            <a class="dropdown-item" href="{% url 'playstyle_compass:game_reviews'%}">
-              {% trans "Game Reviews" %}
-            </a>
-            <a class="dropdown-item" href="{% url 'playstyle_compass:community_polls'%}">
-              {% trans "Community Polls" %}
-            </a>
-            <a class="dropdown-item" href="{% url 'playstyle_compass:completed_polls'%}">
-              {% trans "Completed Polls" %}
-            </a>
-            <a class="dropdown-item" href="{% url 'playstyle_compass:similar_games_directory'%}">
-              {% trans "Similar Games Directory" %}
-            </a>
-            <a class="dropdown-item" href="{% url 'playstyle_compass:view_franchises'%}">
-              {% trans "Franchises" %}
-            </a>
-            <a class="dropdown-item" href="{% url 'playstyle_compass:characters'%}">
-              {% trans "Characters" %}
-            </a>
+          <div class="dropdown-menu">
+            <a class="dropdown-item" href="{% url 'playstyle_compass:create_game_list'%}">{% trans "Create Game List" %}</a>
+            <a class="dropdown-item" href="{% url 'playstyle_compass:user_game_lists' request.user.id%}">{% trans "My Game Lists" %}</a>
+            <a class="dropdown-item" href="{% url 'playstyle_compass:favorite_game_lists' request.user.id%}">{% trans "Favorite Game Lists" %}</a>
+            <a class="dropdown-item" href="{% url 'playstyle_compass:favorite_games'%}">{% trans "Favorite Games" %}</a>
+            <a class="dropdown-item" href="{% url 'playstyle_compass:game_queue'%}">{% trans "Game Queue" %}</a>
           </div>
         </li>
+
+        <!-- Community -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="communityDropdown" role="button" data-toggle="dropdown">
+            {% trans "Community" %}
+          </a>
+          <div class="dropdown-menu">
+            <a class="dropdown-item" href="{% url 'playstyle_compass:create_poll'%}">{% trans "Create Poll" %}</a>
+            <a class="dropdown-item" href="{% url 'playstyle_compass:user_polls' request.user.id%}">{% trans "My Polls" %}</a>
+            <a class="dropdown-item" href="{% url 'playstyle_compass:voted_polls'%}">{% trans "Voted Polls" %}</a>
+            <a class="dropdown-item" href="{% url 'playstyle_compass:community_polls'%}">{% trans "Community Polls" %}</a>
+            <a class="dropdown-item" href="{% url 'playstyle_compass:completed_polls'%}">{% trans "Completed Polls" %}</a>
+            <a class="dropdown-item" href="{% url 'playstyle_compass:user_reviews'%}">{% trans "Game Reviews" %}</a>
+            <a class="dropdown-item" href="{% url 'playstyle_compass:reviewed_game_lists'%}">{% trans "Game List Reviews" %}</a>
+          </div>
+        </li>
+
+        <!-- Social -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="socialDropdown" role="button" data-toggle="dropdown">
+            {% trans "Social" %}
+          </a>
+          <div class="dropdown-menu">
+            <a class="dropdown-item" href="{% url 'users:inbox'%}">{% trans "Messages" %}</a>
+            <a class="dropdown-item" href="{% url 'users:following_list' user.id %}">{% trans "Following List" %}</a>
+            <a class="dropdown-item" href="{% url 'users:followers_list' user.id %}">{% trans "Followers List" %}</a>
+            <a class="dropdown-item" href="{% url 'users:friends_list' user.id %}">{% trans "Your Friends" %}</a>
+            <a class="dropdown-item" href="{% url 'users:friend_requests' user.id %}">{% trans "Friend Requests" %}</a>
+            <a class="dropdown-item" href="{% url 'users:chat_list' %}">{% trans "Chat Rooms" %}</a>
+            <a class="dropdown-item" href="{% url 'users:block_list' %}">{% trans "Blocked Users" %}</a>
+          </div>
+        </li>
+
+        <!-- Notifications + Contact -->
+        <li class="nav-item dropdown" id="notifications">
+          <a class="nav-link" href="#" data-bs-toggle="dropdown" aria-expanded="false">
+            <i id="bellCount" class="fa-solid fa-bell notification-bell" data-count="0"></i>
+          </a>
+          <ul class="dropdown-menu notifications-dropdown text-wrap" id="notify"></ul>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link contact-us" href="{% url 'users:contact' %}">
+            {% trans "Contact" %} <i class="fa-regular fa-comments contact-icon"></i>
+          </a>
+        </li>
+
+        <!-- User Profile Avatar Dropdown -->
+        <li class="nav-item dropdown user-menu">
+          <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userMenu" role="button" data-toggle="dropdown">
+            <img src="{{ user.userprofile.profile_picture.url }}" alt="User" class="user-avatar">
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userMenu">
+            <li class="dropdown-header">{{ user.userprofile.profile_name|default:user.username }}</li>
+            <li><a class="dropdown-item" href="{% url 'users:view_profile' user.userprofile.profile_name %}">{% trans "View Profile" %}</a></li>
+            <li><a class="dropdown-item" href="{% url 'users:profile_details'%}">{% trans "Edit Profile Info" %}</a></li>
+            <li><a class="dropdown-item" href="{% url 'users:change_password' %}">{% trans "Change Password" %}</a></li>
+            <li><a class="dropdown-item" href="{% url 'users:notification_settings'%}">{% trans "Manage Notifications" %}</a></li>
+            <li><a class="dropdown-item" href="{% url 'playstyle_compass:privacy_settings'%}">{% trans "Privacy Settings" %}</a></li>
+            <li><a class="dropdown-item" href="{% url 'users:manage_api_key' %}">{% trans "API Key" %}</a></li>
+            <li><a class="dropdown-item" href="{% url 'playstyle_compass:api-documentation' %}">{% trans "API Docs" %}</a></li>
+            <li><a class="dropdown-item" href="{% url 'users:delete_account' %}">{% trans "Deactivate Account" %}</a></li>
+            <li><a class="dropdown-item" href="{% url 'users:logout' %}">{% trans "Sign Out" %}</a></li>
+          </ul>
+        </li>
+
         {% else %}
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'playstyle_compass:gaming_preferences'%}">
-            {% trans "Create Playstyle" %}
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'playstyle_compass:game_library'%}">
-            {% trans "Game Library" %}
-          </a>
-        </li>
-        <li class="nav-item">
-        <a class="nav-link" href="{% url 'playstyle_compass:explore_game_lists'%}">
-              {% trans "Game Lists" %}
-            </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'playstyle_compass:similar_games_directory'%}">
-              {% trans "Similar Games Directory" %}
-            </a>
-          </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'playstyle_compass:view_franchises'%}">
-            {% trans "Franchises" %}
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'playstyle_compass:characters'%}">
-            {% trans "Characters" %}
-          </a>
-        </li>
+        <!-- Unauthenticated users -->
+        <li class="nav-item"><a class="nav-link" href="{% url 'users:register' %}">{% trans "Register" %}</a></li>
+        <li class="nav-item"><a class="nav-link" href="{% url 'users:login' %}">{% trans "Log in" %}</a></li>
+        <li class="nav-item"><a class="nav-link contact-us" href="{% url 'users:contact' %}">{% trans "Contact" %}</a></li>
         {% endif %}
       </ul>
-      <div class="custom-collapse navbar-collapse" id="navbarCollapse">
-        <ul class="navbar-nav ml-auto-custom">
-          {% if user.is_authenticated %}
-          <li class="nav-item profile-picture">
-            {% if user.userprofile.profile_picture %}
-            <label for="profile-picture-upload" class="profile-picture-label">
-              <img src="{{ user.userprofile.profile_picture.url }}" alt="{{ user.username }}'s Profile Picture"
-                class="profile-picture mr-2" id="profile-picture">
-            </label>
-            {% endif %}
-            <input type="file" id="profile-picture-upload" class="sr-only" accept="image/*"
-              data-profile-url="{% url 'users:profile_picture' %}" data-csrf-token="{{ csrf_token }}">
-          </li>
-
-        <li class="nav-item">
-            <span class="navbar-text mr-3 user-profile-name">
-                <a href="{% url 'users:view_profile' user.userprofile.profile_name %}" style="color: inherit;">
-                    <span class="d-inline-block text-truncate profile-name" style="max-width: 90px;">
-                        {{ user.userprofile.profile_name|default:user.username }}
-                    </span>
-                    <div class="custom-tooltip" style="display: none;">
-                        {{ user.userprofile.profile_name|default:user.username }}
-                    </div>
-                </a>
-            </span>
-        </li>
-          <li class="nav-item dropdown" id="hoverDropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button" data-toggle="dropdown"
-              aria-haspopup="true" aria-expanded="false">
-              {% trans "Account" %}
-            </a>
-            <div class="dropdown-menu" aria-labelledby="profileDropdown">
-
-              <h6 class="dropdown-header">{% trans "Profile" %}</h6>
-              <a class="dropdown-item" href="{% url 'users:view_profile' user.userprofile.profile_name %}">{% trans "View Profile" %}</a>
-              <a class="dropdown-item" href="{% url 'users:profile_details'%}">{% trans "Edit Profile Info" %}</a>
-              <a class="dropdown-item" href="{% url 'users:profile_picture' %}">{% trans "Update Profile Picture" %}</a>
-              <a class="dropdown-item" href="{% url 'users:change_profile_name' %}">{% trans "Update Profile Name" %}</a>
-
-              <div class="dropdown-divider"></div>
-
-              <h6 class="dropdown-header">{% trans "Shared Content" %}</h6>
-              <a class="dropdown-item" href="{% url 'playstyle_compass:games_shared'%}">{% trans "Shared Games" %}</a>
-              <a class="dropdown-item" href="{% url 'playstyle_compass:shared_game_lists'%}">{% trans "Shared Game Lists" %}</a>
-              <a class="dropdown-item" href="{% url 'playstyle_compass:shared_polls'%}">{% trans "Shared Polls" %}</a>
-              <a class="dropdown-item" href="{% url 'playstyle_compass:shared_deals'%}">{% trans "Shared Deals" %}</a>
-              <a class="dropdown-item" href="{% url 'playstyle_compass:shared_reviews'%}">{% trans "Shared Reviews" %}</a>
-              
-              <div class="dropdown-divider"></div>
-
-              <!-- Settings Section -->
-              <h6 class="dropdown-header">{% trans "Settings" %}</h6>
-              <a class="dropdown-item" href="{% url 'users:notification_settings'%}">{% trans "Manage Notifications" %}</a>
-              <a class="dropdown-item" href="{% url 'playstyle_compass:privacy_settings'%}">{% trans "Manage Privacy" %}</a>
-              <a class="dropdown-item" href="{% url 'users:change_password' %}">{% trans "Update Password" %}</a>
-              <a class="dropdown-item" href="{% url 'users:change_email' %}">{% trans "Update Email Address" %}</a>
-
-              <div class="dropdown-divider"></div>
-
-              <!-- API Section -->
-              <h6 class="dropdown-header">{% trans "API" %}</h6>
-              <a class="dropdown-item" href="{% url 'users:manage_api_key' %}">{% trans "Manage API Key" %}</a>
-              <a class="dropdown-item" href="{% url 'playstyle_compass:api-documentation' %}">{% trans "API Documentation" %}</a>
-
-              <div class="dropdown-divider"></div>
-
-              <h6 class="dropdown-header">{% trans "Account" %}</h6>
-              <a class="dropdown-item" href="{% url 'users:delete_account' %}">{% trans "Deactivate Account" %}</a>
-              <a class="dropdown-item" href="{% url 'users:logout' %}">{% trans "Sign Out" %}</a>
-            </div>
-          </li>
-
-          <li class="nav-item dropdown" id="socialDropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="socialDropdownToggle" role="button" data-toggle="dropdown"
-              aria-haspopup="true" aria-expanded="false">
-              {% trans "Social" %}
-            </a>
-            <div class="dropdown-menu" aria-labelledby="socialDropdownToggle">
-              <a class="dropdown-item" href="{% url 'users:inbox'%}">{% trans "Messages" %}</a>
-              <a class="dropdown-item" href="{% url 'users:following_list' user.id %}">{% trans "Following List" %}</a>
-              <a class="dropdown-item" href="{% url 'users:followers_list' user.id %}">{% trans "Followers List" %}</a>
-              <a class="dropdown-item" href="{% url 'users:friends_list' user.id %}">{% trans "Your Friends" %}</a>
-              <a class="dropdown-item" href="{% url 'users:friend_requests' user.id %}">{% trans "Friend Requests" %}</a>
-              <a class="dropdown-item" href="{% url 'users:chat_list' %}">{% trans "Chat Rooms" %}</a>
-              <a class="dropdown-item" href="{% url 'users:block_list' %}">{% trans "Blocked Users" %}</a>
-            </div>
-          </li>
-          {% else %}
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'playstyle_compass:api-documentation' %}">{% trans "API Documentation" %}</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'users:register' %}">{% trans "Register" %}</a>
-          </li>
-          <li class="nav-item">
-              <a class="nav-link" href="{% url 'users:login' %}">{% trans "Log in" %}</a>
-          </li>
-          {% endif %}
-          {% if user.is_authenticated %}
-          <div class="d-flex dropstart" id="notifications" data-mark-read="{% url 'users:mark_notification_as_read' 0 %}"
-          data-mark-inactive="{% url 'users:delete_notification' 0 %}">
-            <div class="custom-collapse navbar-collapse dropstart" id="navbarNavDarkDropdown">
-                <li class="nav-item dropdown">
-                  <a class="nav-link " href="#"  data-bs-toggle="dropdown" aria-expanded="false">
-                    <i id="bellCount" class="fa-solid fa-bell notification-bell" data-count="0" ></i>
-                  </a>
-                  <ul class="dropdown-menu notifications-dropdown text-wrap" id="notify"></ul>
-                </li>
-                <li class="nav-item">
-              <a class="nav-link contact-us" href="{% url 'users:contact' %}">{% trans "Contact" %} <i class="fa-regular fa-comments contact-icon"></i></a>
-          </li>
-            </div>
-          </div>
-          {% else %}
-          <li class="nav-item">
-              <a class="nav-link contact-us" href="{% url 'users:contact' %}">{% trans "Contact" %} <i class="fa-regular fa-comments contact-icon"></i></a>
-          </li>
-          {% endif %}
-        </ul>
-      </div>
     </div>
-  </nav>
+  </div>
+</nav>
+
 
   <div class="page-header">
     <div id="header-content">
