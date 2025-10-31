@@ -126,10 +126,12 @@ textarea,
     display: flex;
     align-items: center;
 
-    img {
-      width: 45px;
-      height: 45px;
-      margin-right: 10px;
+  img {
+    height: 50px;
+    width: auto;
+    margin-right: 10px;
+    object-fit: contain;
+    visibility: visible;
     }
   }
 
@@ -166,9 +168,9 @@ textarea,
       }
 
       .contact-us {
-        margin-left: 15px;
         display: flex;
         align-items: center;
+        margin-right: -10px;
 
         .contact-icon {
           margin-left: 6px;
@@ -443,25 +445,10 @@ textarea,
   }
 }
 
-.user-profile-name {
-  a {
-    font-size: 16px;
-    font-weight: bolder;
-    margin-left: -4px;
-    text-decoration: none;
-    margin-right: -10px;
-    display: flex;
-    text-align: center;
-    color: var(--text-color) !important;
-
-    &:hover {
-      color: var(--user-hover) !important;
-    }
-  }
-}
 
 .notification-bell {
   font-size: 23px;
+  margin: 0;
 
   &:hover {
     color: var(--navlink-hover);

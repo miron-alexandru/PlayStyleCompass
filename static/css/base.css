@@ -248,9 +248,11 @@ textarea.is-invalid,
   align-items: center;
 }
 .navbar .navbar-brand img {
-  width: 45px;
-  height: 45px;
+  height: 50px;
+  width: auto;
   margin-right: 10px;
+  object-fit: contain;
+  visibility: visible;
 }
 .navbar .navbar-nav {
   display: flex;
@@ -282,9 +284,9 @@ textarea.is-invalid,
   object-fit: cover;
 }
 .navbar .navbar-nav .nav-item .contact-us {
-  margin-left: 15px;
   display: flex;
   align-items: center;
+  margin-right: -10px;
 }
 .navbar .navbar-nav .nav-item .contact-us .contact-icon {
   margin-left: 6px;
@@ -530,22 +532,9 @@ textarea.is-invalid,
   opacity: 1;
 }
 
-.user-profile-name a {
-  font-size: 16px;
-  font-weight: bolder;
-  margin-left: -4px;
-  text-decoration: none;
-  margin-right: -10px;
-  display: flex;
-  text-align: center;
-  color: var(--text-color) !important;
-}
-.user-profile-name a:hover {
-  color: var(--user-hover) !important;
-}
-
 .notification-bell {
   font-size: 23px;
+  margin: 0;
 }
 .notification-bell:hover {
   color: var(--navlink-hover);
