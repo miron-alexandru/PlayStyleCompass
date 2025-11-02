@@ -276,6 +276,10 @@ textarea.is-invalid,
   background-color: rgba(255, 255, 255, 0.1);
   color: var(--primary-text);
 }
+.navbar .navbar-nav .nav-item .nav-link.offline {
+  white-space: nowrap;
+  padding: 6px 8px;
+}
 .navbar .navbar-nav .nav-item img {
   width: 55px;
   height: 55px;
