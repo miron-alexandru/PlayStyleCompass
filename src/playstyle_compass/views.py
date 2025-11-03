@@ -121,7 +121,7 @@ def index(request):
     upcoming_games = Game.objects.filter(title__in=upcoming_titles)
     popular_games = Game.objects.filter(title__in=popular_titles)
     popular_franchises = Franchise.objects.filter(title__in=popular_franchise_titles)
-    articles = News.objects.order_by("-publish_date")[:6]
+    articles = News.objects.order_by("-publish_date")[:7]
     top_rated_games = Game.objects.order_by("-average_score")[:10]
     game_deals = Deal.objects.all()[:8]
 

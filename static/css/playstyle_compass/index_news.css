@@ -28,13 +28,18 @@
 
 .article {
   position: relative;
-  width: 270px;
+  width: 277px;
   margin: 13px 0px -5px 0px;
   overflow: hidden;
   border: 1px solid var(--article-border);
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   background-color: #fff;
+  transition: transform 0.3s ease;
+}
+
+.article:hover {
+  transform: translateY(-3px);
 }
 
 .article img {
@@ -100,7 +105,7 @@
 }
 
 .article:nth-child(2) {
-  width: 400px;
+  width: 435px;
 }
 
 .article:nth-child(2) img {

@@ -5,9 +5,9 @@
 {% block page_header %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/playstyle_compass/index.css' %}">
 <link rel="stylesheet" type="text/css" href="{% static 'css/playstyle_compass/index_news.css' %}">
-<div class="jumbotron">
+<div class="header-and-featured">
   <div class="my-header">
-    <h1 class="display-5">{% trans "Find Your Ideal Games" %}</h1>
+    <h1 class="display-5">{% trans "FIND YOUR IDEAL GAMES" %}</h1>
     <p class="lead">
       {% blocktrans %}
       Discover your next favorite game with PlayStyle Compass — your personalized guide to gaming experiences that match your unique playstyle. Our smart recommendations are shaped by your preferences, gaming history, and favorite genres, helping you find titles that truly resonate. Create your own playstyle profile, explore detailed game info with videos and reviews, and connect with a community of like-minded gamers.  
@@ -15,10 +15,20 @@
       {% endblocktrans %}
     </p>
     {% if not user.is_authenticated %}
-    <a class="btn btn-lg btn-primary register-button" href="{% url 'users:register' %}" role="button">{% trans "Register" %}
-      &raquo;</a>
+    <a class="btn btn-lg btn-primary register-button" href="{% url 'users:register' %}" role="button">{% trans "Register" %} &raquo;</a>
     {% endif %}
   </div>
+  {% if articles %}
+  <div class="featured-article">
+    <a href="{{ articles.0.url }}" target="_blank">
+      <img src="{{ articles.0.image }}" alt="{{ articles.0.title }}">
+      <div class="article-content">
+        <h2 class="article-title">{{ articles.0.title }}</h2>
+        <p class="article-summary">{{ articles.0.summary }}</p>
+      </div>
+    </a>
+  </div>
+  {% endif %}
 </div>
 {% endblock page_header %}
 
@@ -28,7 +38,8 @@
 <p class="articles-source-text">{% trans "Source:" %} <a class="articles-source-text" href="https://www.gamespot.com/" target="_blank">GameSpot</a></p>
 <div class="articles">
     {% for article in articles %}
-        <div class="article {% if forloop.first %}first-article{% endif %}">
+        {% if not forloop.first %}
+        <div class="article {% if forloop.counter == 2 %}first-article{% endif %}">
             <a href="{{ article.url }}" target="_blank">
                 <img src="{{ article.image }}" alt="{{ article.title }}">
                 <div class="article-content">
@@ -37,10 +48,12 @@
                 </div>
             </a>
         </div>
+        {% endif %}
     {% endfor %}
-        <div class="all-articles-link">
-            <a href="{% url 'playstyle_compass:latest_news'%}" class="all-articles-btn">{% trans "View All Articles" %}</a>
-      </div>
+
+    <div class="all-articles-link">
+        <a href="{% url 'playstyle_compass:latest_news' %}" class="all-articles-btn">{% trans "View All Articles" %}</a>
+    </div>
 </div>
 
 <div class="search-description">
