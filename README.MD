@@ -144,6 +144,11 @@ Websites for .env configuration: [GiantBomb](https://www.giantbomb.com/) / [Send
 <details>
 <summary><h2>PlayStyle Compass Changelog</h2></summary>
 
+### Version v2.6:
+* Updated Index page with a redesigned header and news layout.
+* Refined navbar structure and styling.
+* Introduced SCSS for easier and cleaner style management.
+
 ### Version v2.5:
 * Tested helper functions for the 'users' & 'playstyle_compass' apps.
 * Completed testing for the 'users' app views.
