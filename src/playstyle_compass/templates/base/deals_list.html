@@ -17,8 +17,10 @@
     </a>
 </div>
     <div class="deal-info">
-        <p class="sale-price">${{ deal.sale_price }}</p>
-        <p class="retail-price"><del>${{ deal.retail_price }}</del></p>
+        <div class="price-line">
+        <span class="sale-price">${{ deal.sale_price }}</span>
+        <span class="retail-price"><del>${{ deal.retail_price }}</del></span>
+    </div>
         <p class="deal-store">
             {% trans "Store:" %} 
             <img src="{{ deal.store_icon_url }}" alt="{{ deal.store_name }}" class="store-icon"> 
