@@ -16,8 +16,13 @@
   }
 }
 
-html,
+html {
+  height: 100%;
+}
+
 body {
+  min-height: 100%;
+  height: auto;
   margin: 0;
   padding: 0;
   display: flex;
@@ -44,6 +49,7 @@ ol {
 }
 
 main {
+  flex: 1;
   display: flex;
   flex-direction: column;
   position: relative;
@@ -300,6 +306,7 @@ textarea,
 
 .content {
   margin-bottom: 20px;
+  margin-top: 15px;
 }
 
 .ml-auto-custom {

@@ -1,61 +1,61 @@
 :root {
-  --background-color: #eef2f7;
+  --background-color: #f4f7fb;
   --secondary-background: #3498db;
   --text-color: #2c3e50;
   --primary-color: #6200ee;
   --header-color: #2f4255;
-  --index-header: #e9ecef;
+  --index-header: #e0e6ec;
   --footer-color: #2c3e50;
   --fixed-navbar: #4aa9ff;
   --descriptions-color: #2f4f6f;
   --listing-title: #3e6a91;
   --search-color: #fff;
-  --result-color: #e6f2fb;
+  --result-color: #d9ecf5;
   --dropdown-item: #1f3550;
   --dropdown-menu: #fff;
   --user-hover: #1a2a40;
   --navlink-hover: #0f0f0f;
-  --dropdown-hover: #dceaf7;
+  --dropdown-hover: #c9e1f2;
   --bell-background: lightblue;
-  --article-border: #c8d9eb;
+  --article-border: #b9c9dc;
   --header-desc: #2f4f6f;
-  --section-color: #e6f2fb;
+  --section-color: #d9ecf5;
   --buttons-color: #007bff;
-  --game-container: #f2f7fb;
-  --sorting-border: #6c8cad;
-  --game-container-border: #c8d9eb;
+  --game-container: #e6f0f7;
+  --sorting-border: #5c7a95;
+  --game-container-border: #b9c9dc;
   --input-color: #fff;
-  --game-lists: #f7fbff;
-  --game-list: #edf4fa;
-  --game-list-hover: #dceaf7;
-  --list-sorting: #c8d9eb;
-  --user-container: #f2f7fb;
-  --user-info: #e6f2fb;
+  --game-lists: #e6f0f7;
+  --game-list: #e0eff7;
+  --game-list-hover: #c9e1f2;
+  --list-sorting: #b9c9dc;
+  --user-container: #e6f0f7;
+  --user-info: #d9ecf5;
   --user-image-border: #1a2a40;
   --show-hive-hover: #00323a;
-  --messages-container: #f2f7fb;
-  --chat-color: #e6f7ff;
-  --chat-sent-message-background: #cce7ff;
-  --chat-received-message-background: #b3daff;
+  --messages-container: #e6f0f7;
+  --chat-color: #d9f0ff;
+  --chat-sent-message-background: #b8dbf2;
+  --chat-received-message-background: #9fc8e6;
   --message-border: #007bff;
-  --notification-hover: #c9dff5;
-  --notification-read: #f7fbff;
-  --notification-unread: #e6f2fb;
-  --review-header: #eaf3fb;
-  --input-border: #c8d9eb;
-  --input-focus: #a5c9ff;
+  --notification-hover: #b9d4ec;
+  --notification-read: #e6f0f7;
+  --notification-unread: #d9ecf5;
+  --review-header: #d9ebf5;
+  --input-border: #b9c9dc;
+  --input-focus: #93b8ff;
   --input-shadow: rgba(0, 123, 255, 0.11);
-  --friend-request: #f2f7fb;
-  --success-alert-background: #dff0d8;
+  --friend-request: #e6f0f7;
+  --success-alert-background: #d0e2cc;
   --success-alert-color: #3c763d;
-  --error-alert-background: #f8d7da;
+  --error-alert-background: #f1cfd5;
   --error-alert-color: #721c24;
-  --separator-border: #c8d9eb;
+  --separator-border: #b9c9dc;
   --list-review-text: #0056b3;
   --global-chat-header: #4e8cff;
-  --global-chat-description: #e0f0ff;
+  --global-chat-description: #cce0f0;
   --api-filters-background: rgba(0, 0, 0, 0.05);
-  --news-container-hover: #f8f8f8;
+  --news-container-hover: #eaeaea;
 }
 
 .dark-theme {
@@ -131,8 +131,13 @@
   background: #a0a0a0;
 }
 
-html,
+html {
+  height: 100%;
+}
+
 body {
+  min-height: 100%;
+  height: auto;
   margin: 0;
   padding: 0;
   display: flex;
@@ -159,6 +164,7 @@ ol {
 }
 
 main {
+  flex: 1;
   display: flex;
   flex-direction: column;
   position: relative;
@@ -400,6 +406,7 @@ textarea.is-invalid,
 
 .content {
   margin-bottom: 20px;
+  margin-top: 15px;
 }
 
 .ml-auto-custom {
@@ -917,5 +924,3 @@ textarea.is-invalid,
     opacity: 1;
   }
 }
-
-/*# sourceMappingURL=base.css.map */
