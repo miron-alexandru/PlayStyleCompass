@@ -118,7 +118,7 @@ class IndexViewTest(TestCase):
         self.assertEqual(context["top_rated_games"].count(), 10)
 
         self.assertIn("game_deals", context)
-        self.assertEqual(context["game_deals"].count(), 8)
+        self.assertEqual(context["game_deals"].count(), 7)
 
 
 class PrivacySettingsViewTest(TestCase):

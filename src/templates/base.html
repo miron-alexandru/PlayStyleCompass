@@ -173,7 +173,8 @@
         <!-- User Profile Avatar Dropdown -->
         <li class="nav-item dropdown user-menu">
           <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userMenu" role="button" data-toggle="dropdown">
-            <img src="{{ user.userprofile.profile_picture.url }}" alt="User" class="user-avatar">
+            <img src="{{ user.userprofile.profile_picture.url }}" alt="User" class="user-avatar" 
+            id="profile-picture">
           </a>
           <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userMenu">
             <li class="dropdown-header">{{ user.userprofile.profile_name|default:user.username }}</li>

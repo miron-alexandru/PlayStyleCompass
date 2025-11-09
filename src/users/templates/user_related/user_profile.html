@@ -35,6 +35,8 @@
       <img src="{{ user_profile.profile_picture.url }}" alt="{{ user_profile.profile_name }}'s Profile Picture"
         class="profile-image" id="profile-picture-user-profile">
     </label>
+    <input type="file" id="profile-picture-upload" class="sr-only" accept="image/*"
+      data-profile-url="{% url 'users:profile_picture' %}" data-csrf-token="{{ csrf_token }}">
     {% else %}
     <label style="padding:5px">
       <img src="{{ user_profile.profile_picture.url }}" alt="{{ user_profile.profile_name }}'s Profile Picture"
@@ -48,6 +50,8 @@
       <img src="{{ default_profile_picture }}" alt="{{ user_profile.profile_name }}'s Default Profile Picture"
         class="profile-image" id="profile-picture-user-profile">
     </label>
+    <input type="file" id="profile-picture-upload" class="sr-only" accept="image/*"
+      data-profile-url="{% url 'users:profile_picture' %}" data-csrf-token="{{ csrf_token }}">
     {% else %}
     <label style="padding:5px">
       <img src="{{ default_profile_picture }}" alt="{{ user_profile.profile_name }}'s Default Profile Picture"
