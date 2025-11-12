@@ -75,7 +75,7 @@ document.addEventListener("DOMContentLoaded", function () {
       if (!existingReviewDiv) return;
 
       const title = existingReviewDiv.querySelector('.review-title').innerText;
-      const rating = existingReviewDiv.querySelector('.review-rating').innerText;
+      const rating = existingReviewDiv.querySelector('.game-list-review-stars').dataset.reviewScore;
       const reviewText = existingReviewDiv.querySelector('.review-text').innerText;
       const formActionUrl = this.getAttribute('data-action-url');
 

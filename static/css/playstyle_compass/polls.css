@@ -57,11 +57,11 @@
   justify-content: center;
   align-items: center;
 }
-.poll-card .buttons-container button,
-.poll-card .buttons-container .vote-button,
-.poll-card .buttons-container .share-poll-button,
-.poll-card .buttons-container .view-poll-button,
-.poll-card .buttons-container .delete-poll-button {
+.poll-card button,
+.poll-card .vote-button,
+.poll-card .share-poll-button,
+.poll-card .view-poll-button,
+.poll-card .delete-poll-button {
   color: white;
   border: none;
   font-size: 13px;
@@ -70,39 +70,39 @@
   cursor: pointer;
   transition: background-color 0.3s ease, transform 0.2s ease;
 }
-.poll-card .buttons-container .vote-button {
+.poll-card .vote-button {
   background-color: #4caf50;
 }
-.poll-card .buttons-container .vote-button:hover {
+.poll-card .vote-button:hover {
   background-color: #45a049;
 }
-.poll-card .buttons-container .vote-button:disabled {
+.poll-card .vote-button:disabled {
   background-color: #dcdcdc;
   color: #a9a9a9;
   cursor: not-allowed;
   opacity: 0.6;
 }
-.poll-card .buttons-container .share-poll-button {
+.poll-card .share-poll-button {
   background-color: #4169e1;
 }
-.poll-card .buttons-container .share-poll-button:hover {
+.poll-card .share-poll-button:hover {
   background-color: #0066b2;
   color: white !important;
 }
-.poll-card .buttons-container .view-poll-button {
+.poll-card .view-poll-button {
   background-color: #9c27b0;
 }
-.poll-card .buttons-container .view-poll-button:hover {
+.poll-card .view-poll-button:hover {
   background-color: #7b1fa2;
   color: white !important;
 }
-.poll-card .buttons-container .delete-poll-button {
+.poll-card .delete-poll-button {
   background-color: #e63946;
 }
-.poll-card .buttons-container .delete-poll-button:hover {
+.poll-card .delete-poll-button:hover {
   background-color: #d62839;
 }
-.poll-card .buttons-container .delete-poll-button:focus {
+.poll-card .delete-poll-button:focus {
   outline: 2px solid #ffccd5;
   outline-offset: 2px;
 }
@@ -357,5 +357,3 @@
   font-weight: 600;
   margin-bottom: 10px;
 }
-
-/*# sourceMappingURL=polls.css.map */

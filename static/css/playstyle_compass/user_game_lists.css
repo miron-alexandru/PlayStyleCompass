@@ -7,7 +7,8 @@
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
-.game-lists-container .users-lists-title {
+
+.users-lists-title {
   font-size: 1.4em;
   font-weight: 600;
   color: var(--text-color);
@@ -15,23 +16,84 @@
   padding-bottom: 10px;
   margin-bottom: 20px;
 }
-.game-lists-container .users-lists-title a {
+.users-lists-title a {
   color: #007bff;
   text-decoration: none;
   transition: color 0.3s ease;
 }
-.game-lists-container .users-lists-title a:hover {
+.users-lists-title a:hover {
   color: #0056b3;
   text-decoration: underline;
 }
-.game-lists-container .game-lists {
+
+.view-button,
+.edit-button,
+.delete-list-button,
+.delete-all-button,
+.share-button {
+  display: inline-block;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 5px;
+  text-decoration: none;
+  font-size: 13px;
+  transition: background-color 0.3s ease;
+  cursor: pointer;
+}
+
+.view-button {
+  background-color: #007bff;
+}
+.view-button:hover {
+  background-color: #0056b3;
+  color: white;
+}
+
+.edit-button {
+  background-color: #ffcc00;
+}
+.edit-button:hover {
+  background-color: #e6b800;
+  color: white;
+}
+
+.delete-list-button {
+  background-color: #ff4d4d;
+  border: none;
+}
+.delete-list-button:hover {
+  background-color: #ff1a1a;
+}
+
+.delete-all-button {
+  background-color: #ff4d4d;
+  border: none;
+}
+.delete-all-button:hover {
+  background-color: #ff1a1a;
+  color: white;
+}
+
+.delete-all-button {
+  margin-top: 20px;
+}
+
+.share-button {
+  background-color: #228b22;
+}
+.share-button:hover {
+  background-color: #006400;
+  color: white;
+}
+
+.game-lists {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
   justify-content: space-around;
   align-items: flex-start;
 }
-.game-lists-container .game-lists .game-list-item {
+.game-lists .game-list-item {
   position: relative;
   background-color: var(--game-list);
   border: 1px solid var(--game-container-border);
@@ -45,75 +107,26 @@
   height: auto;
   flex-grow: 0;
 }
-.game-lists-container .game-lists .game-list-item:hover {
+.game-lists .game-list-item:hover {
   background-color: var(--game-list-hover);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
-.game-lists-container .game-lists .game-list-item h3 {
+.game-lists .game-list-item h3 {
   font-size: 18px;
   margin-bottom: 10px;
 }
-.game-lists-container .game-lists .game-list-item p {
+.game-lists .game-list-item p {
   font-size: 14px;
   margin-bottom: 5px;
 }
-.game-lists-container .game-lists .game-list-item .button-group {
+.game-lists .game-list-item .button-group {
   display: flex;
   justify-content: start;
   gap: 10px;
   margin-top: 10px;
 }
-.game-lists-container .game-lists .game-list-item .button-group .view-button,
-.game-lists-container .game-lists .game-list-item .button-group .edit-button,
-.game-lists-container .game-lists .game-list-item .button-group .delete-list-button,
-.game-lists-container .game-lists .game-list-item .button-group .delete-all-button,
-.game-lists-container .game-lists .game-list-item .button-group .share-button {
-  display: inline-block;
-  color: white;
-  padding: 6px 12px;
-  border-radius: 5px;
-  text-decoration: none;
-  font-size: 13px;
-  transition: background-color 0.3s ease;
-}
-.game-lists-container .game-lists .game-list-item .button-group .view-button {
-  background-color: #007bff;
-}
-.game-lists-container .game-lists .game-list-item .button-group .view-button:hover {
-  background-color: #0056b3;
-  color: white;
-}
-.game-lists-container .game-lists .game-list-item .button-group .edit-button {
-  background-color: #ffcc00;
-}
-.game-lists-container .game-lists .game-list-item .button-group .edit-button:hover {
-  background-color: #e6b800;
-  color: white;
-}
-.game-lists-container .game-lists .game-list-item .button-group .delete-list-button {
-  background-color: #ff4d4d;
-  border: none;
-}
-.game-lists-container .game-lists .game-list-item .button-group .delete-list-button:hover {
-  background-color: #ff1a1a;
-}
-.game-lists-container .game-lists .game-list-item .button-group .delete-all-button {
-  margin-top: 20px;
-  background-color: #ff4d4d;
-  border: none;
-}
-.game-lists-container .game-lists .game-list-item .button-group .delete-all-button:hover {
-  background-color: #ff1a1a;
-  color: white;
-}
-.game-lists-container .game-lists .game-list-item .button-group .share-button {
-  background-color: #228b22;
-}
-.game-lists-container .game-lists .game-list-item .button-group .share-button:hover {
-  background-color: #006400;
-  color: white;
-}
-.game-lists-container .toggle-button {
+
+.toggle-button {
   display: inline-block;
   margin: 3px;
   font-size: 13px;
@@ -126,26 +139,28 @@
   border-radius: 5px;
   text-decoration: none;
 }
-.game-lists-container .toggle-button.active {
+.toggle-button.active {
   background-color: #007bff;
   color: #fff;
 }
-.game-lists-container .toggle-button:hover {
+.toggle-button:hover {
   background-color: #0056b3;
   color: #fff;
   text-decoration: none;
 }
-.game-lists-container .empty-message {
+
+.empty-message {
   color: #555;
   font-size: 14px;
   margin: 15px 0;
   text-align: center;
   padding: 10px;
 }
-.game-lists-container .empty-message p {
+.empty-message p {
   margin: 0;
 }
-.game-lists-container .sorting-options {
+
+.sorting-options {
   display: flex;
   align-items: center;
   justify-content: flex-start;
@@ -156,13 +171,13 @@
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
-.game-lists-container .sorting-options label {
+.sorting-options label {
   font-size: 14px;
   font-weight: 500;
   color: var(--text-color);
   margin-right: 8px;
 }
-.game-lists-container .sorting-options select {
+.sorting-options select {
   padding: 6px 10px;
   margin-right: 8px;
   border: 1px solid var(--list-sorting);
@@ -174,11 +189,11 @@
   transition: border-color 0.3s ease;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
-.game-lists-container .sorting-options select:hover, .game-lists-container .sorting-options select:focus {
+.sorting-options select:hover, .sorting-options select:focus {
   border-color: #007bff;
   outline: none;
 }
-.game-lists-container .sorting-options .sort-button {
+.sorting-options .sort-button {
   padding: 6px 12px;
   background-color: #007bff;
   color: #fff;
@@ -190,17 +205,19 @@
   transition: background-color 0.3s ease;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
-.game-lists-container .sorting-options .sort-button:hover {
+.sorting-options .sort-button:hover {
   background-color: #0056b3;
 }
-.game-lists-container .game-lists-indicator {
+
+.game-lists-indicator {
   position: absolute;
   top: 10px;
   right: 10px;
 }
-.game-lists-container .favorites-creator {
+
+.favorites-creator {
   text-decoration: none;
 }
-.game-lists-container .favorites-creator:hover {
+.favorites-creator:hover {
   text-decoration: none;
 }

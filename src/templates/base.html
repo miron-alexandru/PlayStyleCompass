@@ -173,47 +173,41 @@
         <!-- User Profile Avatar Dropdown -->
         <li class="nav-item dropdown user-menu">
           <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userMenu" role="button" data-toggle="dropdown">
-            <img src="{{ user.userprofile.profile_picture.url }}" alt="User" class="user-avatar" 
-            id="profile-picture">
+            <img src="{{ user.userprofile.profile_picture.url }}" alt="User" class="user-avatar" id="profile-picture">
           </a>
           <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userMenu">
-            <li class="dropdown-header">{{ user.userprofile.profile_name|default:user.username }}</li>
-            <h6 class="dropdown-header">{% trans "Profile" %}</h6>
-              <a class="dropdown-item" href="{% url 'users:view_profile' user.userprofile.profile_name %}">{% trans "View Profile" %}</a>
-              <a class="dropdown-item" href="{% url 'users:profile_details'%}">{% trans "Edit Profile Info" %}</a>
-              <a class="dropdown-item" href="{% url 'users:profile_picture' %}">{% trans "Update Profile Picture" %}</a>
-              <a class="dropdown-item" href="{% url 'users:change_profile_name' %}">{% trans "Update Profile Name" %}</a>
+            <li class="dropdown-user-section">
+              <div class="user-info">
+                <span class="user-label">Your Profile</span>
+                <span class="user-name">{{ user.userprofile.profile_name|default:user.username }}</span>
+              </div>
+            </li>
+            <h6 class="dropdown-header">{% trans "Account Overview" %}</h6>
+            <a class="dropdown-item" href="{% url 'users:view_profile' user.userprofile.profile_name %}">{% trans "View Profile" %}</a>
+            <a class="dropdown-item" href="{% url 'users:profile_details'%}">{% trans "Edit Profile" %}</a>
+            <a class="dropdown-item" href="{% url 'users:profile_picture' %}">{% trans "Change Picture" %}</a>
+            <a class="dropdown-item" href="{% url 'users:change_profile_name' %}">{% trans "Change Profile Name" %}</a>
 
-              <div class="dropdown-divider"></div>
+            <h6 class="dropdown-header">{% trans "Shared Content" %}</h6>
+            <a class="dropdown-item" href="{% url 'playstyle_compass:games_shared'%}">{% trans "Games" %}</a>
+            <a class="dropdown-item" href="{% url 'playstyle_compass:shared_game_lists'%}">{% trans "Game Lists" %}</a>
+            <a class="dropdown-item" href="{% url 'playstyle_compass:shared_polls'%}">{% trans "Polls" %}</a>
+            <a class="dropdown-item" href="{% url 'playstyle_compass:shared_deals'%}">{% trans "Deals" %}</a>
+            <a class="dropdown-item" href="{% url 'playstyle_compass:shared_reviews'%}">{% trans "Reviews" %}</a>
 
-              <h6 class="dropdown-header">{% trans "Shared Content" %}</h6>
-              <a class="dropdown-item" href="{% url 'playstyle_compass:games_shared'%}">{% trans "Shared Games" %}</a>
-              <a class="dropdown-item" href="{% url 'playstyle_compass:shared_game_lists'%}">{% trans "Shared Game Lists" %}</a>
-              <a class="dropdown-item" href="{% url 'playstyle_compass:shared_polls'%}">{% trans "Shared Polls" %}</a>
-              <a class="dropdown-item" href="{% url 'playstyle_compass:shared_deals'%}">{% trans "Shared Deals" %}</a>
-              <a class="dropdown-item" href="{% url 'playstyle_compass:shared_reviews'%}">{% trans "Shared Reviews" %}</a>
-              
-              <div class="dropdown-divider"></div>
+            <h6 class="dropdown-header">{% trans "Preferences" %}</h6>
+            <a class="dropdown-item" href="{% url 'users:notification_settings'%}">{% trans "Notifications" %}</a>
+            <a class="dropdown-item" href="{% url 'playstyle_compass:privacy_settings'%}">{% trans "Privacy" %}</a>
+            <a class="dropdown-item" href="{% url 'users:change_password' %}">{% trans "Password" %}</a>
+            <a class="dropdown-item" href="{% url 'users:change_email' %}">{% trans "Email" %}</a>
 
-              <!-- Settings Section -->
-              <h6 class="dropdown-header">{% trans "Settings" %}</h6>
-              <a class="dropdown-item" href="{% url 'users:notification_settings'%}">{% trans "Manage Notifications" %}</a>
-              <a class="dropdown-item" href="{% url 'playstyle_compass:privacy_settings'%}">{% trans "Manage Privacy" %}</a>
-              <a class="dropdown-item" href="{% url 'users:change_password' %}">{% trans "Update Password" %}</a>
-              <a class="dropdown-item" href="{% url 'users:change_email' %}">{% trans "Update Email Address" %}</a>
+            <h6 class="dropdown-header">{% trans "Developer Tools" %}</h6>
+            <a class="dropdown-item" href="{% url 'users:manage_api_key' %}">{% trans "API Key" %}</a>
+            <a class="dropdown-item" href="{% url 'playstyle_compass:api-documentation' %}">{% trans "Documentation" %}</a>
 
-              <div class="dropdown-divider"></div>
-
-              <!-- API Section -->
-              <h6 class="dropdown-header">{% trans "API" %}</h6>
-              <a class="dropdown-item" href="{% url 'users:manage_api_key' %}">{% trans "API Key" %}</a>
-              <a class="dropdown-item" href="{% url 'playstyle_compass:api-documentation' %}">{% trans "API Docs" %}</a>
-
-              <div class="dropdown-divider"></div>
-
-              <h6 class="dropdown-header">{% trans "Account" %}</h6>
-              <a class="dropdown-item" href="{% url 'users:delete_account' %}">{% trans "Deactivate Account" %}</a>
-              <a class="dropdown-item" href="{% url 'users:logout' %}">{% trans "Sign Out" %}</a>
+            <h6 class="dropdown-header">{% trans "Account Management" %}</h6>
+            <a class="dropdown-item" href="{% url 'users:delete_account' %}">{% trans "Deactivate Account" %}</a>
+            <a class="dropdown-item" href="{% url 'users:logout' %}">{% trans "Sign Out" %}</a>
           </ul>
         </li>
         {% else %}

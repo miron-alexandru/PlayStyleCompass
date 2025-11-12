@@ -59,8 +59,9 @@
     gap: 10px;
     justify-content: center;
     align-items: center;
+  }
 
-    button,
+  button,
     .vote-button,
     .share-poll-button,
     .view-poll-button,
@@ -119,7 +120,6 @@
         outline-offset: 2px;
       }
     }
-  }
 
   .poll-option {
     margin: 10px 0;

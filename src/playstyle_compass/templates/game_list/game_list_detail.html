@@ -142,8 +142,8 @@
     <p><strong>{% trans "Date:" %}</strong> {{ review.created_at|date:"d/m/Y"}}</p>
     <div class="review-buttons">
       <button class="edit-review-button" data-id="{{ review.id }}"
-        data-action-url="{% url 'playstyle_compass:edit_game_list_review' review.id %}">{% trans "Edit Review"
-        %}</button>
+        data-action-url="{% url 'playstyle_compass:edit_game_list_review' review.id %}">
+        {% trans "Edit Review"%}</button>
       <button class="delete-review-button" data-id="{{ review.id }}"
         data-action-url="{% url 'playstyle_compass:delete_game_list_review' review.id %}">
         {% trans "Delete Review" %}

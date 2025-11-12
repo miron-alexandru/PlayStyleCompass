@@ -423,6 +423,45 @@ textarea.is-invalid,
   padding: 25px;
 }
 
+.dropdown-user-section {
+  text-align: center;
+  padding: 10px 0 12px;
+  border-bottom: 1px solid #e5e5e5;
+}
+.dropdown-user-section .user-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.dropdown-user-section .user-info .user-label {
+  font-size: 11px;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 2px;
+}
+.dropdown-user-section .user-info .user-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.dropdown-menu h6.dropdown-header {
+  font-size: 12px;
+  font-weight: 600;
+  color: #555;
+  text-transform: uppercase;
+  margin: 10px 12px 5px;
+  padding: 0;
+  letter-spacing: 0.3px;
+  border-top: 1px solid #f0f0f0;
+  padding-top: 8px;
+}
+.dropdown-menu .dropdown-item {
+  padding: 6px 18px;
+  font-size: 14px;
+}
+
 .dropdown-menu {
   background-color: var(--dropdown-menu);
   color: var(--text-color);
@@ -924,3 +963,5 @@ textarea.is-invalid,
     opacity: 1;
   }
 }
+
+/*# sourceMappingURL=base.css.map */
