@@ -170,7 +170,7 @@ main {
   position: relative;
 }
 
-input:not([type=radio]):not([type=checkbox]),
+input:not([type=radio]):not([type=checkbox]):not([type=button]):not([type=submit]),
 textarea,
 .form-control {
   display: block;
@@ -182,7 +182,7 @@ textarea,
   background-color: var(--input-color);
   border: 1px solid var(--input-border);
 }
-input:not([type=radio]):not([type=checkbox]):focus, input:not([type=radio]):not([type=checkbox]).is-valid, input:not([type=radio]):not([type=checkbox]).is-invalid,
+input:not([type=radio]):not([type=checkbox]):not([type=button]):not([type=submit]):focus, input:not([type=radio]):not([type=checkbox]):not([type=button]):not([type=submit]).is-valid, input:not([type=radio]):not([type=checkbox]):not([type=button]):not([type=submit]).is-invalid,
 textarea:focus,
 textarea.is-valid,
 textarea.is-invalid,
@@ -963,5 +963,3 @@ textarea.is-invalid,
     opacity: 1;
   }
 }
-
-/*# sourceMappingURL=base.css.map */

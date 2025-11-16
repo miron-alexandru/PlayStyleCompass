@@ -4,6 +4,12 @@
   --text-color: #333;
 }
 
+.preferences-btn {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .form-group {
   margin-bottom: 25px;
 }
@@ -28,7 +34,11 @@
 
 .warning {
   color: var(--secondary-color);
-  font-size: 13px;
+  font-size: 14px;
   margin-top: 5px;
   margin-bottom: 7px;
+}
+
+.warnings {
+text-align: center;
 }

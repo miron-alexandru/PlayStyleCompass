@@ -55,7 +55,7 @@ main {
   position: relative;
 }
 
-input:not([type="radio"]):not([type="checkbox"]),
+input:not([type="radio"]):not([type="checkbox"]):not([type="button"]):not([type="submit"]),
 textarea,
 .form-control {
   display: block;
