@@ -149,7 +149,7 @@
             <a class="dropdown-item" href="{% url 'users:inbox'%}">{% trans "Messages" %}</a>
             <a class="dropdown-item" href="{% url 'users:following_list' user.id %}">{% trans "Following List" %}</a>
             <a class="dropdown-item" href="{% url 'users:followers_list' user.id %}">{% trans "Followers List" %}</a>
-            <a class="dropdown-item" href="{% url 'users:friends_list' user.id %}">{% trans "Your Friends" %}</a>
+            <a class="dropdown-item" href="{% url 'users:friends_list' user.id %}">{% trans "Friends List" %}</a>
             <a class="dropdown-item" href="{% url 'users:friend_requests' user.id %}">{% trans "Friend Requests" %}</a>
             <a class="dropdown-item" href="{% url 'users:chat_list' %}">{% trans "Chat Rooms" %}</a>
             <a class="dropdown-item" href="{% url 'users:block_list' %}">{% trans "Blocked Users" %}</a>
@@ -157,7 +157,8 @@
         </li>
 
         <!-- Notifications + Contact -->
-        <li class="nav-item dropdown" id="notifications">
+        <li class="nav-item dropdown" id="notifications" data-mark-read="{% url 'users:mark_notification_as_read' 0 %}"
+          data-mark-inactive="{% url 'users:delete_notification' 0 %}">
           <a class="nav-link" href="#" data-bs-toggle="dropdown" aria-expanded="false">
             <i id="bellCount" class="fa-solid fa-bell notification-bell" data-count="0"></i>
           </a>
