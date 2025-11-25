@@ -121,6 +121,12 @@ class UserPreferences(models.Model):
     def get_game_queue(self):
         return self.game_queue.all()
 
+    def get_favorite_games_number(self):
+        return self.favorite_games.count()
+
+    def get_game_queue_number(self):
+        return self.game_queue.count()
+
     def __str__(self):
         return f"{self.user}'s user preferences"
 

@@ -50,14 +50,14 @@
           <span class="user-info">
             <input type="checkbox" name="{% if category == 'received' %}received_games[]{% else %}shared_games[]{% endif %}" value="{{ game.id }}" class="message-checkbox">
             {% if category == 'received' %}
-            <strong>{% trans "From:" %}</strong><a href="{% url 'users:view_profile' profile_name=game.sender.userprofile.profile_name %}"
+            {% trans "From:" %}<a href="{% url 'users:view_profile' profile_name=game.sender.userprofile.profile_name %}"
               class="user-name">{{ game.sender.userprofile.profile_name }}</a>
             {% elif category == 'sent' %}
-            <strong>{% trans "Sent to:" %}</strong><a href="{% url 'users:view_profile' profile_name=game.receiver.userprofile.profile_name %}"
+             {% trans "Sent to:" %}<a href="{% url 'users:view_profile' profile_name=game.receiver.userprofile.profile_name %}"
               class="user-name">{{ game.receiver.userprofile.profile_name }}</a>
             {% endif %}
           </span>
-          <p class="timestamp"><strong>{% trans "Date:" %}</strong> {{ game.timestamp|convert_to_user_timezone:request.user.userprofile.timezone }}</p>
+          <p class="timestamp">{% trans "Date:" %} {{ game.timestamp|convert_to_user_timezone:request.user.userprofile.timezone }}</p>
         </div>
         <div class="message-content">
           <p>{{ game.content|safe }}</p>

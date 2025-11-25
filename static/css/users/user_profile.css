@@ -154,6 +154,7 @@
 }
 
 .stat-item {
+  min-width: 90px;
   text-align: center;
   margin: 0 10px;
 }
@@ -177,6 +178,7 @@
 }
 
 .stat-value {
+  min-height: 22px;
   font-size: 15px;
   font-weight: 600;
   color: var(--text-color);

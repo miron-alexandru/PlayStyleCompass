@@ -4,20 +4,20 @@
   .category-buttons {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 10px;
+    margin-bottom: 9px;
 
     .category-button {
       width: 100%;
-      font-size: 14px;
+      font-size: 13px;
       background-color: #3498db;
       color: white;
       border: none;
-      padding: 10px 15px;
+      padding: 9px 13px;
       cursor: pointer;
       transition: background-color 0.3s ease-in-out;
       border-radius: 5px;
       flex-grow: 1;
-      margin-right: 10px;
+      margin-right: 9px;
       text-align: center;
 
       &:last-child {
@@ -32,26 +32,26 @@
 
   .messages-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
-    gap: 15px;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 14px;
   }
 
   .messages-grid-inbox {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
-    gap: 15px;
+    grid-template-columns: repeat(auto-fill, minmax(480px, 1fr));
+    gap: 14px;
   }
 
   .message-card {
     background-color: var(--messages-container);
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
+    box-shadow: 0 0 9px rgba(0, 0, 0, 0.1);
+    border-radius: 7px;
     overflow: hidden;
     transition: box-shadow 0.3s ease-in-out;
     word-break: break-word;
 
     &:hover {
-      box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 0 18px rgba(0, 0, 0, 0.3);
     }
 
     .message-header {
@@ -73,17 +73,19 @@
       font-weight: 600;
       color: black;
       margin: 0;
+      font-size: 14px;
     }
 
     .message-content {
-      padding: 10px;
+      padding: 9px;
+      font-size: 14px;
     }
   }
 
   .empty-category {
     text-align: center;
-    font-size: 17px;
-    padding: 20px;
+    font-size: 16px;
+    padding: 18px;
   }
 
   .user-name {
@@ -92,6 +94,7 @@
     color: darkblue;
     transition: color 0.3s ease-in-out;
     margin-left: 4px;
+    font-size: 14px;
 
     &:hover {
       color: #000040;
@@ -102,12 +105,12 @@
     background-color: #e74c3c;
     color: #fff;
     border: none;
-    padding: 5px 10px;
+    padding: 5px 9px;
     cursor: pointer;
     transition: background-color 0.3s ease-in-out;
     border-radius: 5px;
-    font-size: 14px;
-    margin-top: 15px;
+    font-size: 13px;
+    margin-top: 14px;
 
     &:hover {
       background-color: #c0392b;
@@ -121,8 +124,8 @@
   }
 
   .select-all-button {
-    font-size: 14px;
-    padding: 5px 10px;
+    font-size: 13px;
+    padding: 5px 9px;
     background-color: #f39c12;
     color: white;
     border: none;
@@ -136,13 +139,13 @@
   }
 
   label[for="sort-order"] {
-    font-size: 15px;
+    font-size: 14px;
     color: var(--text-color);
   }
 
   #sort-order {
     padding: 3px;
-    font-size: 14px;
+    font-size: 13px;
     border: 1px solid var(--sorting-border);
     border-radius: 5px;
     background-color: var(--dropdown-menu);
@@ -150,7 +153,7 @@
     outline: none;
 
     option {
-      font-size: 14px;
+      font-size: 13px;
       background-color: var(--dropdown-menu);
       color: var(--text-color);
     }
@@ -168,8 +171,8 @@
   }
 
   .apply-button {
-    font-size: 14px;
-    padding: 5px 10px;
+    font-size: 13px;
+    padding: 5px 9px;
     background-color: #607d8b;
     color: white;
     border: none;
@@ -179,8 +182,8 @@
   }
 
   .action-buttons {
-    margin-bottom: 15px;
-    margin-top: -5px;
+    margin-bottom: 14px;
+    margin-top: -4px;
   }
 
   .reply-button {
@@ -204,16 +207,16 @@
 
   .arrow {
     top: 50%;
-    left: calc(100% + 10px);
+    left: calc(100% + 9px);
     width: 0;
     height: 0;
     border-top: 5px solid transparent;
     border-bottom: 5px solid transparent;
-    border-left: 8px solid white;
-    margin-left: 6px;
+    border-left: 7px solid white;
+    margin-left: 5px;
   }
 
   .message-checkbox {
-    margin-right: 0.24rem;
+    margin-right: 0.22rem;
   }
 }
