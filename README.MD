@@ -145,6 +145,18 @@ Websites for .env configuration: [GiantBomb](https://www.giantbomb.com/) / [Send
 <summary><h2>PlayStyle Compass Changelog</h2></summary>
 
 ### Version v2.6:
+* Improved CSS on user profile, messages pages, and shared content.
+* Adjusted layout and sizes for cleaner structure.
+* Fixed incorrect counts for queued games and favorite games on the user profile.
+* Updated text in multiple areas and refreshed translations.
+* Improved CSS on game lists.
+* Fixed errors when marking notifications as read or deleting them.
+* Fixed a style issue where input styles affected buttons.
+* Moved warnings and the update preferences button on the preferences page.
+* Moved shared SCSS classes for consistent global styling.
+* Updated profile dropdown labels, order, and styling.
+* Fixed a JavaScript issue that blocked editing of game list reviews.
+* Replaced SCSS in game_list_detail with plain CSS for simpler maintenance.
 * Updated Index page with a redesigned header and news layout.
 * Refined navbar structure and styling.
 * Introduced SCSS for easier and cleaner style management.
