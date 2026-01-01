@@ -58,6 +58,9 @@ $global-chat-header: #4e8cff;
 $global-chat-description: #cce0f0;
 $api-filters-background: rgba(0, 0, 0, 0.05);
 $news-container-hover: #eaeaea;
+$user-name: #2c3e50;
+$message-header: #3498db;
+$messages-info: black;
 
 // Dark theme
 $dark-theme: (
@@ -117,7 +120,10 @@ $dark-theme: (
   global-chat-header: #333333,
   global-chat-description: #4d4d4d,
   api-filters-background: #202020,
-  news-container-hover: #1f1f1f
+  news-container-hover: #1f1f1f,
+  user-name: #eaeaea,
+  message-header: #2F2F2F,
+  messages-info: eaeaea,
 );
 
 // Apply variables to CSS
@@ -179,6 +185,9 @@ $dark-theme: (
   --global-chat-description: #{$global-chat-description};
   --api-filters-background: #{$api-filters-background};
   --news-container-hover: #{$news-container-hover};
+  --user-name: #{$user-name};
+  --message-header: #{$message-header};
+  --messages-info: #{$messages-info};
 }
 
 .dark-theme {

@@ -55,7 +55,7 @@
     }
 
     .message-header {
-      background-color: #3498db;
+      background-color: var(--message-header);
       color: white;
       padding: 5px;
       text-align: left;
@@ -66,12 +66,15 @@
       align-items: center;
       font-weight: 600;
       color: black;
+      color: var(--messages-info);
+      font-size: 14px;
     }
 
     .timestamp,
     .subject {
       font-weight: 600;
       color: black;
+      color: var(--messages-info);
       margin: 0;
       font-size: 14px;
     }
@@ -91,13 +94,13 @@
   .user-name {
     text-decoration: none !important;
     font-weight: 600;
-    color: darkblue;
+    color: #FFD166;
     transition: color 0.3s ease-in-out;
     margin-left: 4px;
     font-size: 14px;
 
     &:hover {
-      color: #000040;
+      color: #E6B800;
     }
   }
 
@@ -192,14 +195,15 @@
     margin-left: 6px;
     font-size: 10px;
     background-color: #444444;
-    color: #f0f0f0;
+    background-color: #1E8449;
+    color: #F2F2F2;
     border: none;
     border-radius: 4px;
     cursor: pointer;
     text-decoration: none;
 
     &:hover {
-      background-color: #333333;
+      background-color: #145A2B;
       text-decoration: none !important;
       color: #f0f0f0;
     }

@@ -48,7 +48,7 @@
   box-shadow: 0 0 18px rgba(0, 0, 0, 0.3);
 }
 .messages-container .message-card .message-header {
-  background-color: #3498db;
+  background-color: var(--message-header);
   color: white;
   padding: 5px;
   text-align: left;
@@ -58,11 +58,14 @@
   align-items: center;
   font-weight: 600;
   color: black;
+  color: var(--messages-info);
+  font-size: 14px;
 }
 .messages-container .message-card .timestamp,
 .messages-container .message-card .subject {
   font-weight: 600;
   color: black;
+  color: var(--messages-info);
   margin: 0;
   font-size: 14px;
 }
@@ -78,13 +81,13 @@
 .messages-container .user-name {
   text-decoration: none !important;
   font-weight: 600;
-  color: darkblue;
+  color: #FFD166;
   transition: color 0.3s ease-in-out;
   margin-left: 4px;
   font-size: 14px;
 }
 .messages-container .user-name:hover {
-  color: #000040;
+  color: #E6B800;
 }
 .messages-container .delete-button {
   background-color: #e74c3c;
@@ -162,14 +165,15 @@
   margin-left: 6px;
   font-size: 10px;
   background-color: #444444;
-  color: #f0f0f0;
+  background-color: #1E8449;
+  color: #F2F2F2;
   border: none;
   border-radius: 4px;
   cursor: pointer;
   text-decoration: none;
 }
 .messages-container .reply-button:hover {
-  background-color: #333333;
+  background-color: #145A2B;
   text-decoration: none !important;
   color: #f0f0f0;
 }
