@@ -1007,44 +1007,62 @@ def view_profile(request, profile_name):
 
     try:
         user_profile = get_object_or_404(UserProfile, profile_name=profile_name)
-        user = user_profile.user
-
-        user_stats = get_user_stats(user)
-
+        profile_user = user_profile.user
         request_user = request.user
-        profile_to_view = user_profile.user
+
+        user_stats = get_user_stats(profile_user)
+
+        request_is_owner = (
+            request_user.is_authenticated
+            and request_user == profile_user
+        )
+
+        request_is_friend = (
+            request_user.is_authenticated
+            and not request_is_owner
+            and are_friends(request_user, profile_user)
+        )
+
+        request_is_stranger = (
+            request_user.is_authenticated
+            and not request_is_owner
+            and not request_is_friend
+        )
 
         is_blocked = (
-            profile_to_view in request_user.userprofile.blocked_users.all()
-            if request.user.is_authenticated
-            else None
-        )
-        is_friend = get_friend_status(request_user, profile_to_view)
-        is_following = (
-            Follow.objects.filter(follower=request.user, followed=user).exists()
-            if request.user.is_authenticated
+            profile_user in request_user.userprofile.blocked_users.all()
+            if request_user.is_authenticated
             else None
         )
 
-        context.update(
-            {
-                "user_profile": user_profile,
-                "is_friend": is_friend,
-                "user_id": user.id,
-                "user_preferences": user_stats["user_preferences"],
-                "user_reviews_count": user_stats["user_reviews_count"],
-                "review_likes_count": user_stats["review_likes_count"],
-                "follower_count": user_stats["follower_count"],
-                "following_count": user_stats["following_count"],
-                "game_list_count": user_stats["game_list_count"],
-                "game_list_reviews_count": user_stats["game_list_reviews_count"],
-                "show_in_queue": user_stats["user_preferences"].show_in_queue,
-                "show_reviews": user_stats["user_preferences"].show_reviews,
-                "show_favorites": user_stats["user_preferences"].show_favorites,
-                "is_blocked": is_blocked,
-                "is_following": is_following,
-            }
+        is_following = (
+            Follow.objects.filter(
+                follower=request_user,
+                followed=profile_user,
+            ).exists()
+            if request_user.is_authenticated
+            else None
         )
+
+        context.update({
+            "user_profile": user_profile,
+            "user_id": profile_user.id,
+            "user_preferences": user_stats["user_preferences"],
+            "user_reviews_count": user_stats["user_reviews_count"],
+            "review_likes_count": user_stats["review_likes_count"],
+            "follower_count": user_stats["follower_count"],
+            "following_count": user_stats["following_count"],
+            "game_list_count": user_stats["game_list_count"],
+            "game_list_reviews_count": user_stats["game_list_reviews_count"],
+            "show_in_queue": user_stats["user_preferences"].show_in_queue,
+            "show_reviews": user_stats["user_preferences"].show_reviews,
+            "show_favorites": user_stats["user_preferences"].show_favorites,
+            "is_blocked": is_blocked,
+            "is_following": is_following,
+            "request_is_owner": request_is_owner,
+            "request_is_friend": request_is_friend,
+            "request_is_stranger": request_is_stranger,
+        })
 
     except Http404:
         return JsonResponse({"exists": False})
