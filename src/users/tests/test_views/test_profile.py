@@ -198,57 +198,112 @@ class ProfileDetailsTest(TestCase):
 class ViewProfileTest(TestCase):
     def setUp(self):
         self.user = User.objects.create_user(
-            username="testuser", email="test@example.com", password="StrongPass123!"
+            username="testuser",
+            email="test@example.com",
+            password="StrongPass123!"
         )
         self.profile = self.user.userprofile
         self.profile.profile_name = "testprofile"
         self.profile.save()
-        self.url = reverse("users:view_profile", kwargs={"profile_name": self.profile.profile_name})
 
         self.other_user = User.objects.create_user(
-            username="otheruser", email="other@example.com", password="StrongPass456!"
+            username="otheruser",
+            email="other@example.com",
+            password="StrongPass456!"
         )
         self.other_profile = self.other_user.userprofile
         self.other_profile.profile_name = "otherprofile"
         self.other_profile.save()
 
+        self.url = reverse(
+            "users:view_profile",
+            kwargs={"profile_name": self.profile.profile_name}
+        )
+
     def test_view_profile_exists(self):
         response = self.client.get(self.url, secure=True)
+
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, "user_related/user_profile.html")
+        self.assertTemplateUsed(
+            response,
+            "user_related/user_profile.html"
+        )
         self.assertIn("user_profile", response.context)
-        self.assertEqual(response.context["user_profile"].profile_name, "testprofile")
+        self.assertEqual(
+            response.context["user_profile"].profile_name,
+            "testprofile"
+        )
 
     def test_view_profile_not_found(self):
-        url = reverse("users:view_profile", kwargs={"profile_name": "nonexistent"})
+        url = reverse(
+            "users:view_profile",
+            kwargs={"profile_name": "missing"}
+        )
         response = self.client.get(url, secure=True)
-        self.assertEqual(response.status_code, 200)
-        self.assertJSONEqual(response.content, {"exists": False})
 
-    def test_view_profile_authenticated_flags(self):
-        self.client.login(username="testuser", password="StrongPass123!")
+        self.assertEqual(response.status_code, 200)
+        self.assertJSONEqual(
+            response.content,
+            {"exists": False}
+        )
+
+    def test_owner_flags(self):
+        self.client.login(
+            username="testuser",
+            password="StrongPass123!"
+        )
+
+        response = self.client.get(self.url, secure=True)
+
+        self.assertTrue(response.context["request_is_owner"])
+        self.assertFalse(response.context["request_is_friend"])
+        self.assertFalse(response.context["request_is_stranger"])
+
+    def test_authenticated_stranger_flags(self):
+        self.client.login(
+            username="testuser",
+            password="StrongPass123!"
+        )
+
+        url = reverse(
+            "users:view_profile",
+            kwargs={"profile_name": self.other_profile.profile_name}
+        )
+        response = self.client.get(url, secure=True)
+
+        self.assertFalse(response.context["request_is_owner"])
+        self.assertFalse(response.context["request_is_friend"])
+        self.assertTrue(response.context["request_is_stranger"])
+
+    def test_block_and_follow_flags(self):
+        self.client.login(
+            username="testuser",
+            password="StrongPass123!"
+        )
 
         self.user.userprofile.blocked_users.add(self.other_user)
-        self.user.userprofile.save()
+        Follow.objects.create(
+            follower=self.user,
+            followed=self.other_user
+        )
 
-        Follow.objects.create(follower=self.user, followed=self.other_user)
-
-        url = reverse("users:view_profile", kwargs={"profile_name": self.other_profile.profile_name})
+        url = reverse(
+            "users:view_profile",
+            kwargs={"profile_name": self.other_profile.profile_name}
+        )
         response = self.client.get(url, secure=True)
 
-        self.assertEqual(response.status_code, 200)
-        self.assertIn("is_blocked", response.context)
-        self.assertIn("is_following", response.context)
-        self.assertIn("is_friend", response.context)
         self.assertTrue(response.context["is_blocked"])
-        self.assertEqual(response.context["is_friend"], "Stranger")
         self.assertTrue(response.context["is_following"])
 
-    def test_view_profile_anonymous_user(self):
+    def test_anonymous_user_flags(self):
         response = self.client.get(self.url, secure=True)
-        self.assertEqual(response.status_code, 200)
+
         self.assertIsNone(response.context["is_blocked"])
         self.assertIsNone(response.context["is_following"])
+        self.assertFalse(response.context["request_is_owner"])
+        self.assertFalse(response.context["request_is_friend"])
+        self.assertFalse(response.context["request_is_stranger"])
 
 
 class ToggleShowStatTest(TestCase):

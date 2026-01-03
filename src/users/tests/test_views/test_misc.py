@@ -41,6 +41,7 @@ class QuizViewTest(TestCase):
         self.assertEqual(response.status_code, 302)
         self.assertIn(reverse("playstyle_compass:index"), response.url)
 
+    @patch("users.views.format_html", side_effect=lambda text, *args: text.format(*args))
     @patch("users.views.check_quiz_time", return_value=None)
     @patch("users.views.get_quiz_questions")
     @patch("users.views.save_quiz_responses")
@@ -51,6 +52,7 @@ class QuizViewTest(TestCase):
         mock_save_responses,
         mock_get_questions,
         mock_check_time,
+        mock_format_html,
     ):
         question = MagicMock(
             id=1,
@@ -61,6 +63,7 @@ class QuizViewTest(TestCase):
             option4="D",
         )
         mock_get_questions.return_value = [question]
+
         self.client.login(username="user1", password="pass1234")
 
         data = {f"question_{question.id}": "option1"}
@@ -69,11 +72,14 @@ class QuizViewTest(TestCase):
 
         self.assertEqual(response.status_code, 302)
         self.assertIn(reverse("playstyle_compass:index"), response.url)
+
         self.user.userprofile.refresh_from_db()
         self.assertTrue(self.user.userprofile.quiz_taken)
         self.assertIsNotNone(self.user.userprofile.quiz_taken_date)
+
         mock_save_responses.assert_called_once()
         mock_quiz_recs.assert_called_once()
+        mock_format_html.assert_called()
 
     @patch("users.views.check_quiz_time", return_value=None)
     @patch("users.views.get_quiz_questions")

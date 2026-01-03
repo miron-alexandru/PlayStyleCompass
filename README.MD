@@ -145,6 +145,9 @@ Websites for .env configuration: [GiantBomb](https://www.giantbomb.com/) / [Send
 <summary><h2>PlayStyle Compass Changelog</h2></summary>
 
 ### Version v2.6:
+* Updated necessary tests.
+* Refactored user profile view and template.
+* Implemented/Updated dark theme where needed.
 * Improved CSS on user profile, messages pages, and shared content.
 * Adjusted layout and sizes for cleaner structure.
 * Fixed incorrect counts for queued games and favorite games on the user profile.
