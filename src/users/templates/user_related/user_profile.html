@@ -89,12 +89,7 @@
           <p
             id="status"
             class="{% if user_profile.is_online %}online{% else %}offline{% endif %}"
-          >
-            {% if user_profile.is_online %}
-              {% trans "Online" %}
-            {% else %}
-              {% trans "Offline" %}
-            {% endif %}
+            >
           </p>
         {% endif %}
 

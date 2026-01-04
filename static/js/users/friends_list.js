@@ -1,52 +1,47 @@
+document.addEventListener("DOMContentLoaded", () => {
+  const protocol = location.protocol === "https:" ? "wss" : "ws"
+  new WebSocket(`${protocol}://${location.host}/ws/presence/`)
+
+  const friends = document.querySelectorAll(".friend-card")
+
+  friends.forEach(friend => {
+    const recipientId = Number(
+      friend.querySelector(".recipient-id").getAttribute("content")
+    )
+
+    const statusElement = friend.querySelector(".status")
+
+    if (!recipientId || !statusElement) {
+      return
+    }
+
+    fetch(`/users/status/${recipientId}/`)
+      .then(r => r.json())
+      .then(data => {
+        statusElement.innerText = data.status
+          ? translate("Online")
+          : translate("Offline")
+
+        if (data.status) {
+          statusElement.classList.add("online")
+          statusElement.classList.remove("offline")
+        } else {
+          statusElement.classList.add("offline")
+          statusElement.classList.remove("online")
+        }
+      })
+      .catch(() => {
+        statusElement.innerText = translate("Offline")
+        statusElement.classList.add("offline")
+        statusElement.classList.remove("online")
+      })
+  })
+})
+
 function onRemoveFriend() {
-  location.reload();
+  location.reload()
 }
 
 function triggerRemoveFriend(friend_id) {
-  removeFriend(friend_id, onRemoveFriend);
+  removeFriend(friend_id, onRemoveFriend)
 }
-
-document.addEventListener("DOMContentLoaded", function () {
-  const friends = document.querySelectorAll(".friend-card");
-  const statusMap = new Map();
-
-  friends.forEach((friend) => {
-    const recipientId = Number(
-      friend.querySelector(".recipient-id").getAttribute("content")
-    );
-
-    const protocol = window.location.protocol === "https:" ? "wss" : "ws";
-    const wsUrl = recipientId
-      ? `${protocol}://${window.location.host}/ws/online-status/${recipientId}/`
-      : `${protocol}://${window.location.host}/ws/online-status/`;
-    const ws = new WebSocket(wsUrl);
-
-    statusMap.set(recipientId, {
-      ws: ws,
-      statusElement: friend.querySelector(".status"),
-    });
-
-    ws.onmessage = function (event) {
-      const data = JSON.parse(event.data);
-      const { statusElement } = statusMap.get(recipientId);
-
-      if (statusElement) {
-        statusElement.innerText = data.status
-          ? translate("Online")
-          : translate("Offline");
-
-        if (data.status) {
-          statusElement.classList.remove("offline");
-          statusElement.classList.add("online");
-        } else {
-          statusElement.classList.remove("online");
-          statusElement.classList.add("offline");
-        }
-      }
-    };
-
-    ws.onerror = function (error) {
-      console.error("WebSocket error:", error);
-    };
-  });
-});

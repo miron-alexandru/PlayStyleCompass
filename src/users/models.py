@@ -52,7 +52,6 @@ class UserProfile(models.Model):
         max_length=50, blank=True, null=False, default=""
     )
     last_chat_notification = models.DateTimeField(null=True, blank=True)
-    is_online = models.BooleanField(default=False)
     last_online = models.DateTimeField(null=True, blank=True, auto_now_add=True)
     blocked_users = models.ManyToManyField(
         settings.AUTH_USER_MODEL, related_name="blocked_by", blank=True

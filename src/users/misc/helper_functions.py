@@ -2,7 +2,7 @@
 
 import random
 from collections import defaultdict
-from ..models import FriendList, QuizUserResponse, QuizQuestion, Notification
+from ..models import FriendList, QuizUserResponse, QuizQuestion, Notification, UserProfile
 from playstyle_compass.models import Game
 from django.utils import timezone
 from django.core.cache import cache
@@ -10,7 +10,7 @@ from django.core.exceptions import ValidationError
 from datetime import timedelta
 from django.urls import reverse
 from .variables import NOTIFICATION_TEMPLATES_RO
-
+import pytz
 
 def are_friends(user1, user2):
     """Function to check if two users are friends."""
@@ -227,3 +227,25 @@ def process_chat_notification(sender, recipient):
 
         recipient.userprofile.last_chat_notification = now
         recipient.userprofile.save()
+
+def is_user_online(user_id):
+    return cache.get(f"online:{user_id}") is not None
+
+
+def format_last_online(user_profile):
+    """Return formatted last_online time based on user_profile's timezone."""
+    last_online = user_profile.last_online
+    user_timezone = getattr(user_profile, "timezone", None)
+
+    if last_online and user_timezone:
+        user_tz = pytz.timezone(user_timezone)
+
+        if last_online.tzinfo is None:
+            last_online = timezone.make_aware(
+                last_online, timezone.get_default_timezone()
+            )
+
+        last_online = last_online.astimezone(user_tz)
+        return last_online.strftime("%B %d, %Y, %I:%M %p")
+
+    return None

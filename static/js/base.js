@@ -202,64 +202,6 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 
-document.addEventListener("DOMContentLoaded", function () {
-  fetch(authCheckUrl)
-    .then((response) => response.json())
-    .then((data) => {
-      if (data.authenticated) {
-        const recipientMeta = document.getElementById("recipient-id");
-        let recipientId = "";
-
-        if (recipientMeta) {
-          recipientId = Number(recipientMeta.getAttribute("content"));
-        }
-
-        const protocol = window.location.protocol === "https:" ? "wss" : "ws";
-        const wsUrl = recipientId
-          ? `${protocol}://${window.location.host}/ws/online-status/${recipientId}/`
-          : `${protocol}://${window.location.host}/ws/online-status/`;
-
-        const ws = new WebSocket(wsUrl);
-
-        ws.onmessage = function (event) {
-          const data = JSON.parse(event.data);
-          const statusElement = document.getElementById("status");
-          const lastSeenElement = document.querySelector(".last-seen");
-
-          if (statusElement) {
-            statusElement.innerText = data.status
-              ? translate("Online")
-              : translate("Offline");
-
-            if (data.status) {
-              statusElement.classList.remove("offline");
-              statusElement.classList.add("online");
-            } else {
-              statusElement.classList.remove("online");
-              statusElement.classList.add("offline");
-            }
-          }
-
-          if (lastSeenElement) {
-            if (data.status) {
-              lastSeenElement.style.display = "none";
-            } else {
-              lastSeenElement.style.display = "block";
-              lastSeenElement.innerHTML = `<strong>(Last Seen: </strong>${data.last_online})`;
-            }
-          }
-        };
-
-        ws.onerror = function (error) {
-          console.error("WebSocket error:", error);
-        };
-      }
-    })
-    .catch((error) => {
-      console.error("Auth check failed:", error);
-    });
-});
-
 
 function updateLanguage(event, language) {
   event.preventDefault();
@@ -283,3 +225,76 @@ function updateLanguage(event, language) {
       }
   });
 }
+
+
+document.addEventListener("DOMContentLoaded", () => {
+  // Only open presence socket if user is authenticated
+  fetch(authCheckUrl)
+    .then(r => r.json())
+    .then(data => {
+      if (!data.authenticated) return;
+
+      // Open a global presence WebSocket for the current user
+      if (!window._presenceSocket) {
+        const protocol = location.protocol === "https:" ? "wss" : "ws";
+        const ws = new WebSocket(`${protocol}://${location.host}/ws/presence/`);
+        window._presenceSocket = ws;
+
+        ws.onerror = err => console.error("Presence socket error:", err);
+
+        // Send heartbeat every 30 seconds to keep user online
+        setInterval(() => {
+          if (ws.readyState === WebSocket.OPEN) {
+            ws.send(JSON.stringify({ type: "heartbeat" }));
+          }
+        }, 30000);
+      }
+
+      // Update online/offline status if viewing a profile
+      const recipientMeta = document.querySelector('meta[id="recipient-id"]');
+      const statusElement = document.getElementById("status");
+      const lastSeenElement = document.querySelector(".last-seen");
+
+      if (!recipientMeta || !statusElement) return;
+
+      const recipientId = Number(recipientMeta.getAttribute("content"));
+      if (!recipientId) return;
+
+      const fetchStatus = () => {
+        fetch(`/users/status/${recipientId}/`)
+          .then(r => r.json())
+          .then(data => {
+            statusElement.innerText = data.status
+              ? translate("Online")
+              : translate("Offline");
+
+            if (data.status) {
+              statusElement.classList.add("online");
+              statusElement.classList.remove("offline");
+              if (lastSeenElement) lastSeenElement.style.display = "none";
+            } else {
+              statusElement.classList.add("offline");
+              statusElement.classList.remove("online");
+              if (lastSeenElement && data.last_online) {
+                lastSeenElement.style.display = "block";
+                lastSeenElement.innerHTML =
+                  `<strong>(Last Seen: </strong>${data.last_online})`;
+              }
+            }
+          })
+          .catch(() => {
+            statusElement.innerText = translate("Offline");
+            statusElement.classList.add("offline");
+            statusElement.classList.remove("online");
+          });
+      };
+
+      fetchStatus();
+
+      // Refresh last_seen
+      setInterval(fetchStatus, 15000);
+    })
+    .catch(err => console.error("Auth check failed:", err));
+});
+
+

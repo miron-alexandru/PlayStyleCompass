@@ -20,6 +20,7 @@ from django.conf import settings
 from django.urls import reverse
 from django.db.models import Q, F, Value, CharField
 from django.db.models.functions import Concat
+from django.core.cache import cache
 
 
 def get_user_from_session(scope):
@@ -511,121 +512,50 @@ class GlobalChatConsumer(AsyncWebsocketConsumer):
             )
 
 
-class OnlineStatusConsumer(AsyncWebsocketConsumer):
+class PresenceConsumer(AsyncWebsocketConsumer):
     async def connect(self):
-        # Retrieve the recipient_id from the URL route
-        self.recipient_id = self.scope["url_route"]["kwargs"].get("recipient_id")
-
-        # Generate a unique group name for the recipient's status
-        self.room_group_name = (
-            f"user_status_{self.recipient_id}" if self.recipient_id else None
-        )
-
-        # Retrieve the user based on session information
         self.user = await self.get_user_from_session()
 
-        # Ensure the user is authenticated
-        if self.user and self.user.is_authenticated:
-            await self.update_user_status(self.user.id, is_online=True)
+        if not self.user.is_authenticated:
+            await self.close()
+            return
 
-            if self.room_group_name:
-                await self.channel_layer.group_add(
-                    self.room_group_name, self.channel_name
-                )
+        self.key = f"online:{self.user.id}"
 
-            await self.accept()
-
-            if self.recipient_id:
-                user_profile = await self.get_user_profile(self.recipient_id)
-                status = user_profile.is_online if user_profile else None
-                last_online = await self.get_last_online(user_profile)
-
-                await self.send(
-                    text_data=json.dumps({"status": status, "last_online": last_online})
-                )
-
-            # Start periodic task to check user status
-            self.periodic_task = asyncio.create_task(self.check_status_periodically())
+        await database_sync_to_async(self.increment)()
+        await self.accept()
 
     async def disconnect(self, close_code):
-        """Update the user's status to offline"""
-        if self.user and self.user.is_authenticated:
-            await self.update_user_status(self.user.id, is_online=False)
-        # Stop the periodic task
-        if hasattr(self, "periodic_task"):
-            self.periodic_task.cancel()
+        if self.user.is_authenticated:
+            await database_sync_to_async(self.decrement)()
 
-        # Leave the room group when the WebSocket disconnects
-        if self.room_group_name:
-            user_profile = await self.get_user_profile(self.user.id)
-            last_online = await self.get_last_online(user_profile)
-            await self.channel_layer.group_send(
-                self.room_group_name,
-                {"type": "status_update", "status": False, "last_online": last_online},
+    async def receive(self, text_data=None, bytes_data=None):
+        """Handle heartbeat from frontend to refresh online status"""
+        if text_data:
+            data = json.loads(text_data)
+            if data.get("type") == "heartbeat":
+                await database_sync_to_async(self.refresh_cache)()
+
+    def increment(self):
+        count = cache.get(self.key, 0) + 1
+        cache.set(self.key, count, timeout=70)
+
+    def decrement(self):
+        count = cache.get(self.key, 0) - 1
+
+        if count <= 0:
+            cache.delete(self.key)
+            UserProfile.objects.filter(user_id=self.user.id).update(
+                last_online=timezone.now()
             )
+        else:
+            cache.set(self.key, count, timeout=70)
 
-            await self.channel_layer.group_discard(
-                self.room_group_name, self.channel_name
-            )
-
-    async def status_update(self, event):
-        """Send status update to WebSocket client"""
-        await self.send(
-            text_data=json.dumps(
-                {"status": event["status"], "last_online": event["last_online"]}
-            )
-        )
-
-    async def check_status_periodically(self):
-        """Periodically check and send user status every 15 seconds"""
-        while True:
-            if self.recipient_id:
-                user_profile = await self.get_user_profile(self.recipient_id)
-                status = user_profile.is_online if user_profile else None
-                last_online = await self.get_last_online(user_profile)
-
-                await self.send(
-                    text_data=json.dumps({"status": status, "last_online": last_online})
-                )
-            await asyncio.sleep(15)
-
-    async def get_last_online(self, user_profile):
-        """Return formatted last_online time based on user_profile's timezone."""
-        last_online = user_profile.last_online
-        user_timezone = user_profile.timezone
-
-        if last_online and user_timezone:
-            user_tz = pytz.timezone(user_timezone)
-
-            if last_online.tzinfo is None:
-                last_online = timezone.make_aware(
-                    last_online, timezone.get_default_timezone()
-                )
-
-            last_online = last_online.astimezone(user_tz)
-            return last_online.strftime("%B %d, %Y, %I:%M %p")
-
-        return None
+    def refresh_cache(self):
+        """Refresh the cache to keep user online"""
+        count = cache.get(self.key, 0)
+        if count > 0:
+            cache.set(self.key, count, timeout=70)
 
     async def get_user_from_session(self):
-        """Use the utility function to get the user from session"""
         return await database_sync_to_async(get_user_from_session)(self.scope)
-
-    @database_sync_to_async
-    def get_user_profile(self, user_id):
-        """Fetch the user profile for the given user_id"""
-        try:
-            return UserProfile.objects.get(user_id=user_id)
-        except UserProfile.DoesNotExist:
-            return None
-
-    @database_sync_to_async
-    def update_user_status(self, user_id, is_online):
-        """Update the user profile's status and last online time"""
-        try:
-            user_profile = UserProfile.objects.get(user_id=user_id)
-            user_profile.is_online = is_online
-            user_profile.last_online = timezone.now()
-            user_profile.save()
-        except UserProfile.DoesNotExist:
-            pass

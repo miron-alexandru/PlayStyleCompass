@@ -153,4 +153,5 @@ urlpatterns = [
     path("api-key/", api_views.manage_api_key, name="manage_api_key"),
     path("api-key/generate/", api_views.generate_api_key, name="generate_api_key"),
     path("api-key/revoke/", api_views.revoke_api_key, name="revoke_api_key"),
+    path("status/<int:recipient_id>/", views.online_status, name="online-status")
 ]

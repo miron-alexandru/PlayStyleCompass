@@ -86,6 +86,8 @@ from .misc.helper_functions import (
     save_quiz_responses,
     process_chat_notification,
     create_notification,
+    is_user_online,
+    format_last_online,
 )
 
 from .models import (
@@ -660,6 +662,18 @@ def contact_success(request):
     }
 
     return render(request, "account_actions/change_succeeded.html", context)
+
+
+
+def online_status(request, recipient_id):
+    """View used for the online status"""
+    online = is_user_online(recipient_id)
+    profile = UserProfile.objects.filter(user_id=recipient_id).first()
+
+    return JsonResponse({
+        "status": online,
+        "last_online": format_last_online(profile) if profile else None
+    })
 
 
 @login_required
