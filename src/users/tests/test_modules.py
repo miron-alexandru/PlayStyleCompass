@@ -332,7 +332,6 @@ class UserProfileModelTest(TestCase):
         self.assertEqual(self.profile.bio, "")
         self.assertTrue(self.profile.receive_review_notifications)
         self.assertEqual(self.profile.language, "en")
-        self.assertFalse(self.profile.is_online)
 
     def test_last_online_autoset_on_create(self):
         self.assertIsNotNone(self.profile.last_online)

@@ -23,34 +23,6 @@ from django.db.models.functions import Concat
 from django.core.cache import cache
 
 
-def get_user_from_session(scope):
-    # Retrieve the cookie header from the scope
-    cookie_header = dict(scope.get("headers")).get(b"cookie", b"").decode()
-
-    # Parse the cookies
-    cookies = SimpleCookie()
-    cookies.load(cookie_header)
-
-    # Get the session ID from the cookies
-    sessionid = cookies.get("sessionid")
-
-    if sessionid:
-        # If session ID is found, get the session key
-        session_key = sessionid.value
-        try:
-            # Try to retrieve the session using the session key
-            session = Session.objects.get(session_key=session_key)
-
-            # Get the user ID from the session and return the user object
-            return User.objects.get(pk=session.get_decoded().get("_auth_user_id"))
-        except (Session.DoesNotExist, User.DoesNotExist):
-            # If the session or user does not exist, return an anonymous user
-            return None
-    else:
-        # If no session ID is found, return an anonymous user
-        return None
-
-
 class NotificationConsumer(AsyncWebsocketConsumer):
     """
     Handles WebSocket connections for user notifications, managing connections,
@@ -59,7 +31,7 @@ class NotificationConsumer(AsyncWebsocketConsumer):
 
     async def connect(self):
         await self.accept()
-        user = await self.get_user_from_session()
+        user = self.scope["user"]
         if user and user.is_authenticated:
             self.user_id = user.id
             self.group_name = f"user_{self.user_id}"
@@ -110,10 +82,6 @@ class NotificationConsumer(AsyncWebsocketConsumer):
 
         await self.send(text_data=json.dumps(notification_data))
 
-    async def get_user_from_session(self):
-        # Use the utility function to get the user from session
-        return await database_sync_to_async(get_user_from_session)(self.scope)
-
     @database_sync_to_async
     def get_all_notifications(self, user):
         return list(
@@ -129,7 +97,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
     async def connect(self):
         # Retrieve the user from the session
-        self.user = await self.get_user_from_session()
+        self.user = self.scope["user"]
 
         # Get the recipient ID from the URL route parameters
         self.recipient_id = self.scope["url_route"]["kwargs"]["recipient_id"]
@@ -215,10 +183,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
             )
         )
 
-    async def get_user_from_session(self):
-        # Use the utility function to get the user from session
-        return await database_sync_to_async(get_user_from_session)(self.scope)
-
 
 class PrivateChatConsumer(AsyncWebsocketConsumer):
     """
@@ -226,7 +190,7 @@ class PrivateChatConsumer(AsyncWebsocketConsumer):
     """
 
     async def connect(self):
-        self.user = await self.get_user_from_session()
+        self.user = self.scope["user"]
         self.recipient_id = self.scope["url_route"]["kwargs"]["recipient_id"]
 
         self.other_user = await self.get_user(self.recipient_id)
@@ -390,12 +354,6 @@ class PrivateChatConsumer(AsyncWebsocketConsumer):
                 )
             )
 
-    async def get_user_from_session(self):
-        """
-        Retrieve the user associated with the current session.
-        """
-        return await database_sync_to_async(get_user_from_session)(self.scope)
-
 
 class GlobalChatConsumer(AsyncWebsocketConsumer):
     """
@@ -403,7 +361,7 @@ class GlobalChatConsumer(AsyncWebsocketConsumer):
     """
 
     async def connect(self):
-        self.user = await self.get_user_from_session()
+        self.user = self.scope["user"]
         self.room_group_name = "global_chat"
 
         await self.channel_layer.group_add(self.room_group_name, self.channel_name)
@@ -467,10 +425,6 @@ class GlobalChatConsumer(AsyncWebsocketConsumer):
             )
         )
 
-    async def get_user_from_session(self):
-        """Retrieve the user from the session."""
-        return await database_sync_to_async(get_user_from_session)(self.scope)
-
     @database_sync_to_async
     def get_existing_messages(self, offset=0, limit=20):
         messages = list(
@@ -514,7 +468,7 @@ class GlobalChatConsumer(AsyncWebsocketConsumer):
 
 class PresenceConsumer(AsyncWebsocketConsumer):
     async def connect(self):
-        self.user = await self.get_user_from_session()
+        self.user = self.scope["user"]
 
         if not self.user.is_authenticated:
             await self.close()
@@ -531,10 +485,13 @@ class PresenceConsumer(AsyncWebsocketConsumer):
 
     async def receive(self, text_data=None, bytes_data=None):
         """Handle heartbeat from frontend to refresh online status"""
-        if text_data:
-            data = json.loads(text_data)
-            if data.get("type") == "heartbeat":
-                await database_sync_to_async(self.refresh_cache)()
+        if not text_data:
+            return
+
+        data = json.loads(text_data)
+
+        if data.get("type") == "heartbeat":
+            await database_sync_to_async(self.refresh_cache)()
 
     def increment(self):
         count = cache.get(self.key, 0) + 1
@@ -556,6 +513,3 @@ class PresenceConsumer(AsyncWebsocketConsumer):
         count = cache.get(self.key, 0)
         if count > 0:
             cache.set(self.key, count, timeout=70)
-
-    async def get_user_from_session(self):
-        return await database_sync_to_async(get_user_from_session)(self.scope)
