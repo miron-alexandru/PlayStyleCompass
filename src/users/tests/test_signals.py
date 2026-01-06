@@ -1,16 +1,3 @@
-import os
-import sys
-
-CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
-PROJECT_ROOT = os.path.abspath(os.path.join(CURRENT_DIR, "..", "..", ".."))
-sys.path.insert(0, PROJECT_ROOT)
-
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "src.playstyle_manager.settings")
-import django
-
-django.setup()
-
-
 from django.conf import settings
 from django.test import TestCase, override_settings
 from django.contrib.auth.models import User
@@ -140,13 +127,3 @@ class GetLastOnlineTest(TestCase):
         profile.save()
 
         self.assertIsNone(get_last_online(profile))
-
-
-
-if __name__ == "__main__":
-    from django.test.utils import get_runner
-
-    TestRunner = get_runner(settings)
-    test_runner = TestRunner()
-    failures = test_runner.run_tests(["users.tests.test_signals"])
-    sys.exit(bool(failures))

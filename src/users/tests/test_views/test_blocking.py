@@ -145,12 +145,3 @@ class BlockListViewTest(TestCase):
         response = self.client.get(self.url, secure=True)
         self.assertEqual(response.status_code, 302)
         self.assertIn("/users/login/", response.url)
-
-
-if __name__ == "__main__":
-    from django.test.utils import get_runner
-
-    TestRunner = get_runner(settings)
-    test_runner = TestRunner()
-    failures = test_runner.run_tests(["users.tests.test_views.test_blocking"])
-    sys.exit(bool(failures))

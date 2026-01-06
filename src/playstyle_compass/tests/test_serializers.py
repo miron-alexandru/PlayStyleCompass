@@ -1,15 +1,3 @@
-import os
-import sys
-
-CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
-PROJECT_ROOT = os.path.abspath(os.path.join(CURRENT_DIR, "..", "..", ".."))
-sys.path.insert(0, PROJECT_ROOT)
-
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "src.playstyle_manager.settings")
-import django
-
-django.setup()
-
 from django.conf import settings
 from django.test import TestCase
 from rest_framework.utils.serializer_helpers import ReturnDict
@@ -75,12 +63,3 @@ class DynamicFieldsModelSerializerTest(TestCase):
     def test_review_dynamic_fields(self):
         serializer = GameReviewSerializer(instance=self.review, fields=["id", "review_description"])
         self.assertEqual(set(serializer.data.keys()), {"id", "review_description"})
-
-
-if __name__ == "__main__":
-    from django.test.utils import get_runner
-
-    TestRunner = get_runner(settings)
-    test_runner = TestRunner()
-    failures = test_runner.run_tests(["playstyle_compass.tests.test_serializers"])
-    sys.exit(bool(failures))

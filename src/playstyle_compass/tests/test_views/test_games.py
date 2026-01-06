@@ -559,11 +559,3 @@ class GetFilteredGamesTest(TestCase):
         games, prefs, friends = get_filtered_games(request, "Nonexistent")
         self.assertEqual(list(games), [])
 
-
-if __name__ == "__main__":
-    from django.test.utils import get_runner
-
-    TestRunner = get_runner(settings)
-    test_runner = TestRunner()
-    failures = test_runner.run_tests(["playstyle_compass.tests.test_views.test_games"])
-    sys.exit(bool(failures))

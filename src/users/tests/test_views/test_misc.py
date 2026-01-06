@@ -216,13 +216,3 @@ class ContactSuccessViewTest(TestCase):
         self.assertIn("response", response.context)
         messages = list(response.wsgi_request._messages)
         self.assertTrue(any("successfully submitted" in str(m) for m in messages))
-
-
-if __name__ == "__main__":
-    from django.test.utils import get_runner
-
-    TestRunner = get_runner(settings)
-    test_runner = TestRunner()
-    failures = test_runner.run_tests(["users.tests.test_views.test_misc"])
-    sys.exit(bool(failures))
-

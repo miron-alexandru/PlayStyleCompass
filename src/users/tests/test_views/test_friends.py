@@ -482,12 +482,3 @@ class FollowingListViewTest(TestCase):
         self.assertEqual(following_context[0]["profile_name"], self.following_profile_name)
         self.assertEqual(response.context["profile_user"], self.user)
         self.assertEqual(response.context["page_title"], "Following :: PlayStyle Compass")
-
-
-if __name__ == "__main__":
-    from django.test.utils import get_runner
-
-    TestRunner = get_runner(settings)
-    test_runner = TestRunner()
-    failures = test_runner.run_tests(["users.tests.test_views.test_friends"])
-    sys.exit(bool(failures))

@@ -848,12 +848,3 @@ class SharedReviewsViewTest(TestCase):
         reviews = response.context["reviews"]
         self.assertIn(self.shared_sent, reviews)
         self.assertNotIn(self.shared_received, reviews)
-
-
-if __name__ == "__main__":
-    from django.test.utils import get_runner
-
-    TestRunner = get_runner(settings)
-    test_runner = TestRunner()
-    failures = test_runner.run_tests(["playstyle_compass.tests.test_views.test_reviews"])
-    sys.exit(bool(failures))

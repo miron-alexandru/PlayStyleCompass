@@ -1,15 +1,4 @@
 import os
-import sys
-
-CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
-PROJECT_ROOT = os.path.abspath(os.path.join(CURRENT_DIR, "..", "..", ".."))
-sys.path.insert(0, PROJECT_ROOT)
-
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "src.playstyle_manager.settings")
-import django
-
-django.setup()
-
 
 from django.test import TestCase, override_settings
 from django.contrib.auth import get_user_model
@@ -641,12 +630,3 @@ class UserProfileFormTest(TestCase):
         form_data["social_media"] = ""
         form = UserProfileForm(data=form_data, instance=self.profile)
         self.assertTrue(form.is_valid())
-
-
-if __name__ == "__main__":
-    from django.test.utils import get_runner
-
-    TestRunner = get_runner(settings)
-    test_runner = TestRunner()
-    failures = test_runner.run_tests(["users.tests.test_forms"])
-    sys.exit(bool(failures))

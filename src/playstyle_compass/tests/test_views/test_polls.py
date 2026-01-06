@@ -653,12 +653,3 @@ class CompletedPollsViewTest(TestCase):
         user_votes = response.context["user_votes"]
         self.assertIn(self.completed_poll.id, user_votes)
         self.assertEqual(user_votes[self.completed_poll.id], self.completed_poll_option.id)
-
-
-if __name__ == "__main__":
-    from django.test.utils import get_runner
-
-    TestRunner = get_runner(settings)
-    test_runner = TestRunner()
-    failures = test_runner.run_tests(["playstyle_compass.tests.test_views.test_polls"])
-    sys.exit(bool(failures))

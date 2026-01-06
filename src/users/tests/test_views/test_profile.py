@@ -351,12 +351,3 @@ class ToggleShowStatTest(TestCase):
 
         json_response = response.json()
         self.assertTrue(json_response["show"])
-
-
-if __name__ == "__main__":
-    from django.test.utils import get_runner
-
-    TestRunner = get_runner(settings)
-    test_runner = TestRunner()
-    failures = test_runner.run_tests(["users.tests.test_views.test_profile"])
-    sys.exit(bool(failures))

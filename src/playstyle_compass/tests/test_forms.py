@@ -1,16 +1,3 @@
-import os
-import sys
-
-CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
-PROJECT_ROOT = os.path.abspath(os.path.join(CURRENT_DIR, "..", "..", ".."))
-sys.path.insert(0, PROJECT_ROOT)
-
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "src.playstyle_manager.settings")
-import django
-
-django.setup()
-
-
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 from playstyle_compass.models import *
@@ -342,12 +329,3 @@ class VoteFormTest(TestCase):
         empty_poll = Poll.objects.create(title="Empty poll", created_by=self.user)
         form = VoteForm(poll=empty_poll)
         self.assertEqual(form.fields["option"].queryset.count(), 0)
-
-
-if __name__ == "__main__":
-    from django.test.utils import get_runner
-
-    TestRunner = get_runner(settings)
-    test_runner = TestRunner()
-    failures = test_runner.run_tests(["playstyle_compass.tests.test_forms"])
-    sys.exit(bool(failures))

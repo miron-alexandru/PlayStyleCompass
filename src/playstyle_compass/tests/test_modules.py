@@ -1,16 +1,4 @@
-import os
-import sys
 from decimal import Decimal
-
-CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
-PROJECT_ROOT = os.path.abspath(os.path.join(CURRENT_DIR, "..", "..", ".."))
-sys.path.insert(0, PROJECT_ROOT)
-
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "src.playstyle_manager.settings")
-import django
-
-django.setup()
-
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.db.models import Avg
@@ -841,12 +829,3 @@ class SharedReviewModelTest(TestCase):
             SharedReview.objects.create(
                 sender=self.sender, recipient=self.recipient, review=self.review
             )
-
-
-if __name__ == "__main__":
-    from django.test.utils import get_runner
-
-    TestRunner = get_runner(settings)
-    test_runner = TestRunner()
-    failures = test_runner.run_tests(["playstyle_compass.tests.test_modules"])
-    sys.exit(bool(failures))

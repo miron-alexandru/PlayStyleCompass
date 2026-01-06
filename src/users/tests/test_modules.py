@@ -1,15 +1,3 @@
-import os
-import sys
-
-CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
-PROJECT_ROOT = os.path.abspath(os.path.join(CURRENT_DIR, "..", "..", ".."))
-sys.path.insert(0, PROJECT_ROOT)
-
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "src.playstyle_manager.settings")
-import django
-
-django.setup()
-
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.utils import timezone
@@ -336,12 +324,3 @@ class UserProfileModelTest(TestCase):
     def test_last_online_autoset_on_create(self):
         self.assertIsNotNone(self.profile.last_online)
         self.assertLessEqual(self.profile.last_online, timezone.now())
-
-
-if __name__ == "__main__":
-    from django.test.utils import get_runner
-
-    TestRunner = get_runner(settings)
-    test_runner = TestRunner()
-    failures = test_runner.run_tests(["users.tests.test_modules"])
-    sys.exit(bool(failures))

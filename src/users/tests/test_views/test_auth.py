@@ -507,14 +507,3 @@ class DeleteAccountTest(TestCase):
 
         messages = list(get_messages(response.wsgi_request))
         self.assertTrue(any("confirmation email has been sent" in str(m) for m in messages))
-
-
-
-
-if __name__ == "__main__":
-    from django.test.utils import get_runner
-
-    TestRunner = get_runner(settings)
-    test_runner = TestRunner()
-    failures = test_runner.run_tests(["users.tests.test_views.test_auth"])
-    sys.exit(bool(failures))
