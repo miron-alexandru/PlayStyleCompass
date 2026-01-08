@@ -12,7 +12,8 @@ from channels.testing import WebsocketCommunicator
 from django.urls import path
 from django.contrib.auth.models import AnonymousUser
 
-from users.consumers import PresenceConsumer
+from users.consumers import PresenceConsumer, NotificationConsumer
+from users.models import Notification
 
 
 User = get_user_model()
@@ -21,6 +22,7 @@ application = AuthMiddlewareStack(
     URLRouter(
         [
             path("ws/presence/", PresenceConsumer.as_asgi()),
+            path("ws/notifications/", NotificationConsumer.as_asgi()),
         ]
     )
 )
@@ -102,7 +104,105 @@ class PresenceConsumerTests(TransactionTestCase):
                 text_data=json.dumps({"type": "heartbeat"})
             )
 
+            async_to_sync(asyncio.sleep)(0)
+
             self.assertEqual(cache.get(f"online:{user.id}"), 1)
         finally:
             if communicator:
                 self._safe_disconnect(communicator)
+
+
+class NotificationConsumerTests(TransactionTestCase):
+    async def _connect(self, user=None):
+        """
+        Helper to connect a user or guest to the notifications WebSocket.
+        Returns (communicator, connected).
+        """
+        communicator = WebsocketCommunicator(application, "/ws/notifications/")
+        communicator.scope["user"] = user or AnonymousUser()
+        connected, _ = await communicator.connect()
+        return communicator, connected
+
+    def _safe_disconnect(self, communicator):
+        """
+        Disconnect communicator safely without raising CancelledError.
+        """
+        try:
+            async_to_sync(communicator.disconnect)()
+        except asyncio.CancelledError:
+            pass
+
+    def test_user_receives_notifications(self):
+        """
+        Authenticated user should receive all past active and delivered notifications
+        immediately upon connecting.
+        """
+        user = User.objects.create_user(username="ntestuser", password="testpass")
+
+        Notification.objects.create(
+            user=user,
+            message="Hello",
+            message_ro="Salut",
+            is_read=False,
+            is_active=True,
+            delivered=True,
+        )
+
+        async def run():
+            communicator = WebsocketCommunicator(application, "/ws/notifications/")
+            communicator.scope["user"] = user
+
+            connected, _ = await communicator.connect()
+            assert connected
+
+            data = await communicator.receive_json_from()
+            await communicator.disconnect()
+            return data
+
+        data = async_to_sync(run)()
+        self.assertEqual(data["message"], "Hello")
+        self.assertFalse(data["is_read"])
+
+    def test_inactive_notifications_not_sent(self):
+        """
+        Notifications that are inactive should not be sent to the user.
+        """
+        user = User.objects.create_user(username="ntestuser2", password="testpass")
+
+        Notification.objects.create(
+            user=user,
+            message="Hidden",
+            message_ro="Ascuns",
+            is_read=False,
+            is_active=False,
+            delivered=True,
+        )
+
+        async def run():
+            communicator, connected = await self._connect(user)
+            assert connected
+
+            # Attempt to receive a message; should time out
+            with self.assertRaises(asyncio.TimeoutError):
+                await communicator.receive_json_from(timeout=0.1)
+
+            await communicator.disconnect()
+
+        async_to_sync(run)()
+
+    def test_guest_receives_nothing(self):
+        """
+        Guest connections are accepted but receive no notifications.
+        """
+        async def run():
+            communicator, connected = await self._connect()
+            assert connected
+
+            # Attempt to receive a message; should time out
+            with self.assertRaises(asyncio.TimeoutError):
+                await communicator.receive_json_from(timeout=0.1)
+
+            await communicator.disconnect()
+
+        async_to_sync(run)()
+
