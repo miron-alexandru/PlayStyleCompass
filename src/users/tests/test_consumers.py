@@ -28,6 +28,7 @@ application = AuthMiddlewareStack(
 )
 
 
+
 class PresenceConsumerTests(TransactionTestCase):
     async def _connect(self, user=None):
         communicator = WebsocketCommunicator(
@@ -91,20 +92,21 @@ class PresenceConsumerTests(TransactionTestCase):
     def test_heartbeat_keeps_user_online(self):
         user = User.objects.create_user(
             username="dtestuser",
-            password="testpass"
+            password="testpass",
         )
 
         communicator = None
         try:
-            communicator, _ = async_to_sync(self._connect)(user)
+            communicator, connected = async_to_sync(self._connect)(user)
+            assert connected
 
-            cache.set(f"online:{user.id}", 1, timeout=1)
+            cache.set(f"online:{user.id}", 1, timeout=5)
 
             async_to_sync(communicator.send_to)(
                 text_data=json.dumps({"type": "heartbeat"})
             )
 
-            async_to_sync(asyncio.sleep)(0)
+            async_to_sync(asyncio.sleep)(0.1)
 
             self.assertEqual(cache.get(f"online:{user.id}"), 1)
         finally:
@@ -165,9 +167,12 @@ class NotificationConsumerTests(TransactionTestCase):
 
     def test_inactive_notifications_not_sent(self):
         """
-        Notifications that are inactive should not be sent to the user.
+        Inactive notifications are not delivered to the user.
         """
-        user = User.objects.create_user(username="ntestuser2", password="testpass")
+        user = User.objects.create_user(
+            username="ntestuser2",
+            password="testpass",
+        )
 
         Notification.objects.create(
             user=user,
@@ -182,9 +187,11 @@ class NotificationConsumerTests(TransactionTestCase):
             communicator, connected = await self._connect(user)
             assert connected
 
-            # Attempt to receive a message; should time out
-            with self.assertRaises(asyncio.TimeoutError):
-                await communicator.receive_json_from(timeout=0.1)
+            try:
+                await communicator.receive_json_from(timeout=0.5)
+                self.fail("Inactive notification was sent")
+            except asyncio.TimeoutError:
+                pass
 
             await communicator.disconnect()
 
@@ -198,11 +205,12 @@ class NotificationConsumerTests(TransactionTestCase):
             communicator, connected = await self._connect()
             assert connected
 
-            # Attempt to receive a message; should time out
-            with self.assertRaises(asyncio.TimeoutError):
-                await communicator.receive_json_from(timeout=0.1)
+            try:
+                await communicator.receive_json_from(timeout=0.5)
+                self.fail("Guest received a message")
+            except asyncio.TimeoutError:
+                pass
 
             await communicator.disconnect()
 
         async_to_sync(run)()
-
