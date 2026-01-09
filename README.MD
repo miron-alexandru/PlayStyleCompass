@@ -145,7 +145,7 @@ Websites for .env configuration: [GiantBomb](https://www.giantbomb.com/) / [Send
 <summary><h2>PlayStyle Compass Changelog</h2></summary>
 
 ### Version v2.6:
-* Refactored the online status stystem.
+* Refactored the online status system.
 * Updated necessary tests.
 * Refactored user profile view and template.
 * Implemented/Updated dark theme where needed.
