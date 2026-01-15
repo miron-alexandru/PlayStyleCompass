@@ -44,9 +44,9 @@ from data_processing import (
 # create_games_data_db(game_ids)
 
 # Obtain game modes data
-# guids = ["3015-6130", "3015-322"]
-# mode_strings = ["Singleplayer", "Multiplayer"]
-# create_game_modes_data(guids, mode_strings, num_games=5, offset=0)
+#guids = ["3015-6130", "3015-322"]
+#mode_strings = ["Singleplayer", "Multiplayer"]
+#create_game_modes_data(guids, mode_strings, num_games=5, offset=0)
 
 # Obtain games based on concepts (used for preference quiz)
 # create_quiz_data(concept_ids, num_games=1, offset=0)
@@ -57,7 +57,7 @@ from data_processing import (
 # create_quiz_data(concepts, num_games=5, offset=0)
 
 # Obtain News data
-create_news_data(num_articles=100, year=2025, latest_week=False)
+#create_news_data(num_articles=100, year=2025, latest_week=False)
 
 # Obtain casual games data
 # casual_game_ids = fetch_game_ids_by_genre(genre_id=40, page_size=40, page=2)

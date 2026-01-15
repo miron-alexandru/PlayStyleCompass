@@ -35,6 +35,16 @@
 - [mkcert](https://github.com/FiloSottile/mkcert?tab=readme-ov-file#installation) installed for creating local SSL certificates
 - [Nginx](https://nginx.org/en/download.html) downloaded
 
+
+### IMPORTANT! 
+The GiantBomb API is temporarily unavailable. To populate the game database locally:
+1. Ensure games_data.json is inside the 'utils' folder.
+2. Run the population script from the project root:
+```
+python utils/populate_games.py
+```
+## This will create or update playstyle_db.sqlite3 with all game data. Existing games will not be duplicated.
+
 #### Option 1: Run the Website Locally
 1. **Open a Command Prompt or Terminal.**
 2. **Navigate to the Project's Root Directory (containing manage.py).**

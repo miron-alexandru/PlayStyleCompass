@@ -43,11 +43,16 @@ class RecommendationEngine:
         return []
 
     def _parse_release_date(self, release_date_str):
-        """Parse a release date string into a datetime.date object."""
+        if not release_date_str or release_date_str == '0000':
+            return None  # or some default date
         try:
-            return datetime.strptime(release_date_str, "%Y-%m-%d").date()
+            # if only year is stored
+            if len(release_date_str) == 4:
+                return datetime.strptime(release_date_str + "-01-01", "%Y-%m-%d").date()
+            else:
+                return datetime.strptime(release_date_str, "%Y-%m-%d").date()
         except ValueError:
-            return datetime.strptime(release_date_str + "-01-01", "%Y-%m-%d").date()
+            return None
 
     def _process_gaming_history(self, gaming_history):
         """Process the user's gaming history to find matching games and genres."""
@@ -61,10 +66,9 @@ class RecommendationEngine:
             for genre_game in matching_genre_games:
                 if genre_game not in self.matching_games["gaming_history"]:
                     self.matching_games["gaming_history"].append(genre_game)
-                if (
-                    self._parse_release_date(genre_game.release_date)
-                    >= self.current_date
-                ):
+
+                release_date = self._parse_release_date(genre_game.release_date)
+                if release_date is not None and release_date >= self.current_date:
                     games_to_exclude.add(genre_game)
 
         for history_game in gaming_history:
