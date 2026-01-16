@@ -217,7 +217,7 @@ EMAIL_USE_TLS = True
 # Password Reset Timeout
 PASSWORD_RESET_TIMEOUT = 1800
 
-if not DEBUG:
+if os.environ.get("DATABASE_URL"):
     # Database Configuration (PostgreSQL)
     DATABASES = {
         "default": dj_database_url.parse(os.environ.get("DATABASE_URL")),
@@ -277,13 +277,13 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
 
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
-if DEBUG:
+if GS_BUCKET_NAME:
+    DEFAULT_FILE_STORAGE = "storages.backends.gcloud.GoogleCloudStorage"
+    MEDIA_URL = f"https://storage.googleapis.com/{GS_BUCKET_NAME}/"
+else:
     MEDIA_URL = "/media/"
     MEDIA_ROOT = os.path.join(BASE_DIR, "media")
     DEFAULT_FILE_STORAGE = "django.core.files.storage.FileSystemStorage"
-else:
-    DEFAULT_FILE_STORAGE = "storages.backends.gcloud.GoogleCloudStorage"
-    MEDIA_URL = f"https://storage.googleapis.com/{GS_BUCKET_NAME}/"
 
 
 # Authentication Settings

@@ -11,9 +11,6 @@ from datetime import datetime
 from http.cookies import SimpleCookie
 from channels.generic.websocket import AsyncWebsocketConsumer
 from channels.db import database_sync_to_async
-from django.contrib.sessions.models import Session
-from django.contrib.auth.models import User
-from .models import Notification, UserProfile, GlobalChatMessage, ChatMessage
 from django.utils import timezone
 from django.utils.translation import get_language
 from django.conf import settings
@@ -84,6 +81,7 @@ class NotificationConsumer(AsyncWebsocketConsumer):
 
     @database_sync_to_async
     def get_all_notifications(self, user):
+        from .models import Notification
         return list(
             Notification.objects.filter(user=user, is_active=True, delivered=True)
         )
@@ -281,6 +279,7 @@ class PrivateChatConsumer(AsyncWebsocketConsumer):
         """
         Fetch a User instance by ID.
         """
+        from django.contrib.auth.models import User
         try:
             return User.objects.get(id=user_id)
         except User.DoesNotExist:
@@ -291,6 +290,7 @@ class PrivateChatConsumer(AsyncWebsocketConsumer):
         """
         Retrieve existing messages for the chat room, with sender/recipient filters.
         """
+        from .models import ChatMessage
         messages = list(
             ChatMessage.objects.filter(
                 (
@@ -427,6 +427,7 @@ class GlobalChatConsumer(AsyncWebsocketConsumer):
 
     @database_sync_to_async
     def get_existing_messages(self, offset=0, limit=20):
+        from .models import GlobalChatMessage
         messages = list(
             GlobalChatMessage.objects.all()
             .order_by("-created_at")
@@ -502,6 +503,7 @@ class PresenceConsumer(AsyncWebsocketConsumer):
 
         if count <= 0:
             cache.delete(self.key)
+            from .models import UserProfile
             UserProfile.objects.filter(user_id=self.user.id).update(
                 last_online=timezone.now()
             )
