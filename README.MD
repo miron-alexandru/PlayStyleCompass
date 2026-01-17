@@ -34,6 +34,7 @@
 - pip installed
 - [mkcert](https://github.com/FiloSottile/mkcert?tab=readme-ov-file#installation) installed for creating local SSL certificates
 - [Nginx](https://nginx.org/en/download.html) downloaded
+- [Docker](https://www.docker.com/get-started/) installed
 
 
 ### IMPORTANT! 
@@ -43,7 +44,7 @@ The GiantBomb API is temporarily unavailable. To populate the game database loca
 ```
 python utils/populate_games.py
 ```
-## This will create or update playstyle_db.sqlite3 with all game data. Existing games will not be duplicated.
+#### This will create or update playstyle_db.sqlite3 with all game data.
 
 #### Option 1: Run the Website Locally
 1. **Open a Command Prompt or Terminal.**
@@ -59,7 +60,7 @@ python manage.py migrate
 7. **Open the Website:** Visit https://localhost/ in your browser.
 
 #### Option 2: Clone and Run the Website Locally
-1. **Clone the Repository:** `git clone https://github.com/KhadaAke/PlayStyleCompass.git`
+1. **Clone the Repository:** `git clone https://github.com/miron-alexandru/PlayStyleCompass.git`
 2. **Navigate to the Project Directory:** `cd PlayStyleCompass`
 3. **Set Up a Virtual Environment:**
 ```
@@ -76,6 +77,28 @@ python manage.py migrate
 ```
 7. **Run the Development Server:** `python manage.py runserver`
 8. **Open the Website:** Visit https://localhost/ in your browser.
+
+
+### Option 3: Run the website using Docker
+1. **Clone the Repository:** 
+    ```
+    git clone https://github.com/miron-alexandru/PlayStyleCompass.git
+    cd PlayStyleCompass
+    ```
+2. **Create environment file.**
+   - Copy .env.example to .env.
+   - Fill the variables with your own values.
+   - Set DEBUG=True for local usage.
+   - Set SECURE_CONNECTION=False when running without Nginx.
+3. **Build the Docker image.**
+    - From the project root, where manage.py and Dockerfile are located: 
+    ```docker build -t playstyle_app . ```
+4. **Run the container**
+    ```docker run --env-file .env -p 8000:8000 playstyle_app```
+5. **Open the app.**
+    - Without Nginx: open http://127.0.0.1:8000/en/
+    - With Nginx: open https://localhost/ 
+
 
 ### Obtaining SSL Certificates with mkcert
 1. **Install mkcert:** Follow the instructions [here](https://github.com/FiloSottile/mkcert?tab=readme-ov-file#installation)

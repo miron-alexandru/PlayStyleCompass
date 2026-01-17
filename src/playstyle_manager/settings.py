@@ -277,13 +277,13 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
 
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
-if GS_BUCKET_NAME:
-    DEFAULT_FILE_STORAGE = "storages.backends.gcloud.GoogleCloudStorage"
-    MEDIA_URL = f"https://storage.googleapis.com/{GS_BUCKET_NAME}/"
-else:
-    MEDIA_URL = "/media/"
-    MEDIA_ROOT = os.path.join(BASE_DIR, "media")
-    DEFAULT_FILE_STORAGE = "django.core.files.storage.FileSystemStorage"
+#if GS_BUCKET_NAME:
+ #   DEFAULT_FILE_STORAGE = "storages.backends.gcloud.GoogleCloudStorage"
+  #  MEDIA_URL = f"https://storage.googleapis.com/{GS_BUCKET_NAME}/"
+#else:
+MEDIA_URL = "/media/"
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+DEFAULT_FILE_STORAGE = "django.core.files.storage.FileSystemStorage"
 
 
 # Authentication Settings
