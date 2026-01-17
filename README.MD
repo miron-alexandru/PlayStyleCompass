@@ -90,12 +90,17 @@ python manage.py migrate
    - Fill the variables with your own values.
    - Set DEBUG=True for local usage.
    - Set SECURE_CONNECTION=False when running without Nginx.
-3. **Build the Docker image.**
+3. **Apply Migrations:** 
+```
+python manage.py makemigrations
+python manage.py migrate
+```
+4. **Build the Docker image.**
     - From the project root, where manage.py and Dockerfile are located: 
     ```docker build -t playstyle_app . ```
-4. **Run the container**
+5. **Run the container**
     ```docker run --env-file .env -p 8000:8000 playstyle_app```
-5. **Open the app.**
+6. **Open the app.**
     - Without Nginx: open http://127.0.0.1:8000/en/
     - With Nginx: open https://localhost/ 
 
