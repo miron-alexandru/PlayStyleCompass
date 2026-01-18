@@ -37,14 +37,34 @@
 - [Docker](https://www.docker.com/get-started/) installed
 
 
-### IMPORTANT! 
-The GiantBomb API is temporarily unavailable. To populate the game database locally:
-1. Ensure games_data.json is inside the 'utils' folder.
-2. Run the population script from the project root:
+### Local Database Population
+
+### IMPORTANT
+
+The GiantBomb API is temporarily unavailable.  
+You must populate the database locally using the provided JSON files.
+
+1. Ensure db_data folder with the necessary .json files is inside the 'utils' folder.
+2. Run the population scripts:
+- From project root run:
 ```
-python utils/populate_games.py
+cd utils
+python populate_db.py
+python get_games_data.py
 ```
-#### This will create or update playstyle_db.sqlite3 with all game data.
+What this does:
+- Creates or updates `playstyle_db.sqlite3` in the utils folder.
+- Populates Games, Characters, Franchises, GameModes, Reviews
+- Skips existing rows safely
+- Prints how many rows were inserted per table
+- Fills News and Deals data.
+
+---
+
+#### Rules
+- Always run scripts from `utils`
+- Keep JSON files in `utils/db_data`
+- Do not move the database file
 
 #### Option 1: Run the Website Locally
 1. **Open a Command Prompt or Terminal.**
