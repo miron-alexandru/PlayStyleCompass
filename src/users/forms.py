@@ -82,8 +82,7 @@ class CustomRegistrationForm(UserCreationForm):
         label="Password",
         widget=forms.PasswordInput(
             attrs={"placeholder": "", "autocomplete": "new-password"}
-        ),
-        help_text="",
+        ),help_text=UserCreationForm.base_fields["password1"].help_text,
     )
 
     password2 = forms.CharField(

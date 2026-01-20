@@ -41,11 +41,11 @@ class SpecialCharValidator:
     """
 
     def validate(self, password, user=None):
-        if not re.findall("[@#$%!^&*]", password):
+        if not re.findall("[@#$%!^&*?]", password):
             raise ValidationError(
-                _("The password must contain at least 1 special character: @#$%!^&*"),
+                _("The password must contain at least 1 special character: @#$%!^&*?"),
                 code="password_no_symbol",
             )
 
     def get_help_text(self):
-        return _("Your password must contain at least 1 special character: @#$%!^&*")
+        return _("Your password must contain at least 1 special character: @#$%!^&*?")
