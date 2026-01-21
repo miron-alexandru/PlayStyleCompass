@@ -61,40 +61,47 @@ class CustomRegistrationForm(UserCreationForm):
     profile_name = forms.CharField(
         label="Profile Name",
         help_text=_(
-            "Choose nickname that will be shown to other users on the platform. This name is not used for login."
+            "Public nickname. Letters and numbers only. Minimum 3 characters. Shown to other users."
         ),
-        widget=forms.TextInput(attrs={"autofocus": "autofocus", "placeholder": ""}),
+        widget=forms.TextInput(attrs={"autofocus": "autofocus"}),
         max_length=32,
     )
+
     username = forms.CharField(
-        help_text="",
-        widget=forms.TextInput(attrs={"placeholder": "", "autocomplete": "username"}),
+        help_text=_(
+            "Used for login. Letters and numbers only. Minimum 4 characters."
+        ),
+        widget=forms.TextInput(attrs={"autocomplete": "username"}),
         max_length=32,
     )
 
     email = forms.EmailField(
         label="Email",
-        help_text="",
-        widget=forms.EmailInput(attrs={"placeholder": "", "autocomplete": "email"}),
+        help_text=_(
+            "Used for account recovery and notifications."
+        ),
+        widget=forms.EmailInput(attrs={"autocomplete": "email"}),
     )
 
     password1 = forms.CharField(
         label="Password",
-        widget=forms.PasswordInput(
-            attrs={"placeholder": "", "autocomplete": "new-password"}
-        ),help_text=UserCreationForm.base_fields["password1"].help_text,
+        widget=forms.PasswordInput(attrs={"autocomplete": "new-password"}),
+        help_text=UserCreationForm.base_fields["password1"].help_text,
     )
 
     password2 = forms.CharField(
         label="Password Confirmation",
-        widget=forms.PasswordInput(
-            attrs={"placeholder": "", "autocomplete": "new-password"}
+        widget=forms.PasswordInput(attrs={"autocomplete": "new-password"}),
+        help_text=_(
+            "Repeat the password for verification."
         ),
-        help_text=_("Enter the same password as before for verification."),
     )
 
     captcha = ReCaptchaField(
-        error_messages={"required": _("Please complete reCAPTCHA.")}
+        help_text=_(
+            "Security check to prevent automated sign-ups."
+        ),
+        error_messages={"required": _("Please complete reCAPTCHA.")},
     )
 
     class Meta:

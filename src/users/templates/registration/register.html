@@ -42,6 +42,9 @@
         {{ form.username.errors }}
       </ul>
       {% endif %}
+      {% if form.username.help_text %}
+      <p class="help-text">{{ form.username.help_text }}</p>
+      {% endif %}
     </div>
 
     <div class="form-group">
@@ -51,6 +54,9 @@
       <ul class="custom-error-list">
         {{ form.email.errors }}
       </ul>
+      {% endif %}
+      {% if form.email.help_text %}
+      <p class="help-text">{{ form.email.help_text }}</p>
       {% endif %}
     </div>
 
